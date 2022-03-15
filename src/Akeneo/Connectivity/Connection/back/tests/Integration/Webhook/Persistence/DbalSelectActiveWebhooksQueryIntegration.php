@@ -23,17 +23,10 @@ use PHPUnit\Framework\Assert;
  */
 class DbalSelectActiveWebhooksQueryIntegration extends TestCase
 {
-    /** @var ConnectionLoader */
-    private $connectionLoader;
-
-    /** @var SelectActiveWebhooksQueryInterface */
-    private $selectActiveWebhooksQuery;
-
-    /** @var DbalConnection */
-    private $dbalConnection;
-
-    /** @var UpdateConnectionHandler */
-    private $updateConnectionHandler;
+    private ConnectionLoader $connectionLoader;
+    private SelectActiveWebhooksQueryInterface $selectActiveWebhooksQuery;
+    private DbalConnection $dbalConnection;
+    private UpdateConnectionHandler $updateConnectionHandler;
 
     protected function setUp(): void
     {
@@ -42,7 +35,7 @@ class DbalSelectActiveWebhooksQueryIntegration extends TestCase
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->selectActiveWebhooksQuery = $this->get(DbalSelectActiveWebhooksQuery::class);
         $this->dbalConnection = $this->get('database_connection');
-        $this->updateConnectionHandler = $this->get('akeneo_connectivity.connection.application.handler.update_connection');
+        $this->updateConnectionHandler = $this->get(UpdateConnectionHandler::class);
     }
 
     public function test_it_finds_connections_webhook(): void

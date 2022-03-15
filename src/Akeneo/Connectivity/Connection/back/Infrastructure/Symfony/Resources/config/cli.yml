@@ -2,6 +2,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
         tags:
             - { name: 'console.command' }

@@ -1,3 +1,6 @@
+parameters:
+    akeneo_connectivity.connection.max_limit: 50
+
 services:
     akeneo_connectivity.connection.service.client.create_client:
         class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
@@ -63,7 +66,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
             - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
 
     akeneo_connectivity.connection.clock:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock

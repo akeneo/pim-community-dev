@@ -1,5 +1,0 @@
-services:
-    akeneo_connectivity.connection.persistence.repository.connection:
-        class: 'Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Repository\DbalConnectionRepository'
-        arguments:
-            - '@database_connection'
