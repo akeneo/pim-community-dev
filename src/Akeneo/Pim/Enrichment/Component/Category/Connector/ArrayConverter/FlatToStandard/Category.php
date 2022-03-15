@@ -27,7 +27,7 @@ class Category implements ArrayConverterInterface
      */
     public function __construct(
         FieldsRequirementChecker $fieldChecker,
-        // TODO pull-up 6.0/master
+        // TODO pull-up 6.0/master: make params non nullable
         LocaleRepositoryInterface $localeRepository = null
     ) {
         $this->fieldChecker = $fieldChecker;
@@ -92,8 +92,6 @@ class Category implements ArrayConverterInterface
     }
 
     /**
-     * @param array $item
-     * @return void
      * @throws StructureArrayConversionException
      */
     protected function validate(array $item)
@@ -104,12 +102,14 @@ class Category implements ArrayConverterInterface
         $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
 
         $authorizedFields = array_merge($requiredFields, ['parent']);
-        // TODO pull-up 6.0/master
-        if (null !== $this->localeRepository) {
-            $locales = $this->localeRepository->findAll();
-            foreach ($locales as $locale) {
-                $authorizedFields[] = 'label-' . $locale->getCode();
-            }
+        // TODO pull-up 6.0/master: remove conditional return
+        if (null === $this->localeRepository) {
+            return;
+        }
+
+        $locales = $this->localeRepository->findAll();
+        foreach ($locales as $locale) {
+            $authorizedFields[] = 'label-' . $locale->getCode();
         }
 
         foreach (array_keys($item) as $field) {
