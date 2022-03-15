@@ -12,8 +12,8 @@ import {
 } from 'akeneo-design-system';
 import Products from 'akeneo-design-system/static/illustrations/Products.svg';
 import {filterErrors, useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
-import {useReadColumns, useFileTemplateInformationFetcher} from '../hooks';
-import {Column, FileStructure, FileTemplateInformation, getDefaultFileStructure} from '../models';
+import {useReadColumns} from '../hooks';
+import {Column, FileStructure, getDefaultFileStructure} from '../models';
 import {FileTemplateConfigurator} from '../components';
 
 const Container = styled.div`
@@ -48,12 +48,11 @@ type InitializeFileStructureProps = {
 const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const translate = useTranslate();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
-  const [fileTemplateInformation, setFileTemplateInformation] = useState<FileTemplateInformation | null>(null);
+  const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [fileStructure, setFileStructure] = useState<FileStructure>(getDefaultFileStructure());
   const [uploader] = useUploader('pimee_tailored_import_upload_structure_file_action');
   const readColumns = useReadColumns();
-  const fileTemplateInformationFetcher = useFileTemplateInformationFetcher();
   const fileTemplateValidationErrors = filterErrors(validationErrors, '[file]');
   const fileStructureValidationErrors = filterErrors(validationErrors, '[file_structure]');
 
@@ -72,13 +71,13 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const handleConfirm = async () => {
     setValidationErrors([]);
 
-    if (null !== fileTemplateInformation) {
+    if (null !== fileInfo) {
       try {
-        const columns = await readColumns(fileTemplateInformation.file_info.filePath, fileStructure);
+        const columns = await readColumns(fileInfo.filePath, fileStructure);
 
         const columnIdentifier =
           columns.find(column => column.index === fileStructure.unique_identifier_column) ?? null;
-        onConfirm(fileTemplateInformation.file_info.filePath, columns, columnIdentifier, fileStructure);
+        onConfirm(fileInfo.filePath, columns, columnIdentifier, fileStructure);
         closeModal();
       } catch (validationErrors: any) {
         setValidationErrors(formatParameters(validationErrors));
@@ -87,37 +86,11 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   };
 
   const handleFileUpload = async (file: FileInfo | null) => {
-    const fileTemplateInformation = file ? await fileTemplateInformationFetcher(file, null) : null;
-
-    setFileStructure(fileStructure => ({
-      ...fileStructure,
-      sheet_name: fileTemplateInformation?.sheet_names[0] ?? null,
-    }));
-    setFileTemplateInformation(fileTemplateInformation);
-  };
-
-  const handleSheetChange = async (sheetName: string) => {
-    if (fileTemplateInformation) {
-      const newFileStructure = {...getDefaultFileStructure(), sheet_name: sheetName};
-      setFileStructure(newFileStructure);
-      setFileTemplateInformation(
-        await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
-      );
-    }
-  };
-
-  const handleHeaderRowChange = async (headerRow: number) => {
-    if (fileTemplateInformation) {
-      const newFileStructure = {...fileStructure, header_row: headerRow};
-      setFileStructure(newFileStructure);
-      setFileTemplateInformation(
-        await fileTemplateInformationFetcher(fileTemplateInformation.file_info, newFileStructure)
-      );
-    }
+    setFileInfo(file);
   };
 
   const handleClose = () => {
-    setFileTemplateInformation(null);
+    setFileInfo(null);
     setFileStructure(getDefaultFileStructure());
     closeModal();
   };
@@ -128,12 +101,12 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
 
   const handlePrevious = () => {
     setFileStructure(getDefaultFileStructure());
-    setFileTemplateInformation(null);
-  };
+    setFileInfo(null);
+  }
 
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>
-      {fileTemplateInformation && (
+      {fileInfo && (
         <Modal.TopLeftButtons>
           <Button onClick={handlePrevious} level="tertiary">
             {translate('pim_common.previous')}
@@ -141,7 +114,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         </Modal.TopLeftButtons>
       )}
       <Modal.TopRightButtons>
-        <Button disabled={null === fileTemplateInformation} onClick={handleConfirm}>
+        <Button disabled={null === fileInfo} onClick={handleConfirm}>
           {translate('pim_common.confirm')}
         </Button>
       </Modal.TopRightButtons>
@@ -152,10 +125,10 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         <Modal.Title>{translate('akeneo.tailored_import.file_structure.modal.title')}</Modal.Title>
         <Content>
           <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
-          {!fileTemplateInformation || fileTemplateValidationErrors.length > 0 ? (
+          {!fileInfo || fileTemplateValidationErrors.length > 0 ? (
             <>
               <MediaFileInput
-                value={fileTemplateInformation?.file_info ?? null}
+                value={fileInfo ?? null}
                 onChange={handleFileUpload}
                 thumbnailUrl={Products}
                 uploader={uploadFileTemplate}
@@ -173,11 +146,9 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
             </>
           ) : (
             <FileTemplateConfigurator
+              fileInfo={fileInfo}
               fileStructure={fileStructure}
-              fileTemplateInformation={fileTemplateInformation}
               onFileStructureChange={setFileStructure}
-              onSheetChange={handleSheetChange}
-              onHeaderRowChange={handleHeaderRowChange}
               validationErrors={fileStructureValidationErrors}
             />
           )}

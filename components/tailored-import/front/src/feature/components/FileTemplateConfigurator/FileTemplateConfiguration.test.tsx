@@ -2,7 +2,7 @@ import React from 'react';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {screen, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {FileTemplateConfigurator} from './FileTemplateConfigurator';
+import {FileTemplateConfiguration} from './FileTemplateConfiguration';
 import {renderWithProviders} from 'feature/tests';
 import {FileStructure} from '../../models';
 
@@ -21,7 +21,7 @@ const fileStructure: FileStructure = {
 
 test('it display correct value when provided with a templateInformation', async () => {
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -46,7 +46,7 @@ test('it dispatch an event when sheet is changed', async () => {
   const handleSheetChange = jest.fn();
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -71,7 +71,7 @@ test('it dispatch an event when header row change', async () => {
   const handleHeaderRowChange = jest.fn();
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -96,7 +96,7 @@ test('it dispatch event when first product row change', async () => {
   const handleFileStructureChange = jest.fn();
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -121,7 +121,7 @@ test('it dispatch an event when first column row change', async () => {
   const handleFileStructureChange = jest.fn();
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -146,7 +146,7 @@ test('it dispatch an event when column identifier change', async () => {
   const handleFileStructureChange = jest.fn();
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',
@@ -207,7 +207,7 @@ test('it display validation errors', async () => {
   ];
 
   await renderWithProviders(
-    <FileTemplateConfigurator
+    <FileTemplateConfiguration
       fileTemplateInformation={{
         file_info: fileInfo,
         current_sheet: 'currentTestSheet',

@@ -34,7 +34,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
                 'header_row' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 1, 'max' => 500]),
+                    new Range(['min' => 1, 'max' => 19]),
                 ],
                 'first_column' => [
                     new Type('int'),
@@ -44,7 +44,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
                 'first_product_row' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 2, 'max' => 500]),
+                    new Range(['min' => 2, 'max' => 20]),
                 ],
                 'unique_identifier_column' => [
                     new Type('int'),
@@ -62,7 +62,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
             return;
         }
 
-        $validator->atPath('[file_structure][first_product_row]')->validate($value['first_product_row'], new Range(['min' => $value['header_row'], 'minMessage' => $constraint->firstProductRowShouldBeAfterHeaderRow]));
+        $validator->atPath('[file_structure][first_product_row]')->validate($value['first_product_row'], new Range(['min' => $value['header_row'] + 1, 'minMessage' => $constraint->firstProductRowShouldBeAfterHeaderRow]));
         $validator->atPath('[file_structure][unique_identifier_column]')->validate($value['unique_identifier_column'], new Range(['min' => $value['first_column'], 'minMessage' => $constraint->uniqueIdentifierColumnShouldBeAfterFirstColumnMessage]));
     }
 }

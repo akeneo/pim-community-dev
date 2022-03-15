@@ -214,7 +214,7 @@ test('it refresh file information when sheet changed', async () => {
   );
 });
 
-test('it refresh file information when header line changed', async () => {
+test('it refresh file information when header row changed', async () => {
   const handleConfirm = jest.fn();
 
   await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);

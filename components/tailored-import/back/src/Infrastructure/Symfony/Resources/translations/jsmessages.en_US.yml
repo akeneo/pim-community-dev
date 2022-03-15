@@ -86,5 +86,9 @@ akeneo.tailored_import:
       max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
       not_allowed_mime_type: The file must be an Excel spreadsheet.
     file_structure:
-      first_product_row_should_be_after_header_row: First product row should be after header row.
-      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be after first column.
+      first_product_row_should_be_after_header_row: First product row should be after the header row.
+      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be at least the first column.
+    file_preview:
+      empty_sheet:
+        title: This sheet is empty.
+        description: Please select another sheet with at least one row.
