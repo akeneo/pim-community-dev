@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class IsValidFileStructureValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsValidFileStructure) {
             throw new \LogicException('The constraint should be an instance of IsValidFileStructure.');
