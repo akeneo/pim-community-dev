@@ -11,6 +11,5 @@ final class CreateContributorHandlerTest extends TestCase
     /** @test */
     public function itCreatesANewSupplierContributor(): void
     {
-
     }
 }
