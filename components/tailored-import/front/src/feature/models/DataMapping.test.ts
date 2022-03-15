@@ -36,7 +36,7 @@ test('it creates a default data mapping', () => {
     available_locales: [],
   };
 
-  expect(createDefaultDataMapping(attributeIdentifier, [{uuid: 'columnUuid', index: 0, label: 'identifier'}])).toEqual({
+  expect(createDefaultDataMapping(attributeIdentifier, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
     uuid: mockUuid,
     operations: [],
     sample_data: [],

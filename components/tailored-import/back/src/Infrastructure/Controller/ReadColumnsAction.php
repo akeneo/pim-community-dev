@@ -17,6 +17,7 @@ use Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler;
 use Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\Columns;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileStructure;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -47,8 +48,9 @@ final class ReadColumnsAction
             throw new BadRequestException('Missing file key');
         }
 
-        if (null === $normalizedFileStructure) {
-            throw new BadRequestException('Missing file structure');
+        $violations = $this->validator->validate($normalizedFileStructure, new IsValidFileStructure());
+        if (count($violations) > 0) {
+            return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
         $fileStructure = FileStructure::createFromNormalized($normalizedFileStructure);

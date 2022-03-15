@@ -20,9 +20,9 @@ use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Symfony\Component\HttpFoundation\Response;
 
-class ReadColumnsActionTest extends ControllerIntegrationTestCase
+class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_tailored_import_read_columns_action';
+    private const ROUTE = 'pimee_tailored_import_get_file_template_information_action';
     private WebClientHelper $webClientHelper;
     private FileStorer $fileStorer;
 
@@ -35,63 +35,76 @@ class ReadColumnsActionTest extends ControllerIntegrationTestCase
         $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
-    public function test_it_reads_columns_from_a_file(): void
+    public function test_it_return_template_information_from_a_file(): void
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../Common/simple_import.xlsx');
-        $fileStructure = [
-            'header_row' => 1,
-            'first_column' => 0,
-            'first_product_row' => 2,
-            'unique_identifier_column' => 1,
-            'sheet_name' => 'Products',
-        ];
-
         $this->webClientHelper->callApiRoute(
             $this->client,
             self::ROUTE,
             [],
-            'POST',
-            [],
-            json_encode([
+            'GET',
+            [
                 'file_key' => $fileKey,
-                'file_structure' => $fileStructure,
-            ]),
+                'header_row' => 1,
+                'sheet_name' => 'Products',
+            ],
         );
 
         $response = $this->client->getResponse();
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
-        $columns = \json_decode($response->getContent(), true);
+        $response = \json_decode($response->getContent(), true);
         $expectedColumnLabels = [
-            'Sku',
-            'Name',
-            'Price',
-            'Enabled',
-            'Release date',
-            'Price with tax',
+            'sheet_names' => [
+                'Products',
+                'Empty lines and columns',
+                'Empty sheet',
+                'Out of bound value',
+            ],
+            'header_cells' => [
+                'Sku',
+                'Name',
+                'Price',
+                'Enabled',
+                'Release date',
+                'Price with tax',
+            ]
         ];
-        $this->assertSame($expectedColumnLabels, array_column($columns, 'label'));
+
+        $this->assertSame($expectedColumnLabels, $response);
     }
 
-    public function test_it_returns_a_bad_request_when_file_key_is_missing(): void
+    public function test_it_returns_a_bad_request_when_file_key_is_invalid(): void
     {
-        $fileStructure = [
-            'header_row' => 1,
-            'first_column' => 0,
-            'first_product_row' => 2,
-            'unique_identifier_column' => 1,
-            'sheet_name' => 'Products',
-        ];
-
         $this->webClientHelper->callApiRoute(
             $this->client,
             self::ROUTE,
             [],
-            'POST',
+            'GET',
+            [
+                'file_key' => 'invalid_key_file',
+                'header_row' => 1,
+                'sheet_name' => 'Products',
+            ],
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+    }
+
+    public function test_it_returns_a_bad_request_when_sheet_name_is_not_found(): void
+    {
+        $fileKey = $this->storeFile(__DIR__ . '/../../../Common/simple_import.xlsx');
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            self::ROUTE,
             [],
-            json_encode([
-                'file_structure' => $fileStructure,
-            ]),
+            'GET',
+            [
+                'file_key' => $fileKey,
+                'header_row' => 1,
+                'sheet_name' => 'Sheet not found',
+            ],
         );
 
         $response = $this->client->getResponse();

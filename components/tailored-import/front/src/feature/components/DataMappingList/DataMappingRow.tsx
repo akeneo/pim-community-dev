@@ -37,7 +37,7 @@ const DataMappingRow = ({
   const sources = dataMapping.sources.map(uuid => {
     const column = columns.find(column => uuid === column.uuid);
 
-    return column ? generateColumnName(column) : '';
+    return column ? generateColumnName(column.index, column.label) : '';
   });
 
   const handleRemove = (event: SyntheticEvent) => {

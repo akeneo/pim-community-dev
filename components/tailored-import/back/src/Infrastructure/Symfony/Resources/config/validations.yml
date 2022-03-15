@@ -48,3 +48,12 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.file_key' }
     public: true
+
+  akeneo.tailored_import.validation.is_valid_file_template_information_query:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileTemplateInformationQueryValidator'
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.is_valid_file_template_information_query' }
+    public: true
