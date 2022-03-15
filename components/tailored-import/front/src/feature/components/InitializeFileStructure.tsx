@@ -11,11 +11,10 @@ import {
   Helper,
 } from 'akeneo-design-system';
 import Products from 'akeneo-design-system/static/illustrations/Products.svg';
-import {useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
 import {useReadColumns, useFileTemplateInformationFetcher} from '../hooks';
 import {Column, FileStructure, FileTemplateInformation, getDefaultFileStructure} from '../models';
 import {FileTemplateConfigurator} from '../components';
-import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
 
 const Container = styled.div`
   width: 100%;
@@ -125,12 +124,12 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
 
   const handleOpenModal = () => {
     openModal();
-  }
+  };
 
   const handlePrevious = () => {
     setFileStructure(getDefaultFileStructure());
     setFileTemplateInformation(null);
-  }
+  };
 
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>

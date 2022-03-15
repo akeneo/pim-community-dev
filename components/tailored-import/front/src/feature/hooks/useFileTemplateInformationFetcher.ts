@@ -1,7 +1,6 @@
+import {FileInfo} from 'akeneo-design-system';
 import {useRouter} from '@akeneo-pim-community/shared';
-import {FileTemplateInformation} from '../models/FileTemplateInformation';
-import {FileInfo} from 'akeneo-design-system/lib/components/Input/MediaFileInput/FileInfo';
-import {FileStructure} from '../models';
+import {FileStructure, FileTemplateInformation} from '../models';
 
 const useFileTemplateInformationFetcher = () => {
   const router = useRouter();

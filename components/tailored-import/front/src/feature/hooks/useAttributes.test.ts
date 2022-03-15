@@ -1,6 +1,6 @@
 import {act} from '@testing-library/react-hooks';
 import {useAttribute, useAttributes, useIdentifierAttribute} from './useAttributes';
-import {Attribute} from '../models/Attribute';
+import {Attribute} from '../models';
 import {renderHookWithProviders} from 'feature/tests';
 
 const flushPromises = () => new Promise(setImmediate);

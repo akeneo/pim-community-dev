@@ -55,7 +55,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
 
         $response = \json_decode($response->getContent(), true);
         $expectedColumnLabels = [
-            'sheets' => [
+            'sheet_names' => [
                 'Products',
                 'Empty lines and columns',
                 'Empty sheet',

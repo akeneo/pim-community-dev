@@ -1,35 +1,33 @@
 import React from 'react';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {screen, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {FileTemplateConfigurator} from './FileTemplateConfigurator';
 import {renderWithProviders} from 'feature/tests';
-import {FileStructure, FileTemplateInformation} from '../../models';
-import {ValidationError} from "@akeneo-pim-community/shared";
+import {FileStructure} from '../../models';
 
 const fileInfo = {
   originalFilename: 'foo.xlsx',
   filePath: 'path/to/foo.xlsx',
 };
 
-const fileStructure = {
+const fileStructure: FileStructure = {
   header_row: 1,
   first_column: 1,
   first_product_row: 2,
   unique_identifier_column: 1,
   sheet_name: 'currentTestSheet',
-} as FileStructure;
+};
 
 test('it display correct value when provided with a templateInformation', async () => {
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
       onHeaderRowChange={jest.fn()}
@@ -41,9 +39,7 @@ test('it display correct value when provided with a templateInformation', async 
   expect(screen.getByText('akeneo.tailored_import.file_structure.modal.header_row')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.file_structure.modal.first_product_row')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.file_structure.modal.first_column')).toBeInTheDocument();
-  expect(
-    screen.getByText('akeneo.tailored_import.file_structure.modal.unique_identifier_column')
-  ).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.file_structure.modal.unique_identifier_column')).toBeInTheDocument();
 });
 
 test('it dispatch an event when sheet is changed', async () => {
@@ -51,14 +47,12 @@ test('it dispatch an event when sheet is changed', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
       onHeaderRowChange={jest.fn()}
@@ -78,14 +72,12 @@ test('it dispatch an event when header row change', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
       onHeaderRowChange={handleHeaderRowChange}
@@ -105,14 +97,12 @@ test('it dispatch event when first product row change', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
       onHeaderRowChange={jest.fn()}
@@ -132,14 +122,12 @@ test('it dispatch an event when first column row change', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
       onHeaderRowChange={jest.fn()}
@@ -159,14 +147,12 @@ test('it dispatch an event when column identifier change', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
       onHeaderRowChange={jest.fn()}
@@ -222,14 +208,12 @@ test('it display validation errors', async () => {
 
   await renderWithProviders(
     <FileTemplateConfigurator
-      fileTemplateInformation={
-        {
-          file_info: fileInfo,
-          current_sheet: 'currentTestSheet',
-          sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-          header_cells: ['sku', 'name', 'description'],
-        } as FileTemplateInformation
-      }
+      fileTemplateInformation={{
+        file_info: fileInfo,
+        current_sheet: 'currentTestSheet',
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        header_cells: ['sku', 'name', 'description'],
+      }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
       onHeaderRowChange={jest.fn()}

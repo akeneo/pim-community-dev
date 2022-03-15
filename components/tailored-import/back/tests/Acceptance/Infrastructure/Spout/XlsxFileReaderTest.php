@@ -124,7 +124,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_returns_sheets_from_file(): void
+    public function it_returns_sheet_names_from_file(): void
     {
         $xlsxFileReader = $this->getFileReader();
         $actualSheetNames = $xlsxFileReader->getSheetNames();
