@@ -46,16 +46,16 @@ type BlockProps = Override<
 >;
 
 const ActionsContainer = styled.div`
+  height: 0;
   display: none;
   align-items: center;
 `;
 
 const Container = styled.div<AkeneoThemedProps>`
-  padding: 0 20px;
+  padding: 14px 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
-  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
