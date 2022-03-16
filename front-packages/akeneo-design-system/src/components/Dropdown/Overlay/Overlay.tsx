@@ -171,7 +171,7 @@ const Overlay = ({
 
   const [top, left] = overlayPosition;
 
-  const parentWidth = parentRef?.current?.getBoundingClientRect()?.width;
+  const parentWidth = parentRef?.current?.getBoundingClientRect()?.width ?? null;
 
   return createPortal(
     <>

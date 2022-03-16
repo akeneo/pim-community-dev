@@ -3,21 +3,16 @@ import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {PlusIcon} from '../../icons';
 
-jest.mock('../../icons', () => ({
-  ...jest.requireActual('../../icons'),
-  CloseIcon: ({onClick}: {onClick: () => void}) => <button onClick={onClick}>Remove</button>,
-}));
-
-test('it calls onRemove handler when user clicks on remove icon', () => {
+test('it calls onRemove handler when user clicks on remove icon button', () => {
   const onRemove = jest.fn();
   render(
-    <Block removable={true} onRemove={onRemove}>
+    <Block removable={true} onRemove={onRemove} removeLabel={'Remove me, I am a bad block'}>
       My block
     </Block>
   );
 
-  const removeIcon = screen.getByText('Remove');
-  fireEvent.click(removeIcon);
+  const removeIconButton = screen.getByTitle('Remove me, I am a bad block');
+  fireEvent.click(removeIconButton);
 
   expect(onRemove).toBeCalled();
 });

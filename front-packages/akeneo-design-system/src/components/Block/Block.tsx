@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {CloseIcon, IconProps} from '../../icons';
+import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
@@ -16,6 +17,11 @@ type BlockProps = Override<
      * Function called when the user clicks on the remove button.
      */
     onRemove?: () => void;
+
+    /**
+     * Accessibility text for the remove icon button.
+     */
+    removeLabel?: string;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -71,7 +77,16 @@ const Container = styled.div<AkeneoThemedProps>`
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {removable = false, onRemove, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockProps,
+    {
+      removable = false,
+      onRemove,
+      removeLabel,
+      ariaDescribedBy,
+      ariaLabel,
+      ariaLabelledBy,
+      children,
+      ...rest
+    }: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const handleRemove = (event: SyntheticEvent) => {
@@ -98,7 +113,17 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             return child;
           })}
         </div>
-        <ActionsContainer>{removable && <CloseIcon size={18} onClick={handleRemove} />}</ActionsContainer>
+        <ActionsContainer>
+          {removable && (
+            <IconButton
+              icon={<CloseIcon />}
+              title={removeLabel ?? ''}
+              size="small"
+              ghost="borderless"
+              onClick={handleRemove}
+            />
+          )}
+        </ActionsContainer>
       </Container>
     );
   }

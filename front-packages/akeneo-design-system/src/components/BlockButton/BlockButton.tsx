@@ -84,6 +84,7 @@ const Container = styled.button<
 const ChildrenContainer = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
 `;
 
 const ActionsContainer = styled.div`
