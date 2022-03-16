@@ -49,6 +49,7 @@ class DataQualityInsightsApp extends BaseView {
 
   remove() {
     window.removeEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
+    window.removeEventListener(ATTRIBUTE_OPTION_UPDATED, () => this.renderTabTitles());
     window.removeEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
     super.remove();
     this.renderingCount = 0;
@@ -76,9 +77,7 @@ class DataQualityInsightsApp extends BaseView {
     });
 
     window.addEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
-
     window.addEventListener(ATTRIBUTE_OPTION_UPDATED, () => this.renderTabTitles());
-
     window.addEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
   }
 }
