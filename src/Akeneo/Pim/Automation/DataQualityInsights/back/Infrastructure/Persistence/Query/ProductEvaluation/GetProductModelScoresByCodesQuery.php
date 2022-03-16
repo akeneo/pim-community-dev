@@ -29,6 +29,9 @@ final class GetProductModelScoresByCodesQuery implements GetProductModelScoresBy
     /**
      * {@inheritdoc}
      */
+    /**
+     * {@inheritdoc}
+     */
     public function byProductModelCodes(array $productModelCodes): array
     {
         if (empty($productModelCodes)) {
