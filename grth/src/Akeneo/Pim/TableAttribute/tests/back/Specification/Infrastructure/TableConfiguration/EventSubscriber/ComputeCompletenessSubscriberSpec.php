@@ -14,8 +14,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\TableConfigurationHasBeenUpdated;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -34,7 +33,6 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
 {
     function let(
         Connection $connection,
-        TableConfigurationRepository $tableConfigurationRepository,
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository,
         CreateJobInstanceInterface $createJobInstance,
@@ -42,7 +40,6 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(
         $connection,
-        $tableConfigurationRepository,
         $jobLauncher,
         $jobInstanceRepository,
         $createJobInstance,
@@ -143,7 +140,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
             'family_codes' => ['family_code_1'],
         ])->shouldBeCalledOnce();
 
-        $this->aTableAttributeCompletenessHasBeenUpdated(new TableConfigurationHasBeenUpdated('table_attribute_code'));
+        $this->aTableAttributeCompletenessHasBeenUpdated(new CompletenessHasBeenUpdated('table_attribute_code'));
         $this->launchComputeCompletenessJobIfNeeded($event);
     }
 }

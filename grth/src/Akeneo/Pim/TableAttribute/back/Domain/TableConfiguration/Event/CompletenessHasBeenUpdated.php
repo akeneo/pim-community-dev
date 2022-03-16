@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event;
 
-final class TableConfigurationHasBeenUpdated
+final class CompletenessHasBeenUpdated
 {
     public function __construct(private string $attributeCode)
     {

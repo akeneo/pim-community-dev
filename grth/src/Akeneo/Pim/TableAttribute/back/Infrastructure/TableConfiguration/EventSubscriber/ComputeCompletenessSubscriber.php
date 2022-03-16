@@ -15,9 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubsc
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\TableConfigurationHasBeenUpdated;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -34,7 +32,6 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
 
     public function __construct(
         private Connection $connection,
-        private TableConfigurationRepository $tableConfigurationRepository,
         private JobLauncherInterface $jobLauncher,
         private JobInstanceRepository $jobInstanceRepository,
         private CreateJobInstanceInterface $createJobInstance,
@@ -46,12 +43,12 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            TableConfigurationHasBeenUpdated::class => 'aTableAttributeCompletenessHasBeenUpdated',
+            CompletenessHasBeenUpdated::class => 'completenessHasBeenUpdated',
             StorageEvents::POST_SAVE => 'launchComputeCompletenessJobIfNeeded'
         ];
     }
 
-    public function aTableAttributeCompletenessHasBeenUpdated(TableConfigurationHasBeenUpdated $event): void
+    public function completenessHasBeenUpdated(CompletenessHasBeenUpdated $event): void
     {
         $this->tableAttributesToCompute[$event->getAttributeCode()] = true;
     }
@@ -80,31 +77,7 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
             'family_codes' => $familyCodes,
         ];
         $user = $this->tokenStorage->getToken()->getUser();
-        // todo: user has to be system
         $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
-    }
-
-    private function hasAttributeColumnsCompletenessBeenUpdated(AttributeInterface $newAttribute): bool
-    {
-        $formerTableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($newAttribute->getCode());
-        $newTableConfiguration = TableConfiguration::fromColumnDefinitions($newAttribute->getRawTableConfiguration()) ;
-
-        $formerlyRequired = \array_filter($formerTableConfiguration->normalize(), function (array $value) {
-            if (isset($value['is_required_for_completeness'])) {
-                return $value['is_required_for_completeness'];
-            }
-            return false;
-        });
-        $newlyRequired = $newTableConfiguration->requiredColumns();
-
-        $deleted = \array_diff($formerlyRequired, $newlyRequired);
-        $added = \array_diff($newlyRequired, $formerlyRequired);
-
-        if (\count($deleted) > 0 || \count($added) > 0) {
-            return false;
-        }
-
-        return true;
     }
 
     private function getOrCreateJobInstance(): JobInstance

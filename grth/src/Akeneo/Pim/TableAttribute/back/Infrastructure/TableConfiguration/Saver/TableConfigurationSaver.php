@@ -16,7 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\TableConfigurationHasBeenUpdated;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
@@ -96,11 +96,10 @@ class TableConfigurationSaver implements SaverInterface
         }
     }
 
-    private function hasAttributeColumnsCompletenessBeenUpdated(AttributeInterface $newAttribute, TableConfiguration $formerTableConfiguration): bool
+    private function hasCompletenessBeenUpdated(AttributeInterface $newAttribute, TableConfiguration $formerTableConfiguration): bool
     {
         $newTableConfiguration = $newAttribute->getRawTableConfiguration();
         $newlyRequired = [];
-        // ['code-text', 'code2-number']
         foreach ($newTableConfiguration as $rawColumnDefinition) {
             if (
                 isset($rawColumnDefinition['is_required_for_completeness'])
@@ -128,9 +127,9 @@ class TableConfigurationSaver implements SaverInterface
         try {
             $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->getCode());
 
-            $hasBeenUpdated = $this->hasAttributeColumnsCompletenessBeenUpdated($attribute, $tableConfiguration);
-            if ($hasBeenUpdated) {
-                $this->eventDispatcher->dispatch(new TableConfigurationHasBeenUpdated($attribute->getCode()));
+            $hasCompletenessBeenUpdated = $this->hasCompletenessBeenUpdated($attribute, $tableConfiguration);
+            if ($hasCompletenessBeenUpdated) {
+                $this->eventDispatcher->dispatch(new CompletenessHasBeenUpdated($attribute->getCode()));
             }
 
             return $this->tableConfigurationUpdater->update(

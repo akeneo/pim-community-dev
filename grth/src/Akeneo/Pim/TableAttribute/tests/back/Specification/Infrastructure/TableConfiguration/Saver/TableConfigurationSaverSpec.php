@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\SelectOptionWasDeleted;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\TableConfigurationHasBeenUpdated;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Event\CompletenessHasBeenUpdated;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
@@ -153,7 +153,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn($updatedTableConfiguration);
 
         $tableConfigurationRepository->save('nutrition', $updatedTableConfiguration)->shouldBeCalled();
-        $eventDispatcher->dispatch(new TableConfigurationHasBeenUpdated('nutrition'))->shouldBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldBeCalled();
         $this->save($attribute);
     }
 
@@ -233,7 +233,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn($newTableConfiguration);
 
         $tableConfigurationRepository->save('nutrition', $newTableConfiguration)->shouldBeCalled();
-        $eventDispatcher->dispatch(new TableConfigurationHasBeenUpdated('nutrition'))->shouldNotBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldNotBeCalled();
         $this->save($attribute);
     }
 
@@ -261,7 +261,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn($newTableConfiguration);
 
         $tableConfigurationRepository->save('nutrition', $newTableConfiguration)->shouldBeCalled();
-        $eventDispatcher->dispatch(new TableConfigurationHasBeenUpdated('nutrition'))->shouldBeCalled();
+        $eventDispatcher->dispatch(new CompletenessHasBeenUpdated('nutrition'))->shouldBeCalled();
         $this->save($attribute);
     }
 }

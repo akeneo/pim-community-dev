@@ -47,13 +47,13 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
         $familyCodes = $this->stepExecution->getJobParameters()->get('family_codes');
 
         $productIdentifiers = $this->getProductIdentifiersFromTableAttributeCodes($attributeCode, $familyCodes);
-        if (\count($productIdentifiers) === 0) {
+        if ($productIdentifiers->count() === 0) {
             return;
         }
         $this->stepExecution->setTotalItems($productIdentifiers->count());
         $productsToCompute = [];
         foreach ($productIdentifiers as $identifier) {
-            $productsToCompute[] = $identifier;
+            $productsToCompute[] = $identifier->getIdentifier();
             if (count($productsToCompute) >= self::BATCH_SIZE) {
                 $this->computeCompleteness($productsToCompute);
                 $productsToCompute = [];

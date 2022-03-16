@@ -103,7 +103,7 @@ final class TableConfiguration
     {
         return \array_filter(
             $this->columnDefinitions,
-            fn (ColumnDefinition $columnDefinition) => $columnDefinition->isRequiredForCompleteness()->asBoolean()
+            fn (ColumnDefinition $columnDefinition): bool => $columnDefinition->isRequiredForCompleteness()->asBoolean()
         );
     }
 

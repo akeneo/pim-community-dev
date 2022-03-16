@@ -42,7 +42,6 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\ComputeCompletenessSubscriber:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
