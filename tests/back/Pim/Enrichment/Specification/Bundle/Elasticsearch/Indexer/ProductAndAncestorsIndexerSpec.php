@@ -70,9 +70,20 @@ class ProductAndAncestorsIndexerSpec extends ObjectBehavior
         ProductIndexerInterface $productIndexer,
         ProductModelIndexerInterface $productModelIndexer
     ) {
-        $productIndexer->removeFromProductIds([44, 56])->shouldBeCalled();
-        $productModelIndexer->indexFromProductModelCodes(['root_pm', 'sub_pm_1', 'sub_pm_2'])->shouldBeCalled();
+        $productIndexer
+            ->removeFromProductIds([44, 56])
+            ->shouldBeCalled();
+        $productIndexer
+            ->removeFromProductUuids(['d6d6051c-0c00-49cd-8219-c825c72a456e', '386f0ec8-4e4c-4028-acd7-e1195a13a3b5'])
+            ->shouldBeCalled();
+        $productModelIndexer
+            ->indexFromProductModelCodes(['root_pm', 'sub_pm_1', 'sub_pm_2'])
+            ->shouldBeCalled();
 
-        $this->removeFromProductIdsAndReindexAncestors([44, 56], ['root_pm', 'sub_pm_1', 'sub_pm_2']);
+        $this->removeFromProductIdsAndReindexAncestors(
+            [44, 56],
+            ['d6d6051c-0c00-49cd-8219-c825c72a456e', '386f0ec8-4e4c-4028-acd7-e1195a13a3b5'],
+            ['root_pm', 'sub_pm_1', 'sub_pm_2']
+        );
     }
 }
