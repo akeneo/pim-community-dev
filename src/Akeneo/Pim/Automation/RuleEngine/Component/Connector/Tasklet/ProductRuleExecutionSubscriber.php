@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Pim\Automation\RuleEngine\Component\Event\SkippedActionForSubjectEvent;
+use Akeneo\Pim\Automation\RuleEngine\Component\Event\SubjectsWereSkippedWithNoUpdate;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -52,6 +53,7 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
             RuleEvents::POST_SAVE_SUBJECTS => 'postSave',
             RuleEvents::SKIP => 'skipInvalid',
             SkippedActionForSubjectEvent::class => 'skipAction',
+            SubjectsWereSkippedWithNoUpdate::class => 'skippedProductsSaveAction',
         ];
     }
 
@@ -60,6 +62,13 @@ class ProductRuleExecutionSubscriber implements EventSubscriberInterface
         $this->stepExecution->incrementSummaryInfo('read_rules');
         $this->jobRepository->updateStepExecution($this->stepExecution);
         $this->currentRule = $event->getSubject();
+    }
+
+    public function skippedProductsSaveAction(SubjectsWereSkippedWithNoUpdate $event): void
+    {
+        $skippedProducts = $event->getSkippedSubjects();
+        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', \count($skippedProducts));
+        $this->jobRepository->updateStepExecution($this->stepExecution);
     }
 
     public function postSelect(SelectedRuleEvent $event): void
