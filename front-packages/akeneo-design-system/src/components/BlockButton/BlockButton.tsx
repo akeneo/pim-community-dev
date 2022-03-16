@@ -59,12 +59,14 @@ const Container = styled.button<
   } & AkeneoThemedProps
 >`
   width: 100%;
-  padding: 14px 20px;
+  padding: 0 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: inherit;
   font-size: ${getFontSize('default')};
   font-weight: 400;
