@@ -22,4 +22,4 @@ class FeatureFlags {
   }
 }
 
-export = FeatureFlags;
+export default FeatureFlags;

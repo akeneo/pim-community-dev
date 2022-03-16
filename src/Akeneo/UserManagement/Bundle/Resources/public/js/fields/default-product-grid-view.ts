@@ -74,4 +74,4 @@ class DefaultProductGridView extends BaseSelect {
   }
 }
 
-export = DefaultProductGridView;
+export default DefaultProductGridView;

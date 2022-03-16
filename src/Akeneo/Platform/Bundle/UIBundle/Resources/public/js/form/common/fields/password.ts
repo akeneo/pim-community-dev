@@ -18,4 +18,4 @@ class PasswordField extends BaseText {
   }
 }
 
-export = PasswordField;
+export default PasswordField;

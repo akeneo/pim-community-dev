@@ -69,4 +69,4 @@ class PimApp extends BaseView {
   }
 }
 
-export = PimApp;
+export default PimApp;

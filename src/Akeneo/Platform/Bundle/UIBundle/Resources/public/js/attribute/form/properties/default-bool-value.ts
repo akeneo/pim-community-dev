@@ -25,4 +25,4 @@ class DefaultBoolValue extends BaseSelect {
   }
 }
 
-export = DefaultBoolValue;
+export default DefaultBoolValue;

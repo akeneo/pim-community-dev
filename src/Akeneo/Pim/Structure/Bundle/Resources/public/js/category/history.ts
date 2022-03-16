@@ -38,4 +38,4 @@ class CategoryHistory extends BaseView {
   }
 }
 
-export = CategoryHistory;
+export default CategoryHistory;

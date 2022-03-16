@@ -30,4 +30,4 @@ class ConfigController extends ReactController {
   }
 }
 
-export = ConfigController;
+export default ConfigController;

@@ -84,4 +84,4 @@ const useInitialAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   };
 };
 
-export {useAttributeGroupsIndexState, useInitialAttributeGroupsIndexState, AttributeGroupsIndexState};
+export {useAttributeGroupsIndexState, useInitialAttributeGroupsIndexState};

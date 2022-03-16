@@ -76,4 +76,4 @@ class CreateButton extends BaseView {
   }
 }
 
-export = CreateButton;
+export default CreateButton;

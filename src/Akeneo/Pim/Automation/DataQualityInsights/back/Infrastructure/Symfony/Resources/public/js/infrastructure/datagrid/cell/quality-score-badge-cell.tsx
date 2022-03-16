@@ -33,4 +33,4 @@ class QualityScoreBadgeCell extends StringCell {
   }
 }
 
-export = QualityScoreBadgeCell;
+export default QualityScoreBadgeCell;

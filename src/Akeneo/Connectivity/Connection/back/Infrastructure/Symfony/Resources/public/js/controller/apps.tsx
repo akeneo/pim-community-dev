@@ -28,4 +28,4 @@ class AppsController extends ReactController {
   }
 }
 
-export = AppsController;
+export default AppsController;

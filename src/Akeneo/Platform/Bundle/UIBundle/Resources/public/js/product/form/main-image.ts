@@ -44,4 +44,4 @@ class MainImage extends BaseMainImage {
   }
 }
 
-export = MainImage;
+export default MainImage;

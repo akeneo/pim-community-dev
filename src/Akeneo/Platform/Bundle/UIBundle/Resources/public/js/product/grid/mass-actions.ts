@@ -15,4 +15,4 @@ class MassActions extends BaseForm {
   }
 }
 
-export = MassActions;
+export default MassActions;

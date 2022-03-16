@@ -39,4 +39,4 @@ class UserRoleField extends BaseSelect {
   }
 }
 
-export = UserRoleField;
+export default UserRoleField;

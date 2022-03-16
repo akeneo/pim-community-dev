@@ -31,4 +31,4 @@ class Duplicate extends BaseForm {
   }
 }
 
-export = Duplicate;
+export default Duplicate;

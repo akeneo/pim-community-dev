@@ -30,4 +30,4 @@ class SystemIndexController extends ReactController {
   }
 }
 
-export = SystemIndexController;
+export default SystemIndexController;

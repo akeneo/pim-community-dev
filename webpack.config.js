@@ -89,7 +89,6 @@ const webpackConfig = {
           },
         ],
       },
-
       // Load html without needing to prefix the requires with 'text!'
       {
         test: /\.html$/,
@@ -167,11 +166,12 @@ const webpackConfig = {
         use: [
           'thread-loader',
           {
-            loader: 'babel-loader',
-            options: {
-              presets: ['@babel/preset-env'],
-              cacheDirectory: 'public/cache',
-            },
+            // loader: 'babel-loader',
+            // options: {
+            //   presets: ['@babel/preset-env'],
+            //   cacheDirectory: 'public/cache',
+            // },
+            loader: 'swc-loader',
           }
         ],
       },
@@ -189,13 +189,21 @@ const webpackConfig = {
         test: /\.tsx?$/,
         use: [
           {
-            loader: 'ts-loader',
+            // loader: 'ts-loader',
+            // options: {
+            //   transpileOnly: !isStrict,
+            //   configFile: path.resolve(rootDir, 'tsconfig.json'),
+            //   context: path.resolve(rootDir),
+            //   getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
+            // },
+            loader: 'swc-loader',
             options: {
-              transpileOnly: !isStrict,
-              configFile: path.resolve(rootDir, 'tsconfig.json'),
-              context: path.resolve(rootDir),
-              getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
-            },
+              jsc: {
+                parser: {
+                  syntax: 'typescript'
+                }
+              }
+            }
           },
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),

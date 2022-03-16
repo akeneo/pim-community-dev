@@ -29,4 +29,4 @@ class SectionView extends BaseDashboard {
   }
 }
 
-export = SectionView;
+export default SectionView;

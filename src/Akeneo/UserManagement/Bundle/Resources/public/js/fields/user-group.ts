@@ -43,4 +43,4 @@ class UserGroupField extends BaseSelect {
   }
 }
 
-export = UserGroupField;
+export default UserGroupField;

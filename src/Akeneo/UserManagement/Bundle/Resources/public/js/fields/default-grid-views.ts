@@ -56,4 +56,4 @@ class DefaultGridView extends BaseView {
   }
 }
 
-export = DefaultGridView;
+export default DefaultGridView;

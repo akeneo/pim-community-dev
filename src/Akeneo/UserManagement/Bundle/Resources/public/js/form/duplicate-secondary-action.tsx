@@ -8,4 +8,4 @@ class DuplicateSecondaryAction extends ReactView {
   }
 }
 
-export = DuplicateSecondaryAction;
+export default DuplicateSecondaryAction;

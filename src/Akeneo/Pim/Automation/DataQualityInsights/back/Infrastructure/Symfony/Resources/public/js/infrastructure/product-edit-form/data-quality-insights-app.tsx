@@ -203,4 +203,4 @@ class DataQualityInsightsApp extends BaseView {
   }
 }
 
-export = DataQualityInsightsApp;
+export default DataQualityInsightsApp;

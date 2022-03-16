@@ -47,4 +47,4 @@ class DataQualityInsightsTabContent extends BaseView {
   }
 }
 
-export = DataQualityInsightsTabContent;
+export default DataQualityInsightsTabContent;

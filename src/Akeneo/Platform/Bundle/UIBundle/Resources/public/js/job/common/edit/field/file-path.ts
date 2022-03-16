@@ -11,4 +11,4 @@ class FilePath extends BaseField {
   }
 }
 
-export = FilePath;
+export default FilePath;

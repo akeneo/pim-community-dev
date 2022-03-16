@@ -76,4 +76,4 @@ class LocaleSwitcher extends BaseForm {
   }
 }
 
-export = LocaleSwitcher;
+export default LocaleSwitcher;

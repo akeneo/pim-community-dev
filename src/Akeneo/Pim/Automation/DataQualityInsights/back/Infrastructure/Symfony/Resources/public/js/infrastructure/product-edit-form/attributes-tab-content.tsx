@@ -14,4 +14,4 @@ class AttributesTabContent extends BaseView {
   }
 }
 
-export = AttributesTabContent;
+export default AttributesTabContent;

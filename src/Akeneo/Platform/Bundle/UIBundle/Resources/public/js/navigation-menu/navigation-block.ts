@@ -42,4 +42,4 @@ class NavigationBlock extends BaseForm {
   }
 }
 
-export = NavigationBlock;
+export default NavigationBlock;

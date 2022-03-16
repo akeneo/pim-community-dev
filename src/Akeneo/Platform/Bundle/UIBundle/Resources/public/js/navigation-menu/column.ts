@@ -67,4 +67,4 @@ class Column extends BaseColumn {
   }
 }
 
-export = Column;
+export default Column;

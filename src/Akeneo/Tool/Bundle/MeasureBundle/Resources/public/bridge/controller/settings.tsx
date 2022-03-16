@@ -46,4 +46,4 @@ class SettingsController extends ReactController {
   }
 }
 
-export = SettingsController;
+export default SettingsController;

@@ -26,4 +26,4 @@ class WebhookController extends ReactController {
   }
 }
 
-export = WebhookController;
+export default WebhookController;

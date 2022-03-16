@@ -14,4 +14,4 @@ class EntityCategoriesWithFamilyVariant extends BaseController {
   }
 }
 
-export = EntityCategoriesWithFamilyVariant;
+export default EntityCategoriesWithFamilyVariant;

@@ -30,4 +30,5 @@ const AttributeGroupsIndexProvider: FC = ({children}) => {
   return <AttributeGroupsIndexContext.Provider value={state}>{children}</AttributeGroupsIndexContext.Provider>;
 };
 
-export {AttributeGroupsIndexProvider, AttributeGroupsIndexState, AttributeGroupsIndexContext};
+export type {AttributeGroupsIndexState};
+export {AttributeGroupsIndexProvider, AttributeGroupsIndexContext};

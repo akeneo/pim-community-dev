@@ -126,4 +126,4 @@ class Tab extends BaseForm {
   }
 }
 
-export = Tab;
+export default Tab;

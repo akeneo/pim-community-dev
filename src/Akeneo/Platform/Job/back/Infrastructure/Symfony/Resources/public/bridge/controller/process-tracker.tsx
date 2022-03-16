@@ -36,4 +36,4 @@ class ProcessTrackerController extends ReactController {
   }
 }
 
-export = ProcessTrackerController;
+export default ProcessTrackerController;

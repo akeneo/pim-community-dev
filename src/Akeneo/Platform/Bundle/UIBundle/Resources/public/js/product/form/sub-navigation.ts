@@ -32,4 +32,4 @@ class ProductEditFormSubNavigation extends BaseColumn {
   }
 }
 
-export = ProductEditFormSubNavigation;
+export default ProductEditFormSubNavigation;

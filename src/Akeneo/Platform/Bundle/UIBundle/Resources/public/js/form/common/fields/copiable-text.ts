@@ -24,4 +24,4 @@ class CopiableTextField extends BaseText {
   }
 }
 
-export = CopiableTextField;
+export default CopiableTextField;

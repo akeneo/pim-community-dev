@@ -42,4 +42,4 @@ class Breadcrumb extends BaseForm {
   }
 }
 
-export = Breadcrumb;
+export default Breadcrumb;

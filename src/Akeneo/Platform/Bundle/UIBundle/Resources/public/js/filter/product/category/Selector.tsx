@@ -165,4 +165,4 @@ class Selector extends BaseView {
   };
 }
 
-export = Selector;
+export default Selector;

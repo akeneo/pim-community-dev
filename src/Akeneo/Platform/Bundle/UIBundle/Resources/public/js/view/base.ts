@@ -369,4 +369,4 @@ class BaseView extends Backbone.View<any> implements View {
   }
 }
 
-export = BaseView;
+export default BaseView;

@@ -39,4 +39,4 @@ class AvailableLocales extends BaseSelect {
   }
 }
 
-export = AvailableLocales;
+export default AvailableLocales;

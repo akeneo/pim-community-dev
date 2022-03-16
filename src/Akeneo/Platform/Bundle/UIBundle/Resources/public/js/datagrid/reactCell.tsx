@@ -49,4 +49,4 @@ class ReactCell extends StringCell {
   }
 }
 
-export = ReactCell;
+export default ReactCell;

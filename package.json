@@ -55,6 +55,7 @@
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.10.4",
+    "@swc/core": "^1.2.156",
     "@testing-library/cypress": "^7.0.4",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
@@ -115,6 +116,7 @@
     "react-test-renderer": "^16.8.0",
     "read-pkg": "4.0.1",
     "redux-devtools-extension": "^2.13.2",
+    "swc-loader": "^0.1.15",
     "text-loader": "0.0.1",
     "thread-loader": "^2.1.2",
     "ts-jest": "^26.4.0",
@@ -155,6 +157,7 @@
     "style-loader": "^1.0.1",
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
+    "swc": "^1.0.11",
     "underscore": "1.12.1",
     "victory": "^33.1.6"
   },

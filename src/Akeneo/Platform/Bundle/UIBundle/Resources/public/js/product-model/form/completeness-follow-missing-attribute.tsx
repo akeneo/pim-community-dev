@@ -31,4 +31,4 @@ class CompletenessFollowMissingAttribute extends BaseView {
   }
 }
 
-export = CompletenessFollowMissingAttribute;
+export default CompletenessFollowMissingAttribute;

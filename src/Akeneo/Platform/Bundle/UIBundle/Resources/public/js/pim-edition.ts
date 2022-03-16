@@ -4,4 +4,4 @@ const pimEdition = {
   },
 };
 
-export = pimEdition;
+export default pimEdition;

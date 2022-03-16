@@ -28,4 +28,4 @@ class ConnectedAppsController extends ReactController {
   }
 }
 
-export = ConnectedAppsController;
+export default ConnectedAppsController;

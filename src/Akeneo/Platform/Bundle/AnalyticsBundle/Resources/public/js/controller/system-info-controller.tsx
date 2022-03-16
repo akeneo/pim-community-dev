@@ -21,4 +21,4 @@ class SystemInfoController extends ReactController {
   }
 }
 
-export = SystemInfoController;
+export default SystemInfoController;

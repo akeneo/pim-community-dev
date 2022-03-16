@@ -201,4 +201,4 @@ class FiltersSelector extends BaseView {
   }
 }
 
-export = FiltersSelector;
+export default FiltersSelector;

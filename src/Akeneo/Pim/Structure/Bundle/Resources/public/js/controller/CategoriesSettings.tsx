@@ -38,4 +38,4 @@ class CategoriesSettings extends ReactController {
   }
 }
 
-export = CategoriesSettings;
+export default CategoriesSettings;

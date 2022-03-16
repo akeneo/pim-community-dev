@@ -30,4 +30,4 @@ class CatalogVolumeController extends ReactController {
   }
 }
 
-export = CatalogVolumeController;
+export default CatalogVolumeController;

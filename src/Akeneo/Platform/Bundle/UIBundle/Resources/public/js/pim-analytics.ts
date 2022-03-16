@@ -6,4 +6,4 @@ const PimAnalytics: Analytics = {
   },
 };
 
-export = PimAnalytics;
+export default PimAnalytics;

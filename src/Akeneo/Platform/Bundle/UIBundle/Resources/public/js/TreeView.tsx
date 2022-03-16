@@ -158,4 +158,4 @@ class TreeView {
   };
 }
 
-export = TreeView;
+export default TreeView;

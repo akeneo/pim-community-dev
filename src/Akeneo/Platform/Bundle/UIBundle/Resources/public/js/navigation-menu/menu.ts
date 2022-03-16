@@ -217,4 +217,4 @@ class Menu extends BaseForm {
   }
 }
 
-export = Menu;
+export default Menu;

@@ -84,4 +84,4 @@ class ConvertToSimpleProduct extends BaseView {
   }
 }
 
-export = ConvertToSimpleProduct;
+export default ConvertToSimpleProduct;

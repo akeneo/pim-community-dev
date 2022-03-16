@@ -26,4 +26,4 @@ class ErrorManagementController extends ReactController {
   }
 }
 
-export = ErrorManagementController;
+export default ErrorManagementController;

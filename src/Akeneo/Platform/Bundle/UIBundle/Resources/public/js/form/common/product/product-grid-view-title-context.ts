@@ -53,4 +53,4 @@ class ProductGridViewTitleContext extends BaseView {
   }
 }
 
-export = ProductGridViewTitleContext;
+export default ProductGridViewTitleContext;

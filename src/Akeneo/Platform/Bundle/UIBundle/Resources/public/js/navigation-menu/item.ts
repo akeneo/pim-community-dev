@@ -85,4 +85,4 @@ class Item extends BaseForm {
   }
 }
 
-export = Item;
+export default Item;
