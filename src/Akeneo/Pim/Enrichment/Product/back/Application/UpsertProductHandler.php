@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
@@ -237,6 +238,31 @@ final class UpsertProductHandler
                             ],
                         ]
                     );
+                } elseif ($valueUserIntent instanceof RemoveAssetValue) {
+                    $found = true;
+                    $formerValue = $product->getValue(
+                        $valueUserIntent->attributeCode(),
+                        $valueUserIntent->localeCode(),
+                        $valueUserIntent->channelCode(),
+                    );
+                    $formerValueAsString = $formerValue ?
+                        array_map(fn($value) => $value->normalize(), $formerValue->getData())
+                        : null;
+                    $values = $formerValueAsString !== null ?
+                        \array_diff($formerValueAsString, $valueUserIntent->assetCodes())
+                        : $valueUserIntent->assetCodes();
+
+                    $this->productUpdater->update($product, [
+                        'values' => [
+                            $valueUserIntent->attributeCode() => [
+                                [
+                                    'locale' => $valueUserIntent->localeCode(),
+                                    'scope' => $valueUserIntent->channelCode(),
+                                    'data' => $values,
+                                ]
+                            ]
+                        ]
+                    ]);
                 }
 
                 try {

@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
@@ -27,6 +28,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\back\API\Command\UserIntent\AddAssetValue;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
@@ -578,14 +580,14 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->loadAssetFixtures();
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', valueUserIntents: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
             new SetAssetValue('packshot_attr', null, null, ['packshot1'])
         ]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
 
-        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1']);
     }
 
     /** @test */
@@ -620,6 +622,22 @@ final class UpsertProductIntegration extends TestCase
 
         $this->updateProduct(new SetAssetValue('packshot_attr', null, null, ['toto']));
         $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['toto']));
+    }
+
+    /** @test */
+    public function it_update_a_product_with_a_remove_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->createProduct(
+            'identifier',
+            'other',
+            ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1', 'packshot2', 'packshot3']]]]
+        );
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $this->updateProduct(new RemoveAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot3']);
     }
 
     private function loadAssetFixtures(): void

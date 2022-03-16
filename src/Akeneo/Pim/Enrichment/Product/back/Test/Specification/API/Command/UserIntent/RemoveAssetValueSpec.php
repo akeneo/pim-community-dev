@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\Test\Specification\API\Command\UserIntent;
+namespace Akeneo\Pim\Enrichment\Product\Test\Specification\API\Command\UserIntent;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\UserIntent\AddAssetValue;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddAssetValueSpec extends ObjectBehavior
+class RemoveAssetValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', ['packshot1', 'packshot2']);
+        $this->beConstructedWith('code', 'ecommerce', 'en_US', ['packshot1', 'packshot2']);
     }
 
-    function it_it_initializable()
+    function it_is_initializable()
     {
-        $this->shouldHaveType(AddAssetValue::class);
+        $this->shouldHaveType(RemoveAssetValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
