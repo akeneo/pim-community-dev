@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
@@ -589,6 +590,68 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($user);
 
         return $user->getId();
+    }
+
+    /** @test */
+    public function it_creates_a_product_with_an_asset_value(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+
+        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
+        );
+
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
+        );
+
+        $this->createAttribute(
+            [
+                'code' => 'packshot_attr',
+                'type' => 'pim_catalog_asset_collection',
+                'group' => 'other',
+                'reference_data_name' => 'packshot',
+            ]
+        );
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', valueUserIntents: [
+            new SetAssetValue('packshot_attr', null, null, ['packshot1'])
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_date', new \DateTime("2022-03-04"));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_an_asset_value(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+
+        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
+        );
+
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
+        );
+
+        $this->createAttribute(
+            [
+                'code' => 'packshot_attr',
+                'type' => 'pim_catalog_asset_collection',
+                'group' => 'other',
+                'reference_data_name' => 'packshot',
+            ]
+        );
+
+        $this->updateProduct(new SetAssetValue('product_with_asset', null, null, ['packshot1']));
+        $this->assertProductHasCorrectValueByAttributeCode('product_with_asset', ['packshot1']);
     }
 
     private function assertProductHasCorrectValueByAttributeCode(string $attributeCode, mixed $expectedValue): void

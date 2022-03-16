@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -136,7 +137,10 @@ final class UpsertProductHandler
                         ],
                     ];
                     $propertyPath = sprintf('valueUserIntents[%d]', $index);
-                } elseif ($userIntent instanceof SetMultiSelectValue) {
+                } elseif (
+                    $userIntent instanceof SetMultiSelectValue
+                    || $valueUserIntent instanceof SetAssetValue
+                ) {
                     $data = [
                         'values' => [
                             $userIntent->attributeCode() => [
