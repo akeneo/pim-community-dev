@@ -12,10 +12,12 @@ class DataQualityInsightsApp extends BaseView {
   private renderingCount = 0;
   private overrideTabTitles: OverrideTabTitlesInterface;
   private renderingTabTitle: boolean;
+  private updateTabTitlesHandler: any;
 
   public configure() {
     this.overrideTabTitles = new OverrideTabTitles(this.getRoot());
     this.renderingTabTitle = false;
+    this.updateTabTitlesHandler = this.renderTabTitles.bind(this);
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', (tab: string) => {
       window.dispatchEvent(
@@ -27,7 +29,10 @@ class DataQualityInsightsApp extends BaseView {
       );
     });
 
-    this.updateTabTitlesOnEvents();
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.updateTabTitlesHandler);
+    window.addEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, this.updateTabTitlesHandler);
+    window.addEventListener(ATTRIBUTE_OPTION_UPDATED, this.updateTabTitlesHandler);
+    window.addEventListener(ATTRIBUTE_OPTION_DELETED, this.updateTabTitlesHandler);
 
     return super.configure();
   }
@@ -48,9 +53,9 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   remove() {
-    window.removeEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
-    window.removeEventListener(ATTRIBUTE_OPTION_UPDATED, () => this.renderTabTitles());
-    window.removeEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
+    window.removeEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, this.updateTabTitlesHandler);
+    window.removeEventListener(ATTRIBUTE_OPTION_UPDATED, this.updateTabTitlesHandler);
+    window.removeEventListener(ATTRIBUTE_OPTION_DELETED, this.updateTabTitlesHandler);
     super.remove();
     this.renderingCount = 0;
 
@@ -69,16 +74,6 @@ class DataQualityInsightsApp extends BaseView {
       this.render();
       this.renderingTabTitle = false;
     });
-  }
-
-  private updateTabTitlesOnEvents() {
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => {
-      return this.renderTabTitles();
-    });
-
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
-    window.addEventListener(ATTRIBUTE_OPTION_UPDATED, () => this.renderTabTitles());
-    window.addEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
   }
 }
 
