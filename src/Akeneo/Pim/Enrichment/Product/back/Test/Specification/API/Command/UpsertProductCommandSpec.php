@@ -77,29 +77,6 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->valueUserIntents()->shouldReturn($valueUserIntents);
     }
 
-    function it_can_be_constructed_with_reference_entity_value_intent()
-    {
-
-        $valueUserIntents = [
-            new SetSimpleReferenceEntityValue('name', null, null, 'Akeneo'),
-        ];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
-    }
-
     function it_cannot_be_constructed_with_bad_value_user_intent()
     {
         $this->beConstructedWith(
