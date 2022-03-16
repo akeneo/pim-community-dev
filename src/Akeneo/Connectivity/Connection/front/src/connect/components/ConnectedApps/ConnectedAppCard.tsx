@@ -140,7 +140,9 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     const cardDescription = item.has_outdated_scopes ? (
         <Warning>
             <WarningIcon size={14} />
-            {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.warning')}
+            {translate(
+                'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
+            )}
         </Warning>
     ) : (
         <Author>

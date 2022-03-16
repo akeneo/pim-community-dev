@@ -254,7 +254,9 @@ test('The connected app card displays a warning when it has a outdated scopes fl
     await waitFor(() => screen.getByText('App A'));
 
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.warning')
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
+        )
     ).toBeInTheDocument();
 
     expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')).toHaveStyle(

@@ -132,7 +132,7 @@ akeneo_connectivity.connection:
                     link: Check out our Help Center for more information.
                 card:
                     developed_by: 'Developed by {{ author }}'
-                    warning: New access authorization required.
+                    new_access_authorization_required: New access authorization required.
                     manage_app: Manage app
                     open_app: Open App
                 flash:
