@@ -1,5 +1,5 @@
 services:
-    Akeneo\Channel\Locale\API\Query\IsLocaleEditable:
-        class: Akeneo\Channel\Locale\Infrastructure\Query\DummyIsLocaleEditable
-        arguments:
-            - '@database_connection'
+    Akeneo\Channel\Locale\Infrastructure\Query\IsLocaleEditableHandler:
+        class: Akeneo\Channel\Locale\Infrastructure\Query\DummyIsLocaleEditableHandler
+        tags:
+            - { name: messenger.message_handler, bus: query.bus }

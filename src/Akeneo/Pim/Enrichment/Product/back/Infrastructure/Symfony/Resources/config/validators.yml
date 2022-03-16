@@ -21,7 +21,7 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator:
         arguments:
-            - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\QueryBus'
         tags:
             - { name: validator.constraint_validator }
 

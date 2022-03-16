@@ -1,0 +1,5 @@
+services:
+    Akeneo\Pim\Enrichment\Product\Domain\QueryBus:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\AntiCorruptionLayer\MessengerQueryBus
+        arguments:
+            - '@query.bus'

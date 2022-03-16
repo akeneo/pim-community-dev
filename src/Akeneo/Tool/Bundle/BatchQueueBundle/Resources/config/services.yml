@@ -11,7 +11,7 @@ services:
     akeneo_batch_queue.queue.job_execution_queue:
         class: 'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue'
         arguments:
-            - '@messenger.bus.default'
+            - '@messenger.default_bus'
 
     akeneo_batch_queue.manager.job_execution_manager:
         class: '%akeneo_batch_queue.manager.job_execution_manager.class%'
