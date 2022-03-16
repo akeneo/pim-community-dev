@@ -132,7 +132,9 @@ const MicroFrontendDependenciesProvider = ({
       router: {
         generate: generateUrl,
         redirect: (_fragment: string, _options?: object) => console.info('Not implemented'),
-        redirectToRoute: (_route: string, _parameters?: object) => console.info('Not implemented'),
+        redirectToRoute: (route: string, parameters?: object) =>{
+            window.location.href=`#${generateUrl(route, parameters)}`;
+        },
       },
       translate: (id: string, placeholders = {}) => {
         const message = translations.messages[`jsmessages:${id}`] ?? id;
