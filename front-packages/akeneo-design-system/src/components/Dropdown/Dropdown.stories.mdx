@@ -478,12 +478,12 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
             const [isOpen, open, close] = useBooleanState(true);
             return (
                 <SpaceContainer height={290}>
-                    <Dropdown fullWidth={true}>
+                    <Dropdown>
                         <Button onClick={open}>
                             Simple <ArrowDownIcon />
                         </Button>
                         {isOpen && (
-                            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+                            <Dropdown.Overlay verticalPosition="down" onClose={close} fullWidth={true}>
                                 <Dropdown.Header>
                                     <Dropdown.Title>Elements</Dropdown.Title>
                                 </Dropdown.Header>

@@ -7,7 +7,7 @@ import {useState} from 'react';
 import {SpaceContainer} from '../../storybook';
 
 <Meta
-  title="Components/BlockButton"
+  title="Components/Buttons/BlockButton"
   component={BlockButton}
   argTypes={{
     disabled: {control: {type: 'boolean'}},
@@ -91,12 +91,12 @@ Use this playground to test the BlockButton component
                     {blockValue}
                 </Block>
             ))}
-            <Dropdown fullWidth={true}>
+            <Dropdown>
                 <BlockButton onClick={open} disabled={blockValues.length === 3}>
                     Add a block
                 </BlockButton>
                 {isOpen && (
-                    <Dropdown.Overlay onClose={close}>
+                    <Dropdown.Overlay onClose={close} fullWidth={true}>
                         <Dropdown.Header>
                             <Dropdown.Title>Blocks</Dropdown.Title>
                         </Dropdown.Header>

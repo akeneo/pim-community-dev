@@ -6,7 +6,7 @@ import {PlusIcon} from '../../icons';
 test('it calls onRemove handler when user clicks on remove icon button', () => {
   const onRemove = jest.fn();
   render(
-    <Block removable={true} onRemove={onRemove} removeLabel={'Remove me, I am a bad block'}>
+    <Block removable={true} onRemove={onRemove} removeLabel="Remove me, I am a bad block">
       My block
     </Block>
   );

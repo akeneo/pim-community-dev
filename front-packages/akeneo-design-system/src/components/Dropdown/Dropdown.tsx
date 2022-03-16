@@ -5,7 +5,7 @@ import {Item} from './Item/Item';
 import {ItemCollection} from './ItemCollection/ItemCollection';
 import {Header} from './Header/Header';
 import {Title} from './Header/Title';
-import {AkeneoThemedProps, getColor} from '../../theme';
+import {getColor} from '../../theme';
 import {Surtitle} from './Surtitle/Surtitle';
 import {Override} from '../../shared';
 
@@ -21,20 +21,14 @@ const Section = styled.div`
   margin-top: 10px;
 `;
 
-const DropdownContainer = styled.div<{fullWidth?: boolean} & AkeneoThemedProps>`
+const DropdownContainer = styled.div`
   position: relative;
   display: inline-flex;
-  width: ${({fullWidth}) => (fullWidth ? '100%' : 'auto')};
 `;
 
 type DropdownProps = Override<
   HTMLAttributes<HTMLDivElement>,
   {
-    /**
-     * When dropdown is open, it will take the full width of parent element.
-     */
-    fullWidth?: boolean;
-
     /**
      * The content of the Dropdown.
      */
@@ -45,19 +39,18 @@ type DropdownProps = Override<
 /**
  * The dropdown shows a list of options that can be used to select, filter or sort content.
  */
-const Dropdown = ({children, fullWidth = false, ...rest}: DropdownProps) => {
+const Dropdown = ({children, ...rest}: DropdownProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const decoratedChildren = Children.map(children, child => {
     if (!isValidElement(child) || child.type !== Overlay) return child;
 
     return cloneElement(child, {
       parentRef: ref,
-      fullWidth,
     });
   });
 
   return (
-    <DropdownContainer ref={ref} fullWidth={fullWidth} {...rest}>
+    <DropdownContainer ref={ref} {...rest}>
       {decoratedChildren}
     </DropdownContainer>
   );
