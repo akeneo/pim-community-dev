@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10327: Fix process tracker error message after mass executing rules including disabled rules
+
 # 5.0.83 (2022-02-28)
 
 # 5.0.82 (2022-02-25)
@@ -165,6 +169,7 @@
 ## Improvements
 
 - PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
+- BH-950: Job instance validation: data referential integrity command. 
 
 ## Bug fixes
 
