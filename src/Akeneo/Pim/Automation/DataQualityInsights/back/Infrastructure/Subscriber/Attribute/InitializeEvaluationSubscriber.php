@@ -34,8 +34,7 @@ class InitializeEvaluationSubscriber implements EventSubscriberInterface
         private EvaluateUpdatedAttributeOptions              $evaluateUpdatedAttributeOptions,
         private FeatureFlag                                  $dataQualityInsightsFeature,
         private AttributeOptionSpellcheckRepositoryInterface $attributeOptionSpellcheckRepository
-    )
-    {
+    ) {
     }
 
     public static function getSubscribedEvents()

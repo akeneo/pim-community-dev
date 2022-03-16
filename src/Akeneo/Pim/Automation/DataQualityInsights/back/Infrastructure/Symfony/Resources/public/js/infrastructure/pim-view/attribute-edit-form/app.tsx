@@ -1,7 +1,4 @@
-import {
-  AttributeEditFormApp,
-  ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT,
-} from '@akeneo-pim-ee/data-quality-insights';
+import {AttributeEditFormApp, ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from '@akeneo-pim-ee/data-quality-insights';
 import OverrideTabTitles, {OverrideTabTitlesInterface} from './override-tab-titles';
 
 import BaseView from 'pimui/js/view/base';
