@@ -51,12 +51,14 @@ const ActionsContainer = styled.div`
 `;
 
 const Container = styled.div<AkeneoThemedProps>`
-  padding: 14px 20px;
+  padding: 0 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-family: inherit;
   font-size: ${getFontSize('default')};
   font-weight: 400;
@@ -120,6 +122,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
               title={removeLabel ?? ''}
               size="small"
               ghost="borderless"
+              level="tertiary"
               onClick={handleRemove}
             />
           )}
