@@ -40,7 +40,7 @@ akeneo.tailored_import:
       identifier: No settings available for the identifier attribute used as a target.
       locale_specific: This attribute is locale specific
       clear_if_empty: Clear if empty in file
-      configuration:
+      parameters:
         decimal_separator:
           title: Decimal separator
           comma: Comma (,)

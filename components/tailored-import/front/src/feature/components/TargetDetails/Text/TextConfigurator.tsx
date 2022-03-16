@@ -3,7 +3,7 @@ import {isTextTarget} from './model';
 import {AttributeConfiguratorProps} from '../../../models/Configurator';
 import {InvalidAttributeTargetError} from "../error/InvalidAttributeTargetError";
 
-const TextConfigurator = ({target, onTargetChange, validationErrors}: AttributeConfiguratorProps) => {
+const TextConfigurator = ({target}: AttributeConfiguratorProps) => {
   if (!isTextTarget(target)) {
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for text configurator`);
   }

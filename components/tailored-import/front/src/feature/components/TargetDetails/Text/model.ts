@@ -2,13 +2,13 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../models';
 
-type TextConfiguration = {};
+type TextParameters = {};
 
-const getDefaultTextConfiguration = (): TextConfiguration => ({});
+const getDefaultTextParameters = (): TextParameters => ({});
 const getDefaultTargetAction = (): TargetAction => 'set';
 const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
-const isDefaultTextConfiguration = (configuration?: TextConfiguration): boolean => ({} === configuration);
+const isDefaultTextParameters = (parameters?: TextParameters): boolean => ({} === parameters);
 
 type TextTarget = {
   uuid: string;
@@ -16,7 +16,7 @@ type TextTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  configuration: TextConfiguration;
+  parameters: TextParameters;
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
 };
@@ -31,18 +31,18 @@ const getDefaultTextTarget = (
   type: 'attribute',
   locale,
   channel,
-  configuration: getDefaultTextConfiguration(),
+  parameters: getDefaultTextParameters(),
   action_if_not_empty: getDefaultTargetAction(),
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
-const isTextConfiguration = (configuration: any): configuration is TextConfiguration => 'decimal_separator' in configuration;
+const isTextParameters = (parameters: any): boolean => ({} === parameters);
 
-const isTextTarget = (target: Target): target is TextTarget => isTextConfiguration(target.configuration);
+const isTextTarget = (target: Target): target is TextTarget => isTextParameters(target.parameters);
 
-export type {TextTarget, TextConfiguration};
+export type {TextTarget, TextParameters};
 export {
   getDefaultTextTarget,
-  isDefaultTextConfiguration,
+  isDefaultTextParameters,
   isTextTarget,
 };

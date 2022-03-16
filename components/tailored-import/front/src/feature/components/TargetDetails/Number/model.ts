@@ -5,13 +5,13 @@ import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../model
 const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
 
 type NumberSeparator = keyof typeof availableDecimalSeparators;
-type NumberConfiguration = {decimal_separator: NumberSeparator};
+type NumberParameters = {decimal_separator: NumberSeparator};
 
-const getDefaultNumberConfiguration = (): NumberConfiguration => ({decimal_separator: '.'});
+const getDefaultNumberConfiguration = (): NumberParameters => ({decimal_separator: '.'});
 const getDefaultTargetAction = (): TargetAction => 'set';
 const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
-const isDefaultNumberConfiguration = (configuration?: NumberConfiguration): boolean => '.' === configuration?.decimal_separator;
+const isDefaultNumberParameters = (parameters?: NumberParameters): boolean => '.' === parameters?.decimal_separator;
 
 type NumberTarget = {
   uuid: string;
@@ -19,7 +19,7 @@ type NumberTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  configuration: NumberConfiguration;
+  parameters: NumberParameters;
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
 };
@@ -34,22 +34,22 @@ const getDefaultNumberTarget = (
   type: 'attribute',
   locale,
   channel,
-  configuration: getDefaultNumberConfiguration(),
+  parameters: getDefaultNumberConfiguration(),
   action_if_not_empty: getDefaultTargetAction(),
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
-const isNumberConfiguration = (configuration: any): configuration is NumberConfiguration => 'decimal_separator' in configuration;
+const isNumberParameters = (parameters: any): parameters is NumberParameters => 'decimal_separator' in parameters;
 const isNumberDecimalSeparator = (separator: any): separator is NumberSeparator =>
   separator in availableDecimalSeparators;
 
-const isNumberTarget = (target: Target): target is NumberTarget => isNumberConfiguration(target.configuration);
+const isNumberTarget = (target: Target): target is NumberTarget => isNumberParameters(target.parameters);
 
-export type {NumberTarget, NumberConfiguration};
+export type {NumberTarget, NumberParameters};
 export {
   availableDecimalSeparators,
   getDefaultNumberTarget,
-  isDefaultNumberConfiguration,
+  isDefaultNumberParameters,
   isNumberDecimalSeparator,
   isNumberTarget,
 };

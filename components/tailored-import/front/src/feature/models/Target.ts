@@ -2,7 +2,6 @@ import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {getDefaultNumberTarget, NumberTarget} from "../components/TargetDetails/Number/model";
 import {Attribute} from "./Attribute";
 import {getDefaultTextTarget, TextTarget} from "../components/TargetDetails/Text/model";
-import {getDefaultTextSource} from "@akeneo-pim-enterprise/tailored-export/lib/components/SourceDetails/Text/model";
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
@@ -17,7 +16,7 @@ type PropertyTarget = {
   type: 'property';
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
-  configuration: any
+  parameters: any
 };
 
 type Target = AttributeTarget | PropertyTarget;
@@ -27,10 +26,10 @@ const getDefaultAttributeTarget = (
   channel: ChannelReference,
   locale: LocaleReference
 ): AttributeTarget => {
-  return getDefaultNumberTarget(attribute, channel, locale);
   switch (attribute.type) {
     case 'pim_catalog_number':
       return getDefaultNumberTarget(attribute, channel, locale);
+    case 'pim_catalog_identifier':
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
       return getDefaultTextTarget(attribute, channel, locale);
@@ -44,7 +43,7 @@ const createPropertyTarget = (code: string): PropertyTarget => ({
   type: 'property',
   action_if_not_empty: 'set',
   action_if_empty: 'skip',
-  configuration: {},
+  parameters: {},
 });
 
 const isAttributeTarget = (target: Target): target is AttributeTarget =>
