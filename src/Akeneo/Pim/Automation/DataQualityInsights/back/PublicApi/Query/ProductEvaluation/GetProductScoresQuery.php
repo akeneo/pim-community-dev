@@ -20,6 +20,9 @@ class GetProductScoresQuery implements GetProductScoresQueryInterface
     {
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function byProductIdentifiers(array $productIdentifiers): array
     {
         $channelLocaleRateCollections = $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
