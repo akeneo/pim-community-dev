@@ -58,11 +58,13 @@ const Container = styled.button<
     disabled: boolean;
   } & AkeneoThemedProps
 >`
+  box-sizing: border-box;
   width: 100%;
   padding: 14px 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,10 +72,8 @@ const Container = styled.button<
   font-size: ${getFontSize('default')};
   font-weight: 400;
   outline-style: none;
-  text-decoration: none;
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
-  outline-style: none;
-  text-decoration: none;
+  white-space: nowrap;
 
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};

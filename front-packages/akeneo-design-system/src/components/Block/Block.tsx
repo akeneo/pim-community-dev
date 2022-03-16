@@ -6,23 +6,28 @@ import {CloseIcon, IconProps} from '../../icons';
 import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
-  React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
-  {
-    /**
-     * Define if the block is removable.
-     */
-    removable?: boolean;
+  Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
+  (
+    | {
+        /**
+         * Define if the block is removable.
+         */
+        removable: false;
+      }
+    | {
+        removable: boolean;
 
-    /**
-     * Function called when the user clicks on the remove button.
-     */
-    onRemove?: () => void;
+        /**
+         * Function called when the user clicks on the remove button.
+         */
+        onRemove: () => void;
 
-    /**
-     * Accessibility text for the remove icon button.
-     */
-    removeLabel?: string;
-
+        /**
+         * Accessibility text for the remove icon button.
+         */
+        removeLabel: string;
+      }
+  ) & {
     /**
      * Accessibility label to describe shortly the button.
      */
@@ -46,24 +51,23 @@ type BlockProps = Override<
 >;
 
 const ActionsContainer = styled.div`
-  height: 0;
   display: none;
   align-items: center;
 `;
 
 const Container = styled.div<AkeneoThemedProps>`
-  padding: 14px 20px;
+  box-sizing: border-box;
+  padding: 0 20px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: inherit;
   font-size: ${getFontSize('default')};
   font-weight: 400;
-  outline-style: none;
-  text-decoration: none;
 
   background-color: ${getColor('white')};
   border-color: ${getColor('grey', 80)};
@@ -80,7 +84,7 @@ const Container = styled.div<AkeneoThemedProps>`
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
     {
-      removable = false,
+      removable,
       onRemove,
       removeLabel,
       ariaDescribedBy,
@@ -119,7 +123,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
           {removable && (
             <IconButton
               icon={<CloseIcon />}
-              title={removeLabel ?? ''}
+              title={removeLabel}
               size="small"
               ghost="borderless"
               level="tertiary"
