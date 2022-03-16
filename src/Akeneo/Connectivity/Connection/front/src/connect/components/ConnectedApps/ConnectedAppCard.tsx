@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, Button, AppIllustration} from 'akeneo-design-system';
+import {getColor, getFontSize, Button, AppIllustration, DangerIcon} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -66,6 +66,24 @@ const Author = styled.h3`
     text-overflow: ellipsis;
 `;
 
+const Warning = styled.h3`
+    color: ${getColor('grey', 120)};
+    font-size: ${getFontSize('small')};
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 5px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; ;
+`;
+
+const WarningIcon = styled(DangerIcon)`
+    color: ${getColor('yellow', 100)};
+    vertical-align: middle;
+    margin-right: 5px;
+`;
+
 const Tag = styled.span`
     color: ${getColor('grey', 120)};
     font-size: ${getFontSize('small')};
@@ -119,16 +137,27 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
         (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
         (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
 
+    const cardDescription = item.has_outdated_scopes ? (
+        <Warning>
+            <WarningIcon size={14} />
+            {translate(
+                'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
+            )}
+        </Warning>
+    ) : (
+        <Author>
+            {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
+                author,
+            })}
+        </Author>
+    );
+
     return (
         <CardContainer>
             <LogoContainer> {logo} </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                <Author>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
-                        author,
-                    })}
-                </Author>
+                {cardDescription}
                 {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
             </TextInformation>
             <Actions>
@@ -136,7 +165,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
-                    level='secondary'
+                    level={item.has_outdated_scopes ? 'warning' : 'secondary'}
                     href={item.activate_url}
                     disabled={!item.activate_url || !canOpenApp}
                     target='_blank'
