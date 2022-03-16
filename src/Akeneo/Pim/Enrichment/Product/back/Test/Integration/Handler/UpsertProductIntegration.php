@@ -290,26 +290,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_clears_asset_collection_value(): void
     {
-        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
-
-        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
-            /** @phpstan-ignore-next-line */
-            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
-        );
-
-        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-            /** @phpstan-ignore-next-line */
-            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
-        );
-
-        $this->createAttribute(
-            [
-                'code' => 'packshot_attr',
-                'type' => 'pim_catalog_asset_collection',
-                'group' => 'other',
-                'reference_data_name' => 'packshot',
-            ]
-        );
+        $this->loadAssetFixtures();
 
         $this->createProduct(
             'product_with_asset',
@@ -595,26 +576,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_a_product_with_an_asset_value(): void
     {
-        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
-
-        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
-        /** @phpstan-ignore-next-line */
-            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
-        );
-
-        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-        /** @phpstan-ignore-next-line */
-            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
-        );
-
-        $this->createAttribute(
-            [
-                'code' => 'packshot_attr',
-                'type' => 'pim_catalog_asset_collection',
-                'group' => 'other',
-                'reference_data_name' => 'packshot',
-            ]
-        );
+        $this->loadAssetFixtures();
 
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'product_with_asset', valueUserIntents: [
             new SetAssetValue('packshot_attr', null, null, ['packshot1'])
@@ -629,6 +591,39 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_updates_a_product_with_an_asset_value(): void
     {
+        $this->loadAssetFixtures();
+
+        $this->updateProduct(new SetAssetValue('product_with_asset', null, null, ['packshot1']));
+        $this->assertProductHasCorrectValueByAttributeCode('product_with_asset', ['packshot1']);
+    }
+
+
+    /** @test */
+    public function it_updates_a_product_with_an_add_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1', 'packshot2']);
+
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['packshot2', 'packshot3']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1', 'packshot2', 'packshot3']);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_asset_does_not_exist(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Please make sure the "toto" asset exists and belongs to the "packshot" asset family for the "packshot_attr" attribute.');
+
+        $this->updateProduct(new SetAssetValue('packshot_attr', null, null, ['toto']));
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['toto']));
+    }
+
+    private function loadAssetFixtures(): void
+    {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
@@ -640,6 +635,14 @@ final class UpsertProductIntegration extends TestCase
         /** @phpstan-ignore-next-line */
             new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
         );
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot2', ['en_US' => 'Packshot 2'])
+        );
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot3', ['en_US' => 'Packshot 3'])
+        );
 
         $this->createAttribute(
             [
@@ -649,9 +652,6 @@ final class UpsertProductIntegration extends TestCase
                 'reference_data_name' => 'packshot',
             ]
         );
-
-        $this->updateProduct(new SetAssetValue('product_with_asset', null, null, ['packshot1']));
-        $this->assertProductHasCorrectValueByAttributeCode('product_with_asset', ['packshot1']);
     }
 
     private function assertProductHasCorrectValueByAttributeCode(string $attributeCode, mixed $expectedValue): void
