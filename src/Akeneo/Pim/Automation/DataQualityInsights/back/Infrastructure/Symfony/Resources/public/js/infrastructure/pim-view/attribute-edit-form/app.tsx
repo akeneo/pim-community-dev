@@ -5,8 +5,8 @@ import {
 import OverrideTabTitles, {OverrideTabTitlesInterface} from './override-tab-titles';
 
 import BaseView from 'pimui/js/view/base';
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
-import {ATTRIBUTE_OPTION_DELETED} from 'akeneopimstructure/js/attribute-option/model/Events';
+import {ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED} from '@akeneo-pim-ee/data-quality-insights/src/application/constant';
+import {ATTRIBUTE_OPTION_UPDATED, ATTRIBUTE_OPTION_DELETED} from 'akeneopimstructure/js/attribute-option/model/Events';
 
 class DataQualityInsightsApp extends BaseView {
   private renderingCount = 0;
@@ -27,11 +27,7 @@ class DataQualityInsightsApp extends BaseView {
       );
     });
 
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => this.renderTabTitles());
-
-    window.addEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => this.renderTabTitles());
-
-    window.addEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
+    this.updateTabTitlesOnEvents();
 
     return super.configure();
   }
@@ -52,7 +48,7 @@ class DataQualityInsightsApp extends BaseView {
   }
 
   remove() {
-    window.removeEventListener(ATTRIBUTE_EDIT_FORM_UPDATED, () => this.renderTabTitles());
+    window.removeEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
     window.removeEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
     super.remove();
     this.renderingCount = 0;
@@ -72,6 +68,18 @@ class DataQualityInsightsApp extends BaseView {
       this.render();
       this.renderingTabTitle = false;
     });
+  }
+
+  private updateTabTitlesOnEvents() {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', () => {
+      return this.renderTabTitles();
+    });
+
+    window.addEventListener(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED, () => this.renderTabTitles());
+
+    window.addEventListener(ATTRIBUTE_OPTION_UPDATED, () => this.renderTabTitles());
+
+    window.addEventListener(ATTRIBUTE_OPTION_DELETED, () => this.renderTabTitles());
   }
 }
 

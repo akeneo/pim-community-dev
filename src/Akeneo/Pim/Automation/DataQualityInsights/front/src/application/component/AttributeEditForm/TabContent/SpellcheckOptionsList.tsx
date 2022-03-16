@@ -12,7 +12,7 @@ import ActiveHighlightsOnIntersection from '../../Common/HighlightableContent/Ac
 import UpdateHighlightsOnInputChange from '../../Common/HighlightableContent/UpdateHighlightsOnInputChange';
 import SpellcheckPopoverDisclosure from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopoverDisclosure';
 import SpellcheckPopover from '../../Common/HighlightableContent/Spellcheck/SpellcheckPopover';
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from '../../../constant';
+import {ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED} from '../../../constant';
 import UpdateHighlightsOnAttributeChange from '../../Common/HighlightableContent/UpdateHighlightsOnAttributeChange';
 
 const SPELLCHECK_OPTION_ELEMENT_BASE_ID = 'attribute-option-spellcheck';
@@ -28,7 +28,7 @@ const SpellcheckOptionsList: FC = () => {
         }
 
         await fetchIgnoreOptionIssue(text, locale, attribute.code, editingOption.code);
-        window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
+        window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED));
         window.dispatchEvent(new CustomEvent('refreshEvaluation'));
       })();
     },
