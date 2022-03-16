@@ -119,7 +119,7 @@ services:
     akeneo.pim.enrichment.use_cases.get_products_with_quality_scores:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScores
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery'
             - '@akeneo.pim.automation.data_quality_insights.feature'
 
     akeneo.pim.enrichment.use_cases.get_products_with_completenesses:

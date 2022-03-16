@@ -47,7 +47,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
     {
         $valueUserIntents = [
             new SetTextValue('name', null, null, 'foo'),
-            new SetNumberValue('name', null, null, 10),
+            new SetNumberValue('name', null, null, '10'),
             new SetMetricValue('power', null, null, '100', 'KILOWATT'),
             new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>"),
             new ClearValue('name', null, null),
@@ -114,7 +114,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
     {
         $familyUserIntent = new SetFamily('accessories');
         $setTextValue = new SetTextValue('name', null, null, 'foo');
-        $setNumberValue = new SetNumberValue('name', null, null, 10);
+        $setNumberValue = new SetNumberValue('name', null, null, '10');
         $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
 

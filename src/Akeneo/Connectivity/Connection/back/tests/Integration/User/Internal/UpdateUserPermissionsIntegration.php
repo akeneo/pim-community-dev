@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\User\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
@@ -85,7 +86,7 @@ SQL;
         $command = new CreateConnectionCommand($code, $code, FlowType::OTHER, false);
 
         return $this
-            ->get('akeneo_connectivity.connection.application.handler.create_connection')
+            ->get(CreateConnectionHandler::class)
             ->handle($command);
     }
 

@@ -98,20 +98,20 @@ final class UpsertProductIntegration extends TestCase
     public function it_creates_a_product_with_a_number_value(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetNumberValue('a_number_integer', null, null, 10),
+            new SetNumberValue('a_number_integer', null, null, '10'),
         ]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
 
-        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', 10);
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', '10');
     }
 
     /** @test */
     public function it_updates_a_product_with_a_number_value(): void
     {
-        $this->updateProduct(new SetNumberValue('a_number_integer', null, null, 10));
-        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', 10);
+        $this->updateProduct(new SetNumberValue('a_number_integer', null, null, '10'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', '10');
     }
 
     /** @test */
