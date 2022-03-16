@@ -56,6 +56,7 @@ services:
 
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
         arguments:
+            - '@akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
