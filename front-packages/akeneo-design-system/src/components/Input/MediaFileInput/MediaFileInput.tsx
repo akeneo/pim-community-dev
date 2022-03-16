@@ -89,6 +89,10 @@ const UploadProgress = styled(ProgressBar)`
 `;
 
 const MediaFileImage = styled(Image)`
+  border: none;
+`;
+
+const PreviewImage = styled(Image)`
   max-width: 95%;
   max-height: 95%;
   position: absolute;
@@ -278,7 +282,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           </>
         ) : null !== value ? (
           <>
-            <MediaFileImage
+            <PreviewImage
               src={displayedThumbnailUrl}
               alt={value.originalFilename}
               onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
