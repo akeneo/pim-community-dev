@@ -44,9 +44,9 @@ class EvaluateProductsAndProductModelsCriteriaTaskletSpec extends ObjectBehavior
         $evaluateProductModels->__invoke($productModelIds[1])->shouldBeCalled();
 
         $this->execute();
-        $result = $stepExecution->getTrackingData();
-        Assert::same($result['evaluations']['products']['count'], 3);
-        Assert::same($result['evaluations']['product_models']['count'], 4);
+
+        $evaluationSummary = $stepExecution->getSummaryInfo('evaluations');
+        Assert::same($evaluationSummary['products']['count'], 3);
+        Assert::same($evaluationSummary['product_models']['count'], 4);
     }
 }
-
