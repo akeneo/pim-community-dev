@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductProjection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,7 @@ class MigrateToUuidCommand extends Command
     private array $steps;
 
     public function __construct(
+        private GetElasticsearchProductProjection $getElasticsearchProductProjection,
         MigrateToUuidStep $migrateToUuidCreateColumns,
         MigrateToUuidStep $migrateToUuidAddTriggers,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
@@ -55,6 +57,7 @@ class MigrateToUuidCommand extends Command
         $this->logger->notice('Migration start');
 
         foreach ($this->steps as $step) {
+            $this->getElasticsearchProductProjection->clearCache();
             $logContext = new LogContext($step);
             $context->logContext = $logContext;
 
