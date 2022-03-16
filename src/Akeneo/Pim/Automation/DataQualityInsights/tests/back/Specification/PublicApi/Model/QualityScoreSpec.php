@@ -7,10 +7,10 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Mode
 use PhpSpec\ObjectBehavior;
 
 /**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductScoreSpec extends ObjectBehavior
+final class QualityScoreSpec extends ObjectBehavior
 {
     public function it_can_be_constructed_and_returns_letter_and_rate()
     {

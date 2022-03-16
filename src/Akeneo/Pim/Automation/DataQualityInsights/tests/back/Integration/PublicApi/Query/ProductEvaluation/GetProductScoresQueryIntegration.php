@@ -10,9 +10,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScore;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\ProductScoreCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -20,7 +20,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTestCase
+final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
     /**
      * https://github.com/akeneo/pim-community-dev/pull/15486#discussion_r732547768
@@ -28,48 +28,48 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
      * By creating a whole product, it makes DQI completely coupled by the tests to the enrichment context, and on a big part of the application.
      * This test can be broken by a change in enrichment, even if it does not break DQI itself.
      */
-    public function test_it_returns_the_latest_scores_by_product_identifiers()
+    public function test_it_returns_the_quality_scores_by_product_identifiers()
     {
         [$productA, $productB, $productC, $productD] = $this->loadProductScores();
 
-        $expectedProductsScoreCollections = [
-            $productA->getIdentifier() => new ProductScoreCollection([
+        $expectedQualityScoreCollections = [
+            $productA->getIdentifier() => new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductScore('A', 96),
-                    'fr_FR' => new ProductScore('E', 36),
+                    'en_US' => new QualityScore('A', 96),
+                    'fr_FR' => new QualityScore('E', 36),
                 ],
             ]),
-            $productB->getIdentifier() => new ProductScoreCollection([
+            $productB->getIdentifier() => new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductScore('A', 100),
-                    'fr_FR' => new ProductScore('A', 95),
+                    'en_US' => new QualityScore('A', 100),
+                    'fr_FR' => new QualityScore('A', 95),
                 ],
             ]),
         ];
 
-        $productScoreCollections = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifiers([
+        $qualityScoreCollections = $this->get(GetProductScoresQuery::class)->byProductIdentifiers([
             $productA->getIdentifier(),
             $productB->getIdentifier(),
             $productD->getIdentifier(),
         ]);
 
-        $this->assertEqualsCanonicalizing($expectedProductsScoreCollections, $productScoreCollections);
+        $this->assertEqualsCanonicalizing($expectedQualityScoreCollections, $qualityScoreCollections);
     }
 
-    public function test_it_returns_the_latest_scores_by_product_identifier()
+    public function test_it_returns_the_quality_score_by_product_identifier()
     {
         [$productA] = $this->loadProductScores();
 
-        $expectedProductsScoreCollection = new ProductScoreCollection([
+        $expectedQualityScoreCollection = new QualityScoreCollection([
                 'mobile' => [
-                    'en_US' => new ProductScore('A', 96),
-                    'fr_FR' => new ProductScore('E', 36),
+                    'en_US' => new QualityScore('A', 96),
+                    'fr_FR' => new QualityScore('E', 36),
                 ],
         ]);
 
-        $productScoreCollection = $this->get(GetLatestProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
+        $qualityScoreCollection = $this->get(GetProductScoresQuery::class)->byProductIdentifier($productA->getIdentifier());
 
-        $this->assertEqualsCanonicalizing($expectedProductsScoreCollection, $productScoreCollection);
+        $this->assertEqualsCanonicalizing($expectedQualityScoreCollection, $qualityScoreCollection);
     }
 
     private function loadProductScores() {
@@ -85,32 +85,18 @@ final class GetLatestProductScoresQueryIntegration extends DataQualityInsightsTe
         $this->resetProductsScores();
 
         $productsScores = [
-            'product_A_latest_scores' => new ProductScores(
+            'product_A_scores' => new ProductScores(
                 new ProductId($productA->getId()),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
-            'product_A_previous_scores' => new ProductScores(
-                new ProductId($productA->getId()),
-                new \DateTimeImmutable('2020-01-07'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(76))
-                    ->addRate($channelMobile, $localeFr, new Rate(67))
-            ),
-            'product_B_latest_scores' => new ProductScores(
+            'product_B_scores' => new ProductScores(
                 new ProductId($productB->getId()),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
-            ),
-            'product_B_previous_scores' => new ProductScores(
-                new ProductId($productB->getId()),
-                new \DateTimeImmutable('2020-01-08'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(81))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_scores' => new ProductScores(
