@@ -46,7 +46,10 @@ Use this playground to test the block component
           <Block {...args}>
             Non removable block
           </Block>
-          <Block {...args} removable={true} onRemove={action('Remove block')}>
+          <Block
+            {...args}
+            actions={[<IconButton icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />]}
+          >
             Removable block
           </Block>
         </>

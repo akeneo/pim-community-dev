@@ -1,33 +1,15 @@
-import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {cloneElement, isValidElement, ReactNode, Ref} from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {CloseIcon, IconProps} from '../../icons';
-import {IconButton} from '../IconButton/IconButton';
+import {IconProps} from '../../icons';
+import {IconButton, IconButtonProps} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
-  (
-    | {
-        /**
-         * Define if the block is removable.
-         */
-        removable: false;
-      }
-    | {
-        removable: boolean;
+  {
+    actions?: ReactNode;
 
-        /**
-         * Function called when the user clicks on the remove button.
-         */
-        onRemove: () => void;
-
-        /**
-         * Accessibility text for the remove icon button.
-         */
-        removeLabel: string;
-      }
-  ) & {
     /**
      * Accessibility label to describe shortly the button.
      */
@@ -84,9 +66,7 @@ const Container = styled.div<AkeneoThemedProps>`
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
     {
-      removable,
-      onRemove,
-      removeLabel,
+      actions,
       ariaDescribedBy,
       ariaLabel,
       ariaLabelledBy,
@@ -95,13 +75,6 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
     }: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    const handleRemove = (event: SyntheticEvent) => {
-      event.preventDefault();
-      if (onRemove) {
-        onRemove();
-      }
-    };
-
     return (
       <Container
         aria-describedby={ariaDescribedBy}
@@ -120,16 +93,17 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
           })}
         </div>
         <ActionsContainer>
-          {removable && (
-            <IconButton
-              icon={<CloseIcon />}
-              title={removeLabel}
-              size="small"
-              ghost="borderless"
-              level="tertiary"
-              onClick={handleRemove}
-            />
-          )}
+          {React.Children.map(actions, action => {
+            if (isValidElement<IconButtonProps>(action) && IconButton === action.type) {
+              return cloneElement(action, {
+                level: 'tertiary',
+                ghost: 'borderless',
+                size: 'small',
+              });
+            }
+
+            return action;
+          })}
         </ActionsContainer>
       </Container>
     );
