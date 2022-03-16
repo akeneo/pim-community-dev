@@ -15,7 +15,7 @@ interface GetProductModelScoresByCodesQueryInterface
     public function byProductModelCode(string $productModelCode): ChannelLocaleRateCollection;
 
     /**
-     * @return array<ChannelLocaleRateCollection>
+     * @return array<string, ChannelLocaleRateCollection>
      */
     public function byProductModelCodes(array $productModelCodes): array;
 }

@@ -26,6 +26,9 @@ final class GetProductModelScoresByCodesQuery implements GetProductModelScoresBy
         return $productModelScores[$productModelCode] ?? new ChannelLocaleRateCollection();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function byProductModelCodes(array $productModelCodes): array
     {
         if (empty($productModelCodes)) {
