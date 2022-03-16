@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10333: Import category without correct locale should be impossible
+
 # 5.0.84 (2022-03-15)
 
 # 5.0.83 (2022-02-28)
