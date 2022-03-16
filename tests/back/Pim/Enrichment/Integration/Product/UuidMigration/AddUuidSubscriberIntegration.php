@@ -44,7 +44,7 @@ final class AddUuidSubscriberIntegration extends AbstractMigrateToUuidTestCase
         $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
             userId: $adminUserId,
             productIdentifier: 'product_with_uuid',
-            valuesUserIntent: [new SetTextValue('a_text', null, null, 'test1')]
+            valueUserIntents: [new SetTextValue('a_text', null, null, 'test1')]
         ));
         $sql = "SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = 'product_with_uuid'";
         $uuid = $this->connection->executeQuery($sql)->fetchOne();
@@ -55,7 +55,7 @@ final class AddUuidSubscriberIntegration extends AbstractMigrateToUuidTestCase
         $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
             userId: $adminUserId,
             productIdentifier: 'product_with_uuid',
-            valuesUserIntent: [new SetTextValue('a_text', null, null, 'test2')]
+            valueUserIntents: [new SetTextValue('a_text', null, null, 'test2')]
         ));
         $sql = "SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE identifier = 'product_with_uuid'";
         $uuidAfterUpdate = $this->connection->executeQuery($sql)->fetchOne();
