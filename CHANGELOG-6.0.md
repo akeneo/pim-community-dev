@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.12 (2022-03-17)
+
 ## Improvement
 - Fix Docker Composer cache
 
