@@ -61,6 +61,8 @@ batch_jobs:
 job_execution:
   summary:
     assets: Assets
+    transformations: Asset transformations
+    skipped: Skipped
 pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: Assets successfully deleted with warnings
   success: Assets successfully deleted
@@ -70,5 +72,13 @@ pim_mass_edit.notification.asset_manager_mass_edit_assets:
   success: Assets successfully edited
   error: Asset edition failed
 pim_api:
+  acl:
+    asset_family:
+      create: Create and update asset families
+      list: List asset families
+    asset:
+      create: Create and update assets
+      list: List assets
+      remove: Delete assets
   acl_group:
     asset: Assets

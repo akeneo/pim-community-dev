@@ -17,11 +17,6 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
 
-    # Query/Handlers
-    Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler:
-        arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
-
     # Queries
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierList
@@ -42,7 +37,7 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate:
