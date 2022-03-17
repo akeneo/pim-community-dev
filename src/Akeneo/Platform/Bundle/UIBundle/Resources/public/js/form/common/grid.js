@@ -117,6 +117,7 @@ define([
             _.each(modules, function (module) {
               resolvedModules.push(requireContext(module));
             });
+
             datagridBuilder(resolvedModules);
           }.bind(this)
         )

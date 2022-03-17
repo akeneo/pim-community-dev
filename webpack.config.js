@@ -66,7 +66,7 @@ const webpackConfig = {
     filename: '[name].min.js',
     chunkFilename: '[name].bundle.js',
   },
-  devtool: 'source-map',
+  //devtool: 'source-map',
   resolve: {
     symlinks: false,
     alias: _.mapKeys(aliases, (path, key) => `${key}$`),
@@ -159,19 +159,19 @@ const webpackConfig = {
           },
         ],
       },
-
-      // Process the pim webpack files with babel
       {
         test: /\.js$/,
         include: [/public\/bundles/, /webpack/, /spec/, /node_modules\/p\-queue/],
         use: [
           'thread-loader',
           {
-            loader: 'babel-loader',
+            loader: "swc-loader",
             options: {
-              presets: ['@babel/preset-env'],
-              cacheDirectory: 'public/cache',
-            },
+              sourceMaps: true,
+              module: {
+                type: "commonjs"
+              }
+            }
           }
         ],
       },
@@ -189,13 +189,18 @@ const webpackConfig = {
         test: /\.tsx?$/,
         use: [
           {
-            loader: 'ts-loader',
+            loader: "swc-loader",
             options: {
-              transpileOnly: !isStrict,
-              configFile: path.resolve(rootDir, 'tsconfig.json'),
-              context: path.resolve(rootDir),
-              getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
-            },
+              jsc: {
+                parser: {
+                  syntax: "typescript"
+                },
+              },
+              sourceMaps: true,
+              module: {
+                type: "commonjs"
+              }
+            }
           },
           {
             loader: path.resolve(__dirname, 'frontend/webpack/config-loader'),

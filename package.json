@@ -129,6 +129,8 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.156",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
@@ -155,6 +157,7 @@
     "style-loader": "^1.0.1",
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
+    "swc-loader": "^0.1.15",
     "underscore": "1.12.1",
     "victory": "^33.1.6"
   },
