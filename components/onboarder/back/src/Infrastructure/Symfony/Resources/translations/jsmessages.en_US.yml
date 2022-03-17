@@ -38,6 +38,13 @@ onboarder:
             configuration_form:
                 code: Code
                 label: Supplier label (required)
+            contributors_form:
+                info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                add_contributors: Add contributors
+                add_button: Add
+                search_by_email_address: Search by email address
+                columns:
+                    email: Email address
 
 pim_title:
     onboarder_serenity_supplier_list: Supplier list
