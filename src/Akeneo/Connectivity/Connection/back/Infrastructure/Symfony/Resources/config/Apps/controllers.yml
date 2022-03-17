@@ -118,3 +118,10 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\ScopesUpdateAction:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler'

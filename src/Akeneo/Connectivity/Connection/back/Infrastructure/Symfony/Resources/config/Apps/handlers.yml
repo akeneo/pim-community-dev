@@ -47,3 +47,8 @@ services:
             - '@akeneo_connectivity.connection.service.client.delete_client'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
