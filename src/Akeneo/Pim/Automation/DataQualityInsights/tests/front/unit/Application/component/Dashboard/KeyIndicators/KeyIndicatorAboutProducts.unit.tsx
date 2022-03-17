@@ -15,9 +15,9 @@ jest.mock('@akeneo-pim-community/shared', () => ({
     switch (i18nKey) {
       case 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on':
         // we need the marker to test the KeyIndicator component, the i18nkey would not be sufficient
-        return 'some text before marker <button_a/> some text after marker';
+        return 'some text before marker <improvable_products_count_link/> some text after marker';
       case 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds':
-        return 'some text <button_a/> and <button_b/> some other text';
+        return 'some text <improvable_products_count_link/> and <improvable_product_models_count_link/> some other text';
     }
     return i18nKey;
   },

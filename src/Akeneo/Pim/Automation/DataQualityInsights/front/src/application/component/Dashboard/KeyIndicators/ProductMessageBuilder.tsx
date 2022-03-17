@@ -20,6 +20,10 @@ export const ProductMessageBuilder = (props: Props) => {
     product_models: {totalToImprove: nbProductModelsKO},
   } = counts;
 
+  if (nbProductsKO === 0 && nbProductModelsKO === 0) {
+    return null;
+  }
+
   const roughCountProductsKO: number = roughCount(nbProductsKO);
   const roughCountProductModelsKO: number = roughCount(nbProductModelsKO);
 
@@ -38,24 +42,24 @@ export const ProductMessageBuilder = (props: Props) => {
 
   const productModelsButton = <button onClick={onClickOnProductModels}>{roughCountProductModelsKOText}</button>;
 
-  let messageSourceI18nKey =
-    nbProductsKO > 0 && nbProductModelsKO > 0
-      ? 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds'
-      : 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on';
-
+  // we have up to two buttons in the produced message
+  // either we have both product and product model related buttons
+  // either we have just one, it can relate to product or product_model
+  // the following array definition and filtering expresses that situation
   const [buttonA, buttonB] = [
     nbProductsKO > 0 ? productsButton : undefined,
     nbProductModelsKO > 0 ? productModelsButton : undefined,
   ].filter(Boolean);
 
   const markersMapping: MarkersMapping = {
-    '<button_a/>': buttonA,
-    '<button_b/>': buttonB,
+    '<improvable_products_count_link/>': buttonA,
+    '<improvable_product_models_count_link/>': buttonB,
   };
 
-  return nbProductsKO > 0 || nbProductModelsKO > 0 ? (
-    <>{messageBuilder(markersMapping)(translate(messageSourceI18nKey))} </>
-  ) : (
-    <></>
-  );
+  let messageSourceI18nKey =
+    nbProductsKO > 0 && nbProductModelsKO > 0
+      ? 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on_2_kinds'
+      : 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.entities_to_work_on';
+
+  return messageBuilder(markersMapping)(translate(messageSourceI18nKey));
 };
