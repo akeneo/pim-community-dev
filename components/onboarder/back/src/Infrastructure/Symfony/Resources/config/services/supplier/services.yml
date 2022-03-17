@@ -49,3 +49,6 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit:
+        public: true

@@ -3,23 +3,23 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {onboarderTheme} from 'akeneo-design-system';
-import {Supplier} from '@akeneo-pim-enterprise/onboarder';
+import {SupplierApp} from '@akeneo-pim-enterprise/onboarder';
 
 const mediator = require('oro/mediator');
 
-class SupplierList extends ReactController {
+class SupplierManagement extends ReactController {
     private static container = document.createElement('div');
 
     reactElementToMount() {
         return <DependenciesProvider>
             <ThemeProvider theme={onboarderTheme}>
-                <Supplier/>
+                <SupplierApp/>
             </ThemeProvider>
         </DependenciesProvider>;
     }
 
     routeGuardToUnmount() {
-        return /onboarder_serenity_supplier_list/;
+        return /^onboarder_serenity_supplier_/;
     }
 
     renderRoute() {
@@ -30,8 +30,8 @@ class SupplierList extends ReactController {
     }
 
     getContainerRef(): Element {
-        return SupplierList.container;
+        return SupplierManagement.container;
     }
 }
 
-export = SupplierList;
+export = SupplierManagement;

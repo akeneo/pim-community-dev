@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {MouseEvent} from 'react';
 import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
 import {CityIllustration, DeleteIcon, EditIcon, Pagination, onboarderTheme, Table, Search} from 'akeneo-design-system';
-import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
+import {NoDataSection, NoDataText, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
 
@@ -23,6 +23,17 @@ const SupplierList = ({
     currentPage,
 }: SupplierListProps) => {
     const translate = useTranslate();
+    const router = useRouter();
+
+    const goToSupplier = (identifier: string, event: MouseEvent<HTMLTableRowElement>) => {
+        if (event.metaKey || event.ctrlKey) {
+            const newTab = window.open(`#${router.generate('onboarder_serenity_supplier_edit', {identifier})}`, '_blank');
+            newTab?.focus();
+
+            return;
+        }
+        router.redirectToRoute('onboarder_serenity_supplier_edit', {identifier});
+    }
 
     return (
         <>
@@ -64,7 +75,7 @@ const SupplierList = ({
                         </Table.Header>
                         <Table.Body>
                             {suppliers.map((supplier: SupplierRow) => (
-                                <Table.Row key={supplier.code} data-testid={supplier.code}>
+                                <Table.Row key={supplier.code} onClick={(event: MouseEvent<HTMLTableRowElement>) => goToSupplier(supplier.identifier, event)} data-testid={supplier.code}>
                                     <Table.Cell>{supplier.label}</Table.Cell>
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>
