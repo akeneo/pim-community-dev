@@ -3,11 +3,14 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IconProps} from '../../icons';
-import {IconButton, IconButtonProps} from '../IconButton/IconButton';
+import {IconButtonProps} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
   {
+    /**
+     * Actions component that will be displayed on the right of the block.
+     */
     actions?: ReactNode;
 
     /**
@@ -65,14 +68,7 @@ const Container = styled.div<AkeneoThemedProps>`
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {
-      actions,
-      ariaDescribedBy,
-      ariaLabel,
-      ariaLabelledBy,
-      children,
-      ...rest
-    }: BlockProps,
+    {actions = [], ariaDescribedBy, ariaLabel, ariaLabelledBy, children, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     return (
@@ -94,7 +90,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
         </div>
         <ActionsContainer>
           {React.Children.map(actions, action => {
-            if (isValidElement<IconButtonProps>(action) && IconButton === action.type) {
+            if (isValidElement<IconButtonProps>(action)) {
               return cloneElement(action, {
                 level: 'tertiary',
                 ghost: 'borderless',

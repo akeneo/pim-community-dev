@@ -1,10 +1,11 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {BlockButton} from './BlockButton';
-import {PlusIcon} from '../../icons';
+import {PlusIcon, CloseIcon} from '../../icons';
 import {Dropdown, Block} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {useState} from 'react';
 import {SpaceContainer} from '../../storybook';
+import {IconButton} from '../IconButton/IconButton';
 
 <Meta
   title="Components/Buttons/BlockButton"
@@ -82,12 +83,12 @@ Use this playground to test the BlockButton component
 <Canvas>
   <Story name="With Dropdown and Blocks">
     {args => {
-      const [blockValues, setBlockValues] = useState([]);
+      const [blockValues, setBlockValues] = useState<string>([]);
       const [isOpen, open, close] = useBooleanState(false);
       return (
         <SpaceContainer gap={10}>
             {blockValues.map(blockValue => (
-                <Block key={blockValue} removable={true} onRemove={() => setBlockValues(blockValues.filter(current => current !== blockValue))}>
+                <Block key={blockValue} actions={[<IconButton key="remove" icon={<CloseIcon />} title="Remove" onClick={() => setBlockValues(blockValues.filter(current => current !== blockValue))} />]}>
                     {blockValue}
                 </Block>
             ))}

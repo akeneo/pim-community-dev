@@ -1,13 +1,14 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
 import {Block} from './Block';
+import {IconButton} from '../IconButton/IconButton';
+import {CloseIcon, EditIcon, MoreIcon} from '../../icons';
 
 <Meta
   title="Components/Block"
   component={Block}
   argTypes={{
-    removable: {control: {type: 'boolean'}},
-    onRemove: {action: 'Remove block'},
+    actions: {control: {type: 'array'}},
     children: {control: {type: 'text'}},
   }}
   args={{
@@ -36,21 +37,31 @@ Use this playground to test the block component
 
 <ArgsTable story="Standard" />
 
-## Removable
+## With Actions
 
 <Canvas>
-  <Story name="Removable">
+  <Story name="With Actions">
     {args => {
       return (
         <>
           <Block {...args}>
-            Non removable block
+            Block without action
           </Block>
           <Block
             {...args}
-            actions={[<IconButton icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />]}
+            actions={[<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />]}
           >
-            Removable block
+            Block with one action
+          </Block>
+          <Block
+            {...args}
+            actions={[
+                <IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />,
+                <IconButton key="edit" icon={<EditIcon />} title='Edit' onClick={action('Edit block')} />,
+                <IconButton key="more" icon={<MoreIcon />} title='More' onClick={action('See more')} />,
+            ]}
+          >
+            Block with some actions
           </Block>
         </>
       );
