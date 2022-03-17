@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectEventsApiRequestCountWithinLastHourQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventsApiRequestCountLoader;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -14,7 +14,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SelectEventsApiRequestCountWithinLastHourQueryIntegration extends TestCase
+class DbalSelectEventsApiRequestCountWithinLastHourQueryIntegration extends TestCase
 {
     private EventsApiRequestCountLoader $eventsApiRequestCountLoader;
     private SelectEventsApiRequestCountWithinLastHourQueryInterface $eventsApiRequestCountWithinLastHour;

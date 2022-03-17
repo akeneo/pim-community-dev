@@ -1,4 +1,5 @@
 rules:
+    - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\CoverQueryByIntegrationTestRule
     - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\FinalControllerRule
     - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\InvokableControllerRule
     - Akeneo\Connectivity\Connection\Tests\PhpStan\Rule\SuffixControllerByActionRule

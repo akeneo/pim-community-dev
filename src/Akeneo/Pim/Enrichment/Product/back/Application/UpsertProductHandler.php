@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -24,6 +25,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -33,8 +35,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @experimental
- *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -47,7 +47,8 @@ final class UpsertProductHandler
         private SaverInterface $productSaver,
         private ObjectUpdaterInterface $productUpdater,
         private ValidatorInterface $productValidator,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private UserIntentApplierRegistry $applierRegistry
     ) {
     }
 
@@ -86,138 +87,129 @@ final class UpsertProductHandler
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valueUserIntents() as $index => $valueUserIntent) {
-            $found = false;
-            try {
-                if ($valueUserIntent instanceof SetTextValue
-                    || $valueUserIntent instanceof SetNumberValue
-                    || $valueUserIntent instanceof SetTextareaValue
-                    || $valueUserIntent instanceof SetBooleanValue
-                    || $valueUserIntent instanceof SetSimpleSelectValue
+        $userIntents = array_filter(
+            [
+                ...$command->valueUserIntents(),
+                $command->enabledUserIntent(),
+                $command->familyUserIntent(),
+            ],
+            fn ($userIntent): bool => null !== $userIntent
+        );
+
+        foreach ($userIntents as $index => $userIntent) {
+            $applier = $this->applierRegistry->getApplier($userIntent);
+            if (null !== $applier) {
+                $applier->apply($userIntent, $product, $command->userId());
+            } else {
+                if (
+                    $userIntent instanceof SetTextValue
+                    || $userIntent instanceof SetNumberValue
+                    || $userIntent instanceof SetTextareaValue
+                    || $userIntent instanceof SetBooleanValue
+                    || $userIntent instanceof SetSimpleSelectValue
                 ) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
-                                    'data' => $valueUserIntent->value(),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
+                                    'data' => $userIntent->value(),
                                 ],
                             ],
                         ],
-                    ]);
-                } elseif ($valueUserIntent instanceof SetMetricValue) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof SetMetricValue) {
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
                                     'data' => [
-                                        'amount' => $valueUserIntent->amount(),
-                                        'unit' => $valueUserIntent->unit(),
+                                        'amount' => $userIntent->amount(),
+                                        'unit' => $userIntent->unit(),
                                     ],
                                 ],
                             ],
                         ],
-                    ]);
-                } elseif ($valueUserIntent instanceof SetMultiSelectValue) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof SetMultiSelectValue) {
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
-                                    'data' => $valueUserIntent->values(),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
+                                    'data' => $userIntent->values(),
                                 ],
                             ],
                         ],
-                    ]);
-                } elseif ($valueUserIntent instanceof ClearValue) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof ClearValue) {
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
                                     'data' => null,
                                 ],
                             ],
                         ],
-                    ]);
-                } elseif ($valueUserIntent instanceof SetDateValue) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof SetDateValue) {
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
-                                    'data' => $valueUserIntent->value()->format('Y-m-d'),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
+                                    'data' => $userIntent->value()->format('Y-m-d'),
                                 ],
                             ],
                         ],
-                    ]);
-                } elseif ($valueUserIntent instanceof AddMultiSelectValue) {
-                    $found = true;
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof AddMultiSelectValue) {
                     $formerValue = $product->getValue(
-                        $valueUserIntent->attributeCode(),
-                        $valueUserIntent->localeCode(),
-                        $valueUserIntent->channelCode()
+                        $userIntent->attributeCode(),
+                        $userIntent->localeCode(),
+                        $userIntent->channelCode()
                     );
 
                     $values = null !== $formerValue ?
-                        \array_unique(\array_merge($formerValue->getData(), $valueUserIntent->optionCodes())) :
-                        $valueUserIntent->optionCodes();
+                        \array_unique(\array_merge($formerValue->getData(), $userIntent->optionCodes())) :
+                        $userIntent->optionCodes();
 
-                    $this->productUpdater->update($product, [
+                    $data = [
                         'values' => [
-                            $valueUserIntent->attributeCode() => [
+                            $userIntent->attributeCode() => [
                                 [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
+                                    'locale' => $userIntent->localeCode(),
+                                    'scope' => $userIntent->channelCode(),
                                     'data' => $values,
                                 ],
                             ],
                         ],
-                    ]);
+                    ];
+                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
+                } elseif ($userIntent instanceof SetFamily) {
+                    $data = ['family' => $userIntent->familyCode()];
+                    $propertyPath = 'familyUserIntent';
+                } elseif ($userIntent instanceof RemoveFamily) {
+                    $data = ['family' => null];
+                    $propertyPath = 'familyUserIntent';
+                } else {
+                    throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
                 }
-            } catch (PropertyException $e) {
-                $violations = new ConstraintViolationList([
-                    new ConstraintViolation(
-                        $e->getMessage(),
-                        $e->getMessage(),
-                        [],
-                        $command,
-                        "valueUserIntents[$index]",
-                        $valueUserIntent
-                    ),
-                ]);
 
-                throw new ViolationsException($violations);
-            }
-
-            if (!$found) {
-                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($valueUserIntent)));
-            }
-        }
-
-        if (null !== $command->enabledUserIntent()) {
-            $this->productUpdater->update($product, [
-                'enabled' => $command->enabledUserIntent()->enabled(),
-            ]);
-        }
-
-        $familyUserIntent = $command->familyUserIntent();
-        if (null !== $familyUserIntent) {
-            if ($familyUserIntent instanceof SetFamily || $familyUserIntent instanceof RemoveFamily) {
                 try {
-                    $familyData = $familyUserIntent instanceof SetFamily ? $familyUserIntent->familyCode() : null;
-                    $this->productUpdater->update($product, ['family' => $familyData]);
+                    $this->productUpdater->update($product, $data);
                 } catch (PropertyException $e) {
                     $violations = new ConstraintViolationList([
                         new ConstraintViolation(
@@ -225,15 +217,13 @@ final class UpsertProductHandler
                             $e->getMessage(),
                             [],
                             $command,
-                            "familyUserIntent",
-                            $familyUserIntent
+                            $propertyPath,
+                            $userIntent
                         ),
                     ]);
 
                     throw new ViolationsException($violations);
                 }
-            } else {
-                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($familyUserIntent)));
             }
         }
     }

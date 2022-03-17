@@ -28,10 +28,6 @@ services:
             - '@database_connection'
             - '%pim_catalog.entity.product.class%'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery:
         arguments:
             - '@database_connection'
