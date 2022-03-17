@@ -27,6 +27,8 @@
                             }
                         },
                         "code": "complete_brand_record_1",
+                        "created": "2020-06-23T09:24:03-07:00",
+                        "updated": "2020-06-23T09:24:03-07:00",
                         "values": {
                             "label": [
                                 {
@@ -68,6 +70,8 @@
                             }
                         },
                         "code": "complete_brand_record_2",
+                        "created": "2020-06-23T09:24:03-07:00",
+                        "updated": "2020-06-23T09:24:03-07:00",
                         "values": {
                             "label": [
                                 {

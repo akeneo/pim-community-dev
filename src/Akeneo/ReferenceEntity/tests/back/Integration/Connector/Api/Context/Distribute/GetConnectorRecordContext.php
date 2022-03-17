@@ -151,9 +151,11 @@ class GetConnectorRecordContext implements Context
                         'channel' => null,
                         'locale' => null,
                         'data' => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
-                    ]
+                    ],
                 ]
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $this->findConnectorRecord->save(
             ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
@@ -229,7 +231,9 @@ class GetConnectorRecordContext implements Context
         for ($i = 0; $i < 10 ; $i++) {
             $record = new ConnectorRecord(
                 RecordCode::fromString('record_code_' . $i),
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
             $this->findConnectorRecord->save(
                 ReferenceEntityIdentifier::fromString($referenceEntityIdentifier),
@@ -273,7 +277,9 @@ class GetConnectorRecordContext implements Context
             for ($j = 0; $j < 10 ; $j++) {
                 $record = new ConnectorRecord(
                     RecordCode::fromString(sprintf('record_code_%s_%s', $i, $j)),
-                    []
+                    [],
+                    \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                    \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
                 );
                 $this->findConnectorRecord->save(
                     ReferenceEntityIdentifier::fromString(sprintf('reference_entity_%s', $i)),

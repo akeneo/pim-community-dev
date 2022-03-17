@@ -42,21 +42,27 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $kartellRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            []
+            [],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $kartellRecordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($kartellRecordIdentifier, $kartellRecord);
 
         $lexonRecord = new ConnectorRecord(
             RecordCode::fromString('lexon'),
-            []
+            [],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $lexonRecordIdentifier = RecordIdentifier::fromString('brand_lexon_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($lexonRecordIdentifier, $lexonRecord);
 
         $alessiRecord = new ConnectorRecord(
             RecordCode::fromString('alessi'),
-            []
+            [],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $alessiRecordIdentifier = RecordIdentifier::fromString('brand_alessi_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($alessiRecordIdentifier, $alessiRecord);
@@ -84,7 +90,9 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
     {
         $connectorRecord = new ConnectorRecord(
             RecordCode::fromString('kartell'),
-            []
+            [],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
         $this->findConnectorRecordsByIdentifiers->save($recordIdentifier, $connectorRecord);
@@ -148,7 +156,9 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                         'data'    => 'Description for print channel',
                     ],
                 ]
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
 
@@ -181,7 +191,9 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                         'data'    => 'FR ecommerce name',
                     ]
                 ],
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
 
         $recordsFound = $this->findConnectorRecordsByIdentifiers->find([
@@ -249,7 +261,9 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                         'data'    => 'Not localizable value.'
                     ]
                 ],
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
         $recordIdentifier = RecordIdentifier::fromString('brand_kartell_fingerprint');
 
@@ -284,7 +298,9 @@ class InMemoryFindConnectorRecordsByIdentifiersTest extends TestCase
                         'data'    => 'Not localizable value.'
                     ],
                 ],
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
 
         $recordsFound = $this->findConnectorRecordsByIdentifiers->find([

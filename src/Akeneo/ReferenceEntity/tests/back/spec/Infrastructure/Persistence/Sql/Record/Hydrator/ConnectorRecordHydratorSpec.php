@@ -68,24 +68,27 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
-                    'data'      => 'Starck',
-                    'locale'    => 'en_us',
-                    'channel'   => 'ecommerce',
+                    'data' => 'Starck',
+                    'locale' => 'en_us',
+                    'channel' => 'ecommerce',
                     'attribute' => 'name_designer_fingerprint',
                 ],
                 'name_designer_fingerprint_ecommerce_fr_FR' => [
-                    'data'      => 'Starck',
-                    'locale'    => 'fr_FR',
-                    'channel'   => 'ecommerce',
+                    'data' => 'Starck',
+                    'locale' => 'fr_FR',
+                    'channel' => 'ecommerce',
                     'attribute' => 'name_designer_fingerprint',
                 ],
-                'country_designer_fingerprint'              => [
-                    'data'      => 'france',
-                    'locale'    => null,
-                    'channel'   => null,
+                'country_designer_fingerprint' => [
+                    'data' => 'france',
+                    'locale' => null,
+                    'channel' => null,
                     'attribute' => 'country_designer_fingerprint',
                 ]
-            ])
+            ],
+                JSON_THROW_ON_ERROR),
+            'created_at' => '2000-01-01T12:34:56+00:00',
+            'updated_at' => '2000-01-01T12:34:56+00:00',
         ];
 
         $expectedRecord = $connectorRecord = new ConnectorRecord(
@@ -110,7 +113,9 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
                         'data'    => 'france',
                     ]
                 ]
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
         );
 
         $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedRecord);
@@ -140,30 +145,32 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
             'reference_entity_identifier' => 'designer',
             'value_collection'            => json_encode([
                 'name_designer_fingerprint_ecommerce_en_US' => [
-                    'data'      => 'Starck',
-                    'locale'    => 'en_us',
-                    'channel'   => 'ecommerce',
+                    'data' => 'Starck',
+                    'locale' => 'en_us',
+                    'channel' => 'ecommerce',
                     'attribute' => 'name_designer_fingerprint',
                 ],
                 'name_designer_fingerprint_ecommerce_fr_FR' => [
-                    'data'      => 'Starck',
-                    'locale'    => 'fr_FR',
-                    'channel'   => 'ecommerce',
+                    'data' => 'Starck',
+                    'locale' => 'fr_FR',
+                    'channel' => 'ecommerce',
                     'attribute' => 'name_designer_fingerprint',
                 ],
-                'country_designer_fingerprint'              => [
-                    'data'      => 'france',
-                    'locale'    => null,
-                    'channel'   => null,
+                'country_designer_fingerprint' => [
+                    'data' => 'france',
+                    'locale' => null,
+                    'channel' => null,
                     'attribute' => 'country_designer_fingerprint',
                 ],
                 'description_designer_fingerprint_ecommerce_en_US' => [
-                    'data'      => 'The famous french designer',
-                    'locale'    => 'en_us',
-                    'channel'   => 'ecommerce',
+                    'data' => 'The famous french designer',
+                    'locale' => 'en_us',
+                    'channel' => 'ecommerce',
                     'attribute' => 'description_designer_fingerprint',
                 ]
-            ])
+            ], JSON_THROW_ON_ERROR),
+            'created_at' => '2000-01-01T12:34:56+00:00',
+            'updated_at' => '2000-01-01T12:34:56+00:00',
         ];
 
         $expectedRecord = $connectorRecord = new ConnectorRecord(
@@ -188,7 +195,9 @@ class ConnectorRecordHydratorSpec extends ObjectBehavior
                         'data'    => 'france',
                     ]
                 ]
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
         );
 
         $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedRecord);

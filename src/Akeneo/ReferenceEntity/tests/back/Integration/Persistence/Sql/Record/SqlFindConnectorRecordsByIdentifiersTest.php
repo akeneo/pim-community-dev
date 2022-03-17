@@ -111,11 +111,15 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
         }
 
         $connectorRecordsFound = $this->findConnectorRecordsQuery->find($identifiers, $recordQuery);
+
+        $this->assertCount(count($expectedConnectorRecords), $connectorRecordsFound);
 
         $this->assertSameConnectorRecords($expectedConnectorRecords, $connectorRecordsFound);
     }
@@ -155,7 +159,9 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
         }
 
@@ -194,7 +200,9 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
         }
 
@@ -240,9 +248,11 @@ class SqlFindConnectorRecordsByIdentifiersTest extends SqlIntegrationTestCase
     {
         $expectedRecord = $expectedRecord->normalize();
         $expectedRecord['values'] = $this->sortRecordValues($expectedRecord['values']);
+        unset($expectedRecord['created'], $expectedRecord['updated']);
 
         $currentRecord = $currentRecord->normalize();
         $currentRecord['values'] = $this->sortRecordValues($currentRecord['values']);
+        unset($currentRecord['created'], $currentRecord['updated']);
 
         $this->assertSame($expectedRecord, $currentRecord);
     }

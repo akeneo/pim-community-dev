@@ -50,7 +50,9 @@ class InMemoryFindConnectorRecordTest extends TestCase
     {
         $record = new ConnectorRecord(
             RecordCode::fromString('record_code'),
-            []
+            [],
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable()
         );
         $this->query->save(
             ReferenceEntityIdentifier::fromString('reference_entity'),
