@@ -6,7 +6,7 @@ import {SupplierEdit} from "./SupplierEdit";
 const SupplierApp = () => {
     return <Router basename="/onboarder/v2/supplier">
         <Switch>
-            <Route path="/:supplierIdentifier/edit">
+            <Route path="/:supplierIdentifier">
                 <SupplierEdit />
             </Route>
             <Route path="/">
