@@ -10,15 +10,15 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class IsUserOwnerOfTheProduct extends Constraint
+final class ShouldStayOwnerOfTheProduct extends Constraint
 {
-    public string $message = 'pim_enrich.product.validation.upsert.category_no_access_to_products';
+    public string $message = 'pim_enrich.product.validation.upsert.should_keep_one_owned_category';
 
     /**
      * {@inheritDoc}
      */
     public function getTargets()
     {
-        return self::CLASS_CONSTRAINT;
+        return self::PROPERTY_CONSTRAINT;
     }
 }

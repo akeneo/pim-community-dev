@@ -1,6 +1,7 @@
 Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
     group_sequence:
         - User
+        - IsOwner
         - UpsertProductCommand
     properties:
         userId:
@@ -13,6 +14,7 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
             - Valid: ~
         categoryUserIntent:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable: ~
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProduct: ~
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~
@@ -22,7 +24,8 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
                 - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable: ~
                 - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser: ~
     constraints:
-        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct: ~
+        - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct:
+              groups: [IsOwner]
 
 Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue:
     properties:

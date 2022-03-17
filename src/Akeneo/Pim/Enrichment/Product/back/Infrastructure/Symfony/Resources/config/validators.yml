@@ -13,6 +13,13 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator:
         arguments:
             - '@pim_user.repository.user'
