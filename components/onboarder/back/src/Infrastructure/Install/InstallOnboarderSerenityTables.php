@@ -22,6 +22,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     public function installOnboarderSerenityTables(): void
     {
         $this->addSupplierTable();
+        $this->addSupplierContributorTable();
     }
 
     private function addSupplierTable(): void
@@ -33,6 +34,25 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
               `label` varchar(200) NOT NULL,
               PRIMARY KEY (`identifier`),
               CONSTRAINT UC_supplier_code UNIQUE (`code`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addSupplierContributorTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier_contributor` (
+              `identifier` char(36) NOT NULL,
+              `email` varchar(255) NOT NULL,
+              `supplier_identifier` char(36) NOT NULL,
+              PRIMARY KEY (`identifier`),
+              CONSTRAINT UC_supplier_contributor_email UNIQUE (`email`),
+              CONSTRAINT `supplier_identifier_foreign_key`
+                FOREIGN KEY (`supplier_identifier`)
+                REFERENCES `akeneo_onboarder_serenity_supplier` (identifier)
+                ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
