@@ -22,6 +22,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
 
         $this->connection->executeStatement(<<<SQL
             DELETE FROM `akeneo_onboarder_serenity_supplier`;
+            DELETE FROM `akeneo_onboarder_serenity_supplier_contributor`;
         SQL);
     }
 
