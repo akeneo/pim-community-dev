@@ -87,24 +87,28 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
     }
 
     if (false === connectedApp.is_listed_on_the_appstore) {
+        const message = translate(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
+        );
+
         return (
-            <Error>
+            <Error title={message}>
                 <ErrorIcon size={14} />
-                {translate(
-                    'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
-                )}
+                {message}
             </Error>
         );
     }
 
     if (true === connectedApp.has_outdated_scopes) {
+        const message = translate(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
+        );
+
         return (
             <>
-                <Warning>
+                <Warning title={message}>
                     <WarningIcon size={14} />
-                    {translate(
-                        'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
-                    )}
+                    {message}
                 </Warning>
                 {connectedApp.categories.length > 0 && <Tag>{connectedApp.categories[0]}</Tag>}
             </>
