@@ -25,7 +25,7 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected $dompdf;
 
-    protected ?HtmlFormatter $arabicHtmlFormatter;
+    protected HtmlFormatter $arabicHtmlFormatter;
 
     private string $publicDir;
 
@@ -61,11 +61,7 @@ class DompdfBuilder implements PdfBuilderInterface
             'chroot' => $this->publicDir
         ]);
         $this->dompdf = new Dompdf($options);
-
-        if (null !== $this->arabicHtmlFormatter) {
-            $html = $this->arabicHtmlFormatter->formatHtml($html);
-        }
-
+        $html = $this->arabicHtmlFormatter->formatHtml($html);
         $this->dompdf->loadHtml($html);
         $this->dompdf->render();
     }
