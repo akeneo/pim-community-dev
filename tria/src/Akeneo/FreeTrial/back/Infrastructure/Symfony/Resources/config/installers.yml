@@ -181,8 +181,8 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'connection' }
 
