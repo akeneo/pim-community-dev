@@ -5,22 +5,25 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Model;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\ValueObject;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use JetBrains\PhpStorm\ArrayShape;
 
 final class Contributor
 {
     private ValueObject\Identifier $identifier;
     private ValueObject\Email $email;
+    private Supplier\ValueObject\Identifier $supplierIdentifier;
 
-    private function __construct(string $identifier, string $email)
+    private function __construct(string $identifier, string $email, string $supplierIdentifier)
     {
         $this->identifier = ValueObject\Identifier::fromString($identifier);
         $this->email = ValueObject\Email::fromString($email);
+        $this->supplierIdentifier = Supplier\ValueObject\Identifier::fromString($supplierIdentifier);
     }
 
-    public static function create(string $identifier, string $email): self
+    public static function create(string $identifier, string $email, string $supplierIdentifier): self
     {
-        return new self($identifier, $email);
+        return new self($identifier, $email, $supplierIdentifier);
     }
 
     public function identifier(): string
@@ -33,12 +36,18 @@ final class Contributor
         return (string) $this->email;
     }
 
-    #[ArrayShape(['identifier' => 'string', 'email' => 'string'])]
+    public function supplierIdentifier(): string
+    {
+        return (string) $this->supplierIdentifier;
+    }
+
+    #[ArrayShape(['identifier' => "string", 'email' => "string", 'supplier_identifier' => "string"])]
     public function toArray(): array
     {
         return [
             'identifier' => $this->identifier(),
-            'email' => $this->email()
+            'email' => $this->email(),
+            'supplier_identifier' => $this->supplierIdentifier(),
         ];
     }
 }

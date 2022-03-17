@@ -19,6 +19,7 @@ final class InMemoryRepositoryTest extends TestCase
             Contributor\Model\Contributor::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'foo@foo.bar',
+                '44ce8069-8da1-4986-872f-311737f46f01',
             )
         );
 
@@ -30,6 +31,7 @@ final class InMemoryRepositoryTest extends TestCase
 
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $contributor->identifier());
         static::assertSame('foo@foo.bar', $contributor->email());
+        static::assertSame('44ce8069-8da1-4986-872f-311737f46f01', $contributor->supplierIdentifier());
     }
 
     /** @test */
