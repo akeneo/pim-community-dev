@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\ValueObject;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Model\Contributor;
-
 final class Email
 {
     private function __construct(private string $email)

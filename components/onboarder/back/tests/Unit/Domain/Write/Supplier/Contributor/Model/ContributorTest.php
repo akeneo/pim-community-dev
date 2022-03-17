@@ -12,9 +12,13 @@ final class ContributorTest extends TestCase
     /** @test */
     public function itCreatesAContributor(): void
     {
-        $contributor = Contributor::fromEmail('foo@foo.bar');
+        $contributor = Contributor::create(
+            '44ce8069-8da1-4986-872f-311737f46f02',
+            'foo@foo.bar'
+        );
 
         static::assertInstanceOf(Contributor::class, $contributor);
+        static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', $contributor->identifier());
         static::assertSame('foo@foo.bar', $contributor->email());
     }
 }

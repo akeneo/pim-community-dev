@@ -9,16 +9,23 @@ use JetBrains\PhpStorm\ArrayShape;
 
 final class Contributor
 {
+    private ValueObject\Identifier $identifier;
     private ValueObject\Email $email;
 
-    private function __construct(string $email)
+    private function __construct(string $identifier, string $email)
     {
+        $this->identifier = ValueObject\Identifier::fromString($identifier);
         $this->email = ValueObject\Email::fromString($email);
     }
 
-    public static function fromEmail(string $email): self
+    public static function create(string $identifier, string $email): self
     {
-        return new self($email);
+        return new self($identifier, $email);
+    }
+
+    public function identifier(): string
+    {
+        return (string) $this->identifier;
     }
 
     public function email(): string
@@ -26,10 +33,11 @@ final class Contributor
         return (string) $this->email;
     }
 
-    #[ArrayShape(['email' => 'string'])]
+    #[ArrayShape(['identifier' => 'string', 'email' => 'string'])]
     public function toArray(): array
     {
         return [
+            'identifier' => $this->identifier(),
             'email' => $this->email()
         ];
     }
