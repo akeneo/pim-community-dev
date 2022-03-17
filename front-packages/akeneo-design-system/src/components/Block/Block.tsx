@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IconProps} from '../../icons';
-import {IconButtonProps} from '../IconButton/IconButton';
+import {IconButton, IconButtonProps} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
@@ -90,7 +90,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
         </div>
         <ActionsContainer>
           {React.Children.map(actions, action => {
-            if (isValidElement<IconButtonProps>(action)) {
+            if (isValidElement<IconButtonProps>(action) && action.type === IconButton) {
               return cloneElement(action, {
                 level: 'tertiary',
                 ghost: 'borderless',

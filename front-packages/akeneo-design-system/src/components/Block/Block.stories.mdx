@@ -55,11 +55,11 @@ Use this playground to test the block component
           </Block>
           <Block
             {...args}
-            actions={[
+            actions={<>
                 <IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />,
                 <IconButton key="edit" icon={<EditIcon />} title='Edit' onClick={action('Edit block')} />,
                 <IconButton key="more" icon={<MoreIcon />} title='More' onClick={action('See more')} />,
-            ]}
+            </>}
           >
             Block with some actions
           </Block>

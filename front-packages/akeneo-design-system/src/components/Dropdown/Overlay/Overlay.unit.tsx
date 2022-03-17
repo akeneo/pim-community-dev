@@ -1,12 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, {RefObject} from 'react';
 import {Overlay} from './Overlay';
 import {render, screen, fireEvent} from '../../../storybook/test-util';
 
 test('it closes the overlay if escape is hit', () => {
   const onClose = jest.fn();
 
-  render(<Overlay onClose={onClose} fullWidth={true}>Content</Overlay>);
+  render(
+    <Overlay onClose={onClose} fullWidth={true}>
+      Content
+    </Overlay>
+  );
 
   fireEvent.keyDown(window, {key: 'Escape', code: 'Escape'});
 
@@ -24,15 +27,21 @@ test('it closes the overlay if backdrop is clicked', () => {
 });
 
 test('it takes the parent full with if fullWidth props is true', () => {
-  const OverlayParent = styled.div`
-    width: 100px;
-  `;
+  const parentRef = {
+    current: {
+      getBoundingClientRect: () => ({
+        width: 100,
+      }),
+    },
+  } as RefObject<HTMLDivElement>;
 
   render(
-    <OverlayParent>
-      <Overlay onClose={jest.fn()} fullWidth={true}>Content</Overlay>
-    </OverlayParent>
+    <Overlay onClose={jest.fn()} fullWidth={true} parentRef={parentRef}>
+      Content
+    </Overlay>
   );
 
-  expect(screen.getByText('Content')).toBeInTheDocument();
+  expect(screen.getByText('Content')).toHaveStyle({
+    width: '100px',
+  });
 });
