@@ -38,11 +38,6 @@ SQL);
         SQL);
         $jobExecutionId = (int) $statement->fetchOne();
         $this->assertNotNull($jobExecutionId,  'The `data_quality_insights_recompute_products_scores` job execution should be initialized');
-
-        // assert the job execution is sent to the queue job for data maintenance
-        $envelopes = $this->get('messenger.transport.data_maintenance_job')->get();
-
-        $this->assertCount(1, $envelopes, 'The `data_quality_insights_recompute_products_scores` job should be sent to the `data_maintenance_job` queue');
     }
 
     protected function getConfiguration()
