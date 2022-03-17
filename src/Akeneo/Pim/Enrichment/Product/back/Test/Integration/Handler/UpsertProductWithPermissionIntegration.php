@@ -154,7 +154,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
-            categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales'category, but is not owner.
+            categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales' category, but is not owner.
         );
         $this->messageBus->dispatch($command);
     }

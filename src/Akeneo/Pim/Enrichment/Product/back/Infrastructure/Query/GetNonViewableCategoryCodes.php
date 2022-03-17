@@ -6,13 +6,13 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Query;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes as GetNonViewableCategoryCodesInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetNonViewableCategoryCodes implements GetNonViewableCategoryCodes
+class GetNonViewableCategoryCodes implements GetNonViewableCategoryCodesInterface
 {
     public function __construct(
         private GetCategoryCodes $getCategoryCodes,

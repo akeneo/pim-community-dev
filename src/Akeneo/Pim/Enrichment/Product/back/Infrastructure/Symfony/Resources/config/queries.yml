@@ -5,7 +5,7 @@ services:
             - '@database_connection'
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes:
-        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetNonViewableCategoryCodes
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetNonViewableCategoryCodes
         arguments:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
