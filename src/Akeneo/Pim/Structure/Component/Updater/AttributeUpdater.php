@@ -42,22 +42,27 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var TranslatableUpdater */
     protected $translatableUpdater;
 
-    /** @var array */
+    /** @var array<string> */
     private $properties;
+
+    /** @var array<string> */
+    protected $ignoredFields = [];
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param LocaleRepositoryInterface         $localeRepository
      * @param AttributeTypeRegistry             $registry
      * @param TranslatableUpdater               $translatableUpdater
-     * @param array                             $properties
+     * @param array<string>                     $properties
+     * @param array<string>                     $ignoredFields
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepo,
         LocaleRepositoryInterface $localeRepository,
         AttributeTypeRegistry $registry,
         TranslatableUpdater $translatableUpdater,
-        array $properties
+        array $properties,
+        array $ignoredFields
     ) {
         $this->attrGroupRepo = $attrGroupRepo;
         $this->localeRepository = $localeRepository;
@@ -65,6 +70,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->translatableUpdater = $translatableUpdater;
         $this->properties = $properties;
+        $this->ignoredFields = $ignoredFields;
     }
 
     /**
@@ -80,6 +86,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $field => $value) {
+            if ($this->isFieldIgnored($field)) {
+                continue;
+            }
             $this->validateDataType($field, $value);
             $this->setData($attribute, $field, $value);
         }
@@ -103,7 +112,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 throw InvalidPropertyTypeException::arrayExpected($field, static::class, $data);
             }
 
-            foreach ($this->filterReadOnlyFields($data) as $key => $value) {
+            foreach ($data as $value) {
                 if (null !== $value && !is_scalar($value)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $field,
@@ -367,12 +376,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
         return new \DateTime($date);
     }
 
-    private function filterReadOnlyFields(array $dataToFilter) : array
+    private function isFieldIgnored(string $field): bool
     {
-        $readOnlyFields = ['group_labels'];
-
-        return array_filter($dataToFilter, function ($key) use ($readOnlyFields) {
-            return !in_array($key, $readOnlyFields);
-        }, ARRAY_FILTER_USE_KEY);
+        return in_array($field, $this->ignoredFields);
     }
 }
