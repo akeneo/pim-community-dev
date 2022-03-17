@@ -16,6 +16,7 @@
 - PIM-10295: Fixed product categories disappearing on adjacent tab locale switch
 - PIM-10330: Fix wrong error message while importing boolean attribute value
 - PIM-10331: Fix error when using an association with quantities having an numeric code
+- PIM-10336: Fix product Export edition in error if no locale selected
 
 ## Improvements
 - PIM-10293: add batch-size option to pim:completness:calculate command
