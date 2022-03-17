@@ -33,7 +33,6 @@ class ScopesUpdateEndToEnd extends ApiTestCase
         $this->connection = $this->get('database_connection');
     }
 
-
     public function test_it_flags_connected_app_scopes_as_outdated(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(

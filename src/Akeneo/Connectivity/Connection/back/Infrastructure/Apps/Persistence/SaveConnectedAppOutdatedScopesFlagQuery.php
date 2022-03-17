@@ -26,7 +26,8 @@ class SaveConnectedAppOutdatedScopesFlagQuery implements SaveConnectedAppOutdate
         WHERE id = :id
         SQL;
 
-        $this->connection->executeQuery($query,
+        $this->connection->executeQuery(
+            $query,
             [
                 'id' => $connectedAppId,
                 'has_outdated_scopes' => $hasOutdatedScopes,

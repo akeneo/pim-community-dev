@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdQueryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScopesUpdateAction
+final class ScopesUpdateAction
 {
     public function __construct(
         private TokenStorageInterface $tokenStorage,
@@ -28,6 +29,7 @@ class ScopesUpdateAction
 
     public function __invoke(Request $request): Response
     {
+        /** @var UserInterface|null $user */
         $user = $this->tokenStorage->getToken()?->getUser();
         if (null === $user) {
             throw new AccessDeniedHttpException('Not an authenticated App');
