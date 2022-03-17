@@ -2,11 +2,15 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {BlockButton} from './BlockButton';
 import userEvent from '@testing-library/user-event';
-import {PlusIcon} from '../../icons';
+import {PlusIcon, ArrowDownIcon} from '../../icons';
 
 test('it calls onClick handler when user clicks on button', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={onClick}>My block button</BlockButton>);
+  render(
+    <BlockButton icon={<ArrowDownIcon />} onClick={onClick}>
+      My block button
+    </BlockButton>
+  );
 
   const button = screen.getByText('My block button');
   fireEvent.click(button);
@@ -16,7 +20,11 @@ test('it calls onClick handler when user clicks on button', () => {
 
 test('it calls onClick handler when user hits enter key on button', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={onClick}>My block button</BlockButton>);
+  render(
+    <BlockButton icon={<ArrowDownIcon />} onClick={onClick}>
+      My block button
+    </BlockButton>
+  );
 
   const button = screen.getByText('My block button');
   button.focus();
@@ -28,7 +36,7 @@ test('it calls onClick handler when user hits enter key on button', () => {
 test('it does not call onClick handler when user clicks on a disabled button', () => {
   const onClick = jest.fn();
   render(
-    <BlockButton disabled={true} onClick={onClick}>
+    <BlockButton disabled={true} icon={<ArrowDownIcon />} onClick={onClick}>
       My block button
     </BlockButton>
   );
@@ -42,7 +50,7 @@ test('it does not call onClick handler when user clicks on a disabled button', (
 test('it does not call onClick handler when user hits enter key on a disabled button', () => {
   const onClick = jest.fn();
   render(
-    <BlockButton disabled={true} onClick={onClick}>
+    <BlockButton disabled={true} icon={<ArrowDownIcon />} onClick={onClick}>
       My block button
     </BlockButton>
   );
@@ -56,7 +64,7 @@ test('it does not call onClick handler when user hits enter key on a disabled bu
 test('it does not trigger onClick when disabled', () => {
   const onClick = jest.fn();
   render(
-    <BlockButton disabled={true} onClick={onClick}>
+    <BlockButton disabled={true} icon={<ArrowDownIcon />} onClick={onClick}>
       My block button
     </BlockButton>
   );
@@ -69,7 +77,11 @@ test('it does not trigger onClick when disabled', () => {
 
 test('it does not trigger onClick when onClick is undefined', () => {
   const onClick = jest.fn();
-  render(<BlockButton onClick={undefined}>My block button</BlockButton>);
+  render(
+    <BlockButton icon={<ArrowDownIcon />} onClick={undefined}>
+      My block button
+    </BlockButton>
+  );
 
   fireEvent.click(screen.getByText('My block button'));
 
@@ -80,7 +92,7 @@ test('BlockButton supports forwardRef', () => {
   const ref = {current: null};
 
   render(
-    <BlockButton onClick={jest.fn()} ref={ref}>
+    <BlockButton icon={<ArrowDownIcon />} onClick={jest.fn()} ref={ref}>
       My block button
     </BlockButton>
   );
@@ -90,7 +102,7 @@ test('BlockButton supports forwardRef', () => {
 
 test('BlockButton supports ...rest props', () => {
   render(
-    <BlockButton onClick={jest.fn()} data-testid="my_value">
+    <BlockButton icon={<ArrowDownIcon />} onClick={jest.fn()} data-testid="my_value">
       My block button
     </BlockButton>
   );
@@ -100,7 +112,7 @@ test('BlockButton supports ...rest props', () => {
 
 test('it renders children with icon', () => {
   render(
-    <BlockButton>
+    <BlockButton icon={<ArrowDownIcon />}>
       <PlusIcon data-testid="children-icon" /> My block button
     </BlockButton>
   );

@@ -1,12 +1,17 @@
-import React, {isValidElement, ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {isValidElement, ReactElement, ReactNode, Ref, SyntheticEvent} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {ArrowDownIcon, IconProps} from '../../icons';
+import {IconProps} from '../../icons';
 
 type BlockButtonProps = Override<
   React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
   {
+    /**
+     * Icon displayed on the right of the button.
+     */
+    icon: ReactElement<IconProps>;
+
     /**
      * Use when the user cannot proceed or until an input is collected.
      */
@@ -95,7 +100,7 @@ const ActionsContainer = styled.div`
 
 const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
-    {disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
+    {icon, disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const handleAction = (event: SyntheticEvent) => {
@@ -126,7 +131,7 @@ const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
           })}
         </ChildrenContainer>
         <ActionsContainer>
-          <ArrowDownIcon size={18} />
+          {isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: icon.props.size ?? 18})}
         </ActionsContainer>
       </Container>
     );

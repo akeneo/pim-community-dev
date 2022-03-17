@@ -1,22 +1,28 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {BlockButton} from './BlockButton';
-import {PlusIcon, CloseIcon} from '../../icons';
+import {PlusIcon, CloseIcon, ArrowDownIcon} from '../../icons';
 import {Dropdown, Block} from '../../components';
 import {useBooleanState} from '../../hooks';
 import {useState} from 'react';
 import {SpaceContainer} from '../../storybook';
 import {IconButton} from '../IconButton/IconButton';
+import * as Icons from '../../icons';
 
 <Meta
   title="Components/Buttons/BlockButton"
   component={BlockButton}
   argTypes={{
+    icon: {
+      control: {type: 'select'}, options: Object.keys(Icons),
+      table: {type: {summary: 'ReactElement<IconProps>'}},
+    },
     disabled: {control: {type: 'boolean'}},
     onClick: {action: 'Clicked'},
     children: {control: {type: 'text'}},
   }}
   args={{
     children: 'Add block',
+    icon: 'ArrowDownIcon',
   }}
 />
 
@@ -33,7 +39,7 @@ Use this playground to test the BlockButton component
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <BlockButton {...args} />;
+      return <BlockButton {...args} icon={React.createElement(Icons[args.icon])} />;
     }}
   </Story>
 </Canvas>
@@ -57,10 +63,10 @@ Use this playground to test the BlockButton component
   </Story>
 </Canvas>
 
-## With an Icon
+## With an Icon (children)
 
 <Canvas>
-  <Story name="With an Icon">
+  <Story name="With an Icon (children)">
     {args => {
       return (
         <>
@@ -88,20 +94,20 @@ Use this playground to test the BlockButton component
           {blockValues.map(blockValue => (
             <Block
               key={blockValue}
-              actions={[
+              action={
                 <IconButton
                   key="remove"
                   icon={<CloseIcon />}
                   title="Remove"
                   onClick={() => setBlockValues(blockValues.filter(current => current !== blockValue))}
-                />,
-              ]}
+                />
+              }
             >
               {blockValue}
             </Block>
           ))}
           <Dropdown>
-            <BlockButton onClick={open} disabled={blockValues.length === 3}>
+            <BlockButton {...args} onClick={open} disabled={blockValues.length === 3}>
               Add a block
             </BlockButton>
             {isOpen && (

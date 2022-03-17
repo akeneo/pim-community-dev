@@ -8,7 +8,6 @@ import {CloseIcon, EditIcon, MoreIcon} from '../../icons';
   title="Components/Block"
   component={Block}
   argTypes={{
-    actions: {control: {type: 'array'}},
     children: {control: {type: 'text'}},
   }}
   args={{
@@ -40,7 +39,7 @@ Use this playground to test the block component
 ## With Actions
 
 <Canvas>
-  <Story name="With Actions">
+  <Story name="With Action">
     {args => {
       return (
         <>
@@ -49,19 +48,9 @@ Use this playground to test the block component
           </Block>
           <Block
             {...args}
-            actions={[<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />]}
+            action={<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />}
           >
-            Block with one action
-          </Block>
-          <Block
-            {...args}
-            actions={<>
-                <IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />,
-                <IconButton key="edit" icon={<EditIcon />} title='Edit' onClick={action('Edit block')} />,
-                <IconButton key="more" icon={<MoreIcon />} title='More' onClick={action('See more')} />,
-            </>}
-          >
-            Block with some actions
+            Block with action
           </Block>
         </>
       );

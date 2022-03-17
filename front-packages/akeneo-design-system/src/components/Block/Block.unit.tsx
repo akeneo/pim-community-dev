@@ -2,8 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {Button} from '../Button/Button';
-import {PlusIcon, CloseIcon, EditIcon} from '../../icons';
+import {PlusIcon, CloseIcon} from '../../icons';
 
 test('it renders without actions', () => {
   render(<Block>My block</Block>);
@@ -11,32 +10,16 @@ test('it renders without actions', () => {
   expect(screen.getByText('My block')).toBeInTheDocument();
 });
 
-test('it renders actions passed by props', () => {
-  const onEdit = jest.fn();
+test('it renders action passed by props', () => {
   const onRemove = jest.fn();
 
   render(
-    <Block
-      actions={[
-        <IconButton key="edit" icon={<EditIcon />} onClick={onEdit} title="Edit" />,
-        <IconButton key="delete" icon={<CloseIcon />} onClick={onRemove} title="Remove" />,
-        <Button key="add" title="Add" />,
-      ]}
-    >
-      My block
-    </Block>
+    <Block action={<IconButton key="delete" icon={<CloseIcon />} onClick={onRemove} title="Remove" />}>My block</Block>
   );
 
   const removeIconButton = screen.getByTitle('Remove');
   fireEvent.click(removeIconButton);
   expect(onRemove).toBeCalled();
-
-  const editIconButton = screen.getByTitle('Edit');
-  fireEvent.click(editIconButton);
-  expect(onEdit).toBeCalled();
-
-  const addButton = screen.getByTitle('Add');
-  expect(addButton).toBeInTheDocument();
 });
 
 test('Block supports forwardRef', () => {
