@@ -2,9 +2,9 @@
 
 namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Model\Contributor;
 
 interface Repository
 {
-    public function save(Supplier $supplier): void;
+    public function save(Contributor $contributor): void;
 }
