@@ -4,7 +4,7 @@ import {CityIllustration, EditIcon, Pagination, onboarderTheme, Table, Search} f
 import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
-import {DeleteSupplier} from "./DeleteSupplier";
+import {DeleteSupplier} from './DeleteSupplier';
 
 type SupplierListProps = {
     suppliers: SupplierRow[];
@@ -72,7 +72,10 @@ const SupplierList = ({
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>
                                         <StyledEditIcon color={onboarderTheme.color.grey100} />
-                                        <DeleteSupplier identifier={supplier.identifier} onSupplierDeleted={onSupplierDeleted}/>
+                                        <DeleteSupplier
+                                            identifier={supplier.identifier}
+                                            onSupplierDeleted={onSupplierDeleted}
+                                        />
                                     </Table.ActionCell>
                                 </Table.Row>
                             ))}

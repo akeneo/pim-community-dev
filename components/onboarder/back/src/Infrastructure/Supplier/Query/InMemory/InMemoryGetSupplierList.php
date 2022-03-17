@@ -41,15 +41,19 @@ class InMemoryGetSupplierList implements GetSupplierList
     {
         return array_filter(
             $suppliers,
-            fn (Write\Supplier\Model\Supplier $supplier) => 1 <= strpos($supplier->label(), $search)
+            fn (Write\Supplier\Model\Supplier $supplier) =>
+                1 <= strpos(strtolower($supplier->label()), strtolower($search))
         );
     }
 
     private function sortByLabel(array &$suppliers): void
     {
-        uasort($suppliers, function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
-            return strcmp($supplier1->label(), $supplier2->label());
-        });
+        uasort(
+            $suppliers,
+            function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
+                return strcmp($supplier1->label(), $supplier2->label());
+            }
+        );
     }
 
     private function buildReadModels(array $suppliers): array

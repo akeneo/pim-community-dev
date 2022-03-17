@@ -1,7 +1,4 @@
-version: 2.1
 workflows:
-    version: 2
-
     blackhawks_dev_pull_request:
         when:
             not:
@@ -76,7 +73,7 @@ workflows:
                       - test_grth
                       - test_tria
 
-    blackhawks_prod_pull_request:
+    blackhawks_deployments_pull_request:
         when:
             not:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
@@ -157,8 +154,8 @@ workflows:
                   type: approval
                   filters:
                       branches:
-                          ignore:
-                              - "master"
+                          only:
+                              - /BH-.*/
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt", "grth", "tria"]

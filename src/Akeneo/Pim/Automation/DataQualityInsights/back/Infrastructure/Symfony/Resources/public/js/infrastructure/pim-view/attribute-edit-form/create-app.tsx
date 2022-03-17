@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {AttributeCreateFormApp} from 'akeneodataqualityinsights-react';
-import {ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from 'akeneodataqualityinsights-react/application/constant';
+import {AttributeCreateFormApp, ATTRIBUTE_EDIT_FORM_TAB_CHANGED_EVENT} from '@akeneo-pim-ee/data-quality-insights';
 
 import BaseView from 'pimui/js/view/base';
 

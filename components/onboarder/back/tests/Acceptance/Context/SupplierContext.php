@@ -8,10 +8,9 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
-use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
-use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
@@ -27,7 +26,7 @@ final class SupplierContext implements Context
     public function __construct(
         private InMemoryRepository $supplierRepository,
         private CreateSupplierHandler $createSupplierHandler,
-        private GetSuppliersHandler $getSuppliersHandler,
+        private InMemoryGetSupplierList $getSupplierList,
         private DeleteSupplierHandler $deleteSuppliersHandler,
     ) {
         $this->suppliers = [];
@@ -76,6 +75,14 @@ final class SupplierContext implements Context
     }
 
     /**
+     * @When I search on :search
+     */
+    public function iSearchOn(string $search): void
+    {
+        $this->loadSuppliers($search);
+    }
+
+    /**
      * @When I delete the supplier ":code"
      */
     public function iDeleteTheSupplier(string $code)
@@ -120,8 +127,8 @@ final class SupplierContext implements Context
         Assert::assertSame($expectedSuppliers, array_values($actualSuppliers));
     }
 
-    private function loadSuppliers(): void
+    private function loadSuppliers($search = ''): void
     {
-        $this->suppliers = ($this->getSuppliersHandler)(new GetSuppliers());
+        $this->suppliers = ($this->getSupplierList)(1, $search);
     }
 }

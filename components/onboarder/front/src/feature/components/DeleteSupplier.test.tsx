@@ -5,7 +5,7 @@ import {DeleteSupplier} from './DeleteSupplier';
 import userEvent from '@testing-library/user-event';
 
 test('it renders only the button by default', () => {
-    renderWithProviders(<DeleteSupplier onSupplierDeleted={() => {}} identifier={''}/>);
+    renderWithProviders(<DeleteSupplier onSupplierDeleted={() => {}} identifier={''} />);
     expect(screen.getByTitle('pim_common.delete')).toBeInTheDocument();
     assertModalIsClosed();
 });
@@ -16,8 +16,11 @@ test('it renders the modal when clicking on the delete button', () => {
     assertModalIsOpen();
 });
 
-test('it can delete a supplier', async() => {
-    global.fetch = jest.fn();
+test('it can delete a supplier', async () => {
+    global.fetch = jest.fn().mockImplementation(async () => ({
+        ok: true,
+        status: 200,
+    }));
     const onSupplierDeleted = jest.fn();
     const notify = jest.spyOn(mockedDependencies, 'notify');
 
@@ -30,7 +33,11 @@ test('it can delete a supplier', async() => {
 
     expect(onSupplierDeleted).toHaveBeenCalledTimes(1);
     assertModalIsClosed();
-    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.SUCCESS, 'onboarder.supplier.supplier_delete.sucess_message');
+    expect(notify).toHaveBeenNthCalledWith(
+        1,
+        NotificationLevel.SUCCESS,
+        'onboarder.supplier.supplier_delete.sucess_message'
+    );
 });
 
 function openModal() {

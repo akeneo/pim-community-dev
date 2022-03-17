@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliers;
-use Akeneo\OnboarderSerenity\Application\Supplier\GetSuppliersHandler;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
@@ -15,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class SupplierList
 {
     public function __construct(
-        private GetSuppliersHandler $getSuppliersHandler,
+        private GetSupplierList $getSupplierList,
         private GetSupplierCount $getSupplierCount,
     ) {
     }
@@ -25,7 +23,7 @@ final class SupplierList
         $search = $request->query->get('search', '');
         $page = $request->query->getInt('page', 1);
 
-        $suppliers = ($this->getSuppliersHandler)(new GetSuppliers($page, $search));
+        $suppliers = ($this->getSupplierList)($page, $search);
 
         return new JsonResponse([
             'suppliers' => array_map(

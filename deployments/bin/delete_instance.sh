@@ -93,7 +93,7 @@ export KUBECONFIG=.kubeconfig
 
 # WARNING ! DON'T DELETE release helm before get list of PD
 # grep -v mysql because the mysql disk is manage by terraform process
-LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
+LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.csi.volumeHandle] | basename | unique | .[]' | grep -v mysql) || echo "")
 
 if helm3 list -n "${PFID}" | grep "${PFID}"; then
   helm3 uninstall ${PFID} -n ${PFID}
@@ -142,19 +142,7 @@ sleep 30
 
 gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID} || echo "FAILED : gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
 
-echo "4 - Delete PD, PVC and PV"
-# Check disk still exist
-if [[ -n "${LIST_PD_NAME}" ]]; then
-  for PD_NAME in ${LIST_PD_NAME}; do
-    IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID} compute disks list --filter="(name=(${PD_NAME}) AND zone:${GOOGLE_CLUSTER_ZONE} AND NOT users:*)" --format="value(name)" )
-    if [[ -z "$IS_DISK_DETACHED" ]]; then
-      break;
-    fi
-    for i in {1..6}; do
-  		gcloud --quiet compute disks delete ${PD_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} && break || sleep 10
-  	done
-  done
-fi
+echo "4 - Delete PVC, PV and PD"
 
 # Remove PVC
 # Empty list is not an error
@@ -177,6 +165,19 @@ if [[ -n "${LIST_PV_NAME}" ]]; then
   for PV_NAME in ${LIST_PV_NAME}; do
     echo "Delete pv ${PV_NAME}"
     kubectl delete pv ${PV_NAME}
+  done
+fi
+
+# Check disk still exist
+if [[ -n "${LIST_PD_NAME}" ]]; then
+  for PD_NAME in ${LIST_PD_NAME}; do
+    IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID} compute disks list --filter="(name=(${PD_NAME}) AND zone:${GOOGLE_CLUSTER_ZONE} AND NOT users:*)" --format="value(name)" )
+    if [[ -z "$IS_DISK_DETACHED" ]]; then
+      break;
+    fi
+    for i in {1..6}; do
+  		gcloud --quiet compute disks delete ${PD_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} && break || sleep 10
+  	done
   done
 fi
 

@@ -18,6 +18,7 @@
 - PIM-10285: Fix concurrent bulk publish issue
 - PIM-10268: SKU filter is always shown in the product grid
 - PIM-10304: Fix blank screen caused by AM components
+- PIM-10306: Batch thumbnail http calls to avoid parralel generations of thumbails at the same time in AM
 - PIM-10291: Fix table attribute edit blocked when locale recently deleted from channel
 
 ## Improvements

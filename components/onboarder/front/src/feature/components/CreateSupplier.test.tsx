@@ -57,7 +57,11 @@ test('it renders an error notification when a supplier with the same code alread
 
     expect(onSupplierCreated).not.toHaveBeenCalled();
     assertModalIsOpen();
-    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_create.error.supplier_already_exists');
+    expect(notify).toHaveBeenNthCalledWith(
+        1,
+        NotificationLevel.ERROR,
+        'onboarder.supplier.supplier_create.error.supplier_already_exists'
+    );
 });
 
 test('The supplier code can be generated from the supplier label', () => {

@@ -1,5 +1,14 @@
 import React from 'react';
-import {Button, DeleteIcon, DeleteIllustration, getFontSize, Helper, Modal, onboarderTheme, useBooleanState} from 'akeneo-design-system';
+import {
+    Button,
+    DeleteIcon,
+    DeleteIllustration,
+    getFontSize,
+    Helper,
+    Modal,
+    onboarderTheme,
+    useBooleanState,
+} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
@@ -21,17 +30,18 @@ const DeleteSupplier = ({identifier, onSupplierDeleted}: Props) => {
             return;
         }
 
-        notify(
-            NotificationLevel.SUCCESS,
-            translate('onboarder.supplier.supplier_delete.sucess_message')
-        );
+        notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_delete.sucess_message'));
         closeModal();
         onSupplierDeleted();
-    }
+    };
 
     return (
         <>
-            <StyledDeleteIcon color={onboarderTheme.color.grey100} onClick={openModal} title={translate('pim_common.delete')}/>
+            <StyledDeleteIcon
+                color={onboarderTheme.color.grey100}
+                onClick={openModal}
+                title={translate('pim_common.delete')}
+            />
             {isOpen && (
                 <Modal
                     onClose={closeModal}
@@ -67,7 +77,7 @@ const StyledDeleteIcon = styled(DeleteIcon)`
 `;
 
 const ConfirmationText = styled.div`
-  font-size: ${getFontSize('bigger')};
+    font-size: ${getFontSize('bigger')};
 `;
 
 const StyledHelper = styled(Helper)`

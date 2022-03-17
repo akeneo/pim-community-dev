@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Wybierz rodzinę
         set_attribute:
           title: USTAW wartość Atrybutu
-          helper: Aby ustawić wartości atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do ustawienia.
+          helper: Aby ustawić wartości atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do ustawienia. Poprzednie wartości zostaną zastąpione we wszystkich zaznaczonych produktach.
           target_subtitle: Wybierz cel
           value_subtitle: Zdefiniuj wartość
           attribute_label: Atrybut
@@ -183,6 +183,7 @@ pimee_catalog_rule:
           select_reference_entity: Wybierz obiekty referencyjne
           select_asset: Wybierz zasoby
           select_measurement_unit: Wybierz jednostkę
+          table_attribute_helper: Poprzednie wartości tego atrybutu zostaną zastąpione w całym zakresie wyboru produktów.
         set_quantified_associations:
           title: USTAW Powiązania ilościowe
           helper: Aby ustawić powiązania ilościowe, wybierz typy powiązań, a następnie produkty, modele produktów lub grupy, które chcesz powiązać z wyborem produktów.
@@ -196,7 +197,7 @@ pimee_catalog_rule:
           add_product_model: Dodaj model produktu
           add_association_type: Dodaj typ powiązania
           select_title:
-            products: Wybierz produkty
+            products: Wybierz produkty 
             product_models: Wybierz modele produktów
             groups: Wybierz grupy
           select:

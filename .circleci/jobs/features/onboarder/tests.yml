@@ -1,4 +1,4 @@
-executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+executor-machine: &executor-machine
 
 jobs:
     test_back_onboarder:
@@ -18,6 +18,9 @@ jobs:
             -   run:
                     name: Load archived docker PHP image
                     command: docker load -i php-pim-image.tar
+            -   run:
+                    name: Clear Docker network
+                    command: docker network prune -f
             -   run:
                     name: Start containers
                     command: |
@@ -46,6 +49,11 @@ jobs:
                     command: |
                         sudo chown -R 1000:1000 ../project
                         sudo chown -R 1000:1000 ~/.cache/yarn
+            -   run:
+                    name: Recreate Docker network
+                    command: |
+                        docker network prune -f
+                        docker network create project_pim
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node

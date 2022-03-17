@@ -54,7 +54,7 @@ final class InMemoryGetSupplierListTest extends TestCase
             'Jessie Pinkman'
         ));
 
-        static::assertSame($sut(1, 'Pin')[$supplierIdentifier]->code, 'jessie_pinkman');
+        static::assertSame($sut(1, 'pin')[$supplierIdentifier]->code, 'jessie_pinkman');
     }
 
     /** @test */
