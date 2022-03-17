@@ -48,7 +48,7 @@ akeneo_data_quality_insights:
     dqi_dashboard:
         key_indicators:
             attributes: '{1}1 attribute|]1, 200[{{ count }} attributes|[200, Inf[more than {{ count }} attributes'
-            attributes_to_work_on: 'You have <button_a/> to work on.'
+            attributes_to_work_on: 'You have <improvable_attributes_count_link/> to work on.'
             list:
                 has_image :
                     no_data: Your asset collections and image attributes seem to be empty, you should upload images for this key indicator to highlight the quality of your products.

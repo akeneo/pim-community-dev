@@ -17,15 +17,11 @@ export const keyIndicatorDescriptorsEE: KeyIndicatorDescriptors = {
     followResults: (
       channelCode: string,
       localeCode: string,
-      entityType: ProductType | 'attribute',
+      entityType: ProductType,
       familyCode?: string | null,
       categoryId?: string | null,
       rootCategoryId?: string | null
     ) => {
-      if (entityType === 'attribute') {
-        // not ever expected
-        return;
-      }
       redirectToProductGridFilteredByKeyIndicator(
         'data_quality_insights_spelling_quality',
         channelCode,
@@ -41,18 +37,11 @@ export const keyIndicatorDescriptorsEE: KeyIndicatorDescriptors = {
   attributes_perfect_spelling: {
     titleI18nKey: 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.list.attributes_perfect_spelling.title',
     followResults: (
-      _1: string,
       localeCode: string,
-      entityType: ProductType | 'attribute',
       familyCode?: string | null,
       categoryId?: string | null,
-      _2?: string | null,
       extraData?: KeyIndicatorExtraData
     ) => {
-      if (entityType !== 'attribute') {
-        // not ever expected
-        return;
-      }
       if (familyCode) {
         redirectToAttributeGridFilteredByFamilyAndKeyIndicator([familyCode], localeCode);
       } else if (categoryId && extraData) {
