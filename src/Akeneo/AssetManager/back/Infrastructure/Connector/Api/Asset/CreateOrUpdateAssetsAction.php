@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregato
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -116,6 +117,11 @@ class CreateOrUpdateAssetsAction
                     'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
                 ];
                 $responseData += $this->violationNormalizer->normalize($exception);
+            } catch (UniqueConstraintViolationException $exception) {
+                $responseData = [
+                    'code'        => $normalizedAsset['code'],
+                    'status_code' => Response::HTTP_CONFLICT,
+                ];
             }
 
             $responsesData[] = $responseData;
