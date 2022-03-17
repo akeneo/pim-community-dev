@@ -1,5 +1,15 @@
 # 6.0.x
 
+# 6.0.10 (2022-03-14)
+
+## Bug fixes
+
+- BH-986: Fix standard build configuration for dev
+
+# 6.0.9 (2022-03-14)
+
+# 6.0.8 (2022-03-11)
+
 ## Bug fixes
 
 - RAC-1221: [Backport PIM-10236] Fix duplicated mask returned by query for table attribute
@@ -7,6 +17,15 @@
 - RAC-1220: [Backport PIM-10238] Add permissions to view mass delete assets, mass edit assets and mass delete records job logs
 - CPM-543: [Backport PIM-10249] Fix error message when importing YML rule containing a reference entity record with numeric value
 - PIM-10305: Reject disabled user when coming from SAML auth
+- OCT-25: [Backport OCT-19] fix attribute group permissions forms
+- OCT-26: [Backport OCT-23] Locale permissions are removed from App when edited through settings menu
+- OCT-27: [Backport OCT-24] Prevent non-default usergroups from losing permissions on categories
+- PIM-10309: [Backport PIM-10291] Fix table attribute edit blocked when locale recently deleted from channel
+- PIM-10310: [Backport PIM-10289] DQI purge don't purge pimee_dqi_attribute_locale_quality table
+- PIM-10312: [Backport PIM-10284] Clean product values after reference entity removal
+- PIM-10316: [Backport PIM-10255] Fix LocaleCodeContext initialization place for table condition line inside rules
+- PIM-10326: [Bakport PIM-10228] Fix Asset transformations job crashing when having cache resources exhausted
+- PIM-10318: [Backport PIM-10259] Fix Arabic text being reversed in product PDF exports
 
 # 6.0.7 (2022-02-25)
 
