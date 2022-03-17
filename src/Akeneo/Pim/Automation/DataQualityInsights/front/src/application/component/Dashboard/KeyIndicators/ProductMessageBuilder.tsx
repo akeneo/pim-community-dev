@@ -20,6 +20,10 @@ export const ProductMessageBuilder = (props: Props) => {
     product_models: {totalToImprove: nbProductModelsKO},
   } = counts;
 
+  if (nbProductsKO === 0 && nbProductModelsKO === 0) {
+    return null;
+  }
+
   const roughCountProductsKO: number = roughCount(nbProductsKO);
   const roughCountProductModelsKO: number = roughCount(nbProductModelsKO);
 
@@ -49,13 +53,9 @@ export const ProductMessageBuilder = (props: Props) => {
   ].filter(Boolean);
 
   const markersMapping: MarkersMapping = {
-    '<button_a/>': buttonA,
-    '<button_b/>': buttonB,
+    '<improvable_products_count_link/>': buttonA,
+    '<improvable_product_models_count_link/>': buttonB,
   };
 
-  return nbProductsKO > 0 || nbProductModelsKO > 0 ? (
-    <>{messageBuilder(markersMapping)(translate(messageSourceI18nKey))} </>
-  ) : (
-    <></>
-  );
+  return messageBuilder(markersMapping)(translate(messageSourceI18nKey));
 };

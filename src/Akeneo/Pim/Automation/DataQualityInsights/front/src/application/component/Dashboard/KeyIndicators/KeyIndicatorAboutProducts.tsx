@@ -13,7 +13,7 @@ import {
 } from '../../../../domain';
 import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
 import {useDashboardContext} from '../../../context/DashboardContext';
-import {FollowKeyIndicatorResultHandler} from '../../../user-actions';
+import {ProductsKeyIndicatorLinkCallback} from '../../../user-actions';
 import {ProductType} from '../../../../domain/Product.interface';
 import {ProductMessageBuilder} from './ProductMessageBuilder';
 import {KeyIndicatorNoData} from './KeyIndicatorNoData';
@@ -24,7 +24,7 @@ type Props = {
   type: KeyIndicatorProducts;
   counts: CountsByProductType;
   title: string;
-  followResults: FollowKeyIndicatorResultHandler;
+  followResults: ProductsKeyIndicatorLinkCallback;
   extraData?: KeyIndicatorExtraData;
 };
 
