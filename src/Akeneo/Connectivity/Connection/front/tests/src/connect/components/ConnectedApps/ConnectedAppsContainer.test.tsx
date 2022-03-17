@@ -51,6 +51,7 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: false,
+        has_outdated_scopes: false,
     },
     {
         id: 'app_id_b',
@@ -64,6 +65,7 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: true,
+        has_outdated_scopes: false,
     },
     {
         id: 'app_id_c',
@@ -77,6 +79,7 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: true,
+        has_outdated_scopes: false,
     },
     {
         id: 'app_id_d',
@@ -90,6 +93,7 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: false,
+        has_outdated_scopes: false,
     },
 ];
 

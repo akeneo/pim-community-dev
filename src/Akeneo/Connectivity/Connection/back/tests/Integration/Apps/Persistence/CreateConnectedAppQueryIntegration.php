@@ -73,6 +73,7 @@ class CreateConnectedAppQueryIntegration extends TestCase
             'connection_code' => 'bynder',
             'scopes' => '["foo", "bar"]',
             'user_group_name' => 'app_123456abcdef',
+            'has_outdated_scopes' => '0'
         ], $row);
     }
 

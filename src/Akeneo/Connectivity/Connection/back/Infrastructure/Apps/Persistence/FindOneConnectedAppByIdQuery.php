@@ -35,7 +35,8 @@ final class FindOneConnectedAppByIdQuery implements FindOneConnectedAppByIdQuery
             connected_app.certified,
             connected_app.connection_code,
             connected_app.user_group_name,
-            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app
+            IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app,
+            connected_app.has_outdated_scopes
         FROM akeneo_connectivity_connected_app connected_app
         LEFT JOIN akeneo_connectivity_test_app test_app ON test_app.client_id = connected_app.id
         WHERE id = :id

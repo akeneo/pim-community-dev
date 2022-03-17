@@ -61,7 +61,7 @@ const iconsMap: {[key: string]: React.ElementType} = {
 interface Props {
     scopeMessages: ScopeMessage[];
     itemFontSize?: string;
-    mode?: string | null;
+    mode?: 'new' | 'old' | null;
 }
 
 export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, mode}) => {

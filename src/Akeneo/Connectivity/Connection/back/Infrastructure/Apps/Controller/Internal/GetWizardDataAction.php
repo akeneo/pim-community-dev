@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,7 +29,8 @@ final class GetWizardDataAction
         private AppAuthorizationSessionInterface $appAuthorizationSession,
         private ScopeMapperRegistry $scopeMapperRegistry,
         private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
-        private FindOneConnectedAppByConnectionCodeQuery $findOneConnectedAppByConnectionCodeQuery,
+        private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
+        private ScopeListComparatorInterface $scopeListComparator,
     ) {
     }
 
@@ -48,13 +50,19 @@ final class GetWizardDataAction
         if (null === $appAuthorization) {
             throw new NotFoundHttpException("Invalid app identifier");
         }
-
         $originalScopes = $this->getConnectedAppScopesQuery->execute($app->getId());
         $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        $newScopes = ScopeList::getNewScopes($originalScopes, $requestedScopes)->getScopes();
+        /* to delete */
+        $requestedScopes = [...$requestedScopes, 'write_channel_settings'];
+        /* end to delete */
 
-        $isFirstConnection = null === $this->findOneConnectedAppByConnectionCodeQuery->execute($app->getId());
+        $newScopes = $this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        );
+
+        $isFirstConnection = null === $this->findOneConnectedAppByIdQuery->execute($app->getId());
 
         $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
         $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
