@@ -11,6 +11,7 @@ const FileTemplateConfiguratorContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: auto;
 `;
 
 type FileTemplateConfiguratorProps = {
