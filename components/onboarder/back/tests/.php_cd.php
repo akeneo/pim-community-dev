@@ -27,6 +27,7 @@ $rules = [
             // PIM coupling
 
             // External dependencies coupling
+            'JetBrains\PhpStorm',
             'Ramsey\Uuid\Uuid',
         ],
     )->in('Akeneo\OnboarderSerenity\Domain'),
