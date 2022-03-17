@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Repository;
+namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Repository\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
