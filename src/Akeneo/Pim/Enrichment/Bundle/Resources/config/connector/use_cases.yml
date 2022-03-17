@@ -39,6 +39,7 @@ services:
             - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
             - '@pim_catalog.repository.cached_channel'
             - '@akeneo.pim.enrichment.product_model.query.find_id'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
     pim_enrich.connector.use_cases.validator.list_product_models:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator
@@ -126,3 +127,9 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenesses
         arguments:
             - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
+
+    akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
