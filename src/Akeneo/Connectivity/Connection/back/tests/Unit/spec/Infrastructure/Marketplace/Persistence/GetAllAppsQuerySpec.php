@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllConnectedAppsPublicIdsInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +22,7 @@ class GetAllAppsQuerySpec extends ObjectBehavior
 
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery
+        Connection $connection
     ) {
         $this->items = [
             [
@@ -90,9 +91,9 @@ class GetAllAppsQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([]);
+        $connection->fetchFirstColumn(Argument::any())->willReturn([]);
 
-        $this->beConstructedWith($webMarketplaceApi, $getAllConnectedAppsPublicIdsQuery, 2);
+        $this->beConstructedWith($connection, $webMarketplaceApi, 2);
     }
 
     public function it_is_instantiable(): void
@@ -107,9 +108,9 @@ class GetAllAppsQuerySpec extends ObjectBehavior
         }, $this->items)));
     }
 
-    public function it_set_connected_to_true_on_connected_apps(GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery)
+    public function it_set_connected_to_true_on_connected_apps(Connection $connection)
     {
-        $getAllConnectedAppsPublicIdsQuery->execute()->willReturn([
+        $connection->fetchFirstColumn(Argument::any())->willReturn([
             $this->items[0]['id'],
             $this->items[2]['id'],
         ]);

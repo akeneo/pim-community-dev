@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Audit\Persistence;
+namespace Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>

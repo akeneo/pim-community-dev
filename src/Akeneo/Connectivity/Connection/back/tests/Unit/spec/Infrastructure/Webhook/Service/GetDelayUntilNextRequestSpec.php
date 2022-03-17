@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service;
 
-use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectEventsApiRequestCountWithinLastHourQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectEventsApiRequestCountWithinLastHourQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use PhpSpec\ObjectBehavior;
 
