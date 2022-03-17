@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Tool\Component\Connector\Exception\ArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -70,6 +71,7 @@ class ProductModelSpec extends ObjectBehavior
             'categories' => 'tshirt,pull',
             'name-en_US' => 'name',
             'description-en_US-ecommerce' => 'description',
+            123456 => "numerical code name field"
         ];
 
         $columnsMapper->map($flatProductModel, [
@@ -79,7 +81,7 @@ class ProductModelSpec extends ObjectBehavior
         $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
 
         $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
-        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce']);
+        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce', '123456']);
 
         $fieldConverter->supportsColumn('code')->willreturn(true);
         $fieldConverter->convert('code', 'code')->willreturn($identifierConverter);
@@ -119,10 +121,11 @@ class ProductModelSpec extends ObjectBehavior
             ],
         ]);
 
+        $fieldConverter->supportsColumn('123456')->willreturn(false);
         $fieldConverter->supportsColumn('name-en_US')->willreturn(false);
         $fieldConverter->supportsColumn('description-en_US-ecommerce')->willreturn(false);
 
-        $productValueConverter->convert(["name-en_US" => "name", "description-en_US-ecommerce" => "description"])
+        $productValueConverter->convert(["name-en_US" => "name", "description-en_US-ecommerce" => "description", 123456 => "numerical code name field"])
             ->willReturn([
                     'name' => [
                         [
@@ -138,6 +141,13 @@ class ProductModelSpec extends ObjectBehavior
                             'data' => 'description',
                         ],
                     ],
+                    123456 => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'numerical code name field'
+                        ]
+                    ]
                 ]
             );
 
@@ -169,6 +179,13 @@ class ProductModelSpec extends ObjectBehavior
                         'data' => 'description',
                     ],
                 ],
+                123456 => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'numerical code name field'
+                    ]
+                ]
             ],
         ]);
     }
