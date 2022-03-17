@@ -1,5 +1,5 @@
 import React, {FC, useRef} from 'react';
-import {ArrowSimpleUpIcon, getColor, IconButton, SectionTitle} from 'akeneo-design-system';
+import {ArrowSimpleUpIcon, getColor, Helper, IconButton, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplayScrollTopButton';
@@ -42,6 +42,9 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
     const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_test_app);
     const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_test_app);
 
+    const atLeastOneAppIsNotListedOnTheAppStore: boolean =
+        undefined !== connectedApps.find(connectedApp => false === connectedApp.is_listed_on_the_appstore);
+
     const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
     ));
@@ -73,6 +76,14 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
                             )}
                         </SectionTitle.Information>
                     </SectionTitle>
+
+                    {atLeastOneAppIsNotListedOnTheAppStore && (
+                        <Helper level='warning'>
+                            {translate(
+                                'akeneo_connectivity.connection.connect.connected_apps.list.apps.at_least_one_is_not_listed_on_the_appstore'
+                            )}
+                        </Helper>
+                    )}
 
                     {0 === connectedAppCards.length && <NoConnectedApps />}
                     {connectedAppCards.length > 0 && <CardGrid>{connectedAppCards}</CardGrid>}
