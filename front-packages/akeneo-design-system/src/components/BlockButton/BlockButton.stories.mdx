@@ -47,9 +47,7 @@ Use this playground to test the BlockButton component
     {args => {
       return (
         <>
-          <BlockButton {...args}>
-            Default
-          </BlockButton>
+          <BlockButton {...args}>Default</BlockButton>
           <BlockButton {...args} disabled={true}>
             Disabled
           </BlockButton>
@@ -83,34 +81,52 @@ Use this playground to test the BlockButton component
 <Canvas>
   <Story name="With Dropdown and Blocks">
     {args => {
-      const [blockValues, setBlockValues] = useState<string>([]);
+      const [blockValues, setBlockValues] = useState([]);
       const [isOpen, open, close] = useBooleanState(false);
       return (
         <SpaceContainer gap={10}>
-            {blockValues.map(blockValue => (
-                <Block key={blockValue} actions={[<IconButton key="remove" icon={<CloseIcon />} title="Remove" onClick={() => setBlockValues(blockValues.filter(current => current !== blockValue))} />]}>
-                    {blockValue}
-                </Block>
-            ))}
-            <Dropdown>
-                <BlockButton onClick={open} disabled={blockValues.length === 3}>
-                    Add a block
-                </BlockButton>
-                {isOpen && (
-                    <Dropdown.Overlay onClose={close} fullWidth={true}>
-                        <Dropdown.Header>
-                            <Dropdown.Title>Blocks</Dropdown.Title>
-                        </Dropdown.Header>
-                        <Dropdown.ItemCollection>
-                            {['Block 1', 'Block 2', 'Block 3'].filter(blockValue => !blockValues.includes(blockValue)).map(option => (
-                                <Dropdown.Item key={option} onClick={() => {setBlockValues(blockValues => [...blockValues, option]);close();}}>
-                                    {option}
-                                </Dropdown.Item>
-                            ))}
-                        </Dropdown.ItemCollection>
-                    </Dropdown.Overlay>
-                )}
-            </Dropdown>
+          {blockValues.map(blockValue => (
+            <Block
+              key={blockValue}
+              actions={[
+                <IconButton
+                  key="remove"
+                  icon={<CloseIcon />}
+                  title="Remove"
+                  onClick={() => setBlockValues(blockValues.filter(current => current !== blockValue))}
+                />,
+              ]}
+            >
+              {blockValue}
+            </Block>
+          ))}
+          <Dropdown>
+            <BlockButton onClick={open} disabled={blockValues.length === 3}>
+              Add a block
+            </BlockButton>
+            {isOpen && (
+              <Dropdown.Overlay onClose={close} fullWidth={true}>
+                <Dropdown.Header>
+                  <Dropdown.Title>Blocks</Dropdown.Title>
+                </Dropdown.Header>
+                <Dropdown.ItemCollection>
+                  {['Block 1', 'Block 2', 'Block 3']
+                    .filter(blockValue => !blockValues.includes(blockValue))
+                    .map(option => (
+                      <Dropdown.Item
+                        key={option}
+                        onClick={() => {
+                          setBlockValues(blockValues => [...blockValues, option]);
+                          close();
+                        }}
+                      >
+                        {option}
+                      </Dropdown.Item>
+                    ))}
+                </Dropdown.ItemCollection>
+              </Dropdown.Overlay>
+            )}
+          </Dropdown>
         </SpaceContainer>
       );
     }}
