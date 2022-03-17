@@ -11,8 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext;
+namespace Akeneo\Platform\Bundle\FrameworkBundle\Logging;
 
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
 
@@ -51,12 +52,23 @@ class BoundedContextResolver
 
         $namespace = is_array($controller) ? get_class($controller[0]) : get_class($controller);
 
+
+
+        return $this->findContext($namespace)?: sprintf('Unknown namespace context: %s', str_replace('\\', '\\\\', $namespace));
+    }
+
+    private function findContext(string $nameSpace): ?string
+    {
         foreach ($this->boundedContexts as $namespaceStart => $boundedContext) {
-            if (strpos($namespace, $namespaceStart) === 0) {
+            if (strpos($nameSpace, $namespaceStart) === 0) {
                 return $boundedContext;
             }
         }
+        return null;
+    }
 
-        return sprintf('Unknown namespace context: %s', str_replace('\\', '\\\\', $namespace));
+    public function fromCommand(Command $command): ?string
+    {
+        return $this->findContext(get_class($command));
     }
 }
