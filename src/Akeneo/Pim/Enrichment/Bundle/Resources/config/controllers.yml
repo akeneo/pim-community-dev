@@ -107,6 +107,7 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
     pim_api.controller.category:
         public: true

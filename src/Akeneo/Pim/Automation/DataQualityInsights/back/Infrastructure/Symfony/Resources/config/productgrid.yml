@@ -18,7 +18,7 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductScoreProperty:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateLatestProductScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery'
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 

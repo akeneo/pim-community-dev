@@ -12,16 +12,18 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
-use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -51,10 +53,6 @@ final class UpsertProductHandler
 
     public function __invoke(UpsertProductCommand $command): void
     {
-        /**
-         * TODO CPM-492: validate permissions is required here.
-         * If we can do that, then the permission are ok for the rest of the code (= use "without permissions" services)
-         */
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
@@ -212,6 +210,31 @@ final class UpsertProductHandler
             $this->productUpdater->update($product, [
                 'enabled' => $command->enabledUserIntent()->enabled(),
             ]);
+        }
+
+        $familyUserIntent = $command->familyUserIntent();
+        if (null !== $familyUserIntent) {
+            if ($familyUserIntent instanceof SetFamily || $familyUserIntent instanceof RemoveFamily) {
+                try {
+                    $familyData = $familyUserIntent instanceof SetFamily ? $familyUserIntent->familyCode() : null;
+                    $this->productUpdater->update($product, ['family' => $familyData]);
+                } catch (PropertyException $e) {
+                    $violations = new ConstraintViolationList([
+                        new ConstraintViolation(
+                            $e->getMessage(),
+                            $e->getMessage(),
+                            [],
+                            $command,
+                            "familyUserIntent",
+                            $familyUserIntent
+                        ),
+                    ]);
+
+                    throw new ViolationsException($violations);
+                }
+            } else {
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($familyUserIntent)));
+            }
         }
     }
 }
