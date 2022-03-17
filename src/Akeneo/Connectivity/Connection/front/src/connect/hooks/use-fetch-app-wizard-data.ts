@@ -10,6 +10,11 @@ type Result = {
         type: string;
         entities: string;
     }>;
+    oldScopeMessages: Array<{
+        icon: string;
+        type: string;
+        entities: string;
+    }> | null;
     authenticationScopes: Array<'email' | 'profile'>;
 };
 
