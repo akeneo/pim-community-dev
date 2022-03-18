@@ -3,35 +3,35 @@ version: 2.1
 setup: true
 
 orbs:
-    continuation: circleci/continuation@0.2.0
-    git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
+  continuation: circleci/continuation@0.2.0
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
 
 jobs:
-    merge_config:
-        executor: continuation/default
-        steps:
-            - git-shallow-clone/checkout
-            - run:
-                  name: Install yq
-                  command: |
-                      wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_386
-                      sudo mv yq_linux_386 /usr/local/bin/yq
-                      echo "3a011f37fd67ac2fe3b334b46a6e848698d5621d  /usr/local/bin/yq" > /tmp/checksum
-                      sha1sum -c /tmp/checksum
-                      sudo chmod +x /usr/local/bin/yq
-            - run:
-                  name: Merge all files
-                  command: |
-                      #     aliases.yml should be the first and last file merged in order to have a coherent configuration for aliases
-                      #       Because of this, the content of aliases.yml will be in top of the merged file, this requirement in needed by yaml file to call anchors
-                      yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/aliases.yml .circleci/jobs/commands.yml .circleci/jobs/*/*.yml .circleci/jobs/*/*/*.yml .circleci/workflows/*.yml .circleci/workflows/*/*.yml .circleci/*/aliases.yml  > .circleci/merged_config.yml
-                      cat .circleci/merged_config.yml
-            - continuation/continue:
-                  configuration_path: .circleci/merged_config.yml
+  merge_config:
+    executor: continuation/default
+    steps:
+      - git-shallow-clone/checkout
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/v4.13.2/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            echo "3a011f37fd67ac2fe3b334b46a6e848698d5621d  /usr/local/bin/yq" > /tmp/checksum
+            sha1sum -c /tmp/checksum
+            sudo chmod +x /usr/local/bin/yq
+      - run:
+          name: Merge all files
+          command: |
+            #     aliases.yml should be the first and last file merged in order to have a coherent configuration for aliases
+            #       Because of this, the content of aliases.yml will be in top of the merged file, this requirement in needed by yaml file to call anchors
+            yq eval-all '. as $item ireduce ({}; . *+ $item )' .circleci/*/aliases.yml .circleci/jobs/commands.yml .circleci/jobs/*/*.yml .circleci/jobs/*/*/*.yml .circleci/workflows/*.yml .circleci/workflows/*/*.yml .circleci/*/aliases.yml  > .circleci/merged_config.yml
+            cat .circleci/merged_config.yml
+      - continuation/continue:
+          configuration_path: .circleci/merged_config.yml
 
 workflows:
-    version: 2
+  version: 2
 
-    merge_config_workflow:
-        jobs:
-            - merge_config
+  merge_config_workflow:
+    jobs:
+      - merge_config
