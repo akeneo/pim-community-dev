@@ -1,11 +1,10 @@
 import React from 'react';
-import {FileInfo} from 'akeneo-design-system';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {useUploader} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
 import {useReadColumns, useFileTemplateInformationFetcher} from 'feature/hooks';
-import {Column, FileStructure, FileTemplateInformation} from 'feature/models';
+import {Column, FileTemplateInformation} from 'feature/models';
 import {InitializeFileStructure} from './InitializeFileStructure';
 
 const mockedUseUploader = useUploader as jest.Mock;
@@ -42,16 +41,12 @@ beforeEach(() => {
     }),
   ]);
   mockedUseReadColumns.mockImplementation(() => (): Column[] => mockedColumns);
-  mockFetchFileTemplate = jest.fn((fileInfo: FileInfo, fileStructure: FileStructure | null) => {
+  mockFetchFileTemplate = jest.fn((): Promise<FileTemplateInformation> => {
     return Promise.resolve({
-      file_info: {
-        originalFilename: 'foo.xlsx',
-        filePath: 'path/to/foo.xlsx',
-      },
-      current_sheet: 'currentTestSheet',
       sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-      header_cells: [],
-    } as FileTemplateInformation);
+      rows: [],
+      cell_number: 0,
+    });
   });
   mockedUseFileTemplateInformationFetcher.mockImplementation(() => mockFetchFileTemplate);
 });
@@ -204,47 +199,7 @@ test('it refresh file information when sheet changed', async () => {
       originalFilename: 'foo.xlsx',
       filePath: 'path/to/foo.xlsx',
     },
-    {
-      header_row: 1,
-      first_column: 0,
-      first_product_row: 2,
-      sheet_name: 'anotherTestSheet',
-      unique_identifier_column: 0,
-    }
-  );
-});
-
-test('it refresh file information when header row changed', async () => {
-  const handleConfirm = jest.fn();
-
-  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
-
-  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  await act(async () => {
-    const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_row') as HTMLInputElement;
-    await userEvent.clear(input);
-    await userEvent.type(input, '2');
-  });
-
-  expect(mockFetchFileTemplate).toHaveBeenCalledWith(
-    {
-      originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx',
-    },
-    {
-      header_row: 2,
-      first_column: 0,
-      first_product_row: 2,
-      sheet_name: 'currentTestSheet',
-      unique_identifier_column: 0,
-    }
+    'anotherTestSheet'
   );
 });
 

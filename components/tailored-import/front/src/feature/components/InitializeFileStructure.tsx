@@ -14,7 +14,7 @@ import Products from 'akeneo-design-system/static/illustrations/Products.svg';
 import {filterErrors, useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
 import {useReadColumns} from '../hooks';
 import {Column, FileStructure, getDefaultFileStructure} from '../models';
-import {FileTemplateConfigurator} from '../components';
+import {FileTemplateConfiguration} from '../components';
 
 const Container = styled.div`
   width: 100%;
@@ -102,7 +102,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const handlePrevious = () => {
     setFileStructure(getDefaultFileStructure());
     setFileInfo(null);
-  }
+  };
 
   return isModalOpen ? (
     <Modal onClose={handleClose} closeTitle={translate('pim_common.close')}>
@@ -145,7 +145,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
               ))}
             </>
           ) : (
-            <FileTemplateConfigurator
+            <FileTemplateConfiguration
               fileInfo={fileInfo}
               fileStructure={fileStructure}
               onFileStructureChange={setFileStructure}

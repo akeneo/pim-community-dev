@@ -64,7 +64,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
                 $rows[] = $this->cellsFormatter->formatCells($row->toArray());
             }
 
-            if ($index === $start + $length) {
+            if ($index + 1 === $start + $length) {
                 break;
             }
         }

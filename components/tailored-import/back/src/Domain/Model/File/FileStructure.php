@@ -17,10 +17,10 @@ use Webmozart\Assert\Assert;
 
 class FileStructure
 {
-    const MAXIMUM_COLUMN_COUNT = 500;
-    const MINIMUM_HEADER_LINE = 1;
-    const MAXIMUM_HEADER_LINE = 19;
-    const MAXIMUM_FIRST_PRODUCT_LINE = 20;
+    public const MAXIMUM_COLUMN_COUNT = 500;
+    public const MINIMUM_HEADER_LINE = 1;
+    public const MAXIMUM_HEADER_LINE = 19;
+    public const MAXIMUM_FIRST_PRODUCT_LINE = 20;
 
     private function __construct(
         private int $firstColumn,
