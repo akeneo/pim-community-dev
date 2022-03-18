@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\Batch\Job;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+
 /**
  * A runtime service registry for registering job by name.
  *
@@ -12,31 +14,36 @@ namespace Akeneo\Tool\Component\Batch\Job;
 class JobRegistry
 {
     /** @var JobInterface[] */
-    protected $jobs = [];
+    protected array $jobs = [];
 
     /** @var JobInterface[][] */
-    protected $jobsByType = [];
+    protected array $jobsByType = [];
 
     /** @var JobInterface[][] */
-    protected $jobsByConnector = [];
+    protected array $jobsByConnector = [];
 
     /** @var JobInterface[][] */
-    protected $jobsByTypeGroupByConnector = [];
+    protected array $jobsByTypeGroupByConnector = [];
+
+    public function __construct(private FeatureFlags $featureFlags)
+    {
+    }
 
     /**
-     * @param JobInterface $job
-     * @param string       $jobType
-     * @param string       $connector
-     *
      * @throws DuplicatedJobException
      */
-    public function register(JobInterface $job, $jobType, $connector)
+    public function register(JobInterface $job, string $jobType, string $connector, ?string $featureFlag): void
     {
+        if (!$this->jobIsEnabled($featureFlag)) {
+            return;
+        }
+
         if (isset($this->jobs[$job->getName()])) {
             throw new DuplicatedJobException(
                 sprintf('The job "%s" is already registered', $job->getName())
             );
         }
+
         $this->jobs[$job->getName()] = $job;
         $this->jobsByType[$jobType][$job->getName()] = $job;
         $this->jobsByTypeGroupByConnector[$jobType][$connector][$job->getName()] = $job;
@@ -44,13 +51,9 @@ class JobRegistry
     }
 
     /**
-     * @param string $jobName
-     *
      * @throws UndefinedJobException
-     *
-     * @return JobInterface
      */
-    public function get($jobName)
+    public function get(string $jobName): JobInterface
     {
         if (!isset($this->jobs[$jobName])) {
             throw new UndefinedJobException(
@@ -64,19 +67,17 @@ class JobRegistry
     /**
      * @return JobInterface[]
      */
-    public function all()
+    public function all(): array
     {
         return $this->jobs;
     }
 
     /**
-     * @param string $jobType
-     *
      * @throws UndefinedJobException
      *
-     * @return JobInterface
+     * @return JobInterface[]
      */
-    public function allByType($jobType)
+    public function allByType(string $jobType): array
     {
         if (!isset($this->jobsByType[$jobType])) {
             throw new UndefinedJobException(
@@ -88,13 +89,11 @@ class JobRegistry
     }
 
     /**
-     * @param string $jobType
-     *
      * @throws UndefinedJobException
      *
      * @return JobInterface[]
      */
-    public function allByTypeGroupByConnector($jobType)
+    public function allByTypeGroupByConnector(string $jobType): array
     {
         if (!isset($this->jobsByTypeGroupByConnector[$jobType])) {
             throw new UndefinedJobException(
@@ -108,8 +107,17 @@ class JobRegistry
     /**
      * @return string[]
      */
-    public function getConnectors()
+    public function getConnectors(): array
     {
         return array_keys($this->jobsByConnector);
+    }
+
+    private function jobIsEnabled(?string $featureFlag): bool
+    {
+        if (null === $featureFlag) {
+            return true;
+        }
+
+        return $this->featureFlags->isEnabled($featureFlag);
     }
 }
