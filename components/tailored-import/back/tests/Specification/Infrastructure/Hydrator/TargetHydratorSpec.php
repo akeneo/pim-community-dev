@@ -136,7 +136,6 @@ class TargetHydratorSpec extends ObjectBehavior
                 'family',
                 'set',
                 'skip',
-                null,
             ),
         );
     }

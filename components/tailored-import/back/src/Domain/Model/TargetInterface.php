@@ -20,5 +20,4 @@ interface TargetInterface
     public function getCode(): string;
     public function getActionIfNotEmpty(): string;
     public function getActionIfEmpty(): string;
-    public function getSourceParameter(): ?SourceParameterInterface;
 }

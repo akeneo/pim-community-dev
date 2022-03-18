@@ -38,7 +38,7 @@ class ExecuteDataMappingHandler
 
             $value = $row->getCellData($sources[0]);
 
-            if ($target->getSourceParameter() !== null) {
+            if ($target instanceof TargetAttribute && $target->getSourceParameter() !== null) {
                 $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
             }
 

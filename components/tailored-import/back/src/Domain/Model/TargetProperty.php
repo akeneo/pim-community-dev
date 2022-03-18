@@ -19,7 +19,6 @@ class TargetProperty implements TargetInterface
         private string $code,
         private string $actionIfNotEmpty,
         private string $actionIfEmpty,
-        private ?SourceParameterInterface $sourceParameter,
     ) {
         Assert::stringNotEmpty($this->code);
         Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
@@ -30,9 +29,8 @@ class TargetProperty implements TargetInterface
         string $code,
         string $actionIfNotEmpty,
         string $actionIfEmpty,
-        ?SourceParameterInterface $sourceParameter,
     ): self {
-        return new self($code, $actionIfNotEmpty, $actionIfEmpty, $sourceParameter);
+        return new self($code, $actionIfNotEmpty, $actionIfEmpty);
     }
 
     public function getCode(): string
@@ -48,10 +46,5 @@ class TargetProperty implements TargetInterface
     public function getActionIfEmpty(): string
     {
         return $this->actionIfEmpty;
-    }
-
-    public function getSourceParameter(): ?SourceParameterInterface
-    {
-        return $this->sourceParameter;
     }
 }
