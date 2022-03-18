@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from 'feature/tests';
 import {FileStructure} from '../../models';
-import {FileTemplatePreview} from "./FileTemplatePreview";
+import {FileTemplatePreview} from './FileTemplatePreview';
 
 const fileStructure: FileStructure = {
   header_row: 1,

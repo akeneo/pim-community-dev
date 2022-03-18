@@ -1,6 +1,6 @@
 import React from 'react';
-import {FileInfo} from "akeneo-design-system";
-import {ValidationError} from "@akeneo-pim-community/shared";
+import {FileInfo} from 'akeneo-design-system';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '../tests';
@@ -27,12 +27,20 @@ jest.mock('./FileTemplateConfigurator/FileTemplateUploader', () => ({
 }));
 
 jest.mock('./FileTemplateConfigurator/FileTemplateConfiguration', () => ({
-  FileTemplateConfiguration: ({fileStructure, onFileStructureChange, validationErrors}: {fileStructure: FileStructure, onFileStructureChange: (fileStructure: FileStructure) => void, validationErrors: ValidationError[]}) => (
+  FileTemplateConfiguration: ({
+    fileStructure,
+    onFileStructureChange,
+    validationErrors,
+  }: {
+    fileStructure: FileStructure;
+    onFileStructureChange: (fileStructure: FileStructure) => void;
+    validationErrors: ValidationError[];
+  }) => (
     <>
       <>{fileStructure.sheet_name ?? 'first sheet'}</>
       <button
-        onClick={
-          () => onFileStructureChange({
+        onClick={() =>
+          onFileStructureChange({
             sheet_name: 'second sheet',
             header_row: 1,
             first_product_row: 2,

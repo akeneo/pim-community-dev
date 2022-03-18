@@ -14,7 +14,7 @@ const FileTemplateConfiguratorContainer = styled.div`
   overflow-y: auto;
 `;
 
-type FileTemplateConfiguratorProps = {
+type FileTemplateConfigurationProps = {
   fileInfo: FileInfo;
   fileStructure: FileStructure;
   onFileStructureChange: Dispatch<SetStateAction<FileStructure>>;
@@ -26,7 +26,7 @@ const FileTemplateConfiguration = ({
   fileStructure,
   onFileStructureChange,
   validationErrors,
-}: FileTemplateConfiguratorProps) => {
+}: FileTemplateConfigurationProps) => {
   const [fileTemplateInformation, setFileTemplateInformation] = useState<FileTemplateInformation | null>(null);
   const fileTemplateInformationFetcher = useFileTemplateInformationFetcher();
 
@@ -40,7 +40,13 @@ const FileTemplateConfiguration = ({
     if (null === fileStructure.sheet_name || fileTemplateInformation === null) {
       void refreshFileTemplateInformation();
     }
-  }, [fileTemplateInformation, fileTemplateInformationFetcher, fileInfo, onFileStructureChange, fileStructure.sheet_name]);
+  }, [
+    fileTemplateInformation,
+    fileTemplateInformationFetcher,
+    fileInfo,
+    onFileStructureChange,
+    fileStructure.sheet_name,
+  ]);
 
   const handleSheetChange = async (sheetName: string) => {
     if (fileTemplateInformation) {

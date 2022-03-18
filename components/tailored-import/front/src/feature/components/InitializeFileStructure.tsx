@@ -13,7 +13,7 @@ import {filterErrors, useTranslate, ValidationError, formatParameters} from '@ak
 import {useReadColumns} from '../hooks';
 import {Column, FileStructure, getDefaultFileStructure} from '../models';
 import {FileTemplateConfiguration} from '../components';
-import {FileTemplateUploader} from "./FileTemplateConfigurator/FileTemplateUploader";
+import {FileTemplateUploader} from './FileTemplateConfigurator';
 
 const Container = styled.div`
   width: 100%;

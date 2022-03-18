@@ -23,7 +23,9 @@ beforeEach(() => {
 test('it displays a placeholder and a button when the file is not yet uploaded', async () => {
   await renderWithProviders(<FileTemplateUploader onFileTemplateUpload={jest.fn()} />);
 
-  expect(screen.queryByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder')).toBeInTheDocument();
+  expect(
+    screen.queryByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder')
+  ).toBeInTheDocument();
 });
 
 test('it calls handler when file is uploaded', async () => {

@@ -3,7 +3,7 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import {FileTemplateConfiguration} from './FileTemplateConfiguration';
 import {renderWithProviders} from 'feature/tests';
 import {FileStructure, FileTemplateInformation} from '../../models';
-import {ColumnsState} from "@akeneo-pim-enterprise/tailored-export";
+import {ColumnsState} from '@akeneo-pim-enterprise/tailored-export';
 
 const fileStructure: FileStructure = {
   header_row: 1,
@@ -20,16 +20,18 @@ const fileInfo = {
 
 let mockFileTemplateInformationFetcher: jest.Mock;
 beforeEach(() => {
-  mockFileTemplateInformationFetcher = jest.fn((): Promise<FileTemplateInformation> => Promise.resolve({
-      sheet_names: ['first sheet', 'second sheet'],
-      rows: [
-        ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
-        ['ref1', 'Produit 1', '$13.87', 'TRUE', '3/22/2022', '14.4'],
-        ['ref2', 'Produit 2', '$12.00', 'FALSE', '5/23/2022', '16.644'],
-      ],
-      cell_number: 6,
-    })
-  )
+  mockFileTemplateInformationFetcher = jest.fn(
+    (): Promise<FileTemplateInformation> =>
+      Promise.resolve({
+        sheet_names: ['first sheet', 'second sheet'],
+        rows: [
+          ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
+          ['ref1', 'Produit 1', '$13.87', 'TRUE', '3/22/2022', '14.4'],
+          ['ref2', 'Produit 2', '$12.00', 'FALSE', '5/23/2022', '16.644'],
+        ],
+        cell_number: 6,
+      })
+  );
 });
 
 jest.mock('../../hooks/useFileTemplateInformationFetcher', () => ({
@@ -61,10 +63,11 @@ test('it displays inputs in order to modify the file structure and a preview of 
 test('it change file structure and refresh displayed preview when sheet is changed', async () => {
   const handleFileStructureChange = jest.fn(
     (dispatch: FileStructure | ((fileStructure: FileStructure) => FileStructure)): void => {
-      if (typeof dispatch === "function") {
-        void dispatch(fileStructure)
+      if (typeof dispatch === 'function') {
+        void dispatch(fileStructure);
       }
-  });
+    }
+  );
 
   await renderWithProviders(
     <FileTemplateConfiguration
@@ -76,9 +79,9 @@ test('it change file structure and refresh displayed preview when sheet is chang
   );
 
   fireEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.sheet'));
-  await act(async() => {
+  await act(async () => {
     await fireEvent.click(screen.getByText('second sheet'));
-  })
+  });
 
   expect(mockFileTemplateInformationFetcher).toHaveBeenCalledWith(fileInfo, 'second sheet');
   expect(handleFileStructureChange).toHaveBeenCalledWith({

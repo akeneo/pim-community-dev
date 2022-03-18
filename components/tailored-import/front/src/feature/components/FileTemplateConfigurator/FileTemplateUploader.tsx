@@ -1,10 +1,10 @@
-import React from "react";
-import {FileInfo, Helper, MediaFileInput} from "akeneo-design-system";
+import React from 'react';
+import {FileInfo, Helper, MediaFileInput} from 'akeneo-design-system';
 import Products from 'akeneo-design-system/static/illustrations/Products.svg';
-import {formatParameters, useTranslate, useUploader, ValidationError} from "@akeneo-pim-community/shared";
+import {formatParameters, useTranslate, useUploader, ValidationError} from '@akeneo-pim-community/shared';
 
 type FileTemplateUploaderProps = {
-    onFileTemplateUpload: (fileInfo: FileInfo | null) => void;
+  onFileTemplateUpload: (fileInfo: FileInfo | null) => void;
 };
 
 const FileTemplateUploader = ({onFileTemplateUpload}: FileTemplateUploaderProps) => {
@@ -43,7 +43,7 @@ const FileTemplateUploader = ({onFileTemplateUpload}: FileTemplateUploaderProps)
         </Helper>
       ))}
     </>
-  )
-}
+  );
+};
 
 export {FileTemplateUploader};

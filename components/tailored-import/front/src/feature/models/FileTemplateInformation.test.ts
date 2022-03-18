@@ -1,4 +1,4 @@
-import {FileTemplateInformation, getRowAtPosition, getRowsFromPosition} from "./FileTemplateInformation";
+import {FileTemplateInformation, getRowAtPosition, getRowsFromPosition} from './FileTemplateInformation';
 
 const fileTemplateInformation: FileTemplateInformation = {
   sheet_names: ['first sheet', 'second sheet', 'third sheet'],
@@ -14,17 +14,38 @@ const fileTemplateInformation: FileTemplateInformation = {
 test('it returns row at a specific position', () => {
   expect(getRowAtPosition(fileTemplateInformation, 0)).toEqual(['', '', '', '', '', '', '']);
   expect(getRowAtPosition(fileTemplateInformation, 1)).toEqual(['', '', '', '', '', '', '']);
-  expect(getRowAtPosition(fileTemplateInformation, 2)).toEqual(['', 'Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax']);
+  expect(getRowAtPosition(fileTemplateInformation, 2)).toEqual([
+    '',
+    'Sku',
+    'Name',
+    'Price',
+    'Enabled',
+    'Release date',
+    'Price with tax',
+  ]);
   expect(getRowAtPosition(fileTemplateInformation, 5)).toEqual(['', '', '', '', '', '', '']);
 
   expect(getRowAtPosition(fileTemplateInformation, 0, 1)).toEqual(['', '', '', '', '', '']);
   expect(getRowAtPosition(fileTemplateInformation, 1, 1)).toEqual(['', '', '', '', '', '']);
-  expect(getRowAtPosition(fileTemplateInformation, 2, 1)).toEqual(['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax']);
+  expect(getRowAtPosition(fileTemplateInformation, 2, 1)).toEqual([
+    'Sku',
+    'Name',
+    'Price',
+    'Enabled',
+    'Release date',
+    'Price with tax',
+  ]);
   expect(getRowAtPosition(fileTemplateInformation, 5, 1)).toEqual(['', '', '', '', '', '']);
 
   expect(getRowAtPosition(fileTemplateInformation, 0, 2)).toEqual(['', '', '', '', '']);
   expect(getRowAtPosition(fileTemplateInformation, 1, 2)).toEqual(['', '', '', '', '']);
-  expect(getRowAtPosition(fileTemplateInformation, 2, 2)).toEqual(['Name', 'Price', 'Enabled', 'Release date', 'Price with tax']);
+  expect(getRowAtPosition(fileTemplateInformation, 2, 2)).toEqual([
+    'Name',
+    'Price',
+    'Enabled',
+    'Release date',
+    'Price with tax',
+  ]);
   expect(getRowAtPosition(fileTemplateInformation, 5, 2)).toEqual(['', '', '', '', '']);
 });
 
