@@ -3,7 +3,7 @@ type RowInformation = string[];
 type FileTemplateInformation = {
   sheet_names: string[];
   rows: RowInformation[];
-  cell_number: number;
+  column_count: number;
 };
 
 const getRowAtPosition = (
@@ -11,7 +11,7 @@ const getRowAtPosition = (
   rowPosition: number,
   columnStart: number = 0
 ) => {
-  const emptyRow = Array(fileTemplateInformation.cell_number).fill('');
+  const emptyRow = Array(fileTemplateInformation.column_count).fill('');
   if (columnStart < 0) {
     return emptyRow;
   }

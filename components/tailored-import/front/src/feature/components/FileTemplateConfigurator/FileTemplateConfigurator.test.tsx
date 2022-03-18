@@ -20,7 +20,7 @@ test('it display correct value when provided with a templateInformation', async 
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
@@ -45,7 +45,7 @@ test('it dispatch an event when sheet is changed', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}
@@ -68,7 +68,7 @@ test('it dispatch an event when header row change', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
@@ -91,7 +91,7 @@ test('it dispatch event when first product row change', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
@@ -114,7 +114,7 @@ test('it dispatch an event when first column row change', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
@@ -137,7 +137,7 @@ test('it dispatch an event when column identifier change', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={handleFileStructureChange}
@@ -196,7 +196,7 @@ test('it display validation errors', async () => {
       fileTemplateInformation={{
         sheet_names: ['currentTestSheet', 'anotherTestSheet'],
         rows: [['sku', 'name', 'description']],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
       onFileStructureChange={jest.fn()}

@@ -26,7 +26,7 @@ class FileTemplateInformationResult
         return [
             'sheet_names' => $this->sheetNames,
             'rows' => $this->rows,
-            'cell_number' => empty($this->rows) ? 0 : count($this->rows[0]),
+            'column_count' => empty($this->rows) ? 0 : count($this->rows[0]),
         ];
     }
 }

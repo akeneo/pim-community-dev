@@ -18,7 +18,7 @@ test('it display a placeholder when there is no rows', async () => {
       fileTemplateInformation={{
         sheet_names: ['firstSheet', 'secondSheet'],
         rows: [],
-        cell_number: 3,
+        column_count: 3,
       }}
       fileStructure={fileStructure}
     />
@@ -37,7 +37,7 @@ test('it display rows', async () => {
           ['ref1', 'Produit 1', '$13.87', 'TRUE', '3/22/2022', '14.4'],
           ['ref2', 'Produit 2', '$12.00', 'FALSE', '5/23/2022', '16.644'],
         ],
-        cell_number: 6,
+        column_count: 6,
       }}
       fileStructure={fileStructure}
     />
@@ -83,7 +83,7 @@ test('it did not display cell not visible according to file structure', async ()
           ['ref1', 'Produit 1', '$13.87', 'TRUE', '3/22/2022', '14.4'],
           ['ref2', 'Produit 2', '$12.00', 'FALSE', '5/23/2022', '16.644'],
         ],
-        cell_number: 7,
+        column_count: 7,
       }}
       fileStructure={fileStructure}
     />

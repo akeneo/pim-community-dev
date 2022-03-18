@@ -2,7 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import {Helper, NumberInput, SelectInput, Field} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {FileStructure, FileTemplateInformation, generateColumnName, getRowAtPosition} from '../../models';
+import {
+  FileStructure,
+  FileTemplateInformation,
+  generateColumnName,
+  getRowAtPosition, MAXIMUM_FIRST_PRODUCT_ROW, MAXIMUM_HEADER_ROW, MINIMUM_FIRST_PRODUCT_ROW, MINIMUM_HEADER_ROW,
+} from '../../models';
 
 type FileTemplateConfiguratorProps = {
   fileTemplateInformation: FileTemplateInformation;
@@ -77,8 +82,8 @@ const FileTemplateConfigurator = ({
           invalid={headerRowErrors.length > 0}
           onChange={handleHeaderRowChange}
           value={fileStructure.header_row.toString()}
-          min={1}
-          max={19}
+          min={MINIMUM_HEADER_ROW}
+          max={MAXIMUM_HEADER_ROW}
         />
         {headerRowErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
@@ -91,8 +96,8 @@ const FileTemplateConfigurator = ({
           invalid={firstProductRowErrors.length > 0}
           onChange={handleFirstProductRowChange}
           value={fileStructure.first_product_row.toString()}
-          min={2}
-          max={20}
+          min={MINIMUM_FIRST_PRODUCT_ROW}
+          max={MAXIMUM_FIRST_PRODUCT_ROW}
         />
         {firstProductRowErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">

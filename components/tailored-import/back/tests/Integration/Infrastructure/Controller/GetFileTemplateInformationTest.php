@@ -66,7 +66,7 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
                 ['ref2','Produit 2','13.87','FALSE','5/23/2022', ''],
                 ['ref3','Produit 3','16','TRUE','10/5/2015','19.2'],
             ],
-            'cell_number' => 6
+            'column_count' => 6
         ];
 
         $this->assertSame($expectedColumnLabels, $response);

@@ -8,7 +8,7 @@ const fileTemplateInformation: FileTemplateInformation = {
     ['', 'ref1', 'Produit 1', '$13.87 ', 'TRUE', '3/22/2022', '14.4'],
     ['', 'ref2', 'Produit 2', '$12.00 ', 'FALSE', '5/23/2022', '16.644'],
   ],
-  cell_number: 7,
+  column_count: 7,
 };
 
 test('it returns row at a specific position', () => {
