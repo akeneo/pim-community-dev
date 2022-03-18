@@ -9,6 +9,9 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
+/**
+ * @group ce
+ */
 final class SqlGetExistingCategoriesIntegration extends TestCase
 {
     private GetViewableCategories $getViewableCategories;

@@ -91,6 +91,7 @@ final class UpsertProductHandler
                 ...$command->valueUserIntents(),
                 $command->enabledUserIntent(),
                 $command->familyUserIntent(),
+                $command->categoryUserIntent(),
             ],
             fn ($userIntent): bool => null !== $userIntent
         );
