@@ -1,5 +1,23 @@
 # 5.0.x
 
+## Bug fixes
+
+- CPM-562 Fix product grid loading when attribute as image has a numeric code
+
+# 5.0.86 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10335: Fix locale not saved for localizable attribute in product exports
+
+# 5.0.85 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10333: Import category without correct locale should be impossible
+
+# 5.0.84 (2022-03-15)
+
 # 5.0.83 (2022-02-28)
 
 ## Bug fixes

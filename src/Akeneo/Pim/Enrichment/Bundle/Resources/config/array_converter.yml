@@ -102,6 +102,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
+            - '@pim_catalog.repository.locale'
 
     ### Extractors
     pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor:
