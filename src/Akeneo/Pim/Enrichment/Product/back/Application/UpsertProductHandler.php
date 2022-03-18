@@ -86,20 +86,42 @@ final class UpsertProductHandler
 
     private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
+        $indexedValueUserIntents = \array_combine(
+            \array_map(
+                fn (mixed $key): string => \sprintf('valueUserIntents[%s]', $key),
+                \array_keys($command->valueUserIntents())
+            ),
+            $command->valueUserIntents()
+        );
         $userIntents = array_filter(
             [
-                ...$command->valueUserIntents(),
-                $command->enabledUserIntent(),
-                $command->familyUserIntent(),
-                $command->categoryUserIntent(),
+                ...$indexedValueUserIntents,
+                'enabledUserIntent' => $command->enabledUserIntent(),
+                'familyUserIntent' => $command->familyUserIntent(),
+                'categoryUserIntent' => $command->categoryUserIntent(),
             ],
             fn ($userIntent): bool => null !== $userIntent
         );
 
-        foreach ($userIntents as $index => $userIntent) {
+        foreach ($userIntents as $propertyPath => $userIntent) {
             $applier = $this->applierRegistry->getApplier($userIntent);
             if (null !== $applier) {
-                $applier->apply($userIntent, $product, $command->userId());
+                try {
+                    $applier->apply($userIntent, $product, $command->userId());
+                } catch (PropertyException $e) {
+                    $violations = new ConstraintViolationList([
+                        new ConstraintViolation(
+                            $e->getMessage(),
+                            $e->getMessage(),
+                            [],
+                            $command,
+                            $propertyPath,
+                            $userIntent
+                        ),
+                    ]);
+
+                    throw new ViolationsException($violations);
+                }
             } else {
                 if (
                     $userIntent instanceof SetTextValue
@@ -119,7 +141,6 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof SetMetricValue) {
                     $data = [
                         'values' => [
@@ -135,7 +156,6 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof SetMultiSelectValue) {
                     $data = [
                         'values' => [
@@ -148,7 +168,6 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof ClearValue) {
                     $data = [
                         'values' => [
@@ -161,7 +180,6 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof SetDateValue) {
                     $data = [
                         'values' => [
@@ -174,7 +192,6 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof AddMultiSelectValue) {
                     $formerValue = $product->getValue(
                         $userIntent->attributeCode(),
@@ -197,13 +214,10 @@ final class UpsertProductHandler
                             ],
                         ],
                     ];
-                    $propertyPath = sprintf('valueUserIntents[%d]', $index);
                 } elseif ($userIntent instanceof SetFamily) {
                     $data = ['family' => $userIntent->familyCode()];
-                    $propertyPath = 'familyUserIntent';
                 } elseif ($userIntent instanceof RemoveFamily) {
                     $data = ['family' => null];
-                    $propertyPath = 'familyUserIntent';
                 } else {
                     throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
                 }
