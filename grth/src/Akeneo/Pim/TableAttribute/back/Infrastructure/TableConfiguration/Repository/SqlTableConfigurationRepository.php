@@ -38,7 +38,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
     ];
 
     public function __construct(
-        private Connection $connection,
+        private  Connection $connection,
         private TableConfigurationFactory $tableConfigurationFactory,
         private ChannelExistsWithLocaleInterface $channelExistsWithLocale
     ) {
