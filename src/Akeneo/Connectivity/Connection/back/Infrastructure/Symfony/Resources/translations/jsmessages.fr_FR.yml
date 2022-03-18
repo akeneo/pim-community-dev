@@ -427,7 +427,7 @@ akeneo_connectivity.connection:
         data_source: Envie de suivre vos connexions source à l'aide de beaux graphiques ?
         data_destination: Envie de suivre vos connexions destination à l'aide de beaux graphiques ?
       message_with_permission:
-        message: Créez-en une et activez son suivi 
+        message: Créez-en une et activez son suivi
         link: ici !
       message_without_permission:
         message: Demandez à votre administrateur d'en créer une.
@@ -449,7 +449,7 @@ akeneo_connectivity.connection:
       wrong_url: Cette valeur n'est pas une URL valide.
       required: Ce champ est obligatoire.
       not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
-      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
+      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées.
       not_allowed_url: Cette url n'est pas autorisée.
     flash:
       success: La souscription aux événements a bien été mise à jour.
@@ -464,7 +464,7 @@ akeneo_connectivity.connection:
         success: Le secret lié à la souscription aux événements a été régénéré avec succès.
         error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
     active_event_subscriptions_limit_reached:
-      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
+      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite.
       link: En savoir plus sur la configuration de la souscription aux événements.
     event_logs:
       title: Journal des événements
@@ -496,7 +496,7 @@ akeneo_connectivity.connection:
           all: Toutes
         info:
           title: Vous trouverez ici les logs liés à tous les événements envoyés vers cette connexion.
-          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice. 
+          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice.
           link: En savoir plus sur les logs liés aux événements
         headers:
           datetime: Date / heure

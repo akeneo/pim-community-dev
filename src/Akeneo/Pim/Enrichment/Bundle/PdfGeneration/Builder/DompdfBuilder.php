@@ -25,11 +25,11 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected $dompdf;
 
-    protected HtmlFormatter $arabicHtmlFormatter;
+    protected ?HtmlFormatter $arabicHtmlFormatter;
 
     private string $publicDir;
 
-    public function __construct(string $rootDir, $publicDir, HtmlFormatter $arabicHtmlFormatter)
+    public function __construct(string $rootDir, $publicDir, ?HtmlFormatter $arabicHtmlFormatter = null)
     {
         $this->rootDir = $rootDir;
         $this->publicDir = $publicDir;
@@ -61,7 +61,11 @@ class DompdfBuilder implements PdfBuilderInterface
             'chroot' => $this->publicDir
         ]);
         $this->dompdf = new Dompdf($options);
-        $html = $this->arabicHtmlFormatter->formatHtml($html);
+
+        if (null !== $this->arabicHtmlFormatter) {
+            $html = $this->arabicHtmlFormatter->formatHtml($html);
+        }
+
         $this->dompdf->loadHtml($html);
         $this->dompdf->render();
     }
