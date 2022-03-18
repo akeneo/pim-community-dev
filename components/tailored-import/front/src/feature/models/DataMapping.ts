@@ -2,12 +2,7 @@ import {uuid} from 'akeneo-design-system';
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier} from './Configuration';
 import {Attribute} from './Attribute';
-import {
-  AttributeTarget,
-  createPropertyTarget,
-  getDefaultAttributeTarget,
-  PropertyTarget
-} from './Target';
+import {AttributeTarget, createAttributeTarget, createPropertyTarget, PropertyTarget} from './Target';
 
 type DataMapping = {
   uuid: string;
@@ -25,7 +20,7 @@ type DataMappingType = 'attribute' | 'property';
 const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null) => {
   const defaultDataMapping: DataMapping = {
     uuid: uuid(),
-    target: getDefaultAttributeTarget(attribute, null, null),
+    target: createAttributeTarget(attribute.code, null, null),
     sources: [],
     operations: [],
     sample_data: [],
@@ -54,7 +49,7 @@ const createAttributeDataMapping = (code: string, attribute: Attribute, channels
 
   return {
     uuid: uuid(),
-    target: getDefaultAttributeTarget(attribute, channel, locale),
+    target: createAttributeTarget(code, channel, locale),
     sources: [],
     operations: [],
     sample_data: [],
