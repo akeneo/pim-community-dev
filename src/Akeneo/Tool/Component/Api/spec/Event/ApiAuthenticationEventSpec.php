@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace spec\Akeneo\Tool\Bundle\ApiBundle\EventSubscriber;
+namespace spec\Akeneo\Tool\Component\Api\Event;
 
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
 use PhpSpec\ObjectBehavior;
 
 class ApiAuthenticationEventSpec extends ObjectBehavior

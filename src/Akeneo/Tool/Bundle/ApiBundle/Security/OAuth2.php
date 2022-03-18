@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
 use Akeneo\UserManagement\Component\Model\User;
 use OAuth2\IOAuth2Storage;
 use OAuth2\Model\IOAuth2AccessToken;
