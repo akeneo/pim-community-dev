@@ -22,8 +22,7 @@ class TargetHydrator
 {
     public function __construct(
         private SourceParameterHydrator $sourceParameterHydrator
-    )
-    {
+    ) {
     }
 
     public function hydrate(array $normalizedTarget, array $indexedAttributes): TargetInterface
@@ -61,7 +60,6 @@ class TargetHydrator
             $normalizedTarget['code'],
             $normalizedTarget['action_if_not_empty'],
             $normalizedTarget['action_if_empty'],
-            null,
         );
     }
 }
