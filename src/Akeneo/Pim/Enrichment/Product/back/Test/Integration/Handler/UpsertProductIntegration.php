@@ -13,9 +13,12 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -96,20 +99,20 @@ final class UpsertProductIntegration extends TestCase
     public function it_creates_a_product_with_a_number_value(): void
     {
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetNumberValue('a_number_integer', null, null, 10),
+            new SetNumberValue('a_number_integer', null, null, '10'),
         ]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
 
-        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', 10);
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', '10');
     }
 
     /** @test */
     public function it_updates_a_product_with_a_number_value(): void
     {
-        $this->updateProduct(new SetNumberValue('a_number_integer', null, null, 10));
-        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', 10);
+        $this->updateProduct(new SetNumberValue('a_number_integer', null, null, '10'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_number_integer', '10');
     }
 
     /** @test */
@@ -514,6 +517,72 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertTrue($product->isEnabled());
     }
 
+    /** @test */
+    public function it_can_set_and_remove_a_family_on_a_product(): void
+    {
+        $this->updateProduct(new SetFamily('familyA'));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA', $product->getFamily()->getCode());
+
+        $this->updateProduct(new SetFamily('familyA1'));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertSame('familyA1', $product->getFamily()->getCode());
+
+        $this->updateProduct(new RemoveFamily());
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertNull($product->getFamily());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_does_not_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The unknown family does not exist in your PIM.');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('unknown')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_family_code_is_blank(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The family code requires a non empty string');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    public function it_updates_a_product_categories(): void
+    {
+        $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_category_doesnt_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "toto, michel" categories do not exist');
+
+        $this->updateProduct(new SetCategories(['toto', 'michel']));
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -543,11 +612,16 @@ final class UpsertProductIntegration extends TestCase
 
     private function updateProduct(UserIntent $userIntent): void
     {
-        // Creates empty product
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
-        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
-        Assert::assertNotNull($product);
+        if (null === $product) {
+            // Creates empty product
+            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+            $this->messageBus->dispatch($command);
+            $product = $this->productRepository->findOneByIdentifier('identifier');
+            Assert::assertNotNull($product);
+        }
+
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value

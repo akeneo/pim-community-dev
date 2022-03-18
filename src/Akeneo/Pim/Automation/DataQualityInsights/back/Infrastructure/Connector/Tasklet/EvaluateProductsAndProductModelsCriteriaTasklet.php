@@ -53,6 +53,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
                 $evaluationTime['products']['count'] += $evaluationCount;
                 $evaluationTime['products']['time'] += round($evaluationProductsEndTime - $evaluationProductsStartTime, 3);
+                $this->stepExecution->addSummaryInfo('evaluations', $evaluationTime);
             }
 
             if ($continueToEvaluateProductModels) {
@@ -63,6 +64,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
 
                 $evaluationTime['product_models']['count'] += $evaluationCount;
                 $evaluationTime['product_models']['time'] += round($evaluationProductModelsEndTime - $evaluationProductModelsStartTime, 3);
+                $this->stepExecution->addSummaryInfo('evaluations', $evaluationTime);
             }
 
             if ($continueToEvaluateProducts === false && $continueToEvaluateProductModels === false) {
@@ -71,8 +73,6 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
                 $continueToEvaluateProductModels = true;
             }
         } while ($this->isTimeboxReached($startTime) === false);
-
-        $this->stepExecution->setTrackingData(array_merge($this->stepExecution->getTrackingData(), ['evaluations' => $evaluationTime]));
     }
 
     public function setStepExecution(StepExecution $stepExecution)

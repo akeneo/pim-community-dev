@@ -53,10 +53,9 @@ WITH filtered_option_codes AS (
     SELECT DISTINCT option.id, option.code, option.sort_order
     FROM pim_catalog_attribute_option `option`
     INNER JOIN pim_catalog_attribute `attribute` ON option.attribute_id = attribute.id
-    LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
+    LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id $localeCondition
     WHERE attribute.code = :attribute_code
         AND (option.code LIKE :search OR option_value.value LIKE :search)
-        $localeCondition
         $includeCondition
         $excludeCondition
     ORDER BY $order
@@ -113,10 +112,9 @@ SQL;
 SELECT COUNT(DISTINCT option.id)
 FROM pim_catalog_attribute_option `option`
 INNER JOIN pim_catalog_attribute `attribute` ON option.attribute_id = attribute.id
-LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id
+LEFT JOIN pim_catalog_attribute_option_value `option_value` ON option.id = option_value.option_id $localeCondition
 WHERE attribute.code = :attribute_code
     AND (option.code LIKE :search OR option_value.value LIKE :search)
-    $localeCondition
     $includeCondition
     $excludeCondition
 SQL;

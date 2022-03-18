@@ -1,8 +1,4 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery:
         arguments:
             - '@database_connection'

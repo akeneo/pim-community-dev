@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\GetUpToDateProductModelScoresQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
@@ -15,14 +15,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 class GetProductModelScores
 {
     public function __construct(
-        private GetUpToDateProductModelScoresQuery $getUpToDateProductModelScoresQuery,
+        private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
         private GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery
     ) {
     }
 
     public function get(ProductId $productId): array
     {
-        $productScores = $this->getUpToDateProductModelScoresQuery->byProductModelId($productId);
+        $productScores = $this->getProductModelScoresQuery->byProductModelId($productId);
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {
