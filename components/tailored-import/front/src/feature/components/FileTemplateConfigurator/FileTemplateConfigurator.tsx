@@ -6,7 +6,11 @@ import {
   FileStructure,
   FileTemplateInformation,
   generateColumnName,
-  getRowAtPosition, MAXIMUM_FIRST_PRODUCT_ROW, MAXIMUM_HEADER_ROW, MINIMUM_FIRST_PRODUCT_ROW, MINIMUM_HEADER_ROW,
+  getRowAtPosition,
+  MAXIMUM_FIRST_PRODUCT_ROW,
+  MAXIMUM_HEADER_ROW,
+  MINIMUM_FIRST_PRODUCT_ROW,
+  MINIMUM_HEADER_ROW,
 } from '../../models';
 
 type FileTemplateConfiguratorProps = {

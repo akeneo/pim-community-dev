@@ -63,4 +63,13 @@ const generateColumnName = (index: number, label: string): string => {
 };
 
 export type {StructureConfiguration, Column, ColumnIdentifier, FileStructure, ErrorAction};
-export {generateColumnName, MAX_COLUMN_COUNT, MAXIMUM_FIRST_PRODUCT_ROW, MINIMUM_FIRST_PRODUCT_ROW, MAXIMUM_HEADER_ROW, MINIMUM_HEADER_ROW, getDefaultFileStructure, isValidErrorAction};
+export {
+  generateColumnName,
+  MAX_COLUMN_COUNT,
+  MAXIMUM_FIRST_PRODUCT_ROW,
+  MINIMUM_FIRST_PRODUCT_ROW,
+  MAXIMUM_HEADER_ROW,
+  MINIMUM_HEADER_ROW,
+  getDefaultFileStructure,
+  isValidErrorAction,
+};
