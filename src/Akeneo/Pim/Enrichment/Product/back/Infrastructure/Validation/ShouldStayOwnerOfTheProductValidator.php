@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
@@ -31,7 +32,7 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
 
     public function validate($categoryUserIntent, Constraint $constraint): void
     {
-        if (null === $categoryUserIntent) {
+        if (null === $categoryUserIntent || $categoryUserIntent instanceof AddCategories) {
             return;
         }
 

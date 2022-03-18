@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
@@ -87,5 +88,16 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(new SetCategories(['categoryB']), $constraint);
+    }
+
+    function it_does_nothing_when_the_user_intent_is_to_add_categories(
+        GetOwnedCategories $getOwnedCategories,
+        GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
+        ExecutionContext $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
+
+        $this->validate(new AddCategories(['categoryB']), new ShouldStayOwnerOfTheProduct());
     }
 }

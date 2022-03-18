@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
@@ -565,6 +566,39 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The "toto, michel" categories do not exist');
 
         $this->updateProduct(new SetCategories(['toto', 'michel']));
+    }
+
+    /** @test */
+    public function it_updates_a_product_by_adding_categories(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'categoryC']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB', 'categoryC'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_updates_a_product_by_adding_unexisting_categories(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "unknown" category does not exist');
+
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'unknown']));
     }
 
     private function getUserId(string $username): int
