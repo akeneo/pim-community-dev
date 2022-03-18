@@ -146,7 +146,7 @@ jobs:
               date +%F | tee -a ~/akeneo-design-system.hash ~/measurement.hash ~/shared.hash ~/tailored-export.hash ~/catalog-volume-monitoring.hash ~/process-tracker.hash
       - run:
           name: Set front package directories owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/ front-packages/
+          command: sudo chown -R circleci:circleci vendor/akeneo/pim-community-dev/ front-packages/
       - restore_cache:
             name: Restore front package DSM cache
             key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
