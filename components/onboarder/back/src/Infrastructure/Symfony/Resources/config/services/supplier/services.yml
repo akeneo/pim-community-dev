@@ -28,6 +28,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplier
+        arguments:
+            - '@database_connection'
+
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCount
         arguments:
