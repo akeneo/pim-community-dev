@@ -3,7 +3,6 @@ import {act, fireEvent, screen} from '@testing-library/react';
 import {FileTemplateConfiguration} from './FileTemplateConfiguration';
 import {renderWithProviders} from 'feature/tests';
 import {FileStructure, FileTemplateInformation} from '../../models';
-import {ColumnsState} from '@akeneo-pim-enterprise/tailored-export';
 
 const fileStructure: FileStructure = {
   header_row: 1,

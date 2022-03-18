@@ -97,17 +97,16 @@ test('it can upload and send back a list of columns', async () => {
 
 test('it displays validation errors when read columns fails', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  mockedUseReadColumns.mockImplementation(
-    () => () =>
-      Promise.reject([
-        {
-          messageTemplate: 'error.key.a_read_columns_error',
-          invalidValue: '',
-          message: 'this is a read columns error',
-          parameters: {},
-          propertyPath: '[file_structure][sheet_name]',
-        },
-      ])
+  mockedUseReadColumns.mockImplementation(() => () =>
+    Promise.reject([
+      {
+        messageTemplate: 'error.key.a_read_columns_error',
+        invalidValue: '',
+        message: 'this is a read columns error',
+        parameters: {},
+        propertyPath: '[file_structure][sheet_name]',
+      },
+    ])
   );
 
   await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
