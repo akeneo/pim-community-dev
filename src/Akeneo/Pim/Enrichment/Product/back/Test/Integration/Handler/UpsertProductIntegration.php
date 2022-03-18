@@ -324,26 +324,8 @@ final class UpsertProductIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
-        /** @phpstan-ignore-next-line */
-        $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
-        $validator = $this->get('validator');
-        $violations = $validator->validate($createBrandCommand);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
-            $createBrandCommand
-        );
-
-        /** @phpstan-ignore-next-line */
-        $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
-        $violations = $validator->validate($createAkeneoRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
-
-        /** @phpstan-ignore-next-line */
-        $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
-        $violations = $validator->validate($createOtherRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
+        $this->createReferenceEntity('brand');
+        $this->createRecords('brand', ['Akeneo', 'Other']);
 
         $this->createAttribute(
             [
@@ -916,10 +898,10 @@ final class UpsertProductIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
     }
 
-    private function createReferenceEntity(string $referenceEntitycCode, array $labels = []): void
+    private function createReferenceEntity(string $referenceEntitycCode): void
     {
         /** @phpstan-ignore-next-line */
-        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntitycCode, $labels);
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntitycCode, []);
         $validator = $this->get('validator');
         $violations = $validator->validate($createReferenceEntityCommand);
         Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
@@ -928,12 +910,12 @@ final class UpsertProductIntegration extends TestCase
         );
     }
 
-    private function createRecords(string $referenceEntitycCode, array $recordCodes, array $labels = []): void
+    private function createRecords(string $referenceEntitycCode, array $recordCodes): void
     {
         $validator = $this->get('validator');
         foreach ($recordCodes as $recordCode) {
             /** @phpstan-ignore-next-line */
-            $createRecord = new CreateRecordCommand($referenceEntitycCode, $recordCode, $labels);
+            $createRecord = new CreateRecordCommand($referenceEntitycCode, $recordCode, []);
             $violations = $validator->validate($createRecord);
             Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
             ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);

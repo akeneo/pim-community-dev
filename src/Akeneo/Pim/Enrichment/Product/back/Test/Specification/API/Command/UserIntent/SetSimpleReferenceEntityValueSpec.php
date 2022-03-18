@@ -44,4 +44,10 @@ class SetSimpleReferenceEntityValueSpec extends ObjectBehavior
     {
         $this->value()->shouldReturn('Akeneo');
     }
+
+    function it_cannot_be_instantiated_with_an_empty_record_code()
+    {
+        $this->beConstructedWith('attribute_name', null, null, '');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

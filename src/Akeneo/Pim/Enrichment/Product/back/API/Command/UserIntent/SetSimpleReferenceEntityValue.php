@@ -18,6 +18,7 @@ final class SetSimpleReferenceEntityValue implements ValueUserIntent
         private ?string $localeCode,
         private string $value
     ) {
+        Assert::notEmpty($value);
     }
 
     public function attributeCode(): string
