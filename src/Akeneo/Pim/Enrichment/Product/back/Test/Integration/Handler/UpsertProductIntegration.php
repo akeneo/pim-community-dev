@@ -13,11 +13,13 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -25,6 +27,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
@@ -690,6 +693,101 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The "unknown" category does not exist');
 
         $this->updateProduct(new RemoveCategories(['categoryA', 'unknown']));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_multiple_reference_entity_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy']);
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['AnotherZiggy']);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_an_add_multiple_reference_entity_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy']);
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_remove_multiple_reference_entity_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'AnotherZiggy']);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_multi_reference_entity_record_does_not_exist(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
+        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
     }
 
     private function getUserId(string $username): int
