@@ -64,7 +64,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_throw_an_exception_when_file_is_not_found(): void
+    public function it_throws_an_exception_when_file_is_not_found(): void
     {
         $this->expectException(FileNotFoundException::class);
 
@@ -74,7 +74,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_throw_an_exception_when_sheet_is_not_found(): void
+    public function it_throws_an_exception_when_sheet_is_not_found(): void
     {
         $this->expectExceptionObject(new SheetNotFoundException('unknown sheet'));
 

@@ -18,7 +18,7 @@ const useFileTemplateInformationFetcher = () => {
 
     const decodedResponse = await response.json();
 
-    return response.ok ? {...decodedResponse, file_info: fileInfo} : Promise.reject(decodedResponse);
+    return response.ok ? decodedResponse : Promise.reject(decodedResponse);
   };
 };
 

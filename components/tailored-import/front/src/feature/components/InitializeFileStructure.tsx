@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {
   Button,
-  MediaFileInput,
   Modal,
   FileInfo,
   useBooleanState,
@@ -10,11 +9,11 @@ import {
   AttributesIllustration,
   Helper,
 } from 'akeneo-design-system';
-import Products from 'akeneo-design-system/static/illustrations/Products.svg';
-import {filterErrors, useTranslate, useUploader, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
 import {useReadColumns} from '../hooks';
 import {Column, FileStructure, getDefaultFileStructure} from '../models';
 import {FileTemplateConfiguration} from '../components';
+import {FileTemplateUploader} from "./FileTemplateConfigurator/FileTemplateUploader";
 
 const Container = styled.div`
   width: 100%;
@@ -51,22 +50,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [fileStructure, setFileStructure] = useState<FileStructure>(getDefaultFileStructure());
-  const [uploader] = useUploader('pimee_tailored_import_upload_structure_file_action');
   const readColumns = useReadColumns();
-  const fileTemplateValidationErrors = filterErrors(validationErrors, '[file]');
   const fileStructureValidationErrors = filterErrors(validationErrors, '[file_structure]');
-
-  const uploadFileTemplate = async (file: File, onProgress: (ratio: number) => void): Promise<FileInfo> => {
-    setValidationErrors([]);
-    try {
-      return await uploader(file, onProgress);
-    } catch (response: any) {
-      const validationErrors = JSON.parse(response);
-      setValidationErrors(formatParameters(validationErrors));
-
-      return Promise.reject(response);
-    }
-  };
 
   const handleConfirm = async () => {
     setValidationErrors([]);
@@ -125,25 +110,8 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         <Modal.Title>{translate('akeneo.tailored_import.file_structure.modal.title')}</Modal.Title>
         <Content>
           <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
-          {!fileInfo || fileTemplateValidationErrors.length > 0 ? (
-            <>
-              <MediaFileInput
-                value={fileInfo ?? null}
-                onChange={handleFileUpload}
-                thumbnailUrl={Products}
-                uploader={uploadFileTemplate}
-                placeholder={translate('akeneo.tailored_import.file_structure.modal.upload.placeholder')}
-                uploadingLabel={translate('akeneo.tailored_import.file_structure.modal.upload.uploading')}
-                clearTitle={translate('pim_common.clear_value')}
-                uploadErrorLabel={translate('akeneo.tailored_import.file_structure.modal.upload.error')}
-                invalid={0 < fileTemplateValidationErrors.length}
-              />
-              {fileTemplateValidationErrors.map((error, index) => (
-                <Helper key={index} inline={true} level="error">
-                  {translate(error.messageTemplate, error.parameters)}
-                </Helper>
-              ))}
-            </>
+          {!fileInfo ? (
+            <FileTemplateUploader onFileTemplateUpload={handleFileUpload} />
           ) : (
             <FileTemplateConfiguration
               fileInfo={fileInfo}

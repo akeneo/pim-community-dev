@@ -1,7 +1,7 @@
 import React from 'react';
 import {Placeholder, RulesIllustration, TableInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {FileStructure, FileTemplateInformation, getRowAtPosition, getRowsAtPosition} from '../../models';
+import {FileStructure, FileTemplateInformation, getRowAtPosition, getRowsFromPosition} from '../../models';
 
 type FileTemplatePreviewProps = {
   fileTemplateInformation: FileTemplateInformation;
@@ -11,7 +11,7 @@ type FileTemplatePreviewProps = {
 const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTemplatePreviewProps) => {
   const translate = useTranslate();
   const headerCells = getRowAtPosition(fileTemplateInformation, fileStructure.header_row, fileStructure.first_column);
-  const productRows = getRowsAtPosition(
+  const productRows = getRowsFromPosition(
     fileTemplateInformation,
     fileStructure.first_product_row,
     fileStructure.first_column

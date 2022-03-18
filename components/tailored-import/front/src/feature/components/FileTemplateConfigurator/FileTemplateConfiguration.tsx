@@ -37,10 +37,10 @@ const FileTemplateConfiguration = ({
       onFileStructureChange(fileStructure => ({...fileStructure, sheet_name: fileTemplateInformation.sheet_names[0]}));
     };
 
-    if (null === fileStructure.sheet_name) {
+    if (null === fileStructure.sheet_name || fileTemplateInformation === null) {
       void refreshFileTemplateInformation();
     }
-  }, [fileTemplateInformationFetcher, fileInfo, onFileStructureChange, fileStructure.sheet_name]);
+  }, [fileTemplateInformation, fileTemplateInformationFetcher, fileInfo, onFileStructureChange, fileStructure.sheet_name]);
 
   const handleSheetChange = async (sheetName: string) => {
     if (fileTemplateInformation) {
