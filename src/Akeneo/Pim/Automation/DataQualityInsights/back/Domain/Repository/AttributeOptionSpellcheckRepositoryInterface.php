@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
+use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 
 interface AttributeOptionSpellcheckRepositoryInterface
 {
     public function save(AttributeOptionSpellcheck $attributeOptionSpellcheck): void;
 
     public function deleteUnknownAttributeOptions(): void;
+
+    public function deleteUnknownAttributeOption(AttributeOptionInterface $attributeOption): void;
 }
