@@ -570,7 +570,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_by_adding_categories(): void
+    public function it_adds_category_to_a_product(): void
     {
         $command = new UpsertProductCommand(
             userId: $this->getUserId('admin'),

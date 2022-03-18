@@ -23,6 +23,13 @@ class AddCategoriesSpec extends ObjectBehavior
         $this->categoryCodes()->shouldReturn(['categoryA', 'categoryB']);
     }
 
+    function it_requires_non_empty_array()
+    {
+        $this->beConstructedWith([]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     function it_requires_non_empty_values_in_array()
     {
         $this->beConstructedWith(['']);

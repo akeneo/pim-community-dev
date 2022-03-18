@@ -15,6 +15,7 @@ final class AddCategories implements CategoryUserIntent
     /** @param array<string> $categoryCodes */
     public function __construct(private array $categoryCodes)
     {
+        Assert::notEmpty($categoryCodes);
         Assert::allStringNotEmpty($this->categoryCodes);
     }
 
