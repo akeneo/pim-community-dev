@@ -14,16 +14,17 @@ declare(strict_types=1);
 namespace AkeneoTestEnterprise\Pim\Enrichment\Integration;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
+use Akeneo\ReferenceEntity\Application\Record\DeleteRecord\DeleteRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\DeleteRecords\DeleteRecordsCommand;
+use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Test\Pim\TableAttribute\Helper\EntityBuilderTrait;
 use PHPUnit\Framework\Assert;
 
 class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
 {
-    use EntityBuilderTrait;
-
     private const REMOVE_NON_EXISTENT_VALUES_JOB = 'remove_non_existing_product_values';
 
     /** @test */
@@ -190,5 +191,69 @@ SQL,
         $actualRatio = (int)floor(100 * ($res['required_count'] - $res['missing_count']) / $res['required_count']);
 
         Assert::assertSame($expectedRatio, $actualRatio);
+    }
+
+    protected function createAttribute(array $data): AttributeInterface
+    {
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+
+        $violations = $this->get('validator')->validate($attribute);
+        Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        return $attribute;
+    }
+
+    protected function createFamily(array $data): void
+    {
+        $family = $this->get('pim_catalog.factory.family')->create();
+        $this->get('pim_catalog.updater.family')->update($family, $data);
+
+        $constraints = $this->get('validator')->validate($family);
+        Assert::assertCount(0, $constraints, (string) $constraints);
+        $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    protected function createProduct(string $identifier, array $data): void
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+
+        $violations = $this->get('pim_catalog.validator.product')->validate($product);
+        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
+        $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    protected function createReferenceEntity(string $referenceEntityIdentifier): void
+    {
+        $createCommand = new CreateReferenceEntityCommand($referenceEntityIdentifier, []);
+        $violations = $this->get('validator')->validate($createCommand);
+        Assert::assertCount(0, $violations, (string) $violations);
+        $handler = $this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler');
+        $handler($createCommand);
+    }
+
+    protected function createRecord(string $referenceEntityIdentifier, string $code, array $labels): void
+    {
+        $createCommand = new CreateRecordCommand($referenceEntityIdentifier, $code, $labels);
+
+        $violations = $this->get('validator')->validate($createCommand);
+        self::assertCount(0, $violations, (string)$violations);
+
+        $handler = $this->get('akeneo_referenceentity.application.record.create_record_handler');
+        ($handler)($createCommand);
+    }
+
+    protected function deleteRecord(string $referenceEntityIdentifier, string $code): void
+    {
+        $deleteCommand = new DeleteRecordCommand($code, $referenceEntityIdentifier);
+
+        $violations = $this->get('validator')->validate($deleteCommand);
+        self::assertCount(0, $violations, (string)$violations);
+
+        $handler = $this->get('akeneo_referenceentity.application.record.delete_record_handler');
+        ($handler)($deleteCommand);
     }
 }

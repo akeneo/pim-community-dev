@@ -22,5 +22,9 @@ final class AkeneoOnboarderSerenityExtension extends Extension
             $loader,
         ]));
         $loader->load('services');
+
+        if ('test_fake' === getenv('APP_ENV')) {
+            $loader->load('fake_services');
+        }
     }
 }
