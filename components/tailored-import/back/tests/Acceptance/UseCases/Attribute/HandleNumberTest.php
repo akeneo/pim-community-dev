@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMap
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use PHPUnit\Framework\Assert;
 
@@ -49,7 +50,7 @@ final class HandleNumberTest extends AttributeTestCase
                 'row' => [
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '2d9e967a-5efa-4a31-a254-99f7c50a145c' => '2022',
-                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => '12', // TODO: test with a decimal value
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => '12,5',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -61,6 +62,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
+                            null,
                         ),
                         ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
                         [],
@@ -75,6 +77,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
+                            new NumberSourceParameter('.'),
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         [],
@@ -89,6 +92,7 @@ final class HandleNumberTest extends AttributeTestCase
                             'fr_FR',
                             'set',
                             'skip',
+                            new NumberSourceParameter(',')
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         [],
@@ -99,8 +103,8 @@ final class HandleNumberTest extends AttributeTestCase
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
                     valueUserIntents: [
-                        new SetNumberValue('year', null, null, 2022),
-                        new SetNumberValue('age', 'ecommerce', 'fr_FR', 12),
+                        new SetNumberValue('year', null, null, '2022'),
+                        new SetNumberValue('age', 'ecommerce', 'fr_FR', '12.5'),
                     ],
                 ),
             ],

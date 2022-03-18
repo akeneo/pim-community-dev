@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -21,6 +22,7 @@ class TargetAttribute implements TargetInterface
         private ?string $locale,
         private string $actionIfNotEmpty,
         private string $actionIfEmpty,
+        private ?SourceParameterInterface $sourceParameter,
     ) {
         Assert::stringNotEmpty($this->code);
         Assert::stringNotEmpty($this->type);
@@ -36,9 +38,10 @@ class TargetAttribute implements TargetInterface
         ?string $channel,
         ?string $locale,
         string $actionIfNotEmpty,
-        string $actionIfEmpty
+        string $actionIfEmpty,
+        ?SourceParameterInterface $sourceParameter,
     ): self {
-        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty);
+        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty, $sourceParameter);
     }
 
     public function getCode(): string
@@ -69,5 +72,10 @@ class TargetAttribute implements TargetInterface
     public function getActionIfEmpty(): string
     {
         return $this->actionIfEmpty;
+    }
+
+    public function getSourceParameter(): ?SourceParameterInterface
+    {
+        return $this->sourceParameter;
     }
 }

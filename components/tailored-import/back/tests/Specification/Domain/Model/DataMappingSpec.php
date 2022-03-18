@@ -23,7 +23,8 @@ class DataMappingSpec extends ObjectBehavior
                 'web',
                 'fr_FR',
                 'set',
-                'skip'
+                'skip',
+                null,
             ),
             [],
             [],
@@ -43,7 +44,8 @@ class DataMappingSpec extends ObjectBehavior
                 'web',
                 'fr_FR',
                 'set',
-                'skip'
+                'skip',
+                null,
             ),
             [],
             [],

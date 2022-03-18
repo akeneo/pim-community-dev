@@ -6,6 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
@@ -20,6 +21,7 @@ class ExecuteDataMappingHandler
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
         private UserIntentAggregatorInterface $userIntentAggregator,
+        private SourceParameterApplier $sourceParameterApplier
     ) {
     }
 
@@ -34,7 +36,12 @@ class ExecuteDataMappingHandler
             $target = $dataMapping->getTarget();
             $sources = $dataMapping->getSources();
 
-            $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $row, $sources[0]);
+            $value = $row->getCellData($sources[0]);
+
+            if ($target->getSourceParameter() !== null) {
+                $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
+            }
+
             if ($target instanceof TargetAttribute && $target->getCode() === $identifierAttributeCode) {
                 $productIdentifier = $value;
             } else {

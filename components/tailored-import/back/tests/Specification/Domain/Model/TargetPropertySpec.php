@@ -18,10 +18,12 @@ class TargetPropertySpec extends ObjectBehavior
             'test_code',
             'set',
             'skip',
+            null,
         ]);
 
         $this->getCode()->shouldReturn('test_code');
         $this->getActionIfNotEmpty()->shouldReturn('set');
         $this->getActionIfEmpty()->shouldReturn('skip');
+        $this->getSourceParameter()->shouldReturn(null);
     }
 }

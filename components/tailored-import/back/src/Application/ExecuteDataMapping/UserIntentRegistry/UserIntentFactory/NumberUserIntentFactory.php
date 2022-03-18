@@ -31,12 +31,12 @@ class NumberUserIntentFactory implements UserIntentFactoryInterface
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            (int) $value,
+            $value,
         );
     }
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof TargetAttribute && $target->getType() === 'pim_catalog_number';
+        return $target instanceof TargetAttribute && 'pim_catalog_number' === $target->getType();
     }
 }

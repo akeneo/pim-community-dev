@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -56,16 +57,16 @@ class TargetValidator extends ConstraintValidator
                 'action_if_not_empty' => [
                     new Choice([
                         'choices' => [
-                            'set',
-                            'add',
+                            TargetInterface::ACTION_SET,
+                            TargetInterface::ACTION_ADD,
                         ]
                     ]),
                 ],
                 'action_if_empty' => [
                     new Choice([
                         'choices' => [
-                            'clear',
-                            'skip',
+                            TargetInterface::IF_EMPTY_CLEAR,
+                            TargetInterface::IF_EMPTY_SKIP,
                         ]
                     ]),
                 ],

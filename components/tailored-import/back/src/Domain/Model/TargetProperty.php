@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -18,15 +19,20 @@ class TargetProperty implements TargetInterface
         private string $code,
         private string $actionIfNotEmpty,
         private string $actionIfEmpty,
+        private ?SourceParameterInterface $sourceParameter,
     ) {
         Assert::stringNotEmpty($this->code);
         Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
         Assert::inArray($this->actionIfEmpty, [TargetInterface::IF_EMPTY_CLEAR, TargetInterface::IF_EMPTY_SKIP]);
     }
 
-    public static function create(string $code, string $actionIfNotEmpty, string $actionIfEmpty): self
-    {
-        return new self($code, $actionIfNotEmpty, $actionIfEmpty);
+    public static function create(
+        string $code,
+        string $actionIfNotEmpty,
+        string $actionIfEmpty,
+        ?SourceParameterInterface $sourceParameter,
+    ): self {
+        return new self($code, $actionIfNotEmpty, $actionIfEmpty, $sourceParameter);
     }
 
     public function getCode(): string
@@ -42,5 +48,10 @@ class TargetProperty implements TargetInterface
     public function getActionIfEmpty(): string
     {
         return $this->actionIfEmpty;
+    }
+
+    public function getSourceParameter(): ?SourceParameterInterface
+    {
+        return $this->sourceParameter;
     }
 }

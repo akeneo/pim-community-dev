@@ -37,6 +37,6 @@ class TextareaUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof TargetAttribute && $target->getType() === 'pim_catalog_textarea';
+        return $target instanceof TargetAttribute && 'pim_catalog_textarea' === $target->getType();
     }
 }

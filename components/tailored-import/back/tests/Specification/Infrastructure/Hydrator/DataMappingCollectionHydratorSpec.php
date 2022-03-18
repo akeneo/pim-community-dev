@@ -36,6 +36,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             null,
             'set',
             'skip',
+            null,
         );
 
         $descriptionTarget = TargetAttribute::create(
@@ -45,6 +46,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             'fr_FR',
             'set',
             'skip',
+            null,
         );
 
         $indexedAttributes = [

@@ -14,12 +14,19 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetProperty;
+use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator;
 use PhpSpec\ObjectBehavior;
 
 class TargetHydratorSpec extends ObjectBehavior
 {
+    public function let(SourceParameterHydrator $sourceParameterHydrator)
+    {
+        $this->beConstructedWith($sourceParameterHydrator);
+    }
+
     public function it_hydrates_an_attribute_target()
     {
         $indexedAttributes = [
@@ -56,6 +63,7 @@ class TargetHydratorSpec extends ObjectBehavior
             'locale' => null,
             'action_if_not_empty' => 'set',
             'action_if_empty' => 'skip',
+            'source_parameter' => null,
         ], $indexedAttributes)->shouldBeLike(
             TargetAttribute::create(
                 'name',
@@ -64,6 +72,54 @@ class TargetHydratorSpec extends ObjectBehavior
                 null,
                 'set',
                 'skip',
+                null,
+            ),
+        );
+    }
+
+    public function it_hydrates_an_attribute_and_a_source_parameter(
+        SourceParameterHydrator $sourceParameterHydrator,
+        NumberSourceParameter $numberSourceParameter,
+    )
+    {
+        $indexedAttributes = [
+            'count' => new Attribute(
+                'count',
+                'pim_catalog_number',
+                [],
+                false,
+                false,
+                null,
+                null,
+                true,
+                'number',
+                []
+            ),
+        ];
+
+        $sourceParameterHydrator->hydrate([
+            'decimal_separator' => ','
+        ], 'pim_catalog_number')->willReturn($numberSourceParameter);
+
+        $this->hydrate([
+            'type' => 'attribute',
+            'code' => 'count',
+            'channel' => null,
+            'locale' => null,
+            'action_if_not_empty' => 'set',
+            'action_if_empty' => 'skip',
+            'source_parameter' => [
+                'decimal_separator' => ','
+            ]
+        ], $indexedAttributes)->shouldBeLike(
+            TargetAttribute::create(
+                'count',
+                'pim_catalog_number',
+                null,
+                null,
+                'set',
+                'skip',
+                $numberSourceParameter->getWrappedObject(),
             ),
         );
     }
@@ -80,6 +136,7 @@ class TargetHydratorSpec extends ObjectBehavior
                 'family',
                 'set',
                 'skip',
+                null,
             ),
         );
     }
