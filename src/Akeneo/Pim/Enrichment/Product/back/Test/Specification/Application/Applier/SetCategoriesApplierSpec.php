@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -21,9 +22,10 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $this->beConstructedWith($productUpdater, $getNonViewableCategoryCodes);
     }
 
-    function it_is_initializable()
+    function it_is_an_user_intent_applier()
     {
         $this->shouldHaveType(SetCategoriesApplier::class);
+        $this->shouldImplement(UserIntentApplier::class);
     }
 
     function it_applies_a_set_categories_user_intent_on_a_new_product(
@@ -38,7 +40,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
 
-        $this->apply($product, $userIntent, 10);
+        $this->apply($userIntent, $product, 10);
     }
 
     function it_applies_a_set_categories_user_intent_when_all_product_categories_are_viewable(
@@ -54,7 +56,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
 
-        $this->apply($product, $userIntent, 10);
+        $this->apply($userIntent, $product, 10);
     }
 
     function it_merges_non_viewable_categories_when_applying_a_set_categories_user_intent(
@@ -71,6 +73,6 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB', 'categoryD', 'categoryE']])
             ->shouldBeCalledOnce();
 
-        $this->apply($product, $userIntent, 10);
+        $this->apply($userIntent, $product, 10);
     }
 }

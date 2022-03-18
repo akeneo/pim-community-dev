@@ -225,9 +225,5 @@ final class UpsertProductHandler
                 }
             }
         }
-
-//        if ($command->categoryUserIntent() instanceof SetCategories) {
-//            $this->setCategoriesApplier->apply($product, $command->categoryUserIntent(), $command->userId());
-//        }
     }
 }
