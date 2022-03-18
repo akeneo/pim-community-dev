@@ -8,8 +8,10 @@ use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -26,7 +28,8 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
 {
     public function __construct(
         private GetOwnedCategories $getOwnedCategories,
-        private GetNonViewableCategoryCodes $getNonViewableCategoryCodes
+        private GetNonViewableCategoryCodes $getNonViewableCategoryCodes,
+        private GetCategoryCodes $getCategoryCodes
     ) {
     }
 
@@ -46,6 +49,11 @@ final class ShouldStayOwnerOfTheProductValidator extends ConstraintValidator
                 ProductIdentifier::fromString($command->productIdentifier()),
             ], $command->userId())[$command->productIdentifier()] ?? [];
             $newCategoryCodes = \array_merge($categoryUserIntent->categoryCodes(), $nonViewableCategoryCodes);
+        } elseif ($categoryUserIntent instanceof RemoveCategories) {
+            $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([
+                ProductIdentifier::fromString($command->productIdentifier()),
+            ])[$command->productIdentifier()] ?? [];
+            $newCategoryCodes = \array_values(\array_diff($productCategoryCodes, $categoryUserIntent->categoryCodes()));
         } else {
             throw new \LogicException('Not implemented');
         }
