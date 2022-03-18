@@ -27,7 +27,7 @@ export const AttributeMessageBuilder: FC<Props> = ({counts: {totalToImprove}, on
   return (
     <>
       {messageBuilder({
-        '<button_a/>': <button onClick={onClick}>{roughTotalToImproveText}</button>,
+        '<improvable_attributes_count_link/>': <button onClick={onClick}>{roughTotalToImproveText}</button>,
       })(translate('akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on'))}{' '}
     </>
   );

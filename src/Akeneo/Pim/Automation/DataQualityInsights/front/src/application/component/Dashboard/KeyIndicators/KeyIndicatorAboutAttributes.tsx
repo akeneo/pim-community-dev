@@ -12,7 +12,7 @@ import {
 import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {computeTipMessage} from '../../../helper/Dashboard/KeyIndicator';
-import {FollowKeyIndicatorResultHandler} from '../../../user-actions';
+import {AttributesKeyIndicatorLinkCallback} from '../../../user-actions';
 import {KeyIndicatorBase} from './KeyIndicatorBase';
 import {KeyIndicatorNoData} from './KeyIndicatorNoData';
 import {AttributeMessageBuilder} from './AttributeMessageBuilder';
@@ -22,7 +22,7 @@ type Props = {
   type: KeyIndicatorAttributes;
   counts: Counts;
   title: string;
-  followResults: FollowKeyIndicatorResultHandler;
+  followResults: AttributesKeyIndicatorLinkCallback;
   extraData?: KeyIndicatorExtraData;
 };
 
@@ -36,15 +36,7 @@ export const KeyIndicatorAboutAttributes: FC<Props> = ({children, type, counts, 
     (event: React.SyntheticEvent<HTMLElement>) => {
       event.stopPropagation();
 
-      followResults(
-        userContext.get('catalogScope'),
-        userContext.get('catalogLocale'),
-        'attribute',
-        familyCode,
-        category?.id || null,
-        category?.rootCategoryId || null,
-        extraData || undefined
-      );
+      followResults(userContext.get('catalogLocale'), familyCode, category?.id || null, extraData || undefined);
     },
     [userContext, familyCode, category, extraData]
   );

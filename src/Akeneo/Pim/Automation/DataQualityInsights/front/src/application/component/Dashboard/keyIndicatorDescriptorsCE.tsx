@@ -10,15 +10,11 @@ export const keyIndicatorDescriptorsCE: KeyIndicatorDescriptors = {
     followResults: (
       channelCode: string,
       localeCode: string,
-      entityType: ProductType | 'attribute',
+      entityType: ProductType,
       familyCode?: string | null,
       categoryId?: string | null,
       rootCategoryId?: string | null
     ) => {
-      if (entityType === 'attribute') {
-        // not ever expected
-        return;
-      }
       redirectToProductGridFilteredByKeyIndicator(
         'data_quality_insights_images_quality',
         channelCode,
@@ -36,15 +32,11 @@ export const keyIndicatorDescriptorsCE: KeyIndicatorDescriptors = {
     followResults: (
       channelCode: string,
       localeCode: string,
-      entityType: ProductType | 'attribute',
+      entityType: ProductType,
       familyCode?: string | null,
       categoryId?: string | null,
       rootCategoryId?: string | null
     ) => {
-      if (entityType === 'attribute') {
-        // not ever expected
-        return;
-      }
       redirectToProductGridFilteredByKeyIndicator(
         'data_quality_insights_enrichment_quality',
         channelCode,

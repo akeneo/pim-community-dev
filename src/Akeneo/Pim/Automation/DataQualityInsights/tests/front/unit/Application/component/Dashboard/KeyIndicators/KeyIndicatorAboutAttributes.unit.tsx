@@ -1,19 +1,14 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {
-  KeyIndicatorAboutAttributes,
-  KeyIndicatorAboutProducts,
-} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
+import {KeyIndicatorAboutAttributes} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard';
 import {KeyIndicatorsProvider} from '@akeneo-pim-community/data-quality-insights/src/application/context/KeyIndicatorsContext';
 import {renderDashboardWithProvider} from '../../../../../utils/render/renderDashboardWithProvider';
 import {
   Counts,
-  CountsByProductType,
   KeyIndicatorAttributes,
-  KeyIndicatorProducts,
   KeyIndicatorsTips,
 } from '@akeneo-pim-community/data-quality-insights/src/domain';
-import {FollowKeyIndicatorResultHandler} from '@akeneo-pim-community/data-quality-insights/src/application/user-actions';
+import {AttributesKeyIndicatorLinkCallback} from '@akeneo-pim-community/data-quality-insights/src/application/user-actions';
 
 import {fireEvent} from '@testing-library/react';
 
@@ -23,7 +18,7 @@ jest.mock('@akeneo-pim-community/shared', () => ({
     switch (i18nKey) {
       case 'akeneo_data_quality_insights.dqi_dashboard.key_indicators.attributes_to_work_on':
         // we need the marker to test the KeyIndicator component, the i18nkey would not be sufficient
-        return 'some text before marker <button_a/> some text after marker';
+        return 'some text before marker <improvable_attributes_count_link/> some text after marker';
     }
     return i18nKey;
   },
@@ -47,7 +42,7 @@ const countsSamples: {[kind: string]: Counts} = {
 interface RenderDashBoardParams {
   keyIndicatorCode?: KeyIndicatorAttributes;
   counts: Counts;
-  followResults?: FollowKeyIndicatorResultHandler;
+  followResults?: AttributesKeyIndicatorLinkCallback;
 }
 
 const keyIndicatorsTips: KeyIndicatorsTips = {
@@ -192,15 +187,7 @@ describe('KeyIndicatorAboutAttributes', function () {
 
       fireEvent.click(button);
 
-      expect(followResults).toHaveBeenCalledWith(
-        'catalogScope',
-        'en_US',
-        'attribute',
-        undefined,
-        null,
-        null,
-        undefined
-      );
+      expect(followResults).toHaveBeenCalledWith('en_US', undefined, null, undefined);
     });
 
     test('must display a message corresponding to the score', function () {
