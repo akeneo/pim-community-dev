@@ -13,24 +13,24 @@ use Webmozart\Assert\Assert;
 final class SetAssetValue implements ValueUserIntent
 {
     /**
-     * @param array<string> $values
+     * @param array<string> $assetCodes
      */
     public function __construct(
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private array $values,
+        private array $assetCodes,
     ) {
-        Assert::notEmpty($values);
-        Assert::allStringNotEmpty($values);
+        Assert::notEmpty($assetCodes);
+        Assert::allStringNotEmpty($assetCodes);
     }
 
     /**
      * @return array<string>
      */
-    public function values(): array
+    public function assetCodes(): array
     {
-        return $this->values;
+        return $this->assetCodes;
     }
 
     public function attributeCode(): string

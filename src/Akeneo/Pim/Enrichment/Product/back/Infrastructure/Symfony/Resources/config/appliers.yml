@@ -7,6 +7,24 @@ services:
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveAssetValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
     Akeneo\Pim\Enrichment\Product\Application\Applier\SetCategoriesApplier:
         arguments:
             - '@pim_catalog.updater.product'

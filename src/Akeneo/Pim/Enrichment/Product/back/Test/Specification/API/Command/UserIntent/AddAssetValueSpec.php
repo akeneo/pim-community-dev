@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\back\Test\Specification\API\Command\UserIntent;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\UserIntent\AddAssetValue;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -42,7 +42,7 @@ class AddAssetValueSpec extends ObjectBehavior
 
     function it_returns_the_asset_codes()
     {
-        $this->optionCodes()->shouldReturn(['packshot1', 'packshot2']);
+        $this->assetCodes()->shouldReturn(['packshot1', 'packshot2']);
     }
 
     function it_can_only_be_instantiated_with_string_asset_codes()

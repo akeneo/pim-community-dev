@@ -12,9 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
@@ -24,7 +22,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
 use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
@@ -139,10 +136,7 @@ final class UpsertProductHandler
                         ],
                     ];
                     $propertyPath = sprintf('valueUserIntents[%d]', $index);
-                } elseif (
-                    $userIntent instanceof SetMultiSelectValue
-                    || $valueUserIntent instanceof SetAssetValue
-                ) {
+                } elseif ($userIntent instanceof SetMultiSelectValue) {
                     $data = [
                         'values' => [
                             $userIntent->attributeCode() => [
@@ -212,57 +206,6 @@ final class UpsertProductHandler
                     $propertyPath = 'familyUserIntent';
                 } else {
                     throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
-                } elseif ($valueUserIntent instanceof  AddAssetValue) {
-                    $found = true;
-                    $formerValue = $product->getValue(
-                        $valueUserIntent->attributeCode(),
-                        $valueUserIntent->localeCode(),
-                        $valueUserIntent->channelCode()
-                    );
-                    $formerValueAsString = $formerValue ?
-                        array_map(fn($value) => $value->normalize(), $formerValue->getData())
-                        : null;
-                    $values = null !== $formerValueAsString ?
-                        \array_unique(\array_merge($formerValueAsString, $valueUserIntent->assetCodes())) :
-                        $valueUserIntent->assetCodes();
-
-                    $this->productUpdater->update($product, [
-                            'values' => [
-                                $valueUserIntent->attributeCode() => [
-                                    [
-                                        'locale' => $valueUserIntent->localeCode(),
-                                        'scope' => $valueUserIntent->channelCode(),
-                                        'data' => $values,
-                                    ],
-                                ],
-                            ],
-                        ]
-                    );
-                } elseif ($valueUserIntent instanceof RemoveAssetValue) {
-                    $found = true;
-                    $formerValue = $product->getValue(
-                        $valueUserIntent->attributeCode(),
-                        $valueUserIntent->localeCode(),
-                        $valueUserIntent->channelCode(),
-                    );
-                    $formerValueAsString = $formerValue ?
-                        array_map(fn($value) => $value->normalize(), $formerValue->getData())
-                        : null;
-                    $values = $formerValueAsString !== null ?
-                        \array_diff($formerValueAsString, $valueUserIntent->assetCodes())
-                        : $valueUserIntent->assetCodes();
-
-                    $this->productUpdater->update($product, [
-                        'values' => [
-                            $valueUserIntent->attributeCode() => [
-                                [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
-                                    'data' => $values,
-                                ]
-                            ]
-                        ]
-                    ]);
                 }
 
                 try {

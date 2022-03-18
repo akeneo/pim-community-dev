@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
@@ -28,7 +29,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Enrichment\Product\back\API\Command\UserIntent\AddAssetValue;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
@@ -595,8 +595,8 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->loadAssetFixtures();
 
-        $this->updateProduct(new SetAssetValue('product_with_asset', null, null, ['packshot1']));
-        $this->assertProductHasCorrectValueByAttributeCode('product_with_asset', ['packshot1']);
+        $this->updateProduct(new SetAssetValue('packshot_attr', null, null, ['packshot1']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1']);
     }
 
 

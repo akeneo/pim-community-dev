@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Test\Specification\API\Command\UserIntent;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -25,7 +25,6 @@ class SetAssetValueSpec extends ObjectBehavior
         $this->shouldImplement(ValueUserIntent::class);
     }
 
-
     function it_returns_the_attribute_code()
     {
         $this->attributeCode()->shouldReturn('code');
@@ -41,24 +40,24 @@ class SetAssetValueSpec extends ObjectBehavior
         $this->channelCode()->shouldReturn('ecommerce');
     }
 
-    function it_returns_the_value()
+    function it_returns_the_asset_codes()
     {
-        $this->values()->shouldReturn(['absorb_packshot_1', 'admete_packshot_3']);
+        $this->assetCodes()->shouldReturn(['absorb_packshot_1', 'admete_packshot_3']);
     }
 
-    function it_can_only_be_instanced_with_string_values()
+    function it_can_only_be_instanced_with_string_asset_codes()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instanced_with_empty_values_array()
+    function it_cannot_be_instanced_with_empty_asset_codes_array()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', []);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instanced_if_one_of_the_values_is_empty()
+    function it_cannot_be_instanced_if_one_of_the_asset_codes_is_empty()
     {
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
