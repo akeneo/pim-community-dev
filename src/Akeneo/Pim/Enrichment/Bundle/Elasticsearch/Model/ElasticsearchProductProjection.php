@@ -5,83 +5,44 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
+use Symfony\Component\Serializer\Encoder\NormalizationAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ElasticsearchProductProjection
+final class ElasticsearchProductProjection implements AffectedByMigrationProjection
 {
     private const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
 
-    private string $id;
-    private string $identifier;
-    private \DateTimeImmutable $createdDate;
-    private \DateTimeImmutable $updatedDate;
-    private \DateTimeImmutable $entityUpdatedDate;
-    private bool $isEnabled;
-    private ?string $familyCode;
-    private ?array $familyLabels;
-    private ?string $familyVariantCode;
-    private array $categoryCodes;
-    private array $categoryCodesOfAncestors;
-    private array $groupCodes;
-    private array $completeness;
-    private ?string $parentProductModelCode;
-    private array $values;
-    private array $ancestorsIds;
-    private array $ancestorsCodes;
-    private ?array $label;
-    private array $attributeCodesForAncestor;
-    private array $attributeCodesForThisLevel;
-    private array $additionalData = [];
-
     public function __construct(
-        string $id,
-        string $identifier,
-        \DateTimeImmutable $createdDate,
-        \DateTimeImmutable $updatedDate,
-        \DateTimeImmutable $entityUpdatedDate,
-        bool $isEnabled,
-        ?string $familyCode,
-        ?array $familyLabels,
-        ?string $familyVariantCode,
-        array $categoryCodes,
-        array $categoryCodesOfAncestors,
-        array $groupCodes,
-        array $completeness,
-        ?string $parentProductModelCode,
-        array $values,
-        array $ancestorIds,
-        array $ancestorCodes,
-        array $label,
-        array $attributeCodesForAncestor,
-        array $attributeCodesForThisLevel,
-        array $additionalData = []
+        private string $id,
+        private ?string $uuid,
+        private string $identifier,
+        private \DateTimeImmutable $createdDate,
+        private \DateTimeImmutable $updatedDate,
+        private \DateTimeImmutable $entityUpdatedDate,
+        private bool $isEnabled,
+        private ?string $familyCode,
+        private ?array $familyLabels,
+        private ?string $familyVariantCode,
+        private array $categoryCodes,
+        private array $categoryCodesOfAncestors,
+        private array $groupCodes,
+        private array $completeness,
+        private ?string $parentProductModelCode,
+        private array $values,
+        private array $ancestorIds,
+        private array $ancestorCodes,
+        private ?array $label,
+        private array $attributeCodesForAncestor,
+        private array $attributeCodesForThisLevel,
+        private array $additionalData = []
     ) {
-        $this->id = $id;
-        $this->identifier = $identifier;
-        $this->createdDate = $createdDate;
-        $this->updatedDate = $updatedDate;
-        $this->entityUpdatedDate = $entityUpdatedDate;
-        $this->isEnabled = $isEnabled;
-        $this->familyCode = $familyCode;
-        $this->familyLabels = $familyLabels;
-        $this->familyVariantCode = $familyVariantCode;
-        $this->categoryCodes = $categoryCodes;
-        $this->categoryCodesOfAncestors = $categoryCodesOfAncestors;
-        $this->groupCodes = $groupCodes;
-        $this->completeness = $completeness;
-        $this->parentProductModelCode = $parentProductModelCode;
-        $this->values = $values;
-        $this->ancestorsIds = $ancestorIds;
-        $this->ancestorsCodes = $ancestorCodes;
-        $this->label = $label;
-        $this->attributeCodesForAncestor = $attributeCodesForAncestor;
-        $this->attributeCodesForThisLevel = $attributeCodesForThisLevel;
-        $this->additionalData = $additionalData;
     }
 
     public function addAdditionalData(array $additionalData): ElasticsearchProductProjection
@@ -90,6 +51,7 @@ final class ElasticsearchProductProjection
 
         return new self(
             $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -104,13 +66,23 @@ final class ElasticsearchProductProjection
             $this->completeness,
             $this->parentProductModelCode,
             $this->values,
-            $this->ancestorsIds,
-            $this->ancestorsCodes,
+            $this->ancestorIds,
+            $this->ancestorCodes,
             $this->label,
             $this->attributeCodesForAncestor,
             $this->attributeCodesForThisLevel,
             $additionalData
         );
+    }
+
+    public function shouldBeMigrated(): bool
+    {
+        return $this->uuid !== null;
+    }
+
+    public function getFormerDocumentId(): string
+    {
+        return sprintf('%s%s', self::INDEX_PREFIX_ID, $this->id);
     }
 
     public function toArray(): array
@@ -132,7 +104,7 @@ final class ElasticsearchProductProjection
         }
 
         $data = [
-            'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->id),
+            'id' => sprintf('%s%s', self::INDEX_PREFIX_ID, $this->uuid ?? $this->id),
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
@@ -147,8 +119,8 @@ final class ElasticsearchProductProjection
             'parent' => $this->parentProductModelCode,
             'values' => $this->values,
             'ancestors' => [
-                'ids' => preg_filter('/^/', 'product_model_', $this->ancestorsIds),
-                'codes' => $this->ancestorsCodes,
+                'ids' => preg_filter('/^/', 'product_model_', $this->ancestorIds),
+                'codes' => $this->ancestorCodes,
                 'labels' => null !== $this->parentProductModelCode ? $this->label : [],
             ],
             'label' => $this->label,

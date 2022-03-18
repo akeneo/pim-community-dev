@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -148,7 +149,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             )->fetchFirstColumn()
         );
         // pim_data_quality_insights_product_score
-        ($this->get(EvaluateProducts::class))([$newProductId]);
+        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInts([$newProductId]));
         Assert::assertSame(
             [$newProductUuid],
             $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
@@ -207,7 +208,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             )->fetchFirstColumn()
         );
         // pim_data_quality_insights_product_score
-        ($this->get(EvaluateProducts::class))([$newProductId]);
+        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($newProductId));
         Assert::assertSame(
             [$newProductUuid],
             $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
