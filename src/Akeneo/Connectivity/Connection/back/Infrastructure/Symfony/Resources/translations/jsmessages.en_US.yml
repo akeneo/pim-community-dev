@@ -59,6 +59,7 @@ akeneo_connectivity.connection:
                 more_info: More info
                 connect: Connect
                 connected: Connected
+                pending: Pending...
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
