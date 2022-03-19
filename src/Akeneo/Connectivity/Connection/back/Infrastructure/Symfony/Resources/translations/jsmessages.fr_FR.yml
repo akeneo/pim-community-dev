@@ -79,11 +79,34 @@ akeneo_connectivity.connection:
             link: Comment tester mon application avant de la publier ?
             fields:
               name: Nom
+              activate_url: URL d'activation (activate)
+              callback_url: URL de retour (callback)
           credentials:
             title: Identifiants
+            warning: Assurez-vous de sauvegarder ces informations d'identification quelque part car nous ne les affichons qu'une seule fois ici.
+            client_id: ID Client
+            client_secret: Clé secrète du client
+        errors:
+          creation:
+            name:
+              max_length: Le nom de l'app de test est trop long. Il doit comporter 255 caractères ou moins.
+              not_blank: Le nom de l'app de test est requis.
+            client_id:
+              max_length: L'ID Client de l'app de test est trop long. Il doit avoir 36 caractères ou moins.
+              not_blank: L'ID Client est requis.
+            activate_url:
+              max_length: L'URL d'activation (activate) de l'app de test est trop longue. Elle doit contenir 255 caractères ou moins.
+              must_be_url: L'URL d'activation (activate) doit être une URL valide.
+              not_blank: L'URL d'activation (activate) est requise.
+            callback_url:
+              max_length: L'URL de retour (callback) de l'app de test est trop longue. Elle doit contenir 255 caractères ou moins.
+              must_be_url: L'URL de retour (callback) doit être une URL valide.
+              not_blank: L'URL de retour (callback) est requise.
         delete:
           subtitle: Applications
           title: Confirmer la suppression
+          description: Vous êtes sur le point de supprimer votre app de test de ce PIM.
+          warning: En confirmant la suppression, vous supprimerez l'app de test sur la page App Store et l'app connectée correspondante.
           flash:
             success: L'application de test a bien été supprimée.
             error: Une erreur s'est produite lors de la suppression de l'application de test.
@@ -140,6 +163,7 @@ akeneo_connectivity.connection:
           save_permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être mises à jour.'
           save_permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
           success: Paramètres mis à jour avec succès.
+          monitoring_settings_error.description: Désolé, une erreur s'est produite lors de la modification de l'app.
       delete:
         subtitle: Apps
         title: Confirmer la suppression
@@ -149,6 +173,8 @@ akeneo_connectivity.connection:
           success: App supprimée avec succès.
           error: Désolé, une erreur s'est produite lors de la suppression de l'app.
     apps:
+      loader:
+        message: Chargement...
       flash:
         permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être enregistrées.'
         permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
@@ -160,6 +186,7 @@ akeneo_connectivity.connection:
           previous: Précédent
           next: Suivant
           allow_and_next: Autoriser et suivant
+          allow_and_finish: Autoriser et terminer
         progress:
           authentication: Authentification
           authorizations: Autorisations
@@ -167,6 +194,7 @@ akeneo_connectivity.connection:
           summary: Bien joué !
         authentication:
           title: 'L''app {{ app_name }} a besoin de '
+          helper: Pour en savoir plus sur l'authentification aux Apps, veuillez consulter notre article
           helper_link: Comment connecter mon PIM à des Apps ?
           scope_profile: Voir votre prénom et votre nom de famille
           scope_email: Voir votre adresse e-mail
@@ -225,6 +253,7 @@ akeneo_connectivity.connection:
     label: Libellé
     flow_type: Type de flux
     image: Image
+    auditable: Suivre dans le tableau de bord des flux de données (Data flows)
     client_id: Client ID
     secret: Secret
     username: Username
@@ -232,6 +261,7 @@ akeneo_connectivity.connection:
     user_role_id: Rôle
     user_group_id: Groupe
     constraint:
+      connections_number_limit_reached: Vous avez atteint la limite de 50 connexions et apps connectées.
       code:
         required: Le code de la connexion est requis.
         invalid: Le code d'une connexion peut contenir uniquement des lettres, des chiffres et des tirets bas.
@@ -260,6 +290,7 @@ akeneo_connectivity.connection:
     message_link: cliquez ici.
   create_connection:
     title: Créer une nouvelle connexion
+    description: Vous pouvez connecter jusqu'à 50 tiers via les connexions ou les apps.
     flash:
       success: Connexion créée avec succès.
       error: Désolé, une erreur s'est produite lors de la création de la connexion.
@@ -355,6 +386,9 @@ akeneo_connectivity.connection:
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
       button: C'est parti !
     connection_selector:
+      title:
+        source: Sources de données
+        destination: Destinations
       all: Toutes
     charts:
       inbound: En entrée du PIM
@@ -368,10 +402,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Erreurs liées aux sources de données
           helper: Ici vous pouvez voir le nombre total d'erreurs, y compris les erreurs métier.
         chart:
           title: Nombre d'erreurs par jour
       widget:
+        title: Erreurs métier par source de données
         over_the_last_seven_days: Au cours des 7 derniers jours
         business_errors: erreurs métier
     no_connection:
@@ -457,6 +493,7 @@ akeneo_connectivity.connection:
           message: Message
   error_management:
     connection_monitoring:
+      title: Surveillance des erreurs
       helper:
         title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
         description: Ici, vous pouvez voir le détail de chaque erreur métier pour cette connexion au cours des 7 derniers jours. Le nombre d'erreur est limité à 100 erreurs.
