@@ -86,6 +86,7 @@ final class UpsertProductHandler
                     'enabledUserIntent' => $command->enabledUserIntent(),
                     'familyUserIntent' => $command->familyUserIntent(),
                     'categoryUserIntent' => $command->categoryUserIntent(),
+                    'parentUserIntent' => $command->parentUserIntent(),
                     'groupUserIntent' => $command->groupUserIntent(),
                 ]
             ),
