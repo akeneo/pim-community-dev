@@ -92,16 +92,6 @@ const MediaFileImage = styled(Image)`
   border: none;
 `;
 
-const PreviewImage = styled(Image)`
-  max-width: 95%;
-  max-height: 95%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: none;
-`;
-
 type MediaFileInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<FileInfo | null>>,
   (
@@ -282,9 +272,12 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
           </>
         ) : null !== value ? (
           <>
-            <PreviewImage
+            <MediaFileImage
+              height={isCompact ? 47 : 120}
+              width={isCompact ? 47 : 120}
               src={displayedThumbnailUrl}
               alt={value.originalFilename}
+              fit="contain"
               onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
             />
             {readOnly ? (
