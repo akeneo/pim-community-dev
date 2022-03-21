@@ -53,7 +53,7 @@ class JobRegistry
     /**
      * @throws UndefinedJobException
      */
-    public function get(string $jobName): JobInterface
+    public function get(?string $jobName): JobInterface
     {
         if (!isset($this->jobs[$jobName])) {
             throw new UndefinedJobException(

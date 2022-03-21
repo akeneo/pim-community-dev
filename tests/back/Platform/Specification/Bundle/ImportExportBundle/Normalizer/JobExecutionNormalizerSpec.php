@@ -48,7 +48,9 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         JobExecution $jobExecution,
         StepExecution $exportExecution,
         StepExecution $cleanExecution,
-        BatchStatus $status
+        BatchStatus $status,
+        Job $job,
+        JobRegistry $jobRegistry,
     ) {
         $jobExecution->getFailureExceptions()->willReturn(
             [
@@ -57,6 +59,8 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         );
         $jobInstance->getJobName()->willReturn('wow_job');
         $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
+        $jobRegistry->get('wow_job')->willReturn($job);
+        $job->isStoppable()->willReturn(false);
 
         $jobExecution->isRunning()->willReturn(true);
         $jobExecution->getStatus()->willReturn($status);

@@ -158,7 +158,7 @@ final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTre
                 {
                 }
 
-            }, 'export', 'Akeneo CSV Connector');
+            }, 'export', 'Akeneo CSV Connector', null);
         } catch (DuplicatedJobException $e) {
         }
 
