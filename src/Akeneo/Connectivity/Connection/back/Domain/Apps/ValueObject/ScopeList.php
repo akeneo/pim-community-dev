@@ -61,11 +61,6 @@ final class ScopeList
         return \implode(' ', $this->scopes);
     }
 
-    public function filterWith(self $filterList): self
-    {
-        return self::fromScopes(\array_intersect($this->scopes, $filterList->scopes));
-    }
-
     public function equals(self $scopeList): bool
     {
         return $this->toScopeString() === $scopeList->toScopeString();

@@ -101,31 +101,6 @@ class ScopeListSpec extends ObjectBehavior
         $this->toScopeString()->shouldReturn("a_scope another_scope");
     }
 
-    public function it_filters_scopes_with_a_scope_list(): void
-    {
-        $this->beConstructedThrough('fromScopes', [[
-            'a_scope',
-            'another_scope',
-            'allowed_scope_a',
-            'another_scope_b',
-            'allowed_scope_b',
-            'other_scope',
-        ]]);
-
-        $scopeListToFilterWith = ScopeList::fromScopes([
-            'allowed_scope_a',
-            'allowed_scope_b',
-            'allowed_scope_c',
-        ]);
-
-        $filteredScopes = $this->filterWith($scopeListToFilterWith);
-
-        $filteredScopes->getScopes()->shouldReturn([
-            'allowed_scope_a',
-            'allowed_scope_b',
-        ]);
-    }
-
     public function it_compares_two_different_scope_lists(): void
     {
         $differentList = ScopeList::fromScopeString('another_scope other_scope');
