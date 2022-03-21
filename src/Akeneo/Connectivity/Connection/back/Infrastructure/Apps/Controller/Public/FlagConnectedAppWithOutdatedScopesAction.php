@@ -29,10 +29,13 @@ final class FlagConnectedAppWithOutdatedScopesAction
 
     public function __invoke(Request $request): Response
     {
-        /** @var UserInterface|null $user */
         $user = $this->tokenStorage->getToken()?->getUser();
         if (null === $user) {
             throw new AccessDeniedHttpException('Not an authenticated App');
+        }
+
+        if (false === $user instanceof UserInterface) {
+            throw new \LogicException();
         }
 
         $connectedApp = $this->findOneConnectedAppByUserIdQuery->execute($user->getId());

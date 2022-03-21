@@ -54,6 +54,19 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
+    public function it_throws_logic_exception_when_user_returned_do_not_implement_user_interface(
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        Request $request,
+    ): void {
+        $token->getUser()->willReturn('not a user interface entity');
+        $tokenStorage->getToken()->willReturn($token);
+
+        $this
+            ->shouldThrow(new \LogicException())
+            ->during('__invoke', [$request]);
+    }
+
     public function it_throws_access_denied_http_exception_when_no_connected_app_was_found(
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
