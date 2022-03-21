@@ -5,7 +5,6 @@ namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tas
 use Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet\ExecuteRulesTasklet;
 use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSet;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
