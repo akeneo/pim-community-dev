@@ -24,6 +24,9 @@ abstract class AbstractAssociation implements AssociationInterface
     /** @var EntityWithAssociationsInterface */
     protected $owner;
 
+    /** @var EntityWithAssociationsInterface */
+    protected $ownerUuid;
+
     /** @var Collection<ProductInterface> */
     protected $products;
 

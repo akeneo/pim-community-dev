@@ -9,10 +9,14 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
+        # TODO CPM-507: drop this column
+        owner:
+            type: integer
     uniqueConstraints:
-        locale_foreign_key_idx:
+        #        TODO: drop former and add unique constraint in a migration
+        product_foreign_key_idx:
             columns:
-                - owner_id
+                - owner_uuid
                 - association_type_id
     manyToOne:
         associationType:
@@ -22,14 +26,14 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
                     referencedColumnName: id
                     nullable: false
                     onDelete: CASCADE
-        owner:
+        ownerUuid:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
             inversedBy: associations
             cascade:
                 - detach
             joinColumns:
-                owner_id:
-                    referencedColumnName: id
+                owner_uuid:
+                    referencedColumnName: uuid
                     nullable: false
                     onDelete: CASCADE
     manyToMany:
@@ -54,8 +58,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
 
         productModels:
