@@ -28,9 +28,11 @@ class FlagAppContainingOutdatedScopesHandler
         $supportedScopes = ScopeList::fromScopes($this->scopeMapperRegistry->getAllScopes());
         $requestedScopes = ScopeList::fromScopeString($command->getRequestedScopes());
 
-        $allowedRequestedAuthorizationScopes = ScopeList::fromScopes(\array_intersect(
-            $requestedScopes->getScopes(),
-            $supportedScopes->getScopes())
+        $allowedRequestedAuthorizationScopes = ScopeList::fromScopes(
+            \array_intersect(
+                $requestedScopes->getScopes(),
+                $supportedScopes->getScopes()
+            )
         );
 
         if (false === $existingScopes->equals($allowedRequestedAuthorizationScopes)) {
