@@ -29,7 +29,11 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      if [[ "${RELEASE_NAME}" == "" ]]; then
+                          RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      else
+                          RELEASE_TO_DEPLOY=${IMAGE_TAG}
+                      fi
                       SOURCE_PFID_SOURCE_PROJECT_ID=<< parameters.SOURCE_PFID_SOURCE_PROJECT_ID >>
                       SOURCE_PFID="${SOURCE_PFID_SOURCE_PROJECT_ID%%##*}"
                       SOURCE_PROJECT_ID="${SOURCE_PFID_SOURCE_PROJECT_ID##*##}"
@@ -100,7 +104,11 @@ jobs:
             - run:
                   name: Define value for next steps
                   command: |
-                      RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      if [[ "${RELEASE_NAME}" == "" ]]; then
+                          RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
+                      else
+                          RELEASE_TO_DEPLOY=${IMAGE_TAG}
+                      fi
                       SOURCE_PFID_SOURCE_PROJECT_ID=<< parameters.SOURCE_PFID_SOURCE_PROJECT_ID >>
                       SOURCE_PFID="${SOURCE_PFID_SOURCE_PROJECT_ID%%##*}"
                       SOURCE_PROJECT_ID="${SOURCE_PFID_SOURCE_PROJECT_ID##*##}"
