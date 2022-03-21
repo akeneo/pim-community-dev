@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
 use Webmozart\Assert\Assert;
 
 /**

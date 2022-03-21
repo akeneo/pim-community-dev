@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\TargetProperty;
 class TargetHydrator
 {
     public function __construct(
-        private SourceParameterHydrator $sourceParameterHydrator
+        private SourceParameterHydrator $sourceParameterHydrator,
     ) {
     }
 
