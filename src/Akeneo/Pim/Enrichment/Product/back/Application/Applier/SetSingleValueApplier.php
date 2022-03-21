@@ -27,13 +27,14 @@ final class SetSingleValueApplier implements UserIntentApplier
 
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOfAny($userIntent, [
-            SetTextValue::class,
-            SetNumberValue::class,
-            SetTextareaValue::class,
-            SetBooleanValue::class,
-            SetSimpleSelectValue::class,
-        ]);
+        if (!$userIntent instanceof SetTextValue
+            && !$userIntent instanceof SetNumberValue
+            && !$userIntent instanceof SetTextareaValue
+            && !$userIntent instanceof SetBooleanValue
+            && !$userIntent instanceof SetSimpleSelectValue
+        ) {
+            throw new \InvalidArgumentException('Not expected class');
+        }
         $this->productUpdater->update($product, [
             'values' => [
                 $userIntent->attributeCode() => [

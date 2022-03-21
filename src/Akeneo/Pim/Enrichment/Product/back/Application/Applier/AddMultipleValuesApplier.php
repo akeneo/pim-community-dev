@@ -23,7 +23,9 @@ final class AddMultipleValuesApplier implements UserIntentApplier
 
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOfAny($userIntent, [AddMultiSelectValue::class]);
+        if (!$userIntent instanceof AddMultiSelectValue) {
+            throw new \InvalidArgumentException('Not expected class');
+        }
         $formerValue = $product->getValue(
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
