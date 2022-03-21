@@ -58,7 +58,7 @@ FROM (
                        CROSS JOIN pim_catalog_association_type association_type
                        LEFT JOIN pim_catalog_association product_association ON product_association.owner_uuid = product.uuid AND association_type.id = product_association.association_type_id
                        LEFT JOIN pim_catalog_association_product association_to_product ON association_to_product.association_id = product_association.id
-                       LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product.product_id
+                       LEFT JOIN pim_catalog_product associated_product ON associated_product.uuid = association_to_product.product_uuid
                   WHERE product.identifier IN (?) 
                   AND association_type.is_quantified = false
                   UNION DISTINCT
