@@ -277,6 +277,7 @@ const MediaFileInput = React.forwardRef<HTMLInputElement, MediaFileInputProps>(
               width={isCompact ? 47 : 120}
               src={displayedThumbnailUrl}
               alt={value.originalFilename}
+              fit="contain"
               onError={() => setDisplayedThumbnailUrl(DefaultPictureIllustration)}
             />
             {readOnly ? (
