@@ -36,7 +36,6 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         EventDispatcherInterface $eventDispatcher,
         UserIntentApplierRegistry $applierRegistry
@@ -46,7 +45,6 @@ class UpsertProductHandlerSpec extends ObjectBehavior
             $productRepository,
             $productBuilder,
             $productSaver,
-            $productUpdater,
             $productValidator,
             $eventDispatcher,
             $applierRegistry
@@ -171,16 +169,19 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
+        UserIntentApplierRegistry $applierRegistry,
+        UserIntentApplier $userIntentApplier
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [new SetTextValue('name', null, null, 'foo')]);
+        $setTextUserIntent = new SetTextValue('name', null, null, 'foo');
+        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [$setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
-        $productUpdater->update($product, Argument::cetera())->shouldbeCalledOnce()->willThrow(
+        $applierRegistry->getApplier($setTextUserIntent)->willReturn($userIntentApplier);
+        $userIntentApplier->apply($setTextUserIntent, $product, 1)->willThrow(
             InvalidPropertyException::expected('error', 'class')
         );
         $productValidator->validate($product)->shouldNotBeCalled();
