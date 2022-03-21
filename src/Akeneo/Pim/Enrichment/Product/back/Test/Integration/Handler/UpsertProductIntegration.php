@@ -696,25 +696,25 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_multiple_reference_entity_value()
+    public function it_updates_a_product_with_a_set_multiple_reference_entity_value()
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
         $this->createReferenceEntity('brand');
         $this->createAttribute(
             [
-                'code' => 'a_reference_entity_attribute',
-                'type' => 'akeneo_reference_entity',
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy']);
-        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['AnotherZiggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['AnotherZiggy']);
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy']);
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['AnotherZiggy']);
     }
 
     /** @test */
@@ -725,18 +725,18 @@ final class UpsertProductIntegration extends TestCase
         $this->createReferenceEntity('brand');
         $this->createAttribute(
             [
-                'code' => 'a_reference_entity_attribute',
-                'type' => 'akeneo_reference_entity',
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $this->updateProduct(new AddMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy']);
-        $this->updateProduct(new AddMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy']);
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
     }
 
     /** @test */
@@ -747,18 +747,18 @@ final class UpsertProductIntegration extends TestCase
         $this->createReferenceEntity('brand');
         $this->createAttribute(
             [
-                'code' => 'a_reference_entity_attribute',
-                'type' => 'akeneo_reference_entity',
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $this->updateProduct(new SetMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy', 'AnotherZiggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
-        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_reference_entity_attribute', null, null, ['Ziggy']));
-        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', ['Akeneo', 'AnotherZiggy']);
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'AnotherZiggy']);
     }
 
     /** @test */
@@ -769,8 +769,8 @@ final class UpsertProductIntegration extends TestCase
         $this->createReferenceEntity('brand');
         $this->createAttribute(
             [
-                'code' => 'a_reference_entity_attribute',
-                'type' => 'akeneo_reference_entity',
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
                 'group' => 'other',
                 'reference_data_name' => 'brand',
             ]
