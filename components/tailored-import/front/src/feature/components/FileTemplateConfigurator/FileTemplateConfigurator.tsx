@@ -2,13 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import {Helper, NumberInput, SelectInput, Field} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {FileStructure, FileTemplateInformation, generateColumnName} from '../../models';
+import {
+  FileStructure,
+  FileTemplateInformation,
+  generateColumnName,
+  getRowAtPosition,
+  MAXIMUM_FIRST_PRODUCT_ROW,
+  MAXIMUM_HEADER_ROW,
+  MINIMUM_FIRST_PRODUCT_ROW,
+  MINIMUM_HEADER_ROW,
+} from '../../models';
 
 type FileTemplateConfiguratorProps = {
   fileTemplateInformation: FileTemplateInformation;
   fileStructure: FileStructure;
   onFileStructureChange: (fileStructure: FileStructure) => void;
-  onHeaderRowChange: (headerRow: number) => void;
   onSheetChange: (sheet: string) => void;
   validationErrors: ValidationError[];
 };
@@ -23,16 +31,20 @@ const FileTemplateConfigurator = ({
   fileTemplateInformation,
   fileStructure,
   onFileStructureChange,
-  onHeaderRowChange,
   onSheetChange,
   validationErrors,
 }: FileTemplateConfiguratorProps) => {
   const translate = useTranslate();
+  const headerCells = getRowAtPosition(fileTemplateInformation, fileStructure.header_row);
   const sheetNameErrors = filterErrors(validationErrors, '[sheet_name]');
   const headerRowErrors = filterErrors(validationErrors, '[header_row]');
   const firstProductRowErrors = filterErrors(validationErrors, '[first_product_row]');
   const firstColumnErrors = filterErrors(validationErrors, '[first_column]');
   const uniqueIdentifierColumnErrors = filterErrors(validationErrors, '[unique_identifier_column]');
+
+  const handleHeaderRowChange = (firstRow: string) => {
+    onFileStructureChange({...fileStructure, header_row: parseInt(firstRow)});
+  };
 
   const handleFirstProductRowChange = (firstProductRow: string) => {
     onFileStructureChange({...fileStructure, first_product_row: parseInt(firstProductRow)});
@@ -72,10 +84,10 @@ const FileTemplateConfigurator = ({
       <Field label={translate('akeneo.tailored_import.file_structure.modal.header_row')}>
         <NumberInput
           invalid={headerRowErrors.length > 0}
-          onChange={(headerRow: string) => onHeaderRowChange(parseInt(headerRow))}
+          onChange={handleHeaderRowChange}
           value={fileStructure.header_row.toString()}
-          min={1}
-          max={500}
+          min={MINIMUM_HEADER_ROW}
+          max={MAXIMUM_HEADER_ROW}
         />
         {headerRowErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
@@ -88,8 +100,8 @@ const FileTemplateConfigurator = ({
           invalid={firstProductRowErrors.length > 0}
           onChange={handleFirstProductRowChange}
           value={fileStructure.first_product_row.toString()}
-          min={2}
-          max={500}
+          min={MINIMUM_FIRST_PRODUCT_ROW}
+          max={MAXIMUM_FIRST_PRODUCT_ROW}
         />
         {firstProductRowErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
@@ -100,14 +112,14 @@ const FileTemplateConfigurator = ({
       <Field label={translate('akeneo.tailored_import.file_structure.modal.first_column')}>
         <SelectInput
           invalid={firstColumnErrors.length > 0}
-          readOnly={fileTemplateInformation.header_cells.length === 0}
+          readOnly={headerCells.length === 0}
           clearable={false}
           emptyResultLabel={translate('pim_common.no_result')}
           onChange={handleFirstColumnChange}
           value={fileStructure.first_column.toString()}
           openLabel={translate('pim_common.open')}
         >
-          {fileTemplateInformation.header_cells.map((headerCell, index) => (
+          {headerCells.map((headerCell, index) => (
             <SelectInput.Option key={index} value={index.toString()} title={headerCell}>
               {generateColumnName(index, headerCell)}
             </SelectInput.Option>
@@ -122,14 +134,14 @@ const FileTemplateConfigurator = ({
       <Field label={translate('akeneo.tailored_import.file_structure.modal.unique_identifier_column')}>
         <SelectInput
           invalid={uniqueIdentifierColumnErrors.length > 0}
-          readOnly={fileTemplateInformation.header_cells.length === 0}
+          readOnly={headerCells.length === 0}
           clearable={false}
           emptyResultLabel={translate('pim_common.no_result')}
           onChange={handleColumnIdentifierChange}
           value={fileStructure.unique_identifier_column.toString()}
           openLabel={translate('pim_common.open')}
         >
-          {fileTemplateInformation.header_cells.map((headerCell, index) => (
+          {headerCells.map((headerCell, index) => (
             <SelectInput.Option key={index} value={index.toString()} title={headerCell}>
               {generateColumnName(index, headerCell)}
             </SelectInput.Option>

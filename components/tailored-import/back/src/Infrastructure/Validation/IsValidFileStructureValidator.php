@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -34,22 +35,18 @@ class IsValidFileStructureValidator extends ConstraintValidator
                 'header_row' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 1, 'max' => 500]),
                 ],
                 'first_column' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 0, 'max' => 500]),
                 ],
                 'first_product_row' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 2, 'max' => 500]),
                 ],
                 'unique_identifier_column' => [
                     new Type('int'),
                     new NotBlank(),
-                    new Range(['min' => 0, 'max' => 500]),
                 ],
                 'sheet_name' => [
                     new Type('string'),
@@ -62,7 +59,28 @@ class IsValidFileStructureValidator extends ConstraintValidator
             return;
         }
 
-        $validator->atPath('[file_structure][first_product_row]')->validate($value['first_product_row'], new Range(['min' => $value['header_row'], 'minMessage' => $constraint->firstProductRowShouldBeAfterHeaderRow]));
-        $validator->atPath('[file_structure][unique_identifier_column]')->validate($value['unique_identifier_column'], new Range(['min' => $value['first_column'], 'minMessage' => $constraint->uniqueIdentifierColumnShouldBeAfterFirstColumnMessage]));
+        $validator->atPath('[file_structure]')->validate($value, new Collection([
+            'fields' => [
+                'header_row' => new Range([
+                    'min' => FileStructure::MINIMUM_HEADER_LINE,
+                    'max' => FileStructure::MAXIMUM_HEADER_LINE
+                ]),
+                'first_column' => new Range([
+                    'min' => 0,
+                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT
+                ]),
+                'first_product_row' => new Range([
+                    'min' => $value['header_row'] + 1,
+                    'minMessage' => $constraint->firstProductRowShouldBeAfterHeaderRow,
+                    'max' => FileStructure::MAXIMUM_FIRST_PRODUCT_LINE
+                ]),
+                'unique_identifier_column' => new Range([
+                    'min' => $value['first_column'],
+                    'minMessage' => $constraint->uniqueIdentifierColumnShouldBeAfterFirstColumnMessage,
+                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT
+                ]),
+            ],
+            'allowExtraFields' => true,
+        ]));
     }
 }

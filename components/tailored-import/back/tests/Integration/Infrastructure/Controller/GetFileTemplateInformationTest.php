@@ -45,7 +45,6 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => $fileKey,
-                'header_row' => 1,
                 'sheet_name' => 'Products',
             ],
         );
@@ -61,14 +60,13 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
                 'Empty sheet',
                 'Out of bound value',
             ],
-            'header_cells' => [
-                'Sku',
-                'Name',
-                'Price',
-                'Enabled',
-                'Release date',
-                'Price with tax',
-            ]
+            'rows' => [
+                ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
+                ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
+                ['ref2','Produit 2','13.87','FALSE','5/23/2022', ''],
+                ['ref3','Produit 3','16','TRUE','10/5/2015','19.2'],
+            ],
+            'column_count' => 6
         ];
 
         $this->assertSame($expectedColumnLabels, $response);
@@ -83,7 +81,6 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => 'invalid_key_file',
-                'header_row' => 1,
                 'sheet_name' => 'Products',
             ],
         );
@@ -102,7 +99,6 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => $fileKey,
-                'header_row' => 1,
                 'sheet_name' => 'Sheet not found',
             ],
         );
