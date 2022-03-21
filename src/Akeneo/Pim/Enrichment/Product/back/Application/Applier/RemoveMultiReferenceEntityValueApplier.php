@@ -33,8 +33,12 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
         $formerValue = $product->getValue(
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
-            $userIntent->recordCodes(),
+            $userIntent->channelCode(),
         );
+
+        $formerValueAsString = $formerValue ?
+            array_map(fn ($value) => $value->normalize(), $formerValue->getData())
+            : null;
 
         $values = $formerValue !== null ?
             \array_unique(array_diff($formerValueAsString, $userIntent->recordCodes()))
