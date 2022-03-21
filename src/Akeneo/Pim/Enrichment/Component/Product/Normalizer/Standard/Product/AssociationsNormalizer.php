@@ -22,8 +22,7 @@ use Webmozart\Assert\Assert;
 class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     public function __construct(
-        private GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct,
-        private ?GetAssociatedProductCodesByPublishedProduct $getAssociatedProductCodesByPublishedProduct
+        private GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct
     ) {
     }
 
@@ -45,7 +44,8 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
+        return $data instanceof EntityWithAssociationsInterface && 'standard' === $format
+            && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -95,12 +95,6 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     foreach ($association->getProducts() as $product) {
                         $data[$code]['products'][] = $product->getReference();
                     }
-                } elseif (get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
-                    Assert::notNull($this->getAssociatedProductCodesByPublishedProduct);
-                    $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodesByPublishedProduct->getCodes(
-                        $associationAwareEntity->getId(),
-                        $association
-                    ));
                 } else {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
                         $associationAwareEntity->getUuid(),
