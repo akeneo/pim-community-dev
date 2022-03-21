@@ -32,6 +32,7 @@ use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregato
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\Api\Normalizer\Exception\ViolationNormalizer;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -101,24 +102,36 @@ class CreateOrUpdateAssetsAction
         }
 
         $responsesData = [];
-        foreach ($normalizedAssets as $normalizedAsset) {
-            try {
-                $responseData = $this->createOrUpdateAsset($assetFamilyIdentifier, $normalizedAsset);
-            } catch (\InvalidArgumentException $exception) {
-                $responseData = [
-                    'code'        => $normalizedAsset['code'],
-                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-                    'message'     => $exception->getMessage()
-                ];
-            } catch (ViolationHttpException $exception) {
-                $responseData = [
-                    'code'        => $normalizedAsset['code'],
-                    'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
-                ];
-                $responseData += $this->violationNormalizer->normalize($exception);
-            }
+        try {
+            foreach ($normalizedAssets as $normalizedAsset) {
+                try {
+                    $responseData = $this->createOrUpdateAsset($assetFamilyIdentifier, $normalizedAsset);
+                } catch (\InvalidArgumentException $exception) {
+                    $responseData = [
+                        'code' => $normalizedAsset['code'],
+                        'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY,
+                        'message' => $exception->getMessage()
+                    ];
+                } catch (ViolationHttpException $exception) {
+                    $responseData = [
+                        'code' => $normalizedAsset['code'],
+                        'status_code' => Response::HTTP_UNPROCESSABLE_ENTITY
+                    ];
+                    $responseData += $this->violationNormalizer->normalize($exception);
+                } catch (UniqueConstraintViolationException $exception) {
+                    $responseData = [
+                        'code' => $normalizedAsset['code'],
+                        'status_code' => Response::HTTP_CONFLICT,
+                    ];
+                }
 
-            $responsesData[] = $responseData;
+                $responsesData[] = $responseData;
+            }
+        } catch (\Throwable $e) {
+            $this->indexAssetEventAggregator->flushEvents();
+            $this->computeTransformationEventAggregator->flushEvents();
+
+            throw $e;
         }
 
         $this->indexAssetEventAggregator->flushEvents();
