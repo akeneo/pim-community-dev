@@ -23,7 +23,10 @@ class SupplierList extends ReactController {
     }
 
     renderRoute() {
-        mediator.trigger('pim_menu:highlight:tab', {extension: 'pim-menu-connect'});
+        mediator.trigger('pim_menu:highlight:tab', {
+            extension: 'pim-menu-connect',
+            columnExtension: 'pim-menu-onboarder-column',
+        });
         mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-connect-onboarder-supplier-list'});
 
         return super.renderRoute();

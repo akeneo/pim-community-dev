@@ -20,7 +20,7 @@ onboarder:
                 unknown_error: An error occured while creating the supplier.
                 supplier_already_exists: 'A supplier with code "{{ supplierCode }}" already exists.'
         supplier_list:
-            menu_item: Supplier list
+            menu_item: Suppliers
             title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
             no_supplier: There are no suppliers yet.
             search_by_supplier: Search by Supplier
@@ -39,4 +39,4 @@ onboarder:
                 unknown_error: An error occured while deleting the supplier.
 
 pim_title:
-    onboarder_serenity_supplier_list: Supplier list
+    onboarder_serenity_supplier_list: Suppliers
