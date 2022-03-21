@@ -29,7 +29,7 @@ const QualityScoreEvolutionSection: FC<Props> = ({categoryCode, familyCode, chan
   const [chart, setChart] = useState<ReactElement | null>(null);
 
   useEffect(() => {
-    if (dataset === null) {
+    if (dataset === null || Object.keys(dataset.data).length === 0) {
       return;
     }
 
