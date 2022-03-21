@@ -7,8 +7,6 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 /**
  * A runtime service registry for registering job by name.
  *
- * TODO: udpate specs
- *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -58,13 +56,14 @@ class JobRegistry
      */
     public function get($jobName)
     {
-        if (!isset($this->jobs[$jobName])) {
+        $jobs = $this->getAllEnabledJobs();
+        if (!isset($jobs[$jobName])) {
             throw new UndefinedJobException(
                 sprintf('The job "%s" is not registered', $jobName)
             );
         }
 
-        return $this->jobs[$jobName]['job'];
+        return $jobs[$jobName]['job'];
     }
 
     /**
