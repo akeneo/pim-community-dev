@@ -44,7 +44,7 @@ class UploadedFileValidatorTest extends AbstractValidationTest
         );
         $violations = $this->getValidator()->validate($uploadedFile, new UploadedFileConstraint());
 
-        $this->assertHasValidationError('akeneo.tailored_import.validation.uploaded_file.not_allowed_mime_type', '', $violations);
+        $this->assertHasValidationError('akeneo.tailored_import.validation.uploaded_file.not_allowed_mime_type', '[file]', $violations);
     }
 
     protected function getConfiguration(): Configuration

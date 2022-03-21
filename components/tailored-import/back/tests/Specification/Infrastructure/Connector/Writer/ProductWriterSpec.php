@@ -7,10 +7,12 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Messenger\Envelope;
@@ -47,33 +49,105 @@ class ProductWriterSpec extends ObjectBehavior
 
     public function it_execute_upsert_command(MessageBusInterface $messageBus)
     {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_catch_legacy_violation_exception(MessageBusInterface $messageBus, StepExecution $stepExecution, ConstraintViolation $constraintViolation)
-    {
+    public function it_should_catch_legacy_violation_exception(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation
+    ) {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
+
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn("error");
         $constraintViolation->__toString()->willReturn("error");
+
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_catch_violation_exception(MessageBusInterface $messageBus, StepExecution $stepExecution, ConstraintViolation $constraintViolation)
-    {
+    public function it_should_catch_violation_exception(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation
+    ) {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
+
         $constraintViolation->getParameters()->willReturn([]);
-        $constraintViolation->getMessage()->willReturn("error");
-        $constraintViolation->__toString()->willReturn("error");
+        $constraintViolation->getMessage()->willReturn('error');
+        $constraintViolation->__toString()->willReturn('error');
+
         $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning("error", [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_value_on_violations(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation
+    ) {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+
+        $constraintViolation->getParameters()->willReturn([]);
+        $constraintViolation->getMessage()->willReturn('error');
+        $constraintViolation->__toString()->willReturn('error');
+        $constraintViolation->getPropertyPath()->willReturn('valueUserIntents[1]');
+
+        $valueUserIntents = [
+            new SetTextValue('name', null, null, value: 'A name'),
+            new SetTextValue('description', null, null, 'A description with error'),
+        ];
+
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+
+        $messageBus->dispatch($upsertProductCommand)->willThrow(
+            new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()]))
+        );
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+
+        unset($valueUserIntents[1]);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_not_retry_when_value_still_the_same(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation
+    ) {
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+
+        $constraintViolation->getParameters()->willReturn([]);
+        $constraintViolation->getMessage()->willReturn('error');
+        $constraintViolation->__toString()->willReturn('error');
+        $constraintViolation->getPropertyPath()->willReturn('wrong_property_path');
+
+        $valueUserIntents = [
+            new SetTextValue('name', null, null, value: 'A name'),
+            new SetTextValue('description', null, null, 'A description'),
+        ];
+
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+
+        $messageBus->dispatch($upsertProductCommand)
+            ->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])))
+            ->shouldBeCalledOnce();
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+
         $this->write([$this->rowPayload]);
     }
 }

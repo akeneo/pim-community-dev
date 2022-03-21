@@ -24,17 +24,31 @@ class FileStructure
         private ?string $sheetName,
     ) {
         Assert::greaterThanEq($firstColumn, 0);
-        Assert::greaterThanEq($headerLine, 0);
+        Assert::greaterThanEq($headerLine, 1);
         Assert::greaterThanEq($productLine, $headerLine);
         Assert::nullOrNotEmpty($sheetName);
+    }
+
+    public static function create(
+        int $firstColumn,
+        int $headerLine,
+        int $productLine,
+        ?string $sheetName
+    ):self {
+        return new self(
+            $firstColumn,
+            $headerLine,
+            $productLine,
+            $sheetName
+        );
     }
 
     public static function createFromNormalized(array $normalizedFileStructure): self
     {
         return new self(
             (int) $normalizedFileStructure['first_column'],
-            (int) $normalizedFileStructure['header_line'],
-            (int) $normalizedFileStructure['product_line'],
+            (int) $normalizedFileStructure['header_row'],
+            (int) $normalizedFileStructure['first_product_row'],
             $normalizedFileStructure['sheet_name'],
         );
     }

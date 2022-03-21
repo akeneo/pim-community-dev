@@ -3,9 +3,9 @@ import {Column, FileStructure} from 'feature/models';
 import {useReadColumns} from './useReadColumns';
 
 const fileStructure: FileStructure = {
-  header_line: 0,
+  header_row: 0,
   first_column: 0,
-  product_line: 1,
+  first_product_row: 1,
   sheet_name: null,
 };
 

@@ -30,9 +30,9 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
         $flatFileIterator = $this->getFlatFileIterator();
         $actualFileContent = iterator_to_array($flatFileIterator);
         $expectedFileContent = [
-            ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
-            ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', ''],
-            ['ref3', 'Produit 3', '16', 'TRUE', '10/5/2015', '19.2'],
+            1 => ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
+            2 => ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', ''],
+            3 => ['ref3', 'Produit 3', '16', 'TRUE', '10/5/2015', '19.2'],
         ];
 
         $this->assertEquals($expectedFileContent, $actualFileContent);
@@ -62,9 +62,9 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
     public function it_can_iterate_on_file_with_empty_columns_and_lines(): void
     {
         $flatFileIterator = $this->getFlatFileIterator(
-            headerLine: 1,
+            headerLine: 2,
             firstColumn: 1,
-            productLine: 3,
+            productLine: 4,
             sheetName: 'Empty lines and columns',
         );
 
@@ -82,9 +82,9 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
 
         $actualFileContent = iterator_to_array($flatFileIterator);
         $expectedFileContent = [
-            ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
-            ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', '16.644'],
-            ['ref3', 'Produit 3', '16', 'TRUE', '10/5/2015', '19.2'],
+            1 => ['ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
+            2 => ['ref2', 'Produit 2', '13.87', 'FALSE', '5/23/2022', ''],
+            3 => ['ref3', 'Produit 3', '16', 'TRUE', '10/5/2015', '19.2'],
         ];
 
         $this->assertEquals($expectedFileContent, $actualFileContent);
@@ -126,15 +126,15 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
 
     private function getFlatFileIterator(
         string $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx',
-        int $headerLine = 0,
+        int $headerLine = 1,
         int $firstColumn = 0,
-        int $productLine = 1,
+        int $productLine = 2,
         string $sheetName = 'Products'
     ): XlsxFileIterator {
         $fileStructure = FileStructure::createFromNormalized([
-            'header_line' => $headerLine,
+            'header_row' => $headerLine,
             'first_column' => $firstColumn,
-            'product_line' => $productLine,
+            'first_product_row' => $productLine,
             'sheet_name' => $sheetName,
         ]);
 
