@@ -11,6 +11,10 @@ class SourceParameterHydrator
 {
     public function hydrate(?array $normalizedSourceParameter, string $attributeType): ?SourceParameterInterface
     {
+        if (null === $normalizedSourceParameter) {
+            return null;
+        }
+
         return match ($attributeType) {
             'pim_catalog_number' => $this->hydrateNumberSourceParameter($normalizedSourceParameter),
             default => null,

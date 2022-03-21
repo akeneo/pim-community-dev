@@ -51,6 +51,7 @@ final class HandleNumberTest extends AttributeTestCase
                     '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
                     '2d9e967a-5efa-4a31-a254-99f7c50a145c' => '2022',
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => '12,5',
+                    '25621f5a-504f-4893-8f0c-da684dfa84f7' => '6',
                 ],
                 'data_mappings' => [
                     DataMapping::create(
@@ -98,6 +99,21 @@ final class HandleNumberTest extends AttributeTestCase
                         [],
                         [],
                     ),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
+                        TargetAttribute::create(
+                            'quantity',
+                            'pim_catalog_number',
+                            'ecommerce',
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['25621f5a-504f-4893-8f0c-da684dfa84f7'],
+                        [],
+                        [],
+                    ),
                 ],
                 'expected' => new UpsertProductCommand(
                     userId: 1,
@@ -105,6 +121,7 @@ final class HandleNumberTest extends AttributeTestCase
                     valueUserIntents: [
                         new SetNumberValue('year', null, null, '2022'),
                         new SetNumberValue('age', 'ecommerce', 'fr_FR', '12.5'),
+                        new SetNumberValue('quantity', 'ecommerce', null, '6'),
                     ],
                 ),
             ],
