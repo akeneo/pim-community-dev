@@ -53,10 +53,6 @@ final class GetWizardDataAction
         $originalScopes = $this->getConnectedAppScopesQuery->execute($app->getId());
         $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        /* to delete */
-        $requestedScopes = [...$requestedScopes, 'write_channel_settings'];
-        /* end to delete */
-
         $newScopes = $this->scopeListComparator->diff(
             $requestedScopes,
             $originalScopes

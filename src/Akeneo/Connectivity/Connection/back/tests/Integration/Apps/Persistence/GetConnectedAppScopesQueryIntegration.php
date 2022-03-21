@@ -59,4 +59,11 @@ class GetConnectedAppScopesQueryIntegration extends TestCase
 
         $this->assertEquals(['scope A1', 'scope A2', 'scope A3'], $result);
     }
+
+    public function test_it_returns_an_empty_array()
+    {
+        $result = $this->query->execute('undefinedAppId');
+
+        $this->assertEquals([], $result);
+    }
 }

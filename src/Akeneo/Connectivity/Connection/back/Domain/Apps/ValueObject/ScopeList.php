@@ -60,13 +60,4 @@ final class ScopeList
     {
         return \implode(' ', $this->scopes);
     }
-
-    /**
-     * @param array<string> $originalScopes
-     * @param array<string> $requestedScopes
-     */
-    public static function getNewScopes(array $originalScopes, array $requestedScopes): self
-    {
-        return self::fromScopes(\array_diff($requestedScopes, $originalScopes));
-    }
 }

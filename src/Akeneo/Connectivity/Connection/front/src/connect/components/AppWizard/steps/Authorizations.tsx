@@ -27,7 +27,7 @@ type ScopeMessages = {
 type Props = {
     appName: string;
     scopeMessages: ScopeMessages[];
-    oldScopeMessages: ScopeMessages[] | null;
+    oldScopeMessages?: ScopeMessages[] | null;
 };
 
 export const Authorizations: FC<Props> = ({appName, scopeMessages, oldScopeMessages}) => {

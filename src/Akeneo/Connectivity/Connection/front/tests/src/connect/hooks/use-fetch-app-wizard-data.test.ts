@@ -19,6 +19,13 @@ test('it fetches the wizard data', async () => {
             },
         ],
         authenticationScopes: ['email', 'profile'],
+        oldScopeMessages: [
+            {
+                icon: 'an_old_icon',
+                type: 'an_old_type',
+                entities: 'some_entities',
+            },
+        ],
     };
 
     mockFetchResponses({
