@@ -15,6 +15,11 @@ final class SupplierEdit
 
     public function __invoke(Request $request): JsonResponse
     {
-        return new JsonResponse();
+        return new JsonResponse([
+            'identifier'=> "",
+            'code'=> "mysupplier",
+            'label'=> "My Supplier",
+            'contributors'=> []
+        ]);
     }
 }
