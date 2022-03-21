@@ -56,4 +56,8 @@ class ContextLogProcessor
         $this->cachedContext['cmd_name']= $cmd->getName();
         $this->cachedContext['akeneo_context']= $this->boundedContextResolver->fromCommand($cmd)?: "Unknown context";
     }
+
+    public function insertContext(string $key, string $value) {
+        $this->cachedContext[$key] = $value;
+    }
 }
