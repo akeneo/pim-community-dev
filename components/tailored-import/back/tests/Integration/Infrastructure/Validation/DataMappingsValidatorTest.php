@@ -144,8 +144,8 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     ]
                 ],
             ],
-            'data mapping with empty sources' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached',
+            'data mapping with empty sources for single source target' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
                 [
                     [
@@ -164,8 +164,26 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     ]
                 ]
             ],
-            'data mapping with too many sources' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached',
+            'data mapping with empty sources for a multi source target' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'categories',
+                            'type' => 'property',
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                        ],
+                        'sources' => [],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ]
+                ]
+            ],
+            'data mapping with too many sources for single source target' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
                 [
                     [
@@ -175,6 +193,27 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'type' => 'attribute',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
+                            'action_if_not_empty' => 'set',
+                            'action_if_empty' => 'skip',
+                        ],
+                        'sources' => [
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
+                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
+                        ],
+                        'operations' => [],
+                        'sample_data' => [],
+                    ]
+                ]
+            ],
+            'data mapping with too many sources for a multi source target' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached',
+                '[018e1a5e-4d77-4a15-add8-f142111d4cd0][sources]',
+                [
+                    [
+                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
+                        'target' => [
+                            'code' => 'categories',
+                            'type' => 'property',
                             'action_if_not_empty' => 'set',
                             'action_if_empty' => 'skip',
                         ],

@@ -13,7 +13,7 @@ type DataMapping = {
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
-const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 4;
+const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 1;
 
 type DataMappingType = 'attribute' | 'property';
 

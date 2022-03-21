@@ -48,6 +48,21 @@ const propertyDataMapping: DataMapping = {
   sample_data: [],
 };
 
+const attributeDataMappingWithoutSource: DataMapping = {
+  uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
+  target: {
+    code: 'name',
+    type: 'attribute',
+    channel: null,
+    locale: null,
+    action_if_not_empty: 'set',
+    action_if_empty: 'skip',
+  },
+  sources: [],
+  operations: [],
+  sample_data: [],
+};
+
 jest.mock('./SourceDropdown', () => ({
   SourceDropdown: ({
     onColumnSelected,
@@ -57,11 +72,8 @@ jest.mock('./SourceDropdown', () => ({
     disabled: boolean;
   }) => (
     <button
-      onClick={
-        disabled
-          ? undefined
-          : () =>
-              onColumnSelected({uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc', index: 0, label: 'Product identifier'})
+      onClick={() =>
+        onColumnSelected({uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc', index: 0, label: 'Product identifier'})
       }
     >
       Add source
@@ -137,7 +149,7 @@ test('it can add a source to a data mapping', async () => {
 
   await renderWithProviders(
     <DataMappingDetails
-      dataMapping={propertyDataMapping}
+      dataMapping={attributeDataMappingWithoutSource}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
@@ -147,7 +159,7 @@ test('it can add a source to a data mapping', async () => {
   userEvent.click(screen.getByText('Add source'));
 
   expect(handleDataMappingChange).toHaveBeenCalledWith({
-    ...propertyDataMapping,
-    sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab', 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
+    ...attributeDataMappingWithoutSource,
+    sources: ['dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
   });
 });

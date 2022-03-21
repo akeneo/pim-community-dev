@@ -19,9 +19,9 @@ test('it can add a source', () => {
     },
   ];
 
-  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false} />);
+  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} />);
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.label'));
   userEvent.click(screen.getByText('Product (B)'));
 
   expect(onColumnSelected).toHaveBeenCalledWith({
@@ -48,9 +48,9 @@ test('it can filter sources with a text search', () => {
     },
   ];
 
-  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} disabled={false} />);
+  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={onColumnSelected} />);
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.label'));
 
   userEvent.type(screen.getByPlaceholderText('pim_common.search'), 'Sku');
   act(() => {
@@ -67,32 +67,4 @@ test('it can filter sources with a text search', () => {
   });
 
   expect(screen.queryByText('pim_common.no_result')).toBeInTheDocument();
-});
-
-test('it cannot add a source when disabled', () => {
-  const handleColumnSelected = jest.fn();
-  const columns = [
-    {
-      uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
-      index: 0,
-      label: 'Sku',
-    },
-    {
-      uuid: 'd1249682-720e-31ec-90d6-0242ac120003',
-      index: 1,
-      label: 'Product',
-    },
-  ];
-
-  renderWithProviders(<SourceDropdown columns={columns} onColumnSelected={handleColumnSelected} disabled={true} />);
-
-  const addSourceButton = screen.getByText('akeneo.tailored_import.data_mapping.sources.add');
-  expect(addSourceButton).toBeDisabled();
-  expect(addSourceButton).toHaveAttribute(
-    'title',
-    'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached'
-  );
-
-  userEvent.click(addSourceButton);
-  expect(handleColumnSelected).not.toHaveBeenCalled();
 });
