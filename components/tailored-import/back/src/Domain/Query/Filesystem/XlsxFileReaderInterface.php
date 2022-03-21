@@ -21,6 +21,11 @@ interface XlsxFileReaderInterface
     public function readRows(?string $sheetName, int $start, int $length): array;
 
     /**
+     * @return array<string|null>
+     */
+    public function readValuesFromColumn(?string $sheetName, int $productLine, int $columnIndex, int $length): array;
+
+    /**
      * @return array<string>
      */
     public function getSheetNames(): array;

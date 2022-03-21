@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;
@@ -72,6 +73,41 @@ class XlsxFileReader implements XlsxFileReaderInterface
         $rows = $this->removeTrailingEmptyRows($rows);
 
         return $this->padRowsToTheLongestRow($rows);
+    }
+
+    public function readValuesFromColumn(?string $sheetName, int $productLine, int $columnIndex, int $length): array
+    {
+        $values = [];
+
+        $sheet = $this->selectSheet($sheetName);
+        $rowIterator = $sheet->getRowIterator();
+        $rowCount = max(iterator_count($rowIterator), 0);
+
+        $selectedRowIndexes = [];
+        for ($i = 0; $i < min($rowCount, $length); $i++) {
+            $selectedRowIndexes[] = rand($productLine, $rowCount);
+        }
+
+        $rowIterator->rewind();
+
+        while ($rowIterator->valid()) {
+            /** @var Row $row*/
+            $row = $rowIterator->current();
+
+            if (in_array($rowIterator->key(), $selectedRowIndexes)) {
+                $cell = $row->getCellAtIndex($columnIndex+1);
+//                $formattedCell = $this->cellsFormatter->formatCell($cell);
+                $values[] = $cell->getValue();
+
+                if (count($values) === count($selectedRowIndexes)) {
+                    break;
+                }
+            }
+
+            $rowIterator->next();
+        }
+
+        return array_pad($values, $length, null);
     }
 
     public function getSheetNames(): array
