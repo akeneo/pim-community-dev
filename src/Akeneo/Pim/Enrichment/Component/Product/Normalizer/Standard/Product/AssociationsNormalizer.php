@@ -98,7 +98,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     }
                 } else {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
-                        $associationAwareEntity->getId(),
+                        $associationAwareEntity->getUuid(),
                         $association
                     ));
                 }

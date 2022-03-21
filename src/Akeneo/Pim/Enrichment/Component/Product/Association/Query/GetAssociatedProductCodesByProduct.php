@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Association\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -13,10 +14,7 @@ interface GetAssociatedProductCodesByProduct
     /**
      * Return codes of associated products
      *
-     * @param int $productId
-     * @param AssociationInterface $association
-     *
-     * @return array
+     * @return string[]
      */
-    public function getCodes(int $productId, AssociationInterface $association);
+    public function getCodes(UuidInterface $productUuid, AssociationInterface $association): array;
 }
