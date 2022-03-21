@@ -1,5 +1,6 @@
 client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
+client-to-clone-flex: &client-to-clone-flex
 
 workflows:
     # Description :
@@ -79,7 +80,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["flex"]
-                          SOURCE_PFID_SOURCE_PROJECT_ID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
                   requires:
                       - build_env_vars
             - test_upgrade_from_customer_db:
@@ -87,14 +88,14 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                          SOURCE_PFID: *client-to-clone-flex
                   requires:
                       - "[flex] test_migrate_from-<< matrix.SOURCE_PFID >>"
             - ui_sanity_checks:
                   name: sanity_checks-<< matrix.SOURCE_PFID >>
                   matrix:
                       parameters:
-                          SOURCE_PFID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                          SOURCE_PFID: *client-to-clone-flex
                   requires:
                       - "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
 
@@ -119,7 +120,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["flex"]
-                          SOURCE_PFID_SOURCE_PROJECT_ID: ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
                   requires:
                       - build_env_vars
 
@@ -251,3 +252,28 @@ workflows:
                           INSTANCE_NAME: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] Delete environment << matrix.INSTANCE_NAME >> ?"
+
+    # Description :
+    #    On demand check doctrine migration from FLEX N-1 to FLEX N
+    #    To be able to trigger this workfow, you will need to comment the "when" part
+    #       You can also changed the client list by changing the variable `client-to-clone-flex` in the `.circleci/workflows/aliases.yml` file
+    #       You will need the GCP project id and the instance name that you want to check
+    on_demand_clone_and_test_migrate_flex_customers:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "on_demand_clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_srnt_prod:
+                  name: "[srnt] Build"
+                  requires:
+                      - checkout
+            - test_migrate_flex:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_migrate-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
+                  requires:
+                      - "[srnt] Build"

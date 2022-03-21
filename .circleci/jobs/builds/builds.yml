@@ -342,12 +342,10 @@ jobs:
                       IMAGE_TAG=${CIRCLE_SHA1}
                       IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                       IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-                      RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                       if [[ "${TYPE}" == "grth" ]]; then
                           TYPE_LONG=growth
                           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
                           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
-                          RELEASE_NAME="${TYPE_LONG}-${RELEASE_NAME}"
                       fi
 
                       echo export TYPE=${TYPE} > persisted_env_vars
@@ -355,12 +353,14 @@ jobs:
                       echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                       echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
                       echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-                      echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                       echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
 
+                      echo "Type: ${TYPE}"
+                      echo "Type long: ${TYPE_LONG}"
                       echo "Image tag: ${IMAGE_TAG}"
-                      echo "Release name: ${RELEASE_NAME}"
+                      echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
+                      echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
             - persist_to_workspace:
                   root: ~/
                   paths:
