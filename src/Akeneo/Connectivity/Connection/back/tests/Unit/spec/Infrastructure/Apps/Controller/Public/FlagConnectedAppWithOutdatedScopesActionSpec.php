@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class ScopesUpdateActionSpec extends ObjectBehavior
+class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
 {
     public function let(
         TokenStorageInterface $tokenStorage,

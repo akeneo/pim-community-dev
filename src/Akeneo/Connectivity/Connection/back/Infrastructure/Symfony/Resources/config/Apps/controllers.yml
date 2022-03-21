@@ -119,7 +119,7 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\ScopesUpdateAction:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction:
         public: true
         arguments:
             - '@security.token_storage'
