@@ -49,6 +49,7 @@ services:
         class: '%pim_catalog.normalizer.standard.product.associations.class%'
         arguments:
             - '@pim_catalog.query.get_associated_product_codes_by_product'
+            - null
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 40 }
 

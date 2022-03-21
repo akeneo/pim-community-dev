@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByPublishedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
@@ -20,12 +21,10 @@ use Webmozart\Assert\Assert;
  */
 class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var GetAssociatedProductCodesByProduct */
-    private $getAssociatedProductCodeByProduct;
-
-    public function __construct(GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct)
-    {
-        $this->getAssociatedProductCodeByProduct = $getAssociatedProductCodeByProduct;
+    public function __construct(
+        private GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct,
+        private ?GetAssociatedProductCodesByPublishedProduct $getAssociatedProductCodesByPublishedProduct
+    ) {
     }
 
     /**
@@ -96,6 +95,12 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     foreach ($association->getProducts() as $product) {
                         $data[$code]['products'][] = $product->getReference();
                     }
+                } elseif (get_class($associationAwareEntity) === 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+                    Assert::notNull($this->getAssociatedProductCodesByPublishedProduct);
+                    $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodesByPublishedProduct->getCodes(
+                        $associationAwareEntity->getId(),
+                        $association
+                    ));
                 } else {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
                         $associationAwareEntity->getUuid(),
