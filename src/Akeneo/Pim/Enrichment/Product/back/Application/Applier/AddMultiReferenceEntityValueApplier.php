@@ -37,11 +37,11 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
         );
 
         $formerValueAsString = $formerValue ?
-            array_map(fn ($value) => $value->normalize(), $formerValue->getData())
+            array_map(fn ($value) => $value->__toString(), $formerValue->getData())
             : null;
 
         $values = $formerValueAsString !== null ?
-            \array_unique(array_merge($formerValue, $userIntent->recordCodes()))
+            \array_unique(array_merge($formerValueAsString, $userIntent->recordCodes()))
             : $userIntent->recordCodes();
 
         $this->productUpdater->update(

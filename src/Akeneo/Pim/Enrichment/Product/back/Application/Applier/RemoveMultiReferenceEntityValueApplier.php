@@ -37,10 +37,10 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
         );
 
         $formerValueAsString = $formerValue ?
-            array_map(fn ($value) => $value->normalize(), $formerValue->getData())
+            array_map(fn ($value) => $value->__toString(), $formerValue->getData())
             : null;
 
-        $values = $formerValue !== null ?
+        $values = $formerValueAsString !== null ?
             \array_unique(array_diff($formerValueAsString, $userIntent->recordCodes()))
             : $userIntent->recordCodes();
 
