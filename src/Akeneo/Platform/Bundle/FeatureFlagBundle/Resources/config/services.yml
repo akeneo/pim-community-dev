@@ -1,3 +1,6 @@
+parameters:
+    env(PIM_EDITION): 'COMMUNITY_EDITION'
+
 services:
     feature_flags:
         public: true
@@ -22,3 +25,9 @@ services:
     akeneo.feature_flag.service.registry:
         public: false
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry'
+
+    akeneo.feature_flag.service.only_serenity_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySerenityFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
