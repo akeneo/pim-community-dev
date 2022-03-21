@@ -9,9 +9,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
-        # TODO CPM-507: drop this column. Or can not declare it?
-        owner_id:
+        # TODO CPM-507: drop this column.
+        ownerId:
             type: integer
+            column: owner_id
     uniqueConstraints:
         # TODO CPM-507: drop this constraint
         locale_foreign_key_idx:
