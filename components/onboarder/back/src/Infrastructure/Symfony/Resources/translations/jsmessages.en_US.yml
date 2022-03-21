@@ -30,6 +30,13 @@ onboarder:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
                 actions: Actions
+        supplier_delete:
+            sucess_message: The supplier was successfully deleted
+            modal:
+                title: Supplier
+                confirmation_question: Are you sure you want to delete this supplier?
+                warning: By deleting this supplier, any unsaved enrichment will be lost.
+                unknown_error: An error occured while deleting the supplier.
 
 pim_title:
     onboarder_serenity_supplier_list: Supplier list
