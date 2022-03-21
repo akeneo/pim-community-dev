@@ -86,6 +86,7 @@ class ColumnView extends BaseView {
         columns: formData.configuration.import_structure.columns ?? [],
         data_mappings: formData.configuration.import_structure.data_mappings ?? [],
       },
+      file_structure: formData.configuration.file_structure,
     };
 
     const props: ImportStructureTabProps = {

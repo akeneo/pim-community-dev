@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext;
+namespace Specification\Akeneo\Platform\Bundle\FrameworkBundle\Logging;
 
 use Akeneo\Pim\Automation\RuleEngine\Bundle\Controller\RuleController;
 use Akeneo\Pim\Enrichment\Product\Bundle\Controller\InternalApi\DuplicateProductController;
-use Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver;
+use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\ErrorHandler\Error\ClassNotFoundError;
 use Symfony\Component\HttpFoundation\ParameterBag;

@@ -5,6 +5,7 @@ import {Column, DataMapping, MAX_DATA_MAPPING_COUNT} from '../../models';
 import {getErrorsForPath, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {AddDataMappingDropdown} from '../AddDataMappingDropdown';
 import {DataMappingRow} from './DataMappingRow';
+import {useIdentifierAttribute} from '../../hooks';
 
 const Container = styled.div`
   flex: 1;
@@ -19,6 +20,7 @@ type DataMappingListProps = {
   validationErrors: ValidationError[];
   onDataMappingAdded: (dataMapping: DataMapping) => void;
   onDataMappingSelected: (dataMappingUuid: string) => void;
+  onDataMappingRemoved: (dataMappingUuid: string) => void;
 };
 
 const DataMappingList = ({
@@ -28,10 +30,12 @@ const DataMappingList = ({
   validationErrors,
   onDataMappingAdded,
   onDataMappingSelected,
+  onDataMappingRemoved,
 }: DataMappingListProps) => {
   const translate = useTranslate();
   const canAddDataMapping = MAX_DATA_MAPPING_COUNT > dataMappings.length;
   const globalErrors = getErrorsForPath(validationErrors, '');
+  const [, identifierAttribute] = useIdentifierAttribute();
 
   return (
     <Container>
@@ -45,7 +49,6 @@ const DataMappingList = ({
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-
       <Table>
         <Table.Body>
           {dataMappings.map(dataMapping => (
@@ -53,9 +56,11 @@ const DataMappingList = ({
               key={dataMapping.uuid}
               dataMapping={dataMapping}
               columns={columns}
-              onSelect={onDataMappingSelected}
               isSelected={selectedDataMappingUuid === dataMapping.uuid}
+              isIdentifierDataMapping={identifierAttribute?.code === dataMapping.target.code}
               hasError={filterErrors(validationErrors, `[${dataMapping.uuid}]`).length > 0}
+              onSelect={onDataMappingSelected}
+              onRemove={onDataMappingRemoved}
             />
           ))}
         </Table.Body>

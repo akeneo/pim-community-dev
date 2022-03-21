@@ -23,7 +23,7 @@ parameters:
 #        - 'pim_catalog_simpleselect'
 #        - 'pim_catalog_table'
         - 'pim_catalog_text'
-#        - 'pim_catalog_textarea'
+        - 'pim_catalog_textarea'
 
 services:
     akeneo.tailored_import.query.attribute.find_viewable_attributes:

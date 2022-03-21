@@ -20,3 +20,11 @@ services:
       - '@akeneo.tailored_import.handler.read_columns'
       - '@validator'
       - '@serializer'
+
+  akeneo.tailored_import.controller.get_file_template_information_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetFileTemplateInformationAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.get_file_template_information_handler'
+      - '@validator'
+      - '@serializer'

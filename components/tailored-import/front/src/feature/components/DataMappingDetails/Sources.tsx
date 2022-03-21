@@ -36,7 +36,7 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
         {sources.map((uuid, index) => {
           const column = columns.find(column => uuid === column.uuid);
 
-          return <li key={`${uuid}${index}`}>{column ? generateColumnName(column) : ''}</li>;
+          return <li key={`${uuid}${index}`}>{column ? generateColumnName(column.index, column.label) : ''}</li>;
         })}
       </ul>
       <SourceDropdown columns={columns} onColumnSelected={handleAddSource} disabled={!canAddSource} />

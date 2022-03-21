@@ -82,4 +82,27 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             $supplier['label']
         ): null;
     }
+
+    /** @test */
+    public function itDeletesASupplier(): void
+    {
+        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f02',
+            'supplier_code',
+            'Supplier code'
+        ));
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f01',
+            'supplier_code2',
+            'Supplier code2'
+        ));
+        $this->get(Write\Supplier\Repository::class)->delete(
+            Write\Supplier\ValueObject\Identifier::fromString(
+                '44ce8069-8da1-4986-872f-311737f46f02'
+            )
+        );
+        static::assertNull($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02'));
+        static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f01'));
+    }
 }

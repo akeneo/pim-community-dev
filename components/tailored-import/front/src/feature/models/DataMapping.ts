@@ -17,7 +17,7 @@ const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 4;
 
 type DataMappingType = 'attribute' | 'property';
 
-const createDefaultDataMapping = (attribute: Attribute, columns: Column[]) => {
+const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null) => {
   const defaultDataMapping: DataMapping = {
     uuid: uuid(),
     target: createAttributeTarget(attribute.code, null, null),
@@ -26,7 +26,7 @@ const createDefaultDataMapping = (attribute: Attribute, columns: Column[]) => {
     sample_data: [],
   };
 
-  return columns.length > 0 ? addSourceToDataMapping(defaultDataMapping, columns[0]) : defaultDataMapping;
+  return identifierColumn ? addSourceToDataMapping(defaultDataMapping, identifierColumn) : defaultDataMapping;
 };
 
 const createPropertyDataMapping = (code: string): DataMapping => {
