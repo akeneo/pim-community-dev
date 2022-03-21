@@ -36,8 +36,9 @@ class RegisterAttributeTypePass implements CompilerPassInterface
         foreach ($taggedServices as $id => $attributes) {
             $attributes = current($attributes);
             $alias = $attributes['alias'];
+            $feature = $attributes['feature'] ?? null;
 
-            $registry->addMethodCall('register', [$alias, new Reference($id)]);
+            $registry->addMethodCall('register', [$alias, new Reference($id), $feature]);
         }
     }
 }

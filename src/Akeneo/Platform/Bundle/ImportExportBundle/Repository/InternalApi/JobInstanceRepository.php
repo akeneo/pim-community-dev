@@ -2,6 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
@@ -15,12 +18,17 @@ use Oro\Bundle\PimDataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInter
  */
 class JobInstanceRepository extends EntityRepository implements DatagridRepositoryInterface
 {
+    private FeatureFlags $featureFlags;
+    private JobRegistry $jobRegistry;
+
     /**
      * @param EntityManager $em
      * @param string        $class
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(FeatureFlags $featureFlags, JobRegistry $jobRegistry, EntityManager $em, $class)
     {
+        $this->featureFlags = $featureFlags;
+        $this->jobRegistry = $jobRegistry;
         parent::__construct($em, $em->getClassMetadata($class));
     }
 
@@ -29,13 +37,21 @@ class JobInstanceRepository extends EntityRepository implements DatagridReposito
      */
     public function createDatagridQueryBuilder()
     {
+        $jobName = array_map(
+            fn(JobInterface $job) => $job->getName(),
+            $this->jobRegistry->all()
+        );
+
         $qb = $this->createQueryBuilder('j');
         $qb
             ->addSelect("j.jobName as jobName")
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )
-            ->andWhere('j.type = :jobType');
+            ->andWhere('j.type = :jobType')
+            ->andWhere(
+                $qb->expr()->in('j.jobName', $jobName)
+            );
 
         return $qb;
     }

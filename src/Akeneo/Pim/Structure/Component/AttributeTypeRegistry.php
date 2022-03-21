@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+
 /**
  * The attribute type registry
  *
@@ -14,6 +16,18 @@ class AttributeTypeRegistry
     /** @var AttributeTypeInterface[] */
     protected $types = [];
 
+    protected FeatureFlags $featureFlags;
+
+    /**
+     * Constructor with feature flag
+     *
+     * @param FeatureFlags $featureFlags
+     */
+    public function __construct(FeatureFlags $featureFlags)
+    {
+        $this->featureFlags = $featureFlags;
+    }
+
     /**
      * Register an attribute type
      *
@@ -22,9 +36,12 @@ class AttributeTypeRegistry
      *
      * @return AttributeTypeRegistry
      */
-    public function register($alias, AttributeTypeInterface $type)
+    public function register($alias, AttributeTypeInterface $type, $feature = null)
     {
-        $this->types[$alias] = $type;
+        $this->types[$alias] = [
+            $type,
+            $feature
+        ];
 
         return $this;
     }
@@ -40,11 +57,15 @@ class AttributeTypeRegistry
      */
     public function get($alias)
     {
-        if (!isset($this->types[$alias])) {
+        if (
+            !isset($this->types[$alias]) || (null !== $this->types[$alias][1] &&
+                !$this->featureFlags->isEnabled($this->types[$alias][1])
+            )
+        ) {
             throw new \LogicException(sprintf('Attribute type "%s" is not registered', $alias));
         }
 
-        return $this->types[$alias];
+        return $this->types[$alias][0];
     }
 
     /**
@@ -54,7 +75,12 @@ class AttributeTypeRegistry
      */
     public function getAliases()
     {
-        return array_keys($this->types);
+        return array_filter(
+            array_keys($this->types),
+            function ($alias) {
+                return null === $this->types[$alias][1] || $this->featureFlags->isEnabled($this->types[$alias][1]);
+            }
+        );
     }
 
     /**
@@ -64,7 +90,7 @@ class AttributeTypeRegistry
      */
     public function getSortedAliases()
     {
-        $types = array_combine(array_keys($this->types), array_keys($this->types));
+        $types = array_combine($this->getAliases(), $this->getAliases());
         asort($types);
 
         return $types;
