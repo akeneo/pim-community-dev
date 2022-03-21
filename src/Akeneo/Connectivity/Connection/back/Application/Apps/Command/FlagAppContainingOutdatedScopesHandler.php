@@ -27,10 +27,10 @@ class FlagAppContainingOutdatedScopesHandler
         $existingScopes = ScopeList::fromScopes($connectedApp->getScopes());
         $supportedScopes = ScopeList::fromScopes($this->scopeMapperRegistry->getAllScopes());
 
-        $newScopes = ScopeList::fromScopeString($command->getNewScopes());
-        $newScopes = $newScopes->filterWith($supportedScopes);
+        $requestedScopes = ScopeList::fromScopeString($command->getRequestedScopes());
+        $requestedScopes = $requestedScopes->filterWith($supportedScopes);
 
-        if (false === $existingScopes->equals($newScopes)) {
+        if (false === $existingScopes->equals($requestedScopes)) {
             $this->saveConnectedAppOutdatedScopesFlagQuery->execute($connectedApp->getId(), true);
         }
     }
