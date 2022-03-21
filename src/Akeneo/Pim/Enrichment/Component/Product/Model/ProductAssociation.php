@@ -11,4 +11,8 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 class ProductAssociation extends AbstractAssociation implements ProductAssociationInterface
 {
+    /**
+     * @TODO CPM-507: drop this property, that is only here because of doctrine
+     */
+    protected ?int $ownerId = null;
 }

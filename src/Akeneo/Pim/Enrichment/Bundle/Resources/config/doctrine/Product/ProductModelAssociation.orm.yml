@@ -53,7 +53,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
-#                    By changing this, the 'product_id' column does not exist for new envs
+                    # TODO: There is a problem, by changing this, the 'product_id' column does not exist for new envs
+                    # So the trigger will not work anymore
                     product_uuid:
                         referencedColumnName: uuid
                         onDelete: CASCADE
