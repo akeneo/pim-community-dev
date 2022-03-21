@@ -16,15 +16,13 @@ class JobRegistry
     /** @var JobInterface[] */
     protected $jobs = [];
 
-    private FeatureFlags $featureFlags;
-
     /**
      * @param FeatureFlags $featureFlags
      */
-    public function __construct(FeatureFlags $featureFlags)
+    public function __construct(private FeatureFlags $featureFlags)
     {
-        $this->featureFlags = $featureFlags;
     }
+
     /**
      * @param JobInterface $job
      * @param string       $jobType
