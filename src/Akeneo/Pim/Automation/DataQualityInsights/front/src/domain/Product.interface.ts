@@ -1,3 +1,5 @@
+export type ProductType = 'product' | 'product_model';
+
 export default interface Product {
   code?: string; // Product model code
   parent?: string; // Product model parent code
@@ -18,7 +20,7 @@ interface Meta {
   };
   level: null | number;
   attributes_for_this_level: string[];
-  model_type: 'product' | 'product_model';
+  model_type: ProductType;
   variant_navigation: VariantNavigation[];
   family_variant: {
     variant_attribute_sets: VariantAttributeSet[];

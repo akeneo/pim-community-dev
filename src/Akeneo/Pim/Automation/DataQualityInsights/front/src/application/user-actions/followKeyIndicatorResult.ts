@@ -1,10 +1,19 @@
 import {KeyIndicatorExtraData} from '../../domain';
+import {ProductType} from '../../domain/Product.interface';
 
-export type FollowKeyIndicatorResultHandler = (
+export type ProductsKeyIndicatorLinkCallback = (
   channelCode: string,
   localeCode: string,
-  familyCode: string | null,
-  categoryId: string | null,
-  rootCategoryId: string | null,
-  extraData: KeyIndicatorExtraData | undefined
+  entityType: ProductType,
+  familyCode?: string | null,
+  categoryId?: string | null,
+  rootCategoryId?: string | null,
+  extraData?: KeyIndicatorExtraData
+) => void;
+
+export type AttributesKeyIndicatorLinkCallback = (
+  localeCode: string,
+  familyCode?: string | null,
+  categoryId?: string | null,
+  extraData?: KeyIndicatorExtraData
 ) => void;
