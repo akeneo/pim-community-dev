@@ -8,6 +8,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
@@ -126,17 +128,19 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
         $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
+        $setGroupsIntent = new SetGroups(['groupA', 'groupB']);
 
         $this->beConstructedThrough('createFromCollection', [
             10,
             'identifier1',
-            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue, $categoryUserIntent]
+            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue, $categoryUserIntent, $setGroupsIntent]
         ]);
 
         $this->userId()->shouldReturn(10);
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
+        $this->groupsUserIntent()->shouldReturn($setGroupsIntent);
         $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue]);
     }
 
@@ -162,6 +166,20 @@ class UpsertProductCommandSpec extends ObjectBehavior
             [
                 new SetCategories(['foo']),
                 new SetCategories(['bar']),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_multiple_groups_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetGroups(['foo']),
+                new AddGroups(['bar']),
             ]
         ]);
 
