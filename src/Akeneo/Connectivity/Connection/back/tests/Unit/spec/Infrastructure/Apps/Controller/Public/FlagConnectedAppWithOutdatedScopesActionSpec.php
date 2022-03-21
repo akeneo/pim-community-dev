@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByUserIdQueryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -109,11 +110,45 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
 
         $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);
 
-        $request->get('scopes', '')->willReturn('some other scopes');
+        $request->query = new InputBag(['scopes' => 'some other scopes']);
 
         $flagAppContainingOutdatedScopesHandler->handle(new FlagAppContainingOutdatedScopesCommand(
             $connectedApp,
             'some other scopes',
+        ))->shouldBeCalled();
+
+        $this->__invoke($request)->shouldBeLike(new JsonResponse('Ok'));
+    }
+
+    public function it_uses_empty_string_when_scopes_are_not_provided(
+        TokenStorageInterface $tokenStorage,
+        TokenInterface $token,
+        UserInterface $user,
+        FindOneConnectedAppByUserIdQueryInterface $findOneConnectedAppByUserIdQuery,
+        FlagAppContainingOutdatedScopesHandler $flagAppContainingOutdatedScopesHandler,
+        Request $request,
+    ): void {
+        $user->getId()->willReturn(42);
+        $token->getUser()->willReturn($user);
+        $tokenStorage->getToken()->willReturn($token);
+
+        $connectedApp = new ConnectedApp(
+            'id',
+            'name',
+            ['some', 'scopes'],
+            'connection_code',
+            'path/to/logo',
+            'author',
+            'user_group_name',
+        );
+
+        $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);
+
+        $request->query = new InputBag();
+
+        $flagAppContainingOutdatedScopesHandler->handle(new FlagAppContainingOutdatedScopesCommand(
+            $connectedApp,
+            '',
         ))->shouldBeCalled();
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse('Ok'));

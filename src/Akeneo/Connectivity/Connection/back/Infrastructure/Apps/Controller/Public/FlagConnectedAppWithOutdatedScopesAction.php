@@ -45,7 +45,7 @@ final class FlagConnectedAppWithOutdatedScopesAction
 
         $this->flagAppContainingOutdatedScopesHandler->handle(new FlagAppContainingOutdatedScopesCommand(
             $connectedApp,
-            $request->get('scopes', ''),
+            $request->query->get('scopes', ''),
         ));
 
         return new JsonResponse('Ok');
