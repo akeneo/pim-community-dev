@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresByIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
@@ -15,19 +16,19 @@ use PhpSpec\ObjectBehavior;
 class GetProductsWithQualityScoresSpec extends ObjectBehavior
 {
     function let(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
-        $this->beConstructedWith($getProductScoresByIdentifiersQuery, $dataQualityInsightsFeature);
+        $this->beConstructedWith($getProductScoresQuery, $dataQualityInsightsFeature);
     }
 
     function it_does_nothing_if_feature_flag_is_disabled(
-        FeatureFlag                                 $dataQualityInsightsFeature
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(false);
 
         $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
-        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', new ChannelLocaleRateCollection());
+        $productWithQualityScore = $this->buildConnectorProduct('identifier_5', new QualityScoreCollection([]));
 
         $this->fromConnectorProduct($connectorProduct)->shouldBeLike($productWithQualityScore);
 
@@ -36,24 +37,18 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
         )->shouldBeLike(
             new ConnectorProductList(1, [$productWithQualityScore])
         );
-
-        $normalizedProduct = [
-            'enabled'    => true,
-            'categories' => ['cat1', 'cat2'],
-        ];
-        $this->fromNormalizedProduct('a_product', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])->shouldBe($normalizedProduct);
     }
 
     function it_return_a_new_connector_product_with_quality_scores(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $connectorProduct = $this->buildConnectorProduct('identifier_5', null);
 
-        $qualityScores = ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]]);
-        $getProductScoresByIdentifiersQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
+        $qualityScores = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
+        $getProductScoresQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
 
         $productWithQualityScore = $this->buildConnectorProduct('identifier_5', $qualityScores);
 
@@ -61,17 +56,17 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
         $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt(['ecommerce' => ['en_US' => 15]]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
-        $getProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+        $qualityScores1 = new QualityScoreCollection(['ecommerce' => ['en_US' => new QualityScore('E', 15)]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
+        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
             'pdt_5' => $qualityScores1,
             'pdt_6' => $qualityScores2,
         ]);
@@ -89,21 +84,21 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
         $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
-            'print' => ['en_US' => 37]
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)],
+            'print' => ['en_US' => new QualityScore('A', 99)],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
             'pdt_5' => $qualityScores1,
             'pdt_6' => $qualityScores2,
         ]);
@@ -114,30 +109,34 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             []
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => ['en_US' => new QualityScore('E', 15), 'fr_FR' => new QualityScore('D', 62)]
                 ])),
-                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([])),
             ])
         );
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_locales(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
         $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
-            'print' => ['de_DE' => 37],
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => [
+                'en_US' => new QualityScore('E', 15),
+                'fr_FR' => new QualityScore('D', 62),
+                'de_DE' => new QualityScore('C', 76),
+            ],
+            'print' => ['en_US' => new QualityScore('D', 37)],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
             'pdt_5' => $qualityScores1,
             'pdt_6' => $qualityScores2,
         ]);
@@ -148,8 +147,12 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             ['en_US', 'fr_FR']
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15, 'fr_FR' => 42],
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => [
+                        'en_US' => new QualityScore('E', 15),
+                        'fr_FR' => new QualityScore('D', 62),
+                    ],
+                    'print' => ['en_US' => new QualityScore('D', 37)],
                 ])),
                 $this->buildConnectorProduct('pdt_6', $qualityScores2),
             ])
@@ -157,21 +160,28 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     }
 
     function it_return_a_list_of_connector_product_with_quality_scores_filtered_by_channel_and_locales(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        FeatureFlag $dataQualityInsightsFeature
     ) {
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt_5', null);
         $connectorProduct2 = $this->buildConnectorProduct('pdt_6', null);
 
-        $qualityScores1 = ChannelLocaleRateCollection::fromArrayInt([
-            'ecommerce' => ['en_US' => 15, 'fr_FR' => 42, 'de_DE' => 76],
-            'print' => ['en_US' => 98, 'fr_FR' => 13],
+        $qualityScores1 = new QualityScoreCollection([
+            'ecommerce' => [
+                'en_US' => new QualityScore('E', 15),
+                'fr_FR' => new QualityScore('D', 62),
+                'de_DE' => new QualityScore('C', 76),
+            ],
+            'print' => [
+                'en_US' => new QualityScore('D', 37),
+                'fr_FR' => new QualityScore('B', 81),
+            ],
         ]);
-        $qualityScores2 = ChannelLocaleRateCollection::fromArrayInt(['print' => ['en_US' => 99]]);
+        $qualityScores2 = new QualityScoreCollection(['print' => ['en_US' => new QualityScore('A', 99)]]);
 
-        $getProductScoresByIdentifiersQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
+        $getProductScoresQuery->byProductIdentifiers(['pdt_5','pdt_6'])->willReturn([
             'pdt_5' => $qualityScores1,
             'pdt_6' => $qualityScores2,
         ]);
@@ -182,40 +192,14 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
             ['en_US']
         )->shouldBeLike(
             new ConnectorProductList(2, [
-                $this->buildConnectorProduct('pdt_5', ChannelLocaleRateCollection::fromArrayInt([
-                    'ecommerce' => ['en_US' => 15],
+                $this->buildConnectorProduct('pdt_5', new QualityScoreCollection([
+                    'ecommerce' => [
+                        'en_US' => new QualityScore('E', 15),
+                    ],
                 ])),
-                $this->buildConnectorProduct('pdt_6', new ChannelLocaleRateCollection()),
+                $this->buildConnectorProduct('pdt_6', new QualityScoreCollection([])),
             ])
         );
-    }
-
-    public function it_returns_a_normalized_product_with_quality_scores(
-        GetProductScoresByIdentifiersQueryInterface $getProductScoresByIdentifiersQuery,
-        FeatureFlag                                 $dataQualityInsightsFeature
-    ) {
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-
-        $normalizedProduct = ['identifier' => 'identifier_5'];
-        $normalizedQualityScores = [
-            'ecommerce' => ['en_US' => 95, 'fr_FR' => 76, 'de_DE' => 83],
-            'mobile' => ['en_US' => 65, 'fr_FR' => 54, 'de_DE' => 73],
-        ];
-
-        $qualityScores = ChannelLocaleRateCollection::fromArrayInt($normalizedQualityScores);
-        $getProductScoresByIdentifiersQuery->byProductIdentifier('identifier_5')->willReturn($qualityScores);
-
-        $normalizedProductWithQualityScores = array_merge($normalizedProduct, [
-            'quality_scores' => [
-                'ecommerce' => [
-                    'en_US' => 'A',
-                    'fr_FR' => 'C'
-                ]
-            ]
-        ]);
-
-        $this->fromNormalizedProduct('identifier_5', $normalizedProduct, 'ecommerce', ['en_US', 'fr_FR'])
-            ->shouldBeLike($normalizedProductWithQualityScores);
     }
 
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct

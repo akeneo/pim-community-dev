@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
@@ -76,9 +74,12 @@ class ConnectorProductNormalizerSpec extends ObjectBehavior
             ],
             [],
             new ReadValueCollection(),
-            (new ChannelLocaleRateCollection())
-                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(81))
-                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(73)),
+            new QualityScoreCollection([
+                'ecommerce' => [
+                    'en_US' => new QualityScore('B', 81),
+                    'fr_FR' => new QualityScore('C', 73),
+                ],
+            ]),
             new ProductCompletenessCollection(
                 1,
                 [
