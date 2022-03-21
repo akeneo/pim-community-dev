@@ -9,7 +9,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             id: true
             generator:
                 strategy: AUTO
-        # TODO CPM-507: drop this column
+        # TODO CPM-507: drop this column. Or can not declare it?
         owner:
             type: integer
     uniqueConstraints:

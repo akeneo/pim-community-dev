@@ -25,13 +25,14 @@ final class GetAssociatedProductCodesByProductFromDB implements GetAssociatedPro
     {
         $associationTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_product_model_association' : 'pim_catalog_association';
         $associationProductTable = $association instanceof ProductModelAssociationInterface ? 'pim_catalog_association_product_model_to_product' : 'pim_catalog_association_product';
+        $ownerColumn = $association instanceof ProductModelAssociationInterface ? 'owner_id' : 'owner_uuid';
 
         $sql = <<<SQL
 SELECT DISTINCT(p.identifier) as code
 FROM $associationTable a
     INNER JOIN $associationProductTable ap ON a.id = ap.association_id
-    INNER JOIN pim_catalog_product p ON p.id = ap.product_id
-WHERE a.owner_id = :ownerId AND a.association_type_id = :associationTypeId
+    INNER JOIN pim_catalog_product p ON p.uuid = ap.product_uuid
+WHERE a.$ownerColumn = :ownerId AND a.association_type_id = :associationTypeId
 ORDER BY p.identifier ASC;
 SQL;
         $stmt = $this->connection->executeQuery(

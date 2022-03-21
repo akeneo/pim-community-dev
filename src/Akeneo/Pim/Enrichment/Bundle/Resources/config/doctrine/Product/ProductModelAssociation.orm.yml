@@ -53,6 +53,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
+#                    By changing this, the 'product_id' column does not exist for new envs
                     product_uuid:
                         referencedColumnName: uuid
                         onDelete: CASCADE

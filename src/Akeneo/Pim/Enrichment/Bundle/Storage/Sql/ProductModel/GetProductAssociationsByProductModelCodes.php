@@ -50,7 +50,7 @@ JSON_ARRAYAGG(associated_product_identifier) as associations_by_type
                            CROSS JOIN pim_catalog_association_type association_type
                            LEFT JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id AND association_type.id = product_model_association.association_type_id
                            LEFT JOIN pim_catalog_association_product_model_to_product association_to_product_model ON association_to_product_model.association_id = product_model_association.id
-                           LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product_model.product_id
+                           LEFT JOIN pim_catalog_product associated_product ON associated_product.uuid = association_to_product_model.product_uuid
                   WHERE product_model.code IN (:productModelCodes)
                   AND association_type.is_quantified = false
                   UNION DISTINCT 
@@ -63,7 +63,7 @@ JSON_ARRAYAGG(associated_product_identifier) as associations_by_type
                        INNER JOIN pim_catalog_product_model_association product_model_association ON root_product_model.id = product_model_association.owner_id
                        INNER JOIN pim_catalog_association_type association_type ON product_model_association.association_type_id = association_type.id
                        INNER JOIN pim_catalog_association_product_model_to_product product_model_to_product ON product_model_association.id = product_model_to_product.association_id
-                       INNER JOIN pim_catalog_product associated_product ON product_model_to_product.product_id= associated_product.id
+                       INNER JOIN pim_catalog_product associated_product ON product_model_to_product.product_uuid= associated_product.uuid
                   WHERE child_product_model.code IN (:productModelCodes)
                   AND association_type.is_quantified = false
               ) all_associations

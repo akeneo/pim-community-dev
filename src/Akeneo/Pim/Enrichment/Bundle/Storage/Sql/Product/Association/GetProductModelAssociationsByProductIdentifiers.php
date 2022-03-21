@@ -52,7 +52,7 @@ FROM (
                          associated_product_model.code as associated_product_model_code
                   FROM pim_catalog_product product
                            CROSS JOIN pim_catalog_association_type association_type
-                           LEFT JOIN pim_catalog_association association ON association.owner_id = product.id AND association_type.id = association.association_type_id
+                           LEFT JOIN pim_catalog_association association ON association.owner_uuid = product.uuid AND association_type.id = association.association_type_id
                            LEFT JOIN pim_catalog_association_product_model product_model_association ON association.id = product_model_association.association_id
                            LEFT JOIN pim_catalog_product_model associated_product_model ON product_model_association.product_model_id = associated_product_model.id
                   WHERE product.identifier IN (:productIdentifiers)
