@@ -30,7 +30,7 @@ class RegisterKeyIndicatorFilter
         $this->filterLabel = $filterLabel;
     }
 
-    // to rework alsosrc/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Datagrid/Configuration/Product/AddDraftStatusFilterToProductGridListener.php
+    // to rework alsos rc/Akeneo/Pim/WorkOrganization/Workflow/Bundle/Datagrid/Configuration/Product/AddDraftStatusFilterToProductGridListener.php
     public function buildBefore(BuildBefore $event): void
     {
         $datagridConfiguration = $event->getConfig();
