@@ -116,7 +116,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
-                ])
+                ]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
@@ -140,7 +141,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                     ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
-                ])
+                ]),
+                null
             ),
         ]);
 
@@ -298,7 +300,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                     ScalarValue::localizableValue('root_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('root_product_model_view_attribute', true, 'fr_FR'),
-                ])
+                ]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
@@ -322,7 +325,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
                     ScalarValue::localizableValue('sub_product_model_edit_attribute', true, 'fr_FR'),
                     ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'en_US'),
                     ScalarValue::localizableValue('sub_product_model_view_attribute', true, 'fr_FR'),
-                ])
+                ]),
+                null
             ),
         ]);
 

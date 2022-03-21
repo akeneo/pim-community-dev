@@ -49,6 +49,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@pim_connector.processor.normalization.get_normalized_product_quality_scores'
 
     pimee_workflow.processor.mark_product_draft_as_ready:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Component\Connector\Processor\MarkProductDraftAsReadyProcessor'
