@@ -393,7 +393,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function updated_date_filter()
+    public function updated_after_date_filter()
     {
         $before = [
             'identifier'            => 'before',
@@ -409,7 +409,7 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'identifier'            => 'after',
             'reference_entity_code' => 'date_reference_entity',
             'code' => 'after',
-            'record_code_label_search' => ['fr_FR' => 'after_fre'],
+            'record_code_label_search' => ['fr_FR' => 'after_ref'],
             'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
             'updated_at' => date_create('2012-01-01')->getTimestamp(),
             'complete_value_keys' => [],
@@ -442,6 +442,264 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
         Assert::assertSame([
             'identifiers' => ['after'],
             'matches_count' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_before_date_filter()
+    {
+        $before = [
+            'identifier'            => 'before',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2010-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier'            => 'after',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'after',
+            'record_code_label_search' => ['fr_FR' => 'after_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
+            'updated_at' => date_create('2012-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchRecordIndexHelper->index([$before, $after]);
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'updated',
+                    'operator' => '<',
+                    'value' => '2011-01-01T10:00:00+00:00'
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'date_reference_entity',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['before'],
+            'matches_count' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_between_date_filters()
+    {
+        $before = [
+            'identifier'            => 'before',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2010-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $in = [
+            'identifier'            => 'in',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2011-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier'            => 'after',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'after',
+            'record_code_label_search' => ['fr_FR' => 'after_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
+            'updated_at' => date_create('2012-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchRecordIndexHelper->index([$before, $in, $after]);
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'updated',
+                    'operator' => '>',
+                    'value' => '2010-01-01T10:00:00+00:00'
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => '<',
+                    'value' => '2012-01-01T00:00:00+00:00'
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'date_reference_entity',
+                    'context' => []
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['in'],
+            'matches_count' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_not_between_date_filter()
+    {
+        $before = [
+            'identifier'            => 'before',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2010-01-01')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $in = [
+            'identifier'            => 'in',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('2011-01-01')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier'            => 'after',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'after',
+            'record_code_label_search' => ['fr_FR' => 'after_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
+            'updated_at' => date_create('2012-01-01')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchRecordIndexHelper->index([$before, $in, $after]);
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'updated',
+                    'operator' => 'NOT BETWEEN',
+                    'value' => [
+                        '2010-01-01',
+                        '2012-01-01',
+                    ],
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'date_reference_entity',
+                    'context' => [],
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['after', 'before'],
+            'matches_count' => 2
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_since_date_filter()
+    {
+        $twoDaysAgo = [
+            'identifier'            => 'twoDaysAgo',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('now - 2 days')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $yesterday = [
+            'identifier'            => 'yesterday',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'before',
+            'record_code_label_search' => ['fr_FR' => 'before_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
+            'updated_at' => date_create('now - 1 day')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $today = [
+            'identifier'            => 'today',
+            'reference_entity_code' => 'date_reference_entity',
+            'code' => 'after',
+            'record_code_label_search' => ['fr_FR' => 'after_ref'],
+            'record_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
+            'updated_at' => date_create('now')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchRecordIndexHelper->index([$twoDaysAgo, $yesterday, $today]);
+
+        $query = RecordQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'updated',
+                    'operator' => 'SINCE LAST N DAYS',
+                    'value' => 2,
+                ],
+                [
+                    'field' => 'reference_entity',
+                    'operator' => '=',
+                    'value' => 'date_reference_entity',
+                    'context' => [],
+                ]
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['today', 'yesterday'],
+            'matches_count' => 2
         ], $matchingidentifiers->normalize());
     }
 
