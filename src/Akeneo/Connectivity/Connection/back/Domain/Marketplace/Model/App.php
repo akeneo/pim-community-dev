@@ -330,7 +330,7 @@ class App
             $this->categories,
             $this->activateUrl,
             $this->callbackUrl,
-            $this->connected,
+            false,
             true,
             $this->isTestApp,
         );

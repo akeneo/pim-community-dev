@@ -123,6 +123,7 @@ akeneo_connectivity.connection:
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
                     marketplace_link_anchor: App Store
+                    pending_apps: Some of your apps are not connected with your PIM.
                 test_apps:
                     title: My test apps
                     removed_user: Removed user
@@ -135,6 +136,7 @@ akeneo_connectivity.connection:
                     developed_by: 'Developed by {{ author }}'
                     manage_app: Manage app
                     open_app: Open App
+                    pending: App not connected. Opening the App should fix the conection issue.
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
