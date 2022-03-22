@@ -14,6 +14,6 @@ slack-post-step: &slack-post-step
         webhook: $SLACK_NIGHTLY_STATUS
         fail_only: false
 
-client-to-clone-srnt: &client-to-clone-srnt ["srnt-madeira", "srnt-pim-pce", "srnt-cto-pim", "srnt-iteshop"]
+client-to-clone-srnt: &client-to-clone-srnt ["srnt-madeira-production", "srnt-pim-pce", "srnt-cto-pim", "srnt-iteshop"]
 client-to-clone-grth: &client-to-clone-grth ["grth-sirius-staging"]
 client-to-clone-flex: &client-to-clone-flex ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
