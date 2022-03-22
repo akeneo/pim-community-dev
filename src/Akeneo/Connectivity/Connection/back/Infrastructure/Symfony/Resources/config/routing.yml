@@ -15,6 +15,11 @@ akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
     methods: [ GET ]
 
+akeneo_connectivity_connection_connect_apps_v1_scopes_update:
+    path: '/connect/apps/v1/scopes/update'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
+    methods: [ POST ]
+
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
