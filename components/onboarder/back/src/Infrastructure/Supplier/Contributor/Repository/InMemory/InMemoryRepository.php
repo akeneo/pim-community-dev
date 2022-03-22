@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
 
 final class InMemoryRepository implements Contributor\Repository
 {
@@ -21,5 +22,13 @@ final class InMemoryRepository implements Contributor\Repository
             ? $this->contributors[(string) $identifier]
             : null
         ;
+    }
+
+    public function findBySupplier(Identifier $supplierIdentifier): array
+    {
+        return array_filter(
+            $this->contributors,
+            fn (Contributor\Model\Contributor $contributor) => $contributor->supplierIdentifier() === (string) $supplierIdentifier
+        );
     }
 }

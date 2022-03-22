@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierListItem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +27,7 @@ final class SupplierList
 
         return new JsonResponse([
             'suppliers' => array_map(
-                fn (Supplier $supplier) => $supplier->toArray(),
+                fn (SupplierListItem $supplier) => $supplier->toArray(),
                 $suppliers
             ),
             'total' => ($this->getSupplierCount)($search),
