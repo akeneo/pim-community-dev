@@ -16,7 +16,6 @@ class MysqlSyncReport
         public array $missingLines=[],
         public array $lines2Delete=[],
         public array $obsoleteLines=[]
-    )
-    {}
-
+    ) {
+    }
 }

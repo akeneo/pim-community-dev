@@ -22,13 +22,13 @@ class DiffResults
         $esArrayIdentifier=[];
         foreach ($resultsDiffHelper as $arraysFromDiffHelper) {
             foreach ($arraysFromDiffHelper as $pairArrayOldNew) {
-                foreach($pairArrayOldNew['old']['lines'] as $mySqlData){
+                foreach ($pairArrayOldNew['old']['lines'] as $mySqlData) {
                     $mysqlArray = json_decode($mySqlData, true);
                     $mySqlArrayIdentifier[$mysqlArray["identifier"]] = $mysqlArray;
                 }
-                foreach($pairArrayOldNew['new']['lines'] as $esData){
+                foreach ($pairArrayOldNew['new']['lines'] as $esData) {
                     $esArray = json_decode($esData, true);
-                    if(!$esArray){
+                    if (!$esArray) {
                         continue;
                     }
                     $esArrayIdentifier[$esArray["identifier"]] = $esArray;
@@ -38,13 +38,16 @@ class DiffResults
 
         $mySQLOnly = array_diff(
             array_keys($mySqlArrayIdentifier),
-            array_keys($esArrayIdentifier));
+            array_keys($esArrayIdentifier)
+        );
         $esOnly = array_diff(
             array_keys($esArrayIdentifier),
-            array_keys($mySqlArrayIdentifier));
+            array_keys($mySqlArrayIdentifier)
+        );
         $updated = array_diff(
             array_keys($mySqlArrayIdentifier),
-            $mySQLOnly);
+            $mySQLOnly
+        );
         $mysqlSyncReport->missingLines = $mySQLOnly;
         $mysqlSyncReport->lines2Delete = $esOnly;
         $mysqlSyncReport->obsoleteLines = $updated;

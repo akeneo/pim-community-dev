@@ -45,10 +45,10 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
             ->select($entityIndexConfiguration->getColumnsName())
             ->from($entityIndexConfiguration->getTableName());
 
-        if($entityIndexConfiguration->getFilterFieldName() !== null){
+        if ($entityIndexConfiguration->getFilterFieldName() !== null) {
             $request->andwhere($entityIndexConfiguration->getFilterFieldName());
         }
-        $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(),'ASC');
+        $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(), 'ASC');
 
         $results =  $this->connection->executeQuery($request)->iterateAssociative();
 
@@ -70,7 +70,7 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
      */
     public function test_it_columns_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        foreach($entityIndexConfiguration->getColumnsName() as $column){
+        foreach ($entityIndexConfiguration->getColumnsName() as $column) {
             Assert::assertTrue($this->columnsExists($entityIndexConfiguration->getTableName(), $column));
         }
     }
@@ -86,15 +86,15 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
             ['atmosphere_admete_atmosphere_1', null],
             ['atmosphere_admete_atmosphere_2', null]];
         $tests = new \ArrayIterator($fixtures);
-        foreach($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0],$test[1]);
+        foreach ($tests as $test) {
+            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $resultsQuery = $this->searchMySql->findAllByOrder($entityIndexConfiguration);
-        for($i = 0; $i < 4; $i++) {
-            $identifier = substr($resultsQuery[$i]["identifier"],0,strrpos($resultsQuery[$i]["identifier"], '_'));
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier,null);
+        for ($i = 0; $i < 4; $i++) {
+            $identifier = substr($resultsQuery[$i]["identifier"], 0, strrpos($resultsQuery[$i]["identifier"], '_'));
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -112,15 +112,15 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
             ['atmosphere_admete_atmosphere_1', null],
             ['atmosphere_admete_atmosphere_2', null]];
         $tests = new \ArrayIterator($fixtures);
-        foreach($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0],$test[1]);
+        foreach ($tests as $test) {
+            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $resultsQuery =$this->searchMySql->findAllByOrder($entityIndexConfiguration);
-        foreach($resultsQuery as $value){
-            $identifier = substr($value["identifier"],0,strrpos($value["identifier"], '_'));
-            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier,null);
+        foreach ($resultsQuery as $value) {
+            $identifier = substr($value["identifier"], 0, strrpos($value["identifier"], '_'));
+            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
         }
         $resultsOrderFilterQuery = new \ArrayIterator($resultsOrderFilterQueryFormat);
 
@@ -133,7 +133,8 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
             ['identifier', 'updated_at'],
             'akeneo_asset_manager_asset',
             'identifier',
-            'mysql');
+            'mysql'
+        );
         $assetManagerMysql->setDateFieldName('updated_at');
         $assetManagerMysql->setDataProcessing(DateTimeFormat::formatFromString());
         return [
@@ -146,7 +147,8 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
             ['identifier', 'updated_at'],
             'akeneo_asset_manager_asset',
             'identifier',
-            'mysql');
+            'mysql'
+        );
         $assetManagerMysql->setDateFieldName('updated_at');
         $assetManagerMysql->setDataProcessing(DateTimeFormat::formatFromString());
         $assetManagerMysql->setFilterFieldName("identifier LIKE 'atmosphere%'");
@@ -174,7 +176,6 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
 
     private function columnsExists(string $tableName, string $columnName): bool
     {
-
         $rows = $this->connection->fetchAllAssociative(
             sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
             [
@@ -184,5 +185,4 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
 
         return count($rows) >= 1;
     }
-
 }

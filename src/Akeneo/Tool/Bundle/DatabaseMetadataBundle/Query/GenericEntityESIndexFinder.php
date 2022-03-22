@@ -21,7 +21,8 @@ class GenericEntityESIndexFinder implements GenericEntityIndexFinderInterface
     private const MAX_RESULTS_ES = 10000;
 
     public function __construct(private $client)
-    {}
+    {
+    }
 
     public function findAllByOrder(EntityIndexConfiguration $entityIndexConfiguration): Traversable
     {
@@ -29,29 +30,29 @@ class GenericEntityESIndexFinder implements GenericEntityIndexFinderInterface
         $params = [
             'index' => $entityIndexConfiguration->getTableName(),
             '_source' => [
-                implode(',',$entityIndexConfiguration->getColumnsName())
+                implode(',', $entityIndexConfiguration->getColumnsName())
             ],
             'scroll' => '1m',
             'size' => self::MAX_RESULTS_ES,
             'sort' => $entityIndexConfiguration->getIdentifierFieldName(),
         ];
         //Filter
-        if($entityIndexConfiguration->getFilterFieldName()!==null){
+        if ($entityIndexConfiguration->getFilterFieldName()!==null) {
             $params['q'] = $entityIndexConfiguration->getFilterFieldName();
         }
 
         $results = $this->client->search($params);
         $scrollId = $results['_scroll_id'];
         $totalResults['hits'] = [];
-        do{
-            $totalResults['hits'] = array_merge($totalResults['hits'],$results['hits']['hits']);
+        do {
+            $totalResults['hits'] = array_merge($totalResults['hits'], $results['hits']['hits']);
             $results = $this->client->scroll(['scroll_id'=>$scrollId, 'scroll'=>'1m']);
             $resultsPage = $results['hits']['hits'];
             $scrollId = $results['_scroll_id'];
-        }while(count($resultsPage)>0);
+        } while (count($resultsPage)>0);
 
         //Retrieve data in correct format
-        if(isset($totalResults)) {
+        if (isset($totalResults)) {
             foreach ($totalResults as $docs) {
                 foreach ($docs as $value) {
                     if ($entityIndexConfiguration->getDateFieldName() !== null) {

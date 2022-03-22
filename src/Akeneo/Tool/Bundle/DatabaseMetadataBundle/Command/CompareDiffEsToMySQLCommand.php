@@ -43,12 +43,11 @@ class CompareDiffEsToMySQLCommand extends Command
 
     public function __construct(
         private Connection $connection,
-                               $hosts,
+        $hosts,
         private LoggerInterface $logger,
-                            $storeFiles,
+        $storeFiles,
         private ContextLogProcessor $contextLogProcessor
-    )
-    {
+    ) {
         parent::__construct(self::$defaultName);
 
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts;
@@ -67,7 +66,7 @@ class CompareDiffEsToMySQLCommand extends Command
         $definedIndexSource = ConfigurationFactory::initConfigurationList();
 
         foreach ($definedIndexSource as $indexName => $indexMappingConfiguration) {
-            $this->contextLogProcessor->insertContext("index",$indexName);
+            $this->contextLogProcessor->insertContext("index", $indexName);
 
             $results = $this->readMySQLData($indexMappingConfiguration->mySql);
             $filenameSourceDB = $this->dumpItemToJsonFiles($results, $folder);
@@ -79,8 +78,8 @@ class CompareDiffEsToMySQLCommand extends Command
             $indexComparisonStatusList[] = $status;
         }
 
-        foreach($indexComparisonStatusList as $out){
-            if($out > 0){
+        foreach ($indexComparisonStatusList as $out) {
+            if ($out > 0) {
                 return Command::FAILURE;
             }
         }

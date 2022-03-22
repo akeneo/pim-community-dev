@@ -57,18 +57,16 @@ class GenericEntityESIndexFinderTest extends KernelTestCase
             ['atmosphere_admete_atmosphere_2', null]
         ];
         $tests = new \ArrayIterator($fixtures);
-        foreach($tests as $test)
-        {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0],$test[1]);
+        foreach ($tests as $test) {
+            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
 
-        for($i = 0; $i < 4; $i++)
-        {
-            $identifier = substr($results[$i]["identifier"],0,strrpos($results[$i]["identifier"], '_'));
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier,null);
+        for ($i = 0; $i < 4; $i++) {
+            $identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -88,16 +86,14 @@ class GenericEntityESIndexFinderTest extends KernelTestCase
             ['product_1000', null]
         ];
         $tests = new \ArrayIterator($fixtures);
-        foreach($tests as $test)
-        {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0],$test[1]);
+        foreach ($tests as $test) {
+            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
-        for($i = 0; $i < 4; $i++)
-        {
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["identifier"],null);
+        for ($i = 0; $i < 4; $i++) {
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -110,13 +106,13 @@ class GenericEntityESIndexFinderTest extends KernelTestCase
             ['identifier','updated_at'],
             'akeneo_assetmanager_asset',
             'identifier',
-            'es');
+            'es'
+        );
         $assetManagerEs->setDateFieldName('updated_at');
         $assetManagerEs->setDataProcessing(DateTimeFormat::formatFromInt());
         return [
             'es' => [$assetManagerEs]
         ];
-
     }
 
     public function configProviderFilter(): array
@@ -125,21 +121,21 @@ class GenericEntityESIndexFinderTest extends KernelTestCase
             ['id','updated'],
             'akeneo_pim_product_and_product_model',
             'id',
-            'es');
+            'es'
+        );
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromString());
-        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class,'\\').'"');
+        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class, '\\').'"');
 
         return [
             'es' => [$productEs]
         ];
-
     }
 
     private function checkIndexExists(string $index): bool
     {
         $indexParams['index'] = $index;
-        if(!$this->esClient->indices()->exists($indexParams)){
+        if (!$this->esClient->indices()->exists($indexParams)) {
             return false;
         }
         return true;

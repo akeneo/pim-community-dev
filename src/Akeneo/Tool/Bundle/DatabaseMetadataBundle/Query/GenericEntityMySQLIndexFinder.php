@@ -19,7 +19,6 @@ use Traversable;
  */
 class GenericEntityMySQLIndexFinder implements GenericEntityIndexFinderInterface
 {
-
     public function __construct(private Connection $connection)
     {
     }
@@ -30,27 +29,26 @@ class GenericEntityMySQLIndexFinder implements GenericEntityIndexFinderInterface
                     ->select($entityIndexConfiguration->getColumnsName())
                     ->from($entityIndexConfiguration->getTableName());
 
-        if($entityIndexConfiguration->getFilterFieldName() !== null){
+        if ($entityIndexConfiguration->getFilterFieldName() !== null) {
             $request->where($entityIndexConfiguration->getFilterFieldName());
         }
 
-        $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(),'ASC');
+        $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(), 'ASC');
 
         $results = $this->connection->executeQuery($request)->iterateAssociative();
 
         $resultsData = [];
-         foreach($results as $result){
-             //correct format Date
-             if($entityIndexConfiguration->getDateFieldName() !== null)
-             {
-                 $dateField = $entityIndexConfiguration->getDateFieldName();
-                 $dateFormat = $entityIndexConfiguration->getDataProcessing();
-                 $result[$dateField] = $dateFormat($result[$dateField]);
+        foreach ($results as $result) {
+            //correct format Date
+            if ($entityIndexConfiguration->getDateFieldName() !== null) {
+                $dateField = $entityIndexConfiguration->getDateFieldName();
+                $dateFormat = $entityIndexConfiguration->getDataProcessing();
+                $result[$dateField] = $dateFormat($result[$dateField]);
 
-                 $resultsData[] = IndexResultsFactory::initIndexDateResults($result[$entityIndexConfiguration->getIdentifierFieldName()],$entityIndexConfiguration->getDateFieldName()?$result[$entityIndexConfiguration->getDateFieldName()]:null);
-             }
-         }
-         sort($resultsData);
-         return new \ArrayIterator($resultsData);
+                $resultsData[] = IndexResultsFactory::initIndexDateResults($result[$entityIndexConfiguration->getIdentifierFieldName()], $entityIndexConfiguration->getDateFieldName()?$result[$entityIndexConfiguration->getDateFieldName()]:null);
+            }
+        }
+        sort($resultsData);
+        return new \ArrayIterator($resultsData);
     }
 }

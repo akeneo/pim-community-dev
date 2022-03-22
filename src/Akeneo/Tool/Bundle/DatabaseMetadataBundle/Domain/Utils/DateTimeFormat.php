@@ -16,10 +16,9 @@ use DateTime;
  */
 class DateTimeFormat extends \DateTime
 {
-
     public static function formatFromIso(): Closure
     {
-        return function(string &$date){
+        return function (string &$date) {
             $time = strtotime($date);
             return (new \DateTime)->setTimestamp($time);
         };
@@ -27,16 +26,15 @@ class DateTimeFormat extends \DateTime
 
     public static function formatFromString(): Closure
     {
-        return function(string &$date){
+        return function (string &$date) {
             return new DateTime($date);
         };
     }
 
     public static function formatFromInt(): Closure
     {
-        return function(int &$date){
+        return function (int &$date) {
             return (new \DateTime)->setTimestamp($date);
         };
     }
-
 }

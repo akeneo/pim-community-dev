@@ -13,11 +13,9 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model;
  */
 class EntityIndexConfigurationPair
 {
-
     public function __construct(
         public EntityIndexConfiguration $mySql,
         public EntityIndexConfiguration $elasticsearch
-    )
-    {}
-
+    ) {
+    }
 }

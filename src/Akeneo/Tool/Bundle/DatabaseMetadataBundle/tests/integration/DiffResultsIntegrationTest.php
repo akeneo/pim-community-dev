@@ -28,7 +28,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_1_f9b297a7-5072-48a7-889c-c06897eff369\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_2_a9cfb458-69a0-476a-bf76-4799f1f7a6ca\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['notice_absorb_notice_2_0d70d0e8-44f0-4d99-88a2-4472c8534a8b',
@@ -38,7 +38,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->lines2Delete = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_db_more_data(): void
@@ -48,7 +48,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
         $newResults = array();
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4',
@@ -56,7 +56,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->missingLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_db_updated_data(): void
@@ -67,14 +67,14 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $newResults = array(
             "{\"identifier\":\"atmosphere_absorb_atmosphere_1_b238727b-1979-4559-9eec-8511281ee5f6\",\"date\":{\"date\":\"2022-03-03 07:58:50.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['atmosphere_absorb_atmosphere_1_b238727b-1979-4559-9eec-8511281ee5f6'];
         $fixture = new MysqlSyncReport();
         $fixture->obsoleteLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_less_data(): void
@@ -86,7 +86,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_2_a9cfb458-69a0-476a-bf76-4799f1f7a6ca\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
         $newResults = array();
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['notice_absorb_notice_2_0d70d0e8-44f0-4d99-88a2-4472c8534a8b',
@@ -96,7 +96,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->missingLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_more_data(): void
@@ -106,7 +106,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4',
@@ -114,7 +114,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->lines2Delete = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_updated_data(): void
@@ -125,26 +125,26 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $newResults = array(
             "{\"identifier\":\"atmosphere_admete_atmosphere_2_0f77baab-3287-4bfa-bd16-02421ae9a18a\",\"date\":{\"date\":\"2022-03-03 08:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = ['atmosphere_admete_atmosphere_2_0f77baab-3287-4bfa-bd16-02421ae9a18a'];
         $fixture = new MysqlSyncReport();
         $fixture->obsoleteLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_no_diff_data(): void
     {
         $oldResults = array();
         $newResults = array();
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
 
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $fixture = new MysqlSyncReport();
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_db_more_data_and_updated(): void
@@ -157,7 +157,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $newResults = array(
             "{\"identifier\":\"atmosphere_admete_atmosphere_2_0f77baab-3287-4bfa-bd16-02421ae9a18a\",\"date\":{\"date\":\"2022-03-03 08:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier0bsolete = [
@@ -172,7 +172,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->missingLines = $identifierMissing;
         $fixture->obsoleteLines = $identifier0bsolete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_db_less_data_and_updated(): void
@@ -187,7 +187,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_1_f9b297a7-5072-48a7-889c-c06897eff369\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_2_a9cfb458-69a0-476a-bf76-4799f1f7a6ca\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier0bsolete = [
@@ -203,7 +203,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->lines2Delete = $identifierDelete;
         $fixture->obsoleteLines = $identifier0bsolete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_more_data_and_updated(): void
@@ -216,7 +216,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier0bsolete = [
@@ -230,7 +230,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->lines2Delete = $identifierDelete;
         $fixture->obsoleteLines = $identifier0bsolete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_less_data_and_updated(): void
@@ -245,7 +245,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $newResults = array(
             "{\"identifier\":\"atmosphere_absorb_atmosphere_1_b238727b-1979-4559-9eec-8511281ee5f6\",\"date\":{\"date\":\"2022-03-03 07:58:50.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $fixture = new MysqlSyncReport();
@@ -261,7 +261,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->missingLines = $identifierMissing;
         $fixture->obsoleteLines = $identifier0bsolete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_updated_and_db_updated(): void
@@ -274,7 +274,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"atmosphere_absorb_atmosphere_1_b238727b-1979-4559-9eec-8511281ee5f6\",\"date\":{\"date\":\"2022-03-03 07:58:50.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"atmosphere_admete_atmosphere_2_0f77baab-3287-4bfa-bd16-02421ae9a18a\",\"date\":{\"date\":\"2022-03-03 08:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = [
@@ -284,7 +284,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->obsoleteLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_less_and_db_more(): void
@@ -298,7 +298,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
         $newResults = array();
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = [
@@ -312,7 +312,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->missingLines = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_more_and_db_less(): void
@@ -326,7 +326,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = [
@@ -340,7 +340,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture = new MysqlSyncReport();
         $fixture->lines2Delete = $identifier;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_more_and_db_more_diff(): void
@@ -357,7 +357,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifierMissing = [
@@ -377,7 +377,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->missingLines = $identifierMissing;
         $fixture->lines2Delete = $identifierDelete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_more_and_db_more_and_updated_diff(): void
@@ -398,7 +398,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_3_5774db37-03d7-4396-9fad-b86ba7ab62e4\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_4_da78473b-2b40-4c81-9119-7a93bbc4600f\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifierMissing = [
@@ -422,7 +422,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
         $fixture->missingLines = $identifierMissing;
         $fixture->obsoleteLines = $identifierObsolete;
 
-        Assert::assertEquals($fixture,$testEval);
+        Assert::assertEquals($fixture, $testEval);
     }
 
     public function test_it_return_diff_es_and_db_all_updated(): void
@@ -447,7 +447,7 @@ class DiffResultsIntegrationTest extends KernelTestCase
             "{\"identifier\":\"packshot_absorb_packshot_1_f9b297a7-5072-48a7-889c-c06897eff369\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}",
             "{\"identifier\":\"packshot_absorb_packshot_2_a9cfb458-69a0-476a-bf76-4799f1f7a6ca\",\"date\":{\"date\":\"2022-03-03 07:58:51.000000\",\"timezone_type\":1,\"timezone\":\"+00:00\"}}"
         );
-        $line = IndexDatasResults::initDiffBlock($oldResults,$newResults);
+        $line = IndexDatasResults::initDiffBlock($oldResults, $newResults);
         $testEval = DiffResults::exploitDiffHelperResults($line);
 
         $identifier = [

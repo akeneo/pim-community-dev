@@ -24,14 +24,15 @@ class EntityIndexConfiguration
         private string   $tableName,
         private string   $identifierFieldName,
         private string   $sourceName
-    ) {}
+    ) {
+    }
 
     public static function create(
         array   $columnsName,
         string  $tableName,
         string  $identifierFieldName,
         string  $sourceName,
-    ): self{
+    ): self {
         return new self($columnsName, $tableName, $identifierFieldName, $sourceName);
     }
     /**
