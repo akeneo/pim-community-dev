@@ -62,6 +62,6 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep: ~

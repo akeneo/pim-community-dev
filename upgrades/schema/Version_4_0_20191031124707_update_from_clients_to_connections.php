@@ -182,9 +182,7 @@ SQL;
                 $connectionLabel,
                 FlowType::OTHER
             );
-            return $this->container
-                ->get('akeneo_connectivity.connection.application.handler.create_connection')
-                ->handle($command);
+            return $this->container->get(CreateConnectionHandler::class)->handle($command);
         } catch (ConstraintViolationListException $constraintViolationListException) {
             foreach ($constraintViolationListException->getConstraintViolationList() as $constraintViolation) {
                 $this->write($constraintViolation->getMessage());

@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -11,16 +13,17 @@ class ProductModelSpec extends ObjectBehavior
 {
     function let(
         ProductValueConverter $valueConverter,
+        QualityScoreConverter $qualityScoreConverter,
         AttributeRepositoryInterface $attributeRepository,
         AttributeInterface $identifierAttribute
     ) {
         $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
         $identifierAttribute->getCode()->willReturn('sku');
 
-        $this->beConstructedWith($valueConverter, $attributeRepository);
+        $this->beConstructedWith($valueConverter, $qualityScoreConverter, $attributeRepository);
     }
 
-    function it_converts_from_standard_to_flat_format($valueConverter)
+    function it_converts_from_standard_to_flat_format($valueConverter, $qualityScoreConverter)
     {
         $valueConverter->convertAttribute('weight',
             [
@@ -38,6 +41,16 @@ class ProductModelSpec extends ObjectBehavior
             'weight-de_DE-print-unit' => 'KILOGRAM',
         ]);
 
+        $qualityScoreConverter->convert([
+            "ecommerce" => [
+                'en_US' => "B",
+                'fr_FR' => "C"
+            ]
+        ])->willReturn([
+            sprintf('%s-en_US-ecommerce', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'B',
+            sprintf('%s-fr_FR-ecommerce', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'C',
+        ]);
+
         $expected = [
             'code'                               => 'apollon',
             'categories'                         => 'audio_video_sales,loudspeakers,sony',
@@ -53,6 +66,8 @@ class ProductModelSpec extends ObjectBehavior
             'PRODUCTSET-products-quantity'       => '2|8',
             'PRODUCTSET-product_models'          => 'braided-hat,tall_antelope',
             'PRODUCTSET-product_models-quantity' => '12|24',
+            sprintf('%s-en_US-ecommerce', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'B',
+            sprintf('%s-fr_FR-ecommerce', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX) => 'C',
         ];
 
         $item = [
@@ -98,6 +113,12 @@ class ProductModelSpec extends ObjectBehavior
                             'quantity' => 24
                         ]
                     ]
+                ]
+            ],
+            'quality_scores' => [
+                "ecommerce" => [
+                    'en_US' => "B",
+                    'fr_FR' => "C"
                 ]
             ],
         ];

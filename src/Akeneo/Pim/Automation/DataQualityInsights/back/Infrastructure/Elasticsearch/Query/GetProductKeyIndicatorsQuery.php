@@ -23,14 +23,11 @@ use Webmozart\Assert\Assert;
  */
 final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQueryInterface
 {
-    private Client $esClient;
-
-    private CategoryRepositoryInterface $categoryRepository;
-
-    public function __construct(Client $esClient, CategoryRepositoryInterface $categoryRepository)
-    {
-        $this->esClient = $esClient;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(
+        private Client $esClient,
+        private CategoryRepositoryInterface $categoryRepository,
+        private string $documentType
+    ) {
     }
 
     public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode... $keyIndicatorCodes): array
@@ -40,14 +37,14 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
     public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode... $keyIndicatorCodes): array
     {
-        $terms = [['term' => ['family.code' => strval($family)]]];
+        $terms = [['term' => ['family.code' => (string)$family]]];
 
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
 
     public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode... $keyIndicatorCodes): array
     {
-        $categoryCode = strval($category);
+        $categoryCode = (string)$category;
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
         $categoryChildren = $category instanceof CategoryInterface ? $this->categoryRepository->getAllChildrenCodes($category) : [];
 
@@ -66,7 +63,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
             'bool' => [
                 'must' => array_merge([[
                     'term' => [
-                        'document_type' => ProductInterface::class
+                        'document_type' => $this->documentType
                     ],
                 ]], $extraTerms),
             ],
@@ -74,7 +71,7 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
 
         $aggregations = [];
         foreach ($keyIndicatorCodes as $keyIndicatorCode) {
-            $aggregations[strval($keyIndicatorCode)]['terms']['field'] = sprintf(
+            $aggregations[(string)$keyIndicatorCode]['terms']['field'] = sprintf(
                 'data_quality_insights.key_indicators.%s.%s.%s',
                 $channelCode,
                 $localeCode,
@@ -113,9 +110,9 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
             $keyIndicatorValue = $bucket['key'] ?? null;
 
             if (1 === $keyIndicatorValue) {
-                $totalGood = intval($bucket['doc_count'] ?? 0);
+                $totalGood = (int)($bucket['doc_count'] ?? 0);
             } elseif (0 === $keyIndicatorValue) {
-                $totalToImprove = intval($bucket['doc_count'] ?? 0);
+                $totalToImprove = (int)($bucket['doc_count'] ?? 0);
             }
         }
 

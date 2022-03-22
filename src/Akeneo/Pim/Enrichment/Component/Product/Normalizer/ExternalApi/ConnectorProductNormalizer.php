@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
@@ -77,16 +77,16 @@ final class ConnectorProductNormalizer
         return $normalizedProduct;
     }
 
-    private function normalizeQualityScores(ChannelLocaleRateCollection $channelLocaleRates): array
+    private function normalizeQualityScores(QualityScoreCollection $qualityScoreCollection): array
     {
         $qualityScores = [];
 
-        foreach ($channelLocaleRates as $channel => $localeRates) {
-            foreach ($localeRates as $locale => $rate) {
+        foreach ($qualityScoreCollection->qualityScores as $channel => $localeScores) {
+            foreach ($localeScores as $locale => $score) {
                 $qualityScores[] = [
                     'scope' => $channel,
                     'locale' => $locale,
-                    'data' => $rate->toLetter(),
+                    'data' => $score->getLetter(),
                 ];
             }
         }

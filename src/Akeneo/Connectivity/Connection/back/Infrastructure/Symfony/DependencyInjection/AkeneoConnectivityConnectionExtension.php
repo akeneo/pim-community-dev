@@ -22,6 +22,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('Apps/commands.yml');
         $loader->load('Apps/controllers.yml');
+        $loader->load('Apps/event_subscribers.yml');
         $loader->load('Apps/handlers.yml');
         $loader->load('Apps/install.yml');
         $loader->load('Apps/normalizers.yml');
@@ -49,6 +50,11 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Marketplace/queries.yml');
         $loader->load('Marketplace/services.yml');
 
+        $loader->load('Settings/controllers.yml');
+        $loader->load('Settings/handlers.yml');
+        $loader->load('Settings/queries.yml');
+        $loader->load('Settings/validators.yml');
+
         $loader->load('Webhook/commands.yml');
         $loader->load('Webhook/controllers.yml');
         $loader->load('Webhook/event_normalizers.yml');
@@ -64,13 +70,9 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('feature_flag.yml');
-        $loader->load('handlers.yml');
         $loader->load('install.yml');
-        $loader->load('queries.yml');
-        $loader->load('repositories.yml');
         $loader->load('serializers.yml');
         $loader->load('services.yml');
-        $loader->load('validators.yml');
         $loader->load('wrong_credentials_connection.yml');
     }
 }

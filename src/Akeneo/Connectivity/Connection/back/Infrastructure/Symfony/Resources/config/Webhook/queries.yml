@@ -28,6 +28,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectEventsApiRequestCountWithinLastHourQuery:
+        arguments:
+            - '@database_connection'
+
     # EVENTS API DEBUG
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery:
         arguments:
