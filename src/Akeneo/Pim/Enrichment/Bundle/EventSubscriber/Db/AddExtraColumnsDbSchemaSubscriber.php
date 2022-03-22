@@ -32,8 +32,13 @@ class AddExtraColumnsDbSchemaSubscriber implements EventSubscriberInterface
 
     public function addExtraColumns(): void
     {
-        $this->connection->executeQuery(
-            'ALTER TABLE pim_catalog_association_product_model_to_product ADD COLUMN product_id int NOT NULL'
-        );
+        $sql = <<<SQL
+        ALTER TABLE pim_catalog_association ADD COLUMN owner_id int NOT NULL AFTER id;
+        ALTER TABLE pim_catalog_association_product_model_to_product ADD COLUMN product_id int NOT NULL;
+SQL;
+
+        $this->connection->executeQuery($sql);
+
+        // @todo: add the triggers otherwise the inserts will fail due to the NOT NULL constraints
     }
 }
