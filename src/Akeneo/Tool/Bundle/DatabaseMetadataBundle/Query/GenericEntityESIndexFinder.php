@@ -55,12 +55,12 @@ class GenericEntityESIndexFinder implements GenericEntityIndexFinderInterface
         if (isset($totalResults)) {
             foreach ($totalResults as $docs) {
                 foreach ($docs as $value) {
+                    $dateField = $entityIndexConfiguration->getDateFieldName();
+                    $dateFormat = $entityIndexConfiguration->getDataProcessing();
                     if ($entityIndexConfiguration->getDateFieldName() !== null) {
-                        $dateField = $entityIndexConfiguration->getDateFieldName();
-                        $dateFormat = $entityIndexConfiguration->getDataProcessing();
                         $value["_source"][$dateField] = $dateFormat($value["_source"][$dateField]);
-                        $resultsData[] = IndexResultsFactory::initIndexDateResults($value["_source"][$entityIndexConfiguration->getIdentifierFieldName()], $entityIndexConfiguration->getDateFieldName()?$value["_source"][$entityIndexConfiguration->getDateFieldName()]:null);
                     }
+                    $resultsData[] = IndexResultsFactory::initIndexDateResults($value["_source"][$entityIndexConfiguration->getIdentifierFieldName()], $entityIndexConfiguration->getDateFieldName()?$value["_source"][$entityIndexConfiguration->getDateFieldName()]:null);
                 }
             }
         }

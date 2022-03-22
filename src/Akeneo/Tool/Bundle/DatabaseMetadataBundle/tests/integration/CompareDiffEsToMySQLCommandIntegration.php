@@ -51,7 +51,7 @@ class CompareDiffEsToMySQLCommandIntegration extends KernelTestCase
      * @dataProvider configProviderDB
      * @return void
      */
-    public function testCanReadMySQLData(EntityIndexConfiguration $configMySQL): void
+    public function test_can_read_mysql_data(EntityIndexConfiguration $configMySQL): void
     {
         $results = $this->searchMySql->findAllByOrder($configMySQL);
         Assert::assertIsIterable($results);
@@ -84,7 +84,7 @@ class CompareDiffEsToMySQLCommandIntegration extends KernelTestCase
 
     /**
      * Check if good results
-     * @dataProvider configProviderEs
+     * @dataProvider configProviderEs2
      * @return void
      */
     public function test_it_readEsData_returns(EntityIndexConfiguration $configEs): void
@@ -132,6 +132,18 @@ class CompareDiffEsToMySQLCommandIntegration extends KernelTestCase
             'es');
         return [
             'es' => [$assetManagerEs]
+        ];
+    }
+
+    public function configProviderEs2(): array
+    {
+        $productProposalEs = EntityIndexConfiguration::create(
+            ['id'],
+            'akeneo_pim_product_proposal',
+            'id',
+            'es');
+        return [
+            'es' => [$productProposalEs]
         ];
     }
 
