@@ -136,7 +136,7 @@ const QuantifiedAssociationRow = ({
       ...row,
       quantifiedLink: {...row.quantifiedLink, quantity: limitedValue},
     });
-  }
+  };
 
   return (
     <>

@@ -219,18 +219,18 @@ test('It cannot remove an association when user did not have the ACL', () => {
   renderWithProviders(
     <table>
       <tbody>
-      <QuantifiedAssociationRow
-        row={{
-          productType: ProductType.ProductModel,
-          quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
-          product: productModel,
-          errors: [],
-        }}
-        isCompact={true}
-        parentQuantifiedLink={undefined}
-        onChange={jest.fn()}
-        onRemove={jest.fn()}
-      />
+        <QuantifiedAssociationRow
+          row={{
+            productType: ProductType.ProductModel,
+            quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
+            product: productModel,
+            errors: [],
+          }}
+          isCompact={true}
+          parentQuantifiedLink={undefined}
+          onChange={jest.fn()}
+          onRemove={jest.fn()}
+        />
       </tbody>
     </table>
   );
@@ -246,18 +246,18 @@ test('It cannot update the quantity of an association when user did not have the
   renderWithProviders(
     <table>
       <tbody>
-      <QuantifiedAssociationRow
-        row={{
-          productType: ProductType.ProductModel,
-          quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
-          product: productModel,
-          errors: [],
-        }}
-        isCompact={true}
-        parentQuantifiedLink={undefined}
-        onChange={handleChange}
-        onRemove={jest.fn()}
-      />
+        <QuantifiedAssociationRow
+          row={{
+            productType: ProductType.ProductModel,
+            quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
+            product: productModel,
+            errors: [],
+          }}
+          isCompact={true}
+          parentQuantifiedLink={undefined}
+          onChange={handleChange}
+          onRemove={jest.fn()}
+        />
       </tbody>
     </table>
   );
