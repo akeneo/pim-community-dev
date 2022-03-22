@@ -42,7 +42,7 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
 
         $updatedRecordCodes = \array_values(\array_unique(array_merge($formerRecordCodeAsString, $userIntent->recordCodes())));
 
-        if(\count(\array_diff($updatedRecordCodes, $formerRecordCodeAsString)) === 0) {
+        if (\count(\array_diff($updatedRecordCodes, $formerRecordCodeAsString)) === 0) {
             return;
         }
 
