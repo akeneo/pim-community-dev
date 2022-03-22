@@ -7,7 +7,7 @@ Here, it's an example to activate/deactivate an asset attribute type depending o
 
 ## Technical explanation
 
-Attribute types are registered in a service `AttributeRegistry`. All supported attribute types are loaded inside this registry with a compiler pass `RegisterAttributeTypePass`.
+Attribute types are registered in a service `AttributeTypeRegistry`. All supported attribute types are loaded inside this registry with a compiler pass `RegisterAttributeTypePass`.
 
 To register a new attribute type available only if the associated feature flag is activated, you have to configure in the DI the `feature` key in `tags`: 
 

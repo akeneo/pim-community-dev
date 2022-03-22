@@ -43,6 +43,8 @@ class AkeneoTailoredExportExtension extends Extension
     /**
      * Enable or disable services related to Asset Manager based
      * on the presence of the Asset Manager bundle.
+     *
+     * TODO: TIP-
      */
     private function configureAssetManagerRelatedServices(ContainerBuilder $container): void
     {

@@ -4,24 +4,28 @@ extensions:
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         position: 95
+        feature: asset_manager
 
     pim-product-view-form-assets:
         module: pim/product-edit-form/assets
         parent: pimee-product-view-column-tabs
         targetZone: container
         position: 95
+        feature: asset_manager
 
     pimee-product-model-edit-form-assets:
         module: pim/product-edit-form/assets
         parent: pim-product-model-edit-form-column-tabs
         targetZone: container
         position: 95
+        feature: asset_manager
 
     pimee-product-model-view-form-assets:
         module: pim/product-edit-form/assets
         parent: pimee-product-model-view-form-column-tabs
         targetZone: container
         position: 95
+        feature: asset_manager
 
     pim-menu-asset-family:
         module: pim/menu/tab
@@ -29,6 +33,7 @@ extensions:
         # aclResourceId: pimee_product_asset_index //TODO einrich
         position: 33
         targetZone: mainMenu
+        feature: asset_manager
         config:
             title: pim_asset_manager.asset_family.title
             iconModifier: iconAssetFamily
@@ -44,6 +49,7 @@ extensions:
     # Attribute custom fields
     pim-attribute-form-asset:
         module: pim/common/simple-view
+        feature: asset_manager
         config:
             template: pim/template/common/drop-zone
 
@@ -100,6 +106,7 @@ extensions:
         parent: pim-catalog-volume-index
         targetZone: content
         position: 60
+        feature: asset_manager
         config:
             title: pim_catalog_volume.section.asset_family.title
             hint:
@@ -110,6 +117,7 @@ extensions:
         module: pim/catalog-volume/section
         parent: pimee-catalog-volume-asset-family-section
         targetZone: content
+        feature: asset_manager
         config:
             axes: [count_asset_family, average_max_assets_per_asset_family, average_max_attributes_per_asset_family]
 
