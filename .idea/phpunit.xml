@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPUnit">
+    <option name="directories">
+      <list>
+        <option value="$PROJECT_DIR$/src" />
+        <option value="$PROJECT_DIR$/tests" />
+        <option value="$PROJECT_DIR$/upgrades/test_schema" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Connectivity/Connection/back/tests" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/MeasureBundle/tests" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Pim/Automation/DataQualityInsights/tests" />
+        <option value="$PROJECT_DIR$/src/Akeneo/Tool/Bundle/BatchQueueBundle/tests" />
+      </list>
+    </option>
+  </component>
+</project>

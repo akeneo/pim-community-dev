@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PHPSpec">
+    <suites>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Channel" />
+        <option name="specPath" value="tests/back/Channel" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Pim\Structure" />
+        <option name="specPath" value="tests/back/Pim/Structure" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Pim\Enrichment" />
+        <option name="specPath" value="tests/back/Pim/Enrichment" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Platform" />
+        <option name="specPath" value="tests/back/Platform" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Platform\CommunicationChannel" />
+        <option name="specPath" value="src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Unit" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Connectivity\Connection" />
+        <option name="specPath" value="src/Akeneo/Connectivity/Connection/back/tests/Unit" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Pim\Automation\DataQualityInsights" />
+        <option name="specPath" value="src/Akeneo/Pim/Automation/DataQualityInsights/tests/back" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Connector" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Connector" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Analytics" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Analytics" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Batch" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Batch" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\BatchQueue" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/BatchQueue" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Buffer" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Buffer" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Classification" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Classification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Console" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Console" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\FileStorage" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/FileStorage" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Localization" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Localization" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\StorageUtils" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/StorageUtils" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Versioning" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Versioning" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Email" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Email" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\BatchBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/BatchBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\BatchQueueBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/BatchQueueBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\ClassificationBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/ClassificationBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\ElasticsearchBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/ElasticsearchBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\StorageUtilsBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/StorageUtilsBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Platform\Job" />
+        <option name="specPath" value="src/Akeneo/Platform/Job/back/tests" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\MeasureBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/MeasureBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\MessengerBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/MessengerBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\VersioningBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/VersioningBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\WebhookBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/WebhookBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Component\Api" />
+        <option name="specPath" value="src/Akeneo/Tool/Component/Api" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\ApiBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/ApiBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Tool\Bundle\ConnectorBundle" />
+        <option name="specPath" value="src/Akeneo/Tool/Bundle/ConnectorBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\UserManagement" />
+        <option name="specPath" value="tests/back/UserManagement" />
+        <option name="specPrefix" value="Specification" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Oro\Bundle\FilterBundle" />
+        <option name="specPath" value="src/Oro/Bundle/FilterBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Oro\Bundle\DataGridBundle" />
+        <option name="specPath" value="src/Oro/Bundle/DataGridBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Test\Acceptance" />
+        <option name="specPath" value="tests/back/Acceptance" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Akeneo\Test\Common" />
+        <option name="specPath" value="tests/back/Common" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Oro\Bundle\PimDataGridBundle" />
+        <option name="specPath" value="src/Oro/Bundle/PimDataGridBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+      <PhpSpecSuiteConfiguration>
+        <option name="namespace" value="Oro\Bundle\PimFilterBundle" />
+        <option name="specPath" value="src/Oro/Bundle/PimFilterBundle" />
+        <option name="myPath" value="$PROJECT_DIR$" />
+      </PhpSpecSuiteConfiguration>
+    </suites>
+  </component>
+</project>
