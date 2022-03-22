@@ -17,6 +17,7 @@ final class RemoveGroups implements GroupsUserIntent
      */
     public function __construct(private array $groupCodes)
     {
+        Assert::notEmpty($this->groupCodes);
         Assert::allStringNotEmpty($this->groupCodes);
     }
 
