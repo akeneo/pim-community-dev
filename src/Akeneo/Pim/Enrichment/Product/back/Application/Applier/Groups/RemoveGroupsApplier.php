@@ -29,10 +29,10 @@ class RemoveGroupsApplier implements UserIntentApplier
     {
         Assert::isInstanceOf($groupsUserIntent, RemoveGroups::class);
 
-        $existingGroups = $product->getGroupCodes();
-        $newGroups = \array_values(\array_unique(\array_diff($existingGroups, $groupsUserIntent->groupCodes())));
+        $formerGroups = $product->getGroupCodes();
+        $newGroups = \array_values(\array_unique(\array_diff($formerGroups, $groupsUserIntent->groupCodes())));
 
-        if (\count(\array_diff($existingGroups, $newGroups)) > 0) {
+        if (\count(\array_diff($formerGroups, $newGroups)) > 0) {
             $this->productUpdater->update($product, [
                 'groups' => $newGroups,
             ]);

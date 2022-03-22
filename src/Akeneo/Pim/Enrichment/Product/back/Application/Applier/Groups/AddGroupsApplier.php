@@ -29,10 +29,10 @@ class AddGroupsApplier implements UserIntentApplier
     {
         Assert::isInstanceOf($groupsUserIntent, AddGroups::class);
 
-        $existingGroups = $product->getGroupCodes();
-        $newGroups = \array_values(\array_unique(\array_merge($existingGroups, $groupsUserIntent->groupCodes())));
+        $formerGroups = $product->getGroupCodes();
+        $newGroups = \array_values(\array_unique(\array_merge($formerGroups, $groupsUserIntent->groupCodes())));
 
-        if (\count(\array_diff($newGroups, $existingGroups)) > 0) {
+        if (\count(\array_diff($newGroups, $formerGroups)) > 0) {
             $this->productUpdater->update($product, [
                 'groups' => $newGroups,
             ]);
