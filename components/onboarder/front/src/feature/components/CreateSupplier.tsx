@@ -42,6 +42,10 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         setCodeHasBeenChangedManually(false);
     };
 
+    const isSaveDisabled = () => {
+        return '' === code.trim() || '' === label.trim();
+    };
+
     const saveSupplier = async () => {
         const response = await fetch(saveRoute, {
             method: 'POST',
@@ -115,7 +119,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                         <Button level="tertiary" onClick={onCloseModal}>
                             {translate('pim_common.cancel')}
                         </Button>
-                        <Button level="primary" onClick={saveSupplier}>
+                        <Button level="primary" onClick={saveSupplier} disabled={isSaveDisabled()}>
                             {translate('pim_common.save')}
                         </Button>
                     </Modal.BottomButtons>
