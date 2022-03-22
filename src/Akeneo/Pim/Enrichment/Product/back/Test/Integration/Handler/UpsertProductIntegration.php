@@ -718,7 +718,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_successfully_updates_a_product_with_an_add_multiple_records_value()
+    public function it_successfully_creates_and_updates_a_product_with_an_add_multiple_records_value()
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
