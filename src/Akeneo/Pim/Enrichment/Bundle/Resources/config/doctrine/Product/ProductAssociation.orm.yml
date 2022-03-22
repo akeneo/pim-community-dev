@@ -10,7 +10,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             generator:
                 strategy: AUTO
     uniqueConstraints:
-        # TODO: drop former and add unique constraint in the migration
         product_foreign_key_idx:
             columns:
                 - owner_uuid
