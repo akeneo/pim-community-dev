@@ -1,0 +1,30 @@
+services:
+  akeneo.tailored_import.controller.get_grouped_targets_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetGroupedTargetsAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.get_grouped_targets'
+
+  akeneo.tailored_import.controller.upload_structure_file_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\UploadStructureFileAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.upload_structure_file'
+      - '@validator'
+      - '@serializer'
+
+  akeneo.tailored_import.controller.read_columns_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\ReadColumnsAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.read_columns'
+      - '@validator'
+      - '@serializer'
+
+  akeneo.tailored_import.controller.get_file_template_information_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetFileTemplateInformationAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.get_file_template_information_handler'
+      - '@validator'
+      - '@serializer'

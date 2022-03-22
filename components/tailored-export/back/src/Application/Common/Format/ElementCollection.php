@@ -31,7 +31,7 @@ class ElementCollection implements \IteratorAggregate
     }
 
     /**
-     * @return ElementInterface[] | \Iterator
+     * @return ElementInterface[]|\Iterator
      */
     public function getIterator(): \Iterator
     {

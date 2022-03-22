@@ -1,0 +1,5 @@
+services:
+  akeneo.tailored_import.writer.product:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Writer\ProductWriter
+    arguments:
+      - '@pim_enrich.product.message_bus'

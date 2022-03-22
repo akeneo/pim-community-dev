@@ -17,13 +17,10 @@ final class MeasurementValueAndUnitSymbolSelection implements MeasurementSelecti
 {
     public const TYPE = 'value_and_unit_symbol';
 
-    private string $decimalSeparator;
-    private string $measurementFamilyCode;
-
-    public function __construct(string $decimalSeparator, string $measurementFamilyCode)
-    {
-        $this->decimalSeparator = $decimalSeparator;
-        $this->measurementFamilyCode = $measurementFamilyCode;
+    public function __construct(
+        private string $decimalSeparator,
+        private string $measurementFamilyCode,
+    ) {
     }
 
     public function getDecimalSeparator(): string

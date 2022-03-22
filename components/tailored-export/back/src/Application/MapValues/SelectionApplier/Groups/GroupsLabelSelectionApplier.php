@@ -22,11 +22,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 
 class GroupsLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindGroupLabelsInterface $findGroupLabels;
-
-    public function __construct(FindGroupLabelsInterface $findGroupLabels)
-    {
-        $this->findGroupLabels = $findGroupLabels;
+    public function __construct(
+        private FindGroupLabelsInterface $findGroupLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -42,7 +40,7 @@ class GroupsLabelSelectionApplier implements SelectionApplierInterface
         $groupTranslations = $this->findGroupLabels->byCodes($groupCodes, $selection->getLocale());
 
         $selectedData = array_map(static fn ($groupCode) => $groupTranslations[$groupCode] ??
-            sprintf('[%s]', $groupCode), $groupCodes);
+            sprintf('[%s]', $groupCode), $groupCodes, );
 
         return implode($selection->getSeparator(), $selectedData);
     }

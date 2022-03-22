@@ -17,15 +17,10 @@ final class SimpleSelectLabelSelection implements SimpleSelectSelectionInterface
 {
     public const TYPE = 'label';
 
-    private string $locale;
-    private string $attributeCode;
-
     public function __construct(
-        string $locale,
-        string $attributeCode
+        private string $locale,
+        private string $attributeCode,
     ) {
-        $this->locale = $locale;
-        $this->attributeCode = $attributeCode;
     }
 
     public function getLocale(): string

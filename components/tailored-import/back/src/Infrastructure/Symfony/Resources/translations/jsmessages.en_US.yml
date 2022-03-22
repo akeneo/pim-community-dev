@@ -1,0 +1,90 @@
+batch_jobs.xlsx_tailored_product_import.label: Tailored product import in XLSX
+
+akeneo.tailored_import:
+  global_settings:
+    error_action:
+      label: Operation error management
+      skip_product: Skip product
+      skip_value: Skip value
+      helper_message: Define the behavior in case of an error in an operation.
+  file_structure:
+    placeholder:
+      title: Logoden biniou degemer mat an penn ar bed kuzuliañ
+      button: Initialize file structure
+    modal:
+      title: Define your file structure
+      subtitle: Import profiles
+      helper: Logoden biniou degemer mat an penn ar bed kalet lonkañ Perros-Gireg speredek sae uhelder, tavañjer kartoñs doujañs amezeg trizek.
+      upload:
+        placeholder: Drop your file here or browse your disk
+        uploading: Uploading...
+        error: An error occurred while uploading your file. Please check your file and try again.
+      sheet: Sheet
+      header_row: Header row
+      first_product_row: First product row
+      first_column: First product column
+      unique_identifier_column: Unique identifier column
+  data_mapping_list:
+    title: Data mappings
+    no_sources: No sources
+    add: Add a data mapping
+    remove: Are you sure you want to remove this data mapping?
+  data_mapping:
+    title: Data mapping
+    no_data_mapping_selected: No data mapping selected
+    sources:
+      title: Sources
+      add: Add a source
+    target:
+      title: Target parameters
+      identifier: No settings available for the identifier attribute used as a target.
+      locale_specific: This attribute is locale specific
+      clear_if_empty: Clear if empty in file
+  form:
+    job_instance:
+      tab:
+        import-structure:
+          title: Import structure
+  validation:
+    columns:
+      max_count_reached: Your file must not contain more than {{ limit }} columns.
+      uuid:
+        should_be_unique: This column UUID already exists, please enter a new one.
+      index:
+        should_be_unique: This column index already exists, please enter a new one.
+      label:
+        should_not_be_blank: Please define a column label.
+        max_length_reached: Column label is too long. It should contain {{ limit }} characters or less.
+    data_mappings:
+      max_count_reached: You have reached the limit of {{ limit }} data mappings, you can no longer add data mapping to your import.
+      no_identifier_target_found: There is no data mapping targeting an identifier, please add one.
+      too_many_identifier_target_found: There is more than one data mapping targeting an identifier, please remove one.
+      uuid:
+        should_be_unique: This data mapping UUID already exists, please enter a new one.
+      sources:
+        min_count_reached: You need to add at least one source to your data mapping.
+        max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
+        should_be_unique: This source already exists, please enter a new one.
+        should_exist: One of the source does not exist anymore, please delete all sources of this data mapping and retry
+    target:
+      attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
+      property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
+    locale:
+      should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
+      should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.
+    channel:
+      should_exist: The channel {{ channel_code }} has been deleted. Please select another channel.
+    attribute:
+      locale_should_not_be_blank: The attribute {{ attribute_code }} now has a value per locale. Please either create it or choose a different target.
+      channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different target.
+      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either delete then recreate it or choose a different target.
+      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either delete then recreate it or choose a different target.
+      invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
+    file_key:
+      does_not_exist: The file {{ file_key }} was not found.
+    uploaded_file:
+      max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
+      not_allowed_mime_type: The file must be an Excel spreadsheet.
+    file_structure:
+      first_product_row_should_be_after_header_row: First product row should be after header row.
+      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be after first column.

@@ -10,6 +10,6 @@ interface MediaPathGeneratorInterface
         string $identifier,
         string $attributeCode,
         ?string $scope,
-        ?string $locale
+        ?string $locale,
     ): string;
 }

@@ -1,5 +1,42 @@
 # 5.0.x
 
+# 5.0.86 (2022-03-17)
+
+# 5.0.85 (2022-03-17)
+
+# 5.0.84 (2022-03-15)
+
+## Bug fixes
+
+- PIM-10327: Fix process tracker error message after mass executing rules including disabled rules
+
+# 5.0.83 (2022-02-28)
+
+# 5.0.82 (2022-02-25)
+
+# 5.0.81 (2022-02-25)
+
+## Bug fixes
+
+- PIM-10290: [Backport PIM-9984] Fix image preview in asset manager in media link attributes with encoded URL
+
+# 5.0.80 (2022-02-23)
+
+# 5.0.79 (2022-02-21)
+
+## Bug fixes
+
+- PIM-10271: Fix cannot delete an unused association type
+
+# 5.0.78 (2022-02-18)
+
+## Bug fixes
+
+- PIM-10272: Rules - Reference entity records cannot be found if they contain upper cases
+- PIM-10262: Fix Helper about rule does not show under the related attribute on the PEF
+
+# 5.0.77 (2022-02-10)
+
 # 5.0.76 (2022-02-07)
 
 # 5.0.75 (2022-02-04)
@@ -138,6 +175,7 @@
 ## Improvements
 
 - PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
+- BH-950: Job instance validation: data referential integrity command. 
 
 ## Bug fixes
 

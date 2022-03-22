@@ -69,6 +69,7 @@ function downloadArtifacts() {
     rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/bin
     rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/terraform/pim/templates/tests
     rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/deployments/deployments/Makefile
+    rm -rf ~/zdd_compliancy_checker/${SOURCE_RELEASE}/upgrades/upgrades/test_schema
 
     # Download the target release Docker image and Terraform modules
     mkdir -p ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades
@@ -82,6 +83,7 @@ function downloadArtifacts() {
     rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/bin
     rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/terraform/pim/templates/tests
     rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/deployments/deployments/Makefile
+    rm -rf ~/zdd_compliancy_checker/${TARGET_RELEASE}/upgrades/upgrades/test_schema
 }
 
 function getDiff() {

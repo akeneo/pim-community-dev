@@ -21,6 +21,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttributeOptionSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements GetProductIdsWithOutdatedAttributeOptionSpellcheckQueryInterface
 {
@@ -43,7 +44,10 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         $this->filterProductIdsWithCriterionNotEvaluatedSinceQuery = $filterProductIdsWithCriterionNotEvaluatedSinceQuery;
     }
 
-    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Generator
     {
         $productIdsBulk = [];
         /** @var AttributeOptionSpellcheck $attributeOptionSpellcheck */
@@ -58,7 +62,7 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
                 $productIdsBulk = array_merge($productIdsBulk, array_slice($productIds, 0, $nbProductIdsToPick));
 
                 if (count($productIdsBulk) >= $bulkSize) {
-                    yield $productIdsBulk;
+                    yield ProductIdCollection::fromProductIds($productIdsBulk);
 
                     $productIdsBulk = $nbProductIdsToPick < $bulkSize ? array_slice($productIds, $nbProductIdsToPick) : [];
                 }
@@ -66,7 +70,7 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
         }
 
         if (!empty($productIdsBulk)) {
-            yield $productIdsBulk;
+            yield ProductIdCollection::fromProductIds($productIdsBulk);
         }
     }
 
@@ -81,7 +85,8 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuery implements G
                 $productIds,
                 $evaluatedSince,
                 new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-            );
+            )->toArray();
+
             if (empty($productIds)) {
                 continue;
             }

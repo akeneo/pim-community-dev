@@ -18,11 +18,9 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 
 class FindCategoryLabels implements FindCategoryLabelsInterface
 {
-    private GetCategoryTranslations $getCategoryTranslations;
-
-    public function __construct(GetCategoryTranslations $getCategoryTranslations)
-    {
-        $this->getCategoryTranslations = $getCategoryTranslations;
+    public function __construct(
+        private GetCategoryTranslations $getCategoryTranslations,
+    ) {
     }
 
     public function byCodes(array $categoryCodes, string $locale): array

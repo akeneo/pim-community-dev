@@ -1,6 +1,6 @@
 import React from 'react';
 import {Checkbox} from 'akeneo-design-system';
-import {getErrorsForPath, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, TextField, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {NumberAdditionalProperty, NumberAttribute} from 'akeneoassetmanager/domain/model/attribute/type/number';
 import {
@@ -31,6 +31,7 @@ const NumberView = ({
   };
 }) => {
   const translate = useTranslate();
+  const decimalSeparator = useUserContext().get('ui_locale_decimal_separator');
 
   return (
     <>
@@ -46,10 +47,10 @@ const NumberView = ({
       </div>
       <TextField
         label={translate('pim_asset_manager.attribute.edit.input.min_value')}
-        value={formatNumberForUILocale(minValueStringValue(attribute.minValue))}
+        value={formatNumberForUILocale(minValueStringValue(attribute.minValue), decimalSeparator)}
         onSubmit={onSubmit}
         onChange={value => {
-          const cleanedNumber = unformatNumber(value);
+          const cleanedNumber = unformatNumber(value, decimalSeparator);
           onAdditionalPropertyUpdated('min_value', createMinValueFromString(cleanedNumber));
         }}
         readOnly={!rights.attribute.edit}
@@ -57,10 +58,10 @@ const NumberView = ({
       />
       <TextField
         label={translate('pim_asset_manager.attribute.edit.input.max_value')}
-        value={formatNumberForUILocale(maxValueStringValue(attribute.maxValue))}
+        value={formatNumberForUILocale(maxValueStringValue(attribute.maxValue), decimalSeparator)}
         onSubmit={onSubmit}
         onChange={value => {
-          const cleanedNumber = unformatNumber(value);
+          const cleanedNumber = unformatNumber(value, decimalSeparator);
           onAdditionalPropertyUpdated('max_value', createMaxValueFromString(cleanedNumber));
         }}
         readOnly={!rights.attribute.edit}

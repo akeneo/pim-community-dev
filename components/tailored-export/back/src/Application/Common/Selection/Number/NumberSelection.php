@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 /**
-
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2021 Akeneo SAS (https://www.akeneo.com)
@@ -18,11 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 
 class NumberSelection implements SelectionInterface
 {
-    private string $decimalSeparator;
-
-    public function __construct(string $decimalSeparator)
-    {
-        $this->decimalSeparator = $decimalSeparator;
+    public function __construct(
+        private string $decimalSeparator,
+    ) {
     }
 
     public function getDecimalSeparator(): string

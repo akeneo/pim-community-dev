@@ -229,6 +229,7 @@ describe('EditRules', () => {
 
   it('should be able to change the status', async () => {
     // Given
+    dependencies.ruleManager = jest.fn();
     fetchMock.mockResponse((request: Request) => {
       if (
         request.url.includes(

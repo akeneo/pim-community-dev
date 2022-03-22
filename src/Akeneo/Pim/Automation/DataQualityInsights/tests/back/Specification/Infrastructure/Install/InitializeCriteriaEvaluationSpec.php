@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\InitializeCriteriaEvaluation;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\DBAL\Connection;
@@ -68,7 +69,7 @@ class InitializeCriteriaEvaluationSpec extends ObjectBehavior
         $ids = range(1, 100);
         $productIdsResult->fetchFirstColumn()->willReturn($ids);
 
-        $createProductsCriteriaEvaluations->createAll(Argument::type('array'))->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll(Argument::type(ProductIdCollection::class))->shouldBeCalled();
 
         $this->initialize();
     }

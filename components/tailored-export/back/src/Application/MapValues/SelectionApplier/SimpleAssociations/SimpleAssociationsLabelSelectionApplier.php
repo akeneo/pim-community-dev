@@ -23,15 +23,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 
 class SimpleAssociationsLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindProductLabelsInterface $findProductLabels;
-    private FindProductModelLabelsInterface $findProductModelLabels;
-
     public function __construct(
-        FindProductLabelsInterface $findProductLabels,
-        FindProductModelLabelsInterface $findProductModelLabels
+        private FindProductLabelsInterface $findProductLabels,
+        private FindProductModelLabelsInterface $findProductModelLabels,
     ) {
-        $this->findProductLabels = $findProductLabels;
-        $this->findProductModelLabels = $findProductModelLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -46,8 +41,11 @@ class SimpleAssociationsLabelSelectionApplier implements SelectionApplierInterfa
         $associatedEntityCodes = $this->getAssociatedEntityCodes($selection, $value);
         $associatedEntityLabels = $this->getAssociatedEntityLabels($selection, $associatedEntityCodes);
 
-        $selectedData = \array_map(static fn ($associatedEntityCode) => $associatedEntityLabels[$associatedEntityCode] ??
-            \sprintf('[%s]', $associatedEntityCode), $associatedEntityCodes);
+        $selectedData = \array_map(
+            static fn ($associatedEntityCode) => $associatedEntityLabels[$associatedEntityCode] ??
+                \sprintf('[%s]', $associatedEntityCode),
+            $associatedEntityCodes,
+        );
 
         return \implode($selection->getSeparator(), $selectedData);
     }
@@ -60,7 +58,7 @@ class SimpleAssociationsLabelSelectionApplier implements SelectionApplierInterfa
 
     private function getAssociatedEntityLabels(
         SimpleAssociationsLabelSelection $selection,
-        array $associatedEntityCodes
+        array $associatedEntityCodes,
     ): array {
         if ($selection->isProductsSelection()) {
             return $this->findProductLabels->byIdentifiers(

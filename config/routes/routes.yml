@@ -101,6 +101,9 @@ pim_catalog_rule:
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
 
+pim_tailored_import:
+    resource: "@AkeneoTailoredImportBundle/Resources/config/routing.yml"
+
 pim_tailored_export_reference_entity:
     resource: "@AkeneoTailoredExportBundle/Resources/config/reference_entity/routing.yml"
 
@@ -126,6 +129,9 @@ akeneo_authentication:
 shared_catalog:
     resource: "@AkeneoSharedCatalogBundle/Resources/config/routing.yml"
 akeneo_channel:
-    resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
+    resource: "@AkeneoLegacyChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
+onboarder_serenity:
+    resource: "@AkeneoOnboarderSerenityBundle/Resources/config/routing.yml"
+    prefix: /onboarder/v2

@@ -29,6 +29,12 @@ services:
         tags:
             - { name: pim_table_attribute.translator.value_translator }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableMeasurementTranslator:
+        arguments:
+            - '@akeneo_measurement.public_api.get_unit_translations'
+        tags:
+            - { name: pim_table_attribute.translator.value_translator }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\TableValuesTranslator:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\FlatTranslator\Values\TableValueTranslatorRegistry'

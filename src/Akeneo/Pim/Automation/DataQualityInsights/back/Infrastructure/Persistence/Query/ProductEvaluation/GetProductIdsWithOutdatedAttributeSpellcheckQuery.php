@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductIdsWithOutdatedAttributeSpellcheckQuery implements GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface
@@ -30,7 +30,10 @@ final class GetProductIdsWithOutdatedAttributeSpellcheckQuery implements GetProd
         $this->dbConnection = $dbConnection;
     }
 
-    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductIdCollection>
+     */
+    public function evaluatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $query = <<<SQL
 SELECT DISTINCT product.id
@@ -53,16 +56,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchColumn()) {
-            $productIds[] = new ProductId(intval($productId));
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield ProductIdCollection::fromStrings($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield ProductIdCollection::fromStrings($productIds);
         }
     }
 }

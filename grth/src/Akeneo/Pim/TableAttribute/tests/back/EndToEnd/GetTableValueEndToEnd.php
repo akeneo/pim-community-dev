@@ -38,7 +38,11 @@ class GetTableValueEndToEnd extends ApiTestCase
                     'locale' => null,
                     'scope' => null,
                     'data' => [
-                        ['ingredient' => 'sugar'],
+                        [
+                            'ingredient' => 'sugar',
+                            'quantity' => 5,
+                            'manufacturing_time' => ['amount' => 2, 'unit' => 'MINUTE'],
+                        ],
                     ]
                 ]
             ]
@@ -70,7 +74,13 @@ class GetTableValueEndToEnd extends ApiTestCase
                     'options' => [
                         ['code' => 'sugar']
                     ]],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'quantity', 'data_type' => 'number', 'labels' => ['en_US' => 'Quantity']],
+                [
+                    'code' => 'manufacturing_time',
+                    'data_type' => 'measurement',
+                    'measurement_family_code' => 'Duration',
+                    'measurement_default_unit_code' => 'Day',
+                ],
             ]
         ]);
         $violations = $this->get('validator')->validate($attribute);
@@ -80,7 +90,9 @@ class GetTableValueEndToEnd extends ApiTestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'nutrition' => [
-                ['locale' => null, 'scope' => null, 'data' => [['ingredient' => 'sugar']]],
+                ['locale' => null, 'scope' => null, 'data' => [
+                    ['ingredient' => 'sugar', 'quantity' => 5, 'manufacturing_time' => ['amount' => 2, 'unit' => 'MINUTE']],
+                ]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));

@@ -17,18 +17,11 @@ final class AssetCollectionCodeSelection implements AssetCollectionSelectionInte
 {
     public const TYPE = 'code';
 
-    private string $separator;
-    private string $assetFamilyCode;
-    private string $attributeCode;
-
     public function __construct(
-        string $separator,
-        string $assetFamilyCode,
-        string $attributeCode
+        private string $separator,
+        private string $assetFamilyCode,
+        private string $attributeCode,
     ) {
-        $this->separator = $separator;
-        $this->assetFamilyCode = $assetFamilyCode;
-        $this->attributeCode = $attributeCode;
     }
 
     public function getSeparator(): string

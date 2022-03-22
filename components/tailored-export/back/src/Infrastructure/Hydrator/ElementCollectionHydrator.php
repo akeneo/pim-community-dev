@@ -11,10 +11,10 @@ use Akeneo\Platform\TailoredExport\Application\Common\Format\TextElement;
 class ElementCollectionHydrator
 {
     public function hydrate(
-        array $normalizedElements
+        array $normalizedElements,
     ): ElementCollection {
         $elements = array_map(static function (array $element) {
-            if ('text'  === $element['type']) {
+            if ('text' === $element['type']) {
                 return new TextElement($element['value']);
             } elseif ('source' === $element['type']) {
                 return new SourceElement($element['value']);

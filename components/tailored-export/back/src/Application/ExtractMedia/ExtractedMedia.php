@@ -15,15 +15,11 @@ namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 final class ExtractedMedia
 {
-    private string $key;
-    private string $storage;
-    private string $path;
-
-    public function __construct(string $key, string $storage, string $path)
-    {
-        $this->key = $key;
-        $this->storage = $storage;
-        $this->path = $path;
+    public function __construct(
+        private string $key,
+        private string $storage,
+        private string $path,
+    ) {
     }
 
     public function getKey(): string

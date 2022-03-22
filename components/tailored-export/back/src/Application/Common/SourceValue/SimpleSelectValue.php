@@ -15,11 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\SourceValue;
 
 class SimpleSelectValue implements SourceValueInterface
 {
-    private string $optionCode;
-
-    public function __construct(string $optionCode)
-    {
-        $this->optionCode = $optionCode;
+    public function __construct(
+        private string $optionCode,
+    ) {
     }
 
     public function getOptionCode(): string

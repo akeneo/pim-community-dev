@@ -6,6 +6,7 @@ import {renderWithFeatureFlag} from '../../shared/renderWithFeatureFlag';
 
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/ReferenceEntityFetcher');
+jest.mock('../../../src/fetchers/MeasurementFamilyFetcher');
 
 describe('AddColumnModal', () => {
   it('should render the component', () => {
@@ -165,5 +166,38 @@ describe('AddColumnModal', () => {
 
     fireEvent.change(codeInput, {target: {value: 'a_good_code'}});
     expect(createButton.disabled).toEqual(false);
+  });
+
+  it('should select measurement family and measurement unit', async () => {
+    const handleCreate = jest.fn();
+    renderWithProviders(
+      <AddColumnModal close={jest.fn()} onCreate={handleCreate} existingColumnCodes={['firstColumnCode']} />
+    );
+
+    fireEvent.change(screen.getByLabelText(/pim_common.label/), {target: {value: 'Measurement column'}});
+    fireEvent.click(screen.getByTitle('pim_common.open'));
+    fireEvent.click(await screen.findByText('pim_table_attribute.properties.data_type.measurement'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeDisabled();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[1]);
+    fireEvent.click(await screen.findByText('Electric charge'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeDisabled();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.open')[2]);
+    fireEvent.click(screen.getByText('Millicoulomb'));
+    expect(screen.getByText('pim_common.create') as HTMLButtonElement).toBeEnabled();
+
+    fireEvent.click(screen.getByText('pim_common.create'));
+
+    expect(handleCreate).toBeCalledWith({
+      code: 'Measurement_column',
+      labels: {
+        en_US: 'Measurement column',
+      },
+      validations: {},
+      data_type: 'measurement',
+      measurement_family_code: 'ElectricCharge',
+      measurement_default_unit_code: 'MILLICOULOMB',
+    });
   });
 });

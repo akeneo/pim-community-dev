@@ -42,7 +42,6 @@ const mediator = require('oro/mediator');
 const userContext = require('pim/user-context');
 const fetcherRegistry = require('pim/fetcher-registry');
 const router = require('pim/router');
-const Routing = require('routing');
 const datagridState = require('pim/datagrid/state');
 const {notify} = require('oro/messenger');
 
@@ -117,7 +116,7 @@ class AssetFamilyEditController extends BaseController {
     );
 
     this.store.dispatch(updateChannels(fetcherRegistry.getFetcher('channel')) as any);
-    this.store.dispatch(updateActivatedLocales() as any);
+    this.store.dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
     this.store.dispatch(defaultCatalogLocaleChanged(userContext.get('catalogLocale')));
     this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
@@ -152,7 +151,7 @@ class AssetFamilyEditController extends BaseController {
                       history.replaceState(
                         null,
                         '',
-                        '#' + Routing.generate(route.name, {...route.params, tab: tabCode})
+                        '#' + router.generate(route.name, {...route.params, tab: tabCode})
                       );
                     }
                   }}

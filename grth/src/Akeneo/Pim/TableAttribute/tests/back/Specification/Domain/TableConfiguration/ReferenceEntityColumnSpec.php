@@ -34,7 +34,7 @@ class ReferenceEntityColumnSpec extends  ObjectBehavior
         $this->shouldImplement(ColumnDefinition::class);
     }
 
-    function it_is_a_record_column()
+    function it_is_a_reference_entity_column()
     {
         $this->dataType()->shouldHaveType(ColumnDataType::class);
         $this->dataType()->asString()->shouldBe('reference_entity');

@@ -3,11 +3,14 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\MeasurementFamilyCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
+use Akeneo\Pim\TableAttribute\Infrastructure\AntiCorruptionLayer\AclMeasureConverter;
 use Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\GetTableValuesProjection;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
@@ -15,12 +18,18 @@ use PhpSpec\ObjectBehavior;
 
 class GetTableValuesProjectionSpec extends ObjectBehavior
 {
-    function let(TableConfigurationRepository $tableConfigurationRepository)
+    function let(TableConfigurationRepository $tableConfigurationRepository, AclMeasureConverter $measureConverter)
     {
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
                 SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
                 NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+                MeasurementColumn::fromNormalized([
+                    'id' => ColumnIdGenerator::duration(),
+                    'code' => 'duration',
+                    'measurement_family_code' => 'Duration',
+                    'measurement_default_unit_code' => 'second',
+                ]),
             ])
         );
         $tableConfigurationRepository->getByAttributeCode('packaging')->willReturn(
@@ -31,7 +40,7 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
             ])
         );
 
-        $this->beConstructedWith($tableConfigurationRepository);
+        $this->beConstructedWith($tableConfigurationRepository, $measureConverter);
     }
 
     function it_is_initializable()
@@ -45,7 +54,7 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
         $this->fromProductModelCodes([], ['value_collections' => []])->shouldReturn([]);
     }
 
-    function it_normalizes_table_values_from_product_identifiers()
+    function it_normalizes_table_values_from_product_identifiers(AclMeasureConverter $measureConverter)
     {
         $valueCollections = [
             'foo' => new ReadValueCollection([
@@ -55,6 +64,7 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
                         [
                             ColumnIdGenerator::ingredient() => 'salt',
                             ColumnIdGenerator::quantity() => 10,
+                            ColumnIdGenerator::duration() => ['amount' => 1, 'unit' => 'day'],
                         ],
                     ])
                 ),
@@ -96,6 +106,9 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
             ]),
         ];
 
+        $measureConverter->convertAmountInStandardUnit(MeasurementFamilyCode::fromString('Duration'), '1', 'day')
+            ->willReturn('86400');
+
         $this->fromProductIdentifiers([], ['value_collections' => $valueCollections])->shouldReturn([
             'foo' => [
                 'table_values' => [
@@ -110,6 +123,12 @@ class GetTableValuesProjectionSpec extends ObjectBehavior
                             'row' => 'salt',
                             'column' => 'quantity',
                             'value-number' => 10,
+                            'is_column_complete' => true,
+                        ],
+                        [
+                            'row' => 'salt',
+                            'column' => 'duration',
+                            'value-measurement' => '86400',
                             'is_column_complete' => true,
                         ],
                     ],

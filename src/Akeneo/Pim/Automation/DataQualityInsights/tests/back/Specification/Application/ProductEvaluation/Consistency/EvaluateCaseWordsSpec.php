@@ -31,6 +31,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use PhpSpec\Wrapper\Subject;
 
 final class EvaluateCaseWordsSpec extends ObjectBehavior
 {
@@ -39,21 +40,145 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         $this->beConstructedWith($localesByChannelQuery);
     }
 
-    public function it_sets_the_result_status_as_not_applicable_when_a_product_has_no_values_to_evaluate(
+    public function it_evaluates_product_values(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        ComputeCaseWordsRate $computeCaseWordsRate,
+    )
+    {
+        $attributeName = 'my_attribute';
+        $attributeType = AttributeType::textarea();
+        $expectedRate = 10;
+
+        $actualResult = $this->evaluate(
+            $localesByChannelQuery,
+            $computeCaseWordsRate,
+            $attributeName,
+            $attributeType,
+            'DUMMY',
+            new Rate($expectedRate)
+        );
+
+        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate($expectedRate))
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::done())
+            ->addRateByAttributes(new ChannelCode('ecommerce'), new LocaleCode('en_US'), [$attributeName => $expectedRate]));
+    }
+
+    public function it_does_not_evaluate_null_value(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        ComputeCaseWordsRate $computeCaseWordsRate,
+    )
+    {
+        $attributeName = 'my_attribute';
+        $attributeType = AttributeType::textarea();
+
+        $actualResult = $this->evaluate(
+            $localesByChannelQuery,
+            $computeCaseWordsRate,
+            $attributeName,
+            $attributeType,
+            null,
+            null,
+        );
+
+        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
+    }
+
+    public function it_does_not_evaluate_text_attribute(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        ComputeCaseWordsRate $computeCaseWordsRate,
+    )
+    {
+        $attributeName = 'my_attribute';
+        $attributeType = AttributeType::text();
+
+        $actualResult = $this->evaluate(
+            $localesByChannelQuery,
+            $computeCaseWordsRate,
+            $attributeName,
+            $attributeType,
+            'DUMMY',
+            null,
+        );
+
+        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
+    }
+
+    public function it_does_not_evaluate_non_string_value(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        ComputeCaseWordsRate $computeCaseWordsRate
+    ) {
+        $attributeName = 'my_attribute';
+        $attributeType = AttributeType::textarea();
+
+        $actualResult = $this->evaluate(
+            $localesByChannelQuery,
+            $computeCaseWordsRate,
+            $attributeName,
+            $attributeType,
+            ['This is an array, not a string.'],
+            null
+        );
+
+        $actualResult->shouldBeLike((new Write\CriterionEvaluationResult())
+            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable()));
+    }
+
+    private function evaluate(
+        GetLocalesByChannelQueryInterface $localesByChannelQuery,
+        ComputeCaseWordsRate $computeCaseWordsRate,
+        string $attributeName,
+        AttributeType $attributeType,
+        mixed $value,
+        Rate $expectedRate
+    ): Subject
+    {
+        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
+            [
+                'ecommerce' => ['en_US'],
+            ]
+        ));
+
+        $localeChannelValues1 = [
+            'ecommerce' => [
+                'en_US' => $value,
+            ],
+        ];
+
+        $textarea1 = $this->givenAnAttribute($attributeName, $attributeType);
+
+        $textarea1Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($localeChannelValues1, function ($value) { return $value; });
+
+        $productValues = (new ProductValuesCollection())
+            ->add(new ProductValues($textarea1, $textarea1Values));
+
+        $computeCaseWordsRate->__invoke($localeChannelValues1['ecommerce']['en_US'])->willReturn($expectedRate);
+
+        return $this(
+            new Write\CriterionEvaluation(
+                new CriterionCode('criterion1'),
+                new ProductId(1),
+                CriterionEvaluationStatus::pending()
+            ),
+            $productValues,
+            $computeCaseWordsRate
+        );
+    }
+
+    public function it_does_not_evaluate_when_no_values(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         ComputeCaseWordsRate $computeCaseWordsRate
     ) {
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
-                'ecommerce' => ['en_US', 'fr_FR'],
-                'mobile' => ['en_US'],
+                'ecommerce' => ['en_US'],
             ]
         ));
 
         $expectedResult = (new Write\CriterionEvaluationResult())
             ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), CriterionEvaluationResultStatus::notApplicable())
-            ->addStatus(new ChannelCode('mobile'), new LocaleCode('en_US'), CriterionEvaluationResultStatus::notApplicable())
         ;
 
         ($this(
@@ -67,46 +192,7 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         ))->shouldBeLike($expectedResult);
     }
 
-    public function it_sets_the_result_status_as_not_applicable_when_a_product_values_to_evaluate_is_not_in_string_format(
-        GetLocalesByChannelQueryInterface $localesByChannelQuery,
-        ComputeCaseWordsRate $computeCaseWordsRate
-    ) {
-        $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
-            [
-                'ecommerce' => ['fr_FR'],
-            ]
-        ));
-
-        $textarea = $this->givenAnAttributeOfTypeTextarea('textarea');
-
-        // Test on array value but all non-string values are not evaluated
-        $textareaValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
-            'ecommerce' => [
-                'fr_FR' => ['This is an array.']
-            ],
-        ], function ($value) { return $value; });
-
-        $productValues = (new ProductValuesCollection())
-            ->add(new ProductValues($textarea, $textareaValues));
-
-        $channelEcommerce = new ChannelCode('ecommerce');
-        $localeFr = new LocaleCode('fr_FR');
-
-        $expectedResult = (new Write\CriterionEvaluationResult())
-            ->addStatus($channelEcommerce, $localeFr, CriterionEvaluationResultStatus::notApplicable());
-
-        ($this(
-            new Write\CriterionEvaluation(
-                new CriterionCode('criterion1'),
-                new ProductId(1),
-                CriterionEvaluationStatus::pending()
-            ),
-            $productValues,
-            $computeCaseWordsRate
-        ))->shouldBeLike($expectedResult);
-    }
-
-    public function it_evaluates_product_values(
+    public function it_evaluates_rate_average_by_channel_locale(
         GetLocalesByChannelQueryInterface $localesByChannelQuery,
         ComputeCaseWordsRate $computeCaseWordsRate
     )
@@ -114,95 +200,47 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection(
             [
                 'ecommerce' => ['en_US'],
-                'mobile' => ['en_US', 'fr_FR'],
-                'print' => ['en_US', 'fr_FR'],
             ]
         ));
 
         $localeChannelValues1 = [
             'ecommerce' => [
-                'en_US' => '<p><br></p>',
-            ],
-            'mobile' => [
-                'en_US' => 'There is: one error',
-                'fr_FR' => '<p>there is: two errors</p>',
+                'en_US' => 'DUMMY1',
             ],
         ];
 
         $localeChannelValues2 = [
             'ecommerce' => [
-                'en_US' => 'is there: three errors? yes.',
-            ],
-            'print' => [
-                'en_US' => null,
-                'fr_FR' => 'Text without error.',
+                'en_US' => 'DUMMY2',
             ],
         ];
 
-        $localeChannelValues3 = [
-            'ecommerce' => [
-                'en_US' => 'Whatever',
-            ],
-        ];
-
-        $textarea1 = $this->givenAnAttributeOfTypeTextarea('textarea_1');
-        $textarea2 = $this->givenAnAttributeOfTypeTextarea('textarea_2');
-        $textNotToEvaluate = $this->givenAnAttributeOfTypeText('a_text');
+        $textarea1 = $this->givenAnAttribute('textarea_1', AttributeType::textarea());
+        $textarea2 = $this->givenAnAttribute('textarea_2', AttributeType::textarea());
 
         $textarea1Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($localeChannelValues1, function ($value) { return $value; });
-
         $textarea2Values = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($localeChannelValues2, function ($value) { return $value; });
-
-        $textNotToEvaluateValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData($localeChannelValues3, function ($value) { return $value; });
 
         $productValues = (new ProductValuesCollection())
             ->add(new ProductValues($textarea1, $textarea1Values))
-            ->add(new ProductValues($textarea2, $textarea2Values))
-            ->add(new ProductValues($textNotToEvaluate, $textNotToEvaluateValues));
+            ->add(new ProductValues($textarea2, $textarea2Values));
 
         $channelEcommerce = new ChannelCode('ecommerce');
-        $channelMobile = new ChannelCode('mobile');
-        $channelPrint = new ChannelCode('print');
         $localeEn = new LocaleCode('en_US');
-        $localeFr = new LocaleCode('fr_FR');
 
-        $rate0 = new Rate(0);
-        $rate14 = new Rate(14);
-        $rate28 = new Rate(28);
-        $rate52 = new Rate(52);
-        $rate76 = new Rate(76);
-        $rate100 = new Rate(100);
+        $lowRate = 0;
+        $avgRate = 14;
+        $highRate = 28;
 
-        $computeCaseWordsRate->__invoke($localeChannelValues1['ecommerce']['en_US'])->willReturn($rate0);
-        $computeCaseWordsRate->__invoke($localeChannelValues2['ecommerce']['en_US'])->willReturn($rate28);
-
-        $computeCaseWordsRate->__invoke($localeChannelValues1['mobile']['en_US'])->willReturn($rate76);
-
-        $computeCaseWordsRate->__invoke($localeChannelValues1['mobile']['fr_FR'])->willReturn($rate52);
-
-        $computeCaseWordsRate->__invoke($localeChannelValues2['print']['fr_FR'])->willReturn($rate100);
+        $computeCaseWordsRate->__invoke($localeChannelValues1['ecommerce']['en_US'])->willReturn(new Rate($lowRate));
+        $computeCaseWordsRate->__invoke($localeChannelValues2['ecommerce']['en_US'])->willReturn(new Rate($highRate));
 
         $expectedResult = (new Write\CriterionEvaluationResult())
-            ->addRate($channelEcommerce, $localeEn, $rate14)
+            ->addRate($channelEcommerce, $localeEn, new Rate($avgRate))
             ->addStatus($channelEcommerce, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_1' => 0, 'textarea_2' => 28])
+            ->addRateByAttributes($channelEcommerce, $localeEn, ['textarea_1' => $lowRate, 'textarea_2' => $highRate]);
 
-            ->addRate($channelMobile, $localeEn, $rate76)
-            ->addStatus($channelMobile, $localeEn, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelMobile, $localeEn, ['textarea_1' => 76])
-
-            ->addRate($channelMobile, $localeFr, $rate52)
-            ->addStatus($channelMobile, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelMobile, $localeFr, ['textarea_1' => 52])
-
-            ->addRate($channelPrint, $localeFr, $rate100)
-            ->addStatus($channelPrint, $localeFr, CriterionEvaluationResultStatus::done())
-            ->addRateByAttributes($channelPrint, $localeFr, ['textarea_2' => 100])
-
-            ->addStatus($channelPrint, $localeEn, CriterionEvaluationResultStatus::notApplicable())
-        ;
-
-        ($this(
+        $result = $this(
             new Write\CriterionEvaluation(
                 new CriterionCode('criterion1'),
                 new ProductId(1),
@@ -210,16 +248,13 @@ final class EvaluateCaseWordsSpec extends ObjectBehavior
             ),
             $productValues,
             $computeCaseWordsRate
-        ))->shouldBeLike($expectedResult);
+        );
+
+        $result->shouldBeLike($expectedResult);
     }
 
-    private function givenAnAttributeOfTypeText(string $code): Attribute
+    private function givenAnAttribute(string $code, AttributeType $attributeType): Attribute
     {
-        return new Attribute(new AttributeCode($code), AttributeType::text(), true);
-    }
-
-    private function givenAnAttributeOfTypeTextarea(string $code): Attribute
-    {
-        return new Attribute(new AttributeCode($code), AttributeType::textarea(), true);
+        return new Attribute(new AttributeCode($code), $attributeType, true);
     }
 }

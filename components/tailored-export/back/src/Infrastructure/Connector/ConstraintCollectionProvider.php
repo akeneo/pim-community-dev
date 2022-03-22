@@ -22,20 +22,13 @@ use Symfony\Component\Validator\Constraints\Type;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
-    protected ConstraintCollectionProviderInterface $simpleProvider;
-
-    /** @var string[] */
-    protected array $supportedJobNames;
-
     /**
      * @param string[] $supportedJobNames
      */
     public function __construct(
-        ConstraintCollectionProviderInterface $simpleProvider,
-        array $supportedJobNames
+        protected ConstraintCollectionProviderInterface $simpleProvider,
+        protected array $supportedJobNames,
     ) {
-        $this->simpleProvider = $simpleProvider;
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
@@ -48,9 +41,9 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $constraintFields['columns'] = new Columns();
         $constraintFields['with_media'] = new Type(
             [
-                'type'   => 'bool',
+                'type' => 'bool',
                 'groups' => ['Default', 'FileConfiguration'],
-            ]
+            ],
         );
 
         $constraintFields['filters'] = new Assert\Collection([

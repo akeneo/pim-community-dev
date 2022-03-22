@@ -13,22 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
 
 class FindQualityScores implements FindQualityScoresInterface
 {
-    private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery;
-
-    public function __construct(GetLatestProductScoresQueryInterface $getLatestProductScoresQuery)
-    {
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
+    public function __construct(
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+    ) {
     }
 
     public function forProduct(string $productIdentifier, string $channel, string $locale): ?string
     {
-        $productScoreCollection = $this->getLatestProductScoresQuery->byProductIdentifier($productIdentifier);
-        $productScore = $productScoreCollection->getProductScoreByChannelAndLocale($channel, $locale);
+        $productScoreCollection = $this->getProductScoresQuery->byProductIdentifier($productIdentifier);
+        $productScore = $productScoreCollection->getQualityScoreByChannelAndLocale($channel, $locale);
 
         return null !== $productScore ? $productScore->getLetter() : null;
     }

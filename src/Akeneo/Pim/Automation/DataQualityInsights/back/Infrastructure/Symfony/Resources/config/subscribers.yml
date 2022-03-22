@@ -5,19 +5,6 @@ services:
         tags:
             - { name: 'kernel.event_subscriber' }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\InstallAssetsSubscriber:
-        arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Install\EventSubscriber\FileSystemAssetsInstaller:
-        class: Akeneo\Platform\Bundle\InstallerBundle\Event\Subscriber\AssetsInstaller
-        arguments:
-            - '@filesystem'
-            - '%pim_ee_dev_src_folder_location%/src/Akeneo/Pim/Automation/DataQualityInsights/front/src'
-            - '%kernel.project_dir%/public/bundles/akeneodataqualityinsights-react'
-
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\CreateEvaluationCriteriaOnProductIgnoredWordSubscriber:
         arguments:
             $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
@@ -46,9 +33,10 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Attribute\InitializeEvaluationSubscriber:
         arguments:
-            $evaluateUpdatedAttributes: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
-            $evaluateUpdatedAttributeOptions: '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
-            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributes'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateUpdatedAttributeOptions'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeOptionSpellcheckRepository'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -19,18 +19,14 @@ final class QuantifiedAssociationsCodeSelection implements QuantifiedAssociation
 {
     public const TYPE = 'code';
 
-    private string $entityType;
-    private string $separator;
-
-    public function __construct(string $entityType, string $separator)
-    {
+    public function __construct(
+        private string $entityType,
+        private string $separator,
+    ) {
         Assert::inArray($entityType, [
             self::ENTITY_TYPE_PRODUCTS,
             self::ENTITY_TYPE_PRODUCT_MODELS,
         ]);
-
-        $this->entityType = $entityType;
-        $this->separator = $separator;
     }
 
     public function isProductsSelection(): bool

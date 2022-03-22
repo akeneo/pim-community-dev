@@ -22,18 +22,16 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 
 class CategoriesLabelSelectionApplier implements SelectionApplierInterface
 {
-    private FindCategoryLabelsInterface $findCategoryLabels;
-
-    public function __construct(FindCategoryLabelsInterface $findCategoryLabels)
-    {
-        $this->findCategoryLabels = $findCategoryLabels;
+    public function __construct(
+        private FindCategoryLabelsInterface $findCategoryLabels,
+    ) {
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
             !$selection instanceof CategoriesLabelSelection
-            ||!$value instanceof CategoriesValue
+            || !$value instanceof CategoriesValue
         ) {
             throw new \InvalidArgumentException('Cannot apply Categories selection on this entity');
         }
@@ -41,8 +39,11 @@ class CategoriesLabelSelectionApplier implements SelectionApplierInterface
         $categoryCodes = $value->getCategoryCodes();
 
         $categoryTranslations = $this->findCategoryLabels->byCodes($categoryCodes, $selection->getLocale());
-        $selectedData = array_map(static fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
-            sprintf('[%s]', $categoryCode), $categoryCodes);
+        $selectedData = array_map(
+            static fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
+                sprintf('[%s]', $categoryCode),
+            $categoryCodes,
+        );
 
         return implode($selection->getSeparator(), $selectedData);
     }

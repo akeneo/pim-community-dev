@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\FrameworkBundle\EventListener;
 
-use Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver;
+use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**

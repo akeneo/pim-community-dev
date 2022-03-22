@@ -44,7 +44,7 @@ MYSQL_USER_PASSWORD=$(pwgen -s 16 1)
 
 echo "#########################################################################"
 echo "- Get last snapshot selflink and create ES and MySQL disk"
-SELFLINK_FLEX=$(gcloud --project="${SOURCE_PROJECT_ID}" compute snapshots list --filter="labels.backup-name=${SOURCE_PFID}" --limit=1 --sort-by="~creationTimestamp" --uri)
+SELFLINK_FLEX=$(gcloud --project="${SOURCE_PROJECT_ID}" compute snapshots list --filter="name=${SOURCE_PFID}-disk" --limit=1 --sort-by="~creationTimestamp" --uri)
 FLEX_SIZE=$(gcloud compute snapshots describe ${SELFLINK_FLEX} --format=json | jq -r '.diskSizeGb')
 echo "${SELFLINK_FLEX} / ${FLEX_SIZE}"
 

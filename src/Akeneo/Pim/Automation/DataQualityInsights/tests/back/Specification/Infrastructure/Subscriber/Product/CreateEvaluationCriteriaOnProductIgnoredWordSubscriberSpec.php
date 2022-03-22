@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
@@ -53,7 +54,7 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
     ) {
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
+        $createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt(12345))->shouldBeCalled();
 
         $this->onIgnoredWord(new ProductWordIgnoredEvent(new ProductId(12345)));
     }

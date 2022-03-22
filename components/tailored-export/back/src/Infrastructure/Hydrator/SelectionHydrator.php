@@ -61,62 +61,36 @@ class SelectionHydrator
 {
     public function createPropertySelection(array $selectionConfiguration, string $propertyName): SelectionInterface
     {
-        switch ($propertyName) {
-            case 'code':
-                return new CodeSelection();
-            case 'categories':
-                return $this->createCategoriesSelection($selectionConfiguration);
-            case 'enabled':
-                return new EnabledSelection();
-            case 'family':
-                return $this->createFamilySelection($selectionConfiguration);
-            case 'family_variant':
-                return $this->createFamilyVariantSelection($selectionConfiguration);
-            case 'groups':
-                return $this->createGroupsSelection($selectionConfiguration);
-            case 'parent':
-                return $this->createParentSelection($selectionConfiguration);
-            case 'quality_score':
-                return new QualityScoreCodeSelection();
-            default:
-                throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
-        }
+        return match ($propertyName) {
+            'code' => new CodeSelection(),
+            'categories' => $this->createCategoriesSelection($selectionConfiguration),
+            'enabled' => new EnabledSelection(),
+            'family' => $this->createFamilySelection($selectionConfiguration),
+            'family_variant' => $this->createFamilyVariantSelection($selectionConfiguration),
+            'groups' => $this->createGroupsSelection($selectionConfiguration),
+            'parent' => $this->createParentSelection($selectionConfiguration),
+            'quality_score' => new QualityScoreCodeSelection(),
+            default => throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName)),
+        };
     }
 
     public function createAttributeSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($attribute->type()) {
-            case 'pim_catalog_asset_collection':
-                return $this->createAssetCollectionSelection($selectionConfiguration, $attribute);
-            case 'pim_catalog_file':
-            case 'pim_catalog_image':
-                return $this->createFileSelection($selectionConfiguration, $attribute);
-            case 'pim_catalog_boolean':
-                return new BooleanSelection();
-            case 'pim_catalog_date':
-                return new DateSelection($selectionConfiguration['format']);
-            case 'pim_catalog_identifier':
-            case 'pim_catalog_textarea':
-            case 'pim_catalog_text':
-            case 'pim_catalog_table':
-                return new ScalarSelection();
-            case 'pim_catalog_metric':
-                return $this->createMeasurementSelection($selectionConfiguration, $attribute);
-            case 'pim_catalog_number':
-                return new NumberSelection($selectionConfiguration['decimal_separator']);
-            case 'pim_catalog_multiselect':
-                return $this->createMultiselectSelection($selectionConfiguration, $attribute);
-            case 'pim_catalog_simpleselect':
-                return $this->createSimpleSelectSelection($selectionConfiguration, $attribute);
-            case 'pim_catalog_price_collection':
-                return $this->createPriceCollectionSelection($selectionConfiguration, $attribute);
-            case 'akeneo_reference_entity':
-                return $this->createReferenceEntitySelection($selectionConfiguration, $attribute);
-            case 'akeneo_reference_entity_collection':
-                return $this->createReferenceEntityCollectionSelection($selectionConfiguration, $attribute);
-            default:
-                throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
-        }
+        return match ($attribute->type()) {
+            'pim_catalog_asset_collection' => $this->createAssetCollectionSelection($selectionConfiguration, $attribute),
+            'pim_catalog_file', 'pim_catalog_image' => $this->createFileSelection($selectionConfiguration, $attribute),
+            'pim_catalog_boolean' => new BooleanSelection(),
+            'pim_catalog_date' => new DateSelection($selectionConfiguration['format']),
+            'pim_catalog_identifier', 'pim_catalog_textarea', 'pim_catalog_text', 'pim_catalog_table' => new ScalarSelection(),
+            'pim_catalog_metric' => $this->createMeasurementSelection($selectionConfiguration, $attribute),
+            'pim_catalog_number' => new NumberSelection($selectionConfiguration['decimal_separator']),
+            'pim_catalog_multiselect' => $this->createMultiselectSelection($selectionConfiguration, $attribute),
+            'pim_catalog_simpleselect' => $this->createSimpleSelectSelection($selectionConfiguration, $attribute),
+            'pim_catalog_price_collection' => $this->createPriceCollectionSelection($selectionConfiguration, $attribute),
+            'akeneo_reference_entity' => $this->createReferenceEntitySelection($selectionConfiguration, $attribute),
+            'akeneo_reference_entity_collection' => $this->createReferenceEntityCollectionSelection($selectionConfiguration, $attribute),
+            default => throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type())),
+        };
     }
 
     public function createAssociationSelection(array $selectionConfiguration, AssociationType $associationType): SelectionInterface
@@ -130,278 +104,205 @@ class SelectionHydrator
 
     private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case AssetCollectionCodeSelection::TYPE:
-                return new AssetCollectionCodeSelection(
-                    $selectionConfiguration['separator'],
-                    $attribute->properties()['reference_data_name'],
-                    $attribute->code()
-                );
-            case AssetCollectionLabelSelection::TYPE:
-                return new AssetCollectionLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name'],
-                    $attribute->code()
-                );
-            case AssetCollectionMediaFileSelection::TYPE:
-                return new AssetCollectionMediaFileSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['channel'],
-                    $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name'],
-                    $attribute->code(),
-                    $selectionConfiguration['property']
-                );
-            case AssetCollectionMediaLinkSelection::TYPE:
-                return new AssetCollectionMediaLinkSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['channel'],
-                    $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name'],
-                    $attribute->code(),
-                    $selectionConfiguration['with_prefix_and_suffix'],
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            AssetCollectionCodeSelection::TYPE => new AssetCollectionCodeSelection(
+                $selectionConfiguration['separator'],
+                $attribute->properties()['reference_data_name'],
+                $attribute->code(),
+            ),
+            AssetCollectionLabelSelection::TYPE => new AssetCollectionLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+                $attribute->properties()['reference_data_name'],
+                $attribute->code(),
+            ),
+            AssetCollectionMediaFileSelection::TYPE => new AssetCollectionMediaFileSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+                $attribute->properties()['reference_data_name'],
+                $attribute->code(),
+                $selectionConfiguration['property'],
+            ),
+            AssetCollectionMediaLinkSelection::TYPE => new AssetCollectionMediaLinkSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+                $attribute->properties()['reference_data_name'],
+                $attribute->code(),
+                $selectionConfiguration['with_prefix_and_suffix'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createFileSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case FilePathSelection::TYPE:
-                return new FilePathSelection($attribute->code());
-            case FileKeySelection::TYPE:
-                return new FileKeySelection($attribute->code());
-            case FileNameSelection::TYPE:
-                return new FileNameSelection($attribute->code());
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            FilePathSelection::TYPE => new FilePathSelection($attribute->code()),
+            FileKeySelection::TYPE => new FileKeySelection($attribute->code()),
+            FileNameSelection::TYPE => new FileNameSelection($attribute->code()),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case MeasurementValueSelection::TYPE:
-                return new MeasurementValueSelection(
-                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR
-                );
-            case MeasurementUnitCodeSelection::TYPE:
-                return new MeasurementUnitCodeSelection();
-            case MeasurementUnitSymbolSelection::TYPE:
-                return new MeasurementUnitSymbolSelection(
-                    $attribute->metricFamily()
-                );
-            case MeasurementUnitLabelSelection::TYPE:
-                return new MeasurementUnitLabelSelection(
-                    $attribute->metricFamily(),
-                    $selectionConfiguration['locale']
-                );
-            case MeasurementValueAndUnitLabelSelection::TYPE:
-                return new MeasurementValueAndUnitLabelSelection(
-                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
-                    $attribute->metricFamily(),
-                    $selectionConfiguration['locale']
-                );
-            case MeasurementValueAndUnitSymbolSelection::TYPE:
-                return new MeasurementValueAndUnitSymbolSelection(
-                    $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
-                    $attribute->metricFamily(),
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            MeasurementValueSelection::TYPE => new MeasurementValueSelection(
+                $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
+            ),
+            MeasurementUnitCodeSelection::TYPE => new MeasurementUnitCodeSelection(),
+            MeasurementUnitSymbolSelection::TYPE => new MeasurementUnitSymbolSelection(
+                $attribute->metricFamily(),
+            ),
+            MeasurementUnitLabelSelection::TYPE => new MeasurementUnitLabelSelection(
+                $attribute->metricFamily(),
+                $selectionConfiguration['locale'],
+            ),
+            MeasurementValueAndUnitLabelSelection::TYPE => new MeasurementValueAndUnitLabelSelection(
+                $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
+                $attribute->metricFamily(),
+                $selectionConfiguration['locale'],
+            ),
+            MeasurementValueAndUnitSymbolSelection::TYPE => new MeasurementValueAndUnitSymbolSelection(
+                $selectionConfiguration['decimal_separator'] ?? MeasurementApplierInterface::DEFAULT_DECIMAL_SEPARATOR,
+                $attribute->metricFamily(),
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createMultiselectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case MultiSelectCodeSelection::TYPE:
-                return new MultiSelectCodeSelection(
-                    $selectionConfiguration['separator']
-                );
-            case MultiSelectLabelSelection::TYPE:
-                return new MultiSelectLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale'],
-                    $attribute->code()
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            MultiSelectCodeSelection::TYPE => new MultiSelectCodeSelection(
+                $selectionConfiguration['separator'],
+            ),
+            MultiSelectLabelSelection::TYPE => new MultiSelectLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+                $attribute->code(),
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createSimpleSelectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case SimpleSelectCodeSelection::TYPE:
-                return new SimpleSelectCodeSelection();
-            case SimpleSelectLabelSelection::TYPE:
-                return new SimpleSelectLabelSelection(
-                    $selectionConfiguration['locale'],
-                    $attribute->code()
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            SimpleSelectCodeSelection::TYPE => new SimpleSelectCodeSelection(),
+            SimpleSelectLabelSelection::TYPE => new SimpleSelectLabelSelection(
+                $selectionConfiguration['locale'],
+                $attribute->code(),
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case PriceCollectionCurrencyCodeSelection::TYPE:
-                return new PriceCollectionCurrencyCodeSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['currencies'] ?? []
-                );
-            case PriceCollectionCurrencyLabelSelection::TYPE:
-                return new PriceCollectionCurrencyLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale'],
-                    $selectionConfiguration['currencies'] ?? []
-                );
-            case PriceCollectionAmountSelection::TYPE:
-                return new PriceCollectionAmountSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['currencies'] ?? []
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            PriceCollectionCurrencyCodeSelection::TYPE => new PriceCollectionCurrencyCodeSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['currencies'] ?? [],
+            ),
+            PriceCollectionCurrencyLabelSelection::TYPE => new PriceCollectionCurrencyLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+                $selectionConfiguration['currencies'] ?? [],
+            ),
+            PriceCollectionAmountSelection::TYPE => new PriceCollectionAmountSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['currencies'] ?? [],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createReferenceEntitySelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case ReferenceEntityCodeSelection::TYPE:
-                return new ReferenceEntityCodeSelection();
-            case ReferenceEntityLabelSelection::TYPE:
-                return new ReferenceEntityLabelSelection(
-                    $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            ReferenceEntityCodeSelection::TYPE => new ReferenceEntityCodeSelection(),
+            ReferenceEntityLabelSelection::TYPE => new ReferenceEntityLabelSelection(
+                $selectionConfiguration['locale'],
+                $attribute->properties()['reference_data_name'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createReferenceEntityCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case ReferenceEntityCollectionCodeSelection::TYPE:
-                return new ReferenceEntityCollectionCodeSelection(
-                    $selectionConfiguration['separator']
-                );
-            case ReferenceEntityCollectionLabelSelection::TYPE:
-                return new ReferenceEntityCollectionLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            ReferenceEntityCollectionCodeSelection::TYPE => new ReferenceEntityCollectionCodeSelection(
+                $selectionConfiguration['separator'],
+            ),
+            ReferenceEntityCollectionLabelSelection::TYPE => new ReferenceEntityCollectionLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+                $attribute->properties()['reference_data_name'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())),
+        };
     }
 
     private function createCategoriesSelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case CategoriesCodeSelection::TYPE:
-                return new CategoriesCodeSelection(
-                    $selectionConfiguration['separator']
-                );
-            case CategoriesLabelSelection::TYPE:
-                return new CategoriesLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for Categories property', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            CategoriesCodeSelection::TYPE => new CategoriesCodeSelection(
+                $selectionConfiguration['separator'],
+            ),
+            CategoriesLabelSelection::TYPE => new CategoriesLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Categories property', $selectionConfiguration['type'])),
+        };
     }
 
     private function createFamilySelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case FamilyCodeSelection::TYPE:
-                return new FamilyCodeSelection();
-            case FamilyLabelSelection::TYPE:
-                return new FamilyLabelSelection($selectionConfiguration['locale']);
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for Family property', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            FamilyCodeSelection::TYPE => new FamilyCodeSelection(),
+            FamilyLabelSelection::TYPE => new FamilyLabelSelection($selectionConfiguration['locale']),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Family property', $selectionConfiguration['type'])),
+        };
     }
 
     private function createFamilyVariantSelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case FamilyVariantCodeSelection::TYPE:
-                return new FamilyVariantCodeSelection();
-            case FamilyVariantLabelSelection::TYPE:
-                return new FamilyVariantLabelSelection($selectionConfiguration['locale']);
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for Family variant property', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            FamilyVariantCodeSelection::TYPE => new FamilyVariantCodeSelection(),
+            FamilyVariantLabelSelection::TYPE => new FamilyVariantLabelSelection($selectionConfiguration['locale']),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Family variant property', $selectionConfiguration['type'])),
+        };
     }
 
     private function createGroupsSelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case GroupsCodeSelection::TYPE:
-                return new GroupsCodeSelection(
-                    $selectionConfiguration['separator']
-                );
-            case GroupsLabelSelection::TYPE:
-                return new GroupsLabelSelection(
-                    $selectionConfiguration['separator'],
-                    $selectionConfiguration['locale']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for Groups property', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            GroupsCodeSelection::TYPE => new GroupsCodeSelection(
+                $selectionConfiguration['separator'],
+            ),
+            GroupsLabelSelection::TYPE => new GroupsLabelSelection(
+                $selectionConfiguration['separator'],
+                $selectionConfiguration['locale'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Groups property', $selectionConfiguration['type'])),
+        };
     }
 
     private function createParentSelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case ParentCodeSelection::TYPE:
-                return new ParentCodeSelection();
-            case ParentLabelSelection::TYPE:
-                return new ParentLabelSelection(
-                    $selectionConfiguration['locale'],
-                    $selectionConfiguration['channel']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for Parent property', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            ParentCodeSelection::TYPE => new ParentCodeSelection(),
+            ParentLabelSelection::TYPE => new ParentLabelSelection(
+                $selectionConfiguration['locale'],
+                $selectionConfiguration['channel'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for Parent property', $selectionConfiguration['type'])),
+        };
     }
 
     private function createSimpleAssociationsSelection(array $selectionConfiguration): SelectionInterface
@@ -414,7 +315,7 @@ class SelectionHydrator
                 if (SimpleAssociationsSelectionInterface::ENTITY_TYPE_GROUPS === $entityType) {
                     return new SimpleAssociationsGroupsLabelSelection(
                         $selectionConfiguration['locale'],
-                        $selectionConfiguration['separator']
+                        $selectionConfiguration['separator'],
                     );
                 }
 
@@ -422,39 +323,31 @@ class SelectionHydrator
                     $entityType,
                     $selectionConfiguration['channel'],
                     $selectionConfiguration['locale'],
-                    $selectionConfiguration['separator']
+                    $selectionConfiguration['separator'],
                 );
             default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type'])
-                );
+                throw new \LogicException(sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type']));
         }
     }
 
     private function createQuantifiedAssociationsSelection(array $selectionConfiguration): SelectionInterface
     {
-        switch ($selectionConfiguration['type']) {
-            case QuantifiedAssociationsCodeSelection::TYPE:
-                return new QuantifiedAssociationsCodeSelection(
-                    $selectionConfiguration['entity_type'],
-                    $selectionConfiguration['separator']
-                );
-            case QuantifiedAssociationsLabelSelection::TYPE:
-                return new QuantifiedAssociationsLabelSelection(
-                    $selectionConfiguration['entity_type'],
-                    $selectionConfiguration['channel'],
-                    $selectionConfiguration['locale'],
-                    $selectionConfiguration['separator']
-                );
-            case QuantifiedAssociationsQuantitySelection::TYPE:
-                return new QuantifiedAssociationsQuantitySelection(
-                    $selectionConfiguration['entity_type'],
-                    $selectionConfiguration['separator']
-                );
-            default:
-                throw new \LogicException(
-                    sprintf('Selection type "%s" is not supported for QuantifiedAssociation', $selectionConfiguration['type'])
-                );
-        }
+        return match ($selectionConfiguration['type']) {
+            QuantifiedAssociationsCodeSelection::TYPE => new QuantifiedAssociationsCodeSelection(
+                $selectionConfiguration['entity_type'],
+                $selectionConfiguration['separator'],
+            ),
+            QuantifiedAssociationsLabelSelection::TYPE => new QuantifiedAssociationsLabelSelection(
+                $selectionConfiguration['entity_type'],
+                $selectionConfiguration['channel'],
+                $selectionConfiguration['locale'],
+                $selectionConfiguration['separator'],
+            ),
+            QuantifiedAssociationsQuantitySelection::TYPE => new QuantifiedAssociationsQuantitySelection(
+                $selectionConfiguration['entity_type'],
+                $selectionConfiguration['separator'],
+            ),
+            default => throw new \LogicException(sprintf('Selection type "%s" is not supported for QuantifiedAssociation', $selectionConfiguration['type'])),
+        };
     }
 }

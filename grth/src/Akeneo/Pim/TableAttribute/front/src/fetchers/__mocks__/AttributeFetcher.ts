@@ -1,5 +1,5 @@
-import {Router} from '@akeneo-pim-community/shared';
-import {Attribute, AttributeCode} from '../../models';
+import {Router, LocaleCode} from '@akeneo-pim-community/shared';
+import {Attribute, AttributeCode, AttributeWithOptions} from '../../models';
 import {AttributeFetcherIndexParams} from '../AttributeFetcher';
 
 const attribute: Attribute = {
@@ -116,9 +116,27 @@ const query = async (_router: Router, _params: AttributeFetcherIndexParams): Pro
   );
 };
 
+const findAttributeWithOptions = async (_router: Router, _localeCode: LocaleCode): Promise<AttributeWithOptions[]> => {
+  return new Promise(resolve =>
+    resolve([
+      {
+        code: 'simple_select_1',
+        label: 'Simple Select 1',
+        options_count: 42,
+      },
+      {
+        code: 'simple_select_2',
+        label: 'Simple Select 2',
+        options_count: 69,
+      },
+    ])
+  );
+};
+
 const AttributeFetcher = {
   fetch: fetchAttribute,
   query: query,
+  findAttributeWithOptions: findAttributeWithOptions,
 };
 
 export {AttributeFetcher};

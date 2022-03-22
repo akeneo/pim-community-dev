@@ -1,0 +1,290 @@
+client-to-clone-srnt: &client-to-clone-srnt
+client-to-clone-grth: &client-to-clone-grth
+
+workflows:
+    blackhawks_dev_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /BH-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - build_srnt_dev:
+                  requires:
+                      - checkout
+            - test_back_integration_bounded_contexts:
+                  requires:
+                      - build_srnt_dev
+            - test_back_integration_reference_entities:
+                  requires:
+                      - build_srnt_dev
+            - test_back_static_and_acceptance:
+                  requires:
+                      - build_srnt_dev
+            - test_back_phpunit:
+                  requires:
+                      - build_srnt_dev
+            - test_back_performance:
+                  requires:
+                      - build_srnt_dev
+            - test_back_data_migrations:
+                  requires:
+                      - build_srnt_dev
+            - test_front_static_acceptance_and_integration:
+                  requires:
+                      - build_srnt_dev
+            - test_front_end_to_end:
+                  requires:
+                      - build_srnt_dev
+            - test_front_code_style:
+                  requires:
+                      - build_srnt_dev
+            - test_back_behat_legacy:
+                  requires:
+                      - test_back_static_and_acceptance
+                      - test_front_static_acceptance_and_integration
+                      - test_front_code_style
+                      - test_back_phpunit
+                      - test_back_integration_bounded_contexts
+                      - test_back_integration_reference_entities
+            - test_database:
+                  requires:
+                      - build_srnt_dev
+            - test_onboarder_bundle:
+                  requires:
+                      - build_srnt_dev
+            - test_grth:
+                  requires:
+                      - build_srnt_dev
+            - test_tria:
+                  requires:
+                      - build_srnt_dev
+            - pull_request_success:
+                  requires:
+                      - test_back_performance
+                      - test_back_behat_legacy
+                      - test_onboarder_bundle
+                      - test_database
+                      - test_back_data_migrations
+                      - test_grth
+                      - test_tria
+
+    blackhawks_deployments_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /BH-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - checkout
+            - build_srnt_prod:
+                  name: "[srnt] Build"
+                  requires:
+                      - "[srnt] Test helm generated k8s files"
+            - build_grth:
+                  name: "[grth] Build"
+                  requires:
+                      - "[grth] Test helm generated k8s files"
+            - build_tria:
+                  name: "[tria] Build"
+                  requires:
+                      - "[tria] Test helm generated k8s files"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+            - test_deploy:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - create_release_candidate?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy"
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+            - test_deploy_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+            - deploy_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /BH-.*/
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+            - deploy_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment?"
+                      - "[<< matrix.PRODUCT_TYPE >>] Build"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+            - pull_request_success:
+                  requires:
+                      - "[srnt] Test deploy"
+                      - "[grth] Test deploy"
+                      - "[tria] Test deploy"
+                      - "[srnt] Test upgrade from last release"
+                      - "[grth] Test upgrade from last release"
+
+    # Description :
+    #    Beta workflows, current test:
+    #      - check test performance on cloned curstomer
+    nightly_beta:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth", "srnt"]
+                  requires:
+                      - checkout
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - prepare_perf_sanity_checks:
+                  name: "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] test_clone_from-<< matrix.SOURCE_PFID >>"
+            # Currently useless, because we scale down all pods in dev and we did not test it long enough
+            - perf_sanity_checks:
+                  name: "[grth] perf-while-upgrade-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - perf_sanity_checks:
+                  name: "[grth] perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                      - "[grth] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - prepare_perf_sanity_checks:
+                  name: "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] test_clone_from-<< matrix.SOURCE_PFID >>"
+            # Currently useless, because we scale down all pods in dev and we did not test it long enough
+            - perf_sanity_checks:
+                  name: "[srnt] perf-while-upgrade-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - perf_sanity_checks:
+                  name: "[srnt] perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                      - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"

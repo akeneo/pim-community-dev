@@ -17,24 +17,13 @@ use Webmozart\Assert\Assert;
 
 class AssetCollectionValue implements SourceValueInterface
 {
-    /** @var string[] */
-    private array $assetCodes;
-    private string $entityIdentifier;
-    private ?string $channel;
-    private ?string $locale;
-
     public function __construct(
-        array $assetCodes,
-        string $entityIdentifier,
-        ?string $channel,
-        ?string $locale
+        private array $assetCodes,
+        private string $entityIdentifier,
+        private ?string $channel,
+        private ?string $locale,
     ) {
         Assert::allString($assetCodes);
-
-        $this->assetCodes = $assetCodes;
-        $this->entityIdentifier = $entityIdentifier;
-        $this->channel = $channel;
-        $this->locale = $locale;
     }
 
     public function getAssetCodes(): array

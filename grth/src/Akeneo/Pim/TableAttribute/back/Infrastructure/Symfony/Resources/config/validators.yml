@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select" ]
+    pim_catalog_table_allowed_column_datatypes: [ "text", "number", "boolean", "select", "measurement" ]
     pim_catalog_table_allowed_first_column_datatypes: [ "select" ]
 
 services:
@@ -85,7 +85,7 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ReferenceEntity\ReferenceEntityShouldNotBeLinkedToATableColumnValidator:
         arguments:
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsLinkedToATableColumn'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsReferenceEntityLinkedToATableColumn'
         tags:
             - { name: 'validator.constraint_validator' }
 
@@ -107,6 +107,41 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementFamilyExists'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementUnitShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyCannotBeUpdatedValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementInfoShouldOnlyBeSetOnMeasurementColumnsValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldNotBeLinkedToATableColumnValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsMeasurementFamilyLinkedToATableColumn'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyUsedInATableAttributeValidator:
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\IsMeasurementFamilyLinkedToATableColumn'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
     # Constraint guessers
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\ConstraintGuesser\TableGuesser:
         tags:
@@ -114,6 +149,13 @@ services:
 
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifierValidator:
         arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\MeasurementUnitsShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\MeasurementUnitExists'
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
         tags:
             - { name: 'validator.constraint_validator' }

@@ -17,15 +17,11 @@ final class MeasurementValueAndUnitLabelSelection implements MeasurementSelectio
 {
     public const TYPE = 'value_and_unit_label';
 
-    private string $decimalSeparator;
-    private string $measurementFamilyCode;
-    private string $locale;
-
-    public function __construct(string $decimalSeparator, string $measurementFamilyCode, string $locale)
-    {
-        $this->decimalSeparator = $decimalSeparator;
-        $this->measurementFamilyCode = $measurementFamilyCode;
-        $this->locale = $locale;
+    public function __construct(
+        private string $decimalSeparator,
+        private string $measurementFamilyCode,
+        private string $locale,
+    ) {
     }
 
     public function getDecimalSeparator(): string

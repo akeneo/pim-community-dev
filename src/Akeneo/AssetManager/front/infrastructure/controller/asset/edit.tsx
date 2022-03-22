@@ -101,7 +101,7 @@ class AssetEditController extends BaseController {
     this.store.dispatch(catalogLocaleChanged(userContext.get('catalogLocale')));
     this.store.dispatch(catalogChannelChanged(userContext.get('catalogScope')) as any);
     this.store.dispatch(uiLocaleChanged(userContext.get('uiLocale')));
-    this.store.dispatch(updateActivatedLocales() as any);
+    this.store.dispatch(updateActivatedLocales(fetcherRegistry.getFetcher('locale')) as any);
     document.addEventListener('keydown', shortcutDispatcher(this.store));
 
     fetcherRegistry

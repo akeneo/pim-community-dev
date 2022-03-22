@@ -54,15 +54,15 @@ final class ProductFiltersValidator extends ConstraintValidator
                                         [
                                             new Assert\All(new LocaleShouldBeActive()),
                                             new Assert\NotBlank(),
-                                        ]
+                                        ],
                                     ),
-                                    'channel' => new Assert\Optional(new ChannelShouldExist())
+                                    'channel' => new Assert\Optional(new ChannelShouldExist()),
                                 ],
                             ]),
                         ]),
                     ],
                     'allowExtraFields' => true,
-                ]
+                ],
                 ));
         }
     }

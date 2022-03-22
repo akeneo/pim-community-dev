@@ -58,14 +58,14 @@ class FormatValidator extends ConstraintValidator
                         new NotBlank(['message' => 'akeneo.tailored_export.validation.required']),
                         new Length([
                             'max' => self::TEXT_MAX_LENGTH,
-                        ])
+                        ]),
                     ],
                 ]));
         }
 
         $textElements = array_filter($format['elements'], static fn (array $element) => 'text' === $element['type']);
 
-        if (self::MAX_TEXT_COUNT < count($textElements)) {
+        if (self::MAX_TEXT_COUNT < count((array) $textElements)) {
             $this->context->buildViolation(Format::MAX_TEXT_COUNT_REACHED)
                 ->atPath('[elements]')
                 ->setParameter('{{ limit }}', (string) self::MAX_TEXT_COUNT)

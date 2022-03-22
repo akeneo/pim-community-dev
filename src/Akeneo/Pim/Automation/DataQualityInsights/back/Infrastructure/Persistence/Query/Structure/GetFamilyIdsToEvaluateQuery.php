@@ -27,7 +27,10 @@ final class GetFamilyIdsToEvaluateQuery implements GetFamilyIdsToEvaluateQueryIn
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, array<FamilyId>>
+     */
+    public function execute(int $bulkSize): \Generator
     {
         $query = <<<SQL
 SELECT DISTINCT family.id
@@ -43,7 +46,7 @@ WHERE family_evaluation.family_id IS NULL
             LEFT JOIN pim_data_quality_insights_attribute_group_activation AS activation ON activation.attribute_group_code = attribute_group.code
         WHERE family_attribute.family_id = family.id
             AND attribute_spellcheck.evaluated_at > family_evaluation.evaluated_at
-            AND (activation.activated IS NULL OR activation.activated = 1) 
+            AND (activation.activated IS NULL OR activation.activated = 1)
     );
 SQL;
         $stmt = $this->dbConnection->executeQuery($query, ['statusDone' => CriterionEvaluationStatus::DONE]);

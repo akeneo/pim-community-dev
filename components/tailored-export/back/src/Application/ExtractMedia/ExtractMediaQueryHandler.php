@@ -23,15 +23,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
 
 class ExtractMediaQueryHandler
 {
-    private FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection;
-    private MediaPathGeneratorInterface $mediaPathGenerator;
-
     public function __construct(
-        FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection,
-        MediaPathGeneratorInterface $mediaPathGenerator
+        private FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection,
+        private MediaPathGeneratorInterface $mediaPathGenerator,
     ) {
-        $this->findMediaFileInfoCollection = $findMediaFileInfoCollection;
-        $this->mediaPathGenerator = $mediaPathGenerator;
     }
 
     /**
@@ -52,7 +47,7 @@ class ExtractMediaQueryHandler
             if ($selection instanceof AssetCollectionSelectionInterface && $value instanceof AssetCollectionValue) {
                 $mediaToExports = array_merge(
                     $mediaToExports,
-                    $this->extractFromAssetCollectionSource($selection, $value)
+                    $this->extractFromAssetCollectionSource($selection, $value),
                 );
             }
         }
@@ -66,7 +61,7 @@ class ExtractMediaQueryHandler
             $value->getEntityIdentifier(),
             $selection->getAttributeCode(),
             $value->getChannelReference(),
-            $value->getLocaleReference()
+            $value->getLocaleReference(),
         );
 
         $path = sprintf('%s%s', $exportDirectory, $value->getOriginalFilename());
@@ -74,7 +69,7 @@ class ExtractMediaQueryHandler
         return new ExtractedMedia(
             $value->getKey(),
             $value->getStorage(),
-            $path
+            $path,
         );
     }
 
@@ -83,12 +78,12 @@ class ExtractMediaQueryHandler
      */
     private function extractFromAssetCollectionSource(
         AssetCollectionSelectionInterface $selection,
-        AssetCollectionValue $value
+        AssetCollectionValue $value,
     ): array {
         $mainMediaFileInfoCollection = $this->findMediaFileInfoCollection
             ->forAssetFamilyAndAssetCodes(
                 $selection->getAssetFamilyCode(),
-                $value->getAssetCodes()
+                $value->getAssetCodes(),
             );
 
         return array_reduce(
@@ -98,7 +93,7 @@ class ExtractMediaQueryHandler
                     $value->getEntityIdentifier(),
                     $selection->getAttributeCode(),
                     $value->getChannelReference(),
-                    $value->getLocaleReference()
+                    $value->getLocaleReference(),
                 );
 
                 $path = sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
@@ -106,12 +101,12 @@ class ExtractMediaQueryHandler
                 $accumulator[] = new ExtractedMedia(
                     $fileInfo->getFileKey(),
                     $fileInfo->getStorage(),
-                    $path
+                    $path,
                 );
 
                 return $accumulator;
             },
-            []
+            [],
         );
     }
 }

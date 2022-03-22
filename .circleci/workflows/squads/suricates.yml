@@ -1,0 +1,32 @@
+workflows:
+  version: 2
+
+  suricates_pull_request:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+    jobs:
+      - ready_to_build?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /SURI-.*/
+                - /OB2-.*/
+                - /OBS-.*/
+      - checkout:
+          requires:
+            - ready_to_build?
+      - build_srnt_dev:
+          requires:
+            - checkout
+      - test_front_onboarder:
+          requires:
+            - build_srnt_dev
+      - test_back_onboarder:
+          requires:
+            - build_srnt_dev
+      - pull_request_success:
+          requires:
+            - test_front_onboarder
+            - test_back_onboarder

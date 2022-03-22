@@ -7,6 +7,7 @@ services:
         arguments:
             - '%pim_ce_dev_src_folder_location%/src'
             - '%kernel.project_dir%/public'
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\HtmlFormatter\ArabicHtmlFormatter'
 
     pimee_security.renderer.product_pdf:
         class: '%pimee_security.renderer.product_pdf.class%'

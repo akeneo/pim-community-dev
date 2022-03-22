@@ -18,22 +18,20 @@ use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTrans
 
 class FindRecordLabels implements FindRecordLabelsInterface
 {
-    private FindRecordsLabelTranslationsInterface $findRecordLabelTranslations;
-
-    public function __construct(FindRecordsLabelTranslationsInterface $findRecordLabelTranslations)
-    {
-        $this->findRecordLabelTranslations = $findRecordLabelTranslations;
+    public function __construct(
+        private FindRecordsLabelTranslationsInterface $findRecordLabelTranslations,
+    ) {
     }
 
     public function byReferenceEntityCodeAndRecordCodes(
         string $referenceEntityCode,
         array $recordCodes,
-        string $locale
+        string $locale,
     ): array {
         return $this->findRecordLabelTranslations->find(
             $referenceEntityCode,
             $recordCodes,
-            $locale
+            $locale,
         );
     }
 }

@@ -25,6 +25,16 @@ export const getComplexTableConfiguration: (firstColumnType?: DataType) => Table
       validations: {},
       options: [{code: 'A'}, {code: 'B'}, {code: 'C'}],
     },
+    {
+      data_type: 'measurement',
+      code: 'ElectricCharge',
+      labels: {
+        en_US: 'Electric Charge',
+      },
+      validations: {},
+      measurement_family_code: 'ElectricCharge',
+      measurement_default_unit_code: 'MILLIAMPEREHOUR',
+    },
   ] as TableConfiguration;
 };
 

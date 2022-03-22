@@ -25,12 +25,9 @@ final class GetAttributeOptionsAction
 {
     private const LIMIT_DEFAULT = 25;
 
-    private SearchAttributeOptionsInterface $searchAttributeOptions;
-
     public function __construct(
-        SearchAttributeOptionsInterface $searchAttributeOptions
+        private SearchAttributeOptionsInterface $searchAttributeOptions,
     ) {
-        $this->searchAttributeOptions = $searchAttributeOptions;
     }
 
     public function __invoke(Request $request): Response

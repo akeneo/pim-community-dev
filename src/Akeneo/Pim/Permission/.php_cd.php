@@ -182,10 +182,13 @@ $rules = [
         'Akeneo\Tool',
 
         // Required to add quality scores into external API normalized products.
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface',
 
         // Required to add completenesses into external API.
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface',
@@ -215,6 +218,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface',
 
         // TODO: review the voters/filters implementation
+        'Akeneo\UserManagement\Component\Model\Group',
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',

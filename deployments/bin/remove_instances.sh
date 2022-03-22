@@ -100,8 +100,21 @@ for NAMESPACE in ${NS_LIST}; do
             echo "  NS younger than 1 hour"
         fi
     fi
+    # Theses environments are cloned serenity / growth edition env with an upgrade from PR code and should be kept at least 30 days
+    if [[ ${INSTANCE_NAME} == pimci-long-duplic* ]] ; then
+        DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+        DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+        echo "  Day diff :              ${DAY_DIFF}"
+        if [[ -z "${DEPLOY_TIME}" ]] || [[ ${DAY_DIFF} -ge 30 ]]; then
+            DELETE_INSTANCE=true
+            INSTANCE_NAME_PREFIX=pimci-long-duplic
+        else
+            echo "  NS younger than 30 days"
+        fi
+    fi
+
     # Theses environments are test deploy serenity / growth edition (pimci) and aged of 1 hour
-    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) ; then
+    if [[ ${INSTANCE_NAME} == pimci* ]] && ! ([[ ${INSTANCE_NAME} == pimci-pr* ]]) && ! ([[ ${INSTANCE_NAME} == pimci-*duplic* ]]) ; then
         if [[ ${NS_AGE} == *h* ]] || [[ ${NS_AGE} == *d* ]] ; then
             DELETE_INSTANCE=true
             INSTANCE_NAME_PREFIX=pimci
@@ -115,6 +128,7 @@ for NAMESPACE in ${NS_LIST}; do
             echo "  NS younger than 1 hour"
         fi
     fi
+
     # Theses environments are deploy PR serenity / growth edition (pimci-pr) and aged of 1 day after the last deployment
     if [[ ${INSTANCE_NAME} == pimci-pr* ]] ; then
         DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')

@@ -30,7 +30,7 @@ class DateSourceValidator extends ConstraintValidator
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
         $sourceConstraintFields['selection'] = new Collection([
             'fields' => [
-                'format' => new Choice(['choices' => DateFormat::getAvailableFormats()])
+                'format' => new Choice(['choices' => DateFormat::getAvailableFormats()]),
             ],
         ]);
 
@@ -43,7 +43,7 @@ class DateSourceValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

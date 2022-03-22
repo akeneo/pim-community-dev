@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+
 interface GetProductIdsWithUpdatedFamilyAttributesListQueryInterface
 {
+    /**
+     * @return \Iterator<int, ProductIdCollection>
+     */
     public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator;
 }

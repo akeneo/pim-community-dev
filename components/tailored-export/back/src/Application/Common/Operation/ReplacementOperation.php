@@ -34,7 +34,7 @@ class ReplacementOperation implements OperationInterface
 
     public function getMappedValue(string $value): ?string
     {
-        /** check after if we return null */
+        /* check after if we return null */
         if (!$this->hasMappedValue($value)) {
             return null;
         }

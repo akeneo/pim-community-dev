@@ -18,16 +18,14 @@ use Akeneo\Platform\TailoredExport\Application\Common\Format\FormatInterface;
 
 class FormatApplier
 {
-    private ConcatFormatApplier $concatFormatApplier;
-
-    public function __construct(ConcatFormatApplier $concatFormatApplier)
-    {
-        $this->concatFormatApplier = $concatFormatApplier;
+    public function __construct(
+        private ConcatFormatApplier $concatFormatApplier,
+    ) {
     }
 
     public function applyFormat(
         FormatInterface $format,
-        array $mappedValues
+        array $mappedValues,
     ): string {
         if (!$format instanceof ConcatFormat) {
             throw new \InvalidArgumentException('Unsupported format');

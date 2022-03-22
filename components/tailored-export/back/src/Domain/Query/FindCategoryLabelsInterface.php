@@ -17,6 +17,7 @@ interface FindCategoryLabelsInterface
 {
     /**
      * @param string[] $categoryCodes
+     *
      * @return array<string, string>
      */
     public function byCodes(array $categoryCodes, string $locale): array;

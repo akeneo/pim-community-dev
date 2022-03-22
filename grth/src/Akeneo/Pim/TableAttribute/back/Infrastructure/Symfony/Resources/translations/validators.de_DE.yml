@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "Die Optionsbezeichnung ist zu lang: Er darf 255 oder weniger Zeichen haben"
       duplicated_column_code: '[0,1]Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" wird bereits verwendet|]1,Inf[Jede Spalte benötigt einen eindeutigen Code. "%duplicateCodes%" werden bereits verwendet'
       column_type_must_be_a_string: Der Spaltendatentyp muss ein String sein
+      unknown_data_type: 'Der Spaltendatentyp ist unbekannt. Bitte wählen Sie einen der folgenden: {{ allowed_data_types }}'
       column_label_must_be_a_string: Die Spaltenbezeichnung muss ein String sein
       option_label_must_be_a_string: Die Optionsbezeichnung muss ein String sein
       label_locale_does_not_exist_or_is_not_activated: Das "{{ locale_code }}" Gebietsschema existiert nicht oder ist nicht aktiviert
       invalid_labels_format: Die Spaltenbezeichnungen müssen ein Schlüssel/Werteobjekt sein
       invalid_option_labels_format: Die Optionsbezeichnungen müssen ein Schlüssel/Werteobjekt sein
       must_not_be_filled: Der Typ %type% erlaubt keine table_configuration
+      first_column_should_be_valid: '{1}Der erste Spaltentyp sollte immer "{{ allowed_data_types }}" sein, der aktuelle Typ ist "{{ data_type }}". ]1,Inf [Der erste Spaltentyp kann entweder {{ allowed_data_types_except_last }} oder "{{ last_allowed_data_types }}" sein, der aktuelle Typ ist "{{ data_type }}".'
       first_column_code_cannot_be_changed: Der Code Ihrer ersten Spalte kann nicht geändert werden.
       unknown_field: 'Stellen Sie sicher, dass Sie nur erwartete Felder, aktuelles Feld: {{ field }}'
       attribute_does_not_exist: Das Attribut "{{ attribute }}" existiert nicht
@@ -31,12 +33,21 @@ pim_table_configuration:
       not_select_column: Die "{{ column }}" Spalte des Attributs "{{ attribute }}" ist kein "select"
       max_should_be_greater_than_min: Der Maximalwert sollte größer als der Minimalwert sein.
       options_cannot_be_set: Optionen können nicht für einen "{{ data_type }}" Spaltentyp gesetzt werden
+      reference_entity_identifier_cannot_be_set: Referenz-Entitäts-Kennung kann nicht für einen "{{ data_type }}" Spaltentyp gesetzt werden
+      reference_entity_identifier_must_be_filled: Die Referenz-Entitäts-Kennung muss ausgefüllt werden
+      reference_entity_identifier_should_exist: Stellen Sie sicher, dass die "{{ reference_entity_identifier }}" Referenz-Entität vorhanden ist, bevor Sie sie zur Tabelle hinzufügen
+      reference_entity_identifier_is_immutable: Der reference_entity_identifier kann nicht aktualisiert werden
       no_validations_allowed: 'Keine Validierungen für eine "{{ columnType }}" Spalte verwenden, aktueller Spaltentyp: "{{ given }}"'
       invalid_validation_key: 'Die "{{ given }}" Validierungen funktionieren nicht in einer "{{ columnType }}" Spalte, erlaubt: "{{ expected }}"'
       too_many_table_attributes: Sie haben die maximale Anzahl an Tabellenattributen innerhalb Ihrer PIM erreicht ({{ limit }})
+      measurement_family_should_exist: Stellen Sie sicher, dass die "{{ measurement_family_code }}" Messfamilie existiert, bevor Sie sie zur Tabelle hinzufügen
+      measurement_unit_should_exist: Stellen Sie sicher, dass die "{{ measurement_unit_code }}" Einheit in der "{{ measurement_family_code }}" Messfamilie vorhanden ist, bevor Sie sie zur Tabelle hinzufügen
+      measurement_family_code_must_be_filled: Der Mess-Familiencode muss ausgefüllt werden
+      measurement_family_cannot_be_updated: Der measurement_family_code kann nicht aktualisiert werden
     product_value:
       non_existing_columns: '[0,1]Die Spalte "{{ non_existing_columns }}" existiert nicht|]1,Inf[Die "{{ non_existing_columns }}" Spalten existieren nicht'
       unexpected_data_type: 'Die Spalte "{{ columnCode }}" erwartet eine {{ expected }}, {{ given }} gegeben'
+      unexpected_data_type_for_measurement: 'Die Spalte "{{ columnCode }}" erwartet einen Code für die Zeichenkette und einen numerischen Betrag, {{ given }} angegeben'
       first_column_required: 'Die Spalte "{{ columnCode }}" ist obligatorisch'
       unknown_option: 'Stellen Sie sicher, dass Sie nur existierende Optionscodes verwenden, den aktuellen Wert: "{{ optionCode }}"'
       integer_required: 'Dieser Wert sollte eine Ganzzahl sein: {{ invalid_value }}'
@@ -45,5 +56,8 @@ pim_table_configuration:
       value_integer_required: 'Der benötigte Wert ist eine Ganzzahl'
       max_length_validation: Dieser Wert sollte {{ limit }} oder weniger Zeichen enthalten.
       too_many_rows: Sie haben die maximale Anzahl von Zeilen in Ihrer Tabelle erreicht ({{ limit }}).
+      record_should_exist: 'Der "{{ recordCode }}" Datensatz in der "{{ referenceEntityIdentifier }}" Referenz-Entität existiert nicht'
     product_value_collection:
       too_many_cells: Sie haben die maximale Anzahl an Tabellenzellen in Ihrem Produkt erreicht ({{ count }} Zellen, nur {{ limit }} erlaubt).
+    reference_entity:
+      should_not_be_linked: 'Diese Referenz-Entität wird in einem Produkt-Attribut verwendet, daher kann es nicht entfernt werden.'

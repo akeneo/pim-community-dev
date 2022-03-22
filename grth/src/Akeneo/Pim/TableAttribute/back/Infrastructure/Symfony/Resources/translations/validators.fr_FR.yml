@@ -17,12 +17,14 @@ pim_table_configuration:
       too_long_option_label: "L'intitulé de l'option est trop long : il doit avoir au maximum 255 caractères."
       duplicated_column_code: '[0,1]Chaque colonne nécessite un code unique. "%duplicateCodes%" est déjà utilisé|]1, Inf[Chaque colonne nécessite un code unique. "%duplicateCodes%" sont déjà utilisés'
       column_type_must_be_a_string: Le type de colonne doit être une chaîne de caractères
+      unknown_data_type: 'Le type de données de la colonne est inconnu. Veuillez choisir l''un des éléments suivants : {{ allowed_data_types }}'
       column_label_must_be_a_string: Le libellé de la colonne doit être une chaîne de caractères
       option_label_must_be_a_string: Le libellé de l'option doit être une chaîne de caractères
       label_locale_does_not_exist_or_is_not_activated: La locale "{{ locale_code }}" n'existe pas ou n'est pas activée
       invalid_labels_format: Les libellés de colonne doivent être sous forme d'un objet clé/valeur
       invalid_option_labels_format: Les libellés d'option doivent être sous forme d'un objet clé/valeur
       must_not_be_filled: Le type %type% n'autorise pas table_configuration
+      first_column_should_be_valid: '{1}Le premier type de colonne devrait toujours être "{{ allowed_data_types }}", le type actuel est "{{ data_type }}". ]1,Inf[Le type de la première colonne peut être soit {{ allowed_data_types_except_last }} soit "{{ last_allowed_data_types }}", le type actuel est "{{ data_type }}".'
       first_column_code_cannot_be_changed: Le code de la première colonne ne peut pas être modifié.
       unknown_field: 'Assurez-vous d''utiliser uniquement les champs attendus ; le champ actuel : {{ field }}'
       attribute_does_not_exist: L'attribut "{{ attribute }}" n'existe pas
@@ -31,9 +33,20 @@ pim_table_configuration:
       not_select_column: La colonne "{{ column }}" de l'attribut "{{ attribute }}" n'a pas le type "select"
       max_should_be_greater_than_min: La valeur minimum ne doit pas dépasser la valeur maximum.
       options_cannot_be_set: Le champs options ne peut pas être défini pour les colonnes de type "{{ data_type }}"
+      reference_entity_identifier_cannot_be_set: L'identifiant de l'entité référentielle ne peut pas être défini pour un type de colonne "{{ data_type }}"
+      reference_entity_identifier_must_be_filled: L'identifiant de l'entité référentielle doit être renseigné
+      reference_entity_identifier_should_exist: Assurez-vous que l'entité référentielle "{{ reference_entity_identifier }}" existe avant de l'ajouter au tableau
       no_validations_allowed: 'Vous ne pouvez pas utiliser de validations sur une colonne "{{ columnType }}", le type de colonne actuelle est : "{{ given }}"'
       invalid_validation_key: 'La validation "{{ given }}" ne fonctionne pas sur une colonne "{{ columnType }}", sont autorisés : "{{ expected }}"'
       too_many_table_attributes: Vous avez atteint le nombre maximum d'attributs de type tableau dans votre PIM ({{ limit }})
+      measurement_family_should_exist: Assurez-vous que la famille de mesure "{{ measurement_family_code }}" existe avant de l'ajouter à la table
+      measurement_unit_should_exist: Assurez-vous que l'unité "{{ measurement_unit_code }}" existe dans la famille de mesure "{{ measurement_family_code }}" avant de l'ajouter à la table
+      measurement_family_code_must_be_filled: Le code d'une famille de mesure doit être renseigné
+      measurement_default_unit_code_must_be_filled: Le code de l'unité de mesure par défaut doit être renseigné
+      measurement_family_code_cannot_be_set: Le code de famille de mesure ne peut pas être défini pour un type de colonne "{{ data_type }}"
+      measurement_default_unit_code_cannot_be_set: Le code de l'unité de mesure par défaut ne peut pas être défini pour un type de colonne "{{ data_type }}"
+      measurement_family_should_not_be_linked: 'Cette famille de mesure est utilisée dans un attribut produit, il ne peut donc pas être supprimé.'
+      measurement_family_unit_should_not_be_linked: 'Cette unité de famille de mesure est utilisée dans un attribut produit. Vous ne pouvez modifier que les libellés traduits et le symbole d''une unité.'
     product_value:
       non_existing_columns: '[0,1]La colonne "{{ non_existing_columns }}" n''existe pas|]1,Inf[Les colonnes "{{ non_existing_columns }}" n''existent pas'
       unexpected_data_type: 'La colonne "{{ columnCode }}" s''attend à un {{ expected }}, {{ given }} donné'
@@ -45,5 +58,9 @@ pim_table_configuration:
       value_integer_required: 'La valeur requise est un entier'
       max_length_validation: Cette valeur est trop longue. Elle doit contenir {{ max }} caractères ou moins.
       too_many_rows: Vous avez atteint le nombre maximum de lignes dans votre tableau ({{ limit }}).
+      record_should_exist: 'L''enregistrement "{{ recordCode }}" dans l''entité référentielle "{{ referenceEntityIdentifier }}" n''existe pas'
+      measurement_unit_should_exist: 'L''unité "{{ measurement_unit_code }}" dans la famille de mesure "{{ measurement_family_code }}" n''existe pas'
     product_value_collection:
       too_many_cells: Vous avez atteint le nombre maximum de cellules de tableau dans votre produit ({{ count }} cellules, seulement {{ limit }} autorisées).
+    reference_entity:
+      should_not_be_linked: 'Cette entité référentielle est utilisée dans un attribut produit, donc elle ne peut pas être supprimée.'

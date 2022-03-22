@@ -18,6 +18,7 @@ akeneo_connectivity_connection_audit_error | BASE TABLE
 akeneo_connectivity_connection_audit_product | BASE TABLE
 akeneo_connectivity_connection_events_api_request_count | BASE TABLE
 akeneo_connectivity_connection_wrong_credentials_combination | BASE TABLE
+akeneo_connectivity_revoked_app_token | BASE TABLE
 akeneo_connectivity_test_app | BASE TABLE
 akeneo_connectivity_user_consent | BASE TABLE
 akeneo_file_storage_file_info | BASE TABLE
@@ -26,6 +27,7 @@ akeneo_onboarder_message | BASE TABLE
 akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
+akeneo_onboarder_serenity_supplier | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
 akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
@@ -110,6 +112,7 @@ pim_data_quality_insights_attribute_group_activation | BASE TABLE
 pim_data_quality_insights_dashboard_scores_projection | BASE TABLE
 pim_data_quality_insights_product_criteria_evaluation | BASE TABLE
 pim_data_quality_insights_product_model_criteria_evaluation | BASE TABLE
+pim_data_quality_insights_product_model_score | BASE TABLE
 pim_data_quality_insights_product_score | BASE TABLE
 pim_datagrid_view | BASE TABLE
 pim_index_migration | BASE TABLE
@@ -288,6 +291,7 @@ akeneo_connectivity_connection_events_api_request_count | updated | NO | datetim
 akeneo_connectivity_connection_wrong_credentials_combination | connection_code | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | username | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | authentication_date | NO | datetime |
+akeneo_connectivity_revoked_app_token | token | NO | varchar(255) | PRI
 akeneo_connectivity_test_app | client_id | NO | varchar(36) | PRI
 akeneo_connectivity_test_app | client_secret | NO | varchar(100) |
 akeneo_connectivity_test_app | name | NO | varchar(255) |
@@ -328,6 +332,9 @@ akeneo_onboarder_pre_ref_product | created_at | NO | datetime |
 akeneo_onboarder_pre_ref_product | is_rejected | NO | tinyint(1) |
 akeneo_onboarder_retailer_contact | supplier_id | NO | char(36) | PRI
 akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
+akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
+akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
+akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |
@@ -712,6 +719,9 @@ pim_data_quality_insights_product_model_criteria_evaluation | criterion_code | N
 pim_data_quality_insights_product_model_criteria_evaluation | evaluated_at | YES | datetime |
 pim_data_quality_insights_product_model_criteria_evaluation | status | NO | varchar(15) | MUL
 pim_data_quality_insights_product_model_criteria_evaluation | result | YES | json |
+pim_data_quality_insights_product_model_score | product_model_id | NO | int | PRI
+pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
+pim_data_quality_insights_product_model_score | scores | NO | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |

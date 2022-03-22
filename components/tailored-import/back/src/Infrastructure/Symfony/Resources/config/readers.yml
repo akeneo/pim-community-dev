@@ -1,0 +1,6 @@
+services:
+  akeneo.tailored_import.reader.file.xlsx:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Connector\Reader\FileReader
+    arguments:
+      - 'xlsx'
+      - '@akeneo.tailored_import.spout.file_reader.factory'

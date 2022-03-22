@@ -32,25 +32,15 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindQualityScoresInterface;
 
 class PropertyValueHydrator
 {
-    private FindQualityScoresInterface $findQualityScores;
-
-    public function __construct(FindQualityScoresInterface $findQualityScores)
-    {
-        $this->findQualityScores = $findQualityScores;
+    public function __construct(
+        private FindQualityScoresInterface $findQualityScores,
+    ) {
     }
 
-    /**
-     * @param ProductInterface|ProductModelInterface $productOrProductModel
-     */
-    public function hydrate(PropertySource $source, $productOrProductModel): SourceValueInterface
-    {
-        if (
-            !$productOrProductModel instanceof ProductInterface
-            && !$productOrProductModel instanceof ProductModelInterface
-        ) {
-            throw new \InvalidArgumentException('Cannot hydrate this entity');
-        }
-
+    public function hydrate(
+        PropertySource $source,
+        ProductInterface|ProductModelInterface $productOrProductModel,
+    ): SourceValueInterface {
         switch ($source->getName()) {
             case 'code':
                 if (!$productOrProductModel instanceof ProductModelInterface) {

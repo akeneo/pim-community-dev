@@ -29,7 +29,8 @@
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "tailored-export:build": "yarn workspace @akeneo-pim-enterprise/tailored-export lib:build",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn tailored-export:build",
+    "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn tailored-export:build && yarn tailored-import:build",
     "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
   },
   "devDependencies": {
@@ -66,6 +67,7 @@
   },
   "workspaces": [
     "components/tailored-export/front",
+    "components/tailored-import/front",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
@@ -81,6 +83,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "src/Akeneo/Pim/TableAttribute/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
+    "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front"
   ]
 }

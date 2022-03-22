@@ -175,7 +175,6 @@ pimee_catalog_rule:
           subtitle: Selecteer uw familie
         set_attribute:
           title: Attribuutwaarde INSTELLEN
-          helper: Om waarden in te stellen op uw attribuut, moet u beginnen met het selecteren van uw doelattribuut en daarna de gewenste waarde instellen
           target_subtitle: Selecteer uw doel
           value_subtitle: Definiëer uw waarde
           attribute_label: Attribuut
@@ -183,6 +182,7 @@ pimee_catalog_rule:
           select_reference_entity: Selecteer uw refererentie-entiteiten
           select_asset: Selecteer uw assets
           select_measurement_unit: Selecteer uw eenheid
+          table_attribute_helper: De voormalige waarden van dit attribuut worden in de hele productselectie vervangen
         set_quantified_associations:
           title: Gekwantificeerde associaties INSTELLEN
           helper: Om gekwantificeerde associaties in te stellen, selecteert u de associatietype(s) en vervolgens de producten, productmodellen of groepen die u wilt associëren met uw productselectie.

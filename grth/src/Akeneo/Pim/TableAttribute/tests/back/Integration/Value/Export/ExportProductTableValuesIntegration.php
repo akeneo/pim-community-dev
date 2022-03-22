@@ -26,11 +26,11 @@ final class ExportProductTableValuesIntegration extends TestCase
         $csv = $this->jobLauncher->launchExport(static::CSV_EXPORT_JOB_CODE, null, []);
 
         $expected = <<<CSV
-product;attribute;ingredient;allergen;quantity;additional_info;nutrition_score
-111111;nutrition-fr_FR-mobile;sugar;0;50;"this is a text";B
-111111;nutrition-fr_FR-mobile;egg;1;23;;C
-111111;nutrition-en_US-ecommerce;sugar;1;66;"this is a second text";B
-111111;nutrition-en_US-ecommerce;egg;1;20;;C
+product;attribute;ingredient;allergen;quantity;additional_info;nutrition_score;weight
+111111;nutrition-fr_FR-mobile;sugar;0;50;"this is a text";B;"100 KILOGRAM"
+111111;nutrition-fr_FR-mobile;egg;1;23;;C;
+111111;nutrition-en_US-ecommerce;sugar;1;66;"this is a second text";B;
+111111;nutrition-en_US-ecommerce;egg;1;20;;C;
 
 CSV;
         Assert::assertSame($expected, $csv);
@@ -58,11 +58,11 @@ CSV;
         }
 
         $expected = [
-            ['product', 'attribute', 'ingredient', 'allergen', 'quantity', 'additional_info', 'nutrition_score'],
-            ['111111', 'nutrition-fr_FR-mobile', 'sugar', '0', '50', 'this is a text', 'B'],
-            ['111111', 'nutrition-fr_FR-mobile', 'egg', '1', '23', '', 'C'],
-            ['111111', 'nutrition-en_US-ecommerce', 'sugar', '1', '66', 'this is a second text', 'B'],
-            ['111111', 'nutrition-en_US-ecommerce', 'egg', '1', '20', '', 'C'],
+            ['product', 'attribute', 'ingredient', 'allergen', 'quantity', 'additional_info', 'nutrition_score', 'weight'],
+            ['111111', 'nutrition-fr_FR-mobile', 'sugar', '0', '50', 'this is a text', 'B', '100 KILOGRAM'],
+            ['111111', 'nutrition-fr_FR-mobile', 'egg', '1', '23', '', 'C', ''],
+            ['111111', 'nutrition-en_US-ecommerce', 'sugar', '1', '66', 'this is a second text', 'B', ''],
+            ['111111', 'nutrition-en_US-ecommerce', 'egg', '1', '20', '', 'C', ''],
         ];
 
         Assert::assertSame($expected, \array_values($actualRows));
@@ -143,6 +143,12 @@ CSV;
                         ['code' => 'E'],
                     ],
                 ],
+                [
+                    'data_type' => 'measurement',
+                    'code' => 'weight',
+                    'measurement_family_code' => 'Weight',
+                    'measurement_default_unit_code' => 'KILOGRAM'
+                ],
             ]
         );
 
@@ -158,6 +164,10 @@ CSV;
                             'allergen' => false,
                             'additional_info' => 'this is a text',
                             'nutrition_score' => 'B',
+                            'weight' => [
+                                'unit' => 'KILOGRAM',
+                                'amount' => 100,
+                            ],
                         ],
                         [
                             'ingredient' => 'egg',

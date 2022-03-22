@@ -1,5 +1,5 @@
 akeneo_channel:
-    resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
+    resource: "@AkeneoLegacyChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
 akeneo_pim_structure:
@@ -88,6 +88,9 @@ pimee_table_attribute:
 
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
+
+pim_tailored_import:
+    resource: "@AkeneoTailoredImportBundle/Resources/config/routing.yml"
 
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"

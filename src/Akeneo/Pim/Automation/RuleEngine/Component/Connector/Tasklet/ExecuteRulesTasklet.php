@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
+use Akeneo\Pim\Automation\RuleEngine\Component\Exception\NonRunnableException;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
@@ -69,6 +70,7 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
                 'read_rules' => 0,
                 'selected_entities' => 0,
                 'skipped_invalid' => 0,
+                'skipped_no_diff' => 0,
                 'updated_entities' => 0,
                 'executed_rules' => 0,
             ]
@@ -103,7 +105,9 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
                     ],
                     new DataInvalidItem($rule)
                 );
-                $this->stepExecution->addError(\sprintf('Rule "%s": %s', $ruleDefinition->getCode(), $e->getMessage()));
+                if (!$e instanceof NonRunnableException) {
+                    $this->stepExecution->addError(\sprintf('Rule "%s": %s', $ruleDefinition->getCode(), $e->getMessage()));
+                }
 
                 $this->stepExecution->incrementSummaryInfo('errored_rules');
                 if ($this->stepExecution->getJobParameters()->get('stop_on_error')) {

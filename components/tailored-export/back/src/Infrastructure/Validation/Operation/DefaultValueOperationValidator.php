@@ -34,15 +34,15 @@ class DefaultValueOperationValidator extends ConstraintValidator
                     new Length([
                         'max' => 255,
                         'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
-                    ])
-                ]
-            ]
+                    ]),
+                ],
+            ],
         ]));
 
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();

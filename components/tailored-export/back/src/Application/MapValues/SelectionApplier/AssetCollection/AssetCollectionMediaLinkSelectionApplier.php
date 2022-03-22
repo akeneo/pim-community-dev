@@ -24,15 +24,10 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetMainMediaDataInterface;
 
 class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterface
 {
-    private FindAssetMainMediaDataInterface $findAssetMainMediaData;
-    private FindAssetMainMediaAttributeInterface $findAssetMainMediaAttribute;
-
     public function __construct(
-        FindAssetMainMediaDataInterface $findAssetMainMediaData,
-        FindAssetMainMediaAttributeInterface $findAssetMainMediaAttribute
+        private FindAssetMainMediaDataInterface $findAssetMainMediaData,
+        private FindAssetMainMediaAttributeInterface $findAssetMainMediaAttribute,
     ) {
-        $this->findAssetMainMediaData = $findAssetMainMediaData;
-        $this->findAssetMainMediaAttribute = $findAssetMainMediaAttribute;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -48,7 +43,7 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
             $selection->getAssetFamilyCode(),
             $value->getAssetCodes(),
             $selection->getChannel(),
-            $selection->getLocale()
+            $selection->getLocale(),
         );
 
         if ($selection->withPrefixAndSuffix()) {
@@ -73,7 +68,7 @@ class AssetCollectionMediaLinkSelectionApplier implements SelectionApplierInterf
 
         return array_map(
             static fn (string $mediaLinkData) => sprintf('%s%s%s', $attributeAsMainMedia->getPrefix(), $mediaLinkData, $attributeAsMainMedia->getSuffix()),
-            $assetMainMediaLinkData
+            $assetMainMediaLinkData,
         );
     }
 }

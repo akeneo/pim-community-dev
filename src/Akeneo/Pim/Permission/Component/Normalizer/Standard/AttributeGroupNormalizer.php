@@ -3,7 +3,9 @@
 namespace Akeneo\Pim\Permission\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\UserManagement\Component\Model\Group;
+use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -35,19 +37,26 @@ class AttributeGroupNormalizer implements NormalizerInterface, CacheableSupports
     /**
      * {@inheritdoc}
      *
-     * @param JobInstance $object
+     * @param AttributeGroupInterface $object
      */
     public function normalize($object, $format = null, array $context = [])
     {
         $normalizedAttributeGroup = $this->normalizer->normalize($object, $format, $context);
 
+        $viewUserGroups = array_filter($this->accessManager->getViewUserGroups($object), function (GroupInterface $group) {
+            return $group->getType() === Group::TYPE_DEFAULT;
+        });
+        $editUserGroups = array_filter($this->accessManager->getEditUserGroups($object), function (GroupInterface $group) {
+            return $group->getType() === Group::TYPE_DEFAULT;
+        });
+
         $normalizedAttributeGroup['permissions'] = [
             'view' => array_map(function ($permission) {
                 return $permission->getName();
-            }, $this->accessManager->getViewUserGroups($object)),
+            }, $viewUserGroups),
             'edit'   => array_map(function ($permission) {
                 return $permission->getName();
-            }, $this->accessManager->getEditUserGroups($object))
+            }, $editUserGroups)
         ];
 
         return $normalizedAttributeGroup;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository;
 
+use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\TableConfigurationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
@@ -29,13 +30,18 @@ use Ramsey\Uuid\Uuid;
  */
 final class SqlTableConfigurationRepository implements TableConfigurationRepository
 {
-    private Connection $connection;
-    private TableConfigurationFactory $tableConfigurationFactory;
+    /** @var string[] */
+    private array $propertyKeys = [
+        'reference_entity_identifier',
+        'measurement_family_code',
+        'measurement_default_unit_code',
+    ];
 
-    public function __construct(Connection $connection, TableConfigurationFactory $tableConfigurationFactory)
-    {
-        $this->connection = $connection;
-        $this->tableConfigurationFactory = $tableConfigurationFactory;
+    public function __construct(
+        private  Connection $connection,
+        private TableConfigurationFactory $tableConfigurationFactory,
+        private ChannelExistsWithLocaleInterface $channelExistsWithLocale
+    ) {
     }
 
     public function getNextIdentifier(ColumnCode $columnCode): ColumnId
@@ -80,8 +86,10 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $properties = [];
 
-            if (\array_key_exists('reference_entity_identifier', $columnDefinition)) {
-                $properties['reference_entity_identifier'] = $columnDefinition['reference_entity_identifier'];
+            foreach ($this->propertyKeys as $propertyKey) {
+                if (\array_key_exists($propertyKey, $columnDefinition)) {
+                    $properties[$propertyKey] = $columnDefinition[$propertyKey];
+                }
             }
 
             $insertValues = [
@@ -146,20 +154,35 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                         'id' => $row['id'],
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
-                        'labels' => \json_decode($row['labels'], true),
+                        'labels' => $this->filterNonActiveLabels(\json_decode($row['labels'], true)),
                         'validations' => \json_decode($row['validations'], true),
                         'is_required_for_completeness' => Type::getType(Types::BOOLEAN)->convertToPhpValue($row['is_required_for_completeness'], $platform),
                     ];
 
                     $properties = \json_decode($row['properties'], true);
-                    if (\array_key_exists('reference_entity_identifier', $properties)) {
-                        $data['reference_entity_identifier'] = $properties['reference_entity_identifier'];
+                    foreach ($this->propertyKeys as $propertyKey) {
+                        if (\array_key_exists($propertyKey, $properties)) {
+                            $data[$propertyKey] = $properties[$propertyKey];
+                        }
                     }
 
                     return $data;
                 },
                 $results
             )
+        );
+    }
+
+    /**
+     * @param array<string, string> $labels
+     * @return array<string, string>
+     */
+    private function filterNonActiveLabels(array $labels): array
+    {
+        return \array_filter(
+            $labels,
+            fn ($localeCode) => $this->channelExistsWithLocale->isLocaleActive($localeCode),
+            ARRAY_FILTER_USE_KEY
         );
     }
 }

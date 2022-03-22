@@ -19,6 +19,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\OptionsShouldOnlyBeSetOnSelectColumns: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldOnlyBeSetOnReferenceEntityColumns: ~
           - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ImmutableReferenceEntityIdentifier: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyCannotBeUpdated: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementInfoShouldOnlyBeSetOnMeasurementColumns: ~
+          - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementUnitShouldExist: ~
           - Collection:
               fields:
                 code:
@@ -101,6 +104,21 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                       - NotNull:
                           message: The "reference_entity_identifier" option requires a value
                       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ReferenceEntityIdentifierShouldExist: ~
+                measurement_family_code:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "measurement_family_code" option requires a value
+                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\Measurement\MeasurementFamilyShouldExist: ~
+                measurement_default_unit_code:
+                  - Optional:
+                      - Type:
+                          type: string
+                          message: The required value is a string
+                      - NotNull:
+                          message: The "measurement_default_unit_code" option requires a value
                 options:
                   - Optional:
                       - Type:

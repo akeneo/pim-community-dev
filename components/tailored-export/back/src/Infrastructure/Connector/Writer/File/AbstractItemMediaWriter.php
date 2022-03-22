@@ -26,17 +26,9 @@ use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-abstract class AbstractItemMediaWriter implements
-    ItemWriterInterface,
-    InitializableInterface,
-    FlushableInterface,
-    StepExecutionAwareInterface,
-    ArchivableWriterInterface
+abstract class AbstractItemMediaWriter implements ItemWriterInterface, InitializableInterface, FlushableInterface, StepExecutionAwareInterface, ArchivableWriterInterface
 {
     private const DATETIME_FORMAT = 'Y-m-d_H-i-s';
-
-    private Filesystem $localFileSystem;
-    private FileWriterFactory $fileWriterFactory;
     private ?StepExecution $stepExecution = null;
 
     /** @var WrittenFileInfo[] */
@@ -45,10 +37,10 @@ abstract class AbstractItemMediaWriter implements
     private ?string $openedPath = null;
     private ?WriterInterface $writer = null;
 
-    public function __construct(Filesystem $localFileSystem, FileWriterFactory $fileWriterFactory)
-    {
-        $this->localFileSystem = $localFileSystem;
-        $this->fileWriterFactory = $fileWriterFactory;
+    public function __construct(
+        private Filesystem $localFileSystem,
+        private FileWriterFactory $fileWriterFactory,
+    ) {
     }
 
     /**
@@ -69,12 +61,13 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * {@inheritdoc}
+     *
      * @param array<ProcessedTailoredExport> $items
      */
     public function write(array $items): void
     {
         $this->openedPath = $this->getPath();
-        if (!empty($items) && $this->numberOfWrittenLines === 0) {
+        if (!empty($items) && 0 === $this->numberOfWrittenLines) {
             $this->writer = $this->fileWriterFactory->build($this->getWriterOptions());
             $this->writer->openToFile($this->openedPath);
             $this->addHeadersIfNeeded(current($items)->getItems());
@@ -93,18 +86,18 @@ abstract class AbstractItemMediaWriter implements
 
             $this->writer->addRow(WriterEntityFactory::createRowFromArray($processedTailoredExport->getItems()));
             $this->writeMedia($processedTailoredExport->getExtractedMediaCollection());
-            $this->numberOfWrittenLines++;
+            ++$this->numberOfWrittenLines;
         }
 
         $this->stepExecution->incrementSummaryInfo('write', count($items));
     }
 
     /**
-     * Flush items into a file
+     * Flush items into a file.
      */
     public function flush(): void
     {
-        if ($this->numberOfWrittenLines !== 0 && $this->openedPath !== null) {
+        if (0 !== $this->numberOfWrittenLines && null !== $this->openedPath) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
         }
 
@@ -114,7 +107,7 @@ abstract class AbstractItemMediaWriter implements
     }
 
     /**
-     * Get the file path in which to write the data
+     * Get the file path in which to write the data.
      */
     public function getPath(): string
     {
@@ -138,7 +131,7 @@ abstract class AbstractItemMediaWriter implements
             $fileInfo = new \SplFileInfo($filePath);
             $extensionSuffix = '';
             if ('' !== $fileInfo->getExtension()) {
-                $extensionSuffix = '.' . $fileInfo->getExtension();
+                $extensionSuffix = '.'.$fileInfo->getExtension();
             }
 
             $filePath = sprintf(
@@ -147,7 +140,7 @@ abstract class AbstractItemMediaWriter implements
                 DIRECTORY_SEPARATOR,
                 $fileInfo->getBasename($extensionSuffix),
                 $fileNumber,
-                $extensionSuffix
+                $extensionSuffix,
             );
         }
 
@@ -204,7 +197,7 @@ abstract class AbstractItemMediaWriter implements
     private function addHeadersIfNeeded(array $item): void
     {
         $parameters = $this->getStepExecution()->getJobParameters();
-        if (!$parameters->has('withHeader') || $parameters->get('withHeader') === false) {
+        if (!$parameters->has('withHeader') || false === $parameters->get('withHeader')) {
             return;
         }
 
@@ -217,11 +210,11 @@ abstract class AbstractItemMediaWriter implements
             return false;
         }
 
-        return $this->numberOfWrittenLines > 0 && $this->numberOfWrittenLines % $this->getMaxLinesPerFile() === 0;
+        return $this->numberOfWrittenLines > 0 && 0 === $this->numberOfWrittenLines % $this->getMaxLinesPerFile();
     }
 
     /**
-     * @var ExtractedMedia[] $extractedMediaCollection
+     * @param ExtractedMedia[] $extractedMediaCollection
      */
     private function writeMedia(array $extractedMediaCollection): void
     {
@@ -238,7 +231,7 @@ abstract class AbstractItemMediaWriter implements
             $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
                 $mediaToWrite->getKey(),
                 $mediaToWrite->getStorage(),
-                $mediaToWrite->getPath()
+                $mediaToWrite->getPath(),
             );
         }
     }

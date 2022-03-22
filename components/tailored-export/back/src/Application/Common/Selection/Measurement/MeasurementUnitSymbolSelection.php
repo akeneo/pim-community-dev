@@ -17,11 +17,9 @@ final class MeasurementUnitSymbolSelection implements MeasurementSelectionInterf
 {
     public const TYPE = 'unit_symbol';
 
-    private string $measurementFamilyCode;
-
-    public function __construct(string $measurementFamilyCode)
-    {
-        $this->measurementFamilyCode = $measurementFamilyCode;
+    public function __construct(
+        private string $measurementFamilyCode,
+    ) {
     }
 
     public function getMeasurementFamilyCode(): string

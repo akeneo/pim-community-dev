@@ -31,7 +31,7 @@ class OperationCollection implements \IteratorAggregate
     }
 
     /**
-     * @return OperationInterface[] | \Iterator
+     * @return OperationInterface[]|\Iterator
      */
     public function getIterator(): \Iterator
     {
@@ -40,7 +40,6 @@ class OperationCollection implements \IteratorAggregate
 
     /**
      * @param OperationInterface[] $operations
-     * @return OperationCollection
      */
     public static function create(array $operations): self
     {

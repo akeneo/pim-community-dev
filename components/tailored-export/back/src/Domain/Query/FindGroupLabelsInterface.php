@@ -17,6 +17,7 @@ interface FindGroupLabelsInterface
 {
     /**
      * @param string[] $groupCodes
+     *
      * @return array<string, string>
      */
     public function byCodes(array $groupCodes, string $locale): array;

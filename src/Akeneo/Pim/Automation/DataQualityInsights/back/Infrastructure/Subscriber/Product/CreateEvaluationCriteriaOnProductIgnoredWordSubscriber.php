@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -50,7 +51,7 @@ final class CreateEvaluationCriteriaOnProductIgnoredWordSubscriber implements Ev
     private function initializeCriteria($productId)
     {
         try {
-            $this->createProductsCriteriaEvaluations->createAll([new ProductId($productId)]);
+            $this->createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt($productId));
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product criteria evaluation',

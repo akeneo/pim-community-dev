@@ -1,0 +1,55 @@
+services:
+    akeneo.onboarder_serenity.supplier.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_ONBOARDER_SERENITY_SUPPLIER_ENABLED)%'
+        public: true
+
+    # Repositories
+    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
+    # Command/Handlers
+    Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
+
+    Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+
+    # Queries
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierList
+        arguments:
+            - '@database_connection'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCount
+        arguments:
+            - '@database_connection'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierExists
+        arguments:
+            - '@database_connection'
+
+    # Controllers
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierDelete:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'

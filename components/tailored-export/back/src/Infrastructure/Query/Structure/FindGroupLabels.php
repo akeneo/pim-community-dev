@@ -9,15 +9,13 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 
 class FindGroupLabels implements FindGroupLabelsInterface
 {
-    private GetGroupTranslations $getGroupTranslations;
-
-    public function __construct(GetGroupTranslations $getGroupTranslations)
-    {
-        $this->getGroupTranslations = $getGroupTranslations;
+    public function __construct(
+        private GetGroupTranslations $getGroupTranslations,
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function byCodes(array $groupCodes, string $locale): array
     {

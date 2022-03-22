@@ -36,7 +36,6 @@ config/gcp_credentials.json
 deployments/terraform/pim/charts/*
 deployments/instances
 deployments/logs
-deployments/terraform/pim/Chart.yaml
 deployments/terraform/pim/Chart.lock
 deployments/cloud-customers-dev
 /pim-enterprise-cloud

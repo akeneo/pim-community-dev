@@ -17,27 +17,14 @@ final class AssetCollectionMediaLinkSelection implements AssetCollectionSelectio
 {
     public const TYPE = 'media_link';
 
-    private string $separator;
-    private ?string $channel;
-    private ?string $locale;
-    private string $assetFamilyCode;
-    private string $attributeCode;
-    private bool $withPrefixAndSuffix;
-
     public function __construct(
-        string $separator,
-        ?string $channel,
-        ?string $locale,
-        string $assetFamilyCode,
-        string $attributeCode,
-        bool $withPrefixAndSuffix
+        private string $separator,
+        private ?string $channel,
+        private ?string $locale,
+        private string $assetFamilyCode,
+        private string $attributeCode,
+        private bool $withPrefixAndSuffix,
     ) {
-        $this->separator = $separator;
-        $this->channel = $channel;
-        $this->locale = $locale;
-        $this->assetFamilyCode = $assetFamilyCode;
-        $this->attributeCode = $attributeCode;
-        $this->withPrefixAndSuffix = $withPrefixAndSuffix;
     }
 
     public function getSeparator(): string

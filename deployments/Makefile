@@ -447,7 +447,7 @@ endif
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:
 	cd $(DEPLOYMENT_DIR)/bin/uptime && docker-compose run --rm composer composer install
-	cd $(DEPLOYMENT_DIR)/bin/uptime && LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
+	cd $(DEPLOYMENT_DIR)/bin/uptime && CLOUDSDK_PYTHON=python2 LOG_LEVEL=info docker-compose run --rm php make deployment-uptime-clear
 
 .PHONY: remove_unused_resources
 remove_unused_resources: remove_unused_gcloud_dns remove_unused_gcloud_pubsub remove_unused_gcloud_bucket remove_unused_disk remove_unused_mailgun_credentials remove_unused_iam remove_unused_gcloud_logging_metrics
@@ -521,6 +521,11 @@ clone_serenity:
 clone_saas_instance:
 	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
 	SOURCE_PFID=$(SOURCE_PFID) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) DESTINATION_PATH=$(INSTANCE_DIR) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/clone_saas_instance.sh
+
+.PHONY: migrate_flexibility
+migrate_flexibility:
+	TYPE=$(TYPE) INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic make create-ci-release-files
+	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) SOURCE_PROJECT_ID=$(SOURCE_PROJECT_ID) PED_TAG=$(IMAGE_TAG) INSTANCE_NAME=$(INSTANCE_NAME) BUCKET=$(BUCKET) bash $(DEPLOYMENT_DIR)/bin/migrate_flexibility.sh
 
 .PHONY: migrate_flexibility_to_serenity
 migrate_flexibility_to_serenity:

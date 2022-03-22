@@ -19,6 +19,8 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_standard_format_serializer'
             - '@pimee_workflow.updater.product_without_permission'
+            - '@pimee_workflow.repository.published_product_with_permission'
+            - '@translator'
         tags:
             - { name: pimee_workflow.publisher }
 

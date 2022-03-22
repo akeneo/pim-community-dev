@@ -20,24 +20,13 @@ class AssociationTypeSource implements SourceInterface
 {
     public const TYPE = 'association_type';
 
-    private string $uuid;
-    private string $code;
-    private bool $isQuantified;
-    private OperationCollection $operationCollection;
-    private SelectionInterface $selection;
-
     public function __construct(
-        string $uuid,
-        string $code,
-        bool $isQuantified,
-        OperationCollection $operationCollection,
-        SelectionInterface $selection
+        private string $uuid,
+        private string $code,
+        private bool $isQuantified,
+        private OperationCollection $operationCollection,
+        private SelectionInterface $selection,
     ) {
-        $this->uuid = $uuid;
-        $this->code = $code;
-        $this->isQuantified = $isQuantified;
-        $this->operationCollection = $operationCollection;
-        $this->selection = $selection;
     }
 
     public function getUuid(): string

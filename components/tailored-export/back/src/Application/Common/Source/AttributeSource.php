@@ -20,30 +20,15 @@ class AttributeSource implements SourceInterface
 {
     public const TYPE = 'attribute';
 
-    private string $uuid;
-    private string $attributeType;
-    private string $code;
-    private ?string $channelReference;
-    private ?string $localeReference;
-    private OperationCollection $operations;
-    private SelectionInterface $selection;
-
     public function __construct(
-        string $uuid,
-        string $attributeType,
-        string $code,
-        ?string $channelReference,
-        ?string $localeReference,
-        OperationCollection $operations,
-        SelectionInterface $selection
+        private string $uuid,
+        private string $attributeType,
+        private string $code,
+        private ?string $channelReference,
+        private ?string $localeReference,
+        private OperationCollection $operations,
+        private SelectionInterface $selection,
     ) {
-        $this->uuid = $uuid;
-        $this->attributeType = $attributeType;
-        $this->code = $code;
-        $this->channelReference = $channelReference;
-        $this->localeReference = $localeReference;
-        $this->operations = $operations;
-        $this->selection = $selection;
     }
 
     public function getUuid(): string
