@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
+use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MigrateToUuidCommand extends Command
 {
+    use MigrateToUuidTrait;
+
     protected static $defaultName = 'pim:product:migrate-to-uuid';
     /** @var array<MigrateToUuidStep> */
     private array $steps;
@@ -25,6 +28,7 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
         MigrateToUuidStep $migrateToUuidFillJson,
+        private Connection $connection,
         private LoggerInterface $logger
     ) {
         parent::__construct();
@@ -46,6 +50,12 @@ class MigrateToUuidCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->columnExists('pim_catalog_association', 'owner_id')) {
+            $output->writeln('Migration cannot be ran on a fresh install');
+
+            return self::SUCCESS;
+        }
+
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
