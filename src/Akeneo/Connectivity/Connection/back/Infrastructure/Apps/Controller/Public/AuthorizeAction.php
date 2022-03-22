@@ -9,9 +9,11 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGeneratorInterface;
@@ -42,6 +44,8 @@ final class AuthorizeAction
         private RequestAppAuthenticationHandler $requestAppAuthenticationHandler,
         private SecurityFacade $security,
         private GetAppQueryInterface $getAppQuery,
+        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        private ScopeListComparatorInterface $scopeListComparator,
     ) {
     }
 
@@ -88,7 +92,16 @@ final class AuthorizeAction
 
         // Check if the App is authorized
         $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
-        if (null === $appConfirmation) {
+
+        $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
+        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
+
+        $hasNewScopes = \count($this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        )) > 0;
+
+        if (null === $appConfirmation || $hasNewScopes) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
                     'client_id' => $command->getClientId(),
