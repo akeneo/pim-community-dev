@@ -40,7 +40,7 @@ class SetSimpleReferenceEntityValueSpec extends ObjectBehavior
         $this->channelCode()->shouldReturn(null);
     }
 
-    function it_returns_the_reord_code()
+    function it_returns_the_record_code()
     {
         $this->recordCode()->shouldReturn('Akeneo');
     }
