@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.87 (2022-03-22)
+
 ## Bug fixes
 
 - CPM-562 Fix product grid loading when attribute as image has a numeric code
