@@ -50,7 +50,7 @@ const mergeAttributeOptionsEvaluation = (
 
   Object.entries(evaluation.options).forEach(([optionCode, optionEvaluation]) => {
     const optionIndex = attributeOptions.findIndex(
-      (attributeOption: AttributeOption) => attributeOption.code === optionCode
+      (attributeOption: AttributeOption) => attributeOption.code.toLowerCase() === optionCode.toLowerCase()
     );
     const attributeOptionToUpdate: AttributeOption | null = attributeOptions[optionIndex] ?? null;
     if (attributeOptionToUpdate) {

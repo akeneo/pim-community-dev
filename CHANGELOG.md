@@ -16,6 +16,7 @@
 - PIM-10295: Fixed product categories disappearing on adjacent tab locale switch
 - PIM-10330: Fix wrong error message while importing boolean attribute value
 - PIM-10331: Fix error when using an association with quantities having an numeric code
+- PIM-10346: Fix spellcheck badge not displayed on attribute options
 - PIM-10336: Fix product Export edition in error if no locale selected
 - PIM-10345: Fix issue when importing product model with an attribute constituted of only digits
 
