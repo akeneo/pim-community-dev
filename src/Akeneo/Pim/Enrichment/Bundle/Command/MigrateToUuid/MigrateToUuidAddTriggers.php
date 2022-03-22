@@ -58,11 +58,21 @@ final class MigrateToUuidAddTriggers implements MigrateToUuidStep
         $templateSql = <<<SQL
         CREATE TRIGGER {trigger_name}
         BEFORE {action} ON {table_name}
-        FOR EACH ROW SET NEW.{uuid_column_name} = (
-            SELECT p.uuid
-            FROM pim_catalog_product p
-            WHERE p.uuid IS NOT NULL AND p.id = NEW.{id_column_name}
-        );
+        FOR EACH ROW BEGIN
+            IF NEW.{uuid_column_name} IS NULL THEN
+                SET NEW.{uuid_column_name} = (
+                    SELECT p.uuid
+                    FROM pim_catalog_product p
+                    WHERE p.uuid IS NOT NULL AND p.id = NEW.{id_column_name}
+                );
+            ELSEIF NEW.{id_column_name} IS NULL THEN
+                SET NEW.{id_column_name} = (
+                    SELECT p.id
+                    FROM pim_catalog_product p
+                    WHERE p.id IS NOT NULL AND p.uuid = NEW.{uuid_column_name}
+                );
+            END IF;
+        END
         SQL;
 
         foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
