@@ -1,6 +1,6 @@
 import {LocalePermission} from 'akeneoassetmanager/domain/model/permission/locale';
 import {AssetFamilyPermission} from 'akeneoassetmanager/domain/model/permission/asset-family';
-import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
+import AssetFamilyIdentifier, {assetFamilyidentifiersAreEqual} from 'akeneoassetmanager/domain/model/asset-family/identifier';
 
 export interface RightState {
   locale: LocalePermission[];
@@ -48,7 +48,7 @@ export const canEditAssetFamily = (
   assetFamilyPermission: AssetFamilyPermission,
   assetFamilyIdentifier: AssetFamilyIdentifier
 ) => {
-  if (assetFamilyPermission.assetFamilyIdentifier !== assetFamilyIdentifier) {
+  if (!assetFamilyidentifiersAreEqual(assetFamilyPermission.assetFamilyIdentifier, assetFamilyIdentifier)) {
     return false;
   }
 
