@@ -66,3 +66,5 @@ services:
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit:
         public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'

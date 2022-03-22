@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Model;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\ValueObject;
-use JetBrains\PhpStorm\ArrayShape;
 
 final class Contributor
 {
@@ -39,15 +38,5 @@ final class Contributor
     public function supplierIdentifier(): string
     {
         return (string) $this->supplierIdentifier;
-    }
-
-    #[ArrayShape(['identifier' => 'string', 'email' => 'string', 'supplier_identifier' => 'string'])]
-    public function toArray(): array
-    {
-        return [
-            'identifier' => $this->identifier(),
-            'email' => $this->email(),
-            'supplier_identifier' => $this->supplierIdentifier(),
-        ];
     }
 }

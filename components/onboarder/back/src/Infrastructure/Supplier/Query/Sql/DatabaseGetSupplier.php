@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Domain\Read;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplier implements GetSupplier
@@ -14,24 +15,45 @@ final class DatabaseGetSupplier implements GetSupplier
     {
     }
 
-    public function __invoke(Supplier\ValueObject\Code $supplierCode): ?Supplier\Model\Supplier
+    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
     {
         $supplier = $this->connection->executeQuery(
             <<<SQL
-                SELECT identifier, code, label
-                FROM `akeneo_onboarder_serenity_supplier`
-                WHERE code = :supplierCode
+                WITH contributor AS (
+                    SELECT contributor.supplier_identifier, JSON_OBJECTAGG(identifier, email) as contributors
+                    FROM akeneo_onboarder_serenity_supplier_contributor contributor
+                    GROUP BY contributor.supplier_identifier
+                )
+                SELECT identifier, code, label, contributor.contributors
+                FROM akeneo_onboarder_serenity_supplier as supplier
+                LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
+                WHERE identifier = :identifier
             SQL
             ,
             [
-                'supplierCode' => $supplierCode
+                'identifier' => $identifier
             ]
         )->fetchAssociative();
 
-        return false !== $supplier ? Supplier\Model\Supplier::create(
+        return false !== $supplier ? new Read\Supplier\Model\Supplier(
             $supplier['identifier'],
             $supplier['code'],
-            $supplier['label']
+            $supplier['label'],
+            $this->buildContributorsReadModels($supplier['contributors']),
         ) : null;
+    }
+
+    private function buildContributorsReadModels(?string $contributorsJson): array
+    {
+        if (empty($contributorsJson)) {
+            return [];
+        }
+
+        $contributors = [];
+        foreach (json_decode($contributorsJson, true) as $identifier => $email) {
+            $contributors[] = new Read\Supplier\Model\Contributor($identifier, $email);
+        }
+
+        return $contributors;
     }
 }

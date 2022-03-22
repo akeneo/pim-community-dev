@@ -9,6 +9,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
@@ -24,14 +25,18 @@ final class SupplierContext implements Context
 
     private array $suppliers;
 
+    private ?Read\Supplier\Model\Supplier $supplier;
+
     public function __construct(
         private InMemoryRepository $supplierRepository,
         private CreateSupplierHandler $createSupplierHandler,
         private InMemoryGetSupplierList $getSupplierList,
         private DeleteSupplierHandler $deleteSuppliersHandler,
         private Contributor\Repository\InMemory\InMemoryRepository $contributorRepository,
+        private GetSupplier $getSupplier,
     ) {
         $this->suppliers = [];
+        $this->supplier = null;
     }
 
     /**
@@ -57,7 +62,7 @@ final class SupplierContext implements Context
         ));
 
         if ($contributorsCount !== null) {
-            for ($i = 0; $i < $contributorsCount; $i++) {
+            for ($i = 1; $i <= $contributorsCount; $i++) {
                 $this->contributorRepository->save(Write\Supplier\Contributor\Model\Contributor::create(
                     Uuid::uuid4()->toString(),
                     'email'.$i.'@akeneo.com',
@@ -106,6 +111,15 @@ final class SupplierContext implements Context
     }
 
     /**
+     * @When I retrieve the supplier ":code"
+     */
+    public function iRetrieveTheSupplier(string $code)
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\identifier::fromString($supplier->identifier()));
+    }
+
+    /**
      * @Then I should have a supplier with code ":code" and label ":label"
      */
     public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
@@ -143,6 +157,19 @@ final class SupplierContext implements Context
         ], $this->suppliers);
 
         Assert::assertEquals($expectedSuppliers, array_values($actualSuppliers));
+    }
+
+    /**
+     * @Then I should have the following supplier:
+     */
+    public function iShouldHaveTheSupplier(TableNode $properties)
+    {
+        $expectedSupplier = $properties->getHash()[0];
+        $contributors = array_map(fn (Read\Supplier\Model\Contributor $contributor) => $contributor->email, $this->supplier->contributors);
+
+        Assert::assertSame($expectedSupplier['code'], $this->supplier->code);
+        Assert::assertSame($expectedSupplier['label'], $this->supplier->label);
+        Assert::assertSame($expectedSupplier['contributors'], join(';', $contributors));
     }
 
     private function loadSuppliers($search = ''): void

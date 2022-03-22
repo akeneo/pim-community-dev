@@ -22,3 +22,4 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository'
