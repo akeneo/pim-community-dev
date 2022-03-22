@@ -2,7 +2,8 @@
 
 ## Bug fixes
 
-PIM-10358: Assets imported with uppercase letters in the assetFamilyIdentifier are locked in the UI
+- PIM-10358: Assets imported with uppercase letters in the assetFamilyIdentifier are locked in the UI
+- PIM-10357: Fix case sensitivity between products and assets when asset family of the asset have wrong case
 
 # 5.0.87 (2022-03-23)
 
