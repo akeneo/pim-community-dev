@@ -22,6 +22,7 @@
 - PIM-10291: Fix table attribute edit blocked when locale recently deleted from channel
 - PIM-10338: Fix the number of options to improve is not correctly refreshed
 - PIM-10340: Fix uncaught exception when creating the same asset twice in parrallel
+- PIM-10363: Fix add association rule updater
 
 ## Improvements
 
