@@ -21,3 +21,28 @@ services:
         tags: 
             - { name: console.command }
 
+    akeneo.tool.component.database_metadata.batch_job_entity_validator:
+        class: Akeneo\Tool\Component\DatabaseMetadata\BatchEntityValidator
+        public: true
+        arguments:
+            - '@akeneo_batch.job.job_instance_repository'
+            - ['\Akeneo\Tool\Bundle\BatchBundle\Validator\Constraints\JobInstance']
+            - '@pim_catalog.validator.product'
+        tags:
+            - {name: 'batch.validation'}
+
+    akeneo.pim.database_batch_validator.command:
+        public: true
+        autoconfigure: true
+        class: Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\DatabaseBatchValidatorCommand
+        arguments:
+            - !tagged_iterator 'batch.validation'
+            - '@monolog.logger'
+            - '@akeneo_tool_bundle_database_metadata.services.entity_context_provider'
+        tags:
+            - { name: console.command }
+
+    akeneo_tool_bundle_database_metadata.services.entity_context_provider:
+        class: Akeneo\Tool\Bundle\DatabaseMetadataBundle\Services\EntityContextProvider
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

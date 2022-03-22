@@ -51,4 +51,27 @@ const useAttribute = (attributeCode: string) => {
   return [isFetching || previousAttributeCode !== attributeCode, currentAttribute] as const;
 };
 
-export {useAttribute, useAttributes};
+const useIdentifierAttribute = () => {
+  const attributeFetcher = useFetchers().attribute;
+  const [attribute, setAttribute] = useState<Attribute | null>(null);
+  const isMounted = useIsMounted();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchAttributeIdentifier = async () => {
+      setIsFetching(true);
+      const attribute = await attributeFetcher.fetchAttributeIdentifier();
+
+      if (!isMounted()) return;
+
+      setAttribute(attribute);
+      setIsFetching(false);
+    };
+
+    fetchAttributeIdentifier();
+  }, [attributeFetcher, isMounted]);
+
+  return [isFetching, attribute] as const;
+};
+
+export {useAttribute, useAttributes, useIdentifierAttribute};

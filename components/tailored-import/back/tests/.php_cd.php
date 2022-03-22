@@ -21,7 +21,10 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
+            'Symfony\Component\Validator\ConstraintViolationInterface',
             'Webmozart\Assert\Assert',
+            // TODO: Write more specific rules later
+            'Akeneo\Pim\Enrichment\Product\API',
         ],
     )->in('Akeneo\Platform\TailoredImport\Domain'),
 
@@ -29,9 +32,8 @@ $rules = [
         [
             'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredImport\Domain',
-
-            'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
-            'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
+            // TODO: Write more specific rules later
+            'Akeneo\Pim\Enrichment\Product\API',
         ],
     )->in('Akeneo\Platform\TailoredImport\Application'),
 

@@ -1,20 +1,21 @@
 import React from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
-import {Supplier} from './models';
-import {Configuration} from './components/SupplierEdit/Configuration';
+import styled from "styled-components";
+import {Configuration} from "./components/SupplierEdit/Configuration";
+import {useSupplier} from "./hooks";
+import {useParams} from "react-router";
 import {Contributors} from './components/SupplierEdit/Contributors';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
-    const supplier: Supplier = {
-        identifier: '',
-        code: 'mysupplier',
-        label: 'My Supplier',
-        contributors: [],
-    };
+    const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
+    const {supplier, saveSupplier} = useSupplier(supplierIdentifier);
+
+    if (!supplier) {
+        return null;
+    }
 
     return (
         <Container>
@@ -33,7 +34,7 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={'primary'}>{translate('pim_common.save')}</Button>
+                    <Button level={'primary'} onClick={() => {}}>{translate('pim_common.save')}</Button>
                 </PageHeader.Actions>
                 <PageHeader.Title>{supplier.label}</PageHeader.Title>
             </PageHeader>

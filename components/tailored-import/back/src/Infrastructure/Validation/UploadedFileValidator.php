@@ -35,7 +35,7 @@ class UploadedFileValidator extends ConstraintValidator
 
         $validator = $this->context->getValidator();
         //TODO: build the violation without file
-        $validator->inContext($this->context)->validate($uploadedFile, [
+        $validator->inContext($this->context)->atPath('[file]')->validate($uploadedFile, [
             new Valid(),
             new File([
                 'maxSize' => self::SIZE_LIMIT,

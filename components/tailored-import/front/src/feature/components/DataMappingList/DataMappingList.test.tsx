@@ -69,6 +69,7 @@ test('it can add a new data mapping', async () => {
       columns={[]}
       validationErrors={[]}
       onDataMappingAdded={handleDataMappingCreated}
+      onDataMappingRemoved={jest.fn()}
     />
   );
 
@@ -141,6 +142,7 @@ test('it displays the data mapping', async () => {
       columns={columns}
       validationErrors={[]}
       onDataMappingAdded={jest.fn()}
+      onDataMappingRemoved={jest.fn()}
     />
   );
 
@@ -150,7 +152,7 @@ test('it displays the data mapping', async () => {
   ).toBeInTheDocument();
 });
 
-test('it call handler when row is clicked', async () => {
+test('it calls handler when row is selected', async () => {
   const handleDataMappingSelected = jest.fn();
 
   await renderWithProviders(
@@ -161,6 +163,7 @@ test('it call handler when row is clicked', async () => {
       columns={columns}
       validationErrors={[]}
       onDataMappingAdded={jest.fn()}
+      onDataMappingRemoved={jest.fn()}
     />
   );
 
@@ -195,6 +198,7 @@ test('it displays validation errors', async () => {
       columns={columns}
       validationErrors={validationErrors}
       onDataMappingAdded={jest.fn()}
+      onDataMappingRemoved={jest.fn()}
     />
   );
 

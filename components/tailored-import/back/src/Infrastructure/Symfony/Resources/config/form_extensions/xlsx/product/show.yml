@@ -71,7 +71,7 @@ extensions:
         parent: pim-job-instance-xlsx-tailored-product-import-show-upload-switcher-item
         position: 50
         config:
-            type: csv
+            type: xlsx
 
     pim-job-instance-xlsx-tailored-product-import-show-upload-button:
         module: pim/job/common/edit/upload-launch

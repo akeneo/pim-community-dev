@@ -12,3 +12,8 @@ pimee_tailored_import_read_columns_action:
     path: /rest/tailored-import/read-columns
     defaults: { _controller: akeneo.tailored_import.controller.read_columns_action }
     methods: [POST]
+
+pimee_tailored_import_get_file_template_information_action:
+    path: /rest/tailored-import/file-template
+    defaults: { _controller: akeneo.tailored_import.controller.get_file_template_information_action }
+    methods: [GET]

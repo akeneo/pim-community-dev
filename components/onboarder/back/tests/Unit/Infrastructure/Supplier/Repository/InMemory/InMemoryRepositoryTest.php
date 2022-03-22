@@ -83,4 +83,32 @@ final class InMemoryRepositoryTest extends TestCase
                 ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
         );
     }
+
+    /** @test */
+    public function itDeletesASupplier(): void
+    {
+        $supplierRepository = new InMemoryRepository();
+        $identifier = Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
+        $supplierRepository->save(
+            Supplier\Model\Supplier::create(
+                (string) $identifier,
+                'supplier_code',
+                'Supplier code'
+            )
+        );
+        $supplierRepository->save(
+            Supplier\Model\Supplier::create(
+                '44ce8069-8da1-4986-872f-311737f46f01',
+                'supplier_code2',
+                'Supplier code2'
+            )
+        );
+        $supplierRepository->delete($identifier);
+
+        $this->assertNull($supplierRepository->find($identifier));
+        $this->assertInstanceOf(
+            Supplier\Model\Supplier::class,
+            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
+        );
+    }
 }
