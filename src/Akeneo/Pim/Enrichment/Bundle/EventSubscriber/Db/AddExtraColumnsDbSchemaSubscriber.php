@@ -38,7 +38,5 @@ class AddExtraColumnsDbSchemaSubscriber implements EventSubscriberInterface
 SQL;
 
         $this->connection->executeQuery($sql);
-
-        // @todo: add the triggers otherwise the inserts will fail due to the NOT NULL constraints
     }
 }

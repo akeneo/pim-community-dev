@@ -58,12 +58,7 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
     private function columnExists(string $tableName, string $columnName): bool
     {
         $rows = $this->connection->fetchAllAssociative(
-            \strtr(
-                <<<SQL
-                    SHOW COLUMNS FROM {table_name} LIKE :columnName
-                SQL,
-                ['{table_name}' => $tableName]
-            ),
+            \strtr('SHOW COLUMNS FROM {table_name} LIKE :columnName', ['{table_name}' => $tableName]),
             ['columnName' => $columnName]
         );
 
@@ -96,7 +91,7 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
         $sql = <<<SQL
         SELECT CONSTRAINT_NAME FROM information_schema.key_column_usage
         WHERE CONSTRAINT_SCHEMA = :schema AND TABLE_NAME = :table_name AND COLUMN_NAME = :column_name
-          AND REFERENCED_TABLE_NAME = 'pim_catalog_product' AND REFERENCED_COLUMN_NAME = 'id'
+            AND REFERENCED_TABLE_NAME = 'pim_catalog_product' AND REFERENCED_COLUMN_NAME = 'id'
         SQL;
 
         return $this->connection->executeQuery(
@@ -108,21 +103,4 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
             ]
         )->fetchOne();
     }
-
-//    private function getIndexName(string $tableName, string $columnName): ?string
-//    {
-//        $sql = <<<SQL
-//        SELECT INDEX_NAME FROM information_schema.STATISTICS
-//        WHERE INDEX_SCHEMA = :schema AND TABLE_NAME = :table_name AND COLUMN_NAME = :column_name
-//        SQL;
-//
-//        return $this->connection->executeQuery(
-//            $sql,
-//            [
-//                'schema' => $this->connection->getDatabase(),
-//                'table_name' => $tableName,
-//                'column_name' => $columnName,
-//            ]
-//        )->fetchOne();
-//    }
 }
