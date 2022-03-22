@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {Configuration} from "./components/SupplierEdit/Configuration";
 import {useSupplier} from "./hooks";
 import {useParams} from "react-router";
+import {Contributors} from './components/SupplierEdit/Contributors';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
@@ -33,34 +34,24 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={"primary"} onClick={() => {}}>{translate('pim_common.save')}</Button>
+                    <Button level={'primary'} onClick={() => {}}>{translate('pim_common.save')}</Button>
                 </PageHeader.Actions>
                 <PageHeader.Title>{supplier.label}</PageHeader.Title>
             </PageHeader>
             <StyledPageContent>
                 <TabBar moreButtonTitle="More">
-                    <TabBar.Tab
-                        isActive={isCurrent('configuration')}
-                        onClick={() => switchTo('configuration')}
-                    >
+                    <TabBar.Tab isActive={isCurrent('configuration')} onClick={() => switchTo('configuration')}>
                         {translate('onboarder.supplier.supplier_edit.tabs.configuration')}
                     </TabBar.Tab>
-                    <TabBar.Tab
-                        isActive={isCurrent('contributors')}
-                        onClick={() => switchTo('contributors')}
-                    >
+                    <TabBar.Tab isActive={isCurrent('contributors')} onClick={() => switchTo('contributors')}>
                         {translate('onboarder.supplier.supplier_edit.tabs.contributors')}
                     </TabBar.Tab>
-                    <TabBar.Tab
-                        isActive={isCurrent('product_files')}
-                        onClick={() => switchTo('product_files')}
-                    >
+                    <TabBar.Tab isActive={isCurrent('product_files')} onClick={() => switchTo('product_files')}>
                         {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('configuration') && (
-                    <Configuration supplier={supplier} />
-                )}
+                {isCurrent('configuration') && <Configuration supplier={supplier} />}
+                {isCurrent('contributors') && <Contributors contributors={[{email: 'foo@foo.bar'}]} />}
             </StyledPageContent>
         </Container>
     );

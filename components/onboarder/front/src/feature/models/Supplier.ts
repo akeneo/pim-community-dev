@@ -1,10 +1,10 @@
-type Contributor = {};
+export type Contributor = {
+    email: string;
+};
 
-type Supplier = {
+export type Supplier = {
     identifier: string;
     code: string;
     label: string;
     contributors: Contributor[];
-}
-
-export type {Supplier};
+};

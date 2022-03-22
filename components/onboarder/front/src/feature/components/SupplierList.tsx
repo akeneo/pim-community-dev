@@ -5,7 +5,7 @@ import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/sha
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
 import {DeleteSupplier} from './DeleteSupplier';
-import {useHistory} from "react-router";
+import {useHistory} from 'react-router';
 
 type SupplierListProps = {
     suppliers: SupplierRow[];
@@ -30,8 +30,8 @@ const SupplierList = ({
     const history = useHistory();
 
     const goToSupplier = (identifier: string) => {
-        history.push(`/${identifier}`)
-    }
+        history.push(`/${identifier}`);
+    };
 
     return (
         <>
@@ -73,7 +73,11 @@ const SupplierList = ({
                         </Table.Header>
                         <Table.Body>
                             {suppliers.map((supplier: SupplierRow) => (
-                                <Table.Row key={supplier.code} onClick={() => goToSupplier(supplier.identifier)} data-testid={supplier.code}>
+                                <Table.Row
+                                    key={supplier.code}
+                                    onClick={() => goToSupplier(supplier.identifier)}
+                                    data-testid={supplier.code}
+                                >
                                     <Table.Cell>{supplier.label}</Table.Cell>
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>

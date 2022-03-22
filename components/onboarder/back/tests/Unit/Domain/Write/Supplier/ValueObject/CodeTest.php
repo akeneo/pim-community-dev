@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use PHPUnit\Framework\TestCase;
