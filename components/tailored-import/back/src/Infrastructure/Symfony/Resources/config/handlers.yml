@@ -30,9 +30,6 @@ services:
 
   akeneo.tailored_import.handler.get_sample_data_handler:
     class: Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataHandler
-    arguments:
-      - '@akeneo.tailored_import.query.get_job_configuration'
-      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
 
   akeneo.tailored_import.operation_applier:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier

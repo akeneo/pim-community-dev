@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\GetSampleData;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Column;
-use Akeneo\Platform\TailoredImport\Domain\Model\JobConfiguration;
-use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Query\GetJobConfigurationInterface;
+use Akeneo\Platform\TailoredImport\Domain\GetSampleData\FillBlankValues;
+use Akeneo\Platform\TailoredImport\Domain\GetSampleData\FilterUniqueValues;
+use Akeneo\Platform\TailoredImport\Domain\GetSampleData\PickRandomValues;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,42 +14,12 @@ use Akeneo\Platform\TailoredImport\Domain\Query\GetJobConfigurationInterface;
  */
 final class GetSampleDataHandler
 {
-    private const SAMPLE_DATA_LENGTH = 3;
-    private const SAMPLE_DATA_VALUE_MAX_LENGTH = 100;
-
-    public function __construct(
-        private GetJobConfigurationInterface $getJobConfiguration,
-        private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-    ) {
-    }
-
     public function handle(GetSampleDataQuery $getSampleDataQuery): GetSampleDataResult
     {
-        $jobConfiguration = $this->getJobConfiguration->byJobCode($getSampleDataQuery->jobCode);
-        $columnIndex = $this->getColumnIndex($jobConfiguration, $getSampleDataQuery->column);
-        $fileReader = $this->xlsxFileReaderFactory->create($jobConfiguration->getFileKey());
+        $filteredValues = FilterUniqueValues::fromColumnExtract($getSampleDataQuery->columnValues);
+        $sampleData = PickRandomValues::fromColumnExtract($filteredValues);
+        $filledSampleData = FillBlankValues::fromSampleData($sampleData);
 
-        $sampleData = $fileReader->readValuesFromColumn(
-            $jobConfiguration->getFileStructure()->getSheetName(),
-            $jobConfiguration->getFileStructure()->getProductLine(),
-            $columnIndex,
-            self::SAMPLE_DATA_LENGTH
-        );
-
-        return GetSampleDataResult::create($sampleData);
-    }
-
-    private function getColumnIndex(JobConfiguration $jobConfiguration, string $columnUuid): int
-    {
-        $searchedColumn = array_filter(
-            iterator_to_array($jobConfiguration->getColumns()->getIterator()),
-            static fn (Column $column) => $column->getUuid() === $columnUuid
-        );
-
-        if (0 === count($searchedColumn)) {
-            throw new \InvalidArgumentException(sprintf('Column "%s" does not exist', $columnUuid));
-        }
-
-        return array_pop($searchedColumn)->getIndex();
+        return GetSampleDataResult::create($filledSampleData);
     }
 }

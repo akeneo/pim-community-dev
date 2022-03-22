@@ -54,7 +54,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function readRows(?string $sheetName, int $start, int $length): array
+    public function readRows(?string $sheetName, int $start, ?int $length = null): array
     {
         $rows = [];
         $sheet = $this->selectSheet($sheetName);
@@ -65,7 +65,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
                 $rows[] = $this->cellsFormatter->formatCells($row->toArray());
             }
 
-            if ($index + 1 === $start + $length) {
+            if (null !== $length && $index + 1 === $start + $length) {
                 break;
             }
         }
@@ -75,39 +75,11 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $this->padRowsToTheLongestRow($rows);
     }
 
-    public function readValuesFromColumn(?string $sheetName, int $productLine, int $columnIndex, int $length): array
+    public function readColumnValues(?string $sheetName, int $productLine, int $columnIndex): array
     {
         $values = [];
-
-        $sheet = $this->selectSheet($sheetName);
-        $rowIterator = $sheet->getRowIterator();
-        $rowCount = max(iterator_count($rowIterator), 0);
-
-        $selectedRowIndexes = [];
-        for ($i = 0; $i < min($rowCount, $length); $i++) {
-            $selectedRowIndexes[] = rand($productLine, $rowCount);
-        }
-
-        $rowIterator->rewind();
-
-        while ($rowIterator->valid()) {
-            /** @var Row $row*/
-            $row = $rowIterator->current();
-
-            if (in_array($rowIterator->key(), $selectedRowIndexes)) {
-                $cell = $row->getCellAtIndex($columnIndex+1);
-//                $formattedCell = $this->cellsFormatter->formatCell($cell);
-                $values[] = $cell->getValue();
-
-                if (count($values) === count($selectedRowIndexes)) {
-                    break;
-                }
-            }
-
-            $rowIterator->next();
-        }
-
-        return array_pad($values, $length, null);
+        $rows = $this->readRows($sheetName, $productLine);
+        return array_map(static fn (array $row) => $row[$columnIndex], $rows);
     }
 
     public function getSheetNames(): array
