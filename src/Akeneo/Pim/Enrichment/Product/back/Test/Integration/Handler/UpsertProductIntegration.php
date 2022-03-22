@@ -534,7 +534,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_creates_a_product_with_an_existing_reference_entity()
+    public function it_successfully_creates_a_product_with_a_record()
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
@@ -560,7 +560,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_reference_entity()
+    public function it_successfully_sets_a_product_record_code()
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
