@@ -1,5 +1,7 @@
 # 6.0.x
 
+- PIM-10317: [Backport PIM-10237] Order connector Assets with PHP to avoid memory issues
+
 # 6.0.13 (2022-03-18)
 
 # 6.0.12 (2022-03-17)
