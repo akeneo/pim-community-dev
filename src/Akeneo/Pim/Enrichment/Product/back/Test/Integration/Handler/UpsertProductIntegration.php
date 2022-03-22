@@ -12,9 +12,11 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsExceptio
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
@@ -565,6 +567,71 @@ final class UpsertProductIntegration extends TestCase
         $this->expectExceptionMessage('The "toto, michel" categories do not exist');
 
         $this->updateProduct(new SetCategories(['toto', 'michel']));
+    }
+
+    /** @test */
+    public function it_adds_categories_to_a_product(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'categoryC']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB', 'categoryC'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_trying_to_add_unexisting_category(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "unknown" category does not exist');
+
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'unknown']));
+    }
+
+    /** @test */
+    public function it_removes_categories_of_a_product(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA', 'categoryB', 'categoryC'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->updateProduct(new RemoveCategories(['categoryA', 'categoryC']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['categoryB'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_trying_to_remove_unexisting_categories(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA', 'categoryB'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "unknown" category does not exist');
+
+        $this->updateProduct(new RemoveCategories(['categoryA', 'unknown']));
     }
 
     private function getUserId(string $username): int
