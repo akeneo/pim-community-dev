@@ -64,4 +64,25 @@ trait MigrateToUuidTrait
 
         return (bool) $this->connection->fetchOne($sql, ['triggerName' => $triggerName, 'schema' => $schema]);
     }
+
+    protected function constraintExists(string $tableName, string $constraintName): bool
+    {
+        $sql = <<<SQL
+        SELECT EXISTS (
+            SELECT 1
+            FROM information_schema.table_constraints
+            WHERE constraint_schema = :schema AND TABLE_NAME = :table_name
+                AND CONSTRAINT_NAME = :constraint_name
+        ) AS is_existing
+        SQL;
+
+        return (bool) $this->connection->executeQuery(
+            $sql,
+            [
+                'schema' => $this->connection->getDatabase(),
+                'table_name' => $tableName,
+                'constraint_name' => $constraintName,
+            ]
+        )->fetchOne();
+    }
 }
