@@ -16,9 +16,9 @@ final class SetSimpleReferenceEntityValue implements ValueUserIntent
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private string $value
+        private string $recordCode
     ) {
-        Assert::notEmpty($value);
+        Assert::notEmpty($recordCode);
     }
 
     public function attributeCode(): string
@@ -36,8 +36,8 @@ final class SetSimpleReferenceEntityValue implements ValueUserIntent
         return $this->channelCode;
     }
 
-    public function value(): string
+    public function recordCode(): string
     {
-        return $this->value;
+        return $this->recordCode;
     }
 }
