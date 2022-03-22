@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveParent;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetParent;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -90,6 +83,73 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertNotNull($product);
         Assert::assertSame('variant_product', $product->getIdentifier());
         Assert::assertEqualsCanonicalizing(null, $product->getParent());
+    }
+
+    /** @test */
+    public function it_changes_parent_to_another_family_by_clearing_parent_first():void
+    {
+        $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
+        $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
+
+        $this->createFamily('clothes', ['attributes' => ['name', 'sub_name', 'size']]);
+        $this->createFamilyVariant('size_variant_clothes', 'clothes', [
+            'variant_attribute_sets' => [
+                [
+                    'level' => 1,
+                    'axes' => ['size'],
+                    'attributes' => [],
+                ],
+            ],
+        ]);
+
+        $this->createProductModel('root', 'color_variant_accessories', [
+            'categories' => ['print'],
+        ]);
+        $this->createProductModel('root2', 'size_variant_clothes', [
+            'categories' => ['print'],
+        ]);
+
+        $this->createProduct('variant_product', [
+            'parent' => 'root',
+            'categories' => ['suppliers', 'print'],
+            'values' => ['main_color' => [['locale' => null, 'scope' => null, 'data' => 'green']]],
+        ]);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'variant_product',
+            parentUserIntent: new SetParent('root2')
+        );
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('New parent "root2" of variant product "variant_product" must have the same family variant "color_variant_accessories" than the previous parent');
+        $this->messageBus->dispatch($command);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'variant_product',
+            parentUserIntent: new RemoveParent()
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('variant_product');
+        Assert::assertNotNull($product);
+        Assert::assertSame('variant_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(null, $product->getParent());
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'variant_product',
+            parentUserIntent: new SetParent('root2')
+        );
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('variant_product');
+        Assert::assertNotNull($product);
+        Assert::assertSame('variant_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing('root2', $product->getParent()->getCode());
     }
 
     /** @test */
