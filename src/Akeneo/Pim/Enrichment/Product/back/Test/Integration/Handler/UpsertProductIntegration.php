@@ -807,7 +807,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_does_not_update_product_when_it_has_no_record()
+    public function it_does_not_update_product_with_a_remove_multiple_records_value_when_product_has_no_record()
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
