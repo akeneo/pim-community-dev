@@ -30,19 +30,22 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
         Assert::allString($userIntent->recordCodes());
         Assert::allStringNotEmpty($userIntent->recordCodes());
 
-        $formerValue = $product->getValue(
+        $formerRecordCodeCollection = $product->getValue(
             $userIntent->attributeCode(),
             $userIntent->localeCode(),
             $userIntent->channelCode(),
         );
 
-        $formerValueAsString = $formerValue ?
-            array_map(fn ($value) => $value->__toString(), $formerValue->getData())
-            : null;
+        if (null === $formerRecordCodeCollection) {
+            return;
+        }
 
-        $values = $formerValueAsString !== null ?
-            \array_unique(array_diff($formerValueAsString, $userIntent->recordCodes()))
-            : $userIntent->recordCodes();
+        $formerRecordCodesAsString = array_map(fn ($value) => $value->__toString(), $formerRecordCodeCollection->getData());
+        $updatedRecordCodes = \array_values(\array_unique(array_diff($formerRecordCodesAsString, $userIntent->recordCodes())));
+
+        if ([] === array_diff($formerRecordCodeCollection->getData(), $updatedRecordCodes)) {
+            return;
+        }
 
         $this->productUpdater->update(
             $product,
@@ -52,7 +55,7 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
                         [
                             'locale' => $userIntent->localeCode(),
                             'scope' => $userIntent->channelCode(),
-                            'data' => $values,
+                            'data' => $updatedRecordCodes,
                         ],
                     ],
                 ],
