@@ -570,7 +570,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_adds_category_to_a_product(): void
+    public function it_adds_categories_to_a_product(): void
     {
         $command = new UpsertProductCommand(
             userId: $this->getUserId('admin'),
@@ -587,7 +587,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_exception_when_trying_to_add_unexisting_categories(): void
+    public function it_throws_exception_when_trying_to_add_unexisting_category(): void
     {
         $command = new UpsertProductCommand(
             userId: $this->getUserId('admin'),
