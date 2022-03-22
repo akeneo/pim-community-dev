@@ -849,16 +849,12 @@ final class UpsertProductIntegration extends TestCase
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
         $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
-        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
+        $this->expectExceptionMessage('Property "a_multi_reference_entity_attribute" expects valid record codes. The following records do not exist: "toto"');
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
 
         $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
-        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
-
-        $this->expectException(LegacyViolationsException::class);
-        $this->expectExceptionMessage('The toto values are not in the a_multi_select attribute option list.');
-        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_multi_select', null, null, ['toto']));
+        $this->expectExceptionMessage('Property "a_multi_reference_entity_attribute" expects valid record codes. The following records do not exist: "toto"');
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
     }
 
     private function getUserId(string $username): int
