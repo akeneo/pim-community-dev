@@ -78,6 +78,9 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
     {
         if ($this->tableExists($tableName) && $this->columnExists($tableName, $columnName)) {
             $this->connection->executeQuery(\sprintf('ALTER TABLE %s DROP COLUMN %s', $tableName, $columnName));
+            if ('pim_versioning_version' === $tableName) {
+                $this->connection->executeQuery('ALTER TABLE pim_versioning_version DROP INDEX resource_name_uuid_id_idx');
+            }
         }
     }
 
