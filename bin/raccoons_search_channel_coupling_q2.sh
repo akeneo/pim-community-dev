@@ -7,7 +7,9 @@
 # Extra mile:
 # vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle \
 
-grep -rnil -e "pim_catalog_channel" -e "pim_catalog_locale" \
+grep -rnil \
+  -e "pim_catalog_channel" -e "pim_catalog_locale" \
+  --exclude "src/Akeneo/AssetManager/back/Infrastructure/Symfony/Command/MigrationPAM/ExportAssetsIntoCSVFiles/FindVariations.php" \
   components/tailored-import \
   components/tailored-export \
   src/Akeneo/AssetManager \
