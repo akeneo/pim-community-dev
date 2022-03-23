@@ -1,8 +1,20 @@
-import React, {ReactNode, HTMLAttributes, cloneElement, isValidElement, ReactElement} from 'react';
+import React, {
+  ReactNode,
+  HTMLAttributes,
+  cloneElement,
+  isValidElement,
+  ReactElement,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize} from '../../theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IconButton, IconButtonProps} from '../IconButton/IconButton';
+import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
+
+const ANIMATION_DURATION = 100;
 
 const PreviewContainer = styled.div`
   padding: 10px 15px;
@@ -11,19 +23,30 @@ const PreviewContainer = styled.div`
   border: 1px solid ${getColor('blue', 40)};
   display: flex;
   flex-direction: column;
-  gap: 5px;
 `;
 
 const PreviewTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   text-transform: uppercase;
   font-size: ${getFontSize('small')};
   color: ${getColor('blue', 100)};
 `;
 
-const PreviewList = styled.div`
+const PreviewList = styled.div<{$height: number; $overflow: string; shouldAnimate: boolean} & AkeneoThemedProps>`
   overflow-wrap: break-word;
   white-space: break-spaces;
   color: ${getColor('grey', 140)};
+  margin-top: ${({$height}) => (0 === $height ? 0 : 5)}px;
+  max-height: ${({$height}) => $height}px;
+  overflow: ${({$overflow}) => $overflow};
+  ${({shouldAnimate}) =>
+    shouldAnimate &&
+    `
+    transition: all ${ANIMATION_DURATION}ms ease-in-out;
+    transition-property: max-height, margin-top;
+  `}
 `;
 
 const Highlight = styled.span`
@@ -100,6 +123,21 @@ type PreviewProps = Override<
     title: string;
 
     /**
+     * Whether or not the Preview is open.
+     */
+    isOpen?: boolean;
+
+    /**
+     * Label of the collapse button.
+     */
+    collapseButtonLabel?: string;
+
+    /**
+     * Handler called when the collapse button is clicked.
+     */
+    onCollapse?: (isOpen: boolean) => void;
+
+    /**
      * Content of the preview.
      */
     children?: ReactNode;
@@ -109,11 +147,54 @@ type PreviewProps = Override<
 /**
  * Preview component is used to put emphasis on some content.
  */
-const Preview = ({title, children, ...rest}: PreviewProps) => {
+const Preview = ({title, isOpen, collapseButtonLabel, onCollapse, children, ...rest}: PreviewProps) => {
+  const [contentHeight, setContentHeight] = useState<number>(0);
+  const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const isCollapsable = undefined !== collapseButtonLabel && undefined !== onCollapse && undefined !== isOpen;
+
+  const handleCollapse = () => onCollapse?.(!isOpen);
+
+  useEffect(() => {
+    setContentHeight(contentHeight => {
+      const scrollHeight = contentRef.current?.scrollHeight ?? 0;
+
+      return 0 === scrollHeight ? contentHeight : scrollHeight;
+    });
+
+    const shouldAnimateTimeoutId = window.setTimeout(() => {
+      setShouldAnimate(true);
+    }, ANIMATION_DURATION);
+
+    return () => {
+      window.clearTimeout(shouldAnimateTimeoutId);
+    };
+  }, [children]);
+
   return (
     <PreviewContainer {...rest}>
-      <PreviewTitle>{title}</PreviewTitle>
-      <PreviewList>{children}</PreviewList>
+      <PreviewTitle>
+        {title}
+        {isCollapsable && (
+          <IconButton
+            icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+            title={collapseButtonLabel}
+            onClick={handleCollapse}
+            level="tertiary"
+            ghost="borderless"
+            size="small"
+          />
+        )}
+      </PreviewTitle>
+      <PreviewList
+        ref={contentRef}
+        $overflow={isCollapsable && (shouldAnimate || !isOpen) ? 'hidden' : 'inherit'}
+        $height={!isCollapsable || isOpen ? contentHeight : 0}
+        shouldAnimate={isCollapsable && shouldAnimate}
+      >
+        {children}
+      </PreviewList>
     </PreviewContainer>
   );
 };
