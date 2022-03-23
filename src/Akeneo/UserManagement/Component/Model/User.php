@@ -12,13 +12,15 @@ use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface as SymfonyUserInterface;
 
 /**
  * @author    Nicolas Dupont <nicalas@akeneo.com>
  * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class User implements UserInterface
+class User implements UserInterface, EquatableInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const GROUP_DEFAULT = 'All';
@@ -1219,5 +1221,43 @@ class User implements UserInterface
     public function setProfile(?string $profile): void
     {
         $this->profile = '' === $profile ? null : $profile;
+    }
+
+    /**
+     * Please note this function is inspired by User::isEqualTo
+     * But using Akeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
+     * isAccountNonExpired isAccountNotLocked
+     * @see \Symfony\Component\Security\Core\User\User::isEqualTo()
+     * {@inheritdoc}
+     */
+    public function isEqualTo(SymfonyUserInterface $user): bool
+    {
+        if (!$user instanceof self) {
+            return false;
+        }
+
+        if ($this->getPassword() !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->getSalt() !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->getUserIdentifier() !== $user->getUserIdentifier()) {
+            return false;
+        }
+
+        if (self::class === static::class) {
+            if ($this->isAccountNonLocked() !== $user->isAccountNonLocked()) {
+                return false;
+            }
+        }
+
+        if ($this->isEnabled() !== $user->isEnabled()) {
+            return false;
+        }
+
+        return true;
     }
 }
