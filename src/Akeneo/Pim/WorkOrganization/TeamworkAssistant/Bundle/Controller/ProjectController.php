@@ -291,7 +291,8 @@ class ProjectController
 
         return [
             'view'   => $project->getDatagridView(),
-            'status' => $statusCode
+            'status' => $statusCode,
+            'locale' => $project->getLocale()->getCode(),
         ];
     }
 }
