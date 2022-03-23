@@ -4,5 +4,9 @@ services:
     arguments:
       - "@akeneo.tailored_import.hydrator.target"
 
+  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator: ~
+
   akeneo.tailored_import.hydrator.target:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator
+    arguments:
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator'

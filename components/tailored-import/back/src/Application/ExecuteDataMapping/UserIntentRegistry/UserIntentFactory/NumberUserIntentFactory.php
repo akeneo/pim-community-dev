@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
 
-class TextareaUserIntentFactory implements UserIntentFactoryInterface
+class NumberUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
@@ -27,7 +27,7 @@ class TextareaUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target must be a TargetAttribute');
         }
 
-        return new SetTextareaValue(
+        return new SetNumberValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
@@ -37,6 +37,6 @@ class TextareaUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof TargetAttribute && 'pim_catalog_textarea' === $target->getType();
+        return $target instanceof TargetAttribute && 'pim_catalog_number' === $target->getType();
     }
 }

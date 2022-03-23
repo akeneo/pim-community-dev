@@ -27,6 +27,7 @@ class DataMappingCollectionSpec extends ObjectBehavior
                         'fr_FR',
                         'set',
                         'skip',
+                        null,
                     ),
                     [],
                     [],
