@@ -10,6 +10,7 @@ namespace Akeneo\Platform\TailoredImport\Application\GetSampleData;
  */
 final class GetSampleDataQuery
 {
-    /** @var string[] */
-    public array $columnValues = [];
+    public string $jobCode;
+
+    public string $columnIndex;
 }

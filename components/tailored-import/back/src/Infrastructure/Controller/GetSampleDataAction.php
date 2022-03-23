@@ -22,8 +22,6 @@ final class GetSampleDataAction
 {
     public function __construct(
         private GetSampleDataHandler $getSampleDataHandler,
-        private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-        private GetJobConfigurationInterface $getJobConfiguration,
     ) {
     }
 
@@ -37,17 +35,9 @@ final class GetSampleDataAction
             throw new HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
         }
 
-        $jobConfiguration = $this->getJobConfiguration->byJobCode($request->get('job_code'));
-        $fileReader = $this->xlsxFileReaderFactory->create($jobConfiguration->getFileKey());
-
-        $columnValues = $fileReader->readColumnValues(
-            $jobConfiguration->getFileStructure()->getSheetName(),
-            $jobConfiguration->getFileStructure()->getProductLine(),
-            intval($request->get('column_index'))
-        );
-
         $query = new GetSampleDataQuery();
-        $query->columnValues = $columnValues;
+        $query->jobCode = $request->get('job_code');
+        $query->columnIndex = $request->get('column_index');
 
         $sampleData = $this->getSampleDataHandler->handle($query);
 
