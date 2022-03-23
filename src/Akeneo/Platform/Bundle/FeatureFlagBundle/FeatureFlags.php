@@ -11,25 +11,10 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FeatureFlags
+interface FeatureFlags
 {
-    /** @var Registry */
-    private $registry;
-
-    public function __construct(Registry $registry)
-    {
-        $this->registry = $registry;
-    }
-
     /**
-     * @param string $feature
-     *
-     * @return bool
+     * @throws \InvalidArgumentException if the feature flag does not exist
      */
-    public function isEnabled(string $feature): bool
-    {
-        $flag = $this->registry->get($feature);
-
-        return $flag->isEnabled();
-    }
+    public function isEnabled(string $feature): bool;
 }

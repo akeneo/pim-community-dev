@@ -1,0 +1,9 @@
+parameters:
+    env(PIM_EDITION): 'COMMUNITY_EDITION'
+
+services:
+    feature_flags:
+        public: true
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags'
+        arguments:
+            - '@akeneo.feature_flag.service.registry'

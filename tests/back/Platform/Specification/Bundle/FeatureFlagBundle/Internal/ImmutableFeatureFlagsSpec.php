@@ -1,13 +1,13 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle;
+namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 
-class FeatureFlagsSpec extends ObjectBehavior
+class ImmutableFeatureFlagsSpec extends ObjectBehavior
 {
     function let()
     {
