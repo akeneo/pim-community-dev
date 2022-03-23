@@ -6,7 +6,7 @@ import {
     getFontSize,
     Helper,
     Modal,
-    onboarderTheme,
+    pimTheme,
     useBooleanState,
 } from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useTranslate, useRoute} from '@akeneo-pim-community/shared';
@@ -38,7 +38,7 @@ const DeleteSupplier = ({identifier, onSupplierDeleted}: Props) => {
     return (
         <>
             <StyledDeleteIcon
-                color={onboarderTheme.color.grey100}
+                color={pimTheme.color.grey100}
                 onClick={openModal}
                 title={translate('pim_common.delete')}
             />

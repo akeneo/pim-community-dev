@@ -2,7 +2,7 @@ import React from 'react';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
-import {onboarderTheme} from 'akeneo-design-system';
+import {pimTheme} from 'akeneo-design-system';
 import {SupplierApp} from '@akeneo-pim-enterprise/onboarder';
 
 const mediator = require('oro/mediator');
@@ -12,7 +12,7 @@ class SupplierManagement extends ReactController {
 
     reactElementToMount() {
         return <DependenciesProvider>
-            <ThemeProvider theme={onboarderTheme}>
+            <ThemeProvider theme={pimTheme}>
                 <SupplierApp/>
             </ThemeProvider>
         </DependenciesProvider>;

@@ -1,6 +1,6 @@
 import React from 'react';
 import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
-import {CityIllustration, EditIcon, Pagination, onboarderTheme, Table, Search} from 'akeneo-design-system';
+import {CityIllustration, EditIcon, Pagination, pimTheme, Table, Search} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
@@ -81,7 +81,7 @@ const SupplierList = ({
                                     <Table.Cell>{supplier.label}</Table.Cell>
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>
-                                        <StyledEditIcon color={onboarderTheme.color.grey100} />
+                                        <StyledEditIcon color={pimTheme.color.grey100} />
                                         <DeleteSupplier
                                             identifier={supplier.identifier}
                                             onSupplierDeleted={onSupplierDeleted}
