@@ -15,7 +15,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
-    private const BATCH_SIZE = 50000;
+    private const BATCH_SIZE = 10000;
 
     public function __construct(
         private Connection $connection,
@@ -36,7 +36,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function shouldBeExecuted(): bool
     {
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
-            if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
+            if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX], $columnNames[self::ID_COLUMN_INDEX])) {
                 return true;
             }
         }
@@ -95,10 +95,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             return false;
         }
 
-        return $this->shouldBeExecutedForTable($tableName, $uuidColumnName);
+        return $this->shouldBeExecutedForTable($tableName, $uuidColumnName, $idColumnName);
     }
 
-    private function shouldBeExecutedForTable($tableName, $uuidColumnName): bool
+    private function shouldBeExecutedForTable(string $tableName, string $uuidColumnName, string $idColumnName): bool
     {
         if (!$this->tableExists($tableName)) {
             return false;
@@ -111,17 +111,17 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         $sql = <<<SQL
             SELECT EXISTS (
                 SELECT 1
-                FROM {table_name}
-                WHERE {column_name} 
-                IS NULL
+                FROM {table_name} t
+                INNER JOIN pim_catalog_product p ON p.id = t.{id_column_name}
+                WHERE {column_name} IS NULL
                 {extra_condition}
-                LIMIT 1
             ) as missing
         SQL;
 
         $query = \strtr($sql, [
             '{table_name}' => $tableName,
             '{column_name}' => $uuidColumnName,
+            '{id_column_name}' => $idColumnName,
             '{extra_condition}' => $tableName === 'pim_versioning_version'
                 ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
                 : '',
@@ -158,7 +158,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             '{uuid_column_name}' => $uuidColumnName,
             '{id_column_name}' => $idColumnName,
             '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
-                ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                ' AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
                 ''
         ]);
 
@@ -179,7 +179,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             '{table_name}' => $tableName,
             '{id_column_name}' => $idColumnName,
             '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
-                ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
+                ' AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
                 ''
         ]);
 
@@ -193,7 +193,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 SELECT {id_column_name}
                 FROM {table_name}
                 WHERE {uuid_column_name} IS NULL
-                {extra_condition}
                 LIMIT {limit}
             )
             UPDATE {table_name} t, pim_catalog_product p, batched_id b
@@ -201,6 +200,21 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             WHERE t.{id_column_name}=p.id
                 AND t.{id_column_name}=b.{id_column_name}
         SQL;
+        if ('pim_versioning_version' === $tableName) {
+            $sql = <<<SQL
+                WITH batched_id AS (
+                    SELECT v.id, p.uuid
+                    FROM pim_versioning_version v, pim_catalog_product p
+                    WHERE resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"
+                    AND resource_uuid IS NULL
+                    AND p.id = CAST(v.resource_id AS UNSIGNED)
+                    LIMIT {limit}
+                )
+                UPDATE pim_versioning_version v, batched_id b
+                SET v.resource_uuid = b.uuid
+                WHERE v.id = b.id
+            SQL;
+        }
 
         $this->connection->executeQuery(\strtr(
             $sql,
@@ -208,9 +222,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumnName,
                 '{id_column_name}' => $idColumnName,
-                '{extra_condition}' => $tableName === 'pim_versioning_version' ?
-                    ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
-                    '',
                 '{limit}' => self::BATCH_SIZE,
             ]
         ));
