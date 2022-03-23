@@ -3,6 +3,8 @@
 ## Bug fixes
 - PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
 
+# 6.0.15 (2022-03-23)
+
 # 6.0.14 (2022-03-22)
 
 # 6.0.13 (2022-03-18)
