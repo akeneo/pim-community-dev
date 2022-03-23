@@ -52,6 +52,7 @@ onboarder:
                 search_by_email_address: Search by email address
                 columns:
                     email: Email address
+                no_contributor: There are no contributors yet.
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers

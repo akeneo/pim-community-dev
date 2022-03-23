@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {DeleteIcon, Helper, Search, Table} from 'akeneo-design-system';
 import {Contributor} from '../../models';
 import {useFilteredContributors} from '../../hooks';
+import {EmptyContributorList} from "../EmptyContributorList";
 
 type Props = {
     contributors: Contributor[];
@@ -25,30 +26,35 @@ const Contributors = ({contributors}: Props) => {
         <TabContainer>
             <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
 
-            <Search
-                onSearchChange={onSearch}
-                searchValue={searchValue}
-                placeholder={translate('onboarder.supplier.supplier_edit.contributors_form.search_by_email_address')}
-            />
+            {filteredContributors.length === 0 && '' === searchValue && <EmptyContributorList/>}
+            {(filteredContributors.length > 0 || '' !== searchValue) &&
+                <>
+                    <Search
+                        onSearchChange={onSearch}
+                        searchValue={searchValue}
+                        placeholder={translate('onboarder.supplier.supplier_edit.contributors_form.search_by_email_address')}
+                    />
 
-            <Table>
-                <Table.Header>
-                    <Table.HeaderCell>
-                        {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
-                    </Table.HeaderCell>
-                    <Table.HeaderCell />
-                </Table.Header>
-                <Table.Body>
-                    {filteredContributors.map((contributor: Contributor) => (
-                        <Table.Row key={contributor.identifier} data-testid={contributor.email}>
-                            <Table.Cell>{contributor.email}</Table.Cell>
-                            <DeleteCell>
-                                <DeleteIcon />
-                            </DeleteCell>
-                        </Table.Row>
-                    ))}
-                </Table.Body>
-            </Table>
+                    <Table>
+                        <Table.Header>
+                            <Table.HeaderCell>
+                                {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell />
+                        </Table.Header>
+                        <Table.Body>
+                            {filteredContributors.map((contributor: Contributor) => (
+                                <Table.Row key={contributor.identifier} data-testid={contributor.email}>
+                                    <Table.Cell>{contributor.email}</Table.Cell>
+                                    <DeleteCell>
+                                        <DeleteIcon />
+                                    </DeleteCell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                </>
+            }
         </TabContainer>
     );
 };
