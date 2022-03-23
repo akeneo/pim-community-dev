@@ -86,7 +86,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
-    public function it_changes_parent_to_another_family_by_clearing_parent_first():void
+    public function it_changes_parent_to_another_family_by_clearing_parent_first(): void
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
