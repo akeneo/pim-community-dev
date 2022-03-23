@@ -25,7 +25,9 @@ final class RemoveParentApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($userIntent, RemoveParent::class);
-        Assert::notNull($product->getParent());
+        if (null === $product->getParent()) {
+            return;
+        }
 
         $this->removeParent->from($product);
     }
