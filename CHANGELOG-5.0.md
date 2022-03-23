@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.88 (2022-03-23)
+
 ## Bug fixes
 
 - PIM-10358: Assets imported with uppercase letters in the assetFamilyIdentifier are locked in the UI
