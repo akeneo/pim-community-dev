@@ -24,6 +24,7 @@ services:
         arguments:
             - '%kernel.project_dir%/src'
             - '%kernel.project_dir%/public'
+            - '@Akeneo\Pim\Enrichment\Bundle\PdfGeneration\HtmlFormatter\ArabicHtmlFormatter'
 
     pim_comment.builder.comment:
         class: 'Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder'

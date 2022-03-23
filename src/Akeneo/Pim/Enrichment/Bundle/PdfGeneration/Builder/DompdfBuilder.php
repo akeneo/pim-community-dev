@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder;
 
+use Akeneo\Pim\Enrichment\Bundle\PdfGeneration\HtmlFormatter\HtmlFormatter;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -24,12 +25,15 @@ class DompdfBuilder implements PdfBuilderInterface
      */
     protected $dompdf;
 
+    protected ?HtmlFormatter $arabicHtmlFormatter;
+
     private string $publicDir;
 
-    public function __construct(string $rootDir, $publicDir)
+    public function __construct(string $rootDir, $publicDir, ?HtmlFormatter $arabicHtmlFormatter = null)
     {
         $this->rootDir = $rootDir;
         $this->publicDir = $publicDir;
+        $this->arabicHtmlFormatter = $arabicHtmlFormatter;
     }
 
     /**
@@ -57,6 +61,11 @@ class DompdfBuilder implements PdfBuilderInterface
             'chroot' => $this->publicDir
         ]);
         $this->dompdf = new Dompdf($options);
+
+        if (null !== $this->arabicHtmlFormatter) {
+            $html = $this->arabicHtmlFormatter->formatHtml($html);
+        }
+
         $this->dompdf->loadHtml($html);
         $this->dompdf->render();
     }

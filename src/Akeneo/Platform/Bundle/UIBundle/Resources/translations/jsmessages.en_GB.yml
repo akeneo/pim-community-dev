@@ -211,6 +211,7 @@ pim_common:
     search: Search...
     no_match: No matches found
     load_more: Loading more results...
+  selected: "{0}None selected|{1}One selected|]1, Inf[{{ itemsCount }} selected"
   status: Status
   to: to
   type: Type
@@ -245,6 +246,7 @@ pim_common:
   products: Products
   product_models: Product models
   more: More
+  public_view: Public view
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -402,3 +404,11 @@ pim_system:
     users: '{0}You have 0 users|{1}You have 1 user|]1, Inf[You have {{ count }} users'
     user_groups: '{0}You have 0 user groups|{1}You have 1 user group|]1, Inf[You have {{ count }} user groups'
     roles: '{0}You have 0 roles|{1}You have 1 role|]1, Inf[You have {{ count }} roles'
+  sso:
+    enabled: SSO enabled
+    disabled: SSO disabled
+    title: SAML-based Single Sign-On
+pim_datagrid:
+  mass_action:
+    default:
+      select_action: Select Action
