@@ -18,14 +18,6 @@ class SourceParameterHydratorSpec extends ObjectBehavior
         )->shouldBeLike($expected);
     }
 
-    public function it_hydrates_a_number_source_parameter_when_it_is_null()
-    {
-        $this->hydrate(
-            null,
-            'pim_catalog_number'
-        )->shouldBeLike(null);
-    }
-
     public function it_returns_null_by_default()
     {
         $this->hydrate(null, 'pim_catalog_text')
