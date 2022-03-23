@@ -1,4 +1,5 @@
 export type Contributor = {
+    identifier: string;
     email: string;
 };
 

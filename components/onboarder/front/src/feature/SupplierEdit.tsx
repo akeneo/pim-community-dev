@@ -51,7 +51,7 @@ const SupplierEdit = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && <Configuration supplier={supplier} />}
-                {isCurrent('contributors') && <Contributors contributors={[{email: 'foo@foo.bar'}]} />}
+                {isCurrent('contributors') && <Contributors contributors={supplier.contributors} />}
             </StyledPageContent>
         </Container>
     );

@@ -36,7 +36,7 @@ const useSupplier = (identifier: string) => {
 
             setSupplier(await response.json());
         })();
-    }, [getSupplierRoute]);
+    }, []);
 
     return {supplier, setLabel, saveSupplier};
 };
