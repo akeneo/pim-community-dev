@@ -55,11 +55,11 @@ workflows:
 
     # Description :
     #    Check static kubernetes files with latest versions of kubernetes
-    nightly_beta:
+    weekly_static_helm_config:
         when:
             and:
                 - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
+                - equal: [ "weekly_static_helm_config", << pipeline.schedule.name >> ]
         jobs:
             - checkout
             - test_helm_generated_k8s_files:

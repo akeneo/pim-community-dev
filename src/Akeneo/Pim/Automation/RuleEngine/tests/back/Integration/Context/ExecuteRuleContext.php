@@ -28,6 +28,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\ChainedRunner;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\DBAL\Driver\Connection;
@@ -42,53 +43,18 @@ final class ExecuteRuleContext implements Context
     /** @var array */
     private $productModelFields = ['code', 'parent', 'categories', 'family_variant'];
 
-    /** @var Connection */
-    private $connection;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var ChainedRunner */
-    private $rulesRunner;
-
-    /** @var RuleDefinitionRepositoryInterface */
-    private $ruleDefinitionRepository;
-
-    /** @var BuilderInterface */
-    private $builder;
-
-    /** @var AttributeColumnInfoExtractor */
-    private $attributeColumnInfoExtractor;
-
-    /** @var GetProductCompletenesses */
-    private $getProductCompletenesses;
-
-    /** @var FamilyVariantRepositoryInterface */
-    private $familyVariantRepository;
-
     public function __construct(
-        Connection $connection,
-        ProductRepositoryInterface $productRepository,
-        ProductModelRepositoryInterface $productModelRepository,
-        ChainedRunner $rulesRunner,
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
-        BuilderInterface $builder,
-        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
-        GetProductCompletenesses $getProductCompletenesses,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        private Connection $connection,
+        private ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
+        private ChainedRunner $rulesRunner,
+        private RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        private BuilderInterface $builder,
+        private AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        private GetProductCompletenesses $getProductCompletenesses,
+        private FamilyVariantRepositoryInterface $familyVariantRepository,
+        private EntityManagerClearerInterface $clearer
     ) {
-        $this->connection = $connection;
-        $this->productRepository = $productRepository;
-        $this->productModelRepository = $productModelRepository;
-        $this->rulesRunner = $rulesRunner;
-        $this->ruleDefinitionRepository = $ruleDefinitionRepository;
-        $this->builder = $builder;
-        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
-        $this->getProductCompletenesses = $getProductCompletenesses;
-        $this->familyVariantRepository = $familyVariantRepository;
     }
 
     /**
@@ -98,6 +64,7 @@ final class ExecuteRuleContext implements Context
     public function theProductRuleIsExecuted(string $ruleCode): void
     {
         $rule = $this->getRule($ruleCode);
+        $this->clearer->clear();
 
         $this->rulesRunner->run($rule);
     }

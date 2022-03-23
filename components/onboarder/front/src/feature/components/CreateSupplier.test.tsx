@@ -50,6 +50,8 @@ test('it renders an error notification when a supplier with the same code alread
     renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
 
     openModal();
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.label.label'), 'Supplier 1');
 
     await act(async () => {
         userEvent.click(screen.getByText('pim_common.save'));
@@ -94,6 +96,21 @@ test('The supplier code is not generated anymore after typing a label', () => {
     userEvent.type(labelField, 'Supplier number 1');
 
     expect(codeField).toHaveValue('supplier1');
+});
+
+test('Backend is not called when code or label is empty', async () => {
+    const onSupplierCreated = jest.fn();
+
+    renderWithProviders(<CreateSupplier onSupplierCreated={onSupplierCreated} createButtonlabel={'create'} />);
+
+    openModal();
+    userEvent.type(screen.getByPlaceholderText('onboarder.supplier.supplier_create.modal.code.label'), 'supplier1');
+
+    await act(async () => {
+        userEvent.click(screen.getByText('pim_common.save'));
+    });
+
+    expect(onSupplierCreated).not.toHaveBeenCalled();
 });
 
 function openModal() {

@@ -52,7 +52,7 @@ workflows:
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
             - ui_sanity_checks:
-                  name: sanity_checks-<< matrix.SOURCE_PFID >>
+                  name: ui_sanity_checks-<< matrix.SOURCE_PFID >>
                   matrix:
                       parameters:
                           SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]

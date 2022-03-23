@@ -40,7 +40,6 @@ akeneo_data_quality_insights:
       aria_label: "Suggestions orthographiques pour: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}Vous avez <button>1 attribut</button> sur lequel travailler. |]1, 200[Vous avez <button>{{ count }} attributs</button> sur lesquels travailler. |[200, Inf[Vous avez <button>plus de {{ count }} attributs</button> sur lesquels travailler.'
       list:
         has_image:
           no_data: Tous vos attributs image semblent vides. En téléchargeant des images, cet indicateur vous permettra de suivre la qualité de vos produits.
@@ -49,14 +48,14 @@ akeneo_data_quality_insights:
           no_data: Les labels d'attributs et d'options sont vides. En les enrichissant, cet indicateur vous permettra de suivre la quaité de vos produits.
           messages:
             first_step:
-              message1: Vous avez du mal à utiliser les labels des attributs et des options ? On vous explique tout <a href="{{ link }}" target="_blank"> ici</a>.
+              message1: Vous avez du mal à utiliser les labels des attributs et des options ? On vous explique tout <a href="{{ link }}" target="_blank"> ici</a>. 
               message2: Avez-vous besoin d'aide pour vos attributs et options d'attributs ? Jetez un coup d'oeil <a href="{{ link }}" target="_blank">ici</a>!
             second_step:
-              message1: Faites bien attention aux labels de vos attributs et options. Vos produits seront mieux mis en valeur.
+              message1: Faites bien attention aux labels de vos attributs et options. Vos produits seront mieux mis en valeur. 
               message2: Peut être que vous vous êtes un peu perdu en route ? Certains de vos labels doivent être revus !
             third_step:
-              message1: Vous y êtes presque, quelques finitions et ça sera parfait !
-              message2: Certains de vos attributs et labels doivent être revus, mais vous êtes sur la bonne voie.
+              message1: Vous y êtes presque, quelques finitions et ça sera parfait ! 
+              message2: Certains de vos attributs et labels doivent être revus, mais vous êtes sur la bonne voie. 
             perfect_score_step:
               message1: Votre catalogue est prêt, beau travail !
               message2: Excellent travail sur les attributs et les labels.
