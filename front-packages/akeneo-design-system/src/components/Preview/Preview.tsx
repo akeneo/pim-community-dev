@@ -8,7 +8,7 @@ import React, {
   useRef,
   useEffect,
 } from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IconButton, IconButtonProps} from '../IconButton/IconButton';
@@ -34,19 +34,24 @@ const PreviewTitle = styled.div`
   color: ${getColor('blue', 100)};
 `;
 
-const PreviewList = styled.div<{$height: number; $overflow: string; shouldAnimate: boolean} & AkeneoThemedProps>`
+const PreviewList = styled.div<
+  {isCollapsable: boolean; $height: number; $overflow: string; shouldAnimate: boolean} & AkeneoThemedProps
+>`
   overflow-wrap: break-word;
   white-space: break-spaces;
   color: ${getColor('grey', 140)};
-  margin-top: ${({$height}) => (0 === $height ? 0 : 5)}px;
-  max-height: ${({$height}) => $height}px;
-  overflow: ${({$overflow}) => $overflow};
-  ${({shouldAnimate}) =>
-    shouldAnimate &&
-    `
-    transition: all ${ANIMATION_DURATION}ms ease-in-out;
-    transition-property: max-height, margin-top;
-  `}
+  margin-top: ${({$height, isCollapsable}) => (0 === $height && isCollapsable ? 0 : 5)}px;
+  ${({isCollapsable, $height, $overflow, shouldAnimate}) =>
+    isCollapsable &&
+    css`
+      max-height: ${$height}px;
+      overflow: ${$overflow};
+      ${shouldAnimate &&
+      css`
+        transition: all ${ANIMATION_DURATION}ms ease-in-out;
+        transition-property: max-height, margin-top;
+      `}
+    `}
 `;
 
 const Highlight = styled.span`
@@ -55,7 +60,8 @@ const Highlight = styled.span`
 `;
 
 const ActionsContainer = styled.div`
-  display: none;
+  opacity: 0;
+  display: flex;
   align-items: center;
   height: 0;
 
@@ -75,7 +81,7 @@ const RowContainer = styled.div`
     background: ${getColor('blue', 20)};
 
     ${ActionsContainer} {
-      display: flex;
+      opacity: 1;
     }
   }
 `;
@@ -157,6 +163,8 @@ const Preview = ({title, isOpen, collapseButtonLabel, onCollapse, children, ...r
   const handleCollapse = () => onCollapse?.(!isOpen);
 
   useEffect(() => {
+    if (!isCollapsable) return;
+
     setContentHeight(contentHeight => {
       const scrollHeight = contentRef.current?.scrollHeight ?? 0;
 
@@ -188,9 +196,10 @@ const Preview = ({title, isOpen, collapseButtonLabel, onCollapse, children, ...r
       </PreviewTitle>
       <PreviewList
         ref={contentRef}
-        $overflow={isCollapsable && (shouldAnimate || !isOpen) ? 'hidden' : 'inherit'}
-        $height={!isCollapsable || isOpen ? contentHeight : 0}
-        shouldAnimate={isCollapsable && shouldAnimate}
+        isCollapsable={isCollapsable}
+        $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+        $height={true === isOpen ? contentHeight : 0}
+        shouldAnimate={shouldAnimate}
       >
         {children}
       </PreviewList>
