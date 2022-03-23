@@ -1,9 +1,11 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import {render, screen} from '../../storybook/test-util';
+import {act, render, screen} from '../../storybook/test-util';
 import {IconButton} from '../IconButton/IconButton';
 import {RefreshIcon} from '../../icons';
 import {Preview} from './Preview';
+
+jest.useFakeTimers();
 
 test('it renders its title & its children properly', () => {
   render(
@@ -34,6 +36,24 @@ test('it renders its row subcomponent properly', () => {
   userEvent.click(screen.getByTitle('Refresh'));
 
   expect(handleRefresh).toHaveBeenCalled();
+});
+
+test('it can be collapsed if it is collapsable', () => {
+  const handleCollapse = jest.fn();
+
+  render(
+    <Preview title="Nice preview" isOpen={true} collapseButtonLabel="Collapse" onCollapse={handleCollapse}>
+      Content
+    </Preview>
+  );
+
+  act(() => {
+    jest.runAllTimers();
+  });
+
+  userEvent.click(screen.getByTitle('Collapse'));
+
+  expect(handleCollapse).toHaveBeenCalled();
 });
 
 test('Preview supports ...rest props', () => {

@@ -174,13 +174,12 @@ const Preview = ({title, isOpen, collapseButtonLabel, onCollapse, children, ...r
 
   return (
     <PreviewContainer {...rest}>
-      <PreviewTitle>
+      <PreviewTitle onClick={handleCollapse}>
         {title}
         {isCollapsable && (
           <IconButton
             icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
             title={collapseButtonLabel}
-            onClick={handleCollapse}
             level="tertiary"
             ghost="borderless"
             size="small"
