@@ -129,25 +129,32 @@ type PreviewProps = Override<
     title: string;
 
     /**
-     * Whether or not the Preview is open.
-     */
-    isOpen?: boolean;
-
-    /**
-     * Label of the collapse button.
-     */
-    collapseButtonLabel?: string;
-
-    /**
-     * Handler called when the collapse button is clicked.
-     */
-    onCollapse?: (isOpen: boolean) => void;
-
-    /**
      * Content of the preview.
      */
     children?: ReactNode;
-  }
+  } & (
+    | {
+        /**
+         * Whether or not the Preview is open.
+         */
+        isOpen: boolean;
+
+        /**
+         * Label of the collapse button.
+         */
+        collapseButtonLabel: string;
+
+        /**
+         * Handler called when the collapse button is clicked.
+         */
+        onCollapse: (isOpen: boolean) => void;
+      }
+    | {
+        isOpen?: undefined;
+        collapseButtonLabel?: undefined;
+        onCollapse?: undefined;
+      }
+  )
 >;
 
 /**
