@@ -30,24 +30,12 @@ use Doctrine\DBAL\Types\Types;
  */
 class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdentifiersInterface
 {
-    private Connection $sqlConnection;
-
-    private FindValueKeyCollectionInterface $findValueKeyCollection;
-
-    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
-
-    private ConnectorAssetHydrator $assetHydrator;
-
     public function __construct(
-        Connection $connection,
-        ConnectorAssetHydrator $hydrator,
-        FindValueKeyCollectionInterface $findValueKeyCollection,
-        FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier
+        private Connection $sqlConnection,
+        private ConnectorAssetHydrator $assetHydrator,
+        private FindValueKeyCollectionInterface $findValueKeyCollection,
+        private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier,
     ) {
-        $this->sqlConnection = $connection;
-        $this->findValueKeyCollection = $findValueKeyCollection;
-        $this->findAttributesIndexedByIdentifier = $findAttributesIndexedByIdentifier;
-        $this->assetHydrator = $hydrator;
     }
 
     /**
@@ -57,6 +45,7 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
     {
         $sql = <<<SQL
             SELECT
+            /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */
                 identifier,
                 code,
                 asset_family_identifier,
@@ -64,8 +53,7 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
                 created_at,
                 updated_at
             FROM akeneo_asset_manager_asset
-            WHERE identifier IN (:identifiers)
-            ORDER BY FIELD(identifier, :identifiers);
+            WHERE identifier IN (:identifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -73,9 +61,10 @@ SQL;
             ['identifiers' => $identifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         );
-        $results = $statement->fetchAllAssociative();
+        $assets = $statement->fetchAllAssociative();
+        $orderedAssets = $this->orderAssetItems($assets, $identifiers);
 
-        return empty($results) ? [] : $this->hydrateAssets($results, $assetQuery);
+        return empty($orderedAssets) ? [] : $this->hydrateAssets($orderedAssets, $assetQuery);
     }
 
     /**
@@ -122,5 +111,24 @@ SQL;
         }
 
         return $connectorAsset;
+    }
+
+    private function orderAssetItems(array $normalizedAssetItems, array $orderedIdentifiers): array
+    {
+        $resultIndexedByIdentifier = array_column($normalizedAssetItems, null, 'identifier');
+        $resultIndexedByIdentifier = array_change_key_case($resultIndexedByIdentifier, CASE_LOWER);
+
+        $existingIdentifiers = [];
+        foreach ($orderedIdentifiers as $orderedIdentifier) {
+            $sanitizedIdentifier = trim(strtolower($orderedIdentifier));
+
+            if (isset($resultIndexedByIdentifier[$sanitizedIdentifier])) {
+                $existingIdentifiers[$sanitizedIdentifier] = $sanitizedIdentifier;
+            }
+        }
+
+        $result = array_replace($existingIdentifiers, $resultIndexedByIdentifier);
+
+        return array_values($result);
     }
 }
