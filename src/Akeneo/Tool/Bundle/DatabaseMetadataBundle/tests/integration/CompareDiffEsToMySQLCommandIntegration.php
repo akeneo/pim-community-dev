@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
@@ -20,7 +22,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class CompareDiffEsToMySQLCommandIntegration extends KernelTestCase
+class CompareDiffEsToMySQLCommandIntegration extends TestCase
 {
     private const DB_REFERENCE_FILE = __DIR__ . '/../Resources/referenceOutput.jsonl';
 
@@ -151,5 +153,10 @@ class CompareDiffEsToMySQLCommandIntegration extends KernelTestCase
     protected function get(string $service): ?object
     {
         return static::$kernel->getContainer()->get($service);
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->catalog->useFunctionalCatalog();
     }
 }
