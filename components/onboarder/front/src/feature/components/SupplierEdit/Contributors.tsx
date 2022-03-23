@@ -3,7 +3,7 @@ import {useTranslate, useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeleteIcon, Helper, Search, Table} from 'akeneo-design-system';
 import {Contributor} from '../../models';
-import {useFilteredContributors} from "../../hooks";
+import {useFilteredContributors} from '../../hooks';
 
 type Props = {
     contributors: Contributor[];
@@ -36,14 +36,14 @@ const Contributors = ({contributors}: Props) => {
                     <Table.HeaderCell>
                         {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
                     </Table.HeaderCell>
-                    <Table.HeaderCell/>
+                    <Table.HeaderCell />
                 </Table.Header>
                 <Table.Body>
                     {filteredContributors.map((contributor: Contributor) => (
                         <Table.Row key={contributor.identifier} data-testid={contributor.email}>
                             <Table.Cell>{contributor.email}</Table.Cell>
                             <DeleteCell>
-                                <DeleteIcon/>
+                                <DeleteIcon />
                             </DeleteCell>
                         </Table.Row>
                     ))}
@@ -60,7 +60,7 @@ const TabContainer = styled.div`
 `;
 
 const DeleteCell = styled(Table.ActionCell)`
-  width: 50px;
+    width: 50px;
 `;
 
 export {Contributors};

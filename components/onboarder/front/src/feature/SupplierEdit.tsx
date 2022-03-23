@@ -1,17 +1,17 @@
 import React from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
-import {Configuration} from "./components/SupplierEdit/Configuration";
-import {useSupplier} from "./hooks";
-import {useHistory, useParams} from "react-router";
+import styled from 'styled-components';
+import {Configuration} from './components/SupplierEdit/Configuration';
+import {useSupplier} from './hooks';
+import {useHistory, useParams} from 'react-router';
 import {Contributors} from './components/SupplierEdit/Contributors';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
-    const {supplier, saveSupplier} = useSupplier(supplierIdentifier);
+    const {supplier} = useSupplier(supplierIdentifier);
     const history = useHistory();
 
     if (!supplier) {
@@ -24,7 +24,9 @@ const SupplierEdit = () => {
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
                         <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.root')}</Breadcrumb.Step>
-                        <Breadcrumb.Step href={history.createHref({pathname: '/'})}>{translate('onboarder.supplier.breadcrumb.suppliers')}</Breadcrumb.Step>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
+                            {translate('onboarder.supplier.breadcrumb.suppliers')}
+                        </Breadcrumb.Step>
                         <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
@@ -35,7 +37,9 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={'primary'} onClick={() => {}}>{translate('pim_common.save')}</Button>
+                    <Button level={'primary'} onClick={() => {}}>
+                        {translate('pim_common.save')}
+                    </Button>
                 </PageHeader.Actions>
                 <PageHeader.Title>{supplier.label}</PageHeader.Title>
             </PageHeader>

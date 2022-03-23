@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useNotify, useRoute, useTranslate, NotificationLevel} from '@akeneo-pim-community/shared';
-import {Supplier} from "../models";
+import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
     const [supplier, setSupplier] = useState<Supplier | null>(null);
@@ -19,7 +19,7 @@ const useSupplier = (identifier: string) => {
             },
             body: JSON.stringify({
                 label: updatedLabel,
-            })
+            }),
         });
 
         notify(NotificationLevel.SUCCESS, translate(''));
