@@ -34,7 +34,7 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
             $userIntent->channelCode(),
         );
         $formerRecordCodes = \array_map(
-            fn (\Stringable $recordCode): string => $recordCode->__toString(),
+            fn ($recordCode): string => (string) $recordCode,
             $formerRecordCodeCollection?->getData() ?? []
         );
 

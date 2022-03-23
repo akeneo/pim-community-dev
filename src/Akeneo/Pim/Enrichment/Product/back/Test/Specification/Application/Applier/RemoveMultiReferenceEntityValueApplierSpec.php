@@ -34,15 +34,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
     function it_applies_remove_multi_reference_entity_user_intent(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
-        ValueInterface $formerRecordCodes,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAkeneo,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAnotherAkeneo,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordZiggy,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAnotherZiggy
+        ValueInterface $formerRecordCodes
     ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
@@ -54,16 +46,12 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $product->getValue('code', null, null)->shouldBeCalled()->willReturn($formerRecordCodes);
         $formerRecordCodes->getData()->willReturn(
             [
-                $recordAkeneo,
-                $recordAnotherAkeneo,
-                $recordZiggy,
-                $recordAnotherZiggy,
+                'Akeneo',
+                'AnotherAkeneo',
+                'Ziggy',
+                'AnotherZiggy',
             ]
         );
-        $recordAkeneo->__toString()->willReturn('Akeneo');
-        $recordAnotherAkeneo->__toString()->willReturn('AnotherAkeneo');
-        $recordZiggy->__toString()->willReturn('Ziggy');
-        $recordAnotherZiggy->__toString()->willReturn('AnotherZiggy');
 
         $updater->update(
             $product,
@@ -86,9 +74,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
     function it_removes_the_last_records(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
-        ValueInterface $formerRecordCodes,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAkeneo
+        ValueInterface $formerRecordCodes
     ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
@@ -98,8 +84,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         );
 
         $product->getValue('code', null, null)->shouldBeCalled()->willReturn($formerRecordCodes);
-        $formerRecordCodes->getData()->willReturn([$recordAkeneo]);
-        $recordAkeneo->__toString()->willReturn('Akeneo');
+        $formerRecordCodes->getData()->willReturn(['Akeneo']);
 
         $updater->update(
             $product,
@@ -139,9 +124,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
     function it_does_nothing_when_product_does_not_have_the_record_to_remove(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
-        ValueInterface $formerRecordCodes,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAkeneo
+        ValueInterface $formerRecordCodes
     ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
@@ -151,8 +134,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         );
 
         $product->getValue('code', null, null)->shouldBeCalled()->willReturn($formerRecordCodes);
-        $formerRecordCodes->getData()->willReturn([$recordAkeneo]);
-        $recordAkeneo->__toString()->willReturn('Akeneo');
+        $formerRecordCodes->getData()->willReturn(['Akeneo']);
         $updater->update(Argument::any())->shouldNotBeCalled();
 
         $this->apply($removeMultiReferenceEntityValue, $product, 1);

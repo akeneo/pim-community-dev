@@ -8,16 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultiReferenceEntityValueApplier;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveMultiReferenceEntityValueApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
@@ -36,11 +33,7 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
     function it_applies_add_multi_reference_entity_user_intent(
         ObjectUpdaterInterface $updater,
         ProductInterface $product,
-        ValueInterface $formerRecordCodes,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordAkeneo,
-        /** @phpstan-ignore-next-line */
-        RecordCode $recordZiggy
+        ValueInterface $formerRecordCodes
     ) {
         $addMultiReferenceEntityValue = new AddMultiReferenceEntityValue(
             'code',
@@ -52,12 +45,10 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         $product->getValue('code', null, null)->shouldBeCalled()->willReturn($formerRecordCodes);
         $formerRecordCodes->getData()->willReturn(
             [
-                $recordAkeneo,
-                $recordZiggy,
+                'Akeneo',
+                'Ziggy',
             ]
         );
-        $recordAkeneo->__toString()->willReturn('Akeneo');
-        $recordZiggy->__toString()->willReturn('Ziggy');
 
         $updater->update(
             $product,

@@ -47,7 +47,7 @@ final class FeatureHelper
 
     public static function isReferenceEntityFeatureActivated(): bool
     {
-        return \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle');
+        return \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle', true);
     }
 
     public static function skipIntegrationTestWhenAssetFeatureIsNotActivated(): void
