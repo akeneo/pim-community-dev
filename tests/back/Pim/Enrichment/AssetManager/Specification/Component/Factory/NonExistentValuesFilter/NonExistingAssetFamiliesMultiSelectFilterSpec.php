@@ -103,4 +103,59 @@ final class NonExistingAssetFamiliesMultiSelectFilterSpec extends ObjectBehavior
             ]
         );
     }
+
+    public function it_filters_assets_with_case_insensitivity(FindAllExistentAssetsForAssetFamilyIdentifiers $allExistentAssetsForAssetFamilyIdentifiers)
+    {
+        $ongoingFilteredRawValues = OnGoingFilteredRawValues::fromNonFilteredValuesCollectionIndexedByType(
+            [
+                AssetCollectionType::ASSET_COLLECTION => [
+                    'assetcollection' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['absorb_PACKSHOT_1', 'ABSORB_packshot_2', 'non_Existing_Asset'],
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'PaCkShOt'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        );
+
+        $assetCodesIndexedByAssetFamilyIdentifiers = [
+            'PaCkShOt' => ['absorb_PACKSHOT_1', 'ABSORB_packshot_2', 'non_Existing_Asset']
+        ];
+
+        $allExistentAssetsForAssetFamilyIdentifiers->forAssetFamilyIdentifiersAndAssetCodes($assetCodesIndexedByAssetFamilyIdentifiers)->willReturn(
+            [
+                'pAcKsHoT' => ['ABSORB_packshot_1', 'absorb_PACKSHOT_2']
+            ]
+        );
+
+        /** @var OnGoingFilteredRawValues $filteredCollection */
+        $filteredCollection = $this->filter($ongoingFilteredRawValues);
+        $filteredCollection->filteredRawValuesCollectionIndexedByType()->shouldBeLike(
+            [
+                AssetCollectionType::ASSET_COLLECTION => [
+                    'assetcollection' => [
+                        [
+                            'identifier' => 'product_A',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['absorb_PACKSHOT_1', 'ABSORB_packshot_2'],
+                                ],
+                            ],
+                            'properties' => [
+                                'reference_data_name' => 'PaCkShOt'
+                            ]
+                        ]
+                    ]
+                ],
+            ]
+        );
+    }
 }
