@@ -11,3 +11,4 @@ akeneo_feature_flag:
         - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
         - { feature: 'onboarder_serenity_supplier', service: 'akeneo.onboarder_serenity.supplier.feature' }
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
+        - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
