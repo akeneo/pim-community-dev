@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -22,9 +23,7 @@ final class SetSimpleReferenceEntityValueApplier implements UserIntentApplier
 
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
-        if (!$userIntent instanceof SetSimpleReferenceEntityValue) {
-            throw new \InvalidArgumentException('Not expected class');
-        }
+        Assert::isInstanceOf($userIntent, SetSimpleReferenceEntityValue::class);
         $this->productUpdater->update($product, [
             'values' => [
                 $userIntent->attributeCode() => [
