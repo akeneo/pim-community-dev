@@ -23,6 +23,7 @@ class DataMappings extends Constraint
     public const TOO_MANY_IDENTIFIER_TARGET_FOUND = 'akeneo.tailored_import.validation.data_mappings.too_many_identifier_target_found';
     public const MIN_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached';
     public const MAX_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached';
+    public const SOURCES_COUNT_MISMATCHED = 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched';
     public const SOURCES_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique';
     public const SOURCES_SHOULD_EXIST = 'akeneo.tailored_import.validation.data_mappings.sources.should_exist';
 

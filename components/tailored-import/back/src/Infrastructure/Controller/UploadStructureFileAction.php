@@ -51,7 +51,10 @@ class UploadStructureFileAction
             return new JsonResponse($this->normalizer->normalize($violations), 400);
         }
 
-        $uploadFlatFileCommand = new UploadStructureFileCommand($uploadedFile->getPathname(), $uploadedFile->getClientOriginalName());
+        $uploadFlatFileCommand = new UploadStructureFileCommand(
+            $uploadedFile->getPathname(),
+            $uploadedFile->getClientOriginalName()
+        );
 
         $fileInfo = $this->uploadFlatFileHandler->handle($uploadFlatFileCommand);
 

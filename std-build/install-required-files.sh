@@ -52,6 +52,9 @@ cp $DEV_DISTRIB_DIR/config/packages/security.yml $STANDARD_DISTRIB_DIR/config/pa
 # Prepare dev configuration for partners
 cp -r $DEV_DISTRIB_DIR/config/packages/dev $STANDARD_DISTRIB_DIR/config/packages/
 
+cp $DEV_DISTRIB_DIR/config/packages/prod_onprem/oneup_flysystem.yml $STANDARD_DISTRIB_DIR/config/packages/dev/oneup_flysystem.yml
+cp $DEV_DISTRIB_DIR/config/packages/prod_onprem/messenger.yml $STANDARD_DISTRIB_DIR/config/packages/dev/messenger.yml
+
 # We need a console and FPM entrypoint
 cp $DEV_DISTRIB_DIR/bin/console $STANDARD_DISTRIB_DIR/bin/
 chmod +x $STANDARD_DISTRIB_DIR/bin/console

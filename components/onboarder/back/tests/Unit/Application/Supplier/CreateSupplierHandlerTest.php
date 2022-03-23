@@ -6,8 +6,9 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class CreateSupplierHandlerTest extends TestCase
@@ -16,8 +17,9 @@ final class CreateSupplierHandlerTest extends TestCase
     public function itCreatesANewSupplier(): void
     {
         $supplierRepository = new InMemoryRepository();
+        $supplierExists = new InMemorySupplierExists($supplierRepository);
 
-        $sut = new CreateSupplierHandler($supplierRepository);
+        $sut = new CreateSupplierHandler($supplierRepository, $supplierExists);
         ($sut)(new CreateSupplier(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'supplier_code',
@@ -25,7 +27,7 @@ final class CreateSupplierHandlerTest extends TestCase
         ));
 
         $supplier = $supplierRepository->find(
-            Supplier\Identifier::fromString(
+            Supplier\ValueObject\Identifier::fromString(
                 '01319d4c-81c4-4f60-a992-41ea3546824c'
             )
         );

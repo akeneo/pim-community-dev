@@ -40,7 +40,6 @@ akeneo_data_quality_insights:
       aria_label: "Suggerimenti ortografici per: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}Hai <button>1 attributo</button> su cui lavorare.|]1, 200[Hai <button>{{ count }} attributi</button> su cui lavorare.|[200, Inf[Hai <button>più di {{ count }} attributi</button> su cui lavorare.'
       list:
         has_image:
           no_data: Le tue raccolte asset e i tuoi attributi immagine sembrano vuoti. Carica immagini per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.

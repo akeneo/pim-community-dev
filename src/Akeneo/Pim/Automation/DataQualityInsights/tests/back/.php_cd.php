@@ -19,6 +19,7 @@ $rules = [
             //External dependencies
             'Ramsey\Uuid\Uuid',
             'Akeneo\Pim\Structure\Component\AttributeTypes',
+            'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface'
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Domain'),
 

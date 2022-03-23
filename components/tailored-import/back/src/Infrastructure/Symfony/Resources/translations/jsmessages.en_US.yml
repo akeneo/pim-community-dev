@@ -34,7 +34,10 @@ akeneo.tailored_import:
     no_data_mapping_selected: No data mapping selected
     sources:
       title: Sources
-      add: Add a source
+      add:
+        title: Open sources dropdown
+        label: Add a source
+        helper: "]-Inf, 1]For this kind of attribute, you can only add one source.|]1, Inf[For this kind of attribute, you can only add up to {{ limit }} sources."
     target:
       title: Target parameters
       identifier: No settings available for the identifier attribute used as a target.
@@ -68,6 +71,7 @@ akeneo.tailored_import:
       uuid:
         should_be_unique: This data mapping UUID already exists, please enter a new one.
       sources:
+        count_mismatched: You need to set only one source for this data mapping.
         min_count_reached: You need to add at least one source to your data mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
@@ -92,5 +96,9 @@ akeneo.tailored_import:
       max_size: The file is too big. The maximum size is {{ limit }}{{ suffix }}.
       not_allowed_mime_type: The file must be an Excel spreadsheet.
     file_structure:
-      first_product_row_should_be_after_header_row: First product row should be after header row.
-      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be after first column.
+      first_product_row_should_be_after_header_row: First product row should be after the header row.
+      unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be at least the first column.
+    file_preview:
+      empty_sheet:
+        title: This sheet is empty.
+        description: Please select another sheet with at least one row.

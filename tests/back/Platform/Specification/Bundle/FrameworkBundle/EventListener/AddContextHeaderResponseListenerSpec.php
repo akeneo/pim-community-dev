@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Platform\Bundle\FrameworkBundle\EventListener;
 
-use Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver;
+use Akeneo\Platform\Bundle\FrameworkBundle\Logging\BoundedContextResolver;
 use Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\Request;

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets;
-use Akeneo\Platform\TailoredImport\Test\Integration\ControllerIntegrationTestCase;
+use Akeneo\Platform\TailoredImport\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
 
-class InMemoryFindSystemTargetsIntegrationTest extends ControllerIntegrationTestCase
+class InMemoryFindSystemTargetsIntegrationTest extends IntegrationTestCase
 {
     public function test_it_returns_association_types_depending_on_search(): void
     {

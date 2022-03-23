@@ -8,7 +8,3 @@ framework:
                 # Alternatively, we can define as our middlewares instead of using the default ones
                 # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware
                 default_middleware: true
-            onboarder.query.bus:
-                # Alternatively, we can define as our middlewares instead of using the default ones
-                # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware
-                default_middleware: true

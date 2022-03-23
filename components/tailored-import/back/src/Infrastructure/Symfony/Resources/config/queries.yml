@@ -4,9 +4,7 @@ parameters:
 #        - 'enabled'
 #        - 'family'
 #        - 'parent'
-#        - 'groups'
 #        - 'family_variant'
-#        - 'quality_score'
 
     akeneo.tailored_import.supported_attribute_types:
 #        - 'akeneo_reference_entity_collection'
@@ -24,6 +22,14 @@ parameters:
 #        - 'pim_catalog_table'
         - 'pim_catalog_text'
         - 'pim_catalog_textarea'
+
+    akeneo.tailored_import.supported_collection_system_properties: []
+#        - 'categories'
+
+    akeneo.tailored_import.supported_collection_attribute_types: []
+#        - 'akeneo_reference_entity_collection'
+#        - 'pim_catalog_asset_collection'
+#        - 'pim_catalog_multiselect'
 
 services:
     akeneo.tailored_import.query.attribute.find_viewable_attributes:
@@ -58,3 +64,10 @@ services:
             - '@akeneo.tailored_import.query.attribute.find_viewable_attributes'
             - '@akeneo.tailored_import.query.find_system_targets'
             - '@translator'
+
+    akeneo.tailored_import.query.is_multi_source_target:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\IsMultiSourceTarget
+        arguments:
+            - '%akeneo.tailored_import.supported_collection_system_properties%'
+            - '%akeneo.tailored_import.supported_collection_attribute_types%'
+            - '@akeneo.pim.structure.query.get_attributes'

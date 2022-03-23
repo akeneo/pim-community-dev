@@ -31,21 +31,31 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
         $this->beConstructedWith($getProductsKeyIndicators, $computeAttributesPerfectSpelling);
     }
 
-    public function it_gives_key_indicators_for_all_products($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
+    public function it_gives_key_indicators_for_all_products_and_product_models($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
     {
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -57,7 +67,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 26,
             'totalGood' => 12,
             'totalToImprove' => 34,
             'extraData' => [],
@@ -74,14 +83,24 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -93,7 +112,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 0,
             'totalGood' => 0,
             'totalToImprove' => 42,
             'extraData' => [],
@@ -110,14 +128,24 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 
@@ -129,7 +157,6 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $expectedKeyIndicators = $productKeyIndicators;
         $expectedKeyIndicators[AttributesWithPerfectSpelling::CODE] = [
-            'ratioGood' => 100,
             'totalGood' => 23,
             'totalToImprove' => 0,
             'extraData' => [],
@@ -146,14 +173,24 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 
         $productKeyIndicators = [
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' => [
+                    'totalGood' => 10,
+                    'totalToImprove' => 14,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' => [
+                    'totalGood' => 8,
+                    'totalToImprove' => 12,
+                ]
             ]
         ];
 

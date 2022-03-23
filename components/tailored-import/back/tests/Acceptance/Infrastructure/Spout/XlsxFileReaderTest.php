@@ -27,8 +27,8 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     public function it_returns_cells_at_first_sheet_and_at_a_specific_line(): void
     {
         $xlsxFileReader = $this->getFileReader();
-        $actualCells = $xlsxFileReader->readLine(null, 1);
-        $expectedCells = ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'];
+        $actualCells = $xlsxFileReader->readRows(null, 1, 1);
+        $expectedCells = [['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax']];
 
         $this->assertEquals($expectedCells, $actualCells);
     }
@@ -36,63 +36,35 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_returns_cells_at_a_specific_sheet_and_a_specific_line(): void
+    public function it_returns_rows_at_a_specific_sheet_and_a_specific_line(): void
     {
         $xlsxFileReader = $this->getFileReader();
 
         $this->assertEquals(
-            ['', 'Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
-            $xlsxFileReader->readLine('Empty lines and columns', 2)
+            [['', 'Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax']],
+            $xlsxFileReader->readRows('Empty lines and columns', 2, 1)
         );
 
         $this->assertEquals(
-            ['', 'ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
-            $xlsxFileReader->readLine('Empty lines and columns', 4)
+            [['', 'ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4']],
+            $xlsxFileReader->readRows('Empty lines and columns', 4, 1)
         );
 
         $this->assertEquals(
-            ['','ref2','Produit 2','13.87','FALSE','5/23/2022'],
-            $xlsxFileReader->readLine('Empty lines and columns', 5)
+            [
+                ['','ref2','Produit 2','13.87','FALSE','5/23/2022', ''],
+                ['','ref3','Produit 3','16','TRUE','10/5/2015','19.2'],
+            ],
+            $xlsxFileReader->readRows('Empty lines and columns', 5, 2)
         );
 
-        $this->assertEquals(
-            ['','ref3','Produit 3','16','TRUE','10/5/2015','19.2'],
-            $xlsxFileReader->readLine('Empty lines and columns', 6)
-        );
+        $this->assertEquals([], $xlsxFileReader->readRows('Empty lines and columns', 8, 1));
     }
 
     /**
      * @test
      */
-    public function it_throws_an_exception_when_sheet_is_not_found(): void
-    {
-        $xlsxFileReader = $this->getFileReader();
-
-        $this->assertEquals(
-            ['', 'Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
-            $xlsxFileReader->readLine('Empty lines and columns', 2)
-        );
-
-        $this->assertEquals(
-            ['', 'ref1', 'Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
-            $xlsxFileReader->readLine('Empty lines and columns', 4)
-        );
-
-        $this->assertEquals(
-            ['','ref2','Produit 2','13.87','FALSE','5/23/2022'],
-            $xlsxFileReader->readLine('Empty lines and columns', 5)
-        );
-
-        $this->assertEquals(
-            ['','ref3','Produit 3','16','TRUE','10/5/2015','19.2'],
-            $xlsxFileReader->readLine('Empty lines and columns', 6)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throw_an_exception_when_file_is_not_found(): void
+    public function it_throws_an_exception_when_file_is_not_found(): void
     {
         $this->expectException(FileNotFoundException::class);
 
@@ -102,12 +74,12 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_throw_an_exception_when_sheet_is_not_found(): void
+    public function it_throws_an_exception_when_sheet_is_not_found(): void
     {
         $this->expectExceptionObject(new SheetNotFoundException('unknown sheet'));
 
         $fileReader = $this->getFileReader();
-        $fileReader->readLine('unknown sheet', 1);
+        $fileReader->readRows('unknown sheet', 1, 1);
     }
 
     /**
@@ -116,7 +88,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     public function it_returns_empty_cells_when_line_is_empty(): void
     {
         $xlsxFileReader = $this->getFileReader();
-        $actualCells = $xlsxFileReader->readLine('Empty lines and columns', 1);
+        $actualCells = $xlsxFileReader->readRows('Empty lines and columns', 1, 1);
 
         $this->assertEquals([], $actualCells);
     }

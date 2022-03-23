@@ -1,0 +1,42 @@
+onboarder:
+    menu_block_title: Onboarder
+    supplier:
+        breadcrumb:
+            root: Onboarder settings
+            suppliers: Suppliers
+        supplier_create:
+            modal:
+                title: Supplier
+                code:
+                    label: Code
+                label:
+                    label: Label
+            create_button:
+                label: Create your first supplier
+            notification:
+                title: The supplier has been created.
+                content: You can now edit it in the supplier management section.
+            error:
+                unknown_error: An error occured while creating the supplier.
+                supplier_already_exists: 'A supplier with code "{{ supplierCode }}" already exists.'
+        supplier_list:
+            menu_item: Suppliers
+            title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
+            no_supplier: There are no suppliers yet.
+            search_by_supplier: Search by Supplier
+            no_search_result: There are no suppliers matching this search.
+            error: An error occured while loading the supplier list.
+            columns:
+                supplier: Supplier
+                number_of_contributors: Number of contributors
+                actions: Actions
+        supplier_delete:
+            sucess_message: The supplier was successfully deleted
+            modal:
+                title: Supplier
+                confirmation_question: Are you sure you want to delete this supplier?
+                warning: By deleting this supplier, any unsaved enrichment will be lost.
+                unknown_error: An error occured while deleting the supplier.
+
+pim_title:
+    onboarder_serenity_supplier_list: Suppliers

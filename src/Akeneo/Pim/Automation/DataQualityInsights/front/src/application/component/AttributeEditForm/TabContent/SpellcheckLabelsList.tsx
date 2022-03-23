@@ -13,7 +13,7 @@ import SpellcheckPopoverDisclosure from '../../Common/HighlightableContent/Spell
 import applySuggestionOnLabel from '../../../helper/AttributeEditForm/Spellcheck/applySuggestionOnLabel';
 import {useAttributeEditFormContext} from '../../../context/AttributeEditFormContext';
 import fetchIgnoreTextIssue from '../../../../infrastructure/fetcher/AttributeEditForm/fetchIgnoreTextIssue';
-import {ATTRIBUTE_EDIT_FORM_UPDATED} from '../../../constant';
+import {ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED} from '../../../constant';
 
 const SPELLCHECK_LABEL_ELEMENT_BASE_ID = 'attribute-label-spellcheck';
 
@@ -27,7 +27,7 @@ const SpellcheckLabelsList: FC<SpellcheckLabelsListProps> = () => {
     ignore: (text: string, locale: string) => {
       (async () => {
         await fetchIgnoreTextIssue(text, locale, attribute.code);
-        window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_UPDATED));
+        window.dispatchEvent(new CustomEvent(ATTRIBUTE_EDIT_FORM_SPELLCHECK_IGNORED));
       })();
     },
   });

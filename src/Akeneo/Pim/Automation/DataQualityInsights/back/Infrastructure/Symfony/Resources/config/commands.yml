@@ -40,3 +40,9 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\CleanCaseSensitiveAttributeOptionSpellcheckCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
