@@ -41,8 +41,7 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         RecordCode $recordAkeneo,
         /** @phpstan-ignore-next-line */
         RecordCode $recordZiggy
-    )
-    {
+    ) {
         $addMultiReferenceEntityValue = new AddMultiReferenceEntityValue(
             'code',
             null,
