@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent} from '@testing-library/react';
+import {screen, fireEvent} from '@testing-library/react';
 import {QuantifiedAssociationRow} from '../../../../Resources/public/js/product/form/quantified-associations/components/QuantifiedAssociationRow';
 import {Product, ProductType} from '../../../../Resources/public/js/product/form/quantified-associations/models';
 import {renderWithProviders} from '@akeneo-pim-community/shared/tests/front/unit/utils';
@@ -26,6 +26,17 @@ const productModel: Product = {
     totalChildren: 2,
   },
 };
+
+let mockedGrantedAcl: string[] = [];
+jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useSecurity', () => ({
+  useSecurity: () => ({
+    isGranted: (acl: string) => mockedGrantedAcl.includes(acl),
+  }),
+}));
+
+beforeEach(() => {
+  mockedGrantedAcl = ['pim_enrich_associations_remove', 'pim_enrich_associations_edit'];
+});
 
 test('It displays a quantified association row for a product', () => {
   const onChange = jest.fn();
@@ -200,4 +211,59 @@ test('It triggers the onRemove event when the remove button is clicked in compac
 
   expect(onChange).not.toBeCalled();
   expect(onRemove).toBeCalled();
+});
+
+test('It cannot remove an association when user did not have the ACL', () => {
+  mockedGrantedAcl = ['pim_enrich_associations_edit'];
+
+  renderWithProviders(
+    <table>
+      <tbody>
+        <QuantifiedAssociationRow
+          row={{
+            productType: ProductType.ProductModel,
+            quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
+            product: productModel,
+            errors: [],
+          }}
+          isCompact={true}
+          parentQuantifiedLink={undefined}
+          onChange={jest.fn()}
+          onRemove={jest.fn()}
+        />
+      </tbody>
+    </table>
+  );
+
+  const removeButton = screen.queryByTitle('pim_enrich.entity.product.module.associations.remove');
+  expect(removeButton).not.toBeInTheDocument();
+});
+
+test('It cannot update the quantity of an association when user did not have the ACL', () => {
+  mockedGrantedAcl = [];
+  const handleChange = jest.fn();
+
+  renderWithProviders(
+    <table>
+      <tbody>
+        <QuantifiedAssociationRow
+          row={{
+            productType: ProductType.ProductModel,
+            quantifiedLink: {quantity: 15, identifier: 'braided-hat'},
+            product: productModel,
+            errors: [],
+          }}
+          isCompact={true}
+          parentQuantifiedLink={undefined}
+          onChange={handleChange}
+          onRemove={jest.fn()}
+        />
+      </tbody>
+    </table>
+  );
+
+  const quantityInput = screen.getByTitle('pim_enrich.entity.product.module.associations.quantified.quantity');
+  fireEvent.change(quantityInput, {target: {value: '16'}});
+
+  expect(handleChange).not.toBeCalled();
 });

@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import {useTranslate, useNotify, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useNotify, useSecurity, NotificationLevel} from '@akeneo-pim-community/legacy-bridge';
 import {BrokenLinkIcon, AssociationTypesIllustration, Helper, Button} from 'akeneo-design-system';
 import {
   SearchBar,
@@ -79,6 +79,7 @@ const QuantifiedAssociations = ({
 }: QuantifiedAssociationsProps) => {
   const translate = useTranslate();
   const notify = useNotify();
+  const {isGranted} = useSecurity();
   const [rowCollection, setRowCollection] = useState<Row[]>(
     quantifiedAssociationToRowCollection(quantifiedAssociations, errors)
   );
@@ -94,7 +95,7 @@ const QuantifiedAssociations = ({
     rowCollectionToQuantifiedAssociation(rowCollection)
   );
   const filteredCollectionWithProducts = collectionWithProducts.filter(filterOnLabelOrIdentifier(searchValue));
-
+  const canAddAssociation = isGranted('pim_enrich_associations_edit');
   useEffect(() => {
     formatParameters(getErrorsForPath(errors, '')).forEach(error =>
       notify(NotificationLevel.ERROR, translate(error.messageTemplate, error.parameters, error.plural))
@@ -156,7 +157,7 @@ const QuantifiedAssociations = ({
         searchValue={searchValue}
         onSearchChange={setSearchValue}
       />
-      {!isCompact && (
+      {!isCompact && canAddAssociation && (
         <Buttons>
           <Button level="secondary" onClick={handleAdd}>
             {translate('pim_enrich.entity.product.module.associations.add_associations')}

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {ChangeEvent} from 'react';
 import styled, {css} from 'styled-components';
-import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate, useRoute, useSecurity} from '@akeneo-pim-community/legacy-bridge';
 import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
 import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
@@ -118,10 +118,25 @@ const QuantifiedAssociationRow = ({
   onRemove,
 }: QuantifiedAssociationRowProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const isProductModel = ProductType.ProductModel === row.productType;
   const productEditUrl = useRoute(`pim_enrich_${row.productType}_edit`, {id: row.product?.id.toString() || ''});
   const thumbnailUrl = useProductThumbnail(row.product);
   const blueColor = useTheme().color.blue100;
+  const canRemoveAssociation = isGranted('pim_enrich_associations_remove') && undefined === parentQuantifiedLink;
+  const canUpdateQuantity = isGranted('pim_enrich_associations_edit') && isGranted('pim_enrich_associations_remove');
+
+  const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!canUpdateQuantity) return;
+
+    const numberValue = Number(event.currentTarget.value) || 1;
+    const limitedValue = numberValue > MAX_QUANTITY ? row.quantifiedLink.quantity : numberValue;
+
+    onChange({
+      ...row,
+      quantifiedLink: {...row.quantifiedLink, quantity: limitedValue},
+    });
+  };
 
   return (
     <>
@@ -189,15 +204,8 @@ const QuantifiedAssociationRow = ({
               max={MAX_QUANTITY}
               value={row.quantifiedLink.quantity}
               isInvalid={0 < filterErrors(row.errors, 'quantity').length}
-              onChange={event => {
-                const numberValue = Number(event.currentTarget.value) || 1;
-                const limitedValue = numberValue > MAX_QUANTITY ? row.quantifiedLink.quantity : numberValue;
-
-                onChange({
-                  ...row,
-                  quantifiedLink: {...row.quantifiedLink, quantity: limitedValue},
-                });
-              }}
+              disabled={!canUpdateQuantity}
+              onChange={handleQuantityChange}
             />
           </InputCellContainer>
           <InputErrors errors={row.errors} />
@@ -220,7 +228,7 @@ const QuantifiedAssociationRow = ({
                     </a>
                   </RowAction>
                 )}
-                {undefined === parentQuantifiedLink && (
+                {canRemoveAssociation && (
                   <RowAction onClick={() => onRemove(row)}>
                     <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
                   </RowAction>
@@ -232,7 +240,7 @@ const QuantifiedAssociationRow = ({
           <Cell>
             <ActionCellContainer>
               <RowActions>
-                {undefined === parentQuantifiedLink && (
+                {canRemoveAssociation && (
                   <RowAction onClick={() => onRemove(row)}>
                     <CloseIcon title={translate('pim_enrich.entity.product.module.associations.remove')} size={20} />
                   </RowAction>
