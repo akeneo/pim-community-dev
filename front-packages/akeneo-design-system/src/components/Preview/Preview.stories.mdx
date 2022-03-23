@@ -60,7 +60,7 @@ The `<Preview.Row>` subcomponent has an `action` prop that accepts an `IconButto
   <Story name="Row">
     {args => {
       return (
-        <SpaceContainer height={150}>
+        <SpaceContainer height={200}>
           <Preview {...args}>
             <Preview.Row>First row</Preview.Row>
             <Preview.Row>Second row</Preview.Row>
@@ -69,13 +69,13 @@ The `<Preview.Row>` subcomponent has an `action` prop that accepts an `IconButto
             >
               Third row
             </Preview.Row>
-            <Preview.Row>Fourth row</Preview.Row>
             <Preview.Row
               action={<IconButton icon={<RefreshIcon />} title="Reload long" onClick={action('Reload long row')} />}
             >
               Logoden biniou degemer mat an penn ar bed werenn, baradoz hed c’haod moged gar galleg pakañ goañv merenn,
               hevelep Gwaien gegin gleb warnañ, Remengol morzhol.
             </Preview.Row>
+            <Preview.Row>Fifth row</Preview.Row>
           </Preview>
         </SpaceContainer>
       );
@@ -90,7 +90,7 @@ The `<Preview.Row>` subcomponent has an `action` prop that accepts an `IconButto
     {args => {
       const [isOpen, setOpen] = useState(false);
       return (
-        <SpaceContainer height={150}>
+        <SpaceContainer height={200}>
           <Preview {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse">
             <Preview.Row>First row</Preview.Row>
             <Preview.Row>Second row</Preview.Row>
