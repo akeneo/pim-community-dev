@@ -27,7 +27,7 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
         $this->addSql($sql);
 
         if ($this->constraintExists('pim_catalog_association', 'locale_foreign_key_idx')) {
-            $this->addSql('ALTER TABLE pim_catalog_association DROP CONSTRAINT locale_foreign_key_idx');
+            $this->addSql('ALTER TABLE pim_catalog_association DROP CONSTRAINT locale_foreign_key_idx, ALGORITHM=INPLACE, LOCK=NONE');
         }
 
         $columnsToRemove = [

@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProdu
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -95,11 +96,13 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     foreach ($association->getProducts() as $product) {
                         $data[$code]['products'][] = $product->getReference();
                     }
-                } else {
+                } elseif ($associationAwareEntity instanceof ProductInterface) {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
                         $associationAwareEntity->getUuid(),
                         $association
                     ));
+                } else {
+                    throw new \InvalidArgumentException(\sprintf('No expected class: "%s"', \get_class($associationAwareEntity)));
                 }
 
                 $data[$code]['product_models'] = $data[$code]['product_models'] ?? [];

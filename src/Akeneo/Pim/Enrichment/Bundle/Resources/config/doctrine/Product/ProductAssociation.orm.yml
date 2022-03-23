@@ -10,7 +10,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation:
             generator:
                 strategy: AUTO
     uniqueConstraints:
-        product_foreign_key_idx:
+        owner_uuid_association_type_id_idx:
             columns:
                 - owner_uuid
                 - association_type_id
