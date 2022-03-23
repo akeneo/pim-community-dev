@@ -4,13 +4,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
+        # @TODO: the pim_catalog_product.id column should set nullable in migration
         uuid:
             type: uuid_binary
+            id: true
             unique: true
         enabled:
             type: boolean
@@ -57,8 +54,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
                 inverseJoinColumns:
                     group_id:
@@ -70,8 +67,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
                 inverseJoinColumns:
                     category_id:

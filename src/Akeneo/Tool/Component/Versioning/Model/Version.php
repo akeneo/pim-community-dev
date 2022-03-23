@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Component\Versioning\Model;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Resource version entity
  *
@@ -30,6 +32,8 @@ class Version implements VersionInterface
      * @var string
      */
     protected $resourceId;
+
+    protected ?UuidInterface $resourceUuid;
 
     /**
      * @var array
@@ -101,6 +105,11 @@ class Version implements VersionInterface
         $this->id = $id;
 
         return $this;
+    }
+
+    public function getResourceUuid(): ?UuidInterface
+    {
+        return $this->resourceUuid;
     }
 
     /**
