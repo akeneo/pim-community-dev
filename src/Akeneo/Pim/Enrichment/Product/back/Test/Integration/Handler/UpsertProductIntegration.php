@@ -715,12 +715,20 @@ final class UpsertProductIntegration extends TestCase
             new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo']),
             'product_with_multiple_ref_entities_using_set'
         );
-        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo']);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo'],
+            'product_with_multiple_ref_entities_using_set'
+        );
         $this->updateProduct(
             new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['AnotherZiggy', 'Ziggy']),
             'product_with_multiple_ref_entities_using_set'
         );
-        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['AnotherZiggy', 'Ziggy']);
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['AnotherZiggy', 'Ziggy'],
+            'product_with_multiple_ref_entities_using_set'
+        );
     }
 
     /** @test */
@@ -743,12 +751,20 @@ final class UpsertProductIntegration extends TestCase
             new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']),
             'product_with_multiple_ref_entities_using_add'
         );
-        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy']);
-        $this->updateProduct(new AddMultiReferenceEntityValue(
-            'a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']),
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo', 'Ziggy'],
             'product_with_multiple_ref_entities_using_add'
         );
-        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+        $this->updateProduct(
+            new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']),
+            'product_with_multiple_ref_entities_using_add'
+        );
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo', 'Ziggy', 'AnotherZiggy'],
+            'product_with_multiple_ref_entities_using_add'
+        );
     }
 
     /** @test */
@@ -925,18 +941,21 @@ final class UpsertProductIntegration extends TestCase
         );
     }
 
-    private function assertProductHasCorrectValueByAttributeCode(string $attributeCode, mixed $expectedValue): void
-    {
-        $product = $this->productRepository->findOneByIdentifier('identifier');
+    private function assertProductHasCorrectValueByAttributeCode(
+        string $attributeCode,
+        mixed $expectedValue,
+        string $productIdentifier = 'identifier'
+    ): void {
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
         Assert::assertEquals($expectedValue, $value->getData());
     }
 
-    private function assertProductHasNoValueByAttributeCode(string $attributeCode): void
+    private function assertProductHasNoValueByAttributeCode(string $attributeCode, string $productIdentifier = 'identifier'): void
     {
-        $product = $this->productRepository->findOneByIdentifier('identifier');
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNull($value);

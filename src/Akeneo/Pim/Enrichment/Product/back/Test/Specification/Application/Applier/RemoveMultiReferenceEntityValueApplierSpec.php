@@ -43,8 +43,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         RecordCode $recordZiggy,
         /** @phpstan-ignore-next-line */
         RecordCode $recordAnotherZiggy
-    )
-    {
+    ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
             null,
@@ -90,8 +89,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         ValueInterface $formerRecordCodes,
         /** @phpstan-ignore-next-line */
         RecordCode $recordAkeneo
-    )
-    {
+    ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
             null,
@@ -124,8 +122,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
     function it_does_nothing_when_product_has_no_record_to_remove(
         ObjectUpdaterInterface $updater,
         ProductInterface $product
-    )
-    {
+    ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
             null,
@@ -145,8 +142,7 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
         ValueInterface $formerRecordCodes,
         /** @phpstan-ignore-next-line */
         RecordCode $recordAkeneo
-    )
-    {
+    ) {
         $removeMultiReferenceEntityValue = new RemoveMultiReferenceEntityValue(
             'code',
             null,

@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
@@ -34,9 +33,8 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
             $userIntent->localeCode(),
             $userIntent->channelCode(),
         );
-
         $formerRecordCodes = \array_map(
-            fn (RecordCode $recordCode): string => $recordCode->__toString(),
+            fn (\Stringable $recordCode): string => $recordCode->__toString(),
             $formerRecordCodeCollection?->getData() ?? []
         );
 
