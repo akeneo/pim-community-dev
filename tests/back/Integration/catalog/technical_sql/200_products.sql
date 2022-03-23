@@ -20,7 +20,11 @@
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49),(6,867,49);
+INSERT INTO `pim_catalog_association` (id, association_type_id, owner_uuid) VALUES
+(9,865,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd')),
+(8,866,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd')),
+(7,868,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd')),
+(6,867,UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'));
 /*!40000 ALTER TABLE `pim_catalog_association` ENABLE KEYS */;
 
 --
@@ -37,7 +41,10 @@ INSERT INTO `pim_catalog_association_group` VALUES (8,240),(9,241);
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
+INSERT INTO `pim_catalog_association_product` (association_id, product_uuid) VALUES
+(7,UUID_TO_BIN('bb2cd2b4-05c1-4b02-b97d-e5ef7b4312af')),
+(7,UUID_TO_BIN('b110e90c-c1c5-476b-9717-1a87fad21405')),
+(9,UUID_TO_BIN('bb2cd2b4-05c1-4b02-b97d-e5ef7b4312af'));
 /*!40000 ALTER TABLE `pim_catalog_association_product` ENABLE KEYS */;
 
 
