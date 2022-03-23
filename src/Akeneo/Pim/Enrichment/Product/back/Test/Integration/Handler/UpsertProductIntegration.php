@@ -27,6 +27,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -323,26 +324,8 @@ final class UpsertProductIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
-        /** @phpstan-ignore-next-line */
-        $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
-        $validator = $this->get('validator');
-        $violations = $validator->validate($createBrandCommand);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
-            $createBrandCommand
-        );
-
-        /** @phpstan-ignore-next-line */
-        $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
-        $violations = $validator->validate($createAkeneoRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
-
-        /** @phpstan-ignore-next-line */
-        $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
-        $violations = $validator->validate($createOtherRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
+        $this->createReferenceEntity('brand');
+        $this->createRecords('brand', ['Akeneo', 'Other']);
 
         $this->createAttribute(
             [
@@ -546,6 +529,81 @@ final class UpsertProductIntegration extends TestCase
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
             familyUserIntent: new SetFamily('')
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_successfully_creates_a_product_with_a_record()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo']);
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Akeneo');
+    }
+
+    /** @test */
+    public function it_successfully_sets_a_product_record_code()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy']);
+
+        $this->updateProduct(new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Akeneo');
+        $this->updateProduct(new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Ziggy'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Ziggy');
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_record_does_not_exist()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Property "a_reference_entity_attribute" expects a valid record code. The record "Unknown" does not exist');
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy']);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Unknown')]
         );
         $this->messageBus->dispatch($command);
     }
@@ -838,5 +896,29 @@ final class UpsertProductIntegration extends TestCase
             throw new \InvalidArgumentException((string)$constraints);
         }
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+    }
+
+    private function createReferenceEntity(string $referenceEntitycCode): void
+    {
+        /** @phpstan-ignore-next-line */
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntitycCode, []);
+        $validator = $this->get('validator');
+        $violations = $validator->validate($createReferenceEntityCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
+            $createReferenceEntityCommand
+        );
+    }
+
+    private function createRecords(string $referenceEntitycCode, array $recordCodes): void
+    {
+        $validator = $this->get('validator');
+        foreach ($recordCodes as $recordCode) {
+            /** @phpstan-ignore-next-line */
+            $createRecord = new CreateRecordCommand($referenceEntitycCode, $recordCode, []);
+            $violations = $validator->validate($createRecord);
+            Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+            ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);
+        }
     }
 }

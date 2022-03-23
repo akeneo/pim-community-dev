@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
@@ -57,6 +58,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             new SetBooleanValue('name', null, null, true),
             new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00")),
             new AddMultiSelectValue('name', null, null, ['optionA']),
+            new SetSimpleReferenceEntityValue('name', null, null, 'Akeneo'),
         ];
         $this->beConstructedWith(
             1,
