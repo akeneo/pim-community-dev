@@ -40,7 +40,6 @@ akeneo_data_quality_insights:
       aria_label: "Spellingssuggesties voor: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}U heeft <button>1 attribuut</button> om aan te werken.|]1, 200[Je hebt <button>{{ count }} attributen</button> om aan te werken.|[200, Inf[U heeft meer dan <button>{{ count }} attributen</button> om aan te werken.'
       list:
         has_image:
           no_data: Je assetcollecties en afbeeldingskenmerken lijken leeg te zijn, je moet afbeeldingen van deze belangrijke indicator uploaden om de kwaliteit van je producten te markeren.
