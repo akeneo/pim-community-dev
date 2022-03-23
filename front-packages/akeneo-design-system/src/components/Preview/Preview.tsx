@@ -65,8 +65,8 @@ const ActionsContainer = styled.div`
   align-items: center;
   height: 0;
 
-  button:hover:not([disabled]) {
-    background: none;
+  button:hover {
+    background: none !important;
   }
 `;
 
