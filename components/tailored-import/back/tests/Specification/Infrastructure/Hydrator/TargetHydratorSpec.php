@@ -80,8 +80,7 @@ class TargetHydratorSpec extends ObjectBehavior
     public function it_hydrates_an_attribute_and_a_source_parameter(
         SourceParameterHydrator $sourceParameterHydrator,
         NumberSourceParameter $numberSourceParameter,
-    )
-    {
+    ) {
         $indexedAttributes = [
             'count' => new Attribute(
                 'count',

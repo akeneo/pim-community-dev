@@ -3,7 +3,6 @@
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
-
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
 
