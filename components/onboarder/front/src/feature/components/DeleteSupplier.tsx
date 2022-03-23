@@ -39,7 +39,10 @@ const DeleteSupplier = ({identifier, onSupplierDeleted}: Props) => {
         <>
             <StyledDeleteIcon
                 color={pimTheme.color.grey100}
-                onClick={openModal}
+                onClick={(event: any) => {
+                    event.stopPropagation();
+                    openModal();
+                }}
                 title={translate('pim_common.delete')}
             />
             {isOpen && (
