@@ -22,7 +22,6 @@ final class SetMultiReferenceEntityValue implements ValueUserIntent
         private array $recordCodes
     ) {
         Assert::notEmpty($recordCodes);
-        Assert::allString($recordCodes);
         Assert::allStringNotEmpty($recordCodes);
     }
 

@@ -27,8 +27,6 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($userIntent, RemoveMultiReferenceEntityValue::class);
-        Assert::allString($userIntent->recordCodes());
-        Assert::allStringNotEmpty($userIntent->recordCodes());
 
         $formerRecordCodeCollection = $product->getValue(
             $userIntent->attributeCode(),

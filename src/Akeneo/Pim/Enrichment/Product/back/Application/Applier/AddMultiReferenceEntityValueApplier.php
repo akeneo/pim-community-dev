@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
@@ -27,8 +28,6 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($userIntent, AddMultiReferenceEntityValue::class);
-        Assert::allString($userIntent->recordCodes());
-        Assert::allStringNotEmpty($userIntent->recordCodes());
 
         $formerRecordCodeCollection = $product->getValue(
             $userIntent->attributeCode(),
@@ -36,13 +35,14 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
             $userIntent->channelCode(),
         );
 
-        $formerRecordCodeAsString = $formerRecordCodeCollection ?
-            \array_values(\array_map(fn ($value) => $value->__toString(), $formerRecordCodeCollection->getData()))
-            : [];
+        $formerRecordCodes = \array_map(
+            fn (RecordCode $recordCode): string => $recordCode->__toString(),
+            $formerRecordCodeCollection?->getData() ?? []
+        );
 
-        $updatedRecordCodes = \array_values(\array_unique(array_merge($formerRecordCodeAsString, $userIntent->recordCodes())));
+        $updatedRecordCodes = \array_values(\array_unique(array_merge($formerRecordCodes, $userIntent->recordCodes())));
 
-        if (\count(\array_diff($updatedRecordCodes, $formerRecordCodeAsString)) === 0) {
+        if (\count(\array_diff($updatedRecordCodes, $formerRecordCodes)) === 0) {
             return;
         }
 
