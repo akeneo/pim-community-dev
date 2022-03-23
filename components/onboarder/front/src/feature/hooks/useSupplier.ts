@@ -23,7 +23,7 @@ const useSupplier = (identifier: string) => {
         });
 
         notify(NotificationLevel.SUCCESS, translate(''));
-    }, [saveSupplierRoute, translate, notify]);
+    }, [saveSupplierRoute, updatedLabel]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
@@ -36,7 +36,7 @@ const useSupplier = (identifier: string) => {
 
             setSupplier(await response.json());
         })();
-    }, []);
+    }, [getSupplierRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {supplier, setLabel, saveSupplier};
 };
