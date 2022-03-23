@@ -16,7 +16,7 @@ class GetSampleDataTest extends TestCase
     public function test_it_select_3_different_value_from_a_column()
     {
         $selectSampleData = new SelectSampleData();
-        $sampleData = ["value1","value1","value2","value2","value3","value3","value4","value4",];
+        $sampleData = ["value1","value1","value2","value2","value3","value3"];
         $result = $selectSampleData->fromExtractedColumn($sampleData);
 
         $this->assertEquals(SelectSampleData::NUMBER_OF_VALUES, count($result));
