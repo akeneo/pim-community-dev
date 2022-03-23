@@ -4,7 +4,7 @@ import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-commun
 import styled from "styled-components";
 import {Configuration} from "./components/SupplierEdit/Configuration";
 import {useSupplier} from "./hooks";
-import {useParams} from "react-router";
+import {useHistory, useParams} from "react-router";
 import {Contributors} from './components/SupplierEdit/Contributors';
 
 const SupplierEdit = () => {
@@ -12,6 +12,7 @@ const SupplierEdit = () => {
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
     const {supplier, saveSupplier} = useSupplier(supplierIdentifier);
+    const history = useHistory();
 
     if (!supplier) {
         return null;
@@ -23,7 +24,7 @@ const SupplierEdit = () => {
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
                         <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.root')}</Breadcrumb.Step>
-                        <Breadcrumb.Step>{translate('onboarder.supplier.breadcrumb.suppliers')}</Breadcrumb.Step>
+                        <Breadcrumb.Step href={history.createHref({pathname: '/'})}>{translate('onboarder.supplier.breadcrumb.suppliers')}</Breadcrumb.Step>
                         <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
