@@ -285,4 +285,4 @@ test('The pending App card renders', async () => {
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryByAltText('App A')).toBeInTheDocument();
     expect(AppIllustration).toHaveBeenCalled();
-})
+});

@@ -48,6 +48,7 @@ const connectedApp = {
     certified: false,
     partner: null,
     is_test_app: false,
+    is_pending: false,
 };
 
 test('It renders the app errors', async done => {

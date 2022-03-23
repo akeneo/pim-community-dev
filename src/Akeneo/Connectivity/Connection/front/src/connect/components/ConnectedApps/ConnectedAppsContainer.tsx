@@ -74,11 +74,11 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
                             )}
                         </SectionTitle.Information>
                     </SectionTitle>
-                    {pendingApps.length > 0 &&
+                    {pendingApps.length > 0 && (
                         <Helper icon={<DangerIcon />} level='warning'>
                             {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')}
                         </Helper>
-                    }
+                    )}
 
                     {0 === connectedAppCards.length && <NoConnectedApps />}
                     {connectedAppCards.length > 0 && <CardGrid>{connectedAppCards}</CardGrid>}

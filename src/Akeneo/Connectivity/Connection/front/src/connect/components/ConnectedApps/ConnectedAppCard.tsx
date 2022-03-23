@@ -129,11 +129,14 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
             <LogoContainer> {logo} </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                {item.is_pending ?
+                {item.is_pending ? (
                     <>
-                        <IconBox><DangerIcon size={13} color={theme.color.yellow100}/></IconBox>
+                        <IconBox>
+                            <DangerIcon size={13} color={theme.color.yellow100} />
+                        </IconBox>
                         {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.pending')}
-                    </> :
+                    </>
+                ) : (
                     <>
                         <Author>
                             {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
@@ -142,7 +145,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                         </Author>
                         {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
                     </>
-                }
+                )}
             </TextInformation>
             <Actions>
                 <Button ghost level='tertiary' href={connectedAppUrl} disabled={!canManageApp}>

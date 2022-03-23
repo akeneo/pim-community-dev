@@ -153,18 +153,18 @@ test('The connected apps list renders without connected apps', async () => {
 
 test('The connected apps list renders with pending apps', async () => {
     const pendingApp = {
-            id: 'pending_app_id',
-            name: 'Pending App',
-            scopes: [],
-            connection_code: 'pendingConnectionCode',
-            logo: 'http://www.example.test/path/to/logo/pending',
-            author: 'author pending',
-            user_group_name: 'user_group_pending',
-            categories: [],
-            certified: true,
-            partner: null,
-            is_test_app: false,
-            is_pending: true,
+        id: 'pending_app_id',
+        name: 'Pending App',
+        scopes: [],
+        connection_code: 'pendingConnectionCode',
+        logo: 'http://www.example.test/path/to/logo/pending',
+        author: 'author pending',
+        user_group_name: 'user_group_pending',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: false,
+        is_pending: true,
     };
     renderWithProviders(<ConnectedAppsContainer allConnectedApps={[...connectedApps, pendingApp]} />);
     await waitFor(() => screen.getByText('Helper mock'));
