@@ -15,7 +15,12 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
-    private const INDEX_NAME = 'product_uuid';
+    private const DEFAULT_INDEX_NAME = 'product_uuid';
+    private const INDEX_NAMES = [
+        'pim_catalog_association' => 'IDX_CC27100147D93336',
+        'pim_catalog_association_product' => 'IDX_3A3A49D45C977207',
+        'pim_catalog_association_product_model_to_product' => 'IDX_3FF3ED195C977207',
+    ];
 
     public function __construct(
         private Connection $connection,
@@ -76,21 +81,28 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
             ALTER TABLE `{table_name}`
-                ADD INDEX `{index_name}` (`{uuid_column_name}`),
+                ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`),
                     ALGORITHM=INPLACE,
                     LOCK=NONE;
         SQL;
-
-        $addUuidColumnAndIndexOnUuidQuery = \strtr(
-            $addUuidColumnAndIndexOnUuidSql,
-            [
-                '{table_name}' => $tableName,
-                '{uuid_column_name}' => $uuidColumName,
-                '{index_name}' => self::INDEX_NAME,
+        if (!\in_array($tableName, [
+                'pim_data_quality_insights_product_criteria_evaluation',
+                'pim_data_quality_insights_product_score',
+                'pim_versioning_version',
             ]
-        );
+        )) {
+            $addUuidColumnAndIndexOnUuidQuery = \strtr(
+                $addUuidColumnAndIndexOnUuidSql,
+                [
+                    '{unique}' => $tableName === 'pimee_workflow_published_product' ? 'UNIQUE' : '',
+                    '{table_name}' => $tableName,
+                    '{uuid_column_name}' => $uuidColumName,
+                    '{index_name}' => self::INDEX_NAMES[$tableName] ?? self::DEFAULT_INDEX_NAME,
+                ]
+            );
 
-        $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
+            $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
+        }
 
         if ('pim_versioning_version' === $tableName) {
             // TODO CPM-581: remove this index once the pim_versioning_version is fully migrated
