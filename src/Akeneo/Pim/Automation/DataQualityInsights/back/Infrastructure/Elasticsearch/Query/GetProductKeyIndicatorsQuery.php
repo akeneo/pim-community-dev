@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -30,19 +30,19 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
     ) {
     }
 
-    public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes);
     }
 
-    public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
         $terms = [['term' => ['family.code' => (string)$family]]];
 
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
 
-    public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
         $categoryCode = (string)$category;
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
@@ -68,6 +68,12 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
                 ]], $extraTerms),
             ],
         ];
+
+        if ($this->documentType === ProductModelInterface::class) {
+            // here we do not want to consider product_model which are child of another product model (aka "submodels")
+            // this is to be consistent with the product grid in front
+            $query['bool']['must_not'] = ["exists" => ['field' => 'parent']];
+        }
 
         $aggregations = [];
         foreach ($keyIndicatorCodes as $keyIndicatorCode) {
