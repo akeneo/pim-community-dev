@@ -21,7 +21,7 @@ class SourceParameterHydrator
         };
     }
 
-    private function hydrateNumberSourceParameter($normalizedSourceParameter): SourceParameterInterface
+    private function hydrateNumberSourceParameter(array $normalizedSourceParameter): SourceParameterInterface
     {
         return new NumberSourceParameter($normalizedSourceParameter['decimal_separator']);
     }
