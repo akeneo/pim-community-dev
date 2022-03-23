@@ -29,6 +29,10 @@ class SetGroupsApplier implements UserIntentApplier
     {
         Assert::isInstanceOf($groupsUserIntent, SetGroups::class);
 
+        if ($groupsUserIntent->groupCodes() === $product->getGroupCodes()) {
+            return;
+        }
+
         $this->productUpdater->update($product, [
             'groups' => $groupsUserIntent->groupCodes(),
         ]);

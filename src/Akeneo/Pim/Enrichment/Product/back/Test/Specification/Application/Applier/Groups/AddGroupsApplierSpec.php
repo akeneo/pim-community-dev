@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier\Groups;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddGroups;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddGroupsApplier;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddToGroupsApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -21,7 +21,7 @@ class AddGroupsApplierSpec extends ObjectBehavior
 
     function it_is_an_user_intent_applier()
     {
-        $this->shouldHaveType(AddGroupsApplier::class);
+        $this->shouldHaveType(AddToGroupsApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
@@ -29,7 +29,7 @@ class AddGroupsApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
-        $userIntent = new AddGroups(['promotion', 'toto']);
+        $userIntent = new AddToGroups(['promotion', 'toto']);
         $product->getGroupCodes()->willReturn([]);
         $productUpdater->update($product, ['groups' => ['promotion', 'toto']])->shouldBeCalledOnce();
 
@@ -40,7 +40,7 @@ class AddGroupsApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
-        $userIntent = new AddGroups(['toto']);
+        $userIntent = new AddToGroups(['toto']);
         $product->getGroupCodes()->willReturn(['promotion']);
         $productUpdater->update($product, ['groups' => ['promotion', 'toto']])->shouldBeCalledOnce();
 
@@ -51,7 +51,7 @@ class AddGroupsApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
-        $userIntent = new AddGroups(['promotion']);
+        $userIntent = new AddToGroups(['promotion']);
         $product->getGroupCodes()->willReturn(['promotion']);
         $productUpdater->update()->shouldNotBeCalled();
 

@@ -8,7 +8,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -179,7 +179,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             'identifier1',
             [
                 new SetGroups(['foo']),
-                new AddGroups(['bar']),
+                new AddToGroups(['bar']),
             ]
         ]);
 

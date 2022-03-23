@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Application\Applier\Groups;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -15,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveGroupsApplier implements UserIntentApplier
+class RemoveFromGroupsApplier implements UserIntentApplier
 {
     public function __construct(
         private ObjectUpdaterInterface $productUpdater
@@ -27,16 +27,16 @@ class RemoveGroupsApplier implements UserIntentApplier
      */
     public function apply(UserIntent $groupsUserIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOf($groupsUserIntent, RemoveGroups::class);
+        Assert::isInstanceOf($groupsUserIntent, RemoveFromGroups::class);
 
-        $formerGroups = $product->getGroupCodes();
-        $newGroups = \array_values(\array_unique(\array_diff($formerGroups, $groupsUserIntent->groupCodes())));
-
-        if (\count(\array_diff($formerGroups, $newGroups)) > 0) {
-            $this->productUpdater->update($product, [
-                'groups' => $newGroups,
-            ]);
+        $formerGroupCodes = \array_values($product->getGroupCodes());
+        $updatedGroupCodes = \array_diff($formerGroupCodes, $groupsUserIntent->groupCodes());
+        if ($formerGroupCodes === $updatedGroupCodes) {
+            return;
         }
+        $this->productUpdater->update($product, [
+            'groups' => \array_values($updatedGroupCodes),
+        ]);
     }
 
     /**
@@ -44,6 +44,6 @@ class RemoveGroupsApplier implements UserIntentApplier
      */
     public function getSupportedUserIntents(): array
     {
-        return [RemoveGroups::class];
+        return [RemoveFromGroups::class];
     }
 }

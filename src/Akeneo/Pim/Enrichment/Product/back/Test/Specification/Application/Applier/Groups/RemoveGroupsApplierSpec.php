@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier\Groups;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddGroups;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveGroups;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddGroupsApplier;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\RemoveGroupsApplier;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddToGroupsApplier;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\RemoveFromGroupsApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
@@ -23,7 +23,7 @@ class RemoveGroupsApplierSpec extends ObjectBehavior
 
     function it_is_an_user_intent_applier()
     {
-        $this->shouldHaveType(RemoveGroupsApplier::class);
+        $this->shouldHaveType(RemoveFromGroupsApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
@@ -31,7 +31,7 @@ class RemoveGroupsApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
-        $userIntent = new RemoveGroups(['promotion']);
+        $userIntent = new RemoveFromGroups(['promotion']);
         $product->getGroupCodes()->willReturn(['promotion', 'foo', 'bar']);
         $productUpdater->update($product, ['groups' => ['foo', 'bar']])->shouldBeCalledOnce();
 
@@ -42,7 +42,7 @@ class RemoveGroupsApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         Product $product
     ) {
-        $userIntent = new RemoveGroups(['toto']);
+        $userIntent = new RemoveFromGroups(['toto']);
         $product->getGroupCodes()->willReturn(['promotion', 'foo', 'bar']);
         $productUpdater->update()->shouldNotBeCalled();
 

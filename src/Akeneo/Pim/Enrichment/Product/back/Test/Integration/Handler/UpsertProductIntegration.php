@@ -16,8 +16,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddGroups;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
@@ -848,12 +848,12 @@ final class UpsertProductIntegration extends TestCase
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
 
-        $this->updateProduct(new RemoveGroups(['groupB']));
+        $this->updateProduct(new RemoveFromGroups(['groupB']));
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing(['groupA'], $product->getGroupCodes());
 
-        $this->updateProduct(new AddGroups(['groupB']));
+        $this->updateProduct(new AddToGroups(['groupB']));
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
