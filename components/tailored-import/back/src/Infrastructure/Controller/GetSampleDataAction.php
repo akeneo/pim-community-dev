@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
-use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Query\GetJobConfigurationInterface;
 use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataQuery;
 use HttpInvalidParamException;

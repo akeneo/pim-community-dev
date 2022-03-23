@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  */
 class GetSampleDataTest extends TestCase
 {
-    public function test_it_select_3_different_value_from_a_column()
+    public function test_it_select_3_different_value_from_a_column(): void
     {
         $selectSampleData = new SelectSampleData();
         $sampleData = ["value1","value1","value2","value2","value3","value3"];
@@ -23,7 +23,7 @@ class GetSampleDataTest extends TestCase
         $this->assertTrue(count($result) === count(array_unique($result)));
     }
 
-    public function test_it_complete_selection_with_null()
+    public function test_it_complete_selection_with_null(): void
     {
         $selectSampleData = new SelectSampleData();
         $sampleData = ["value1","value2"];

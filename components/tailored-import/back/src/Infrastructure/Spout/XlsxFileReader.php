@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use Box\Spout\Common\Entity\Row;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\ReaderInterface;
 use Box\Spout\Reader\SheetInterface;

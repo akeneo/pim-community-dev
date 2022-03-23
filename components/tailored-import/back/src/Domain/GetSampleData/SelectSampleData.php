@@ -29,7 +29,7 @@ final class SelectSampleData implements SelectSampleDataInterface
         return array_unique($sampleData);
     }
     
-    private function pickRandomValues($sampleData): array
+    private function pickRandomValues(array $sampleData): array
     {
         shuffle($sampleData);
         return array_slice($sampleData, 0, min(count($sampleData), SelectSampleData::NUMBER_OF_VALUES));

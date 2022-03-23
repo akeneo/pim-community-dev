@@ -18,7 +18,8 @@ final class GetSampleDataHandler
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
         private GetJobConfigurationInterface $getJobConfiguration,
         private SelectSampleDataInterface $selectSampleData
-    ) {}
+    ) {
+    }
 
     public function handle(GetSampleDataQuery $getSampleDataQuery): GetSampleDataResult
     {

@@ -25,8 +25,7 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
         SelectSampleDataInterface $selectSampleData,
         JobConfiguration $jobConfiguration,
         XlsxFileReaderInterface $fileReader
-    )
-    {
+    ) {
         $query = new GetSampleDataQuery();
         $query->jobCode = "tailoredimport";
         $query->columnIndex = "1";
