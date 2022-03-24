@@ -26,7 +26,8 @@ class UpdateProductsIndex
         Client                         $esClient,
         GetProductScoresQueryInterface $getProductScoresQuery,
         ComputeProductsKeyIndicators   $getProductsKeyIndicators
-    ) {
+    )
+    {
         $this->esClient = $esClient;
         $this->getProductsKeyIndicators = $getProductsKeyIndicators;
         $this->getProductScoresQuery = $getProductScoresQuery;
@@ -51,12 +52,50 @@ class UpdateProductsIndex
 
     private function updateProductIndex(int $productId, ChannelLocaleRateCollection $productScores, array $keyIndicators): void
     {
+        $query['body'] = [
+            [
+                'update' => [
+                    '_id' => sprintf('product_%d', $productId)
+                ]
+            ],
+            [
+                'script' => [
+                    'inline' => "ctx._source.data_quality_insights = params;",
+                    'params' => [
+                        'scores' => $productScores->toArrayIntRank(),
+                        'key_indicators' => $keyIndicators
+                    ],
+                ]
+            ],
+        ];
+        $queryjson = json_encode($query);
+//        $test = $this->esClient->bulkUpdate($query);
+
+//        $this->esClient->bulkUpdate([
+//            'body' => [
+//                [
+//                    'update' => [
+//                        '_id' => sprintf('product_%d', $productId)
+//                    ]
+//                ],
+//                [
+//                    'script' => [
+//                        'inline' => "ctx._source.data_quality_insights = params;",
+//                        'params' => [
+//                            'scores' => $productScores->toArrayIntRank(),
+//                            'key_indicators' => $keyIndicators
+//                        ],
+//                    ]
+//                ],
+//            ]
+//        ]);
+
         $this->esClient->updateByQuery(
             [
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
-                        'scores' => $productScores->toArrayIntRank() ,
+                        'scores' => $productScores->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
                 ],

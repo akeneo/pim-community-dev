@@ -290,6 +290,12 @@ class Client
         return $this->client->bulk($params);
     }
 
+
+    public function bulkUpdate($params)
+    {
+        return $this->client->bulk($params);
+    }
+
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
