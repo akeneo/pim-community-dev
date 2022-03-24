@@ -64,9 +64,9 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     {
         $product = $this->createProduct();
         $this->get('database_connection')->executeUpdate(
-            'DELETE FROM pim_catalog_completeness WHERE product_id = :productId',
+            'DELETE FROM pim_catalog_completeness WHERE product_uuid = :productUuid',
             [
-                'productId' => $product->getId(),
+                'productUuid' => $product->getUuid()->getBytes(),
             ]
         );
 

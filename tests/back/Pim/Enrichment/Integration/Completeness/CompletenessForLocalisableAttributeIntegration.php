@@ -181,7 +181,7 @@ class CompletenessForLocalisableAttributeIntegration extends AbstractCompletenes
      */
     private function getCompletenessByLocaleCode(ProductInterface $product, $localeCode)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($this->getProductIdFromUuid($product->getUuid()));
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
         foreach ($completenesses as $completeness) {
             if ($localeCode === $completeness->localeCode()) {
                 return $completeness;

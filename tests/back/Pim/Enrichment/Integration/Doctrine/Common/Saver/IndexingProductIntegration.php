@@ -34,17 +34,17 @@ class IndexingProductIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll($products);
 
-        $productFooId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo')->getId();
-        $productBarId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar')->getId();
-        $productBazId = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz')->getId();
+        $productFooUuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo')->getUuid()->toString();
+        $productBarUuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bar')->getUuid()->toString();
+        $productBazUuid = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz')->getUuid()->toString();
 
-        $indexedProductModelFoo = $this->esProductAndProductModelClient->get('product_' . $productFooId);
+        $indexedProductModelFoo = $this->esProductAndProductModelClient->get('product_' . $productFooUuid);
         $this->assertTrue($indexedProductModelFoo['found']);
 
-        $indexedProductModelBar = $this->esProductAndProductModelClient->get('product_' . $productBarId);
+        $indexedProductModelBar = $this->esProductAndProductModelClient->get('product_' . $productBarUuid);
         $this->assertTrue($indexedProductModelBar['found']);
 
-        $indexedProductModelBaz = $this->esProductAndProductModelClient->get('product_' . $productBazId);
+        $indexedProductModelBaz = $this->esProductAndProductModelClient->get('product_' . $productBazUuid);
         $this->assertTrue($indexedProductModelBaz['found']);
     }
 
@@ -56,7 +56,7 @@ class IndexingProductIntegration extends TestCase
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
 
         $productInProductAndProductModelIndex = $this->esProductAndProductModelClient->get(
-            'product_' . $product->getId()
+            'product_' . $product->getUuid()->toString()
         );
         $this->assertTrue($productInProductAndProductModelIndex['found']);
     }

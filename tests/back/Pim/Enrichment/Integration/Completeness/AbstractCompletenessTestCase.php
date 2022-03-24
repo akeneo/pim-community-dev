@@ -22,20 +22,6 @@ use Ramsey\Uuid\UuidInterface;
 abstract class AbstractCompletenessTestCase extends TestCase
 {
     /**
-     * We add this method because after product creation, the Product does not have the id filled anymore.
-     * Do we add a subscriber to fill the id just after the product creation?
-     */
-    protected function getProductIdFromUuid(UuidInterface $uuid): ?int
-    {
-        $id = $this->get('database_connection')->fetchOne(
-            'SELECT id FROM pim_catalog_product WHERE uuid = ?',
-            [$uuid->getBytes()]
-        );
-
-        return null !== $id ? (int) $id : null;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
@@ -50,7 +36,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($this->getProductIdFromUuid($product->getUuid()));
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
 
         return $completenesses->getIterator()->current();
     }
@@ -61,7 +47,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($this->getProductIdFromUuid($product->getUuid()));
+        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 
