@@ -711,18 +711,19 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
-        $this->updateProduct(
-            new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo']),
-            'product_with_multiple_ref_entities_using_set'
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo'])]
         );
+        $this->messageBus->dispatch($command);
+
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_multi_reference_entity_attribute',
-            ['Akeneo'],
-            'product_with_multiple_ref_entities_using_set'
+            ['Akeneo']
         );
         $this->updateProduct(
-            new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['AnotherZiggy', 'Ziggy']),
-            'product_with_multiple_ref_entities_using_set'
+            new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['AnotherZiggy', 'Ziggy'])
         );
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_multi_reference_entity_attribute',
@@ -747,23 +748,23 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
 
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy'])]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo', 'Ziggy']
+        );
         $this->updateProduct(
-            new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy']),
-            'product_with_multiple_ref_entities_using_add'
+            new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy'])
         );
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_multi_reference_entity_attribute',
-            ['Akeneo', 'Ziggy'],
-            'product_with_multiple_ref_entities_using_add'
-        );
-        $this->updateProduct(
-            new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy']),
-            'product_with_multiple_ref_entities_using_add'
-        );
-        $this->assertProductHasCorrectValueByAttributeCode(
-            'a_multi_reference_entity_attribute',
-            ['Akeneo', 'Ziggy', 'AnotherZiggy'],
-            'product_with_multiple_ref_entities_using_add'
+            ['Akeneo', 'Ziggy', 'AnotherZiggy']
         );
     }
 
@@ -943,19 +944,18 @@ final class UpsertProductIntegration extends TestCase
 
     private function assertProductHasCorrectValueByAttributeCode(
         string $attributeCode,
-        mixed $expectedValue,
-        string $productIdentifier = 'identifier'
+        mixed $expectedValue
     ): void {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
         Assert::assertEquals($expectedValue, $value->getData());
     }
 
-    private function assertProductHasNoValueByAttributeCode(string $attributeCode, string $productIdentifier = 'identifier'): void
+    private function assertProductHasNoValueByAttributeCode(string $attributeCode): void
     {
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNull($value);
@@ -971,22 +971,22 @@ final class UpsertProductIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
-    private function updateProduct(UserIntent $userIntent, string $productIdentifier = 'identifier'): void
+    private function updateProduct(UserIntent $userIntent): void
     {
         $this->clearDoctrineUoW();
-        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
         if (null === $product) {
             // Creates empty product
-            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: $productIdentifier);
+            $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
             $this->messageBus->dispatch($command);
-            $product = $this->productRepository->findOneByIdentifier($productIdentifier);
+            $product = $this->productRepository->findOneByIdentifier('identifier');
             Assert::assertNotNull($product);
         }
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         // Update product with userIntent value
-        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: $productIdentifier, userIntents: [$userIntent]);
+        $command = UpsertProductCommand::createFromCollection(userId: $this->getUserId('admin'), productIdentifier: 'identifier', userIntents: [$userIntent]);
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
