@@ -8,6 +8,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: integer
             unique: true
             columnDefinition: INT AUTO_INCREMENT NOT NULL
+            generated: INSERT
         uuid:
             type: uuid_binary
             id: true
