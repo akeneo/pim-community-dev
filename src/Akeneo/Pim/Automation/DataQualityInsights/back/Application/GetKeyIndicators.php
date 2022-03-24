@@ -25,7 +25,7 @@ final class GetKeyIndicators implements GetKeyIndicatorsInterface
     public function __construct(
         private GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery,
         private GetProductKeyIndicatorsQueryInterface $getProductModelKeyIndicatorsQuery,
-        string... $keyIndicators
+        string ...$keyIndicators
     ) {
         $this->keyIndicatorCodes = array_map(static fn ($keyIndicator) => new KeyIndicatorCode($keyIndicator), $keyIndicators);
     }
@@ -54,6 +54,13 @@ final class GetKeyIndicators implements GetKeyIndicatorsInterface
     private function formatKeyIndicators(array $productKeyIndicators, array $productModelKeyIndicators): array
     {
         $formattedKeyIndicators = [];
+        foreach ($this->keyIndicatorCodes as $code) {
+            $formattedKeyIndicators[(string)$code] = [
+                'products' => ['totalGood' => 0, 'totalToImprove' => 0],
+                'product_models' => ['totalGood' => 0, 'totalToImprove' => 0]
+            ];
+        };
+
         foreach ($productKeyIndicators as $productKeyIndicator) {
             Assert::isInstanceOf($productKeyIndicator, KeyIndicator::class);
             $formattedKeyIndicators[(string)$productKeyIndicator->getCode()]['products'] = [
