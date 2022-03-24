@@ -392,9 +392,10 @@ acceptance:
                 - akeneo_referenceentity.tests.back.acceptance.context.create_reference_entity_context
                 - akeneo_referenceentity.tests.back.acceptance.context.create_record_context
                 - akeneo_assetmanager.tests.back.acceptance.context.list_asset_context
-
+                - test.feature_flag.context
             filters:
                 tags: '@acceptance-back'
+
         platform:
             paths:
                 - '%paths.base%/tests/features/volume-monitoring'

@@ -8,6 +8,7 @@ services:
             - '@akeneo_referenceentity.application.reference_entity.delete_reference_entity_handler'
             - '@akeneo_referenceentity.infrastructure.persistence.query.reference_entity_exists'
             - '@akeneo_referenceentity.application.record.create_record_handler'
+            - '@feature_flags'
 
     Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes:
         class: Akeneo\Test\Pim\TableAttribute\Acceptance\InMemory\InMemoryGetExistingRecordCodes
