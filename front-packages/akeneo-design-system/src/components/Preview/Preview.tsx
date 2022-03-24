@@ -207,6 +207,7 @@ const Preview = ({title, isOpen, collapseButtonLabel, onCollapse, children, ...r
         $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
         $height={true === isOpen ? contentHeight : 0}
         shouldAnimate={shouldAnimate}
+        aria-hidden={!isOpen}
       >
         {children}
       </PreviewList>

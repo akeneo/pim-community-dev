@@ -56,6 +56,18 @@ test('it can be collapsed if it is collapsable', () => {
   expect(handleCollapse).toHaveBeenCalled();
 });
 
+test('content is hidden when collapsed', () => {
+  const handleCollapse = jest.fn();
+
+  render(
+    <Preview title="Nice preview" isOpen={false} collapseButtonLabel="Collapse" onCollapse={handleCollapse}>
+      Content
+    </Preview>
+  );
+
+  expect(screen.getByText('Content')).toHaveAttribute('aria-hidden', 'true');
+});
+
 test('Preview supports ...rest props', () => {
   render(<Preview title="Hello" data-testid="my_value" />);
 
