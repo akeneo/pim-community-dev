@@ -727,8 +727,7 @@ final class UpsertProductIntegration extends TestCase
         );
         $this->assertProductHasCorrectValueByAttributeCode(
             'a_multi_reference_entity_attribute',
-            ['AnotherZiggy', 'Ziggy'],
-            'product_with_multiple_ref_entities_using_set'
+            ['AnotherZiggy', 'Ziggy']
         );
     }
 
