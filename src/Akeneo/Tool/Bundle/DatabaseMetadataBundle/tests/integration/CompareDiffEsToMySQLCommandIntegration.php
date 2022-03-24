@@ -160,6 +160,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 }
