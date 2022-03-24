@@ -32,7 +32,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
             $localeRepository,
             $registry,
             $translatableUpdater,
-            ['auto_option_sorting']
+            ['auto_option_sorting'],
+            ['group_labels']
         );
     }
 
@@ -109,6 +110,24 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $accessor->setValue($attribute, 'type', 'pim_catalog_text');
 
         $this->update($attribute, $data);
+    }
+
+    function it_ignores_fields_when_updating_an_attribute(AttributeInterface $attribute, PropertyAccessor $accessor)
+    {
+        $updates = [
+            'number_min' => 1,
+            'group_labels' => ['label1', 'label2'],
+        ];
+
+        $attribute
+            ->setNumberMin(1)
+            ->shouldBeCalled();
+
+        $accessor
+            ->setValue($attribute, 'group_labels', ['label1', 'label2'])
+            ->shouldNotBeCalled();
+
+        $this->update($attribute, $updates, []);
     }
 
     function it_throws_an_exception_if_no_groups_found(

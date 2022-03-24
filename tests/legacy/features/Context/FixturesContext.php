@@ -7,6 +7,7 @@ use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
@@ -97,7 +98,7 @@ class FixturesContext extends BaseFixturesContext
     public function thereIsAConnection($connectionCode)
     {
         $createConnectionCommand = new CreateConnectionCommand($connectionCode, $connectionCode, FlowType::DATA_SOURCE);
-        $this->getContainer()->get('akeneo_connectivity.connection.application.handler.create_connection')->handle($createConnectionCommand);
+        $this->getContainer()->get(CreateConnectionHandler::class)->handle($createConnectionCommand);
     }
 
     /**

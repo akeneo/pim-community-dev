@@ -1,8 +1,4 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery:
-        arguments:
-            - '@database_connection'
-
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery:
         arguments:
             - '@database_connection'
@@ -57,5 +53,13 @@ services:
             - '@database_connection'
             -
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\IsAccessTokenRevokedQuery:
         arguments:
             - '@database_connection'

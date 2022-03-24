@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: 일
     key_indicators:
       title: 주요 지표
-      products_to_work_on: '{1}작업 중인 <button>1개의 제품</button>이 있습니다.|]1, 200[작업 중인 <button>{{ count }}개의 제품</button>이 있습니다.|[200, Inf[작업 중인 <button>{{ count }}개 초과한 제품</button>이 있습니다.'
       list:
         has_image:
           title: 이미지 포함 제품

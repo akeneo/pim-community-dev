@@ -172,7 +172,8 @@ final class SqlGetConnectorProductModels implements Query\GetConnectorProductMod
                 $row['associations'] ?? [],
                 $row['quantified_associations'] ?? [],
                 $row['category_codes'],
-                $filteredValuesIndexedByProductModelCode[$productModelCode]
+                $filteredValuesIndexedByProductModelCode[$productModelCode],
+                null
             );
         }
 

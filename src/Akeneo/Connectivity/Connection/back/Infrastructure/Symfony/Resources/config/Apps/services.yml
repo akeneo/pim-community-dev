@@ -14,8 +14,8 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
-            - '@akeneo_connectivity.connection.persistence.query.select_connection_with_credentials_by_code'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalSelectConnectionWithCredentialsByCodeQuery'
 
     # OTHERS
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession:

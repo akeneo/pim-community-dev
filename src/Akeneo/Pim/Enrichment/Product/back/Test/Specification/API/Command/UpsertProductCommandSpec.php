@@ -7,10 +7,15 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
@@ -42,89 +47,19 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->shouldHaveType(UpsertProductCommand::class);
     }
 
-    function it_can_be_constructed_with_a_set_text_value_intent()
+    function it_can_be_constructed_with_value_intents()
     {
-        $valueUserIntents = [new SetTextValue('name', null, null, 'foo')];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
-    }
-
-    function it_can_be_constructed_with_a_set_number_value_intent()
-    {
-        $valueUserIntents = [new SetNumberValue('name', null, null, 10)];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
-    }
-
-    function it_can_be_constructed_with_a_set_metric_value_intent()
-    {
-        $valueUserIntents = [new SetMetricValue('power', null, null, '100', 'KILOWATT')];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
-    }
-
-    function it_can_be_constructed_with_a_set_textarea_value_intent()
-    {
-        $valueUserIntents = [new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>")];
-        $this->beConstructedWith(
-            1,
-            'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
-    }
-
-    function it_can_be_constructed_with_a_clear_value_intent()
-    {
-        $valueUserIntents = [new ClearValue('name', null, null)];
+        $valueUserIntents = [
+            new SetTextValue('name', null, null, 'foo'),
+            new SetNumberValue('name', null, null, '10'),
+            new SetMetricValue('power', null, null, '100', 'KILOWATT'),
+            new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>"),
+            new ClearValue('name', null, null),
+            new SetBooleanValue('name', null, null, true),
+            new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00")),
+            new AddMultiSelectValue('name', null, null, ['optionA']),
+            new SetSimpleReferenceEntityValue('name', null, null, 'Akeneo'),
+        ];
         $this->beConstructedWith(
             1,
             'identifier1',
@@ -159,63 +94,77 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_can_be_constructed_with_a_set_boolean_value_intent()
+    function it_can_be_constructed_with_field_user_intents()
     {
-        $valueUserIntents = [new SetBooleanValue('name', null, null, true)];
+        $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
         $this->beConstructedWith(
             1,
             'identifier1',
             null,
+            $familyUserIntent,
+            $categoryUserIntent,
             null,
             null,
             null,
             null,
-            null,
-            null,
-            $valueUserIntents
+            []
         );
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
+        $this->familyUserIntent()->shouldReturn($familyUserIntent);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
+        $this->valueUserIntents()->shouldReturn([]);
     }
 
-    function it_can_be_constructed_with_a_set_date_value_intent()
+    function it_can_be_constructed_from_a_collection_of_user_intents()
     {
-        $valueUserIntents = [new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"))];
-        $this->beConstructedWith(
-            1,
+        $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
+        $setTextValue = new SetTextValue('name', null, null, 'foo');
+        $setNumberValue = new SetNumberValue('name', null, null, '10');
+        $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
+        $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
+        $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
+
+        $this->beConstructedThrough('createFromCollection', [
+            10,
             'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
+            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue, $categoryUserIntent]
+        ]);
+
+        $this->userId()->shouldReturn(10);
         $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
+        $this->familyUserIntent()->shouldReturn($familyUserIntent);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
+        $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue]);
     }
 
-    function it_can_be_constructed_with_a_add_multi_select_value_intent()
+    function it_cannot_be_constructed_with_multiple_set_enabled_intents()
     {
-        $valueUserIntents = [new AddMultiSelectValue('name', null, null, ['optionA'])];
-        $this->beConstructedWith(
+        $this->beConstructedThrough('createFromCollection', [
             1,
             'identifier1',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            $valueUserIntents
-        );
-        $this->userId()->shouldReturn(1);
-        $this->productIdentifier()->shouldReturn('identifier1');
-        $this->valueUserIntents()->shouldReturn($valueUserIntents);
+            [
+                new SetEnabled(true),
+                new SetEnabled(false),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_categories_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetCategories(['foo']),
+                new SetCategories(['bar']),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
