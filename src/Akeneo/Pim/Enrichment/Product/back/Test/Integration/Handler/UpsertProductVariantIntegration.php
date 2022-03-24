@@ -169,7 +169,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         );
 
         $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('Property "parent" expects a valid parent code. The parent product model does not exist, "unknown" given.');
+        $this->expectExceptionMessage('The parent product model "unknown" does not exist');
 
         $this->messageBus->dispatch($command);
     }

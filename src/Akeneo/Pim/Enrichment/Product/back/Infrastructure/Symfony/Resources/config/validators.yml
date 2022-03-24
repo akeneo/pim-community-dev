@@ -48,3 +48,9 @@ services:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ParentShouldExistValidator:
+        arguments:
+            - '@pim_catalog.repository.product_model'
+        tags:
+            - { name: validator.constraint_validator }

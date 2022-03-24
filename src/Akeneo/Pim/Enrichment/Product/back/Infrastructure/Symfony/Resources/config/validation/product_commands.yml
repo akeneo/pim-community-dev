@@ -15,6 +15,8 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         categoryUserIntent:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewable: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProduct: ~
+        parentUserIntent:
+            - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ParentShouldExist: ~
         valueUserIntents:
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleAndChannelShouldBeConsistent: ~
             - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique: ~
