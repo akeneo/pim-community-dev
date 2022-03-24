@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -22,10 +17,7 @@ use PHPUnit\Framework\Assert;
 class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
 {
     private FindOneConnectedAppByConnectionCodeQuery $query;
-    private ConnectionLoader $connectionLoader;
-    private UserGroupLoader $userGroupLoader;
-    private CreateConnectedAppQuery $createConnectedAppQuery;
-    private Connection $connection;
+    private ConnectedAppLoader $connectedAppLoader;
 
     protected function getConfiguration(): Configuration
     {
@@ -37,72 +29,86 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(FindOneConnectedAppByConnectionCodeQuery::class);
-        $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
-        $this->createConnectedAppQuery = $this->get(CreateConnectedAppQuery::class);
-        $this->connection = $this->get('database_connection');
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
-    public function test_it_can_retrieve_an_app_by_connection_code(): void
+    public function test_it_retrieves_an_app_by_connection_code(): void
     {
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
-        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
-
-        $createdApp = new ConnectedApp(
-            '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
-            'my app',
-            ['foo', 'bar'],
-            'bynder',
-            'app logo',
-            'app author',
-            'app_123456abcdef',
-            ['e-commerce'],
-            false,
-            'akeneo'
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'connected_app',
         );
-        $this->createConnectedAppQuery->execute($createdApp);
+        $expectedApp = [
+            'id' => '2677e764-f852-4956-bf9b-1a1ec1b0d145',
+            'name' => 'connected_app',
+            'connection_code' => 'connected_app',
+            'user_group_name' => 'app_connected_app',
+            'logo' => 'http://example.com/logo.png',
+            'author' => 'Akeneo',
+            'categories' => ['ecommerce'],
+            'is_test_app' => false,
+            'scopes' => ['read_products'],
+            'partner' => null,
+            'certified' => false,
+            'is_pending' => false,
+        ];
+        $connectedApp = $this->query->execute('connected_app');
 
-        $retrievedApp = $this->query->execute('bynder');
-
-        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
+        Assert::assertEquals($expectedApp, $connectedApp->normalize());
     }
 
-    public function test_it_can_retrieve_a_connected_app_by_connection_code_related_to_a_test_app(): void
+    public function test_it_retrieves_a_test_connected_app_by_connection_code(): void
     {
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
-        $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
-
-        $createdApp = new ConnectedApp(
-            '86d603e6-ec67-45fa-bd79-aa8b2f649e12',
-            'my app',
-            ['foo', 'bar'],
-            'bynder',
-            'app logo',
-            'app author',
-            'app_123456abcdef',
-            ['e-commerce'],
-            false,
-            'akeneo',
-            true
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+            'connected_test_app',
+            ['read_products'],
+            true,
         );
-        $this->createConnectedAppQuery->execute($createdApp);
+        $expectedTestApp = [
+            'id' => '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+            'name' => 'connected_test_app',
+            'connection_code' => 'connected_test_app',
+            'author' => 'Akeneo',
+            'logo' => null,
+            'user_group_name' => 'app_connected_test_app',
+            'categories' => [],
+            'partner' => null,
+            'certified' => false,
+            'is_test_app' => true,
+            'is_pending' => false,
+            'scopes' => ['read_products'],
+        ];
+        $testApp = $this->query->execute('connected_test_app');
 
-        $this->createTestApp('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
-
-        $retrievedApp = $this->query->execute('bynder');
-
-        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
+        Assert::assertEquals($expectedTestApp, $testApp->normalize());
     }
 
-    private function createTestApp(string $id): void
+    public function test_it_retrieves_a_pending_app_by_connection_code(): void
     {
-        $this->connection->insert('akeneo_connectivity_test_app', [
-            'client_id' => $id,
-            'client_secret' => 'secret',
-            'name' => 'App Name',
-            'activate_url' => 'http://shopware.example.com/activate',
-            'callback_url' => 'http://shopware.example.com/callback',
-            'user_id' => null,
-        ]);
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
+            'cc345scc-f852-4956-bf9b-1a1ec1b0d145',
+            'pending_app',
+            ['read_products'],
+            false,
+            true,
+        );
+        $expectedPendingApp = [
+            'id' => 'cc345scc-f852-4956-bf9b-1a1ec1b0d145',
+            'name' => 'pending_app',
+            'scopes' => ['read_products'],
+            'connection_code' => 'pending_app',
+            'logo' => 'http://example.com/logo.png',
+            'author' => 'Akeneo',
+            'user_group_name' => 'app_pending_app',
+            'categories' => ['ecommerce'],
+            'certified' => false,
+            'partner' => null,
+            'is_test_app' => false,
+            'is_pending' => true,
+        ];
+        $pendingApp = $this->query->execute('pending_app');
+
+        Assert::assertEquals($expectedPendingApp, $pendingApp->normalize());
     }
 }
