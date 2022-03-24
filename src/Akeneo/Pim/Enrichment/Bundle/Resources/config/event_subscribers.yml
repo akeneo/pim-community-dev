@@ -263,3 +263,9 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\LoadProductIdAfterCreationEventSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: doctrine.event_subscriber, priority: 5000 }
