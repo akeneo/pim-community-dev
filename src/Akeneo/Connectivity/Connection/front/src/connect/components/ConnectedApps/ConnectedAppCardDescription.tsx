@@ -87,12 +87,14 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
     }
 
     if (false === connectedApp.is_listed_on_the_appstore) {
+        const message = translate(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
+        );
+
         return (
-            <Error>
+            <Error title={message}>
                 <ErrorIcon size={14} />
-                {translate(
-                    'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
-                )}
+                {message}
             </Error>
         );
     }

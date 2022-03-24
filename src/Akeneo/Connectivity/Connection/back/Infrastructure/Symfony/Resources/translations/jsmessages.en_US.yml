@@ -133,7 +133,7 @@ akeneo_connectivity.connection:
                     link: Check out our Help Center for more information.
                 card:
                     developed_by: 'Developed by {{ author }}'
-                    not_listed_on_the_appstore: App no longer listed on the Akeneo App Store.
+                    not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
                 flash:
