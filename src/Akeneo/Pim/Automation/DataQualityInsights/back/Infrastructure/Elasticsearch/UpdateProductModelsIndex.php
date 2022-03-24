@@ -43,7 +43,7 @@ class UpdateProductModelsIndex
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
-                        'scores' => $productModelsScores->toArrayIntRank(),
+                        'scores' => $productModelScores->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
                 ]
