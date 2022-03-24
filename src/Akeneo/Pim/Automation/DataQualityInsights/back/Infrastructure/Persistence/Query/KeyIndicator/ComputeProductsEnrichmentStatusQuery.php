@@ -139,9 +139,10 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     private function getProductsEvaluationsByCriterion(string $criterionCode, array $productIds): array
     {
         $query = <<<SQL
-SELECT product_id, result
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN(:productIds) AND criterion_code = :criterionCode
+SELECT p.id AS product_id, e.result
+FROM pim_catalog_product p
+    JOIN pim_data_quality_insights_product_criteria_evaluation e ON e.product_uuid = p.uuid
+WHERE p.id IN(:productIds) AND e.criterion_code = :criterionCode
 SQL;
 
         $stmt = $this->db->executeQuery(
