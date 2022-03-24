@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.18 (2022-03-24)
+
 # 6.0.17 (2022-03-24)
 
 # 6.0.16 (2022-03-24)
@@ -46,6 +48,7 @@
 - PIM-10316: [Backport PIM-10255] Fix LocaleCodeContext initialization place for table condition line inside rules
 - PIM-10326: [Bakport PIM-10228] Fix Asset transformations job crashing when having cache resources exhausted
 - PIM-10318: [Backport PIM-10259] Fix Arabic text being reversed in product PDF exports
+- PIM-10368: Fix deleted localizable or scopable values on drafts
 
 # 6.0.7 (2022-02-25)
 
