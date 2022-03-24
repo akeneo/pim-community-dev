@@ -318,7 +318,7 @@ class ClientSpec extends ObjectBehavior
         ClientBuilder $clientBuilder,
         Loader $indexConfigurationLoader
     ) {
-        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 79);
+        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name', '', 200);
 
         $client->bulk([
             'body' => [
