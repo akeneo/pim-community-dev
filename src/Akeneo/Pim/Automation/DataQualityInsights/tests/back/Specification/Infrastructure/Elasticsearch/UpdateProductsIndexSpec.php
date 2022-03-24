@@ -72,34 +72,30 @@ class UpdateProductsIndexSpec extends ObjectBehavior
 
         $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
 
-        $esClient->updateByQuery([
-            'script' => [
-                'inline' => "ctx._source.data_quality_insights = params;",
-                'params' => [
-                    'scores' => ['ecommerce' => ['en_US' => 5]],
-                    'key_indicators' => $productsKeyIndicators[123]
+        $esClient->bulkUpdate(
+            ['product_123', 'product_456', 'product_42'],
+            [
+                'product_123' => [
+                    'script' => [
+                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'params' => [
+                            'scores' => ['ecommerce' => ['en_US' => 5]],
+                            'key_indicators' => $productsKeyIndicators[123]
+                        ],
+                    ]
                 ],
-            ],
-            'query' => [
-                'term' => [
-                    'id' => 'product_123',
-                ],
-            ],
-        ])->shouldBeCalled();
-        $esClient->updateByQuery([
-            'script' => [
-                'inline' => "ctx._source.data_quality_insights = params;",
-                'params' => [
-                    'scores' => ['ecommerce' => ['en_US' => 1]],
-                    'key_indicators' => $productsKeyIndicators[456]
-                ],
-            ],
-            'query' => [
-                'term' => [
-                    'id' => 'product_456',
-                ],
-            ],
-        ])->shouldBeCalled();
+                'product_456' => [
+                    'script' => [
+                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'params' => [
+                            'scores' => ['ecommerce' => ['en_US' => 1]],
+                            'key_indicators' => $productsKeyIndicators[456]
+                        ],
+                    ]
+                ]
+            ]
+        )
+            ->shouldBeCalled();
 
         $this->execute(ProductIdCollection::fromInts([123, 456, 42]));
     }
