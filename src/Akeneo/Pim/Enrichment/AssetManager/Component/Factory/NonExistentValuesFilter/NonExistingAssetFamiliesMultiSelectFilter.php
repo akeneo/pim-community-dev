@@ -71,7 +71,7 @@ final class NonExistingAssetFamiliesMultiSelectFilter implements NonExistentValu
 
         $assetCodes = $this->findAllExistentAssetsForAssetFamilyIdentifiers->forAssetFamilyIdentifiersAndAssetCodes($uniqueAssetCodesIndexedByAssetFamilyIdentifier);
 
-        return $assetCodes;
+        return array_change_key_case($assetCodes, CASE_LOWER);
     }
 
     private function buildRawValuesWithExistingAssetCodes(array $assetCollectionValues, array $assetCodes): array
@@ -81,7 +81,7 @@ final class NonExistingAssetFamiliesMultiSelectFilter implements NonExistentValu
         foreach ($assetCollectionValues as $attributeCode => $productListData) {
             foreach ($productListData as $productData) {
                 $multiSelectValues = [];
-                $assetFamilyIdentifier = $productData['properties']['reference_data_name'];
+                $assetFamilyIdentifier = strtolower($productData['properties']['reference_data_name']);
                 foreach ($productData['values'] as $channel => $valuesIndexedByLocale) {
                     foreach ($valuesIndexedByLocale as $locale => $value) {
                         if (is_array($value)) {
