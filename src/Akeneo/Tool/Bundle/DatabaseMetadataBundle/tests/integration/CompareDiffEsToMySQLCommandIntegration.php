@@ -2,7 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
@@ -12,7 +11,6 @@ use Doctrine\DBAL\Connection;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -27,8 +25,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     private const DB_REFERENCE_FILE = __DIR__ . '/../Resources/referenceOutput.jsonl';
 
     private NativeClient $esClient;
-    /** @var Connection */
-    private $connection;
     private $hosts;
     private GenericEntityMySQLIndexFinder $searchMySql;
     private GenericEntityESIndexFinder $searchEs;
@@ -36,16 +32,15 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     public function setUp(): void
     {
         //create and launch the kernel to test
-        self::bootKernel();
-        //Connection to Database
-        $this->connection = $this->get('database_connection');
-        $this->searchMySql = new GenericEntityMySQLIndexFinder($this->connection);
+        static::bootKernel();
+        parent::setUp();
+
         //Connection ES
-        $clientBuilder = new ClientBuilder();
+       /* $clientBuilder = new ClientBuilder();
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
-        $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
+        $this->searchEs = new GenericEntityESIndexFinder($this->esClient);*/
     }
 
 
@@ -55,7 +50,9 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
      */
     public function test_can_read_mysql_data(EntityIndexConfiguration $configMySQL): void
     {
-        $results = $this->searchMySql->findAllByOrder($configMySQL);
+        $connection = $this->get('database_connection');
+        $searchMySql = new GenericEntityMySQLIndexFinder($connection);
+        $results = $searchMySql->findAllByOrder($configMySQL);
         Assert::assertIsIterable($results);
     }
 
@@ -65,7 +62,12 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
      */
     public function test_can_read_es_data(EntityIndexConfiguration $configEs): void
     {
-        $results = $this->searchEs->findAllByOrder($configEs);
+        $clientBuilder = new ClientBuilder();
+        $indexHost = $this->getParameter('index_hosts');
+        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
+        $client = $clientBuilder->build();
+        $searchEs = new GenericEntityESIndexFinder($client);
+        $results = $searchEs->findAllByOrder($configEs);
         Assert::assertIsIterable($results);
     }
 
@@ -78,8 +80,9 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     {
         $res = [];
         $test = new \ArrayIterator($res);
-
-        $results = $this->searchMySql->findAllByOrder($configMySQL);
+        $connection = $this->get('database_connection');
+        $searchMySql = new GenericEntityMySQLIndexFinder($connection);
+        $results = $searchMySql->findAllByOrder($configMySQL);
 
         Assert::assertEquals($test,$results);
     }
@@ -93,7 +96,12 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     {
         $res = [];
         $test = new \ArrayIterator($res);
-        $results = $this->searchEs->findAllByOrder($configEs);
+        $clientBuilder = new ClientBuilder();
+        $indexHost = $this->getParameter('index_hosts');
+        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
+        $client = $clientBuilder->build();
+        $searchEs = new GenericEntityESIndexFinder($client);
+        $results = $searchEs->findAllByOrder($configEs);
 
         Assert::assertEquals($test,$results);
     }
@@ -150,13 +158,8 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     }
 
 
-    protected function get(string $service): ?object
-    {
-        return static::$kernel->getContainer()->get($service);
-    }
-
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 }
