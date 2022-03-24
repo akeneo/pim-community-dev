@@ -120,4 +120,23 @@ final class ConnectedApp
             'is_test_app' => $this->isTestApp,
         ];
     }
+
+    public function withUpdatedDescription(
+        string $name,
+        ?string $logo,
+        ?string $author,
+        array $categories = [],
+        bool $certified = false,
+        ?string $partner = null,
+    ): self {
+        $self = clone $this;
+        $self->name = $name;
+        $self->logo = $logo;
+        $self->author = $author;
+        $self->categories = $categories;
+        $self->certified = $certified;
+        $self->partner = $partner;
+
+        return $self;
+    }
 }

@@ -131,4 +131,30 @@ class ConnectedAppSpec extends ObjectBehavior
             'is_test_app' => false,
         ]);
     }
+
+    public function is_updates_description_properties(): void
+    {
+        $updated = $this->withUpdatedDescription(
+            'New Name',
+            'http://example.com/new-logo.png',
+            'New Author',
+            ['new category'],
+            true,
+            'Akeneo Premium Partner',
+        );
+
+        $updated->normalize()->shouldBe([
+            'id' => '4028c158-d620-4903-9859-958b66a059e2',
+            'name' => 'New Name',
+            'scopes' => ['Scope1', 'Scope2'],
+            'connection_code' => 'someConnectionCode',
+            'logo' => 'http://example.com/new-logo.png',
+            'author' => 'New Author',
+            'user_group_name' => 'app_123456abcdef',
+            'categories' => ['new category'],
+            'certified' => true,
+            'partner' => 'Akeneo Premium Partner',
+            'is_test_app' => true,
+        ]);
+    }
 }
