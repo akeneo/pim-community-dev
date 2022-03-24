@@ -11,8 +11,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntity
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultiReferenceEntityValueApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -20,7 +18,6 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
     function let(ObjectUpdaterInterface $updater)
     {
-        FeatureHelper::skipSpecTestWhenReferenceEntityFeatureIsNotActivated();
         $this->beConstructedWith($updater);
     }
 

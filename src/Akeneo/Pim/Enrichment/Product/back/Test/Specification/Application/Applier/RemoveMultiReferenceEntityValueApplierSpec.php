@@ -11,8 +11,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveMultiReferenceEnt
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveMultiReferenceEntityValueApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
-use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -21,7 +19,6 @@ class RemoveMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
     function let(ObjectUpdaterInterface $updater)
     {
-        FeatureHelper::skipSpecTestWhenReferenceEntityFeatureIsNotActivated();
         $this->beConstructedWith($updater);
     }
 

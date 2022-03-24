@@ -38,9 +38,7 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
             $formerRecordCodeCollection?->getData() ?? []
         );
 
-        $updatedRecordCodes = \array_values(\array_unique(array_merge($formerRecordCodes, $userIntent->recordCodes())));
-
-        if (\count(\array_diff($updatedRecordCodes, $formerRecordCodes)) === 0) {
+        if (\count(\array_diff($userIntent->recordCodes(), $formerRecordCodes)) === 0) {
             return;
         }
 
@@ -52,7 +50,7 @@ final class AddMultiReferenceEntityValueApplier implements UserIntentApplier
                         [
                             'locale' => $userIntent->localeCode(),
                             'scope' => $userIntent->channelCode(),
-                            'data' => $updatedRecordCodes,
+                            'data' => \array_values(\array_unique(array_merge($formerRecordCodes, $userIntent->recordCodes()))),
                         ],
                     ],
                 ],
