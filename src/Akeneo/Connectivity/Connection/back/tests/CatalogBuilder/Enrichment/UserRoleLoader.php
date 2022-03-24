@@ -8,6 +8,7 @@ use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -16,21 +17,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserRoleLoader
 {
-    private SimpleFactoryInterface $builder;
-    private ObjectUpdaterInterface $updater;
-    private SaverInterface $saver;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        SimpleFactoryInterface $builder,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver
+        private SimpleFactoryInterface $builder,
+        private ObjectUpdaterInterface $updater,
+        private ValidatorInterface $validator,
+        private SaverInterface $saver,
+        private Connection $connection,
     ) {
-        $this->builder = $builder;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
     }
 
     public function create(array $data = []): RoleInterface
@@ -47,5 +40,18 @@ class UserRoleLoader
         $this->saver->save($role);
 
         return $role;
+    }
+
+    public function createOnlyNecessary(array $roles = []): void
+    {
+        $existingRoles = $this->connection->fetchFirstColumn('SELECT role FROM oro_access_role');
+        $rolesToCreate = array_diff($roles, $existingRoles);
+
+        foreach ($rolesToCreate as $role) {
+            $this->create([
+                'role' => $role,
+                'label' => $role,
+            ]);
+        }
     }
 }
