@@ -202,6 +202,32 @@ class ClientSpec extends ObjectBehavior
         $this->bulkDelete([40, 33]);
     }
 
+    public function it_bulk_updates_documents($client)
+    {
+        $client->bulk(
+            [
+                'body' => [
+                    [
+                        'update' => [
+                            '_index' => 'an_index_name',
+                            '_id' => '40',
+                        ],
+                    ],
+                    'params_of_id_40',
+                    [
+                        'update' => [
+                            '_index' => 'an_index_name',
+                            '_id' => '33',
+                        ],
+                    ],
+                    'params_of_id_33',
+                ],
+            ]
+        )->shouldBeCalled();
+
+        $this->bulkUpdate(['40', '33'], ['40' => 'params_of_id_40', '33' => 'params_of_id_33']);
+    }
+
     public function it_deletes_an_index_without_alias($client, IndicesNamespace $indices)
     {
         $client->indices()->willReturn($indices);
