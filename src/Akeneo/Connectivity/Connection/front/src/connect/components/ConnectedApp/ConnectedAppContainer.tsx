@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {AppIllustration, Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -220,7 +220,11 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')}
                     </TabBar.Tab>
                 </TabBar>
-
+                {isCurrent(settingsTabName) && connectedApp.is_pending && (
+                    <Helper icon={<DangerIcon />} level='warning'>
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')}
+                    </Helper>
+                )}
                 {isCurrent(settingsTabName) && (
                     <ConnectedAppSettings
                         connectedApp={connectedApp}
