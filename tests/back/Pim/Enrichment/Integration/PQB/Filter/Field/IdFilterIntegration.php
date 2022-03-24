@@ -14,7 +14,7 @@ use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCas
  */
 class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
 {
-    private static $ids = [];
+    private static $uuids = [];
 
     /**
      * {@inheritdoc}
@@ -29,16 +29,16 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $barista = $this->createProduct('BARISTA', []);
         $bazar = $this->createProduct('BAZAR', []);
 
-        self::$ids['foo'] = (string) $foo->getId();
-        self::$ids['bar'] = (string) $bar->getId();
-        self::$ids['baz'] = (string) $baz->getId();
-        self::$ids['barista'] = (string) $barista->getId();
-        self::$ids['bazar'] = (string) $bazar->getId();
+        self::$uuids['foo'] = $foo->getUuid()->toString();
+        self::$uuids['bar'] = $bar->getUuid()->toString();
+        self::$uuids['baz'] = $baz->getUuid()->toString();
+        self::$uuids['barista'] = $barista->getUuid()->toString();
+        self::$uuids['bazar'] = $bazar->getUuid()->toString();
     }
 
     public function testOperatorEquals()
     {
-        $result = $this->executeFilter([['id', Operators::EQUALS, self::$ids['baz']]]);
+        $result = $this->executeFilter([['id', Operators::EQUALS, self::$uuids['baz']]]);
         $this->assert($result, ['baz']);
 
         $result = $this->executeFilter([['id', Operators::EQUALS, $this->getUnknowRandomId()]]);
@@ -50,16 +50,16 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['id', Operators::NOT_EQUAL, $this->getUnknowRandomId()]]);
         $this->assert($result, ['foo', 'bar', 'baz', 'BARISTA', 'BAZAR']);
 
-        $result = $this->executeFilter([['id', Operators::NOT_EQUAL, self::$ids['baz']]]);
+        $result = $this->executeFilter([['id', Operators::NOT_EQUAL, self::$uuids['baz']]]);
         $this->assert($result, ['foo', 'bar', 'BARISTA', 'BAZAR']);
     }
 
     public function testOperatorInList()
     {
-        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
+        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$uuids['baz'], self::$uuids['foo']]]]);
         $this->assert($result, ['foo', 'baz']);
 
-        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['id', Operators::IN_LIST, [self::$uuids['baz'], $this->getUnknowRandomId()]]]);
         $this->assert($result, ['baz']);
 
         $result = $this->executeFilter([['id', Operators::IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
@@ -68,10 +68,10 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testOperatorNotInList()
     {
-        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$ids['baz'], self::$ids['foo']]]]);
+        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$uuids['baz'], self::$uuids['foo']]]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR']);
 
-        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$ids['baz'], $this->getUnknowRandomId()]]]);
+        $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [self::$uuids['baz'], $this->getUnknowRandomId()]]]);
         $this->assert($result, ['bar', 'BARISTA', 'BAZAR', 'foo']);
 
         $result = $this->executeFilter([['id', Operators::NOT_IN_LIST, [$this->getUnknowRandomId(), $this->getUnknowRandomId()]]]);
@@ -141,7 +141,7 @@ class IdFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         do {
             $id = rand();
-        } while (in_array($id, self::$ids));
+        } while (in_array($id, self::$uuids));
 
         return (string) $id;
     }

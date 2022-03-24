@@ -62,14 +62,14 @@ class RemovingProductModelFromIndexIntegration extends TestCase
 
         $this->assertTrue($this->productModelIdIsInIndex($productModelId));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertTrue($this->productIdIsInIndex($variantProductUuid));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
 
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->removeFromProductModelId($productModelId);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertFalse($this->productIdIsInIndex($variantProductUuid));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
     }
 
     public function testBulkRemovingProductModel()
@@ -85,10 +85,10 @@ class RemovingProductModelFromIndexIntegration extends TestCase
 
         $this->assertTrue($this->productModelIdIsInIndex($productModelId));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertTrue($this->productIdIsInIndex($variantProductUuid));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
         $this->assertTrue($this->productModelIdIsInIndex($productModelId2));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId2));
-        $this->assertTrue($this->productIdIsInIndex($variantProductUuid));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
 
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->removeFromProductModelIds(
             [$productModelId, $productModelId2]
@@ -97,13 +97,13 @@ class RemovingProductModelFromIndexIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertFalse($this->productIdIsInIndex($variantProductUuid));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
         $this->assertFalse($this->productModelIdIsInIndex($productModelId2));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId2));
-        $this->assertFalse($this->productIdIsInIndex($variantProductUuid));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
     }
 
-    private function productIdIsInIndex(UuidInterface $productUuid): bool
+    private function productIsInIndex(UuidInterface $productUuid): bool
     {
         try {
             $this->esProductAndProductModelClient->get('product_' . $productUuid->toString());
