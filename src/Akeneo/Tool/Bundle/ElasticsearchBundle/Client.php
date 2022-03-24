@@ -136,9 +136,9 @@ class Client
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
-            if (($paramsComputedSize + strlen(json_encode($document))) >= $this->maxChunkSize) {
+            $estimatedAddedSize = strlen(json_encode(array_merge([$action, $document], $extraActions)));
+            if ($paramsComputedSize + $estimatedAddedSize >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
-                $paramsComputedSize = 0;
                 $params = [];
             }
 
@@ -146,7 +146,7 @@ class Client
             $params['body'][] = $document;
             $params['body'] = array_merge($params['body'], $extraActions);
 
-            $paramsComputedSize += strlen(json_encode($document));
+            $paramsComputedSize = strlen(json_encode($params));
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
@@ -166,7 +166,7 @@ class Client
         $length = count($params['body']);
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
-        } catch (BadRequest400Exception $e) {
+        } catch (BadRequest400Exception) {
             $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
             $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
 
