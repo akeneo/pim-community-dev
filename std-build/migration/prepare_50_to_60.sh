@@ -42,6 +42,8 @@ cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
+# First of all, removing potential deprecated migration scripts
+rm -f $STANDARD_DISTRIB_DIR/upgrades/schema/*
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
 cp -r $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
