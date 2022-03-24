@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.16 (2022-03-24)
+
 ## Bug fixes
 
 - PIM-10325: [Backport PIM-10229] Enforce lax same-site policy for session cookies
