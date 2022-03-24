@@ -95,7 +95,7 @@ class RefreshConnectedAppHandlerIntegration extends TestCase
     {
         $connectedApp = $this->findOneConnectedAppByIdQuery->execute($id);
         $normalizedConnectedApp = $connectedApp->normalize();
-        $actual = array_combine(array_keys($expected), array_intersect_key($normalizedConnectedApp, $expected));
+        $actual = \array_combine(\array_keys($expected), \array_intersect_key($normalizedConnectedApp, $expected));
 
         Assert::assertSame($expected, $actual);
     }

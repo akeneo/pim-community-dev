@@ -121,6 +121,9 @@ final class ConnectedApp
         ];
     }
 
+    /**
+     * @param array<string> $categories
+     */
     public function withUpdatedDescription(
         string $name,
         ?string $logo,
