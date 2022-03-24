@@ -560,3 +560,10 @@ pim_permissions:
             edit: Edit
             view: View
         all: All
+
+pim_notification:
+    types:
+        connected_app_authorizations: Connected App authorizations
+    connected_app_authorizations:
+        message: 'The %app_name% App requires an authorization update. Please open the app to proceed.'
+        button_label: Open App

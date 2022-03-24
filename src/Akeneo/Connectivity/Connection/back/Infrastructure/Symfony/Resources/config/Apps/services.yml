@@ -42,3 +42,8 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
+            - '@pim_notification.notifier'

@@ -95,6 +95,13 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\OpenAppRedirectionAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+
     ## PUBLIC
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction:
         public: true

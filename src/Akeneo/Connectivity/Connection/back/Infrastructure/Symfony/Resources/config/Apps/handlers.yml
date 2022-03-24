@@ -53,3 +53,4 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier'
