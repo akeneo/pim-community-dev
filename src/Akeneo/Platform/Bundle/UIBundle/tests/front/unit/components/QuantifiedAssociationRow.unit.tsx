@@ -28,7 +28,7 @@ const productModel: Product = {
 };
 
 let mockedGrantedAcl: string[] = [];
-jest.mock('@akeneo-pim-community/legacy-bridge/src/hooks/useSecurity', () => ({
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
   useSecurity: () => ({
     isGranted: (acl: string) => mockedGrantedAcl.includes(acl),
   }),
