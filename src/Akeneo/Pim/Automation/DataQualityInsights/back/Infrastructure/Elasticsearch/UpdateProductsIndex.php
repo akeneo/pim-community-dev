@@ -16,25 +16,18 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class UpdateProductsIndex
 {
-    private Client $esClient;
-
-    private ComputeProductsKeyIndicators $getProductsKeyIndicators;
-
-    private GetProductScoresQueryInterface $getProductScoresQuery;
+    private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
 
     public function __construct(
-        Client                         $esClient,
-        GetProductScoresQueryInterface $getProductScoresQuery,
-        ComputeProductsKeyIndicators   $getProductsKeyIndicators
-    )
-    {
-        $this->esClient = $esClient;
-        $this->getProductsKeyIndicators = $getProductsKeyIndicators;
-        $this->getProductScoresQuery = $getProductScoresQuery;
+        private Client $esClient,
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators
+    ) {
     }
 
     public function execute(ProductIdCollection $productIdCollection): void
     {
+        $params = [];
         $productsScores = $this->getProductScoresQuery->byProductIds($productIdCollection);
         $productsKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
@@ -46,65 +39,20 @@ class UpdateProductsIndex
             $productScores = $productsScores[$productId];
             $keyIndicators = $productsKeyIndicators[$productId] ?? [];
 
-            $this->updateProductIndex($productId, $productScores, $keyIndicators);
+            $params[self::PRODUCT_IDENTIFIER_PREFIX . $productId] = [
+                'script' => [
+                    'inline' => "ctx._source.data_quality_insights = params;",
+                    'params' => [
+                        'scores' => $productScores->toArrayIntRank(),
+                        'key_indicators' => $keyIndicators
+                    ],
+                ]
+            ];
         }
-    }
 
-    private function updateProductIndex(int $productId, ChannelLocaleRateCollection $productScores, array $keyIndicators): void
-    {
-        $query['body'] = [
-            [
-                'update' => [
-                    '_id' => sprintf('product_%d', $productId)
-                ]
-            ],
-            [
-                'script' => [
-                    'inline' => "ctx._source.data_quality_insights = params;",
-                    'params' => [
-                        'scores' => $productScores->toArrayIntRank(),
-                        'key_indicators' => $keyIndicators
-                    ],
-                ]
-            ],
-        ];
-        $queryjson = json_encode($query);
-//        $test = $this->esClient->bulkUpdate($query);
-
-//        $this->esClient->bulkUpdate([
-//            'body' => [
-//                [
-//                    'update' => [
-//                        '_id' => sprintf('product_%d', $productId)
-//                    ]
-//                ],
-//                [
-//                    'script' => [
-//                        'inline' => "ctx._source.data_quality_insights = params;",
-//                        'params' => [
-//                            'scores' => $productScores->toArrayIntRank(),
-//                            'key_indicators' => $keyIndicators
-//                        ],
-//                    ]
-//                ],
-//            ]
-//        ]);
-
-        $this->esClient->updateByQuery(
-            [
-                'script' => [
-                    'inline' => "ctx._source.data_quality_insights = params;",
-                    'params' => [
-                        'scores' => $productScores->toArrayIntRank(),
-                        'key_indicators' => $keyIndicators
-                    ],
-                ],
-                'query' => [
-                    'term' => [
-                        'id' => sprintf('product_%d', $productId),
-                    ],
-                ],
-            ]
-        );
+        $this->esClient->bulkUpdate(
+            array_map(fn ($productId) => self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId,
+                $productIdCollection->toArrayInt()),
+            $params);
     }
 }

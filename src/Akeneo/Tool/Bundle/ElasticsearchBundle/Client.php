@@ -291,9 +291,22 @@ class Client
     }
 
 
-    public function bulkUpdate($params)
+    public function bulkUpdate($documentIds, $params)
     {
-        return $this->client->bulk($params);
+        $queries = [];
+
+        foreach ($documentIds as $identifier) {
+            $queries['body'][] = [
+                'update' => [
+                    '_index' => $this->indexName,
+                    '_id' => $this->idPrefix.$identifier,
+                ],
+            ];
+
+            $queries['body'][] = $params[$identifier];
+        }
+
+        return $this->client->bulk($queries);
     }
 
     /**
