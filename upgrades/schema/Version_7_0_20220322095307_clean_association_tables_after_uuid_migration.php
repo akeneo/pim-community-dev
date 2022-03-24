@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -17,8 +16,8 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
 
     public function up(Schema $schema): void
     {
-        $insertTriggerName = MigrateToUuidAddTriggers::getInsertTriggerName('pim_catalog_association');
-        $updateTriggerName = MigrateToUuidAddTriggers::getUpdateTriggerName('pim_catalog_association');
+        $insertTriggerName = self::getInsertTriggerName('pim_catalog_association');
+        $updateTriggerName = self::getUpdateTriggerName('pim_catalog_association');
 
         $sql = <<<SQL
         DROP TRIGGER IF EXISTS $insertTriggerName;
@@ -102,5 +101,29 @@ final class Version_7_0_20220322095307_clean_association_tables_after_uuid_migra
                 'column_name' => $columnName,
             ]
         )->fetchOne();
+    }
+
+    private static function getInsertTriggerName(string $tableName): string
+    {
+        // Some tables are too long, so we shorten them (trigger names are limited to 64 characters)
+        // Need to be the same function as in MigrateToUuidAddTriggers (we cannot use it because of coupling detector)
+        $trigger_prefix = \strtr($tableName, [
+            'data_quality_insights' => 'dqi',
+            'teamwork_assistant' => 'twa',
+        ]);
+
+        return $trigger_prefix . '_uuid_insert';
+    }
+
+    private static function getUpdateTriggerName(string $tableName): string
+    {
+        // Some tables are too long, so we shorten them (trigger names are limited to 64 characters)
+        // Need to be the same function as in MigrateToUuidAddTriggers (we cannot use it because of coupling detector)
+        $trigger_prefix = \strtr($tableName, [
+            'data_quality_insights' => 'dqi',
+            'teamwork_assistant' => 'twa',
+        ]);
+
+        return $trigger_prefix . '_uuid_update';
     }
 }
