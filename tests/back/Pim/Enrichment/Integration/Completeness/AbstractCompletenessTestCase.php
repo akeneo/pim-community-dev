@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
@@ -20,6 +21,20 @@ use PHPUnit\Framework\Assert;
  */
 abstract class AbstractCompletenessTestCase extends TestCase
 {
+    /**
+     * We add this method because after product creation, the Product does not have the id filled anymore.
+     * Do we add a subscriber to fill the id just after the product creation?
+     */
+    protected function getProductIdFromUuid(UuidInterface $uuid): ?int
+    {
+        $id = $this->get('database_connection')->fetchOne(
+            'SELECT id FROM pim_catalog_product WHERE uuid = ?',
+            [$uuid->getBytes()]
+        );
+
+        return null !== $id ? (int) $id : null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +50,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductId($this->getProductIdFromUuid($product->getUuid()));
 
         return $completenesses->getIterator()->current();
     }
@@ -46,7 +61,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductId($this->getProductIdFromUuid($product->getUuid()));
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 

@@ -49,7 +49,7 @@ final class SqlGetProductCompletenesses implements GetProductCompletenesses
         $sql = sprintf(
             <<<SQL
 SELECT 
-       completeness.product_id AS product_id,
+       product.id AS product_id,
        JSON_ARRAYAGG(
            JSON_OBJECT(
                'channel_code', channel.code,
@@ -59,10 +59,11 @@ SELECT
            )
        ) AS completenesses
 FROM pim_catalog_completeness completeness
+    INNER JOIN pim_catalog_product product ON product.uuid = completeness.product_uuid
     INNER JOIN pim_catalog_channel channel ON completeness.channel_id = channel.id
     INNER JOIN pim_catalog_locale locale ON completeness.locale_id = locale.id
-WHERE completeness.product_id IN (:productIds) %s
-GROUP BY product_id
+WHERE product.id IN (:productIds) %s
+GROUP BY product.id
 SQL,
             $andWhere
         );

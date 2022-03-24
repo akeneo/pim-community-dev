@@ -37,7 +37,7 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
         $sql = <<<SQL
         WITH
         existing_product AS (
-            SELECT id, product_model_id, identifier FROM pim_catalog_product WHERE identifier IN (:product_identifiers)
+            SELECT uuid, product_model_id, identifier FROM pim_catalog_product WHERE identifier IN (:product_identifiers)
         )
         SELECT p.identifier, IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
         FROM 
@@ -46,7 +46,7 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
                 SELECT
                     p.identifier, c.code AS category_code
                 FROM existing_product p
-                    INNER JOIN pim_catalog_category_product cp ON cp.product_id = p.id
+                    INNER JOIN pim_catalog_category_product cp ON cp.product_uuid = p.uuid
                     INNER JOIN pim_catalog_category c ON c.id = cp.category_id
                 UNION ALL
                 SELECT

@@ -9,10 +9,11 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 class CalculateCompletenessCommandIntegration extends TestCase
 {
-    private $productIds = [];
+    private $productUuids = [];
     private $productModelIds = [];
 
     public function test_that_it_computes_completeness_and_reindexes_all_products_and_their_ancestors()
@@ -25,7 +26,7 @@ class CalculateCompletenessCommandIntegration extends TestCase
         $identifiers = ['simple_product', 'variant_A_yes', 'variant_A_no'];
         $this->assertCompletenessWasComputedForProducts($identifiers);
         foreach ($identifiers as $identifier) {
-            Assert::assertTrue($this->isProductIndexed($this->productIds[$identifier]));
+            Assert::assertTrue($this->isProductIndexed($this->productUuids[$identifier]));
         }
         foreach (['sub_pm_A', 'root_pm'] as $productModelCode) {
             Assert::assertTrue($this->isProductModelIndexed($this->productModelIds[$productModelCode]));
@@ -112,10 +113,10 @@ class CalculateCompletenessCommandIntegration extends TestCase
         );
         $client->bulkDelete(
             array_map(
-                function (int $productId): string {
-                    return sprintf('product_%d', $productId);
+                function (UuidInterface $productUuid): string {
+                    return sprintf('product_%s', $productUuid->toString());
                 },
-                $this->productIds
+                $this->productUuids
             )
         );
     }
@@ -126,7 +127,7 @@ class CalculateCompletenessCommandIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->productIds[$identifier] = $product->getId();
+        $this->productUuids[$identifier] = $product->getUuid();
     }
 
     private function createProductModel(array $data): void
@@ -141,16 +142,25 @@ class CalculateCompletenessCommandIntegration extends TestCase
     private function assertCompletenessWasComputedForProducts(array $identifiers): void
     {
         foreach ($identifiers as $identifier) {
+            $uuid = $this->productUuids[$identifier];
+            Assert::assertInstanceOf(UuidInterface::class, $uuid);
+            $id = $this->get('database_connection')->fetchOne(
+                'SELECT id FROM pim_catalog_product WHERE uuid = ?',
+                [$uuid->getBytes()]
+            );
+            Assert::assertNotNull($id);
+            $id = (int) $id;
+
             $completenesses = $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($this->productIds[$identifier]);
+                ->fromProductId($id);
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }
 
-    private function isProductIndexed(int $productId): bool
+    private function isProductIndexed(UuidInterface $productUuid): bool
     {
         return null !== $this->get('akeneo_elasticsearch.client.product_and_product_model')
-                             ->get(sprintf('product_%d', $productId));
+                             ->get(sprintf('product_%s', $productUuid->toString()));
     }
 
     private function isProductModelIndexed(int $productModelId): bool
