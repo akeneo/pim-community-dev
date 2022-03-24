@@ -43,6 +43,7 @@ Akeneo\Tool\Component\Versioning\Model\Version:
             length: 24
             # @TODO: add a migration to change to nullable
             nullable: true
+        # @TODO? Add constraint to check resourceId or resourceUuid is not null
         resourceUuid:
             type: uuid_binary
             column: resource_uuid

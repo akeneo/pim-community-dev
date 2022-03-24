@@ -13,6 +13,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesM
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class CompletenessCalculatorSpec extends ObjectBehavior
 {
@@ -27,7 +28,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetCompletenessProductMasks $getCompletenessProductMasks,
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
-        $productCompleteness = new CompletenessProductMask(5, "michel", "tshirt", [
+        $uuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
+        $productCompleteness = new CompletenessProductMask($uuid, "michel", "tshirt", [
             'name-ecommerce-en_US',
             'name-ecommerce-fr_FR',
             'desc-<all_channels>-<all_locales>',
@@ -45,7 +47,7 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         $getRequiredAttributesMasks->fromFamilyCodes(['tshirt'])->willReturn(['tshirt' => $requiredAttributesMask]);
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel'])->willReturn([$productCompleteness]);
-        $this->fromProductIdentifier("michel")->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection(5, [
+        $this->fromProductIdentifier("michel")->shouldBeLike(new ProductCompletenessWithMissingAttributeCodesCollection($uuid, [
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
             new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
         ]));
@@ -55,14 +57,16 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetCompletenessProductMasks $getCompletenessProductMasks,
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
-        $michelCompleteness = new CompletenessProductMask(5, "michel", "tshirt", [
+        $michelUuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
+        $michelCompleteness = new CompletenessProductMask($michelUuid, "michel", "tshirt", [
             'name-ecommerce-en_US',
             'name-ecommerce-fr_FR',
             'desc-<all_channels>-<all_locales>',
             'price-tablet-fr_FR',
             'size-ecommerce-en_US'
         ]);
-        $anotherCompleteness = new CompletenessProductMask(2, "jean", "tshirt", [
+        $anotherUuid = Uuid::fromString('fbbee246-ba5b-4dd2-810c-f5669f887e64');
+        $anotherCompleteness = new CompletenessProductMask($anotherUuid, "jean", "tshirt", [
             'name-ecommerce-fr_FR',
             'price-tablet-fr_FR',
             'size-ecommerce-en_US'
@@ -79,11 +83,11 @@ class CompletenessCalculatorSpec extends ObjectBehavior
 
         $getCompletenessProductMasks->fromProductIdentifiers(['michel', 'jean'])->willReturn([$michelCompleteness, $anotherCompleteness]);
         $this->fromProductIdentifiers(["michel", "jean"])->shouldBeLike([
-            'michel' => new ProductCompletenessWithMissingAttributeCodesCollection(5, [
+            'michel' => new ProductCompletenessWithMissingAttributeCodesCollection($michelUuid, [
                 new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
                 new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
             ]),
-            'jean' => new ProductCompletenessWithMissingAttributeCodesCollection(2, [
+            'jean' => new ProductCompletenessWithMissingAttributeCodesCollection($anotherUuid, [
                 new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, ['name', 'view']),
                 new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, ['desc'])
             ]),
@@ -94,14 +98,15 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         GetCompletenessProductMasks $getCompletenessProductMasks,
         GetRequiredAttributesMasks $getRequiredAttributesMasks
     ) {
-        $productCompleteness = new CompletenessProductMask(5, 'product_without_family', null, []);
+        $uuid = Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf');
+        $productCompleteness = new CompletenessProductMask($uuid, 'product_without_family', null, []);
         $getCompletenessProductMasks->fromProductIdentifiers(['product_without_family'])->willReturn([$productCompleteness]);
 
         $getRequiredAttributesMasks->fromFamilyCodes([])->willReturn([]);
 
 
         $this->fromProductIdentifier('product_without_family')->shouldBeLike(
-            new ProductCompletenessWithMissingAttributeCodesCollection(5, [])
+            new ProductCompletenessWithMissingAttributeCodesCollection($uuid, [])
         );
     }
 }

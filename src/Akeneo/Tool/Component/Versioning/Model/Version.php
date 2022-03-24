@@ -69,14 +69,15 @@ class Version implements VersionInterface
      * Constructor
      *
      * @param string      $resourceName
-     * @param string      $resourceId
+     * @param string|null $resourceId
      * @param string      $author
      * @param string|null $context
      */
-    public function __construct($resourceName, $resourceId, $author, $context = null)
+    public function __construct($resourceName, $resourceId, ?UuidInterface $resourceUuid, $author, $context = null)
     {
         $this->resourceName = $resourceName;
         $this->resourceId = $resourceId;
+        $this->resourceUuid = $resourceUuid;
         $this->author = $author;
         $this->context = $context;
         $this->loggedAt = new \DateTime('now', new \DateTimeZone('UTC'));

@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
 use Doctrine\DBAL\ParameterType;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -60,21 +61,21 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
-            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                return $productCompletenessCollection->productId();
+            $productUuids = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
+                return Uuid::fromString($productCompletenessCollection->productId())->getBytes();
             }, $productCompletenessCollections));
 
             $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
-                ['product_ids' => $productIds],
-                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
+                'DELETE FROM pim_catalog_completeness WHERE product_uuid IN (:product_uuids)',
+                ['product_uuids' => $productUuids],
+                ['product_uuids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
             );
 
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
             }
-            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, ?, ?, ?)'));
+            $placeholders = implode(',', array_fill(0, $numberCompletenessRow, '(?, ?, UUID_TO_BIN(?), ?, ?)'));
 
             if (empty($placeholders)) {
                 return;
@@ -82,7 +83,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
 
             $insert = <<<SQL
                         INSERT INTO pim_catalog_completeness
-                            (locale_id, channel_id, product_id, missing_count, required_count)
+                            (locale_id, channel_id, product_uuid, missing_count, required_count)
                         VALUES
                             $placeholders
         SQL;
@@ -94,7 +95,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 foreach ($productCompletenessCollection as $productCompleteness) {
                     $stmt->bindValue($placeholderIndex++, $localeIdsFromCode[$productCompleteness->localeCode()]);
                     $stmt->bindValue($placeholderIndex++, $channelIdsFromCode[$productCompleteness->channelCode()]);
-                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId(), ParameterType::INTEGER);
+                    $stmt->bindValue($placeholderIndex++, $productCompletenessCollection->productId());
                     $stmt->bindValue($placeholderIndex++, count($productCompleteness->missingAttributeCodes()), ParameterType::INTEGER);
                     $stmt->bindValue($placeholderIndex++, $productCompleteness->requiredCount(), ParameterType::INTEGER);
                 }

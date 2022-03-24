@@ -2,11 +2,13 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionBuilderSpec extends ObjectBehavior
@@ -19,8 +21,10 @@ class VersionBuilderSpec extends ObjectBehavior
     function it_builds_versions_for_versionable_entities($normalizer, $versionFactory, ProductInterface $product, Version $version)
     {
         $product->getId()->willReturn(1);
+        $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
+        $product->getUuid()->willReturn($uuid);
         $normalizer->normalize($product, 'flat', [])->willReturn(['bar' => 'baz']);
-        $versionFactory->create(Argument::Any(), 1, 'foo', null)->willReturn($version);
+        $versionFactory->create(Argument::Any(), null, $uuid, 'foo', null)->willReturn($version);
         $version->setVersion(1)->willReturn($version);
         $version->setSnapshot(['bar' => 'baz'])->willReturn($version);
         $version->setChangeset(['bar' => ['old' => '', 'new' => 'baz']])->willReturn($version);
@@ -30,7 +34,9 @@ class VersionBuilderSpec extends ObjectBehavior
     function it_creates_pending_version($versionFactory, ProductInterface $product, Version $pending)
     {
         $product->getId()->willReturn(1);
-        $versionFactory->create(Argument::Any(), 1, 'baz', null)->willReturn($pending);
+        $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
+        $product->getUuid()->willReturn($uuid);
+        $versionFactory->create(Argument::Any(), null, $uuid, 'baz', null)->willReturn($pending);
         $pending->getChangeset()->willReturn($pending);
         $pending->setChangeset([])->willReturn($pending);
         $pending->getAuthor()->willReturn('baz');
@@ -84,11 +90,11 @@ class VersionBuilderSpec extends ObjectBehavior
     function it_builds_versions_and_handle_correctly_the_old_versioning_date_format(
         $normalizer,
         $versionFactory,
-        ProductInterface $product,
+        ProductModelInterface $productModel,
         Version $previousVersion,
         Version $version
     ) {
-        $normalizer->normalize($product, 'flat', [])->willReturn([
+        $normalizer->normalize($productModel, 'flat', [])->willReturn([
             'name' => 'bar',
             'date_with_new_format' => '2020-01-01T00:00:00+00:00',
             'date_with_old_format' => '2020-01-01T00:00:00+00:00',
@@ -96,9 +102,9 @@ class VersionBuilderSpec extends ObjectBehavior
             'date_with_old_format_has_changed' => '2020-01-02T00:00:00+00:00'
         ]);
 
-        $versionFactory->create(Argument::any(), 100, 'julia', null)->willReturn($version);
+        $versionFactory->create(Argument::any(), 100, null, 'julia', null)->willReturn($version);
 
-        $product->getId()->willReturn(100);
+        $productModel->getId()->willReturn(100);
 
         $previousVersion->getVersion()->willReturn(1);
         $previousVersion->getSnapshot()->willReturn([
@@ -123,6 +129,6 @@ class VersionBuilderSpec extends ObjectBehavior
             'date_with_old_format_has_changed' => ['old' => '2020-01-01', 'new' => '2020-01-02T00:00:00+00:00']
         ])->willReturn($version);
 
-        $this->buildVersion($product, 'julia', $previousVersion, null);
+        $this->buildVersion($productModel, 'julia', $previousVersion, null);
     }
 }

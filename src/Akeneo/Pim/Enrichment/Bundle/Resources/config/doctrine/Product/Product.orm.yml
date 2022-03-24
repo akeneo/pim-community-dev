@@ -4,7 +4,10 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
     changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductRepository
     fields:
-        # @TODO: the pim_catalog_product.id column should set nullable in migration
+        id:
+            type: integer
+            unique: true
+            columnDefinition: INT AUTO_INCREMENT NOT NULL
         uuid:
             type: uuid_binary
             id: true

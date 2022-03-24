@@ -4,12 +4,13 @@ namespace spec\Akeneo\Tool\Component\Versioning\Model;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class VersionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('JobInstance', 1537, 'Julia', 'import');
+        $this->beConstructedWith('JobInstance', 1537, null, 'Julia', 'import');
     }
 
     function it_is_initializable()
@@ -32,6 +33,19 @@ class VersionSpec extends ObjectBehavior
     function it_has_a_resource_id()
     {
         $this->getResourceId()->shouldBe(1537);
+    }
+
+    function it_has_no_resource_uuid()
+    {
+        $this->getResourceUuid()->shouldBeNull();
+    }
+
+    function it_can_be_constructed_with_a_uuid()
+    {
+        $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
+        $this->beConstructedWith('JobInstance', null, $uuid, 'Julia', 'import');
+        $this->getResourceId()->shouldBeNull();
+        $this->getResourceUuid()->shouldReturn($uuid);
     }
 
     function it_has_a_resource_name()

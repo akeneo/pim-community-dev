@@ -223,7 +223,7 @@ WITH product_model_completeness_by_channel_id_and_locale_id AS (
         MIN(completeness.missing_count) <> 0 AS all_incomplete
     FROM pim_catalog_product_model product_model
     INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
-    INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+    INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
     WHERE product_model.code IN (:productModelCodes)
     GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
 UNION ALL
@@ -236,7 +236,7 @@ UNION ALL
     FROM pim_catalog_product_model product_model
     INNER JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
     INNER JOIN pim_catalog_product product ON product.product_model_id = product_model.id
-    INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+    INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
     WHERE root_product_model.code IN (:productModelCodes)
     GROUP BY product_model_code, completeness.locale_id, completeness.channel_id
 ), 

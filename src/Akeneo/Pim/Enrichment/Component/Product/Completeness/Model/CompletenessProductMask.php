@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -16,29 +15,13 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask
  */
 class CompletenessProductMask
 {
-    /** @var int */
-    private $id;
-
-    /** @var string */
-    private $identifier;
-
-    /** @var string */
-    private $familyCode;
-
-    /** @var array */
-    private $mask;
-
     // TODO - TIP-1212: familyCode should not be nullable
     public function __construct(
-        int $id,
-        string $identifier,
-        ?string $familyCode,
-        array $mask
+        private string $id,
+        private string $identifier,
+        private ?string $familyCode,
+        private array $mask
     ) {
-        $this->id = $id;
-        $this->identifier = $identifier;
-        $this->familyCode = $familyCode;
-        $this->mask = $mask;
     }
 
     public function familyCode(): ?string
@@ -51,7 +34,7 @@ class CompletenessProductMask
         return $this->mask;
     }
 
-    public function id(): int
+    public function id(): string
     {
         return $this->id;
     }

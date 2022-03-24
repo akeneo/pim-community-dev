@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\Associat
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociationsNormalizerSpec extends ObjectBehavior
@@ -66,12 +67,13 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $productModelAssociated->getCode()->willReturn('product_model_code');
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
 
-        $product->getId()->willReturn(1);
+        $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
+        $product->getUuid()->willReturn($uuid);
         $product->getParent()->willReturn(null);
         $product->getAssociations()->willReturn([$association1, $association2]);
 
-        $getAssociatedProductCodesByProduct->getCodes(1, $association1)->willReturn([]);
-        $getAssociatedProductCodesByProduct->getCodes(1, $association2)->willReturn(['product_code']);
+        $getAssociatedProductCodesByProduct->getCodes($uuid, $association1)->willReturn([]);
+        $getAssociatedProductCodesByProduct->getCodes($uuid, $association2)->willReturn(['product_code']);
 
         $this->normalize($product, 'standard')->shouldReturn(
             [
@@ -113,8 +115,9 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association1->getGroups()->willReturn([$group1]);
         $association1->getProducts()->willReturn(new ArrayCollection());
         $association1->getProductModels()->willReturn(new ArrayCollection());
-        $product->getId()->willReturn(1);
-        $getAssociatedProductCodesByProduct->getCodes(1, $association1)->willReturn([]);
+        $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
+        $product->getUuid()->willReturn($uuid);
+        $getAssociatedProductCodesByProduct->getCodes($uuid, $association1)->willReturn([]);
 
         $productAssociated->getReference()->willReturn('product_code');
         $productModel->getCode()->willReturn('product_model_code');
@@ -125,9 +128,8 @@ class AssociationsNormalizerSpec extends ObjectBehavior
         $association2->getProducts()->willReturn([$productAssociated->getWrappedObject()]);
         $association2->getProductModels()->willReturn(new ArrayCollection([$productModel->getWrappedObject()]));
 
-        $getAssociatedProductCodesByProduct->getCodes(1, $association2)->willReturn(['product_code']);
+        $getAssociatedProductCodesByProduct->getCodes($uuid, $association2)->willReturn(['product_code']);
 
-        $product->getId()->willReturn(1);
         $product->getParent()->willReturn(null);
         $product->getAssociations()->willReturn([$association1, $association2]);
         $product->getAllAssociations()->willReturn([$association1, $association2]);

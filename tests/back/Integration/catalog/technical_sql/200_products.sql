@@ -62,7 +62,10 @@ INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,0,19),(774,21039
 --
 
 /*!40000 ALTER TABLE `pim_catalog_group_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_group_product` VALUES (49,239),(49,240),(49,241);
+INSERT INTO `pim_catalog_group_product` (product_uuid, group_id) VALUES
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),239),
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),240),
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),241);
 /*!40000 ALTER TABLE `pim_catalog_group_product` ENABLE KEYS */;
 
 --
@@ -91,11 +94,14 @@ INSERT INTO `pim_catalog_product` (`id`, `uuid`, `identifier`, `family_id`, `fam
 /*!40000 ALTER TABLE `pim_catalog_product` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `pim_catalog_category_product_model` DISABLE KEYS */;
-INSERT INTO `pim_catalog_category_product_model` VALUES (150,896),(151,899),(151,897);
+INSERT INTO `pim_catalog_category_product_model` (product_model_id, category_id) VALUES (150,896),(151,899),(151,897);
 /*!40000 ALTER TABLE `pim_catalog_category_product_model` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `pim_catalog_category_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_category_product` VALUES (49,897),(49,899),(50,898);
+INSERT INTO `pim_catalog_category_product` (product_uuid, category_id) VALUES
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),897),
+(UUID_TO_BIN('0e0304dc-d7f7-4dc4-89bb-a388e1fa2bcd'),899),
+(UUID_TO_BIN('114c9108-444d-408a-ab43-195068166d2c'),898);
 /*!40000 ALTER TABLE `pim_catalog_category_product` ENABLE KEYS */;
 
 

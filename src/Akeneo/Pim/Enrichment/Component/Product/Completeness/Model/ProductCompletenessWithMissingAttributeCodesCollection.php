@@ -4,27 +4,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Completeness\Model;
 
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class ProductCompletenessWithMissingAttributeCodesCollection implements \IteratorAggregate, \Countable
 {
-    /** @var int */
-    private $productId;
-
     /** @var ProductCompletenessWithMissingAttributeCodes[] */
-    private $completenesses = [];
+    private array $completenesses = [];
 
-    public function __construct(int $productId, array $completenesses)
+    public function __construct(private string $productId, array $completenesses)
     {
-        $this->productId = $productId;
         foreach ($completenesses as $completeness) {
             $this->add($completeness);
         }
     }
 
-    public function productId(): int
+    public function productId(): string
     {
         return $this->productId;
     }
