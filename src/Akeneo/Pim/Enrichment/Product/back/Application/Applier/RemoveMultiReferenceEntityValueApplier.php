@@ -38,7 +38,7 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
             return;
         }
 
-        $formerRecordCodesAsString = array_map(fn ($value): string => (string) $value, $formerRecordCodeCollection->getData());
+        $formerRecordCodesAsString = array_map(fn ($recordCode): string => (string) $recordCode, $formerRecordCodeCollection->getData());
         $updatedRecordCodes = \array_values(\array_unique(array_diff($formerRecordCodesAsString, $userIntent->recordCodes())));
 
         if ([] === array_diff($formerRecordCodeCollection->getData(), $updatedRecordCodes)) {
