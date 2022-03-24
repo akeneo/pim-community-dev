@@ -8,9 +8,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration\AbstractMigrateToUuidTestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
@@ -26,6 +29,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->assertAllProductsHaveUuid();
         $this->assertJsonHaveUuid();
         $this->assertTriggersExistAndWork();
+        $this->assertProductsAreReindexed();
     }
 
     private function assertTheColumnsDoNotExist(): void
@@ -34,7 +38,11 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             if ($this->tableExists($tableName)) {
                 Assert::assertFalse(
                     $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
-                    \sprintf('The "%s" column exists in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
+                    \sprintf(
+                        'The "%s" column exists in the "%s" table',
+                        $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX],
+                        $tableName
+                    )
                 );
             }
         }
@@ -46,7 +54,11 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             if ($this->tableExists($tableName)) {
                 Assert::assertTrue(
                     $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
-                    \sprintf('The "%s" column does not exist in the "%s" table', $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableName)
+                    \sprintf(
+                        'The "%s" column does not exist in the "%s" table',
+                        $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX],
+                        $tableName
+                    )
                 );
             }
         }
@@ -54,16 +66,16 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertAllProductsHaveUuid(): void
     {
-        $query = 'SELECT count(*) FROM pim_catalog_product WHERE uuid IS NULL';
+        $query = 'SELECT COUNT(*) FROM pim_catalog_product WHERE uuid IS NULL';
 
-        $result = (int) $this->connection->executeQuery($query)->fetchOne();
+        $result = (int)$this->connection->executeQuery($query)->fetchOne();
 
         Assert::assertSame(0, $result, \sprintf('%s product(s) does not have an uuid after migration.', $result));
     }
 
     private function assertJsonHaveUuid(): void
     {
-        $query = 'SELECT BIN_TO_UUID(uuid) as uuid, quantified_associations FROM pim_catalog_product';
+        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid, quantified_associations FROM pim_catalog_product';
 
         $result = $this->connection->fetchAllAssociative($query);
 
@@ -73,9 +85,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                 // the first product is linked to a non existing product and is cleaned
                 Assert::assertEquals(["SOIREEFOOD10" => ["products" => []]], $quantifiedAssociations);
             } else {
-                Assert::assertEquals(["SOIREEFOOD10" => ["products" => [
-                    ['id' => $i - 1, 'uuid' => $result[$i - 2]['uuid'], 'quantity' => 1000]
-                ]]], $quantifiedAssociations);
+                Assert::assertEquals([
+                    "SOIREEFOOD10" => [
+                        "products" => [
+                            ['id' => $i - 1, 'uuid' => $result[$i - 2]['uuid'], 'quantity' => 1000],
+                        ],
+                    ],
+                ], $quantifiedAssociations);
             }
         }
     }
@@ -88,9 +104,15 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             }
 
             $insertTriggerName = MigrateToUuidAddTriggers::getInsertTriggerName($tableName);
-            Assert::assertTrue($this->triggerExists($insertTriggerName), \sprintf('The %s trigger does not exist', $insertTriggerName));
+            Assert::assertTrue(
+                $this->triggerExists($insertTriggerName),
+                \sprintf('The %s trigger does not exist', $insertTriggerName)
+            );
             $updateTriggerName = MigrateToUuidAddTriggers::getUpdateTriggerName($tableName);
-            Assert::assertTrue($this->triggerExists($updateTriggerName), \sprintf('The %s trigger does not exist', $updateTriggerName));
+            Assert::assertTrue(
+                $this->triggerExists($updateTriggerName),
+                \sprintf('The %s trigger does not exist', $updateTriggerName)
+            );
         }
 
         /**
@@ -110,27 +132,40 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $newProductUuid = $this->getProductUuid('new_product');
 
         // pim_catalog_association
-        $ownerdUuids = $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association')->fetchFirstColumn();
+        $ownerdUuids = $this->connection->executeQuery(
+            'SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association'
+        )->fetchFirstColumn();
         Assert::assertSame([$newProductUuid], $ownerdUuids);
         // pim_catalog_association_product
-        Assert::assertTrue((bool) $this->connection->executeQuery(
-            'SELECT EXISTS (SELECT 1 FROM pim_catalog_association_product WHERE product_uuid = UUID_TO_BIN(?)) as e',
-            [$this->getProductUuid('identifier1')]
-        )->fetchOne());
+        Assert::assertTrue(
+            (bool)$this->connection->executeQuery(
+                'SELECT EXISTS (SELECT 1 FROM pim_catalog_association_product WHERE product_uuid = UUID_TO_BIN(?)) AS e',
+                [$this->getProductUuid('identifier1')]
+            )->fetchOne()
+        );
         // pim_catalog_category_product
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_category_product WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_category_product WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_catalog_group_product
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_group_product WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_group_product WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_catalog_product_unique_data
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_product_unique_data WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_product_unique_data WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_versioning_version
         Assert::assertSame(
@@ -152,7 +187,10 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInts([$newProductId]));
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
 
         /**
@@ -169,27 +207,40 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         Assert::assertSame($newProductUuid, $this->getProductUuid('new_product'));
 
         // pim_catalog_association
-        $ownerdUuids = $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association')->fetchFirstColumn();
+        $ownerdUuids = $this->connection->executeQuery(
+            'SELECT DISTINCT BIN_TO_UUID(owner_uuid) FROM pim_catalog_association'
+        )->fetchFirstColumn();
         Assert::assertSame([$this->getProductUuid('new_product')], $ownerdUuids);
         // pim_catalog_association_product
-        Assert::assertTrue((bool) $this->connection->executeQuery(
-            'SELECT EXISTS (SELECT 1 FROM pim_catalog_association_product WHERE product_uuid = UUID_TO_BIN(?)) as e',
-            [$this->getProductUuid('identifier1')]
-        )->fetchOne());
+        Assert::assertTrue(
+            (bool)$this->connection->executeQuery(
+                'SELECT EXISTS (SELECT 1 FROM pim_catalog_association_product WHERE product_uuid = UUID_TO_BIN(?)) AS e',
+                [$this->getProductUuid('identifier1')]
+            )->fetchOne()
+        );
         // pim_catalog_category_product
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_category_product WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_category_product WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_catalog_group_product
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_group_product WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_group_product WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_catalog_product_unique_data
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_product_unique_data WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_product_unique_data WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
         // pim_versioning_version
         Assert::assertSame(
@@ -211,7 +262,10 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($newProductId));
         Assert::assertSame(
             [$newProductUuid],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?', [$newProductId])->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_data_quality_insights_product_score WHERE product_id = ?',
+                [$newProductId]
+            )->fetchFirstColumn()
         );
 
         /**
@@ -226,13 +280,58 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             ],
         ]);
         $violations = $this->get('pim_catalog.validator.product_model')->validate($productModel);
-        Assert::assertCount(0, $violations, \sprintf('The product model is invalid: %s', (string) $violations));
+        Assert::assertCount(0, $violations, \sprintf('The product model is invalid: %s', (string)$violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         // pim_catalog_association_product_model_to_product
         Assert::assertSame(
             [$this->getProductUuid('identifier2')],
-            $this->connection->executeQuery('SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_association_product_model_to_product')->fetchFirstColumn()
+            $this->connection->executeQuery(
+                'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_association_product_model_to_product'
+            )->fetchFirstColumn()
         );
+    }
+
+    private function assertProductsAreReindexed(): void
+    {
+        $indexedProducts = $this->getIndexedProducts();
+        Assert::assertNotContains('identifier_removed', $indexedProducts);
+
+        foreach ($indexedProducts as $esId => $identifier) {
+            $split = \preg_match('/^product_(?P<uuid>.*)$/', $esId, $matches);
+            Assert::assertSame(1, $split);
+            Assert::assertTrue(Uuid::isValid($matches['uuid']));
+            Assert::assertTrue(
+                (bool)$this->connection->executeQuery(
+                    'SELECT EXISTS(SELECT * FROM pim_catalog_product WHERE identifier = :identifier AND BIN_TO_UUID(uuid) = :uuid)',
+                    ['identifier' => $identifier, 'uuid' => $matches['uuid']]
+                )
+            );
+        }
+    }
+
+    private function getIndexedProducts(): array
+    {
+        /** @var Client $esClient */
+        $esClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
+        $esClient->refreshIndex();
+        $result = $esClient->search([
+            'query' => [
+                'term' => [
+                    'document_type' => ProductInterface::class,
+                ],
+            ],
+            'fields' => ['id', 'identifier'],
+            '_source' => false,
+            'size' => 100,
+        ]);
+
+        $esProducts = [];
+        foreach ($result['hits']['hits'] as $document) {
+            $identifier = $document['fields']['identifier'][0];
+            $esProducts[$document['_id']] = $identifier;
+        }
+
+        return $esProducts;
     }
 
     private function loadFixtures(): void
@@ -242,20 +341,37 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->createQuantifiedAssociationType('SOIREEFOOD10');
 
         foreach (range(1, 10) as $i) {
-            $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
-                userId: $adminUser->getId(),
-                productIdentifier: 'identifier' . $i
-            ));
+            $this->get('pim_enrich.product.message_bus')->dispatch(
+                new UpsertProductCommand(
+                    userId: $adminUser->getId(),
+                    productIdentifier: 'identifier' . $i
+                )
+            );
 
-            $this->connection->executeQuery(\strtr(<<<SQL
+            $this->connection->executeQuery(
+                \strtr(
+                    <<<SQL
                 UPDATE pim_catalog_product
                 SET quantified_associations = '{"SOIREEFOOD10":{"products":[{"id":{associated_product_id},"quantity":1000}]}}'
                 WHERE id = {product_id}
-            SQL, [
-                '{product_id}' => $i,
-                '{associated_product_id}' => $i - 1,
-            ]));
+            SQL,
+                    [
+                        '{product_id}' => $i,
+                        '{associated_product_id}' => $i - 1,
+                    ]
+                )
+            );
         }
+
+        // test product only in ES index
+        $this->get('pim_enrich.product.message_bus')->dispatch(
+            new UpsertProductCommand(
+                userId: $adminUser->getId(),
+                productIdentifier: 'identifier_removed',
+            )
+        );
+        $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');
+        Assert::assertContains('identifier_removed', $this->getIndexedProducts());
 
         $this->createProductGroup(['code' => 'groupA', 'type' => 'RELATED']);
         $this->createProductGroup(['code' => 'groupB', 'type' => 'RELATED']);
