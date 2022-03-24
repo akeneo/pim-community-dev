@@ -1,11 +1,21 @@
-import React, {isValidElement, ReactElement, ReactNode, Ref, SyntheticEvent} from 'react';
+import React, {
+  ButtonHTMLAttributes,
+  Children,
+  cloneElement,
+  forwardRef,
+  isValidElement,
+  ReactElement,
+  ReactNode,
+  Ref,
+  SyntheticEvent,
+} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {IconProps} from '../../icons';
 
 type BlockButtonProps = Override<
-  React.ButtonHTMLAttributes<HTMLButtonElement> & React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  ButtonHTMLAttributes<HTMLButtonElement>,
   {
     /**
      * Icon displayed on the right of the button.
@@ -13,7 +23,7 @@ type BlockButtonProps = Override<
     icon: ReactElement<IconProps>;
 
     /**
-     * Use when the user cannot proceed or until an input is collected.
+     * Used when the user cannot proceed or until an input is collected.
      */
     disabled?: boolean;
 
@@ -51,6 +61,7 @@ const getColorStyle = ({disabled}: {disabled: boolean} & AkeneoThemedProps) => {
       color: ${getColor('grey', 100)};
     `;
   }
+
   return css`
     background-color: ${getColor('white')};
     border-color: ${getColor('blue', 100)};
@@ -79,6 +90,7 @@ const Container = styled.button<
   outline-style: none;
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   white-space: nowrap;
+  text-transform: uppercase;
 
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
@@ -98,7 +110,7 @@ const ActionsContainer = styled.div`
   align-items: center;
 `;
 
-const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
+const BlockButton = forwardRef<HTMLButtonElement, BlockButtonProps>(
   (
     {icon, disabled = false, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, onClick, ...rest}: BlockButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
@@ -122,16 +134,16 @@ const BlockButton = React.forwardRef<HTMLButtonElement, BlockButtonProps>(
         {...rest}
       >
         <ChildrenContainer>
-          {React.Children.map(children, child => {
+          {Children.map(children, child => {
             if (isValidElement<IconProps>(child)) {
-              return React.cloneElement(child, {size: child.props.size ?? 18});
+              return cloneElement(child, {size: child.props.size ?? 18});
             }
 
             return child;
           })}
         </ChildrenContainer>
         <ActionsContainer>
-          {isValidElement<IconProps>(icon) && React.cloneElement(icon, {size: icon.props.size ?? 18})}
+          {isValidElement<IconProps>(icon) && cloneElement(icon, {size: icon.props.size ?? 18})}
         </ActionsContainer>
       </Container>
     );

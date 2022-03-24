@@ -17,6 +17,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
         tags:
             - { name: validator.constraint_validator }
 

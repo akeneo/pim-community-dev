@@ -8,7 +8,7 @@ Feature: Apply a mass action on products only (and not product models)
   Background:
     Given a "catalog_modeling" catalog configuration
     And the following categories:
-      | code         | label_en_US  | parent  |
+      | code         | label-en_US  | parent  |
       | long_sleeves | Long sleeves | tshirts |
       | seasons      | Seasons      | tshirts |
       | summer       | Summer       | seasons |

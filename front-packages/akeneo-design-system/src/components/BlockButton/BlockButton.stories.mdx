@@ -1,11 +1,10 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {SpaceContainer} from '../../storybook';
 import {BlockButton} from './BlockButton';
 import {PlusIcon, CloseIcon, ArrowDownIcon} from '../../icons';
-import {Dropdown, Block} from '../../components';
+import {Dropdown, Block, IconButton} from '../../components';
 import {useBooleanState} from '../../hooks';
-import {useState} from 'react';
-import {SpaceContainer} from '../../storybook';
-import {IconButton} from '../IconButton/IconButton';
 import * as Icons from '../../icons';
 
 <Meta
@@ -13,7 +12,8 @@ import * as Icons from '../../icons';
   component={BlockButton}
   argTypes={{
     icon: {
-      control: {type: 'select'}, options: Object.keys(Icons),
+      control: {type: 'select'},
+      options: Object.keys(Icons),
       table: {type: {summary: 'ReactElement<IconProps>'}},
     },
     disabled: {control: {type: 'boolean'}},
@@ -53,7 +53,9 @@ Use this playground to test the BlockButton component
     {args => {
       return (
         <>
-          <BlockButton {...args} icon={<ArrowDownIcon />}>Default</BlockButton>
+          <BlockButton {...args} icon={<ArrowDownIcon />}>
+            Default
+          </BlockButton>
           <BlockButton {...args} disabled={true} icon={<ArrowDownIcon />}>
             Disabled
           </BlockButton>

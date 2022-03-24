@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
@@ -145,7 +146,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_there_is_no_more_owned_category_after_update(): void
     {
-        $this->createProduct('my_product', ['categories' => ['print']]);
+        $this->createProduct('identifier', ['categories' => ['print']]);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
         $this->expectException(ViolationsException::class);
@@ -155,6 +156,23 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             userId: $this->getUserId('betty'),
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales' category, but is not owner.
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_there_is_no_more_owned_category_after_removing_category(): void
+    {
+        $this->createProduct('identifier', ['categories' => ['print', 'sales']]);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new RemoveCategories(['print'])
         );
         $this->messageBus->dispatch($command);
     }

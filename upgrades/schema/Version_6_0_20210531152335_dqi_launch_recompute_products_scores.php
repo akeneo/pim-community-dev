@@ -26,13 +26,6 @@ final class Version_6_0_20210531152335_dqi_launch_recompute_products_scores exte
         SQL);
     }
 
-    public function postUp(Schema $schema): void
-    {
-        $this->container->get('pim_catalog.command_launcher')->executeForeground(
-            'akeneo:batch:publish-job-to-queue data_quality_insights_recompute_products_scores'
-        );
-    }
-
     public function down(Schema $schema) : void
     {
         $this->throwIrreversibleMigrationException();
