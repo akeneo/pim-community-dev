@@ -203,9 +203,3 @@ services:
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@pim_volume_monitoring.persistence.query.average_max_category_levels'
-
-    test.catalog_volume_limits.feature_flag_context:
-        public: true
-        class: 'AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Context\FeatureFlagContext'
-        arguments:
-            - '@feature_flags'

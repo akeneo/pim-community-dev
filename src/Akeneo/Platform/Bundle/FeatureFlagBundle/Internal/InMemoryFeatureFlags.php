@@ -42,13 +42,6 @@ class InMemoryFeatureFlags implements FeatureFlags
     {
         $this->throwExceptionIfFlagDoesNotExist($feature);
 
-        // TIP-1561: onboarder feature flag would deactivated by default if we don't do that
-        // the issue is that it makes the onboarder acceptance tests fail, but to fix it these tests we need to merge this PR
-        // so this is a temporary dirty workaround to be able to fix and release onboarder, before removing it
-        if ($feature === 'onboarder') {
-            return true;
-        }
-
         return $this->flags[$feature] ?? false;
     }
 

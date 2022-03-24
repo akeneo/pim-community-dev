@@ -1,6 +1,3 @@
-parameters:
-    env(PIM_EDITION): 'COMMUNITY_EDITION'
-
 services:
     feature_flags:
         public: true
