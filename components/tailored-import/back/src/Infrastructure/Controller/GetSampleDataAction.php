@@ -6,7 +6,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 
 use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataQuery;
-use HttpInvalidParamException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +29,7 @@ final class GetSampleDataAction
         }
 
         if (null === $request->get('job_code') || null === $request->get('column_index')) {
-            throw new HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
+            throw new \HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
         }
 
         $query = new GetSampleDataQuery();
