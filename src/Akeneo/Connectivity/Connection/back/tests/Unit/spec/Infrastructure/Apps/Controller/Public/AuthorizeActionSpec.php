@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Pub
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
@@ -46,6 +47,7 @@ class AuthorizeActionSpec extends ObjectBehavior
         GetAppQueryInterface $getAppQuery,
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         ScopeListComparatorInterface $scopeListComparator,
+        UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
     ): void {
         $this->beConstructedWith(
             $requestAppAuthorizationHandler,
@@ -60,6 +62,7 @@ class AuthorizeActionSpec extends ObjectBehavior
             $getAppQuery,
             $getConnectedAppScopesQuery,
             $scopeListComparator,
+            $updateAppWithAuthorizationHandler,
         );
     }
 

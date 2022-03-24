@@ -9,11 +9,13 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -54,6 +56,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         ConnectedPimUserProvider $connectedPimUserProvider,
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         GetAppQueryInterface $getAppQuery,
+        FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
+        UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
     ): void {
         $this->beConstructedWith(
             $createAppWithAuthorizationHandler,
@@ -67,6 +71,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             $connectedPimUserProvider,
             $consentAppAuthenticationHandler,
             $getAppQuery,
+            $findOneConnectedAppByIdQuery,
+            $updateAppWithAuthorizationHandler,
         );
     }
 

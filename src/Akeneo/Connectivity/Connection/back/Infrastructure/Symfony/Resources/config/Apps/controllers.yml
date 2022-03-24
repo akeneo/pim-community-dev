@@ -24,6 +24,8 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthenticationAction:
         public: true
@@ -111,6 +113,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction:
         public: true

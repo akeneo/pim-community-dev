@@ -9,9 +9,12 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
@@ -46,6 +49,8 @@ final class ConfirmAuthorizationAction
         private ConnectedPimUserProvider $connectedPimUserProvider,
         private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         private GetAppQueryInterface $getAppQuery,
+        private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
+        private UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
     ) {
     }
 
@@ -75,7 +80,13 @@ final class ConfirmAuthorizationAction
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
         try {
-            $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+            $connectedApp = $this->findOneConnectedAppByIdQuery->execute($clientId);
+
+            if (null === $connectedApp) {
+                $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+            } else {
+                $this->updateAppWithAuthorizationHandler->handle(new UpdateAppWithAuthorizationCommand($clientId));
+            }
 
             $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
             if (null === $appAuthorization) {

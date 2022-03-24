@@ -9,6 +9,8 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
@@ -46,6 +48,7 @@ final class AuthorizeAction
         private GetAppQueryInterface $getAppQuery,
         private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         private ScopeListComparatorInterface $scopeListComparator,
+        private UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
     ) {
     }
 
@@ -108,6 +111,8 @@ final class AuthorizeAction
                 ])
             );
         }
+
+        $this->updateAppWithAuthorizationHandler->handle(new UpdateAppWithAuthorizationCommand($clientId));
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
