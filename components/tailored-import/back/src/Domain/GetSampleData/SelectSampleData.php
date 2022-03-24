@@ -14,17 +14,17 @@ final class SelectSampleData implements SelectSampleDataInterface
     
     public function fromExtractedColumn(array $extractedColumn): array
     {
-        $reducedValue = $this->filterUniqueValue($extractedColumn);
+        $reducedValue = $this->filterUniqueValues($extractedColumn);
         $sampleData = $this->pickRandomValues($reducedValue);
-        return $this->fillBlankValue($sampleData);
+        return $this->fillBlankValues($sampleData);
     }
 
-    private function fillBlankValue(array $sampleData): array
+    private function fillBlankValues(array $sampleData): array
     {
         return array_pad($sampleData, SelectSampleData::NUMBER_OF_VALUES, null);
     }
     
-    private function filterUniqueValue(array $sampleData): array
+    private function filterUniqueValues(array $sampleData): array
     {
         return array_unique($sampleData);
     }

@@ -24,25 +24,16 @@ class JobConfiguration
     ) {
     }
 
-    /**
-     * @return string
-     */
     public function getFileKey(): string
     {
         return $this->fileKey;
     }
 
-    /**
-     * @return FileStructure
-     */
     public function getFileStructure(): FileStructure
     {
         return $this->fileStructure;
     }
 
-    /**
-     * @return ColumnCollection
-     */
     public function getColumns(): ColumnCollection
     {
         return $this->columns;
