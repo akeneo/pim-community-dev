@@ -19,7 +19,9 @@ import {
   DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
   PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME,
   PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME,
+  productEditFormStore,
 } from '@akeneo-pim-community/data-quality-insights/src';
+import {unsetProductAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer/ProductEditForm/productReducer';
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
 
@@ -198,6 +200,8 @@ class DataQualityInsightsApp extends BaseView {
 
   remove() {
     ReactDOM.unmountComponentAtNode(this.el);
+
+    productEditFormStore.dispatch(unsetProductAction());
 
     return super.remove();
   }
