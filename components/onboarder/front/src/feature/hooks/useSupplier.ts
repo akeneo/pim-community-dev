@@ -30,7 +30,7 @@ const useSupplier = (identifier: string) => {
             const response = await fetch(getSupplierRoute, {method: 'GET'});
 
             if (!response.ok) {
-                notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_list.error'));
+                notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.error'));
                 return;
             }
 

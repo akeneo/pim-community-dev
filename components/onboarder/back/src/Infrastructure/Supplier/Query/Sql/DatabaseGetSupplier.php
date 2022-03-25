@@ -25,7 +25,7 @@ final class DatabaseGetSupplier implements GetSupplier
                     GROUP BY contributor.supplier_identifier
                 )
                 SELECT identifier, code, label, contributor.contributors
-                FROM akeneo_onboarder_serenity_supplier as supplier
+                FROM akeneo_onboarder_serenity_supplier supplier
                 LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
                 WHERE identifier = :identifier
             SQL
@@ -39,11 +39,11 @@ final class DatabaseGetSupplier implements GetSupplier
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],
-            $this->buildContributorsReadModels($supplier['contributors']),
+            $this->buildContributorReadModels($supplier['contributors']),
         ) : null;
     }
 
-    private function buildContributorsReadModels(?string $contributorsJson): array
+    private function buildContributorReadModels(?string $contributorsJson): array
     {
         if (empty($contributorsJson)) {
             return [];

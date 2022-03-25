@@ -12,7 +12,7 @@ const useFilteredContributors = (contributors: Contributor[]) => {
         (searchValue: string) => {
             setFilteredContributors(
                 contributors.filter((contributor: Contributor) =>
-                    contributor.email.toLocaleLowerCase().includes(searchValue.toLowerCase().trim())
+                    contributor.email.toLowerCase().includes(searchValue.toLowerCase().trim())
                 )
             );
         },

@@ -4,5 +4,3 @@ parameters:
     - %rootDir%/../../../components/onboarder/back
   checkMissingIterableValueType: false # Allow array typehint instead of int[]
   treatPhpDocTypesAsCertain: false # https://phpstan.org/config-reference#treatphpdoctypesascertain
-  ignoreErrors:
-    - '#Attribute class JetBrains\\PhpStorm\\ArrayShape does not exist.#'

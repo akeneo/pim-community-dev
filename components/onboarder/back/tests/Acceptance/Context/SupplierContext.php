@@ -61,14 +61,12 @@ final class SupplierContext implements Context
             $label ?: $code,
         ));
 
-        if ($contributorsCount !== null) {
-            for ($i = 1; $i <= $contributorsCount; $i++) {
-                $this->contributorRepository->save(Write\Supplier\Contributor\Model\Contributor::create(
-                    Uuid::uuid4()->toString(),
-                    'email'.$i.'@akeneo.com',
-                    $supplierIdentifier,
-                ));
-            }
+        for ($i = 1; $i <= $contributorsCount; $i++) {
+            $this->contributorRepository->save(Write\Supplier\Contributor\Model\Contributor::create(
+                Uuid::uuid4()->toString(),
+                'email'.$i.'@akeneo.com',
+                $supplierIdentifier,
+            ));
         }
     }
 

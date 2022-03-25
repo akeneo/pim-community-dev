@@ -8,10 +8,6 @@ final class Email
 {
     private function __construct(private string $email)
     {
-        if ('' === $email) {
-            throw new \InvalidArgumentException('The contributor email cannot be empty.');
-        }
-
         if (false === \filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new \InvalidArgumentException('The contributor email must be valid.');
         }

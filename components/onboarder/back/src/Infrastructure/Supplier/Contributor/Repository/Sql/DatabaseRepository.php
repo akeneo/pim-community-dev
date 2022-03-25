@@ -16,7 +16,7 @@ final class DatabaseRepository implements Contributor\Repository
     public function save(Contributor\Model\Contributor $contributor): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_onboarder_serenity_supplier_contributor` (identifier, email, supplier_identifier)
+            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (identifier, email, supplier_identifier)
             VALUES (:identifier, :email, :supplierIdentifier)
         SQL;
 

@@ -10,14 +10,6 @@ use PHPUnit\Framework\TestCase;
 final class EmailTest extends TestCase
 {
     /** @test */
-    public function itDoesNotCreateAContributorEmailIfItsEmpty(): void
-    {
-        static::expectExceptionObject(new \InvalidArgumentException('The contributor email cannot be empty.'));
-
-        Contributor\ValueObject\Email::fromString('');
-    }
-
-    /** @test */
     public function itDoesNotCreateAContributorEmailIfTheFormatIsNotValid(): void
     {
         static::expectExceptionObject(new \InvalidArgumentException('The contributor email must be valid.'));

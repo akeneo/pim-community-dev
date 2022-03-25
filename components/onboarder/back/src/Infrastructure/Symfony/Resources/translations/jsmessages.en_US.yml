@@ -53,6 +53,7 @@ onboarder:
                 columns:
                     email: Email address
                 no_contributor: There are no contributors yet.
+            error: An error occured while loading the supplier.
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers
