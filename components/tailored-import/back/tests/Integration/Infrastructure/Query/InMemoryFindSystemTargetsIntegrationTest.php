@@ -63,8 +63,6 @@ class InMemoryFindSystemTargetsIntegrationTest extends IntegrationTestCase
         $this->assertNotEmpty($results);
         $systemTarget = $this->findSystemTargetInResults('family_variant', $results);
         $this->assertNotNull($systemTarget);
-        $systemTarget = $this->findSystemTargetInResults('groups', $results);
-        $this->assertNotNull($systemTarget);
 
         $results = $this->getQuery()->execute('unknown', 100);
         $this->assertNotNull($results);
