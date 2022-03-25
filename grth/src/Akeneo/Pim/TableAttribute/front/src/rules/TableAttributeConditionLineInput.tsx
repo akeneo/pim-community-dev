@@ -35,14 +35,13 @@ const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProp
      * - if user selects "any row", we send "undefined" to RHF instead of null (which is not allowed by ReactHookForm).
      * - if user removes the condition on column, we send "null" to RHF to have error message to force user to fill it.
      */
-    const row = value.row === null ? undefined : (value.row || null);
+    const row = value.row === null ? undefined : value.row || null;
     onChange({
       ...value,
       column: value.column,
       row,
     });
   };
-
 
   return (
     <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
