@@ -51,8 +51,11 @@ class UpdateProductsIndex
         }
 
         $this->esClient->bulkUpdate(
-            array_map(fn ($productId) => self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId,
-                $productIdCollection->toArrayInt()),
-            $params);
+            array_map(
+                fn ($productId) => self::PRODUCT_IDENTIFIER_PREFIX . (string) $productId,
+                $productIdCollection->toArrayInt()
+            ),
+            $params
+        );
     }
 }
