@@ -57,6 +57,7 @@ legacy:
                 - 'Pim\Behat\Context\Domain\Structure\AssociationTypeContext'
                 - 'Pim\Behat\Context\Domain\Structure\CategoryContext'
                 - 'Context\EnterprisePermissionContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
 
         all:
             paths:
@@ -117,6 +118,7 @@ legacy:
                 - 'Pim\Behat\Context\Domain\Structure\AssociationTypeContext'
                 - 'Pim\Behat\Context\Domain\Structure\CategoryContext'
                 - 'Context\EnterprisePermissionContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
 
         chipmunk:
             paths:
@@ -175,6 +177,7 @@ legacy:
                 - 'Context\EnterpriseAssetManagerContext'
                 - 'Context\ConnectivityContext'
                 - 'Pim\Behat\Context\Domain\Structure\AssociationTypeContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
 
         raccoon:
             paths:
@@ -230,6 +233,7 @@ legacy:
                 - 'PimEnterprise\Behat\Context\Proposal\ProductModelProposalStorageContext'
                 - 'Context\EnterpriseReferenceEntityContext'
                 - 'Context\EnterpriseAssetManagerContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
         weasel:
             paths:
                 - tests/legacy/features/pim/work-organization/
@@ -285,6 +289,7 @@ legacy:
                 - 'Context\EnterpriseReferenceEntityContext'
                 - 'Context\EnterpriseAssetManagerContext'
                 - 'Context\ConnectivityContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
 
         connectivity:
             paths:
@@ -325,6 +330,7 @@ legacy:
                 - 'Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext'
                 - 'Pim\Behat\Context\Storage\ProductStorage'
                 - 'Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext'
+                - 'Pim\Behat\Context\FeatureFlagContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:
@@ -348,7 +354,6 @@ legacy:
                                     - "--window-size=1280,1024"
                                     - "--start-maximized"
                                     - "--no-sandbox"
-                                    - "--headless"
                                 prefs:
                                     foo: "Just because prefs must be a dictionnary"
         FriendsOfBehat\SymfonyExtension:
