@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichProductAndProductModelRowsWithScores;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -19,9 +20,9 @@ use Prophecy\Argument;
 
 class AddProductScorePropertySpec extends ObjectBehavior
 {
-    public function let(GetProductScoresQueryInterface $getProductScores)
+    public function let(GetProductScoresQueryInterface $getProductScores, EnrichProductAndProductModelRowsWithScores $enrichProductAndProductModelRowsWithScores)
     {
-        $this->beConstructedWith($getProductScores);
+        $this->beConstructedWith($getProductScores, $enrichProductAndProductModelRowsWithScores);
     }
 
     public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
@@ -32,11 +33,15 @@ class AddProductScorePropertySpec extends ObjectBehavior
             'ecommerce',
             'en_US'
         );
+
         $this->add($queryParameters, [])->shouldReturn([]);
     }
 
-
-    public function it_returns_row_with_additional_property_DQI_score($getProductScores, ProductQueryBuilderInterface $productQueryBuilder)
+    public function it_returns_row_with_additional_property_DQI_score(
+        $getProductScores,
+        $enrichProductAndProductModelRowsWithScores,
+        ProductQueryBuilderInterface $productQueryBuilder
+    )
     {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
@@ -45,15 +50,19 @@ class AddProductScorePropertySpec extends ObjectBehavior
             'en_US'
         );
 
-        $getProductScores->byProductIds(Argument::any())->willReturn(
-            [
-                (new ChannelLocaleRateCollection())
-                    ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(96))
-                    ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(36)),
-            ],
-        );
+        $rows = [$this->makeRow(1), $this->makeRow(4)];
 
-        $this->add($queryParameters, [$this->makeRow(1), $this->makeRow(4)])->shouldHaveScoreProperties();
+        $scores = [
+            (new ChannelLocaleRateCollection())
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(96))
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(36))
+        ];
+
+        $getProductScores->byProductIds(Argument::any())->willReturn($scores);
+
+        $enrichProductAndProductModelRowsWithScores->__invoke($queryParameters, $rows, $scores)->shouldBeCalled();
+
+        $this->add($queryParameters, $rows)->shouldHaveScoreProperties();
     }
 
     private function makeRow(int $id): Row
