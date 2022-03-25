@@ -1,11 +1,22 @@
+import {ProductType} from '../domain/Product.interface';
+
 const Router = require('pim/router');
 const DatagridState = require('pim/datagrid/state');
 const userContext = require('pim/user-context');
 
 const PRODUCT_GRID_QUALITY_SCORE_COLUMN = 'data_quality_insights_score';
 
+interface BuildFilterParams {
+  channelCode: string;
+  productType: ProductType;
+  familyCode?: string | null;
+  categoryId?: string | null;
+  rootCategoryId?: string | null;
+  keyIndicator?: string | null;
+}
+
 export const redirectToProductGridFilteredByFamily = (channelCode: string, localeCode: string, familyCode: string) => {
-  const gridFilters = buildFilters(channelCode, familyCode, null, null, null);
+  const gridFilters = buildFilters({channelCode, productType: 'product', familyCode});
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
@@ -15,7 +26,7 @@ export const redirectToProductGridFilteredByCategory = (
   categoryId: string,
   rootCategoryId: string
 ) => {
-  const gridFilters = buildFilters(channelCode, null, categoryId, rootCategoryId, null);
+  const gridFilters = buildFilters({channelCode, productType: 'product', categoryId, rootCategoryId});
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
@@ -23,35 +34,38 @@ export const redirectToProductGridFilteredByKeyIndicator = (
   keyIndicator: string,
   channelCode: string,
   localeCode: string,
-  familyCode: string | null,
-  categoryId: string | null,
-  rootCategoryId: string | null
+  productType: ProductType,
+  familyCode?: string | null,
+  categoryId?: string | null,
+  rootCategoryId?: string | null
 ) => {
-  const gridFilters = buildFilters(channelCode, familyCode, categoryId, rootCategoryId, keyIndicator);
+  const gridFilters = buildFilters({channelCode, productType, familyCode, categoryId, rootCategoryId, keyIndicator});
   redirectToFilteredProductGrid(channelCode, localeCode, gridFilters);
 };
 
-const buildFilters = (
-  channelCode: string,
-  familyCode: string | null,
-  categoryId: string | null,
-  rootCategoryId: string | null,
-  keyIndicator: string | null
-) => {
-  let filters = ['s[updated]=1', `f[scope][value]=${channelCode}`, 'f[entity_type][value]=product', 't=product-grid'];
-  if (familyCode) {
-    filters = filters.concat([`f[family][value][]=${familyCode}`, 'f[family][type]=in']);
-  }
-  if (keyIndicator) {
-    filters = filters.concat([`f[${keyIndicator}][value]=0`]);
-  }
-  filters = filters.concat([
+const buildFilters = ({
+  channelCode,
+  productType,
+  familyCode,
+  categoryId = null,
+  rootCategoryId = null,
+  keyIndicator,
+}: BuildFilterParams) => {
+  return [
+    's[updated]=1',
+    `f[scope][value]=${channelCode}`,
+    't=product-grid',
+    productType === 'product_model' && 'f[product_typology][value]=variant',
+    productType === 'product' && 'f[entity_type][value]=product',
+    familyCode && `f[family][value][]=${familyCode}`,
+    familyCode && 'f[family][type]=in',
+    keyIndicator && `f[${keyIndicator}][value]=0`,
     `f[category][value][treeId]=${rootCategoryId}`,
     `f[category][value][categoryId]=${categoryId}`,
     'f[category][type]=1',
-  ]);
-
-  return filters.join('&');
+  ]
+    .filter(Boolean)
+    .join('&');
 };
 
 const redirectToFilteredProductGrid = (

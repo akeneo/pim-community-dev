@@ -39,10 +39,6 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
 
         $productCategoryCodes = $this->getCategoryCodes->fromProductIdentifiers([$productIdentifier])[$productIdentifier->asString()] ?? null;
         if (null === $productCategoryCodes || [] === $productCategoryCodes) {
-            // null => product does not exist
-            // [] => product exists and has no category
-            // A new product without category is always granted (from a category permission point of view).
-            // TODO later: if we create/add with a category, we have to check the category is granted
             return;
         }
 

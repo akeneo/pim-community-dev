@@ -86,7 +86,7 @@ $rules = [
         // TIP-1021: Mass edit should not be linked to Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AbstractProcessor',
 
-        // TIP-907: Functionnal problem we should not create empty associations
+        // TIP-907: Functional problem we should not create empty associations
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
 
         // TIP-1011: Create a Versioning component
@@ -112,6 +112,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
     ])->in('Akeneo\Pim\Structure\Component'),
 ];
 

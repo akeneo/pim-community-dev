@@ -1,28 +1,64 @@
-type KeyIndicator = {
-  ratioGood: number;
+export type Counts = {
+  totalGood: number;
   totalToImprove: number;
   extraData?: KeyIndicatorExtraData;
 };
 
-type keyIndicatorMap = {
-  [keyIndicator: string]: KeyIndicator;
+export const makeCounts = (): Counts => ({
+  totalGood: 0,
+  totalToImprove: 0,
+});
+
+export type CountsByProductType = {
+  [entitityKind in 'products' | 'product_models']: Counts;
 };
 
-type Tip = {
+export const makeCountsByProductType = (): CountsByProductType => ({
+  products: makeCounts(),
+  product_models: makeCounts(),
+});
+
+export const areCountsZero = ({totalGood, totalToImprove}: Counts): boolean => totalGood === 0 && totalToImprove === 0;
+
+export const isCountsByProductType = (c: CountsByProductType | Counts): c is CountsByProductType => {
+  return c.hasOwnProperty('products') && c.hasOwnProperty('product_models');
+};
+
+export const areAllCountsZero = (c: CountsByProductType | Counts): boolean => {
+  if (isCountsByProductType(c)) {
+    return areCountsZero(c.products) && areCountsZero(c.product_models);
+  }
+  return areCountsZero(c);
+};
+
+export const keyIndicatorProducts = ['has_image', 'good_enrichment', 'values_perfect_spelling'] as const;
+export const keyIndicatorAttributes = ['attributes_perfect_spelling'] as const;
+export type KeyIndicatorProducts = typeof keyIndicatorProducts[number];
+export type KeyIndicatorAttributes = typeof keyIndicatorAttributes[number];
+
+export function isKeyIndicatorProducts(code: string): code is KeyIndicatorProducts {
+  return (keyIndicatorProducts as unknown as string[]).includes(code);
+}
+
+export type KeyIndicatorMap = {
+  [code in KeyIndicatorProducts]?: CountsByProductType;
+} & {
+  [code in KeyIndicatorAttributes]?: Counts;
+};
+
+export type Tip = {
   message: string;
   link?: string;
 };
 
-type KeyIndicatorTips = {
+export type KeyIndicatorTips = {
   [step: string]: Tip[];
 };
 
-type KeyIndicatorsTips = {
-  [keyIndicatorName: string]: KeyIndicatorTips;
+export type KeyIndicatorsTips = {
+  [keyIndicatorCode in string]: KeyIndicatorTips;
 };
 
-type KeyIndicatorExtraData = {
+export type KeyIndicatorExtraData = {
   impactedFamilies: string[];
 };
-
-export {KeyIndicator, keyIndicatorMap, Tip, KeyIndicatorTips, KeyIndicatorsTips, KeyIndicatorExtraData};

@@ -7,11 +7,15 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
@@ -54,6 +58,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             new SetBooleanValue('name', null, null, true),
             new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00")),
             new AddMultiSelectValue('name', null, null, ['optionA']),
+            new SetSimpleReferenceEntityValue('name', null, null, 'Akeneo'),
         ];
         $this->beConstructedWith(
             1,
@@ -92,12 +97,13 @@ class UpsertProductCommandSpec extends ObjectBehavior
     function it_can_be_constructed_with_field_user_intents()
     {
         $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
         $this->beConstructedWith(
             1,
             'identifier1',
             null,
             $familyUserIntent,
-            null,
+            $categoryUserIntent,
             null,
             null,
             null,
@@ -107,26 +113,58 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->userId()->shouldReturn(1);
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->valueUserIntents()->shouldReturn([]);
     }
 
     function it_can_be_constructed_from_a_collection_of_user_intents()
     {
         $familyUserIntent = new SetFamily('accessories');
+        $categoryUserIntent = new SetCategories(['master']);
         $setTextValue = new SetTextValue('name', null, null, 'foo');
         $setNumberValue = new SetNumberValue('name', null, null, '10');
         $setDateValue = new SetDateValue('name', null, null, new \DateTime("2022-03-04T09:35:24+00:00"));
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
+        $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
 
         $this->beConstructedThrough('createFromCollection', [
             10,
             'identifier1',
-            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue]
+            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue, $categoryUserIntent]
         ]);
 
         $this->userId()->shouldReturn(10);
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
-        $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue]);
+        $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
+        $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue]);
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_enabled_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetEnabled(true),
+                new SetEnabled(false),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_categories_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetCategories(['foo']),
+                new SetCategories(['bar']),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
