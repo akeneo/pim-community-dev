@@ -88,8 +88,8 @@ CSV;
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_ref_data_multi_select
 product_airguard;;1;a_family;;airguard
-product_braid;;1;a_family;;braid
 product_airguard_braid;;1;a_family;;airguard,braid
+product_braid;;1;a_family;;braid
 
 CSV;
 

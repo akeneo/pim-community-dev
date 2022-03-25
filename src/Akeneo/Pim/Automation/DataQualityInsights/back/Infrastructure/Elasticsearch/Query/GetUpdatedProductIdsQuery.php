@@ -8,6 +8,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,12 +18,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
 {
-    /** @var Client */
-    private $esClient;
-
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient, private Connection $connection)
     {
-        $this->esClient = $esClient;
     }
 
     public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
@@ -58,16 +57,16 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         $returnedProducts = 0;
 
         while (!empty($result['hits']['hits'])) {
-            $productIds = [];
+            $productUuids = [];
             $previousSearchAfter = $searchAfter;
             foreach ($result['hits']['hits'] as $product) {
-                $productIds[] = $this->formatProductId($product);
+                $productUuids[] = $this->extractUuid($product);
                 $searchAfter = $product['sort'] ?? $searchAfter;
             }
 
-            yield $productIds;
+            yield $this->findProductIdFromUuid($productUuids);
 
-            $returnedProducts += count($productIds);
+            $returnedProducts += count($productUuids);
             $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter
                 ? $this->searchAfter($searchQuery, $searchAfter)
                 : [];
@@ -92,6 +91,38 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         $productId =  intval(str_replace('product_', '', $productData['_source']['id']));
 
         return new ProductId($productId);
+    }
+
+    private function extractUuid(array $productData): UuidInterface
+    {
+        if (!isset($productData['_source']['id'])) {
+            throw new \Exception('No id not found in source when searching updated products');
+        }
+
+        return Uuid::fromString(str_replace('product_', '', $productData['_source']['id']));
+    }
+
+    /**
+     * @todo: remove this class when ProductId can accept a uuid
+     *
+     * @param UuidInterface[] $productUuids
+     * @return ProductId[]
+     */
+    private function findProductIdFromUuid(array $productUuids): array
+    {
+        if ([] === $productUuids) {
+            return [];
+        }
+
+        $sql = 'SELECT id FROM pim_catalog_product WHERE uuid IN (:product_uuids)';
+
+        $ids = $this->connection->executeQuery(
+            $sql,
+            ['product_uuids' => \array_map(fn (UuidInterface $uuid): string => $uuid->getBytes(), $productUuids)],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchFirstColumn();
+
+        return \array_map(fn ($id): ProductId => new ProductId((int) $id), $ids);
     }
 
     private function countUpdatedProducts(array $query): int

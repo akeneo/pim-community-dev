@@ -16,6 +16,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@database_connection'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductModelIdsQuery:
         arguments:

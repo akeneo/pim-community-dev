@@ -177,8 +177,8 @@ class ExportProductsIntegration extends AbstractExportTestCase
 
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
-apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
 apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
+apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
 apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
 
 CSV;

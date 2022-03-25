@@ -129,7 +129,7 @@ SQL;
         $result = [];
         foreach ($rows as $row) {
             $result[] = new CompletenessProductMask(
-                $row['id'],
+                (string) $row['id'],
                 $row['identifier'],
                 $row['familyCode'],
                 $this->getMask($row['cleanedRawValues'], $attributes)

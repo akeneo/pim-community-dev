@@ -178,16 +178,6 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $this->assertSame($expected, $products);
     }
 
-    protected function assertResultContains(CursorInterface $result, array $expected)
-    {
-        $products = [];
-        foreach ($result as $product) {
-            $products[] = $product->getIdentifier();
-        }
-
-        $this->assertEqualsCanonicalizing($expected, $products);
-    }
-
     protected function activateLocaleForChannel(string $localeCode, string $channelCode): void
     {
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);

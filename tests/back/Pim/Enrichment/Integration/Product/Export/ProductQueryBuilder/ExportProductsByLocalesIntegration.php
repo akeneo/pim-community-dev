@@ -120,10 +120,10 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;description-fr_FR;name-fr_FR
-french;;1;localized;;"French desc";"French name"
-english;;1;localized;;"French desc";
 complete;;1;localized;;"French desc";"French name"
 empty;;1;localized;;;
+english;;1;localized;;"French desc";
+french;;1;localized;;"French desc";"French name"
 withLocaleSpecificAttribute;;1;accessories;;;
 
 CSV;
@@ -145,10 +145,10 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;description-fr_FR;localeSpecificAttribute;name-en_US;name-fr_FR
-french;;1;localized;;"French desc";;;"French name"
-english;;1;localized;;"French desc";;"English name";
 complete;;1;localized;;"French desc";;"English name";"French name"
 empty;;1;localized;;;;;
+english;;1;localized;;"French desc";;"English name";
+french;;1;localized;;"French desc";;;"French name"
 withLocaleSpecificAttribute;;1;accessories;;;"Locale Specific Value";"English name";
 
 CSV;
@@ -174,8 +174,8 @@ CSV;
 
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;localeSpecificAttribute;name-en_US
-english;;1;localized;;;"English name"
 complete;;1;localized;;;"English name"
+english;;1;localized;;;"English name"
 withLocaleSpecificAttribute;;1;accessories;;"Locale Specific Value";"English name"
 
 CSV;

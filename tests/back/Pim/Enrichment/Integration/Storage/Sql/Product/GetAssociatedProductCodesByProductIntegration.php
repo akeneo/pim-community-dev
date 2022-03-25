@@ -30,9 +30,9 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
         }
 
         $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productB'], $query->getCodes($productA->getId(), $productAssociations['X_SELL']));
-        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getId(), $productAssociations['PACK']));
-        $this->assertSame([], $query->getCodes($productA->getId(), $productAssociations['UPSELL']));
+        $this->assertSame(['productB'], $query->getCodes($productA->getUuid(), $productAssociations['X_SELL']));
+        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getUuid(), $productAssociations['PACK']));
+        $this->assertSame([], $query->getCodes($productA->getUuid(), $productAssociations['UPSELL']));
     }
 
     /**

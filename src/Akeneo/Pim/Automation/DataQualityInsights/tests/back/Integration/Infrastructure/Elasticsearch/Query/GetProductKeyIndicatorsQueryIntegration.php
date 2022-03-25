@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -125,28 +126,28 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), false, false);
+        $this->updateProductKeyIndicators($product->getUuid(), false, false);
     }
 
     private function givenAProductWithPerfectEnrichmentAndImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), true, true);
+        $this->updateProductKeyIndicators($product->getUuid(), true, true);
     }
 
     private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), true, false);
+        $this->updateProductKeyIndicators($product->getUuid(), true, false);
     }
 
     private function givenAProductWithImageButMissingEnrichment(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
 
-        $this->updateProductKeyIndicators($product->getId(), false, true);
+        $this->updateProductKeyIndicators($product->getUuid(), false, true);
     }
 
     private function givenAProductVariantWithoutValues(string $parent, array $data = []): void
@@ -158,7 +159,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), false, false);
+        $this->updateProductKeyIndicators($productVariant->getUuid(), false, false);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentAndImage(string $parent, array $data = []): void
@@ -170,7 +171,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), true, true);
+        $this->updateProductKeyIndicators($productVariant->getUuid(), true, true);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage(string $parent, array $data = []): void
@@ -182,10 +183,10 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
             $data
         );
 
-        $this->updateProductKeyIndicators($productVariant->getId(), true, false);
+        $this->updateProductKeyIndicators($productVariant->getUuid(), true, false);
     }
 
-    private function updateProductKeyIndicators(int $productId, bool $goodEnrichment, bool $hasImage): void
+    private function updateProductKeyIndicators(UuidInterface $productUuid, bool $goodEnrichment, bool $hasImage): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -220,7 +221,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
                 ],
                 'query' => [
                     'term' => [
-                        'id' => sprintf('product_%d', $productId),
+                        'id' => sprintf('product_%s', $productUuid->toString()),
                     ],
                 ],
             ]

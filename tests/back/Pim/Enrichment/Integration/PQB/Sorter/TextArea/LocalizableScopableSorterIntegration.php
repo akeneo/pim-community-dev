@@ -84,18 +84,6 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         $this->assertOrder($result, ['dog', 'cattle', 'cat', 'empty_product']);
     }
 
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_localizable_scopable_text_area', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
-
-        $result = $this->executeSorter([['a_localizable_scopable_text_area', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
-    }
-
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(InvalidDirectionException::class);

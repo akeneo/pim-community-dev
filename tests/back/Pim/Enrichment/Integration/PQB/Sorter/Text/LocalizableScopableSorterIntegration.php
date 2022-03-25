@@ -113,9 +113,9 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     public function testSorterWithNoDataOnSorterField()
     {
         $result = $this->executeSorter([['a_localizable_scopable_text', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+        $this->assertOrder($result, ['empty_product', 'product_one', 'product_two']);
 
         $result = $this->executeSorter([['a_localizable_scopable_text', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+        $this->assertOrder($result, ['empty_product', 'product_one', 'product_two']);
     }
 }
