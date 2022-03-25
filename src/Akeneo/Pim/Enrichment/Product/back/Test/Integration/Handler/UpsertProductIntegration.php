@@ -11,16 +11,23 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
@@ -288,26 +295,7 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_clears_asset_collection_value(): void
     {
-        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
-
-        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
-            /** @phpstan-ignore-next-line */
-            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
-        );
-
-        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
-            /** @phpstan-ignore-next-line */
-            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
-        );
-
-        $this->createAttribute(
-            [
-                'code' => 'packshot_attr',
-                'type' => 'pim_catalog_asset_collection',
-                'group' => 'other',
-                'reference_data_name' => 'packshot',
-            ]
-        );
+        $this->loadAssetFixtures();
 
         $this->createProduct(
             'product_with_asset',
@@ -336,26 +324,8 @@ final class UpsertProductIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
 
-        /** @phpstan-ignore-next-line */
-        $createBrandCommand = new CreateReferenceEntityCommand('brand', []);
-        $validator = $this->get('validator');
-        $violations = $validator->validate($createBrandCommand);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
-            $createBrandCommand
-        );
-
-        /** @phpstan-ignore-next-line */
-        $createAkeneoRecord = new CreateRecordCommand('brand', 'Akeneo', []);
-        $violations = $validator->validate($createAkeneoRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createAkeneoRecord);
-
-        /** @phpstan-ignore-next-line */
-        $createOtherRecord = new CreateRecordCommand('brand', 'Other', []);
-        $violations = $validator->validate($createOtherRecord);
-        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
-        ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createOtherRecord);
+        $this->createReferenceEntity('brand');
+        $this->createRecords('brand', ['Akeneo', 'Other']);
 
         $this->createAttribute(
             [
@@ -563,12 +533,268 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
     }
 
+    /** @test */
+    public function it_successfully_creates_a_product_with_a_record()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo']);
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'),
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Akeneo');
+    }
+
+    /** @test */
+    public function it_successfully_sets_a_product_record_code()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy']);
+
+        $this->updateProduct(new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Akeneo');
+        $this->updateProduct(new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Ziggy'));
+        $this->assertProductHasCorrectValueByAttributeCode('a_reference_entity_attribute', 'Ziggy');
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_record_does_not_exist()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Property "a_reference_entity_attribute" expects a valid record code. The record "Unknown" does not exist');
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy']);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Unknown')]
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    public function it_updates_a_product_categories(): void
+    {
+        $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_category_doesnt_exist(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "toto, michel" categories do not exist');
+
+        $this->updateProduct(new SetCategories(['toto', 'michel']));
+    }
+
+    /** @test */
+    public function it_adds_categories_to_a_product(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'categoryC']));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+
+        Assert::assertEqualsCanonicalizing(['categoryA', 'categoryB', 'categoryC'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_trying_to_add_unexisting_category(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "unknown" category does not exist');
+
+        $this->updateProduct(new AddCategories(['categoryA', 'categoryB', 'unknown']));
+    }
+
+    /** @test */
+    public function it_removes_categories_of_a_product(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA', 'categoryB', 'categoryC'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->updateProduct(new RemoveCategories(['categoryA', 'categoryC']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['categoryB'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_throws_exception_when_trying_to_remove_unexisting_categories(): void
+    {
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['categoryA', 'categoryB'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "unknown" category does not exist');
+
+        $this->updateProduct(new RemoveCategories(['categoryA', 'unknown']));
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
         Assert::assertNotNull($user);
 
         return $user->getId();
+    }
+
+    /** @test */
+    public function it_creates_a_product_with_an_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetAssetValue('packshot_attr', null, null, ['packshot1'])
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1']);
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_an_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->updateProduct(new SetAssetValue('packshot_attr', null, null, ['packshot1']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1']);
+    }
+
+
+    /** @test */
+    public function it_updates_a_product_with_an_add_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1', 'packshot2']);
+
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['packshot2', 'packshot3']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot1', 'packshot2', 'packshot3']);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_asset_does_not_exist(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Please make sure the "toto" asset exists and belongs to the "packshot" asset family for the "packshot_attr" attribute.');
+
+        $this->updateProduct(new SetAssetValue('packshot_attr', null, null, ['toto']));
+        $this->updateProduct(new AddAssetValue('packshot_attr', null, null, ['toto']));
+    }
+
+    /** @test */
+    public function it_update_a_product_with_a_remove_asset_value(): void
+    {
+        $this->loadAssetFixtures();
+
+        $this->createProduct(
+            'identifier',
+            'other',
+            ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1', 'packshot2', 'packshot3']]]]
+        );
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $this->updateProduct(new RemoveAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2']));
+        $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot3']);
+    }
+
+    private function loadAssetFixtures(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+
+        ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])
+        );
+
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot1', ['en_US' => 'Packshot 1'])
+        );
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot2', ['en_US' => 'Packshot 2'])
+        );
+        ($this->get('akeneo_assetmanager.application.asset.create_asset_handler'))(
+        /** @phpstan-ignore-next-line */
+            new CreateAssetCommand('packshot', 'packshot3', ['en_US' => 'Packshot 3'])
+        );
+
+        $this->createAttribute(
+            [
+                'code' => 'packshot_attr',
+                'type' => 'pim_catalog_asset_collection',
+                'group' => 'other',
+                'reference_data_name' => 'packshot',
+            ]
+        );
     }
 
     private function assertProductHasCorrectValueByAttributeCode(string $attributeCode, mixed $expectedValue): void
@@ -670,5 +896,29 @@ final class UpsertProductIntegration extends TestCase
             throw new \InvalidArgumentException((string)$constraints);
         }
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
+    }
+
+    private function createReferenceEntity(string $referenceEntitycCode): void
+    {
+        /** @phpstan-ignore-next-line */
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntitycCode, []);
+        $validator = $this->get('validator');
+        $violations = $validator->validate($createReferenceEntityCommand);
+        Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+        ($this->get('akeneo_referenceentity.application.reference_entity.create_reference_entity_handler'))(
+            $createReferenceEntityCommand
+        );
+    }
+
+    private function createRecords(string $referenceEntitycCode, array $recordCodes): void
+    {
+        $validator = $this->get('validator');
+        foreach ($recordCodes as $recordCode) {
+            /** @phpstan-ignore-next-line */
+            $createRecord = new CreateRecordCommand($referenceEntitycCode, $recordCode, []);
+            $violations = $validator->validate($createRecord);
+            Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
+            ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);
+        }
     }
 }

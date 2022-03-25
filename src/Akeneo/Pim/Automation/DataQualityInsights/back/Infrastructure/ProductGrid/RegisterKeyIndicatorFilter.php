@@ -30,6 +30,7 @@ class RegisterKeyIndicatorFilter
         $this->filterLabel = $filterLabel;
     }
 
+    // TIP-1555: to remove later on with AddDraftStatusFilterToProductGridListener also
     public function buildBefore(BuildBefore $event): void
     {
         $datagridConfiguration = $event->getConfig();

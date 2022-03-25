@@ -9,6 +9,7 @@ import {
 import {useAttributeContext} from './AttributeContext';
 import {useRoute} from '@akeneo-pim-community/shared';
 import baseFetcher from '../fetchers/baseFetcher';
+import {ATTRIBUTE_OPTION_UPDATED, ATTRIBUTE_OPTION_DELETED} from '../model/Events';
 
 type AttributeOptionsState = {
   attributeOptions: AttributeOption[] | null;
@@ -49,7 +50,7 @@ const mergeAttributeOptionsEvaluation = (
 
   Object.entries(evaluation.options).forEach(([optionCode, optionEvaluation]) => {
     const optionIndex = attributeOptions.findIndex(
-      (attributeOption: AttributeOption) => attributeOption.code === optionCode
+      (attributeOption: AttributeOption) => attributeOption.code.toLowerCase() === optionCode.toLowerCase()
     );
     const attributeOptionToUpdate: AttributeOption | null = attributeOptions[optionIndex] ?? null;
     if (attributeOptionToUpdate) {
@@ -89,6 +90,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
 
       setAttributeOptions(newAttributeOptions);
       setIsSaving(false);
+      window.dispatchEvent(new CustomEvent(ATTRIBUTE_OPTION_UPDATED));
     },
     [attributeOptions, attributeOptionSaver]
   );
@@ -128,6 +130,7 @@ const AttributeOptionsContextProvider: FC<Props> = ({children, attributeOptionsQ
       newAttributeOptions.splice(index, 1);
       setAttributeOptions(newAttributeOptions);
       setIsSaving(false);
+      window.dispatchEvent(new CustomEvent(ATTRIBUTE_OPTION_DELETED));
     },
     [attributeOptions, attributeOptionDelete]
   );

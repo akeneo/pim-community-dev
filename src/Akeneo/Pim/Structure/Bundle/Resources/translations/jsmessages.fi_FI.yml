@@ -180,8 +180,8 @@ pim_enrich.entity.attribute:
     number_max: Max numero
     number_min: Min numero
     reference_data_name:
-      label: Referenssidatan tyyppi
-      choose: Valitse viite-datatyyppi
+      label: Viitetiedon (kustomoitu) tyyppi
+      choose: Valitse viitetiedon (kustomoitu) tyyppi
     scopable: Kanavakohtainen
     type:
       choose: Valitse attribuutin tyyppi
