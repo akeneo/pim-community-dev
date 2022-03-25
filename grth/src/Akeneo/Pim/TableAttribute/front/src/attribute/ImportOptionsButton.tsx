@@ -63,7 +63,7 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
             {attributes.map(attribute => {
               return (
                 <DropdownItem onClick={() => handleClick(attribute.code)} key={attribute.code}>
-                  <AttributeLabel>{attribute.label}</AttributeLabel>
+                  <AttributeLabel>{(attribute.label || `[${attribute.code}]`)}</AttributeLabel>
                   <OptionsCount>
                     {translate(
                       'pim_table_attribute.form.attribute.option_count',
