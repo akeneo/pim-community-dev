@@ -1,4 +1,4 @@
-Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException<?php
+<?php
 
 use Akeneo\CouplingDetector\Configuration\Configuration;
 use Akeneo\CouplingDetector\Configuration\DefaultFinder;
