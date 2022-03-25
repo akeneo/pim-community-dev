@@ -290,7 +290,6 @@ class Client
         return $this->client->bulk($params);
     }
 
-
     public function bulkUpdate($documentIds, $params)
     {
         $queries = [];
