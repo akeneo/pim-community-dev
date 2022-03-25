@@ -9,12 +9,14 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
@@ -378,5 +380,79 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             '__invoke',
             [$request, $clientId]
         );
+    }
+
+    public function it_updates_when_connected_app_already_exist(
+        UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        ConnectedPimUserProvider $connectedPimUserProvider,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+        FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
+    ): void {
+        $connectedPimUserId = 1;
+        $fosClientId = 2;
+        $clientId = 'a_client_id';
+        $appConfirmation = AppConfirmation::create('an_app_id', $connectedPimUserId, 'a_user_group', $fosClientId);
+
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $request->isXmlHttpRequest()->willReturn(true);
+
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
+        $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
+
+        $connectedApp = new ConnectedApp(
+            $clientId,
+            'App',
+            [],
+            'connectionCode_random',
+            'http://www.example.com/path/to/logo',
+            'author',
+            'userGroup_random',
+            [],
+            false,
+            'partner'
+        );
+
+        $findOneConnectedAppByIdQuery->execute($clientId)->willReturn($connectedApp);
+
+        $updateAppWithAuthorizationHandler->handle(
+            new UpdateAppWithAuthorizationCommand($clientId)
+        )->shouldBeCalledOnce();
+
+        $appAuthorization = AppAuthorization::createFromNormalized([
+            'client_id' => $clientId,
+            'authorization_scope' => 'read_catalog_structure write_categories',
+            'authentication_scope' => ScopeList::fromScopes([AuthenticationScope::SCOPE_OPENID])->toScopeString(),
+            'redirect_uri' => 'a_redirect_uri',
+            'state' => 'a state',
+        ]);
+
+        $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
+        $getAppConfirmationQuery->execute($clientId)->willReturn($appConfirmation);
+
+        $redirectUriWithAuthorizationCodeGenerator->generate(
+            $appAuthorization,
+            $appConfirmation,
+            $connectedPimUserId
+        )->willReturn('http://url.test');
+
+        $this->__invoke($request, $clientId);
     }
 }

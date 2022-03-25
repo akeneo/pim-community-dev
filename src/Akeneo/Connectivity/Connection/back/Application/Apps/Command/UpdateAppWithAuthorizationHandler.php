@@ -32,6 +32,7 @@ class UpdateAppWithAuthorizationHandler
         $appId = $command->getClientId();
 
         $appAuthorization = $this->session->getAppAuthorization($appId);
+
         if (null === $appAuthorization) {
             throw new \LogicException('AppAuthorization should exists in the session for the given app');
         }
