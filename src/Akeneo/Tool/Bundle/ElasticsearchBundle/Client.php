@@ -290,6 +290,24 @@ class Client
         return $this->client->bulk($params);
     }
 
+    public function bulkUpdate($documentIds, $params)
+    {
+        $queries = [];
+
+        foreach ($documentIds as $identifier) {
+            $queries['body'][] = [
+                'update' => [
+                    '_index' => $this->indexName,
+                    '_id' => $this->idPrefix.$identifier,
+                ],
+            ];
+
+            $queries['body'][] = $params[$identifier];
+        }
+
+        return $this->client->bulk($queries);
+    }
+
     /**
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_delete_an_index}
      */
