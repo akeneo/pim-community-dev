@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderOptionsReso
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\AttributeSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\SorterRegistryInterface;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -52,12 +51,18 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
         SearchQueryBuilder $searchQb,
-        FilterRegistryInterface $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $this->setQueryBuilder($searchQb);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $filterField->setQueryBuilder(Argument::any())->shouldBeCalled();
+
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $filterField->addFieldFilter(
             "entity_type",
@@ -275,12 +280,18 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        FilterRegistryInterface $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $this->setQueryBuilder($searchQb);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
+
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $this->execute()->shouldReturn($cursor);
     }
@@ -293,7 +304,8 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         SearchQueryBuilder $searchQb,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver,
         CursorInterface $cursor,
-        FieldFilterInterface $filterField
+        FieldFilterInterface $filterField,
+        FieldSorterInterface $sorter
     ) {
         $defaultContext = ['locale' => 'en_US', 'scope' => 'print', 'with_document_type_facet' => true];
         $this->beConstructedWith(
@@ -311,6 +323,10 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
         $searchQb->addFacet('document_type_facet', 'document_type')->shouldBeCalledOnce();
+
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $this->execute()->shouldReturn($cursor);
     }

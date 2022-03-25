@@ -59,7 +59,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         $admin->getUsername()->willReturn('admin');
         $authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')->willReturn(true);
 
-        $versionRepository->getNewestLogEntry(Argument::any(), 12)->willReturn($previousVersion);
+        $versionRepository->getNewestLogEntry(Argument::any(), 12, null)->willReturn($previousVersion);
         $previousVersion->getVersion()->willReturn(11);
         $previousVersion->getSnapshot()->willReturn(['foo' => 'bar']);
 

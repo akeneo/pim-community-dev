@@ -53,7 +53,9 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
@@ -67,6 +69,10 @@ class ProductQueryBuilderSpec extends ObjectBehavior
             "print",
             ["locale" => "en_US", "scope" => "print"]
         )->shouldBeCalled();
+
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $this->execute()->shouldReturn($cursor);
 
@@ -250,11 +256,17 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        $filterRegistry
+        FilterRegistryInterface $filterRegistry,
+        SorterRegistryInterface $sorterRegistry,
+        FieldSorterInterface $sorter
     ) {
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
         $searchQb->getQuery()->willReturn([]);
         $cursorFactory->createCursor(Argument::any(), [] )->shouldBeCalled()->willReturn($cursor);
+
+        $sorterRegistry->getFieldSorter('identifier')->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addFieldSorter('identifier', Argument::cetera())->willReturn($sorter);
 
         $this->execute()->shouldReturn($cursor);
     }
