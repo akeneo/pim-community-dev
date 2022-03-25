@@ -38,12 +38,12 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
             return;
         }
 
-        $formerRecordCodesAsString = array_map(
+        $formerRecordCodes = array_map(
             fn ($recordCode): string => (string) $recordCode,
             $formerRecordCodeCollection->getData()
         );
 
-        if ($userIntent->recordCodes() === array_diff($userIntent->recordCodes(), $formerRecordCodesAsString)) {
+        if ($userIntent->recordCodes() === array_diff($userIntent->recordCodes(), $formerRecordCodes)) {
             return;
         }
 
@@ -55,7 +55,7 @@ final class RemoveMultiReferenceEntityValueApplier implements UserIntentApplier
                         [
                             'locale' => $userIntent->localeCode(),
                             'scope' => $userIntent->channelCode(),
-                            'data' => \array_values(\array_unique(array_diff($formerRecordCodesAsString, $userIntent->recordCodes()))),
+                            'data' => \array_values(\array_unique(array_diff($formerRecordCodes, $userIntent->recordCodes()))),
                         ],
                     ],
                 ],

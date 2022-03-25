@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultiReferenceEntityVal
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
 {
@@ -61,6 +62,26 @@ class AddMultiReferenceEntityValueApplierSpec extends ObjectBehavior
                 ],
             ]
         )->shouldBeCalledOnce();
+
+        $this->apply($addMultiReferenceEntityValue, $product, 1);
+    }
+
+    function it_does_not_update_the_product_when_there_is_nothing_to_add(
+        ObjectUpdaterInterface $updater,
+        ProductInterface $product,
+        ValueInterface $formerRecordCodes
+    ) {
+        $addMultiReferenceEntityValue = new AddMultiReferenceEntityValue(
+            'code',
+            null,
+            null,
+            ['Ziggy', 'Akeneo']
+        );
+
+        $product->getValue('code', null, null)->shouldBeCalled()->willReturn($formerRecordCodes);
+        $formerRecordCodes->getData()->willReturn(['Akeneo', 'Ziggy']);
+
+        $updater->update(Argument::any())->shouldNotBeCalled();
 
         $this->apply($addMultiReferenceEntityValue, $product, 1);
     }
