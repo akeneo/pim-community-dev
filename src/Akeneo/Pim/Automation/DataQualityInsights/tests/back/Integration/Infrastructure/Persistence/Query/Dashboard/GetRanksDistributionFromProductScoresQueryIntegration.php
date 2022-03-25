@@ -16,6 +16,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCase
 {
@@ -166,10 +168,12 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
         $productIdentifiers = [];
         for ($i = 0; $i < $nbProducts; $i++) {
             $productId = $createProduct();
+            $productUuid = $this->getProductUuidFromId($productId->toInt());
             $productIdentifiers[] = 'product_' . $productId;
 
             $this->get('database_connection')->executeQuery(
-                "DELETE FROM pim_data_quality_insights_product_score WHERE product_id = $productId"
+                "DELETE FROM pim_data_quality_insights_product_score WHERE product_uuid = ?",
+                [$productUuid->getBytes()]
             );
 
             $this->productScoreRepository->saveAll([
@@ -248,5 +252,12 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     private function getRateFromRank(int $rank): Rate
     {
         return new Rate(100 - $rank*10);
+    }
+
+    private function getProductUuidFromId(int $productId): UuidInterface
+    {
+        return Uuid::fromString($this->get('database_connection')->fetchOne(
+            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = ?', [$productId]
+        ));
     }
 }

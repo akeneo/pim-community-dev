@@ -43,7 +43,7 @@ SELECT product_identifier, JSON_ARRAYAGG(category_codes) as category_codes
 FROM (
          SELECT product.identifier as product_identifier, category.code as category_codes
          FROM pim_catalog_product product
-                INNER JOIN pim_catalog_category_product category_product ON product.id = category_product.product_id
+                INNER JOIN pim_catalog_category_product category_product ON product.uuid = category_product.product_uuid
                 INNER JOIN pim_catalog_category category ON category.id = category_product.category_id
          WHERE product.identifier IN (?)
        UNION ALL

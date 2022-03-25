@@ -89,7 +89,7 @@ SQL;
               (
                 SELECT DISTINCT product.identifier, completeness.locale_id, completeness.channel_id, completeness.missing_count as product_missing_count
                 %s
-                INNER JOIN pim_catalog_completeness completeness ON product.id = completeness.product_id
+                INNER JOIN pim_catalog_completeness completeness ON product.uuid = completeness.product_uuid
                 WHERE
                     root_product_model.id = :root_product_model_id
               ) AS product

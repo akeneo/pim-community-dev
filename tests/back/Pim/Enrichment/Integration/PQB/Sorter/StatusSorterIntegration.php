@@ -29,14 +29,14 @@ class StatusSorterIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testSortDescendant()
     {
-        $result = $this->executeSorter([['enabled', Directions::DESCENDING]]);
-        $this->assertOrder($result, ['bar', 'foobar', 'foobaz', 'foo', 'baz']);
+        $result = $this->executeSorter([['enabled', Directions::DESCENDING], ['identifier', Directions::ASCENDING]]);
+        $this->assertOrder($result, ['bar', 'foobar', 'foobaz', 'baz', 'foo']);
     }
 
     public function testSortAscendant()
     {
-        $result = $this->executeSorter([['enabled', Directions::ASCENDING]]);
-        $this->assertOrder($result, ['foo', 'baz', 'bar', 'foobar', 'foobaz']);
+        $result = $this->executeSorter([['enabled', Directions::ASCENDING], ['identifier', Directions::ASCENDING]]);
+        $this->assertOrder($result, ['baz', 'foo', 'bar', 'foobar', 'foobaz']);
     }
 
     public function testErrorOperatorNotSupported()
