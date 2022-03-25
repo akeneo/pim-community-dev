@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
@@ -40,11 +41,11 @@ class DataQualityInsightsTestCase extends TestCase
         return Uuid::uuid4()->toString();
     }
 
-    protected function deleteProductCriterionEvaluations(int $productId): void
+    protected function deleteProductCriterionEvaluations(UuidInterface $productUuid): void
     {
         $this->get('database_connection')->executeQuery(
-            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_id = :productId',
-            ['productId' => $productId]
+            'DELETE FROM pim_data_quality_insights_product_criteria_evaluation WHERE product_uuid = :productUuid',
+            ['productUuid' => $productUuid->getBytes()]
         );
     }
 
@@ -84,7 +85,7 @@ class DataQualityInsightsTestCase extends TestCase
     protected function createProductWithoutEvaluations(string $identifier, array $data = []): ProductInterface
     {
         $product = $this->createProduct($identifier, $data);
-        $this->deleteProductCriterionEvaluations($product->getId());
+        $this->deleteProductCriterionEvaluations($product->getUuid());
 
         return $product;
     }

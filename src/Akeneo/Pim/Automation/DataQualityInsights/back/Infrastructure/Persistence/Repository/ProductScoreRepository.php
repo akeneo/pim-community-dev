@@ -63,8 +63,9 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             $scores = sprintf('scores_%d', $index);
 
             $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores)
+SELECT uuid, :$evaluatedAt, :$scores
+FROM pim_catalog_product WHERE id = :$productId
 ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
 SQL;
             $queriesParameters[$productId] = $productScore->getProductId()->toInt();

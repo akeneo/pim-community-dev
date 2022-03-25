@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Number;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -85,9 +86,9 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
     public function testSorterWithNoDataOnSorterField()
     {
         $result = $this->executeSorter([['a_scopable_number', Directions::DESCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+        $this->assertResultContains($result, ['empty_product', 'product_two', 'product_one']);
 
         $result = $this->executeSorter([['a_scopable_number', Directions::ASCENDING, ['scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+        $this->assertResultContains($result, ['product_one', 'empty_product', 'product_two']);
     }
 }

@@ -87,9 +87,9 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     public function testSorterWithNoDataOnSorterField()
     {
         $result = $this->executeSorter([['a_localizable_metric', Directions::DESCENDING, ['locale' => 'de_DE']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
+        $this->assertResultContains($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
 
         $result = $this->executeSorter([['a_localizable_metric', Directions::ASCENDING, ['locale' => 'de_DE']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
+        $this->assertResultContains($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
     }
 }

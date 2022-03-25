@@ -53,7 +53,7 @@ SELECT
        evaluation.evaluated_at,
        evaluation.result
 FROM $criterionEvaluationTable AS evaluation
-    JOIN pim_catalog_product product ON product.uuid = evaluation.uuid
+    JOIN pim_catalog_product product ON product.uuid = evaluation.product_uuid
 WHERE product.id = :product_id
 SQL;
         } else {
