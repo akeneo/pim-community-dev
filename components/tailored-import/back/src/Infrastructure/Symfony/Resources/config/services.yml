@@ -13,3 +13,6 @@ services:
                 xlsx_tailored_product_import: pim-job-instance-xlsx-tailored-product-import
         tags:
             - { name: pim_enrich.provider.form }
+
+    akeneo.tailored_import.domain.get_sample_data.select_sample_data:
+        class: Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleData

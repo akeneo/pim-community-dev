@@ -53,7 +53,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function readRows(?string $sheetName, int $start, int $length): array
+    public function readRows(?string $sheetName, int $start, ?int $length = null): array
     {
         $rows = [];
         $sheet = $this->selectSheet($sheetName);
@@ -64,7 +64,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
                 $rows[] = $this->cellsFormatter->formatCells($row->toArray());
             }
 
-            if ($index + 1 === $start + $length) {
+            if (null !== $length && $index + 1 === $start + $length) {
                 break;
             }
         }
@@ -72,6 +72,13 @@ class XlsxFileReader implements XlsxFileReaderInterface
         $rows = $this->removeTrailingEmptyRows($rows);
 
         return $this->padRowsToTheLongestRow($rows);
+    }
+
+    public function readColumnValues(?string $sheetName, int $productLine, int $columnIndex): array
+    {
+        $values = [];
+        $rows = $this->readRows($sheetName, $productLine);
+        return array_map(static fn (array $row) => $row[$columnIndex], $rows);
     }
 
     public function getSheetNames(): array

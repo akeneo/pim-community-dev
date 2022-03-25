@@ -28,3 +28,11 @@ services:
       - '@akeneo.tailored_import.handler.get_file_template_information_handler'
       - '@validator'
       - '@serializer'
+
+  akeneo.tailored_import.controller.get_sample_data_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetSampleDataAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.get_sample_data_handler'
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+      - '@akeneo.tailored_import.query.get_job_configuration'
