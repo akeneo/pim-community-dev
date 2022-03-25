@@ -48,60 +48,6 @@ class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_attrib
         $this->assertTrue($this->attributeExists('an_fabrics_reference_data_attribute'));
     }
 
-    /**
-     * @test
-     */
-    public function it_does_not_remove_asset_reference_data_attribute_used_in_product()
-    {
-        $this->createReferenceDataAttribute('an_asset_reference_data_attribute', 'assets', false, false);
-        $this->createReferenceDataAttribute('an_localized_asset_reference_data_attribute', 'assets', false, false);
-
-        $this->assertTrue($this->attributeExists('an_asset_reference_data_attribute'));
-        $this->assertTrue($this->attributeExists('an_localized_asset_reference_data_attribute'));
-
-        $this->createProduct('a_product');
-        $this->updateProduct('a_product', 'an_asset_reference_data_attribute', null, null, 'a value');
-        $this->updateProduct('a_product', 'an_localized_asset_reference_data_attribute', 'ecommerce', 'en_US', 'another value');
-
-        $this->reExecuteMigration(self::MIGRATION_LABEL);
-
-        $this->assertTrue($this->attributeExists('an_asset_reference_data_attribute'));
-        $this->assertTrue($this->attributeExists('an_localized_asset_reference_data_attribute'));
-    }
-
-    private function createProduct(string $identifier)
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.saver.product')->save($product);
-    }
-
-    private function updateProduct(
-        string $productIdentifier,
-        string $attributeCode,
-        ?string $channel,
-        ?string $locale,
-        string $value
-    ): void {
-        $channelReference = $channel ?? '<all_channels>';
-        $localeReference = $locale ?? '<all_locales>';
-        $sql = <<<SQL
-            UPDATE pim_catalog_product
-            SET raw_values = JSON_SET(
-               raw_values,
-               "$.$attributeCode",
-               JSON_OBJECT("$channelReference", JSON_OBJECT("$localeReference", JSON_ARRAY($value))
-           )
-            WHERE identifier = :product_identifier
-        SQL;
-
-        $this->getConnection()->executeStatement($sql, [
-            'product_identifier' => $productIdentifier,
-        ]);
-
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($productIdentifier);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-    }
-
     private function createReferenceDataAttribute(string $attributeCode, string $referenceDataName, bool $isScopable, bool $isLocalizable): void
     {
         $sql = <<<SQL
