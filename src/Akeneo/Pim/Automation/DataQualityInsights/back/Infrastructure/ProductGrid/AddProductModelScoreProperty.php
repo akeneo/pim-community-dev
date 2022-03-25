@@ -34,7 +34,7 @@ final class AddProductModelScoreProperty implements AddAdditionalProductModelPro
             return [];
         }
 
-        $allScores = $this->fetchAllScores($queryParameters, $rows);
+        $allScores = $this->fetchAllScores($rows);
 
         $channel = new ChannelCode($queryParameters->channelCode());
         $locale = new LocaleCode($queryParameters->localeCode());
@@ -46,7 +46,7 @@ final class AddProductModelScoreProperty implements AddAdditionalProductModelPro
      * @param Row[] $rows
      * @return ChannelLocaleRateCollection[]
      */
-    private function fetchAllScores(FetchProductAndProductModelRowsParameters $queryParameters, array $rows): array
+    private function fetchAllScores(array $rows): array
     {
         $productIds = [];
         foreach ($rows as $row) {
