@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
 # 6.0.18 (2022-03-24)
 
 # 6.0.17 (2022-03-24)
