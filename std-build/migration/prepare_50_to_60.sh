@@ -43,8 +43,8 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
 # First of all, removing potential deprecated migration scripts
+mkdir -p $STANDARD_DISTRIB_DIR/upgrades/schema
 rm -f $STANDARD_DISTRIB_DIR/upgrades/schema/*
-mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
 cp -r $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
 printf "Done. \n"
