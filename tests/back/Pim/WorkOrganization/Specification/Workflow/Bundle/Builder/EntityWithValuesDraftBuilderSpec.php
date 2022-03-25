@@ -12,14 +12,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Builder\EntityWithValuesDraftBuilder;
-use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\ProductDraftFactory;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Factory\EntityWithValuesDraftFactory;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\DraftSource;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
@@ -28,7 +30,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         GetAttributes $getAttributes,
-        ProductDraftFactory $factory,
+        EntityWithValuesDraftFactory $factory,
         EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
         WriteValueCollectionFactory $valueCollectionFactory,
         ValueFactory $valueFactory
@@ -428,5 +430,85 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
 
         $this->build($variantProduct, $draftSource)->shouldReturn($productDraft);
+    }
+
+    function it_builds_a_draft_with_removed_value(
+        WriteValueCollectionFactory $valueCollectionFactory,
+        ComparatorRegistry $comparatorRegistry,
+        EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
+        NormalizerInterface $normalizer,
+        GetAttributes $getAttributes,
+        ValueFactory $valueFactory,
+        ProductInterface $product,
+        EntityWithValuesDraftInterface $productDraft,
+        ComparatorInterface $textComparator,
+    ) : void {
+        $newValues = new WriteValueCollection([
+            ScalarValue::localizableValue('name', 'mon_produit', 'fr_FR'),
+        ]);
+        $product->getValuesForVariation()->willReturn($newValues);
+        $normalizer->normalize($newValues, 'standard')->willReturn([
+            'name' => [
+                [
+                    'scope' => null,
+                    'locale' => 'fr_FR',
+                    'data' => 'mon_produit'
+                ]
+            ]
+        ]);
+
+        $rawValues = [
+            'name' => [
+                [
+                    'scope' => null,
+                    'locale' => 'en_US',
+                    'data' => 'my_product'
+                ]
+            ]
+        ];
+        $product->getRawValues()->willReturn($rawValues);
+        $formerValues = new WriteValueCollection([
+            ScalarValue::localizableValue('name', 'my_product', 'en_US'),
+        ]);
+        $valueCollectionFactory->createFromStorageFormat($rawValues)->willReturn($formerValues);
+        $normalizer->normalize($formerValues, 'standard')->willReturn($rawValues);
+
+        $textAttribute = new Attribute('name', 'text', [], true, false, null, null, false, 'text', []);
+        $getAttributes->forCode('name')->shouldBeCalled()->willReturn($textAttribute);
+        $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
+        $textComparator->compare(
+            ['data' => 'mon_produit', 'locale' => 'fr_FR', 'scope' => null],
+            []
+        )
+            ->shouldBeCalled()
+            ->willReturn(['data' => 'mon_produit', 'locale' => 'fr_FR', 'scope' => null]);
+
+        $textComparator->compare(
+            ['data' => null, 'locale' => 'en_US', 'scope' => null],
+            ['data' => 'my_product', 'locale' => 'en_US', 'scope' => null]
+        )
+            ->shouldBeCalled()
+            ->willReturn(['data' => null, 'locale' => 'en_US', 'scope' => null]);
+
+        $valueFactory->createByCheckingData($textAttribute, null, 'fr_FR', 'mon_produit')
+            ->shouldBeCalled()
+            ->willReturn(ScalarValue::localizableValue('name', 'mon_produit', 'fr_FR'));
+
+        $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
+        $productDraft->setValues(Argument::type(WriteValueCollection::class))->shouldBeCalled();
+        $productDraft->setChanges([
+            'values' => [
+                'name' => [
+                    ['data' => 'mon_produit', 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => null, 'locale' => 'en_US', 'scope' => null],
+                ]
+            ]
+        ])->shouldBeCalled()->willReturn($productDraft);
+        $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
+
+        $draftSource = new DraftSource('pim', 'PIM', 'mary', 'Mary Smith');
+
+
+        $this->build($product, $draftSource)->shouldReturn($productDraft);
     }
 }

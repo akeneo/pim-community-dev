@@ -48,6 +48,7 @@ cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/../pim-community-dev/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
+cp -R $DEV_DISTRIB_DIR/grth/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 
 #cp $DEV_DISTRIB_DIR/std-build/upgrade/50_to_60/* $STANDARD_DISTRIB_DIR/
 
