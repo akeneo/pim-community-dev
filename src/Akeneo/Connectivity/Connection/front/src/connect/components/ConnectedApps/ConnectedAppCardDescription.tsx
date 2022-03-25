@@ -68,7 +68,7 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
         return null;
     }
 
-    if (false === connectedApp.is_test_app && false === connectedApp.is_listed_on_the_appstore) {
+    if (false === connectedApp.is_listed_on_the_appstore && false === connectedApp.is_test_app) {
         const message = translate(
             'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
         );
