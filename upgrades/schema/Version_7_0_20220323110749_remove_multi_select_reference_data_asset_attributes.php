@@ -15,8 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_attributes extends AbstractMigration implements ContainerAwareInterface
 {
     private ?ContainerInterface $container;
-    private NativeClient $nativeClient;
-    private string $indexName;
+    private ?NativeClient $nativeClient = null;
     private LoggerInterface $logger;
 
     public function __construct(Connection $connection, LoggerInterface $logger)
@@ -28,14 +27,8 @@ final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_
 
     public function up(Schema $schema): void
     {
-        $indexHosts = $this->container->getParameter('index_hosts');
-        $clientBuilder = $this->container->get('akeneo_elasticsearch.client_builder')->setHosts([$indexHosts]);
-        $this->nativeClient = $clientBuilder->build();
-        $this->indexName = $this->container->getParameter('product_and_product_model_index_name');
-
-        $assetReferenceDataAttributes =$this->getAssetReferenceDataAttributes();
-
         $attributeCodeToDelete = [];
+        $assetReferenceDataAttributes = $this->getAssetReferenceDataAttributes();
 
         foreach ($assetReferenceDataAttributes as $assetReferenceDataAttribute) {
             $count = $this->countProductWithValueSetForAttribute($assetReferenceDataAttribute['code']);
@@ -72,6 +65,7 @@ final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_
         $sql = <<<SQL
             SELECT code, properties FROM pim_catalog_attribute WHERE attribute_type = 'pim_reference_data_multiselect';
         SQL;
+
         $attributes = $this->connection->fetchAllAssociative($sql);
 
         return array_filter($attributes, function (array $attribute) {
@@ -83,8 +77,10 @@ final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_
 
     private function countProductWithValueSetForAttribute(string $code): int
     {
+        $indexName = $this->container->getParameter('product_and_product_model_index_name');
+
         $request = [
-            'index' => $this->indexName,
+            'index' => $indexName,
             'body' => [
                 'query' => [
                     'constant_score' => [
@@ -104,7 +100,7 @@ final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_
             ],
         ];
 
-        $result = $this->nativeClient->count($request);
+        $result = $this->getClient()->count($request);
 
         return (int) $result['count'];
     }
@@ -125,5 +121,16 @@ final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_
                 ['attribute_codes' => $attributeCodeToDelete],
                 ['attribute_codes' => Connection::PARAM_STR_ARRAY],
             );
+    }
+
+    private function getClient(): NativeClient
+    {
+        if (!$this->nativeClient) {
+            $indexHosts = $this->container->getParameter('index_hosts');
+            $clientBuilder = $this->container->get('akeneo_elasticsearch.client_builder')->setHosts([$indexHosts]);
+            $this->nativeClient = $clientBuilder->build();
+        }
+
+        return $this->nativeClient;
     }
 }

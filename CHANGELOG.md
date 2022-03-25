@@ -24,6 +24,7 @@
 - PIM-10346: Fix spellcheck badge not displayed on attribute options
 - PIM-10340: Fix uncaught exception when creating the same asset twice in parrallel
 - PIM-10363: Fix add association rule updater
+- PIM-10341: Fix unable to delete reference data multi select attribute
 
 ## Improvements
 
