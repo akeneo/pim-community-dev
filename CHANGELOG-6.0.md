@@ -1,5 +1,19 @@
 # 6.0.x
 
+# 6.0.18 (2022-03-24)
+
+# 6.0.17 (2022-03-24)
+
+# 6.0.16 (2022-03-24)
+
+## Bug fixes
+- PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
+- PIM-10321: [Backport PIM-10241] Fix user account disabled can connect regression
+
+# 6.0.15 (2022-03-23)
+
+# 6.0.14 (2022-03-22)
+
 # 6.0.13 (2022-03-18)
 
 # 6.0.12 (2022-03-17)
