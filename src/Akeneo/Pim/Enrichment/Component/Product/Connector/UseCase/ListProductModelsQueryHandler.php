@@ -23,37 +23,15 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class ListProductModelsQueryHandler
 {
-    /** @var ApplyProductSearchQueryParametersToPQB */
-    private $applyProductSearchQueryParametersToPQB;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $fromSizePqbFactory;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $searchAfterPqbFactory;
-
-    /** @var GetConnectorProductModels */
-    private $getConnectorProductModelsQuery;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
-
-    private FindId $getProductModelId;
-
     public function __construct(
-        ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
-        ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
-        ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
-        GetConnectorProductModels $getConnectorProductModelsQuery,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        FindId $getProductModelId
+        private ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
+        private ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        private ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
+        private GetConnectorProductModels $getConnectorProductModelsQuery,
+        private IdentifiableObjectRepositoryInterface $channelRepository,
+        private FindId $getProductModelId,
+        private GetProductModelsWithQualityScoresInterface $getProductModelsWithQualityScores
     ) {
-        $this->applyProductSearchQueryParametersToPQB = $applyProductSearchQueryParametersToPQB;
-        $this->fromSizePqbFactory = $fromSizePqbFactory;
-        $this->searchAfterPqbFactory = $searchAfterPqbFactory;
-        $this->getConnectorProductModelsQuery = $getConnectorProductModelsQuery;
-        $this->channelRepository = $channelRepository;
-        $this->getProductModelId = $getProductModelId;
     }
 
     public function handle(ListProductModelsQuery $query): ConnectorProductModelList
@@ -80,14 +58,25 @@ class ListProductModelsQueryHandler
 
         $pqb->addSorter('identifier', Directions::ASCENDING);
 
+        $locales = $this->getLocales($query->channelCode, $query->localeCodes);
 
-        return $this->getConnectorProductModelsQuery->fromProductQueryBuilder(
+        $productModelList = $this->getConnectorProductModelsQuery->fromProductQueryBuilder(
             $pqb,
             $query->userId,
             $query->attributeCodes,
             $query->channelCode,
-            $this->getLocales($query->channelCode, $query->localeCodes)
+            $locales
         );
+
+        if ($query->withQualityScores()) {
+            $productModelList = $this->getProductModelsWithQualityScores->fromConnectorProductModelList(
+                $productModelList,
+                $query->channelCode,
+                $locales ?? []
+            );
+        }
+
+        return $productModelList;
     }
 
     private function getSearchPQB(ListProductModelsQuery $query): ProductQueryBuilderInterface

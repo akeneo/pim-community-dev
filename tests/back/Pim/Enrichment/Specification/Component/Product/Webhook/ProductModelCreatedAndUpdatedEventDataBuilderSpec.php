@@ -188,7 +188,8 @@ class ProductModelCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null
         );
     }
 }

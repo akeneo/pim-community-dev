@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -23,31 +23,28 @@ use Webmozart\Assert\Assert;
  */
 final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQueryInterface
 {
-    private Client $esClient;
-
-    private CategoryRepositoryInterface $categoryRepository;
-
-    public function __construct(Client $esClient, CategoryRepositoryInterface $categoryRepository)
-    {
-        $this->esClient = $esClient;
-        $this->categoryRepository = $categoryRepository;
+    public function __construct(
+        private Client $esClient,
+        private CategoryRepositoryInterface $categoryRepository,
+        private string $documentType
+    ) {
     }
 
-    public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function all(ChannelCode $channelCode, LocaleCode $localeCode, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes);
     }
 
-    public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
-        $terms = [['term' => ['family.code' => strval($family)]]];
+        $terms = [['term' => ['family.code' => (string)$family]]];
 
         return $this->executeQuery($channelCode, $localeCode, $keyIndicatorCodes, $terms);
     }
 
-    public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode... $keyIndicatorCodes): array
+    public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category, KeyIndicatorCode ...$keyIndicatorCodes): array
     {
-        $categoryCode = strval($category);
+        $categoryCode = (string)$category;
         $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
         $categoryChildren = $category instanceof CategoryInterface ? $this->categoryRepository->getAllChildrenCodes($category) : [];
 
@@ -66,15 +63,21 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
             'bool' => [
                 'must' => array_merge([[
                     'term' => [
-                        'document_type' => ProductInterface::class
+                        'document_type' => $this->documentType
                     ],
                 ]], $extraTerms),
             ],
         ];
 
+        if ($this->documentType === ProductModelInterface::class) {
+            // here we do not want to consider product_model which are child of another product model (aka "submodels")
+            // this is to be consistent with the product grid in front
+            $query['bool']['must_not'] = ["exists" => ['field' => 'parent']];
+        }
+
         $aggregations = [];
         foreach ($keyIndicatorCodes as $keyIndicatorCode) {
-            $aggregations[strval($keyIndicatorCode)]['terms']['field'] = sprintf(
+            $aggregations[(string)$keyIndicatorCode]['terms']['field'] = sprintf(
                 'data_quality_insights.key_indicators.%s.%s.%s',
                 $channelCode,
                 $localeCode,
@@ -113,9 +116,9 @@ final class GetProductKeyIndicatorsQuery implements GetProductKeyIndicatorsQuery
             $keyIndicatorValue = $bucket['key'] ?? null;
 
             if (1 === $keyIndicatorValue) {
-                $totalGood = intval($bucket['doc_count'] ?? 0);
+                $totalGood = (int)($bucket['doc_count'] ?? 0);
             } elseif (0 === $keyIndicatorValue) {
-                $totalToImprove = intval($bucket['doc_count'] ?? 0);
+                $totalToImprove = (int)($bucket['doc_count'] ?? 0);
             }
         }
 

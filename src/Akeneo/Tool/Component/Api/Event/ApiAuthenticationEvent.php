@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Tool\Bundle\ApiBundle\EventSubscriber;
+namespace Akeneo\Tool\Component\Api\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 

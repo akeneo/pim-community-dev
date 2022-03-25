@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnSave\ApiAggregat
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelCommand;
 use Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQueryHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ListProductModelsQueryValidator;
@@ -85,6 +86,7 @@ class ProductModelController
     private SecurityFacade $security;
     private RemoveProductModelHandler $removeProductModelHandler;
     private ValidatorInterface $validator;
+    private GetProductModelsWithQualityScoresInterface $getProductModelsWithQualityScores;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -113,7 +115,8 @@ class ProductModelController
         LoggerInterface $apiProductAclLogger,
         SecurityFacade $security,
         RemoveProductModelHandler $removeProductModelHandler,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        GetProductModelsWithQualityScoresInterface $getProductModelsWithQualityScores
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
@@ -142,16 +145,18 @@ class ProductModelController
         $this->security = $security;
         $this->removeProductModelHandler = $removeProductModelHandler;
         $this->validator = $validator;
+        $this->getProductModelsWithQualityScores = $getProductModelsWithQualityScores;
     }
 
     /**
+     * @param Request $request
      * @param string $code
      *
      * @throws NotFoundHttpException
      *
      * @return JsonResponse
      */
-    public function getAction(string $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
 
@@ -160,6 +165,10 @@ class ProductModelController
             Assert::isInstanceOf($user, UserInterface::class);
 
             $productModel = $this->getConnectorProductModels->fromProductModelCode($code, $user->getId());
+
+            if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
+                $productModel = $this->getProductModelsWithQualityScores->fromConnectorProductModel($productModel);
+            }
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product model "%s" does not exist or you do not have permission to access it.', $code));
         }
@@ -310,6 +319,7 @@ class ProductModelController
         $query->searchChannelCode = $request->query->get('search_scope', null);
         $query->searchAfter = $request->query->get('search_after', null);
         $query->userId = $user->getId();
+        $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
 
         try {
             $this->listProductModelsQueryValidator->validate($query);
