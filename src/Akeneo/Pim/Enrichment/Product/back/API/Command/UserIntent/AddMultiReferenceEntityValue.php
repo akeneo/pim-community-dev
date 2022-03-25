@@ -10,20 +10,19 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SetMultiSelectValue implements ValueUserIntent
+final class AddMultiReferenceEntityValue implements ValueUserIntent
 {
     /**
-     * @param array<string> $values
+     * @param array<string> $recordCodes
      */
     public function __construct(
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private array $values
+        private array $recordCodes
     ) {
-        Assert::notEmpty($values);
-        Assert::allString($values);
-        Assert::allStringNotEmpty($values);
+        Assert::notEmpty($recordCodes);
+        Assert::allStringNotEmpty($recordCodes);
     }
 
     public function attributeCode(): string
@@ -44,8 +43,8 @@ final class SetMultiSelectValue implements ValueUserIntent
     /**
      * @return array<string>
      */
-    public function values(): array
+    public function recordCodes(): array
     {
-        return $this->values;
+        return $this->recordCodes;
     }
 }
