@@ -56,7 +56,6 @@ $rules = [
         'Psr\Log\LoggerInterface',
         'Ramsey\Uuid\Uuid',
         'Symfony\Component',
-        'Symfony\Contracts',
         'Webmozart\Assert\Assert',
 
         // TODO: Remove when MigrationPam folder is removed (RAB-521)
