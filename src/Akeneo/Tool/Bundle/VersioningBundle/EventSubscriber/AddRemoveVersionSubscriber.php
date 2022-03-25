@@ -86,13 +86,14 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
             $author = $token->getUser()->getUsername();
         }
 
+        $resourceId = method_exists($subject, 'getUuid') ? null : ($subject->getId() ?? $event->getSubjectId());
+        $resourceUuid = method_exists($subject, 'getUuid') ? $subject->getUuid() : null;
         $previousVersion = $this->versionRepository->getNewestLogEntry(
             ClassUtils::getClass($subject),
-            $event->getSubjectId()
+            $resourceId,
+            $resourceUuid
         );
 
-        $resourceId = method_exists($subject, 'getUuid') ? null : $subject->getId();
-        $resourceUuid = method_exists($subject, 'getUuid') ? $subject->getUuid() : null;
         $version = $this->versionFactory->create(
             ClassUtils::getClass($subject),
             $resourceId,

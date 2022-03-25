@@ -86,6 +86,9 @@ class ProductIntegration extends TestCase
 
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
+        $this->assertTrue($flatProduct['PACK-products'] === 'baz,bar' || $flatProduct['PACK-products'] === 'bar,baz');
+        unset($expected['PACK-products']);
+        unset($flatProduct['PACK-products']);
         $this->assertEquals($expected, $flatProduct);
 
         $this->assertEquals(

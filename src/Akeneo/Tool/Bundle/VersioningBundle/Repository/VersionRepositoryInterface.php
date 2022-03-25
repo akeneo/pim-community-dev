@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Version repository interface
@@ -18,33 +19,33 @@ interface VersionRepositoryInterface
      * Returns all versions for a resource
      *
      * @param string $resourceName
-     * @param string $resourceId
+     * @param string|null $resourceId
      *
      * @return Version[]|null
      */
-    public function getLogEntries($resourceName, $resourceId);
+    public function getLogEntries($resourceName, $resourceId, ?UuidInterface $resourceUuid);
 
     /**
      * Returns oldest (first) version for a resource
      *
      * @param string $resourceName
-     * @param string $resourceId
+     * @param string|null $resourceId
      * @param bool   $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($resourceName, $resourceId, $pending);
+    public function getOldestLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending);
 
     /**
      * Returns newest (last) version for a resource
      *
      * @param string $resourceName
-     * @param string $resourceId
+     * @param string|null $resourceId
      * @param bool   $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending = false);
+    public function getNewestLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending = false);
 
     /**
      * Returns newest (last) version for an array of ressources
@@ -93,14 +94,4 @@ interface VersionRepositoryInterface
      * @return CursorInterface|\PDOStatement
      */
     public function findPotentiallyPurgeableBy(array $options = []);
-
-    /**
-     * Get the id of the most recent version for the resource name and resource ID
-     *
-     * @param string $resourceName
-     * @param int    $resourceId
-     *
-     * @return int|null
-     */
-    public function getNewestVersionIdForResource($resourceName, $resourceId);
 }

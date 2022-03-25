@@ -17,8 +17,9 @@ interface GetCompletenessProductMasks
      * Calculates completeness masks from a value collection. It is only useful to calculate the missing required
      * attributes for a product model, or a product whose values were potentially updated before rendering in the PEF
      * (e.g permissions). It SHOULD NOT be used for any other purpose.
+     * @param string|int $id
      */
-    public function fromValueCollection(string $id, string $identifier, string $familyCode, WriteValueCollection $values): CompletenessProductMask;
+    public function fromValueCollection($id, string $identifier, string $familyCode, WriteValueCollection $values): CompletenessProductMask;
 
     /**
      * @param string[] $productIdentifiers

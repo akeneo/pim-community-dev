@@ -46,6 +46,7 @@ class VersionManagerSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher
     )
     {
+        $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
         $this->setUsername('julia');
         $this->buildVersion($product);
         $eventDispatcher->dispatch(Argument::type(BuildVersionEvent::class), BuildVersionEvents::PRE_BUILD)
@@ -56,6 +57,7 @@ class VersionManagerSpec extends ObjectBehavior
 
     function it_builds_versions_for_versionable_entities($om, ProductInterface $product, $builder)
     {
+        $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('foo', 1, null, 'bar'));
 
         $versions = $this->buildVersion($product);
@@ -80,8 +82,8 @@ class VersionManagerSpec extends ObjectBehavior
         ProductInterface $product,
         $builder,
         $versionRepository
-    )
-    {
+    ) {
+        $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
         $product->getId()->willReturn(1);
 
         $pending1 = new Version('Product', null, Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c'), 'julia');
@@ -102,6 +104,7 @@ class VersionManagerSpec extends ObjectBehavior
 
     function it_builds_pending_versions_for_a_given_entity(ProductInterface $product, $builder, $versionRepository)
     {
+        $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
         $product->getId()->willReturn(1);
 
         $pending1 = new Version('Product', 1, null, 'julia');

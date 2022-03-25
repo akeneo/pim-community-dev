@@ -187,7 +187,15 @@ class VersionManager
      */
     public function getLogEntries($versionable)
     {
-        return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $versionable->getId());
+        if (method_exists($versionable, 'getUuid')) {
+            $resourceId = null;
+            $resourceUuid = $versionable->getUuid();
+        } else {
+            $resourceId = $versionable->getId();
+            $resourceUuid = null;
+        }
+
+        return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $resourceId, $resourceUuid);
     }
 
     /**
@@ -201,9 +209,18 @@ class VersionManager
      */
     public function getOldestLogEntry($versionable, $pending = false)
     {
+        if (method_exists($versionable, 'getUuid')) {
+            $resourceId = null;
+            $resourceUuid = $versionable->getUuid();
+        } else {
+            $resourceId = $versionable->getId();
+            $resourceUuid = null;
+        }
+
         return $this->getVersionRepository()->getOldestLogEntry(
             ClassUtils::getClass($versionable),
-            $versionable->getId(),
+            $resourceId,
+            $resourceUuid,
             $pending
         );
     }
@@ -219,9 +236,18 @@ class VersionManager
      */
     public function getNewestLogEntry($versionable, $pending = false)
     {
+        if (method_exists($versionable, 'getUuid')) {
+            $resourceId = null;
+            $resourceUuid = $versionable->getUuid();
+        } else {
+            $resourceId = $versionable->getId();
+            $resourceUuid = null;
+        }
+
         return $this->getVersionRepository()->getNewestLogEntry(
             ClassUtils::getClass($versionable),
-            $versionable->getId(),
+            $resourceId,
+            $resourceUuid,
             $pending
         );
     }
@@ -238,7 +264,7 @@ class VersionManager
     {
         if (null === $previousVersion) {
             $previousVersion = $this->getVersionRepository()
-                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId(), false);
+                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId(), $pending->getResourceUuid(), false);
         }
 
         return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
@@ -255,12 +281,18 @@ class VersionManager
     {
         $createdVersions = [];
 
+        $params = [
+            'resourceName' => ClassUtils::getClass($versionable),
+            'pending' => true
+        ];
+        if (method_exists($versionable, 'getUuid')) {
+            $params['resourceUuid'] = $versionable->getUuid();
+        } else {
+            $params['resourceId'] = $versionable->getId();
+        }
+
         $pendingVersions = $this->getVersionRepository()->findBy(
-            [
-                'resourceId'   => $versionable->getId(),
-                'resourceName' => ClassUtils::getClass($versionable),
-                'pending'      => true
-            ],
+            $params,
             ['loggedAt' => 'asc']
         );
 

@@ -40,7 +40,7 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
         $getProductIdentifierFromProductIdQuery->execute($productId)->willReturn($productIdentifier);
 
         $completenessCalculator->fromProductIdentifier('ziggy_mug')->willReturn(new ProductCompletenessWithMissingAttributeCodesCollection(
-            42, [
+            '42', [
                 new ProductCompletenessWithMissingAttributeCodes(
                     'ecommerce', 'en_US', 10, [
                         'name', 'description', 'weight', 'height'

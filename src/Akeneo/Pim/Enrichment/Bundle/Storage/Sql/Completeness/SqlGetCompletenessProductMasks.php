@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -98,11 +99,12 @@ SQL;
      * {@inheritdoc}
      */
     public function fromValueCollection(
-        string $id,
+        $id,
         string $identifier,
         string $familyCode,
         WriteValueCollection $values
     ): CompletenessProductMask {
+        Assert::true(\is_int($id) || \is_string($id));
         $row = [
             'id' => $id,
             'identifier' => $identifier,
