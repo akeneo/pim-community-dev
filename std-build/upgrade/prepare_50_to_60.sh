@@ -45,7 +45,9 @@ cp $DEV_DISTRIB_DIR/std-build/services.yml $STANDARD_DISTRIB_DIR/config/services
 cp $DEV_DISTRIB_DIR/.env $STANDARD_DISTRIB_DIR/
 
 # Prepare database upgrades to run
-mkdir -p $STANDARD_DISTRIB_DIR/upgrades/
+# First of all, removing potential deprecated migration scripts
+mkdir -p $STANDARD_DISTRIB_DIR/upgrades/schema
+rm -f $STANDARD_DISTRIB_DIR/upgrades/schema/*
 cp -R $DEV_DISTRIB_DIR/../pim-community-dev/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
 cp -R $DEV_DISTRIB_DIR/grth/upgrades/* $STANDARD_DISTRIB_DIR/upgrades/
