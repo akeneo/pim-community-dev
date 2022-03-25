@@ -19,6 +19,7 @@
 - PIM-10346: Fix spellcheck badge not displayed on attribute options
 - PIM-10336: Fix product Export edition in error if no locale selected
 - PIM-10345: Fix issue when importing product model with an attribute constituted of only digits
+- PIM-10372: Fix letter case issue when importing channels
 - PIM-10334: Fix error on the clean-removed-attributes
 
 ## Improvements

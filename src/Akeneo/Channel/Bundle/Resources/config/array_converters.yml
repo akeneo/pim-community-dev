@@ -13,6 +13,7 @@ services:
         class: 'Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Channel'
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
+            - '@pim_catalog.repository.cached_locale'
 
     pim_connector.array_converter.standard_to_flat.channel:
         class: 'Akeneo\Channel\Component\ArrayConverter\StandardToFlat\Channel'

@@ -4,6 +4,7 @@ namespace Akeneo\Channel\Component\ArrayConverter\FlatToStandard;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Channel Flat to Standard format Converter
@@ -14,15 +15,10 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
  */
 class Channel implements ArrayConverterInterface
 {
-    /** @var FieldsRequirementChecker */
-    protected $fieldChecker;
-
-    /**
-     * @param FieldsRequirementChecker $fieldChecker
-     */
-    public function __construct(FieldsRequirementChecker $fieldChecker)
-    {
-        $this->fieldChecker = $fieldChecker;
+    public function __construct(
+        private FieldsRequirementChecker $fieldChecker,
+        private IdentifiableObjectRepositoryInterface $localeRepository,
+    ) {
     }
 
     /**
@@ -82,7 +78,7 @@ class Channel implements ArrayConverterInterface
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);
-            $labelLocale = $labelTokens[1];
+            $labelLocale = $this->convertLocaleCode($labelTokens[1] ?? '');
             $convertedItem['labels'][$labelLocale] = $data;
         } elseif ('locales' === $field || 'currencies' === $field) {
             $convertedItem[$field] = explode(',', $data);
@@ -113,5 +109,12 @@ class Channel implements ArrayConverterInterface
         }
 
         return $formattedUnits;
+    }
+
+    private function convertLocaleCode(string $localeCode): string
+    {
+        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+
+        return null !== $locale ? $locale->getCode() : $localeCode;
     }
 }
