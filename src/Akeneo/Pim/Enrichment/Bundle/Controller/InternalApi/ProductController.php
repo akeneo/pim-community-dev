@@ -420,7 +420,8 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->find($id);
+        // @TODO: change to use uuid
+        $product = $this->productRepository->findOneBy(['id' => $id]);
 
         if (null === $product) {
             throw new NotFoundHttpException(

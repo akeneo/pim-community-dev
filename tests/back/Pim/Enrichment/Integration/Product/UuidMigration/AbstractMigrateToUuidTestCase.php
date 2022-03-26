@@ -34,6 +34,7 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
 
     protected function setUp(): void
     {
+        self::markTestSkipped('TODO: Test to remove');
         parent::setUp();
         $this->connection = $this->get('database_connection');
     }
