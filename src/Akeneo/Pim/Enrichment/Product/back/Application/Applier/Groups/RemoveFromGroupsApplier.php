@@ -25,12 +25,12 @@ class RemoveFromGroupsApplier implements UserIntentApplier
     /**
      * {@inheritDoc}
      */
-    public function apply(UserIntent $groupsUserIntent, ProductInterface $product, int $userId): void
+    public function apply(UserIntent $groupUserIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOf($groupsUserIntent, RemoveFromGroups::class);
+        Assert::isInstanceOf($groupUserIntent, RemoveFromGroups::class);
 
         $formerGroupCodes = \array_values($product->getGroupCodes());
-        $updatedGroupCodes = \array_diff($formerGroupCodes, $groupsUserIntent->groupCodes());
+        $updatedGroupCodes = \array_diff($formerGroupCodes, $groupUserIntent->groupCodes());
         if ($formerGroupCodes === $updatedGroupCodes) {
             return;
         }

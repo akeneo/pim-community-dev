@@ -25,16 +25,16 @@ class AddToGroupsApplier implements UserIntentApplier
     /**
      * {@inheritDoc}
      */
-    public function apply(UserIntent $groupsUserIntent, ProductInterface $product, int $userId): void
+    public function apply(UserIntent $groupUserIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOf($groupsUserIntent, AddToGroups::class);
+        Assert::isInstanceOf($groupUserIntent, AddToGroups::class);
 
         $formerGroupCodes = $product->getGroupCodes();
-        if ([] === \array_diff($groupsUserIntent->groupCodes(), $formerGroupCodes)) {
+        if ([] === \array_diff($groupUserIntent->groupCodes(), $formerGroupCodes)) {
             return;
         }
         $this->productUpdater->update($product, [
-            'groups' => \array_values(\array_unique(\array_merge($formerGroupCodes, $groupsUserIntent->groupCodes()))),
+            'groups' => \array_values(\array_unique(\array_merge($formerGroupCodes, $groupUserIntent->groupCodes()))),
         ]);
     }
 

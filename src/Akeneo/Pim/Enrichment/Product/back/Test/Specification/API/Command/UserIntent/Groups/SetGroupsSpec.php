@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\GroupsUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\GroupUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use PhpSpec\ObjectBehavior;
 
@@ -22,7 +22,7 @@ class SetGroupsSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(SetGroups::class);
-        $this->shouldImplement(GroupsUserIntent::class);
+        $this->shouldImplement(GroupUserIntent::class);
     }
 
     function it_returns_the_group_codes()

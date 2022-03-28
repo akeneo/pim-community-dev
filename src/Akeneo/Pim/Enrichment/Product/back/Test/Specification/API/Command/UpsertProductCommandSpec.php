@@ -140,7 +140,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->productIdentifier()->shouldReturn('identifier1');
         $this->familyUserIntent()->shouldReturn($familyUserIntent);
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
-        $this->groupsUserIntent()->shouldReturn($setGroupsIntent);
+        $this->groupUserIntent()->shouldReturn($setGroupsIntent);
         $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue]);
     }
 

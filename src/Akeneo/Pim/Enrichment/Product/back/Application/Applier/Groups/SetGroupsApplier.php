@@ -25,12 +25,12 @@ class SetGroupsApplier implements UserIntentApplier
     /**
      * {@inheritDoc}
      */
-    public function apply(UserIntent $groupsUserIntent, ProductInterface $product, int $userId): void
+    public function apply(UserIntent $groupUserIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOf($groupsUserIntent, SetGroups::class);
+        Assert::isInstanceOf($groupUserIntent, SetGroups::class);
 
         $formerGroupCodes = $product->getGroupCodes();
-        $newGroupCodes = $groupsUserIntent->groupCodes();
+        $newGroupCodes = $groupUserIntent->groupCodes();
 
         \sort($formerGroupCodes);
         \sort($newGroupCodes);

@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\GroupsUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\GroupUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -24,16 +24,16 @@ final class UpsertProductCommand
      * @param ValueUserIntent[] $valueUserIntents
      */
     public function __construct(
-        private int $userId,
-        private string $productIdentifier,
-        private mixed $identifierUserIntent = null,
-        private ?FamilyUserIntent $familyUserIntent = null,
+        private int                 $userId,
+        private string              $productIdentifier,
+        private mixed               $identifierUserIntent = null,
+        private ?FamilyUserIntent   $familyUserIntent = null,
         private ?CategoryUserIntent $categoryUserIntent = null,
-        private mixed $parentUserIntent = null,
-        private ?GroupsUserIntent $groupsUserIntent = null,
-        private ?SetEnabled $enabledUserIntent = null,
-        private mixed $associationsUserIntent = null,
-        private array $valueUserIntents = []
+        private mixed               $parentUserIntent = null,
+        private ?GroupUserIntent    $groupUserIntent = null,
+        private ?SetEnabled         $enabledUserIntent = null,
+        private mixed               $associationsUserIntent = null,
+        private array               $valueUserIntents = []
     ) {
         Assert::allImplementsInterface($this->valueUserIntents, ValueUserIntent::class);
     }
@@ -45,15 +45,15 @@ final class UpsertProductCommand
     {
         $valueUserIntents = [];
         $categoryUserIntent = null;
-        $groupsUserIntent = null;
+        $groupUserIntent = null;
         $enabledUserIntent = null;
         $familyUserIntent = null;
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
-            } elseif ($userIntent instanceof GroupsUserIntent) {
-                Assert::null($groupsUserIntent, "Only one groups intent can be passed to the command.");
-                $groupsUserIntent = $userIntent;
+            } elseif ($userIntent instanceof GroupUserIntent) {
+                Assert::null($groupUserIntent, "Only one groups intent can be passed to the command.");
+                $groupUserIntent = $userIntent;
             } elseif ($userIntent instanceof SetEnabled) {
                 Assert::null($enabledUserIntent, "Only one enabled intent can be passed to the command.");
                 $enabledUserIntent = $userIntent;
@@ -71,7 +71,7 @@ final class UpsertProductCommand
             productIdentifier: $productIdentifier,
             familyUserIntent: $familyUserIntent,
             categoryUserIntent: $categoryUserIntent,
-            groupsUserIntent: $groupsUserIntent,
+            groupUserIntent: $groupUserIntent,
             enabledUserIntent: $enabledUserIntent,
             valueUserIntents: $valueUserIntents
         );
@@ -105,9 +105,9 @@ final class UpsertProductCommand
         return $this->valueUserIntents;
     }
 
-    public function groupsUserIntent(): ?GroupsUserIntent
+    public function groupUserIntent(): ?GroupUserIntent
     {
-        return $this->groupsUserIntent;
+        return $this->groupUserIntent;
     }
 
     public function enabledUserIntent(): ?SetEnabled
