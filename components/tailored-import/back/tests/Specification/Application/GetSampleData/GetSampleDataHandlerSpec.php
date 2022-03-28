@@ -21,7 +21,6 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
 {
     public function it_return_a_sample_of_data(
         XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-        GetJobConfigurationInterface $getJobConfiguration,
         SelectSampleDataInterface $selectSampleData,
         JobConfiguration $jobConfiguration,
         XlsxFileReaderInterface $fileReader
@@ -29,24 +28,20 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
         $query = new GetSampleDataQuery();
         $query->jobCode = "tailoredimport";
         $query->columnIndex = "1";
+        $query->sheetName = "sheet1";
+        $query->fileKey = "/filepath";
+        $query->productLine = 2;
 
-        $fileStructure = FileStructure::create(1, 1, 2, "sheet1");
-
-        $jobConfiguration->getFileKey()->willReturn("/filepath");
-        $jobConfiguration->getFileStructure()->willReturn($fileStructure);
-
-        $getJobConfiguration->byJobCode($query->jobCode)->willReturn($jobConfiguration)->shouldBeCalled();
-        $xlsxFileReaderFactory->create("/filepath")->willReturn($fileReader)->shouldBeCalled();
+        $xlsxFileReaderFactory->create($query->fileKey)->willReturn($fileReader)->shouldBeCalled();
         $fileReader->readColumnValues(
-            $fileStructure->getSheetName(),
-            $fileStructure->getProductLine(),
+            $query->sheetName,
+            $query->productLine,
             intval($query->columnIndex)
         )->willReturn(["value1","value1","value2","value2","value3","value3"])->shouldBeCalled();
         $selectSampleData->fromExtractedColumn(["value1","value1","value2","value2","value3","value3"])->willReturn(["value1","value2","value3"])->shouldBeCalled();
 
         $this->beConstructedWith(
             $xlsxFileReaderFactory,
-            $getJobConfiguration,
             $selectSampleData
         );
 
