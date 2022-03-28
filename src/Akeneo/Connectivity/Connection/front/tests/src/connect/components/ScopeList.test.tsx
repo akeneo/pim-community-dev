@@ -57,7 +57,7 @@ test('The scope list renders with NEW badge', () => {
         },
     ];
 
-    renderWithProviders(<ScopeList scopeMessages={scopes} mode={'new'} />);
+    renderWithProviders(<ScopeList scopeMessages={scopes} highlightMode={'new'} />);
 
     expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).toBeInTheDocument();
 });

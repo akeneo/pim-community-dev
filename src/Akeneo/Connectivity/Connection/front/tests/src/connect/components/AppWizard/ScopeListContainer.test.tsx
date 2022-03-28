@@ -34,7 +34,7 @@ test('The scope list renders with scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, mode: null}, {});
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, highlightMode: null}, {});
 });
 
 test('The scope list still renders with unknown scopes', () => {
@@ -51,7 +51,7 @@ test('The scope list still renders with unknown scopes', () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.authorize.helper')
     ).toBeInTheDocument();
-    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, mode: null}, {});
+    expect(ScopeList).toHaveBeenCalledWith({scopeMessages: scopes, highlightMode: null}, {});
 });
 
 test('The scope list renders without scopes', () => {
@@ -96,7 +96,7 @@ test('The scope list renders with oldScopeMessages', () => {
     expect(ScopeList).toHaveBeenCalledWith(
         {
             scopeMessages: scopeMessages,
-            mode: 'new',
+            highlightMode: 'new',
         },
         {}
     );
@@ -104,7 +104,7 @@ test('The scope list renders with oldScopeMessages', () => {
     expect(ScopeList).toHaveBeenCalledWith(
         {
             scopeMessages: oldScopeMessages,
-            mode: 'old',
+            highlightMode: 'old',
         },
         {}
     );
