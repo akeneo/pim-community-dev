@@ -22,6 +22,11 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
 
+    Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@validator'
+
     Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'

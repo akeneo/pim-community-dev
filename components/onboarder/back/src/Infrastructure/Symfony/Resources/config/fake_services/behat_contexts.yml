@@ -5,3 +5,4 @@ services:
         - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
         - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'
         - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'
+        - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'

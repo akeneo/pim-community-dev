@@ -24,10 +24,14 @@ final class UpdateSupplierHandler
             throw new InvalidDataException($violations);
         }
 
-        $supplier = $this->repository->getByIdentifier(Identifier::fromString($updateSupplier->identifier));
+        $storageSupplier = $this->repository->getByIdentifier(Identifier::fromString($updateSupplier->identifier));
 
-        $supplier->updateLabel(Supplier\ValueObject\Label::fromString($updateSupplier->label));
-//        $updateSupplier->contributorEmails
-//        $supplier->updateContributors();
+        if (!$storageSupplier instanceof Supplier\Model\Supplier) {
+            return;
+        }
+
+        $supplier = $storageSupplier->update($updateSupplier->label, $updateSupplier->contributorEmails);
+
+        $this->repository->save($supplier);
     }
 }

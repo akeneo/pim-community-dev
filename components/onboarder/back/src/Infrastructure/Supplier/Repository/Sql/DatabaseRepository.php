@@ -29,6 +29,9 @@ final class DatabaseRepository implements Supplier\Repository
                 'label' => $supplier->label(),
             ]
         );
+
+        $this->deleteContributors($supplier->identifier());
+        $this->persistContributors($supplier);
     }
 
     public function getByIdentifier(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
@@ -59,5 +62,31 @@ final class DatabaseRepository implements Supplier\Repository
             'akeneo_onboarder_serenity_supplier',
             ['identifier' => (string) $identifier]
         );
+    }
+
+    private function deleteContributors(string $supplierIdentifier): void
+    {
+        $this->connection->delete(
+            'akeneo_onboarder_serenity_supplier_contributor',
+            ['supplier_identifier' => (string) $supplierIdentifier]
+        );
+    }
+
+    private function persistContributors(Supplier\Model\Supplier $supplier): void
+    {
+        $sql = <<<SQL
+INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+VALUES (:email, :supplierIdentifier)
+SQL;
+        $contributorEmails = $supplier->contributors()->toArray();
+
+        foreach ($contributorEmails as $email) {
+            $this->connection->executeQuery(
+                $sql,
+                [
+                    'email' => $email,
+                    'supplierIdentifier' => $supplier->identifier(),
+                ]);
+        }
     }
 }

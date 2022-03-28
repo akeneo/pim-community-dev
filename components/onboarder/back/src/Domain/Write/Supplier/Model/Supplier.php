@@ -25,7 +25,7 @@ final class Supplier
         $this->contributors = ValueObject\Contributors::fromEmails($contributorEmails);
     }
 
-    public static function create(string $identifier, string $code, string $label, array $contributorEmails): Supplier
+    public static function create(string $identifier, string $code, string $label, array $contributorEmails): self
     {
         return new self(
             $identifier,
@@ -35,10 +35,15 @@ final class Supplier
         );
     }
 
-//    public function update($code, $label, array $contributors)
-//    {
-//
-//    }
+    public function update($label, array $contributorEmails): self
+    {
+        return new self(
+            (string) $this->identifier,
+            (string) $this->code,
+            $label,
+            $contributorEmails,
+        );
+    }
 
     public function identifier(): string
     {

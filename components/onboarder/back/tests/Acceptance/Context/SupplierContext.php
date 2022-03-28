@@ -8,6 +8,8 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
+use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
@@ -32,6 +34,7 @@ final class SupplierContext implements Context
         private InMemoryGetSupplierList $getSupplierList,
         private DeleteSupplierHandler $deleteSuppliersHandler,
         private GetSupplier $getSupplier,
+        private UpdateSupplierHandler $updateSupplierHandler,
     ) {
         $this->suppliers = [];
         $this->supplier = null;
@@ -99,7 +102,7 @@ final class SupplierContext implements Context
     /**
      * @When I delete the supplier ":code"
      */
-    public function iDeleteTheSupplier(string $code)
+    public function iDeleteTheSupplier(string $code): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         ($this->deleteSuppliersHandler)(new DeleteSupplier($supplier->identifier()));
@@ -108,10 +111,21 @@ final class SupplierContext implements Context
     /**
      * @When I retrieve the supplier ":code"
      */
-    public function iRetrieveTheSupplier(string $code)
+    public function iRetrieveTheSupplier(string $code): void
     {
+        $this->loadSupplier($code);
+    }
+
+    /**
+     * @When I update the supplier ":code" with:
+     */
+    public function iUpdateTheSupplierWith(string $code, TableNode $properties): void
+    {
+        $label = $properties->getHash()[0]['label'];
+        $contributors = explode(';', $properties->getHash()[0]['contributors']);
+
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
-        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\identifier::fromString($supplier->identifier()));
+        ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $contributors));
     }
 
     /**
@@ -161,6 +175,10 @@ final class SupplierContext implements Context
     {
         $expectedSupplier = $properties->getHash()[0];
 
+        if (null === $this->supplier) {
+            $this->loadSupplier($expectedSupplier['code']);
+        }
+
         Assert::assertSame($expectedSupplier['code'], $this->supplier->code);
         Assert::assertSame($expectedSupplier['label'], $this->supplier->label);
         Assert::assertSame($expectedSupplier['contributors'], join(';', $this->supplier->contributors));
@@ -169,5 +187,11 @@ final class SupplierContext implements Context
     private function loadSuppliers($search = ''): void
     {
         $this->suppliers = ($this->getSupplierList)(1, $search);
+    }
+
+    private function loadSupplier(string $code): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\identifier::fromString($supplier->identifier()));
     }
 }

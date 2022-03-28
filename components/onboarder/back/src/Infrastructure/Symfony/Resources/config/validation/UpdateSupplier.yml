@@ -1,4 +1,5 @@
 Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier:
   properties:
     contributorEmails:
-
+      - All:
+          - Email: ~
