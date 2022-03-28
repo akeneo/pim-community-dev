@@ -24,15 +24,17 @@ const Operations = ({ dataMapping }: OperationsProps) => {
                     {translate('akeneo.tailored_import.data_mapping.operations.title')}
                 </SectionTitle.Title>
             </SectionTitle>
-            <Preview title={translate("akeneo.tailored_import.data_mapping.preview.title")}>
-                {
-                    dataMapping.sample_data.map(
-                        (sampleData) => (
-                            <Preview.Row>{sampleData}</Preview.Row>
+            {dataMapping.sample_data.length > 0 &&
+                <Preview title={translate("akeneo.tailored_import.data_mapping.preview.title")}>
+                    {
+                        dataMapping.sample_data.map(
+                            (sampleData) => (
+                                <Preview.Row>{sampleData}</Preview.Row>
+                            )
                         )
-                    )
-                }
-            </Preview>
+                    }
+                </Preview>
+            }
 
         </OperationsContainer>
     );

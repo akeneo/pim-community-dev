@@ -1,11 +1,11 @@
 import {useRouter} from "@akeneo-pim-community/shared";
 
 
-const useFetchSampleData = (): (job_code: string, column_index: string) => Promise<Array<string>> => {
+const useFetchSampleData = (): (file_key: string, column_index: number, sheet_name: string|null, product_line: number) => Promise<Array<string>> => {
     const router = useRouter();
 
-    return (job_code: string, column_index: string): Promise<Array<string>> => {
-        const route = router.generate('pimee_tailored_import_get_sample_data_action', {job_code, column_index});
+    return (file_key: string, column_index: number, sheet_name: string|null, product_line: number): Promise<Array<string>> => {
+        const route = router.generate('pimee_tailored_import_get_sample_data_action', {file_key, column_index, sheet_name, product_line});
 
         return new Promise<Array<string>>(async (resolve, reject) => {
                 const response = await fetch(route, {

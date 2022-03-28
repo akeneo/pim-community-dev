@@ -10,7 +10,11 @@ namespace Akeneo\Platform\TailoredImport\Application\GetSampleData;
  */
 final class GetSampleDataQuery
 {
-    public string $jobCode;
+    public string $fileKey;
 
     public string $columnIndex;
+
+    public string $sheetName;
+
+    public int $productLine;
 }

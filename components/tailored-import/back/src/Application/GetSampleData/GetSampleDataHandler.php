@@ -16,19 +16,17 @@ final class GetSampleDataHandler
 {
     public function __construct(
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-        private GetJobConfigurationInterface $getJobConfiguration,
         private SelectSampleDataInterface $selectSampleData
     ) {
     }
 
     public function handle(GetSampleDataQuery $getSampleDataQuery): GetSampleDataResult
     {
-        $jobConfiguration = $this->getJobConfiguration->byJobCode($getSampleDataQuery->jobCode);
-        $fileReader = $this->xlsxFileReaderFactory->create($jobConfiguration->getFileKey());
+        $fileReader = $this->xlsxFileReaderFactory->create($getSampleDataQuery->fileKey);
 
         $extractedColumn = $fileReader->readColumnValues(
-            $jobConfiguration->getFileStructure()->getSheetName(),
-            $jobConfiguration->getFileStructure()->getProductLine(),
+            $getSampleDataQuery->sheetName,
+            $getSampleDataQuery->productLine,
             intval($getSampleDataQuery->columnIndex)
         );
 
