@@ -154,7 +154,7 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
      */
     public function resetIndex(string $str): void
     {
-        $clientProduct = $this->getContainer($str);
+        $clientProduct = $this->getContainer()->get($str);
         $clientProduct->resetIndex();
     }
 }
