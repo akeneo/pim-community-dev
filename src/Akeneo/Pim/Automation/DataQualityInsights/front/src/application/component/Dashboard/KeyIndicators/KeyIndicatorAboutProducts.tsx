@@ -10,7 +10,8 @@ import {
   computePercent,
   IntegerPercent,
   KeyIndicatorProducts,
-} from '../../../../domain';
+  makeCounts,
+} from '@akeneo-pim-community/data-quality-insights/src/domain';
 import {useGetKeyIndicatorTips} from '../../../../infrastructure/hooks/Dashboard/UseKeyIndicatorTips';
 import {useDashboardContext} from '../../../context/DashboardContext';
 import {ProductsKeyIndicatorLinkCallback} from '../../../user-actions';
@@ -19,6 +20,8 @@ import {ProductMessageBuilder} from './ProductMessageBuilder';
 import {KeyIndicatorNoData} from './KeyIndicatorNoData';
 import {TextWithLink, Text} from './styled';
 import {KeyIndicatorBase} from './KeyIndicatorBase';
+
+const defaultCounts = makeCounts();
 
 type Props = {
   type: KeyIndicatorProducts;
@@ -62,7 +65,9 @@ export const KeyIndicatorAboutProducts: FC<Props> = ({children, type, counts, ti
   let percentOK: IntegerPercent;
   let entitiesToWorkOn: JSX.Element;
 
-  percentOK = computePercent(counts.products.totalGood, counts.products.totalToImprove);
+  const {products: {totalGood, totalToImprove} = defaultCounts} = counts;
+
+  percentOK = computePercent(totalGood, totalToImprove);
 
   entitiesToWorkOn = (
     <ProductMessageBuilder
