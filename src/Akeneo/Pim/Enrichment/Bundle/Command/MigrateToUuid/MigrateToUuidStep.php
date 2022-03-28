@@ -16,6 +16,7 @@ interface MigrateToUuidStep
         'pim_catalog_category_product' => ['product_id', 'product_uuid'],
         'pim_catalog_group_product' => ['product_id', 'product_uuid'],
         'pim_catalog_product_unique_data' => ['product_id', 'product_uuid'],
+        'pim_catalog_completeness' => ['product_id', 'product_uuid'],
         'pim_data_quality_insights_product_criteria_evaluation' => ['product_id', 'product_uuid'],
         'pim_data_quality_insights_product_score' => ['product_id', 'product_uuid'],
         'pimee_teamwork_assistant_completeness_per_attribute_group' => ['product_id', 'product_uuid'],
