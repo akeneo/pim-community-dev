@@ -41,7 +41,9 @@ SQL;
             ]
         )->fetchAssociative();
 
-        if (!$result) return null;
+        if (!$result) {
+            return null;
+        }
 
         $unit = new Unit();
         $unit->code = $result['code'];

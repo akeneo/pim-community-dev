@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\tests\Integration\PublicApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlFindUnit;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
 
 final class SqlFindUnitIntegration extends TestCase
@@ -48,8 +48,8 @@ final class SqlFindUnitIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    private function getQuery(): SqlGetUnit
+    private function getQuery(): SqlFindUnit
     {
-        return $this->get('akeneo_measurement.public_api.get_unit');
+        return $this->get('akeneo_measurement.public_api.find_unit');
     }
 }
