@@ -23,6 +23,16 @@ final class FeatureHelper
         }
     }
 
+    /**
+     * @throws SkippingException
+     */
+    public static function skipSpecTestWhenReferenceEntityFeatureIsNotActivated(): void
+    {
+        if (!self::isReferenceEntityFeatureActivated()) {
+            throw new SkippingException('Reference entity feature is not available in this scope');
+        }
+    }
+
     public static function skipIntegrationTestWhenPermissionFeatureIsNotActivated(): void
     {
         if (!self::isPermissionFeatureActivated()) {
@@ -33,6 +43,11 @@ final class FeatureHelper
     public static function isPermissionFeatureActivated(): bool
     {
         return \class_exists('Akeneo\Pim\Permission\Bundle\AkeneoPimPermissionBundle');
+    }
+
+    public static function isReferenceEntityFeatureActivated(): bool
+    {
+        return \class_exists('Akeneo\ReferenceEntity\Infrastructure\Symfony\AkeneoReferenceEntityBundle', true);
     }
 
     public static function skipIntegrationTestWhenAssetFeatureIsNotActivated(): void

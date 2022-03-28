@@ -59,6 +59,7 @@ akeneo_connectivity.connection:
                 more_info: More info
                 connect: Connect
                 connected: Connected
+                pending: Pending...
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
@@ -122,6 +123,8 @@ akeneo_connectivity.connection:
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
                     marketplace_link_anchor: App Store
+                    at_least_one_is_not_listed_on_the_appstore: Some of your connected apps are not compatible with your PIM version or doesn't exist anymore on the Akeneo App Store. Contact us to get more information.
+                    pending_apps: Some of your apps are not connected with your PIM.
                 test_apps:
                     title: My test apps
                     removed_user: Removed user
@@ -132,8 +135,10 @@ akeneo_connectivity.connection:
                     link: Check out our Help Center for more information.
                 card:
                     developed_by: 'Developed by {{ author }}'
+                    not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
+                    pending: App not connected. Opening the App should fix the conection issue.
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
@@ -150,6 +155,7 @@ akeneo_connectivity.connection:
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                    pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:

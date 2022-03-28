@@ -99,3 +99,21 @@ services:
             - '@pim_catalog.updater.product'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AddMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveMultiReferenceEntityValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }

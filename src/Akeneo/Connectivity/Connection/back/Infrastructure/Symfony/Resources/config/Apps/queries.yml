@@ -39,19 +39,19 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAccessTokenQuery:
         arguments:
             - '@database_connection'
-            -
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery:
         arguments:
             - '@database_connection'
-            -
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllConnectedAppsQuery:
         arguments:
             - '@database_connection'
-            -
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery:
         arguments:
             - '@database_connection'
-            -
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery:
         arguments:
             - '@database_connection'
@@ -61,6 +61,14 @@ services:
             - '@database_connection'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\IsAccessTokenRevokedQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllPendingAppsPublicIdsQuery:
         arguments:
             - '@database_connection'
 

@@ -3,6 +3,9 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {CountsByProductType} from '../../../../domain';
 import {roughCount} from '../../../helper/Dashboard/KeyIndicator';
 import {MarkersMapping, messageBuilder} from './messageBuilder';
+import {makeCounts} from '@akeneo-pim-community/data-quality-insights/src/domain';
+
+const defaultCounts = makeCounts();
 
 interface Props {
   counts: CountsByProductType;
@@ -16,8 +19,8 @@ export const ProductMessageBuilder = (props: Props) => {
   const translate = useTranslate();
 
   const {
-    products: {totalToImprove: nbProductsKO},
-    product_models: {totalToImprove: nbProductModelsKO},
+    products: {totalToImprove: nbProductsKO} = defaultCounts,
+    product_models: {totalToImprove: nbProductModelsKO} = defaultCounts,
   } = counts;
 
   if (nbProductsKO === 0 && nbProductModelsKO === 0) {

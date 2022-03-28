@@ -78,6 +78,8 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
                         return {
                             ...connectedApp,
                             activate_url: app?.activate_url || undefined,
+                            is_loaded: true,
+                            is_listed_on_the_appstore: false === connectedApp.is_test_app && undefined !== app,
                         };
                     });
                 });
