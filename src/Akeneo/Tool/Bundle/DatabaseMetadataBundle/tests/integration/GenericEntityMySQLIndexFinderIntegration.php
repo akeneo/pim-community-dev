@@ -24,6 +24,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 class GenericEntityMySQLIndexFinderIntegration extends TestCase
 {
     private GenericEntityMySQLIndexFinder $query;
+    private Connection $connection;
 
     protected function setUp(): void
     {
@@ -31,6 +32,7 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(GenericEntityMySQLIndexFinder::class);
+        $this->connection = $this->get('database_connection');
     }
 
     /*private function runResetIndexesCommand(): void
@@ -58,9 +60,9 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     {
         foreach ($entityIndexConfiguration->getColumnsName() as $column) {
             if(substr($column,0,3)=== "CON"){
-                $column = substr($column, strrpos($column, 'AS')+ strlen('as'));
+                $column = substr($column, strrpos($column, 'AS') + strlen('as')+1);
             }
-            Assert::assertTrue($this->columnsExists($entityIndexConfiguration->getTableName(), $column));
+            Assert::assertTrue($this->columnExists($entityIndexConfiguration->getTableName(), $column));
         }
     }
 
@@ -150,8 +152,8 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
 
     private function tableExists(string $tableName): bool
     {
-        $connection = $this->get('database_connection');
-        $rows = $connection->executeQuery(
+        //$connection = $this->get('database_connection');
+        $rows = $this->connection->executeQuery(
             'SHOW TABLES LIKE :tableName',
             [
                 'tableName' => $tableName,
@@ -161,23 +163,14 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         return count($rows) >= 1;
     }
 
-    private function columnsExists(string $tableName, string $columnName): bool
+    private function columnExists(string $tableName, string $columnName): bool
     {
-        $connection = $this->get('database_connection');
-        $rows = $connection->fetchAllAssociative(
-            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]
-        );
-
-        return count($rows) >= 1;
+        return 1 === $this->connection->executeQuery(sprintf("SHOW COLUMNS FROM %s LIKE '%s'", $tableName,
+                $columnName))->rowCount();
     }
 
     protected function getConfiguration()
     {
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
-        //return $this->catalog->useMinimalCatalog();
-        //return $this->catalog->useTechnicalCatalog();
     }
 }
