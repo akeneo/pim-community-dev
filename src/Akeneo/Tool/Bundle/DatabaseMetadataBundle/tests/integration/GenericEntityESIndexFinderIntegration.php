@@ -35,10 +35,10 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
+        //$this->searchEs = new GenericEntityESIndexFinder($this->esClient);
+        $this->resetIndex("akeneo_elasticsearch.client.product_and_product_model");
+        $this->resetIndex("akeneo_assetmanager.client.asset");
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
-
-        $this->client->resetIndex();
-        $this->searchEs = new GenericEntityESIndexFinder($this->client);
     }
 
     /**
@@ -68,6 +68,7 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
+        //$this->client->set($entityIndexConfiguration->getTableName());
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
 
         for ($i = 0; $i < 4; $i++) {
@@ -145,5 +146,15 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param string $str
+     * @return void
+     */
+    public function resetIndex(string $str): void
+    {
+        $clientProduct = $this->getContainer($str);
+        $clientProduct->resetIndex();
     }
 }
