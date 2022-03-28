@@ -153,6 +153,8 @@ $rules = [
             'Mekras\Speller',
             'League\Flysystem',
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
 
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
