@@ -44,7 +44,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '1',
             'parent_code',
             $values
         );
@@ -56,7 +56,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
             new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
             'data model',
             null,
-            2,
+            '2',
             [
                 'complete' => 0,
                 'total' => 1
@@ -74,7 +74,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
 
         $expected = [
             [
-                'id'           => 1,
+                'id'           => '1',
                 'identifier'   => 'identifier',
                 'label'        => 'data',
                 'document_type' => 'product',
@@ -85,7 +85,7 @@ class LinkedProductsNormalizerSpec extends ObjectBehavior
                 'completeness' => 90,
                 'variant_product_completenesses' => null
             ],  [
-                'id'           => 2,
+                'id'           => '2',
                 'identifier'   => 'identifier_model',
                 'label'        => 'data model',
                 'document_type' => 'product_model',

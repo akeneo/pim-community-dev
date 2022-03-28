@@ -26,7 +26,7 @@ class RowsSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '1',
             'parent_code',
             new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );
@@ -66,7 +66,7 @@ class RowsSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '1',
             'parent_code',
             new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
         );

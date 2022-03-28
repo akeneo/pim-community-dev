@@ -47,7 +47,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'label',
             null,
             90,
-            1,
+            '1',
             'parent_code',
             new WriteValueCollection([])
         );
@@ -74,7 +74,7 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             'data',
             MediaValue::value('media_attribute', new FileInfo()),
             90,
-            1,
+            '1',
             'parent_code',
             $values
         );
@@ -128,8 +128,8 @@ class ProductAndProductModelRowNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 1,
-            'id'           => 1,
+            'technical_id' => '1',
+            'id'           => '1',
             'search_id' => 'product_1',
             'is_checked' => true,
             'complete_variant_product' => [],

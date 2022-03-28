@@ -34,7 +34,7 @@ class RowSpec extends ObjectBehavior
                 'data',
                 MediaValue::value('media_attribute', new FileInfo()),
                 90,
-                1,
+                '1',
                 'parent_code',
                 new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]
@@ -50,7 +50,7 @@ class RowSpec extends ObjectBehavior
         $this->image()->shouldBeLike(MediaValue::value('media_attribute', new FileInfo()));
         $this->completeness()->shouldReturn(90);
         $this->documentType()->shouldReturn('product');
-        $this->technicalId()->shouldReturn(1);
+        $this->technicalId()->shouldReturn('1');
         $this->searchId()->shouldReturn('product_1');
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
@@ -70,7 +70,7 @@ class RowSpec extends ObjectBehavior
                 new \DateTime('2018-05-23 15:55:50', new \DateTimeZone('UTC')),
                 'data',
                 MediaValue::value('media_attribute', new FileInfo()),
-                1,
+                '1',
                 [],
                 'parent_code',
                 new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
@@ -87,7 +87,7 @@ class RowSpec extends ObjectBehavior
         $this->image()->shouldBeLike(MediaValue::value('media_attribute', new FileInfo()));
         $this->completeness()->shouldReturn(null);
         $this->documentType()->shouldReturn('product_model');
-        $this->technicalId()->shouldReturn(1);
+        $this->technicalId()->shouldReturn('1');
         $this->searchId()->shouldReturn('product_model_1');
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
@@ -110,7 +110,7 @@ class RowSpec extends ObjectBehavior
                 'data',
                 MediaValue::value('media_attribute', new FileInfo()),
                 90,
-                1,
+                '1',
                 'parent_code',
                 new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]

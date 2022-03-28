@@ -22,6 +22,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssociatedProductDatasourceSpec extends ObjectBehavior
@@ -120,8 +122,10 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
-        $associatedProduct1->getId()->willReturn('1');
-        $associatedProduct2->getId()->willReturn('2');
+        $associatedProduct1->getId()->willReturn(1);
+        $associatedProduct2->getId()->willReturn(2);
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('68e4e0e3-37a0-4c09-975f-27dbdbee0083'));
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('37f7c7fb-24a5-42fd-abc1-fb48c704a8c1'));
         $associatedProductModel->getId()->willReturn('1');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
@@ -177,7 +181,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             ->addFilter(
                 'id',
                 Operators::IN_LIST,
-                ['product_1', 'product_2']
+                ['product_68e4e0e3-37a0-4c09-975f-27dbdbee0083', 'product_37f7c7fb-24a5-42fd-abc1-fb48c704a8c1']
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(
@@ -352,8 +356,10 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             'association_type_id' => '1'
         ]);
 
-        $associatedProduct1->getId()->willReturn('1');
-        $associatedProduct2->getId()->willReturn('2');
+        $associatedProduct1->getId()->willReturn(1);
+        $associatedProduct2->getId()->willReturn(2);
+        $associatedProduct1->getUuid()->willReturn(Uuid::fromString('68e4e0e3-37a0-4c09-975f-27dbdbee0083'));
+        $associatedProduct2->getUuid()->willReturn(Uuid::fromString('37f7c7fb-24a5-42fd-abc1-fb48c704a8c1'));
         $associatedProductModel->getId()->willReturn('1');
         $currentProduct->getAllAssociations()->willReturn($associationCollection);
         $currentProduct->getIdentifier()->willReturn('current_product');
@@ -409,7 +415,7 @@ class AssociatedProductDatasourceSpec extends ObjectBehavior
             ->addFilter(
                 'id',
                 Operators::IN_LIST,
-                ['product_1', 'product_2']
+                ['product_68e4e0e3-37a0-4c09-975f-27dbdbee0083', 'product_37f7c7fb-24a5-42fd-abc1-fb48c704a8c1']
             )->shouldBeCalled();
         $pqbAsso
             ->addFilter(

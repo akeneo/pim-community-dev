@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -79,6 +80,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('67d16e86-52c8-4da0-bc42-4ec3f21cd74c'));
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
@@ -147,8 +149,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
+            'search_id' => 'product_67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,
@@ -182,6 +184,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('67d16e86-52c8-4da0-bc42-4ec3f21cd74c'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -249,8 +252,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
+            'search_id' => 'product_67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,
@@ -286,6 +289,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->isVariant()->willReturn(true);
         $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('67d16e86-52c8-4da0-bc42-4ec3f21cd74c'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -353,8 +357,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
+            'search_id' => 'product_67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => 'parent_code',
@@ -384,6 +388,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->isVariant()->willReturn(false);
         $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('67d16e86-52c8-4da0-bc42-4ec3f21cd74c'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -451,8 +456,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
+            'search_id' => 'product_67d16e86-52c8-4da0-bc42-4ec3f21cd74c',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,
