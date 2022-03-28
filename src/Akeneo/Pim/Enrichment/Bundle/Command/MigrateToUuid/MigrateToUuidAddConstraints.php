@@ -260,7 +260,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
         $updatedItems = 0;
 
         foreach ($this->constraintsToAdd as $constraint) {
-            $logContext->addContext('substep', $constraint['tableName']);
+            $logContext->addContext('substep', 'add_constraint_' . $constraint['tableName']);
 
             if ($this->tableExists($constraint['tableName']) && !$this->constraintExists($constraint['tableName'], $constraint['constraintName'])) {
                 $this->logger->notice(sprintf('Will add %s constraint', $constraint['constraintName']), $logContext->toArray());
@@ -272,7 +272,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
         }
 
         foreach ($this->indexesToAdd as $indexToAdd) {
-            $logContext->addContext('substep', $indexToAdd['tableName']);
+            $logContext->addContext('substep', 'add_index_' . $indexToAdd['tableName']);
 
             if ($this->tableExists($indexToAdd['tableName']) && !$this->indexExists($indexToAdd['tableName'], $indexToAdd['indexName'])) {
                 $this->logger->notice(sprintf('Will add %s index', $indexToAdd['indexName']), $logContext->toArray());
