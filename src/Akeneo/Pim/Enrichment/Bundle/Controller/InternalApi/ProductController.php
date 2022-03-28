@@ -23,6 +23,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -170,16 +171,9 @@ class ProductController
         return new JsonResponse($normalizedProducts);
     }
 
-    /**
-     * @param string $id Product id
-     *
-     * @throws NotFoundHttpException If product is not found or the user cannot see it
-     *
-     * @return JsonResponse
-     */
-    public function getAction(Request $request, string $id)
+    public function getAction(Request $request, string $id): JsonResponse
     {
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductByUuidOr404($id);
 
         $context = $this->getNormalizationContext();
         $context['catalogLocale'] = $request->get('catalogLocale');
@@ -420,12 +414,26 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
+        // @TODO Delete this method
         // @TODO CPM-577: Change endpoint call to provide uuid instead of id
         $product = $this->productRepository->findOneBy(['id' => $id]);
 
         if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', $id)
+            );
+        }
+
+        return $product;
+    }
+
+    protected function findProductByUuidOr404(string $uuid)
+    {
+        $product = $this->productRepository->find(Uuid::fromString($uuid));
+
+        if (null === $product) {
+            throw new NotFoundHttpException(
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 
