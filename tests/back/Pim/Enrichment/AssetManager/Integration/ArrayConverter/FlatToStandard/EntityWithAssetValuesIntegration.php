@@ -30,6 +30,7 @@ final class EntityWithAssetValuesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('asset_manager');
 
         $this->productConverter = $this->get('akeneo_assetmanager.job.array_converter.flat_to_standard.product');
         $this->productModelConverter = $this->get('akeneo_assetmanager.job.array_converter.flat_to_standard.product_model');

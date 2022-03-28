@@ -354,6 +354,7 @@ legacy:
                                     - "--window-size=1280,1024"
                                     - "--start-maximized"
                                     - "--no-sandbox"
+                                    - "--headless"
                                 prefs:
                                     foo: "Just because prefs must be a dictionnary"
         FriendsOfBehat\SymfonyExtension:

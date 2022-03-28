@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\Connector\Api\Context;
 
-
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags;
 use Behat\Behat\Context\Context;
 

@@ -39,6 +39,8 @@ CSV;
      */
     protected function loadFixtures(): void
     {
+        $this->get('feature_flags')->enable('asset_manager');
+
         // Reference entities
         /** @var ReferenceEntityFixturesLoader $referenceEntityFixturesLoader */
         $referenceEntityFixturesLoader = $this->get('akeneoreference_entity.tests.helper.fixtures_loader');
