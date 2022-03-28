@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilePersistedFeatureFlags;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
@@ -12,7 +12,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope;
  */
 class FeatureFlagContext implements Context
 {
-    public function __construct(private InMemoryFeatureFlags $featureFlags)
+    public function __construct(private FilePersistedFeatureFlags $featureFlags)
     {
     }
 
@@ -21,10 +21,12 @@ class FeatureFlagContext implements Context
      */
     public function enabledFeatureFlags(BeforeScenarioScope $scope)
     {
+        $this->featureFlags->deleteFile();
+
         $tags = $scope->getScenario()->getTags();
-        $featureFlagTags = array_filter($tags, fn(string $tag) => preg_match('/-feature-enabled$/', $tag));
-        $featureFlagsTagsWithoutSuffix = array_map(fn($tag) => str_replace('-feature-enabled', '', $tag), $featureFlagTags);
-        $featureFlags = array_map(fn($tag) => str_replace('-', '_', $tag), $featureFlagsTagsWithoutSuffix);
+        $featureFlagTags = array_filter($tags, fn (string $tag) => preg_match('/-feature-enabled$/', $tag));
+        $featureFlagsTagsWithoutSuffix = array_map(fn ($tag) => str_replace('-feature-enabled', '', $tag), $featureFlagTags);
+        $featureFlags = array_map(fn ($tag) => str_replace('-', '_', $tag), $featureFlagsTagsWithoutSuffix);
 
         foreach ($featureFlags as $featureFlag) {
             $this->featureFlags->enable($featureFlag);

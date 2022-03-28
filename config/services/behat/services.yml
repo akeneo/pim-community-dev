@@ -5,7 +5,7 @@ imports:
     # Akeneo/Connectivity/Connection
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
     # FeatureFlag
-    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_behat_services.yml }
 
 services:
     _defaults:

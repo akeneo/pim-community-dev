@@ -7,11 +7,12 @@ namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
 /**
+ * Not for production.
+
  * Registry of in memory feature flags. All existing feature flag are deactivated by default.
  **
  * A feature flag can be changed after Symfony container boot. It is mainly used for testing purpose. Its configuration shares the same lifecycle as the Symfoby container. Therefore, it cannot be used to configure feature flags in sub processes, or for end to end testing with multiple HTTP requests.
  *
- * By default, a feature is disabled.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

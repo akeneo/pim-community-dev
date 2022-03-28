@@ -29,9 +29,9 @@ class FeatureFlagContext implements Context
     public function enabledFeatureFlags(BeforeScenarioScope $scope)
     {
         $tags = $scope->getScenario()->getTags();
-        $featureFlagTags = array_filter($tags, fn(string $tag) => preg_match('/-feature-enabled$/', $tag));
-        $featureFlagsTagsWithoutSuffix = array_map(fn($tag) => str_replace('-feature-enabled', '', $tag), $featureFlagTags);
-        $featureFlags = array_map(fn($tag) => str_replace('-', '_', $tag), $featureFlagsTagsWithoutSuffix);
+        $featureFlagTags = array_filter($tags, fn (string $tag) => preg_match('/-feature-enabled$/', $tag));
+        $featureFlagsTagsWithoutSuffix = array_map(fn ($tag) => str_replace('-feature-enabled', '', $tag), $featureFlagTags);
+        $featureFlags = array_map(fn ($tag) => str_replace('-', '_', $tag), $featureFlagsTagsWithoutSuffix);
 
         foreach ($featureFlags as $featureFlag) {
             $this->featureFlags->enable($featureFlag);
