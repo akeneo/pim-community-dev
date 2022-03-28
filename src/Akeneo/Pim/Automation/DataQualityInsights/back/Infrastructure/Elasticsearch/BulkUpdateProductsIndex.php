@@ -33,13 +33,13 @@ class BulkUpdateProductsIndex implements BulkUpdateProductsInterface
     {
         if ($this->documentType === ProductModelInterface::class) {
             $scores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
-            $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($productIdCollection);
             $identifierPrefix = self::PRODUCT_MODEL_IDENTIFIER_PREFIX;
         } else {
             $scores = $this->getProductScoresQuery->byProductIds($productIdCollection);
-            $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($productIdCollection);
             $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
         }
+
+        $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($productIdCollection);
 
         $params = [];
         foreach ($productIdCollection->toArray() as $productId) {
