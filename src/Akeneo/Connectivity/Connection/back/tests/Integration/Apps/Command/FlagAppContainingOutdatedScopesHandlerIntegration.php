@@ -48,7 +48,7 @@ class FlagAppContainingOutdatedScopesHandlerIntegration extends TestCase
     {
         $userA = $this->userLoader->createUser('userA', ['userGroupA'], ['ROLE_APP_A']);
         $userB = $this->userLoader->createUser('userB', ['userGroupA'], ['ROLE_APP_A']);
-        $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_apps' , ['ROLE_APP_A']);
+        $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_apps', ['ROLE_APP_A']);
 
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             'outdated_app_id',

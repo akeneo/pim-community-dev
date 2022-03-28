@@ -186,7 +186,6 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
         Request $request,
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
     ): void {
-
         $this->__invoke($request, 'connection_code');
 
         $saveConnectedAppOutdatedScopesFlagQuery

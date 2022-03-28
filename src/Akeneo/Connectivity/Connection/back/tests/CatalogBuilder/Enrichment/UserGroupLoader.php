@@ -41,7 +41,7 @@ class UserGroupLoader
     public function createOnlyNecessary(array $groups = []): void
     {
         $existingGroups = $this->connection->fetchFirstColumn('SELECT name FROM oro_access_group');
-        $groupsToCreate = array_diff($groups, $existingGroups);
+        $groupsToCreate = \array_diff($groups, $existingGroups);
 
         foreach ($groupsToCreate as $groupName) {
             $this->create(['name' => $groupName]);

@@ -33,7 +33,6 @@ class AclLoader
             $roleWithPermissions->setPermissions($permissions);
 
             $roleWithPermissionsCollection[] = $roleWithPermissions;
-
         }
 
         $this->roleWithPermissionsSaver->saveAll($roleWithPermissionsCollection);

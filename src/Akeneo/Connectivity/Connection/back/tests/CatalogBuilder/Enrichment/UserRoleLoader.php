@@ -45,7 +45,7 @@ class UserRoleLoader
     public function createOnlyNecessary(array $roles = []): void
     {
         $existingRoles = $this->connection->fetchFirstColumn('SELECT role FROM oro_access_role');
-        $rolesToCreate = array_diff($roles, $existingRoles);
+        $rolesToCreate = \array_diff($roles, $existingRoles);
 
         foreach ($rolesToCreate as $role) {
             $this->create([
