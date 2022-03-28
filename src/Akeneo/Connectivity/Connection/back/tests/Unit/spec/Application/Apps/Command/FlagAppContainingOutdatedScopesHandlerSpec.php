@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQueryInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,9 +20,14 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
 {
     public function let(
         ScopeMapperRegistryInterface $scopeMapperRegistry,
-        SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery
+        SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
+        AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
-        $this->beConstructedWith($scopeMapperRegistry, $saveConnectedAppOutdatedScopesFlagQuery);
+        $this->beConstructedWith(
+            $scopeMapperRegistry,
+            $saveConnectedAppOutdatedScopesFlagQuery,
+            $authorizationRequestNotifier,
+        );
     }
 
     public function it_is_a_flag_app_containing_outdated_scopes_handler(): void
@@ -32,7 +38,18 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
     public function it_updates_has_outdated_scopes_flag(
         ScopeMapperRegistryInterface $scopeMapperRegistry,
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
+        AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
+        $connectedApp = new ConnectedApp(
+            'a_connected_app_id',
+            'a_connected_app_name',
+            ['allowed_scope_d allowed_scope_b'],
+            'random_connection_code',
+            'a/path/to/a/logo',
+            'an_author',
+            'a_group',
+        );
+
         $scopeMapperRegistry->getAllScopes()->willReturn([
             'allowed_scope_a',
             'allowed_scope_b',
@@ -44,16 +61,12 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             ->execute('a_connected_app_id', true)
             ->shouldBeCalled();
 
+        $authorizationRequestNotifier
+            ->notify($connectedApp)
+            ->shouldBeCalled();
+
         $this->handle(new FlagAppContainingOutdatedScopesCommand(
-            new ConnectedApp(
-                'a_connected_app_id',
-                'a_connected_app_name',
-                ['allowed_scope_d allowed_scope_b' ],
-                'random_connection_code',
-                'a/path/to/a/logo',
-                'an_author',
-                'a_group',
-            ),
+            $connectedApp,
             'allowed_scope_a openid_scope_a random noise allowed_scope_b'
         ));
     }
@@ -61,7 +74,18 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
     public function it_does_not_update_has_outdated_scopes_flag(
         ScopeMapperRegistryInterface $scopeMapperRegistry,
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
+        AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
+        $connectedApp = new ConnectedApp(
+            'a_connected_app_id',
+            'a_connected_app_name',
+            ['allowed_scope_d', 'allowed_scope_b', 'allowed_scope_c'],
+            'random_connection_code',
+            'a/path/to/a/logo',
+            'an_author',
+            'a_group',
+        );
+
         $scopeMapperRegistry->getAllScopes()->willReturn([
             'allowed_scope_a',
             'allowed_scope_b',
@@ -73,16 +97,12 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             ->execute('a_connected_app_id', true)
             ->shouldNotBeCalled();
 
+        $authorizationRequestNotifier
+            ->notify($connectedApp)
+            ->shouldNotBeCalled();
+
         $this->handle(new FlagAppContainingOutdatedScopesCommand(
-            new ConnectedApp(
-                'a_connected_app_id',
-                'a_connected_app_name',
-                ['allowed_scope_d', 'allowed_scope_b', 'allowed_scope_c'],
-                'random_connection_code',
-                'a/path/to/a/logo',
-                'an_author',
-                'a_group',
-            ),
+            $connectedApp,
             'allowed_scope_c openid_scope_a random noise allowed_scope_b allowed_scope_d'
         ));
     }
