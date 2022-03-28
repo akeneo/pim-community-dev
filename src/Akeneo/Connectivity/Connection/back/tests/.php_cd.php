@@ -257,6 +257,8 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace',
             'Akeneo\Connectivity\Connection\Application\Marketplace',
 
+            'Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllConnectedAppsPublicIdsInterface',
+            'Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllPendingAppsPublicIdsQueryInterface',
             'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
             'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
 
