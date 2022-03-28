@@ -8,8 +8,8 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
 /**
  * Registry of in memory feature flags. All existing feature flag are deactivated by default.
- *
- * It can be changed after Symfony container boot. It is mainly used for testing purpose. Its configuration shares the same lifecycle as the Symofony container. Therefore, it cannot be used to configure feature flags in sub processes, or for end to end testing with multiple HTTP requests.
+ **
+ * A feature flag can be changed after Symfony container boot. It is mainly used for testing purpose. Its configuration shares the same lifecycle as the Symfoby container. Therefore, it cannot be used to configure feature flags in sub processes, or for end to end testing with multiple HTTP requests.
  *
  * By default, a feature is disabled.
  *
@@ -22,6 +22,8 @@ class InMemoryFeatureFlags implements FeatureFlags
 
     public function __construct(private Registry $registry)
     {
+        $featureFlagNames = array_keys($this->registry->all());
+        $this->flags = array_fill_keys($featureFlagNames, false);
     }
 
     public function enable(string $feature): void
@@ -43,6 +45,11 @@ class InMemoryFeatureFlags implements FeatureFlags
         $this->throwExceptionIfFlagDoesNotExist($feature);
 
         return $this->flags[$feature] ?? false;
+    }
+
+    public function all(): array
+    {
+        return $this->flags;
     }
 
     /**

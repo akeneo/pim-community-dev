@@ -17,4 +17,9 @@ interface FeatureFlags
      * @throws \InvalidArgumentException if the feature flag does not exist
      */
     public function isEnabled(string $feature): bool;
+
+    /**
+     * @return array<string, bool>
+     */
+    public function all(): array;
 }

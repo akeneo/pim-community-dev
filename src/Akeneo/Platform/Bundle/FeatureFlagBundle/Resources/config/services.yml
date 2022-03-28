@@ -12,7 +12,7 @@ services:
         public: true
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Controller'
         arguments:
-            - '@akeneo.feature_flag.service.registry'
+            - '@feature_flags'
 
     akeneo.feature_flag.filter_routes_subscriber:
         public: false

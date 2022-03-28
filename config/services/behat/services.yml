@@ -4,6 +4,8 @@ parameters:
 imports:
     # Akeneo/Connectivity/Connection
     - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
+    # FeatureFlag
+    - { resource: ../../../src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_services.yml }
 
 services:
     _defaults:
@@ -293,3 +295,6 @@ services:
     Pim\Behat\Context\Domain\Structure\CategoryContext:
         - 'Context\FeatureContext'
         - '@kernel'
+
+    Pim\Behat\Context\FeatureFlagContext:
+        - '@feature_flags'
