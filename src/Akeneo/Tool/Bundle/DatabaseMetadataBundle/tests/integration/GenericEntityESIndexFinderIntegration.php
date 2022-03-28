@@ -8,6 +8,7 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfigurat
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
@@ -24,6 +25,8 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 class GenericEntityESIndexFinderIntegration extends KernelTestCase
 {
     private NativeClient $esClient;
+    private Client $client;
+
     public function setUp(): void
     {
         self::bootKernel();
@@ -33,6 +36,9 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
+
+        $this->client->resetIndex();
+        $this->searchEs = new GenericEntityESIndexFinder($this->client);
     }
 
     /**
