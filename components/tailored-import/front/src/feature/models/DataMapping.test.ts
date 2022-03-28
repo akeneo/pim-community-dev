@@ -26,7 +26,7 @@ const attribute: Attribute = {
 };
 
 test('it creates a default data mapping', () => {
-  const attributeIdentifier: Attribute = {
+  const identifierAttribute: Attribute = {
     code: 'sku',
     type: 'pim_catalog_identifier',
     labels: {},
@@ -36,7 +36,7 @@ test('it creates a default data mapping', () => {
     available_locales: [],
   };
 
-  expect(createDefaultDataMapping(attributeIdentifier, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
+  expect(createDefaultDataMapping(identifierAttribute, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
     uuid: mockUuid,
     operations: [],
     sample_data: [],
@@ -46,6 +46,7 @@ test('it creates a default data mapping', () => {
       channel: null,
       code: 'sku',
       action_if_empty: 'skip',
+      source_parameter: null,
       locale: null,
       type: 'attribute',
     },
@@ -63,6 +64,7 @@ test('it creates an attribute data mapping', () => {
       channel: null,
       code: 'description',
       action_if_empty: 'skip',
+      source_parameter: null,
       locale: null,
       type: 'attribute',
     },
@@ -91,6 +93,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
       channel: null,
       code: 'description',
       action_if_empty: 'skip',
+      source_parameter: null,
       locale: 'fr_FR',
       type: 'attribute',
     },
@@ -125,6 +128,7 @@ test('it adds a source to data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
+      source_parameter: null,
     },
   };
 
@@ -140,6 +144,7 @@ test('it adds a source to data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
+      source_parameter: null,
     },
   });
 });
@@ -158,6 +163,7 @@ test('it updates a data mapping', () => {
         action_if_empty: 'skip',
         locale: null,
         type: 'attribute',
+        source_parameter: null,
       },
     },
     {
@@ -172,6 +178,7 @@ test('it updates a data mapping', () => {
         action_if_empty: 'clear',
         locale: null,
         type: 'attribute',
+        source_parameter: null,
       },
     },
   ];
@@ -188,6 +195,7 @@ test('it updates a data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
+      source_parameter: null,
     },
   };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FunctionComponent} from 'react';
 import styled from 'styled-components';
 import {Checkbox, Helper} from 'akeneo-design-system';
 import {
@@ -10,10 +10,11 @@ import {
   useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {AttributeTarget, isIdentifierAttribute} from '../../models';
+import {AttributeTargetParameterConfiguratorProps, AttributeTarget, isIdentifierAttribute} from '../../models';
 import {useAttribute, useChannels} from '../../hooks';
 import {ChannelDropdown} from './ChannelDropdown';
 import {LocaleDropdown} from './LocaleDropdown';
+import {NumberConfigurator} from '../TargetDetails';
 
 const Container = styled.div`
   display: flex;
@@ -21,6 +22,12 @@ const Container = styled.div`
   gap: 20px;
   padding: 20px 0;
 `;
+
+const attributeTargetParameterConfigurators: {
+  [attributeType: string]: FunctionComponent<AttributeTargetParameterConfiguratorProps>;
+} = {
+  pim_catalog_number: NumberConfigurator,
+};
 
 type AttributeTargetParametersProps = {
   target: AttributeTarget;
@@ -70,6 +77,8 @@ const AttributeTargetParameters = ({target, validationErrors, onTargetChange}: A
     return <Helper>{translate('akeneo.tailored_import.data_mapping.target.identifier')}</Helper>;
   }
 
+  const Configurator = attributeTargetParameterConfigurators[attribute.type] ?? null;
+
   return (
     <Container>
       {0 < channels.length && null !== target.channel && (
@@ -95,6 +104,14 @@ const AttributeTargetParameters = ({target, validationErrors, onTargetChange}: A
       <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
         {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
       </Checkbox>
+      {null !== Configurator && (
+        <Configurator
+          target={target}
+          attribute={attribute}
+          validationErrors={validationErrors}
+          onTargetAttributeChange={onTargetChange}
+        />
+      )}
     </Container>
   );
 };

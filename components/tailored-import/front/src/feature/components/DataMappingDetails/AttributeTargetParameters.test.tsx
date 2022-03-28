@@ -10,6 +10,7 @@ const attributeTarget: AttributeTarget = {
   type: 'attribute',
   action_if_not_empty: 'set',
   action_if_empty: 'skip',
+  source_parameter: null,
   channel: 'ecommerce',
   locale: 'fr_FR',
 };

@@ -4,3 +4,4 @@ export * from './Configuration';
 export * from './DataMapping';
 export * from './FileTemplateInformation';
 export * from './Target';
+export * from './Configurator';
