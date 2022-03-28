@@ -80,11 +80,8 @@ export const ScopeListContainer: FC<Props> = ({appName, scopeMessages, oldScopeM
                 </NoScope>
             ) : (
                 <>
-                    <ScopeList
-                        scopeMessages={scopeMessages}
-                        mode={null !== oldScopeMessages && undefined !== oldScopeMessages ? 'new' : null}
-                    />
-                    {undefined !== oldScopeMessages && null !== oldScopeMessages && oldScopeMessages.length > 0 && (
+                    <ScopeList scopeMessages={scopeMessages} mode={oldScopeMessages ? 'new' : null} />
+                    {oldScopeMessages && oldScopeMessages.length > 0 && (
                         <>
                             <ScopeListTitle>
                                 {translate(
