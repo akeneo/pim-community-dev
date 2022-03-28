@@ -18,7 +18,8 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code'
+            'Supplier code',
+            [],
         ));
 
         static::assertTrue(

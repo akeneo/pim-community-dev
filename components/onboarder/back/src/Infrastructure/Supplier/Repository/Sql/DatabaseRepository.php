@@ -31,6 +31,28 @@ final class DatabaseRepository implements Supplier\Repository
         );
     }
 
+    public function getByIdentifier(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
+    {
+        $sql = <<<SQL
+            SELECT identifier, code, label
+            FROM `akeneo_onboarder_serenity_supplier`
+            WHERE identifier = :identifier
+        SQL;
+
+        $row = $this->connection->executeQuery(
+            $sql,
+            [
+                'identifier' => (string) $identifier,
+            ]
+        )->fetchAssociative();
+
+        return false !== $row ? Supplier\Model\Supplier::create(
+            $row['identifier'],
+            $row['code'],
+            $row['label']
+        ) : null;
+    }
+
     public function delete(Identifier $identifier): void
     {
         $this->connection->delete(

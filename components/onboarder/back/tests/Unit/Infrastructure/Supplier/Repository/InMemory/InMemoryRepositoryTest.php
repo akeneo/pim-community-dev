@@ -19,11 +19,12 @@ final class InMemoryRepositoryTest extends TestCase
             Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
-                'Supplier code'
+                'Supplier code',
+                []
             )
         );
 
-        $supplier = $supplierRepository->find(
+        $supplier = $supplierRepository->getByIdentifier(
             Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
@@ -42,7 +43,8 @@ final class InMemoryRepositoryTest extends TestCase
             Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
-                'Supplier code'
+                'Supplier code',
+                []
             )
         );
 
@@ -61,11 +63,12 @@ final class InMemoryRepositoryTest extends TestCase
             Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'new_supplier_code',
-                'New supplier code'
+                'New supplier code',
+                []
             )
         );
 
-        $supplier = $supplierRepository->find(
+        $supplier = $supplierRepository->getByIdentifier(
             Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
@@ -80,7 +83,7 @@ final class InMemoryRepositoryTest extends TestCase
     {
         static::assertNull(
             (new InMemoryRepository())
-                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
+                ->getByIdentifier(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
         );
     }
 
@@ -93,22 +96,24 @@ final class InMemoryRepositoryTest extends TestCase
             Supplier\Model\Supplier::create(
                 (string) $identifier,
                 'supplier_code',
-                'Supplier code'
+                'Supplier code',
+                []
             )
         );
         $supplierRepository->save(
             Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f01',
                 'supplier_code2',
-                'Supplier code2'
+                'Supplier code2',
+                []
             )
         );
         $supplierRepository->delete($identifier);
 
-        $this->assertNull($supplierRepository->find($identifier));
+        $this->assertNull($supplierRepository->getByIdentifier($identifier));
         $this->assertInstanceOf(
             Supplier\Model\Supplier::class,
-            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
+            $supplierRepository->getByIdentifier(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
         );
     }
 }

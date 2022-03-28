@@ -27,7 +27,8 @@ final class CreateSupplierHandler
             Supplier\Model\Supplier::create(
                 $createSupplier->identifier,
                 $createSupplier->code,
-                $createSupplier->label
+                $createSupplier->label,
+                $createSupplier->contributorEmails
             )
         );
     }

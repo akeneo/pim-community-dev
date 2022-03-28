@@ -44,10 +44,10 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     {
         $sql = <<<SQL
             CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier_contributor` (
-              `identifier` char(36) NOT NULL,
+              `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
               `email` varchar(255) NOT NULL,
               `supplier_identifier` char(36) NOT NULL,
-              PRIMARY KEY (`identifier`),
+              PRIMARY KEY (`id`),
               CONSTRAINT UC_supplier_contributor_email UNIQUE (`email`),
               CONSTRAINT `supplier_identifier_foreign_key`
                 FOREIGN KEY (`supplier_identifier`)

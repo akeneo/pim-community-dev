@@ -3,15 +3,11 @@ services:
     Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
 
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory\InMemoryRepository
-
     # Queries
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository'
 
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists
@@ -22,4 +18,3 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository'

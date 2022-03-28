@@ -11,25 +11,34 @@ final class Supplier
     private ValueObject\Identifier $identifier;
     private ValueObject\Code $code;
     private ValueObject\Label $label;
+    private ValueObject\Contributors $contributors;
 
     private function __construct(
         string $identifier,
         string $code,
-        string $label
+        string $label,
+        array $contributorEmails = [],
     ) {
         $this->identifier = ValueObject\Identifier::fromString($identifier);
         $this->code = ValueObject\Code::fromString($code);
         $this->label = ValueObject\Label::fromString($label);
+        $this->contributors = ValueObject\Contributors::fromEmails($contributorEmails);
     }
 
-    public static function create(string $identifier, string $code, string $label): Supplier
+    public static function create(string $identifier, string $code, string $label, array $contributorEmails): Supplier
     {
         return new self(
             $identifier,
             $code,
-            $label
+            $label,
+            $contributorEmails,
         );
     }
+
+//    public function update($code, $label, array $contributors)
+//    {
+//
+//    }
 
     public function identifier(): string
     {
@@ -46,12 +55,8 @@ final class Supplier
         return (string) $this->label;
     }
 
-    public function toArray(): array
+    public function contributors(): ValueObject\Contributors
     {
-        return [
-            'identifier' => $this->identifier(),
-            'code' => $this->code(),
-            'label' => $this->label(),
-        ];
+        return $this->contributors;
     }
 }

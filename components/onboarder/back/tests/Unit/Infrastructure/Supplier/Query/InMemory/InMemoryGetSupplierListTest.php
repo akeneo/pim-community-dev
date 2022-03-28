@@ -7,7 +7,6 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Query\InMem
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory\InMemoryRepository as ContributorRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -16,20 +15,21 @@ final class InMemoryGetSupplierListTest extends TestCase
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoSupplier(): void
     {
-        static::assertCount(0, (new InMemoryGetSupplierList(new InMemoryRepository(), new ContributorRepository()))());
+        static::assertCount(0, (new InMemoryGetSupplierList(new InMemoryRepository()))());
     }
 
     /** @test */
     public function itGetsNoMoreThanFiftySuppliersAtATime(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
+        $sut = new InMemoryGetSupplierList($repository);
 
         for ($i = 1; $i <= 60; $i++) {
             $repository->save(Write\Supplier\Model\Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
-                sprintf('Supplier %d label', $i)
+                sprintf('Supplier %d label', $i),
+                []
             ));
         }
 
@@ -40,19 +40,21 @@ final class InMemoryGetSupplierListTest extends TestCase
     public function itSearchesOnSupplierLabel(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
+        $sut = new InMemoryGetSupplierList($repository);
 
         $repository->save(Write\Supplier\Model\Supplier::create(
             Uuid::uuid4()->toString(),
             'walter_white',
-            'Walter White'
+            'Walter White',
+            []
         ));
 
         $supplierIdentifier = Uuid::uuid4()->toString();
         $repository->save(Write\Supplier\Model\Supplier::create(
             $supplierIdentifier,
             'jessie_pinkman',
-            'Jessie Pinkman'
+            'Jessie Pinkman',
+            []
         ));
 
         static::assertSame($sut(1, 'pin')[$supplierIdentifier]->code, 'jessie_pinkman');
@@ -62,13 +64,14 @@ final class InMemoryGetSupplierListTest extends TestCase
     public function itPaginatesTheSupplierList(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
+        $sut = new InMemoryGetSupplierList($repository);
 
         for ($i = 1; $i <= 110; $i++) {
             $repository->save(Write\Supplier\Model\Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
-                sprintf('Supplier %d label', $i)
+                sprintf('Supplier %d label', $i),
+                []
             ));
         }
 

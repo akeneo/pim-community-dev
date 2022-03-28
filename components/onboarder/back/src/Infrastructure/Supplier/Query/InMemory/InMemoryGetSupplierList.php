@@ -8,11 +8,10 @@ use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory\InMemoryRepository as ContributorRepository;
 
 class InMemoryGetSupplierList implements GetSupplierList
 {
-    public function __construct(private SupplierRepository $repository, private ContributorRepository $contributoryRepository)
+    public function __construct(private SupplierRepository $repository)
     {
     }
 
@@ -60,9 +59,7 @@ class InMemoryGetSupplierList implements GetSupplierList
     private function buildReadModels(array $suppliers): array
     {
         return array_map(function (Write\Supplier\Model\Supplier $supplier) {
-            $contributors = $this->contributoryRepository->findBySupplier(Write\Supplier\ValueObject\Identifier::fromString($supplier->identifier()));
-
-            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($contributors));
+            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
         }, $suppliers);
     }
 }

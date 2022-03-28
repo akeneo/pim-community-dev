@@ -18,13 +18,15 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code'
+            'Supplier code',
+            [],
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
             'other_supplier_code',
-            'Other supplier code'
+            'Other supplier code',
+            [],
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
@@ -42,13 +44,15 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code'
+            'Supplier code',
+            [],
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
-            'New supplier code'
+            'New supplier code',
+            [],
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
@@ -66,8 +70,14 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     private function findSupplier(string $identifier): ?Write\Supplier\Model\Supplier
     {
         $sql = <<<SQL
-            SELECT identifier, code, label
-            FROM `akeneo_onboarder_serenity_supplier`
+            WITH contributor AS (
+                SELECT contributor.supplier_identifier, JSON_OBJECTAGG(id, email) as contributors
+                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
+                GROUP BY contributor.supplier_identifier
+            )
+            SELECT identifier, code, label, contributor.contributors
+            FROM `akeneo_onboarder_serenity_supplier` supplier
+            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE identifier = :identifier
         SQL;
 
@@ -79,7 +89,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         return false !== $supplier ? Write\Supplier\Model\Supplier::create(
             $supplier['identifier'],
             $supplier['code'],
-            $supplier['label']
+            $supplier['label'],
+            null !== $supplier['contributors'] ? json_decode($supplier['contributors'], true) : [],
         ): null;
     }
 
@@ -90,12 +101,14 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code'
+            'Supplier code',
+            [],
         ));
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f01',
             'supplier_code2',
-            'Supplier code2'
+            'Supplier code2',
+            [],
         ));
         $this->get(Write\Supplier\Repository::class)->delete(
             Write\Supplier\ValueObject\Identifier::fromString(

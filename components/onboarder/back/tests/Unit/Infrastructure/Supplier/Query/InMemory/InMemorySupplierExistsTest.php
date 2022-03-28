@@ -22,7 +22,8 @@ final class InMemorySupplierExistsTest extends TestCase
             Supplier::create(
                 'ca8baefd-0e05-4683-be48-6b9ff87e4cbc',
                 'supplier_code',
-                'Supplier label'
+                'Supplier label',
+                []
             )
         );
 

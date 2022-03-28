@@ -16,7 +16,7 @@ class InMemoryRepository implements Supplier\Repository
         $this->suppliers[$supplier->identifier()] = $supplier;
     }
 
-    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
+    public function getByIdentifier(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
         return \array_key_exists((string) $identifier, $this->suppliers) ? $this->suppliers[(string) $identifier] : null;
     }
