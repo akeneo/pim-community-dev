@@ -912,6 +912,7 @@ final class UpsertProductIntegration extends TestCase
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+        $this->get('feature_flags')->enable('asset_manager');
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
         /** @phpstan-ignore-next-line */
