@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetOpenAppUrlAction
+final class GetOpenAppUrlAction
 {
     public function __construct(
         private FeatureFlag $marketplaceActivateFeatureFlag,
@@ -46,7 +46,7 @@ class GetOpenAppUrlAction
 
         $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
         if (null === $connectedApp) {
-            throw new NotFoundHttpException(\sprintf('App not found with connected app id "%s"', $connectionCode));
+            throw new NotFoundHttpException(\sprintf('Connected App not found with connection code "%s"', $connectionCode));
         }
 
         $app = $this->getAppQuery->execute($connectedApp->getId());
@@ -54,7 +54,7 @@ class GetOpenAppUrlAction
             throw new \LogicException(\sprintf('App not found with connected app id "%s"', $connectedApp->getId()));
         }
 
-//        $this->denyAccessUnlessGrantedToManage($app);
+        $this->denyAccessUnlessGrantedToManage($app);
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
