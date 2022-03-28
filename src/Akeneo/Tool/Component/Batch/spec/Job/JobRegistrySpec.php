@@ -33,9 +33,9 @@ class JobRegistrySpec extends ObjectBehavior
         $this->get('asset_manager_job')->shouldReturn($assetJob);
     }
 
-    function it_throws_an_exception_when_getting_a_job_deactivated_through_feature_flag(JobInterface $referenceEntityJob)
+    function it_gets_a_job_even_it_is_disabled_through_feature_flag_to_allow_icecat_job_installation(JobInterface $referenceEntityJob)
     {
-        $this->shouldThrow(UndefinedJobException::class)->during('get', ['reference_entity_job']);
+        $this->get('reference_entity_job')->shouldReturn($referenceEntityJob);
     }
 
     function it_gets_a_job_when_no_feature_flag_configured_for_it(JobInterface $productExportJob)
