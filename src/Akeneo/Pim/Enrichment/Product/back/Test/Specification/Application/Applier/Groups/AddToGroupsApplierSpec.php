@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
-class AddGroupsApplierSpec extends ObjectBehavior
+class AddToGroupsApplierSpec extends ObjectBehavior
 {
     function let(
         ObjectUpdaterInterface $productUpdater

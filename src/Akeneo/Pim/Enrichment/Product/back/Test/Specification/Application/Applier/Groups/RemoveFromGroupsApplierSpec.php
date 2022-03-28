@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
-class RemoveGroupsApplierSpec extends ObjectBehavior
+class RemoveFromGroupsApplierSpec extends ObjectBehavior
 {
     function let(
         ObjectUpdaterInterface $productUpdater
