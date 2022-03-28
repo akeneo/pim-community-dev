@@ -121,7 +121,7 @@ class Category extends BaseCategory implements CategoryInterface
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() === $locale) {
+            if (strtolower($translation->getLocale()) === strtolower($locale)) {
                 return $translation;
             }
         }
