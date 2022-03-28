@@ -103,7 +103,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
     }
 
     /**
-     * @todo: remove this class when ProductId can accept a uuid
+     * @todo CPM-576: remove this class when ProductId can accept a uuid
      *
      * @param UuidInterface[] $productUuids
      * @return ProductId[]

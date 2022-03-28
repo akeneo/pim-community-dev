@@ -90,7 +90,7 @@ class ProductPdfController
      */
     protected function findProductOr404($id)
     {
-        // @TODO: Change endpoint call to provide uuid instead of id
+        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
         $product = $this->productRepository->findOneBy(['id' => $id]);
 
         if (null === $product) {

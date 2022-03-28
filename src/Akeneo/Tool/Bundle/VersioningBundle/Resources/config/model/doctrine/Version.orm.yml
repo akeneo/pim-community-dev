@@ -20,7 +20,6 @@ Akeneo\Tool\Component\Versioning\Model\Version:
                 - resource_name
                 - resource_id
                 - version
-        # @TODO: change the name to be the same as in the migration
         resource_name_resource_uuid_version_idx:
             columns:
                 - resource_name
@@ -41,9 +40,8 @@ Akeneo\Tool\Component\Versioning\Model\Version:
             type: string
             column: resource_id
             length: 24
-            # @TODO: add a migration to change to nullable
             nullable: true
-        # @TODO? Add constraint to check resourceId or resourceUuid is not null
+        # @TODO CPM-578: Add constraint to check resourceId or resourceUuid is not null
         resourceUuid:
             type: uuid_binary
             column: resource_uuid

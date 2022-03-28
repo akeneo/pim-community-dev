@@ -92,8 +92,6 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
      */
     public function testIdFilter()
     {
-        // @todo: when we select some products to do a mass action, the id of the products
-        // are put in the job parameters to run the PQB. We need to change that to put uuid instead
         $productId = IdEncoder::encode(
             IdEncoder::PRODUCT_TYPE,
             $this->get('pim_catalog.repository.product')->findOneByIdentifier('watch')->getUuid()->toString()

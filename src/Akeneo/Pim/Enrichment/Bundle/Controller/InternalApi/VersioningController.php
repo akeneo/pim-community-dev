@@ -58,7 +58,7 @@ class VersioningController
      */
     public function getAction($entityType, $entityId)
     {
-        // @todo: if a product, change the call to send uuid instead of id.
+        // @todo CPM-577: if a product, change the call to send uuid instead of id.
         $entityUuid = null;
         if (Uuid::isValid($entityId)) {
             $entityUuid = Uuid::fromString($entityId);

@@ -36,8 +36,7 @@ CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
   result json DEFAULT NULL,
   PRIMARY KEY (product_uuid, criterion_code),
   INDEX status_index (status),
-  -- TODO use the same as in migration
-  CONSTRAINT FK_dqi_product_criteria_evaluation FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
+  CONSTRAINT FK_dqi_product_uuid_criteria_evaluation FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
@@ -57,8 +56,7 @@ CREATE TABLE pim_data_quality_insights_product_score (
     scores JSON NOT NULL,
     PRIMARY KEY (product_uuid, evaluated_at),
     INDEX evaluated_at_index (evaluated_at),
-  -- TODO use the same as in migration
-    CONSTRAINT FK_dqi_product_score FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
+    CONSTRAINT FK_dqi_product_uuid_score FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_attribute_group_activation (

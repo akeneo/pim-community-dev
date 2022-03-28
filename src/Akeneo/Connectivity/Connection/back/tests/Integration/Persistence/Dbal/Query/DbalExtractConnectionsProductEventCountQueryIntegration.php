@@ -46,7 +46,7 @@ class DbalExtractConnectionsProductEventCountQueryIntegration extends TestCase
         $this->productClass = self::$container->getParameter('pim_catalog.entity.product.class');
     }
 
-    public function aatest_it_extracts_created_products_by_connection(): void
+    public function test_it_extracts_created_products_by_connection(): void
     {
         $erpConnection = $this->connectionLoader
             ->createConnection('erp', 'ERP', FlowType::DATA_SOURCE, true);
