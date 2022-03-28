@@ -83,6 +83,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'certified' => false,
                 'partner' => 'partner A',
                 'is_test_app' => false,
+                'is_pending' => false,
             ],
             [
                 'id' => '2677e764-f852-4956-bf9b-1a1ec1b0d145',
@@ -96,6 +97,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'certified' => true,
                 'partner' => null,
                 'is_test_app' => false,
+                'is_pending' => false,
             ],
         ];
 

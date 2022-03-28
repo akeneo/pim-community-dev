@@ -98,7 +98,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
-                    level='secondary'
+                    level={item.is_pending ? 'warning' : 'secondary'}
                     href={item.activate_url}
                     disabled={!item.activate_url || !canOpenApp}
                     target='_blank'

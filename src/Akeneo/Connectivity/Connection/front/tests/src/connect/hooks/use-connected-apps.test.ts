@@ -93,6 +93,7 @@ test('it does not fail if it cannot retrieve marketplace apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        is_pending: false,
     };
 
     mockFetchResponses({
@@ -133,6 +134,7 @@ test('it fetches connected apps', async () => {
         certified: false,
         partner: 'partner A',
         is_test_app: false,
+        is_pending: false,
     };
 
     const marketplaceApp = {
@@ -197,6 +199,7 @@ test('it fetches connected test apps', async () => {
         certified: false,
         partner: 'partner A',
         is_test_app: true,
+        is_pending: false,
     };
 
     const testApp: TestApp = {
@@ -261,6 +264,7 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         certified: false,
         partner: 'partner A',
         is_test_app: false,
+        is_pending: false,
     };
 
     const expectedApp = {

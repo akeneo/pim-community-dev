@@ -19,6 +19,7 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
         certified: false,
         partner: null,
         is_test_app: false,
+        is_pending: false,
     };
 
     const monitoringSettings = {
