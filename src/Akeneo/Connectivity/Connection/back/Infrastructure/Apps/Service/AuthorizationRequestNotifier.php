@@ -15,7 +15,7 @@ use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AuthorizationRequestNotifier implements AuthorizationRequestNotifierInterface
+final class AuthorizationRequestNotifier implements AuthorizationRequestNotifierInterface
 {
     public function __construct(
         private FindAllUsernamesWithAclQueryInterface $findAllUsernamesWithAclQuery,
