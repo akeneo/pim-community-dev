@@ -47,14 +47,14 @@ class BulkUpdateProductsIndex implements BulkUpdateProductsInterface
             if (!array_key_exists($productId, $scores)) {
                 continue;
             }
-            $productScores = $scores[$productId];
+            $qualityScores = $scores[$productId];
             $keyIndicators = $computedKeyIndicators[$productId] ?? [];
 
             $params[$identifierPrefix . $productId] = [
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
-                        'scores' => $productScores->toArrayIntRank(),
+                        'scores' => $qualityScores->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
                 ]
