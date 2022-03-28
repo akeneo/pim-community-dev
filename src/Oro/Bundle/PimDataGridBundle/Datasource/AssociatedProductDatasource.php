@@ -185,7 +185,7 @@ class AssociatedProductDatasource extends ProductDatasource
     {
         $ids = [];
         foreach ($association->getProducts() as $associatedProduct) {
-            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getId());
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getUuid()->toString());
         }
 
         return $ids;
@@ -295,7 +295,7 @@ class AssociatedProductDatasource extends ProductDatasource
             if ($product instanceof ProductModelInterface) {
                 $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $product->getId());
             } else {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $product->getId());
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $product->getUuid()->toString());
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);

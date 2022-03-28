@@ -24,9 +24,9 @@ class AssociationRepository extends EntityRepository implements AssociationRepos
         $qb = $this->createQueryBuilder('pa');
 
         $qb
-            ->join('pa.products', 'pap', Join::WITH, 'pap.id = :productId')
+            ->join('pa.products', 'pap', Join::WITH, 'pap.uuid = :productUuid')
             ->where($qb->expr()->in('pa.owner', $ownerIds))
-            ->setParameter(':productId', $product->getId());
+            ->setParameter(':productUuid', $product->getUuid()->getBytes());
 
         return $qb->getQuery()->getResult();
     }

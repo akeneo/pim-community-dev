@@ -182,7 +182,7 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
         $id = $this->requestParams->get('product', null);
-        $object = null !== $id ? $this->objectRepository->find($id) : null;
+        $object = null !== $id ? $this->objectRepository->findOneBy(['id' => $id]) : null;
 
         $this->configuration->offsetSetByPath($path, $object);
     }
