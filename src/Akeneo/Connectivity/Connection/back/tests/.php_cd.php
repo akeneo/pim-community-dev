@@ -34,7 +34,6 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\Settings',
             'Akeneo\Connectivity\Connection\Application\User',
 
-            'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Akeneo\UserManagement\Component\Model\RoleInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
 
@@ -98,7 +97,6 @@ $rules = [
             // Not ok
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
-            'Doctrine\Persistence',
             'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
             'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
             'Symfony\Component\Security\Core\User\UserInterface',
@@ -136,7 +134,6 @@ $rules = [
         'Akeneo\Platform\Component\EventQueue\Author',
         'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
 
-        'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
         'Akeneo\Connectivity\Connection\Domain\ValueObject\Url',
 
         'Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated',
@@ -162,9 +159,6 @@ $rules = [
             'FOS\OAuthServerBundle\Model\ClientManagerInterface',
             'FOS\OAuthServerBundle\Util\Random',
             'OAuth2\OAuth2',
-
-            // For acceptance tests purpose
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Client'),
 
@@ -182,10 +176,6 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\User',
             'Akeneo\UserManagement\Component\Model\UserInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
-
-            // For acceptance tests purpose
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryConnectionRepository',
-            'Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repository\InMemoryUserPermissionsRepository',
 
             'Doctrine\DBAL\Driver\Connection',
 
@@ -219,46 +209,23 @@ $rules = [
         [
             'Akeneo\Connectivity\Connection\Application',
             'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\Connectivity\Connection\Infrastructure',
 
             // Dependency on HTTP foundation for Request/Response
             'Symfony\Component\HttpFoundation',
-            'Symfony\Component\HttpKernel\Exception',
             // Dependency on constraint violations to correctly display errors on frontend
             'Symfony\Component\Validator\ConstraintViolationListInterface',
             // ACL dependency
             'Symfony\Component\Security\Core\Exception\AccessDeniedException',
-            'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
-            // Dependency to retrieve the current User (and his timezone).
-            'Akeneo\UserManagement\Bundle\Context\UserContext',
-            // Feature flag dependency
-            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-
-            'Psr\Log\LoggerInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\InternalApi'),
 
     $builder->only(
         [
             'Akeneo\Connectivity\Connection\Domain',
-            'Akeneo\UserManagement\Component\Model\User',
-
-            // Dependency for uuid generation
-            'Ramsey\Uuid\Uuid',
 
             // Dependency on Doctrine DBAL for persistence layer
             'Doctrine\DBAL',
-
-            // Dependency on Elasticsearch
-            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
-
-            // Dependency on Encrypter
-            'Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter',
-
-            'Symfony\Component\OptionsResolver\OptionsResolver',
-
-            'Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Persistence'),
 
@@ -290,7 +257,6 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace',
             'Akeneo\Connectivity\Connection\Application\Marketplace',
 
-            'Akeneo\Connectivity\Connection\Domain\Apps',
             'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
             'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
 

@@ -50,10 +50,10 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                     'totalToImprove' => 60,
                 ],
                 'product_models' =>
-                    [
-                        'totalGood' => 23,
-                        'totalToImprove' => 52,
-                    ]
+                [
+                    'totalGood' => 23,
+                    'totalToImprove' => 52,
+                ]
             ],
             'has_image' => [
                 'products' => [
@@ -61,10 +61,10 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                     'totalToImprove' => 26,
                 ],
                 'product_models' =>
-                    [
-                        'totalGood' => 24,
-                        'totalToImprove' => 89,
-                    ]
+                [
+                    'totalGood' => 24,
+                    'totalToImprove' => 89,
+                ]
             ]
         ]);
     }
@@ -94,11 +94,22 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                     'totalToImprove' => 60,
                 ],
                 'product_models' =>
-                    [
-                        'totalGood' => 30,
-                        'totalToImprove' => 40,
-                    ]
+                [
+                    'totalGood' => 30,
+                    'totalToImprove' => 40,
+                ]
             ],
+            'has_image' => [
+                'products' => [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ]
+            ]
         ]);
     }
 
@@ -129,10 +140,10 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                     'totalToImprove' => 60,
                 ],
                 'product_models' =>
-                    [
-                        'totalGood' => 45,
-                        'totalToImprove' => 65,
-                    ]
+                [
+                    'totalGood' => 45,
+                    'totalToImprove' => 65,
+                ]
             ],
             'has_image' => [
                 'products' => [
@@ -140,10 +151,10 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                     'totalToImprove' => 0,
                 ],
                 'product_models' =>
-                    [
-                        'totalGood' => 0,
-                        'totalToImprove' => 0,
-                    ]
+                [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ]
             ]
         ]);
     }

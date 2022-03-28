@@ -7,6 +7,7 @@ import {ConnectedAppsContainer} from '@src/connect/components/ConnectedApps/Conn
 import ConnectedAppsContainerHelper from '@src/connect/components/ConnectedApps/ConnectedAppsContainerHelper';
 import {ConnectedTestAppList} from '@src/connect/components/ConnectedApps/ConnectedTestAppList';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
+import {ConnectedApp} from '@src/model/Apps/connected-app';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -52,6 +53,8 @@ const connectedApps = [
         partner: null,
         is_test_app: false,
         is_pending: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_b',
@@ -66,6 +69,8 @@ const connectedApps = [
         partner: null,
         is_test_app: true,
         is_pending: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_c',
@@ -80,6 +85,8 @@ const connectedApps = [
         partner: null,
         is_test_app: true,
         is_pending: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_d',
@@ -94,6 +101,8 @@ const connectedApps = [
         partner: null,
         is_test_app: false,
         is_pending: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
 ];
 
@@ -149,6 +158,35 @@ test('The connected apps list renders without connected apps', async () => {
     expect(
         screen.queryAllByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
     ).toHaveLength(0);
+});
+
+test('The connected apps list renders a warning where at least one connected app is not listed on the app store', async () => {
+    const connectedApps: ConnectedApp[] = [
+        {
+            id: 'app_id_a',
+            name: 'App A',
+            scopes: [],
+            connection_code: 'connectionCodeA',
+            logo: 'http://www.example.test/path/to/logo/a',
+            author: 'author A',
+            user_group_name: 'user_group_a',
+            categories: [],
+            certified: true,
+            partner: null,
+            is_test_app: false,
+            is_pending: false,
+            is_loaded: true,
+            is_listed_on_the_appstore: false,
+        },
+    ];
+
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={connectedApps} />);
+
+    expect(
+        await screen.findByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.apps.at_least_one_is_not_listed_on_the_appstore'
+        )
+    ).toBeInTheDocument();
 });
 
 test('The connected apps list renders with pending apps', async () => {

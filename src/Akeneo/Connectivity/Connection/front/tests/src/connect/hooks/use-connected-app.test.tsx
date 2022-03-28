@@ -95,6 +95,7 @@ test('it returns loading status then a connected app', async () => {
         partner: null,
         activate_url: 'http://example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     (useFetchConnectedApp as jest.Mock).mockImplementation(() =>

@@ -43,12 +43,6 @@ $rules = [
         // TIP-939: Remove filter system for permissions
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
-        // TIP-1005: Clean UI form types
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\AsyncSelectType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\LightEntityType',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber',
-        'Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType',
-
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',

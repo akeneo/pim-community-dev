@@ -10,7 +10,7 @@ export const makeCounts = (): Counts => ({
 });
 
 export type CountsByProductType = {
-  [entitityKind in 'products' | 'product_models']: Counts;
+  [entitityKind in 'products' | 'product_models']?: Counts;
 };
 
 export const makeCountsByProductType = (): CountsByProductType => ({
@@ -18,10 +18,11 @@ export const makeCountsByProductType = (): CountsByProductType => ({
   product_models: makeCounts(),
 });
 
-export const areCountsZero = ({totalGood, totalToImprove}: Counts): boolean => totalGood === 0 && totalToImprove === 0;
+export const areCountsZero = (counts?: Counts): boolean =>
+  !!counts && counts.totalGood === 0 && counts.totalToImprove === 0;
 
 export const isCountsByProductType = (c: CountsByProductType | Counts): c is CountsByProductType => {
-  return c.hasOwnProperty('products') && c.hasOwnProperty('product_models');
+  return c.hasOwnProperty('products') || c.hasOwnProperty('product_models');
 };
 
 export const areAllCountsZero = (c: CountsByProductType | Counts): boolean => {

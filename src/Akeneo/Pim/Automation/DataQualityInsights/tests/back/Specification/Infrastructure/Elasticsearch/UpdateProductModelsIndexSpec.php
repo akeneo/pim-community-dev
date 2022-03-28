@@ -27,7 +27,7 @@ class UpdateProductModelsIndexSpec extends ObjectBehavior
         $this->beConstructedWith($esClient, $getProductModelScoresQuery, $computeProductsKeyIndicators);
     }
 
-    public function it_updates_product_models_index(
+    public function it_updates_product_model_models_index(
         $esClient,
         $getProductModelScoresQuery,
         $computeProductsKeyIndicators
@@ -73,34 +73,30 @@ class UpdateProductModelsIndexSpec extends ObjectBehavior
 
         $computeProductsKeyIndicators->compute($productModelIds)->willReturn($productModelsKeyIndicators);
 
-        $esClient->updateByQuery([
-            'script' => [
-                'inline' => "ctx._source.data_quality_insights = params;",
-                'params' => [
-                    'scores' => ['ecommerce' => ['en_US' => 5]],
-                    'key_indicators' => $productModelsKeyIndicators[123]
+        $esClient->bulkUpdate(
+            ['product_model_123', 'product_model_456', 'product_model_42'],
+            [
+                'product_model_123' => [
+                    'script' => [
+                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'params' => [
+                            'scores' => ['ecommerce' => ['en_US' => 5]],
+                            'key_indicators' => $productModelsKeyIndicators[123]
+                        ],
+                    ]
                 ],
-            ],
-            'query' => [
-                'term' => [
-                    'id' => 'product_model_123',
-                ],
-            ],
-        ])->shouldBeCalled();
-        $esClient->updateByQuery([
-            'script' => [
-                'inline' => "ctx._source.data_quality_insights = params;",
-                'params' => [
-                    'scores' => ['ecommerce' => ['en_US' => 1]],
-                    'key_indicators' => $productModelsKeyIndicators[456]
-                ],
-            ],
-            'query' => [
-                'term' => [
-                    'id' => 'product_model_456',
-                ],
-            ],
-        ])->shouldBeCalled();
+                'product_model_456' => [
+                    'script' => [
+                        'inline' => "ctx._source.data_quality_insights = params;",
+                        'params' => [
+                            'scores' => ['ecommerce' => ['en_US' => 1]],
+                            'key_indicators' => $productModelsKeyIndicators[456]
+                        ],
+                    ]
+                ]
+            ]
+        )
+            ->shouldBeCalled();
 
         $this->execute(ProductIdCollection::fromInts([123, 456, 42]));
     }

@@ -5,6 +5,7 @@ import {useFeatureFlags} from '@src/shared/feature-flags/use-feature-flags';
 import {useNotify} from '@src/shared/notify';
 import {NotificationLevel} from '@src/shared/notify';
 import {TestApp} from '@src/model/app';
+import {ConnectedApp} from '@src/model/Apps/connected-app';
 
 jest.mock('@src/shared/feature-flags/use-feature-flags');
 jest.mock('@src/shared/notify');
@@ -92,6 +93,7 @@ test('it does not fail if it cannot retrieve marketplace apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        is_pending: false,
     };
 
     mockFetchResponses({
@@ -120,7 +122,7 @@ test('it fetches connected apps', async () => {
         },
     }));
 
-    const connectedApp = {
+    const connectedApp: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -131,6 +133,8 @@ test('it fetches connected apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        is_test_app: false,
+        is_pending: false,
     };
 
     const marketplaceApp = {
@@ -150,6 +154,8 @@ test('it fetches connected apps', async () => {
     const expectedApp = {
         ...connectedApp,
         activate_url: marketplaceApp.activate_url,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     mockFetchResponses({
@@ -181,7 +187,7 @@ test('it fetches connected test apps', async () => {
         },
     }));
 
-    const connectedApp = {
+    const connectedApp: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -192,6 +198,8 @@ test('it fetches connected test apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        is_test_app: true,
+        is_pending: false,
     };
 
     const testApp: TestApp = {
@@ -206,6 +214,8 @@ test('it fetches connected test apps', async () => {
     const expectedApp = {
         ...connectedApp,
         activate_url: testApp.activate_url,
+        is_loaded: true,
+        is_listed_on_the_appstore: false,
     };
 
     mockFetchResponses({
@@ -222,6 +232,56 @@ test('it fetches connected test apps', async () => {
             json: {
                 total: 1,
                 apps: [testApp],
+            },
+        },
+    });
+
+    const {result, waitForNextUpdate} = renderHook(() => useConnectedApps());
+    expect(result.current).toEqual(null);
+    await waitForNextUpdate();
+    expect(result.current).toEqual([expectedApp]);
+});
+
+test('it returns connected apps and warns when not listed on the appstore', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'marketplace_activate':
+                    return true;
+            }
+        },
+    }));
+
+    const connectedApp: ConnectedApp = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'App A',
+        scopes: ['scope A1'],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.com/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        is_test_app: false,
+        is_pending: false,
+    };
+
+    const expectedApp = {
+        ...connectedApp,
+        activate_url: undefined,
+        is_loaded: true,
+        is_listed_on_the_appstore: false,
+    };
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
+            json: [connectedApp],
+        },
+        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+            json: {
+                total: 0,
+                apps: [],
             },
         },
     });
