@@ -6,13 +6,13 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParent
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveParentApplier;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\ConvertToSimpleProductApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use PhpSpec\ObjectBehavior;
 
-class RemoveParentApplierSpec extends ObjectBehavior
+class ConvertToSimpleProductApplierSpec extends ObjectBehavior
 {
     function let(RemoveParentInterface $removeParent)
     {
@@ -21,7 +21,7 @@ class RemoveParentApplierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(RemoveParentApplier::class);
+        $this->shouldHaveType(ConvertToSimpleProductApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
@@ -31,18 +31,24 @@ class RemoveParentApplierSpec extends ObjectBehavior
         ProductModelInterface $productModel
     ): void
     {
-        $removeParentIntent = new RemoveParent();
+        $removeParentIntent = new ConvertToSimpleProduct();
         $product->getParent()->willReturn($productModel);
         $removeParent->from($product)->shouldBeCalledOnce();
 
         $this->apply($removeParentIntent, $product, 1);
     }
 
-    function it_throws_an_exception_when_product_has_no_parent(ProductInterface $product): void
+    function it_throws_an_exception_when_product_has_no_parent(
+        ProductInterface $product,
+        RemoveParentInterface $removeParent
+    ): void
     {
-        $removeParentIntent = new RemoveParent();
+        $removeParentIntent = new ConvertToSimpleProduct();
         $product->getParent()->willReturn(null);
-        $this->shouldThrow(\InvalidArgumentException::class)->during('apply', [$removeParentIntent, $product, 1]);
+
+        $removeParent->from($product)->shouldNotBeCalled();
+
+        $this->apply($removeParentIntent, $product, 1);
     }
 
     function it_throws_an_exception_when_user_intent_is_not_supported(): void

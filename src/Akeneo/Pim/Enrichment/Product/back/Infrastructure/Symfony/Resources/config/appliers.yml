@@ -136,13 +136,13 @@ services:
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 
-    Akeneo\Pim\Enrichment\Product\Application\Applier\RemoveParentApplier:
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ConvertToSimpleProductApplier:
         arguments:
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
 
-    Akeneo\Pim\Enrichment\Product\Application\Applier\SetParentApplier:
+    Akeneo\Pim\Enrichment\Product\Application\Applier\ChangeParentApplier:
         arguments:
             - '@pim_catalog.updater.product'
         tags:

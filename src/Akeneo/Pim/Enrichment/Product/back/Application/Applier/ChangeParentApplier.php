@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
@@ -15,25 +14,26 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class RemoveParentApplier implements UserIntentApplier
+final class ChangeParentApplier implements UserIntentApplier
 {
     public function __construct(
-        private RemoveParentInterface $removeParent
+        private ObjectUpdaterInterface $productUpdater,
     ) {
     }
 
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
-        Assert::isInstanceOf($userIntent, RemoveParent::class);
-        if (null === $product->getParent()) {
+        Assert::isInstanceOf($userIntent, ChangeParent::class);
+
+        if ($userIntent->parentCode() === $product->getParent()?->getCode()) {
             return;
         }
 
-        $this->removeParent->from($product);
+        $this->productUpdater->update($product, ['parent' => $userIntent->parentCode()]);
     }
 
     public function getSupportedUserIntents(): array
     {
-        return [RemoveParent::class];
+        return [ChangeParent::class];
     }
 }
