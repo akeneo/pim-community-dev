@@ -4,10 +4,12 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
+use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 
-use Doctrine\DBAL\Connection;
+
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
@@ -35,12 +37,21 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
         static::bootKernel();
         parent::setUp();
 
+        $this->searchMySql = $this->get(GenericEntityMySQLIndexFinder::class);
+        $this->runResetIndexesCommand();
         //Connection ES
        /* $clientBuilder = new ClientBuilder();
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);*/
+    }
+
+    private function runResetIndexesCommand(): void
+    {
+        $commandLauncher = new CommandLauncher(static::$kernel); // static::bootKernel(); //static::$kernel
+        $exitCode = $commandLauncher->execute('akeneo:elasticsearch:reset-indexes', null, ['inputs' => ['yes']]);
+        $this->assertSame(0, $exitCode);
     }
 
 
@@ -50,9 +61,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
      */
     public function test_can_read_mysql_data(EntityIndexConfiguration $configMySQL): void
     {
-        $connection = $this->get('database_connection');
-        $searchMySql = new GenericEntityMySQLIndexFinder($connection);
-        $results = $searchMySql->findAllByOrder($configMySQL);
+        $results = $this->searchMySql->findAllByOrder($configMySQL);
         Assert::assertIsIterable($results);
     }
 
@@ -80,9 +89,8 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     {
         $res = [];
         $test = new \ArrayIterator($res);
-        $connection = $this->get('database_connection');
-        $searchMySql = new GenericEntityMySQLIndexFinder($connection);
-        $results = $searchMySql->findAllByOrder($configMySQL);
+
+        $results = $this->searchMySql->findAllByOrder($configMySQL);
 
         Assert::assertEquals($test,$results);
     }
@@ -123,13 +131,16 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     public function configProviderDB(): array
     {
-        $assetManagerMySql = EntityIndexConfiguration::create(
-            ['identifier', 'updated_at'],
-            'akeneo_asset_manager_asset',
-            'identifier',
-            'mysql');
+        $productMysql = EntityIndexConfiguration::create(
+            ['CONCAT("product_",id) AS id', 'updated'],
+            'pim_catalog_product', //'akeneo_asset_manager_asset'
+            'id',
+            'mysql'
+        );
+        $productMysql->setDateFieldName('updated');
+        $productMysql->setDataProcessing(DateTimeFormat::formatFromString());
         return [
-            'mysql' => [$assetManagerMySql]
+            'mysql' => [$productMysql]
         ];
     }
 

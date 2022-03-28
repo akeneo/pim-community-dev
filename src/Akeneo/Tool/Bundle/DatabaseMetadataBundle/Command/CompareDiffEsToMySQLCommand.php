@@ -38,11 +38,10 @@ class CompareDiffEsToMySQLCommand extends Command
     private array $hosts;
     private string $filenameSource;
     private string $storeFiles;
-    private GenericEntityMySQLIndexFinder $searchMySql;
     private GenericEntityESIndexFinder $searchEs;
 
     public function __construct(
-        private Connection $connection,
+        private GenericEntityMySQLIndexFinder $searchMySql,
         $hosts,
         private LoggerInterface $logger,
         $storeFiles,
@@ -53,7 +52,6 @@ class CompareDiffEsToMySQLCommand extends Command
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts;
         $clientBuilder = new ClientBuilder();
         $esClient = $clientBuilder->setHosts($this->hosts)->build();
-        $this->searchMySql = new GenericEntityMySQLIndexFinder($this->connection);
         $this->searchEs = new GenericEntityESIndexFinder($esClient);
         $this->storeFiles = $storeFiles;
     }
@@ -68,7 +66,7 @@ class CompareDiffEsToMySQLCommand extends Command
         foreach ($definedIndexSource as $indexName => $indexMappingConfiguration) {
             $this->contextLogProcessor->insertContext("index", $indexName);
 
-            $results = $this->readMySQLData($indexMappingConfiguration->mySql);
+            $results = $this->readMySQLData($indexMappingConfiguration->mySql, $indexName);
             $filenameSourceDB = $this->dumpItemToJsonFiles($results, $folder);
 
             $results = $this->readEsData($indexMappingConfiguration->elasticsearch, $indexName);
@@ -86,9 +84,9 @@ class CompareDiffEsToMySQLCommand extends Command
         return Command::SUCCESS;
     }
 
-    public function readMySQLData(EntityIndexConfiguration $entityIndexConfiguration): \Traversable
+    public function readMySQLData(EntityIndexConfiguration $entityIndexConfiguration, string $indexName): \Traversable
     {
-        $this->filenameSource = '/' . $entityIndexConfiguration->getSourceName() . self::SEPARATOR . $entityIndexConfiguration->getTableName();
+        $this->filenameSource = '/' . $entityIndexConfiguration->getSourceName() . self::SEPARATOR . $indexName;
         return $this->searchMySql->findAllByOrder($entityIndexConfiguration);
     }
 

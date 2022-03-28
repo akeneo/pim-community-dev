@@ -50,10 +50,14 @@ services:
     akeneo.pim.migration_diff.command:
         class: 'Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\CompareDiffEsToMySQLCommand'
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder'
             - '%index_hosts%'
             - '@monolog.logger'
             - '%kernel.cache_dir%'
             - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\ContextLogProcessor'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder:
+        arguments:
+            - '@database_connection'

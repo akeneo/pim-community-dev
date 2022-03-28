@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 
@@ -9,7 +11,7 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -19,41 +21,25 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class GenericEntityMySQLIndexFinderTest extends KernelTestCase
+class GenericEntityMySQLIndexFinderIntegration extends TestCase
 {
+    private GenericEntityMySQLIndexFinder $query;
 
-    /** @var Connection */
-    private $connection;
-    private GenericEntityMySQLIndexFinder $searchMySql;
-
-    public function setUp(): void
+    protected function setUp(): void
     {
-        //create and launch the kernel to test
-        self::bootKernel();
-        //Connection to Database
-        $this->connection = $this->get('database_connection');
-        $this->searchMySql = new GenericEntityMySQLIndexFinder($this->connection);
+        /*$this->runResetIndexesCommand();*/
+        parent::setUp();
+
+        $this->query = $this->get(GenericEntityMySQLIndexFinder::class);
     }
 
-    /**
-     * 0@dataProvider configProvider
-     * @return void
-     */
-    public function test_FindAllByOrder(EntityIndexConfiguration $entityIndexConfiguration): void
+    /*private function runResetIndexesCommand(): void
     {
-        $request = $this->connection->createQueryBuilder()
-            ->select($entityIndexConfiguration->getColumnsName())
-            ->from($entityIndexConfiguration->getTableName());
+        $commandLauncher = new CommandLauncher(static::$kernel); // static::bootKernel(); //static::$kernel
+        $exitCode = $commandLauncher->execute('akeneo:elasticsearch:reset-indexes', null, ['inputs' => ['yes']]);
+        $this->assertSame(0, $exitCode);
+    }*/
 
-        if ($entityIndexConfiguration->getFilterFieldName() !== null) {
-            $request->andwhere($entityIndexConfiguration->getFilterFieldName());
-        }
-        $request->orderBy($entityIndexConfiguration->getIdentifierFieldName(), 'ASC');
-
-        $results =  $this->connection->executeQuery($request)->iterateAssociative();
-
-        Assert::assertIsIterable($results);
-    }
 
     /**
      * 0@dataProvider configProvider
@@ -71,6 +57,9 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
     public function test_it_columns_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
     {
         foreach ($entityIndexConfiguration->getColumnsName() as $column) {
+            if(substr($column,0,3)=== "CON"){
+                $column = substr($column, strrpos($column, 'AS')+ strlen('as'));
+            }
             Assert::assertTrue($this->columnsExists($entityIndexConfiguration->getTableName(), $column));
         }
     }
@@ -81,20 +70,19 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
      */
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['atmosphere_absorb_atmosphere_1', null],
-            ['atmosphere_absorb_atmosphere_2', null],
-            ['atmosphere_admete_atmosphere_1', null],
-            ['atmosphere_admete_atmosphere_2', null]];
+        $fixtures = [['product_1', null],
+            ['product_10', null],
+            ['product_100', null],
+            ['product_101', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
-        $resultsQuery = $this->searchMySql->findAllByOrder($entityIndexConfiguration);
+        $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < 4; $i++) {
-            $identifier = substr($resultsQuery[$i]["identifier"], 0, strrpos($resultsQuery[$i]["identifier"], '_'));
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($resultsQuery[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -107,20 +95,21 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
      */
     public function test_it_results_request_filter_and_is_ordered(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['atmosphere_absorb_atmosphere_1', null],
-            ['atmosphere_absorb_atmosphere_2', null],
-            ['atmosphere_admete_atmosphere_1', null],
-            ['atmosphere_admete_atmosphere_2', null]];
+        $fixtures = [['product_1', null],
+            ['product_2', null],
+            ['product_3', null],
+            ['product_4', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
-        $resultsQuery =$this->searchMySql->findAllByOrder($entityIndexConfiguration);
+        $resultsOrderFilterQueryFormat = [];
+
+        $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         foreach ($resultsQuery as $value) {
-            $identifier = substr($value["identifier"], 0, strrpos($value["identifier"], '_'));
-            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
+            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($value["identifier"], null);
         }
         $resultsOrderFilterQuery = new \ArrayIterator($resultsOrderFilterQueryFormat);
 
@@ -129,42 +118,40 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
 
     public function configProvider(): array
     {
-        $assetManagerMysql = EntityIndexConfiguration::create(
-            ['identifier', 'updated_at'],
-            'akeneo_asset_manager_asset',
-            'identifier',
+        $productMysql = EntityIndexConfiguration::create(
+            ['CONCAT("product_",id) AS id', 'updated'],
+            'pim_catalog_product', //'akeneo_asset_manager_asset'
+            'id',
             'mysql'
         );
-        $assetManagerMysql->setDateFieldName('updated_at');
-        $assetManagerMysql->setDataProcessing(DateTimeFormat::formatFromString());
+        $productMysql->setDateFieldName('updated');
+        $productMysql->setDataProcessing(DateTimeFormat::formatFromString());
         return [
-            'mysql' => [$assetManagerMysql]
-        ];
-    }
-    public function configProviderFilterOrderBy(): array
-    {
-        $assetManagerMysql = EntityIndexConfiguration::create(
-            ['identifier', 'updated_at'],
-            'akeneo_asset_manager_asset',
-            'identifier',
-            'mysql'
-        );
-        $assetManagerMysql->setDateFieldName('updated_at');
-        $assetManagerMysql->setDataProcessing(DateTimeFormat::formatFromString());
-        $assetManagerMysql->setFilterFieldName("identifier LIKE 'atmosphere%'");
-        return [
-            'mysql' => [$assetManagerMysql]
+            'mysql' => [$productMysql]
         ];
     }
 
-    protected function get(string $service): ?object
+    public function configProviderFilterOrderBy(): array
     {
-        return static::$kernel->getContainer()->get($service);
+        $productMysql = EntityIndexConfiguration::create(
+            ['CONCAT("product_",id) AS id', 'updated'],
+            'pim_catalog_product',
+            'id',
+            'mysql'
+        );
+        $productMysql->setDateFieldName('updated');
+        $productMysql->setDataProcessing(DateTimeFormat::formatFromString());
+        $productMysql->setFilterFieldName("id < 5");
+        return [
+            'mysql' => [$productMysql]
+        ];
     }
+
 
     private function tableExists(string $tableName): bool
     {
-        $rows = $this->connection->executeQuery(
+        $connection = $this->get('database_connection');
+        $rows = $connection->executeQuery(
             'SHOW TABLES LIKE :tableName',
             [
                 'tableName' => $tableName,
@@ -176,7 +163,8 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
 
     private function columnsExists(string $tableName, string $columnName): bool
     {
-        $rows = $this->connection->fetchAllAssociative(
+        $connection = $this->get('database_connection');
+        $rows = $connection->fetchAllAssociative(
             sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
             [
                 'columnName' => $columnName,
@@ -184,5 +172,12 @@ class GenericEntityMySQLIndexFinderTest extends KernelTestCase
         );
 
         return count($rows) >= 1;
+    }
+
+    protected function getConfiguration()
+    {
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        //return $this->catalog->useMinimalCatalog();
+        //return $this->catalog->useTechnicalCatalog();
     }
 }
