@@ -39,7 +39,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (self::TABLES as $tableName => $columnNames) {
+        foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
             if ($this->tableExists($tableName) && $this->isColumnNullable($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $count++;
             }
@@ -73,7 +73,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         $logContext = $context->logContext;
 
         $updatedItems = 0;
-        foreach (self::TABLES as $tableName => $columnNames) {
+        foreach ($this->getTablesToMigrate() as $tableName => $columnNames) {
             $logContext->addContext('substep', $tableName);
             if ($this->tableExists($tableName) && $this->isColumnNullable($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $this->logger->notice(sprintf('Will set uuid column not nullable for %s', $tableName), $logContext->toArray());
@@ -108,5 +108,14 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
         );
 
         $this->connection->executeQuery($query);
+    }
+
+    private function getTablesToMigrate(): array
+    {
+        return \array_filter(
+            self::TABLES,
+            fn (string $tableName): bool => 'pim_versioning_version' !== $tableName && $this->tableExists($tableName),
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }
