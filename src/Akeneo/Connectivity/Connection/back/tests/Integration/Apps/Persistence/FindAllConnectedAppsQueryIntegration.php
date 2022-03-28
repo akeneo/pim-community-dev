@@ -4,16 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllConnectedAppsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
-use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -23,9 +17,6 @@ use PHPUnit\Framework\Assert;
 class FindAllConnectedAppsQueryIntegration extends TestCase
 {
     private FindAllConnectedAppsQuery $query;
-    private ConnectionLoader $connectionLoader;
-    private UserGroupLoader $userGroupLoader;
-    private Connection $connection;
     private ConnectedAppLoader $connectedAppLoader;
 
     protected function getConfiguration(): Configuration
@@ -38,9 +29,6 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(FindAllConnectedAppsQuery::class);
-        $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
-        $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
-        $this->connection = $this->get('database_connection');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 

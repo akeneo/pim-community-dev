@@ -153,6 +153,7 @@ akeneo_connectivity.connection:
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                    pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:

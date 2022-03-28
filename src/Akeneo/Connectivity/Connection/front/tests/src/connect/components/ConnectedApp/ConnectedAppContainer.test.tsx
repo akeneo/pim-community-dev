@@ -491,6 +491,76 @@ test('The connected app container notifies errors when saving monitoring setting
     expect(screen.queryByText('pim_common.entity_updated')).toBeInTheDocument();
 });
 
+test('Displaying a pending app comes with a warning message on the settings tab', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+    };
+
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
+        mockedProviders,
+        mockedPermissions,
+        jest.fn(),
+    ]);
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, is_pending: true}} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')
+    ).toBeInTheDocument();
+    act(() => {
+        userEvent.click(
+            screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')
+        );
+    });
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')
+    ).not.toBeInTheDocument();
+    act(() => {
+        userEvent.click(
+            screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
+        );
+    });
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')
+    ).not.toBeInTheDocument();
+});
+
 const assertPageHeader = () => {
     expect(screen.queryByText('pim_menu.tab.connect')).toBeInTheDocument();
     expect(screen.queryByText('pim_menu.item.connected_apps')).toBeInTheDocument();
