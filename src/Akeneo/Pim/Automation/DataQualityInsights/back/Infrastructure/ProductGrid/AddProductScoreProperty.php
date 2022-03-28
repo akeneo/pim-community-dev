@@ -11,6 +11,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
+use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -18,11 +21,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
  */
 final class AddProductScoreProperty implements AddAdditionalProductProperties
 {
-    private GetLatestProductScoresQueryInterface $getProductScores;
-
-    public function __construct(GetLatestProductScoresQueryInterface $getProductScores)
-    {
-        $this->getProductScores = $getProductScores;
+    public function __construct(
+        private GetLatestProductScoresQueryInterface $getProductScores,
+        private Connection $connection
+    ) {
     }
 
     /**
@@ -34,10 +36,21 @@ final class AddProductScoreProperty implements AddAdditionalProductProperties
             return [];
         }
 
-        $productIds = [];
-        foreach ($rows as $row) {
-            $productIds[] = new ProductId($row->technicalId());
-        }
+        $productUuidAsBytes = array_map(
+            fn (Row $row): string => Uuid::fromString($row->technicalId())->getBytes(),
+            $rows
+        );
+
+        $productUuidsToIds = $this->connection->fetchAllKeyValue(
+            'SELECT BIN_TO_UUID(uuid) AS uuid, id FROM pim_catalog_product WHERE uuid IN (:product_uuids)',
+            ['product_uuids' => $productUuidAsBytes],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY],
+        );
+
+        $productIds = array_map(
+            fn (string $productId): ProductId => new ProductId((int) $productId),
+            $productUuidsToIds
+        );
 
         $productScores = $this->getProductScores->byProductIds($productIds);
         $channel = new ChannelCode($queryParameters->channelCode());
@@ -45,7 +58,7 @@ final class AddProductScoreProperty implements AddAdditionalProductProperties
 
         $rowsWithAdditionalProperty = [];
         foreach ($rows as $row) {
-            $scoreValue = $this->retrieveProductScore($row->technicalId(), $productScores, $channel, $locale);
+            $scoreValue = $this->retrieveProductScore((int) $productUuidsToIds[$row->technicalId()] ?? -1, $productScores, $channel, $locale);
             $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
             $rowsWithAdditionalProperty[] = $row->addAdditionalProperty($property);
         }

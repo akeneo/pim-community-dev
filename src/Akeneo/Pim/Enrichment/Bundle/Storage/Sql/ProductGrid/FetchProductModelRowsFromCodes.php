@@ -75,7 +75,7 @@ final class FetchProductModelRowsFromCodes
                 Type::getType(Types::DATETIME_MUTABLE)->convertToPhpValue($row['updated'], $platform),
                 $row['label'],
                 $row['image'],
-                (int) $row['id'],
+                $row['id'],
                 $row['children_completeness'],
                 $row['parent_code'],
                 $row['value_collection']

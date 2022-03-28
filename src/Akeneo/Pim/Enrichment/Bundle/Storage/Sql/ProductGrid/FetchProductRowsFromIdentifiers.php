@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
@@ -76,7 +77,7 @@ final class FetchProductRowsFromIdentifiers
                 $row['label'],
                 $row['image'],
                 $row['completeness'],
-                (int) $row['id'],
+                $row['uuid'],
                 $row['product_model_code'],
                 $row['value_collection']
             );
@@ -89,7 +90,7 @@ final class FetchProductRowsFromIdentifiers
     {
         $sql = <<<SQL
             SELECT 
-                p.id,
+                BIN_TO_UUID(p.uuid) as uuid,
                 p.identifier,
                 p.family_id,
                 p.is_enabled,
