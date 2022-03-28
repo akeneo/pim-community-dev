@@ -183,9 +183,9 @@ SQL;
 
         if (null !== $product) {
             $sqlQuery .= <<<SQL
- AND resource_id = :product_id
+ AND resource_uuid = :product_uuid
 SQL;
-            $parameters['product_id'] = $product->getId();
+            $parameters['product_uuidtests/back/Pim/Enrichment/EndToEnd/Product/Product/ExternalApi/ListProducts/SuccessListProductEndToEnd.php'] = $product->getUuid()->getBytes();
         }
 
         $this->dbalConnection->executeQuery(
