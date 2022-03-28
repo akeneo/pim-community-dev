@@ -47,7 +47,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     {
         $count = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
+            if ($this->tableExists($tableName) && !$this->indexExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $count++;
             }
         }
@@ -62,14 +62,17 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             $logContext->addContext('substep', $tableName);
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
+            if ($this->tableExists($tableName) && !$this->indexExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
                 $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addIndexOnUuid(
                         $tableName,
                         $columnNames[self::UUID_COLUMN_INDEX]
                     );
-                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+                    $this->logger->notice(
+                        'Substep done',
+                        $logContext->toArray(['updated_items_count' => $updatedItems += 1])
+                    );
                 }
             }
         }
@@ -81,7 +84,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
             ALTER TABLE `{table_name}`
-                ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`),
+                ADD {UNIQUE} INDEX `{index_name}` (`{uuid_column_name}`),
                     ALGORITHM=INPLACE,
                     LOCK=NONE;
         SQL;
