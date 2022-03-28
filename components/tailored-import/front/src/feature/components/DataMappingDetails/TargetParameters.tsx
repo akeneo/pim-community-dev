@@ -4,7 +4,7 @@ import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community
 import {isAttributeTarget, Target} from '../../models';
 import {AttributeTargetParameters} from './AttributeTargetParameters';
 import {PropertyTargetParameters} from './PropertyTargetParameters';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 type TargetParametersProps = {
   target: Target;

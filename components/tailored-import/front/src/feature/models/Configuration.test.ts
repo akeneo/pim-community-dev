@@ -1,5 +1,5 @@
 import {generateColumnName, getDefaultFileStructure, getColumnByUuid} from './Configuration';
-import {Column} from "../../../lib";
+import {Column} from '../../../lib';
 
 test('it generates column name', () => {
   expect(generateColumnName(0, 'Sku')).toEqual('Sku (A)');
@@ -24,35 +24,35 @@ test('it can get the default file structure', () => {
 test('it find column from uuid', () => {
   let colums = [
     {
-      uuid: "c33e67f4-a6f7-4950-81c1-1800a956b88f",
-      label: "name",
-      index: 1
+      uuid: 'c33e67f4-a6f7-4950-81c1-1800a956b88f',
+      label: 'name',
+      index: 1,
     } as Column,
     {
-      uuid: "cb5bb5ca-e532-45bd-801b-65a7966a8f18",
-      label: "description",
-      index: 2
-    } as Column
+      uuid: 'cb5bb5ca-e532-45bd-801b-65a7966a8f18',
+      label: 'description',
+      index: 2,
+    } as Column,
   ];
 
-  const result = getColumnByUuid(colums, "c33e67f4-a6f7-4950-81c1-1800a956b88f");
+  const result = getColumnByUuid(colums, 'c33e67f4-a6f7-4950-81c1-1800a956b88f');
   expect(result).toEqual(colums[0]);
-})
+});
 
 test("it can't find column from uuid", () => {
   let colums = [
     {
-      uuid: "c33e67f4-a6f7-4950-81c1-1800a956b88f",
-      label: "name",
-      index: 1
+      uuid: 'c33e67f4-a6f7-4950-81c1-1800a956b88f',
+      label: 'name',
+      index: 1,
     } as Column,
     {
-      uuid: "cb5bb5ca-e532-45bd-801b-65a7966a8f18",
-      label: "description",
-      index: 2
-    } as Column
+      uuid: 'cb5bb5ca-e532-45bd-801b-65a7966a8f18',
+      label: 'description',
+      index: 2,
+    } as Column,
   ];
 
-  const result = getColumnByUuid(colums, "885bbc55-ed08-4392-8096-4d7fed9f0ca9");
+  const result = getColumnByUuid(colums, '885bbc55-ed08-4392-8096-4d7fed9f0ca9');
   expect(result).toBeNull();
-})
+});
