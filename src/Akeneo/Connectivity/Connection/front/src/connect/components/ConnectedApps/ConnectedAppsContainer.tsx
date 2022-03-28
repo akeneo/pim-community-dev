@@ -41,7 +41,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
 
     const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_test_app);
     const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_test_app);
-    const pendingApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_pending);
+    const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
     const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
@@ -74,7 +74,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
                             )}
                         </SectionTitle.Information>
                     </SectionTitle>
-                    {pendingApps.length > 0 && (
+                    {hasPendingApps && (
                         <Helper icon={<DangerIcon />} level='warning'>
                             {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')}
                         </Helper>
