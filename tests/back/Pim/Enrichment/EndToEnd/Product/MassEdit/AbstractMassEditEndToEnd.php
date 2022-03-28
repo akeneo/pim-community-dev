@@ -110,6 +110,26 @@ SQL;
         return sprintf('%s_%s', $type, $idFromDatabase);
     }
 
+    protected function getProductId(string $identifier): string
+    {
+        $query = <<<SQL
+SELECT id AS uuid FROM pim_catalog_product WHERE identifier = :identifier
+SQL;
+
+        $stmt = $this->dbalConnection->prepare($query);
+        $stmt->bindValue('identifier', $identifier);
+        $idFromDatabase = $stmt->executeQuery()->fetchOne();
+
+        if (false === $idFromDatabase) {
+            throw new \InvalidArgumentException(sprintf(
+                'Product with identifier "%s" does not exist.',
+                $identifier
+            ));
+        }
+
+        return $idFromDatabase;
+    }
+
     protected function getProductUuid(string $identifier): string
     {
             $query = <<<SQL
@@ -156,7 +176,7 @@ SQL;
     {
         $this->client->request(
             'POST',
-            sprintf('/enrich/product/rest/%s', $this->getProductUuid($identifier)),
+            sprintf('/enrich/product/rest/%s', $this->getProductId($identifier)),
             [],
             [],
             [

@@ -185,7 +185,7 @@ SQL;
             $sqlQuery .= <<<SQL
  AND resource_uuid = :product_uuid
 SQL;
-            $parameters['product_uuidtests/back/Pim/Enrichment/EndToEnd/Product/Product/ExternalApi/ListProducts/SuccessListProductEndToEnd.php'] = $product->getUuid()->getBytes();
+            $parameters['product_uuid'] = $product->getUuid()->getBytes();
         }
 
         $this->dbalConnection->executeQuery(

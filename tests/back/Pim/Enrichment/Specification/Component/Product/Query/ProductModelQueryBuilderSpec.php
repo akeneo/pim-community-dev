@@ -282,9 +282,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         CursorFactoryInterface $cursorFactory,
         CursorInterface $cursor,
         FieldFilterInterface $filterField,
-        FilterRegistryInterface $filterRegistry,
-        SorterRegistryInterface $sorterRegistry,
-        FieldSorterInterface $sorter
+        FilterRegistryInterface $filterRegistry
     ) {
         $this->setQueryBuilder($searchQb);
         $filterRegistry->getFieldFilter('entity_type', '=')->willReturn($filterField);
@@ -304,8 +302,7 @@ class ProductModelQueryBuilderSpec extends ObjectBehavior
         SearchQueryBuilder $searchQb,
         ProductQueryBuilderOptionsResolverInterface $optionsResolver,
         CursorInterface $cursor,
-        FieldFilterInterface $filterField,
-        FieldSorterInterface $sorter
+        FieldFilterInterface $filterField
     ) {
         $defaultContext = ['locale' => 'en_US', 'scope' => 'print', 'with_document_type_facet' => true];
         $this->beConstructedWith(

@@ -75,7 +75,7 @@ class AbstractEntityWithValuesQueryBuilder implements ProductQueryBuilderInterfa
         return $this->cursorFactory->createCursor($this->getQueryBuilder()->getQuery(), $cursorOptions);
     }
 
-    /**ProductPdfController
+    /**
      * {@inheritdoc}
      */
     public function setQueryBuilder($queryBuilder)
