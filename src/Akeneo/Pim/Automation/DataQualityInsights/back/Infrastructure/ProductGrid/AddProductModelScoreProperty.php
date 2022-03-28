@@ -18,7 +18,7 @@ final class AddProductModelScoreProperty implements AddAdditionalProductModelPro
 {
     public function __construct(
         private GetProductModelScoresQueryInterface $getProductModelScores,
-        private EnrichProductAndProductModelRowsWithScores $enrichProductAndProductModelRowsWithScores
+        private AddScoresToProductAndProductModelRows $addScoresToProductAndProductModelRows
     ) {
     }
 
@@ -38,6 +38,6 @@ final class AddProductModelScoreProperty implements AddAdditionalProductModelPro
 
         $scores = $this->getProductModelScores->byProductModelIds(ProductIdCollection::fromProductIds($productIds));
 
-        return ($this->enrichProductAndProductModelRowsWithScores)($fetchProductAndProductModelRowsParameters, $rows, $scores);
+        return ($this->addScoresToProductAndProductModelRows)($fetchProductAndProductModelRowsParameters, $rows, $scores);
     }
 }

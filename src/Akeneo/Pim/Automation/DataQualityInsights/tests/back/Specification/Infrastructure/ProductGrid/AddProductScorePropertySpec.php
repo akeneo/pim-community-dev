@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\EnrichProductAndProductModelRowsWithScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
@@ -20,9 +20,11 @@ use Prophecy\Argument;
 
 class AddProductScorePropertySpec extends ObjectBehavior
 {
-    public function let(GetProductScoresQueryInterface $getProductScores, EnrichProductAndProductModelRowsWithScores $enrichProductAndProductModelRowsWithScores)
-    {
-        $this->beConstructedWith($getProductScores, $enrichProductAndProductModelRowsWithScores);
+    public function let(
+        GetProductScoresQueryInterface $getProductScores,
+        AddScoresToProductAndProductModelRows $addScoresToProductAndProductModelRows
+    ){
+        $this->beConstructedWith($getProductScores, $addScoresToProductAndProductModelRows);
     }
 
     public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
@@ -39,7 +41,7 @@ class AddProductScorePropertySpec extends ObjectBehavior
 
     public function it_returns_row_with_additional_property_DQI_score(
         $getProductScores,
-        $enrichProductAndProductModelRowsWithScores,
+        $addScoresToProductAndProductModelRows,
         ProductQueryBuilderInterface $productQueryBuilder
     )
     {
@@ -60,7 +62,7 @@ class AddProductScorePropertySpec extends ObjectBehavior
 
         $getProductScores->byProductIds(Argument::any())->willReturn($scores);
 
-        $enrichProductAndProductModelRowsWithScores->__invoke($queryParameters, $rows, $scores)->shouldBeCalled();
+        $addScoresToProductAndProductModelRows->__invoke($queryParameters, $rows, $scores)->shouldBeCalled();
 
         $this->add($queryParameters, $rows)->shouldHaveScoreProperties();
     }
