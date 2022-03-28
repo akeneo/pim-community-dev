@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\BulkUpdateProductsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductModelsEvaluated;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductsInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
