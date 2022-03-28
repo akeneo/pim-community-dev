@@ -16,6 +16,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class UpdateProductModelsIndex
 {
+    private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
+
     public function __construct(
         private Client                              $esClient,
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
@@ -25,6 +27,7 @@ class UpdateProductModelsIndex
 
     public function execute(ProductIdCollection $productIdCollection): void
     {
+        $params = [];
         $productModelsScores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
         $productModelsKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
@@ -36,27 +39,23 @@ class UpdateProductModelsIndex
             $productModelScores = $productModelsScores[$productModelId];
             $keyIndicators = $productModelsKeyIndicators[$productModelId] ?? [];
 
-            $this->updateProductIndex($productModelId, $productModelScores, $keyIndicators);
-        }
-    }
-
-    private function updateProductIndex(int $productModelId, ChannelLocaleRateCollection $productModelScores, array $keyIndicators): void
-    {
-        $this->esClient->updateByQuery(
-            [
+            $params[self::PRODUCT_MODEL_IDENTIFIER_PREFIX . $productModelId] = [
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
                         'scores' => $productModelScores->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
-                ],
-                'query' => [
-                    'term' => [
-                        'id' => sprintf('product_model_%d', $productModelId),
-                    ],
-                ],
-            ]
+                ]
+            ];
+        }
+
+        $this->esClient->bulkUpdate(
+            array_map(
+                fn ($productModelId) => self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $productModelId,
+                $productIdCollection->toArrayInt()
+            ),
+            $params
         );
     }
 }

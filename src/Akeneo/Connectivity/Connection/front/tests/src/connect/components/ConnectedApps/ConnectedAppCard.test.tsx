@@ -6,6 +6,7 @@ import {renderWithProviders, historyMock} from '../../../../test-utils';
 import {ConnectedAppCard} from '@src/connect/components/ConnectedApps/ConnectedAppCard';
 import {SecurityContext} from '@src/shared/security';
 import {AppIllustration} from 'akeneo-design-system';
+import {ConnectedApp} from '@src/model/Apps/connected-app';
 
 beforeEach(() => {
     fetchMock.resetMocks();
@@ -18,7 +19,7 @@ jest.mock('akeneo-design-system', () => ({
 }));
 
 test('The connected app card renders', async () => {
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -31,6 +32,8 @@ test('The connected app card renders', async () => {
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -60,7 +63,7 @@ test('The Manage App button is disabled when the user doesnt have the permission
         return true;
     });
 
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -73,6 +76,8 @@ test('The Manage App button is disabled when the user doesnt have the permission
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(
@@ -98,7 +103,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
         return true;
     });
 
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -111,6 +116,8 @@ test('The Open App button is disabled when the user doesnt have the permission t
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(
@@ -136,7 +143,7 @@ test('The Open App and Manage App buttons are enabled for test app when the user
         return false;
     });
 
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -149,6 +156,8 @@ test('The Open App and Manage App buttons are enabled for test app when the user
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(
@@ -177,7 +186,7 @@ test('The Open App and Manage App buttons are enabled for test app when the user
 });
 
 test('The connected app card displays removed user as author when author is null', async () => {
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -190,6 +199,8 @@ test('The connected app card displays removed user as author when author is null
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -204,7 +215,7 @@ test('The connected app card displays removed user as author when author is null
 });
 
 test('The connected app card displays app illustration when logo is null', async () => {
-    const item = {
+    const item: ConnectedApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'App A',
         scopes: ['scope A1'],
@@ -217,6 +228,8 @@ test('The connected app card displays app illustration when logo is null', async
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -225,4 +238,30 @@ test('The connected app card displays app illustration when logo is null', async
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryByAltText('App A')).not.toBeInTheDocument();
     expect(AppIllustration).toHaveBeenCalled();
+});
+
+test('The connected app card displays a warning when it is not listed on the app store', async () => {
+    const item: ConnectedApp = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'App A',
+        scopes: ['scope A1'],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
+        is_test_app: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: false,
+    };
+
+    renderWithProviders(<ConnectedAppCard item={item} />);
+    await waitFor(() => screen.getByText('App A'));
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore')
+    ).toBeInTheDocument();
 });
