@@ -233,7 +233,7 @@ test('it fetches connected test apps', async () => {
     expect(result.current).toEqual([expectedApp]);
 });
 
-test('it trigger a connnected app update if there is inconsistency between it and the app store data', async () => {
+test('it triggers a connected app update if there is inconsistency between it and the app store data', async () => {
     (useFeatureFlags as jest.Mock).mockImplementation(() => ({
         isEnabled: (feature: string) => {
             switch (feature) {

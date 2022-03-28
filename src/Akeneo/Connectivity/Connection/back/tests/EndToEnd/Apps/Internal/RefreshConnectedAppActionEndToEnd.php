@@ -41,7 +41,7 @@ class RefreshConnectedAppActionEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_refresh_a_connected_app(): void
+    public function test_it_refreshes_a_connected_app(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->authenticateAsAdmin();

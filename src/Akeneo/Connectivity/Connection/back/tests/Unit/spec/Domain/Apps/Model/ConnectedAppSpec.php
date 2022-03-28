@@ -132,7 +132,7 @@ class ConnectedAppSpec extends ObjectBehavior
         ]);
     }
 
-    public function is_updates_description_properties(): void
+    public function it_updates_description_properties(): void
     {
         $updated = $this->withUpdatedDescription(
             'New Name',

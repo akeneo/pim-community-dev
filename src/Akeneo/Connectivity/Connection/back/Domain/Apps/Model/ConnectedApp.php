@@ -132,14 +132,18 @@ final class ConnectedApp
         bool $certified = false,
         ?string $partner = null,
     ): self {
-        $self = clone $this;
-        $self->name = $name;
-        $self->logo = $logo;
-        $self->author = $author;
-        $self->categories = $categories;
-        $self->certified = $certified;
-        $self->partner = $partner;
-
-        return $self;
+        return new self(
+            $this->id,
+            $name,
+            $this->scopes,
+            $this->connectionCode,
+            $logo,
+            $author,
+            $this->userGroupName,
+            $categories,
+            $certified,
+            $partner,
+            $this->isTestApp,
+        );
     }
 }
