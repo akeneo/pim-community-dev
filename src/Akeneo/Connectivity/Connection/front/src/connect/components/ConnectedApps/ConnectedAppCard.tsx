@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, Button, AppIllustration} from 'akeneo-design-system';
+import {getColor, getFontSize, Button, AppIllustration, DangerIcon, useTheme} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -95,6 +95,10 @@ const Actions = styled.div`
         margin-left: 10px;
     }
 `;
+const IconBox = styled.span`
+    vertical-align: middle;
+    margin-right: 5px;
+`;
 
 type Props = {
     item: ConnectedApp;
@@ -104,6 +108,7 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     const translate = useTranslate();
     const security = useSecurity();
     const generateUrl = useRouter();
+    const theme = useTheme();
     const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: item.connection_code,
     })}`;
@@ -124,19 +129,30 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
             <LogoContainer> {logo} </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                <Author>
-                    {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
-                        author,
-                    })}
-                </Author>
-                {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
+                {item.is_pending ? (
+                    <>
+                        <IconBox>
+                            <DangerIcon size={13} color={theme.color.yellow100} />
+                        </IconBox>
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.pending')}
+                    </>
+                ) : (
+                    <>
+                        <Author>
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
+                                author,
+                            })}
+                        </Author>
+                        {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
+                    </>
+                )}
             </TextInformation>
             <Actions>
                 <Button ghost level='tertiary' href={connectedAppUrl} disabled={!canManageApp}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
-                    level='secondary'
+                    level={item.is_pending ? 'warning' : 'secondary'}
                     href={item.activate_url}
                     disabled={!item.activate_url || !canOpenApp}
                     target='_blank'

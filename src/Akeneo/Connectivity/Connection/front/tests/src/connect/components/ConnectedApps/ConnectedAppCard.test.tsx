@@ -31,6 +31,7 @@ test('The connected app card renders', async () => {
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -73,6 +74,7 @@ test('The Manage App button is disabled when the user doesnt have the permission
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     renderWithProviders(
@@ -111,6 +113,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     renderWithProviders(
@@ -149,6 +152,7 @@ test('The Open App and Manage App buttons are enabled for test app when the user
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
+        is_pending: false,
     };
 
     renderWithProviders(
@@ -190,6 +194,7 @@ test('The connected app card displays removed user as author when author is null
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -217,6 +222,7 @@ test('The connected app card displays app illustration when logo is null', async
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
+        is_pending: false,
     };
 
     renderWithProviders(<ConnectedAppCard item={item} />);
@@ -224,5 +230,59 @@ test('The connected app card displays app illustration when logo is null', async
 
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryByAltText('App A')).not.toBeInTheDocument();
+    expect(AppIllustration).toHaveBeenCalled();
+});
+
+test('The pending App card renders', async () => {
+    const item = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'App A',
+        scopes: ['scope A1'],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
+        is_test_app: false,
+        is_pending: true,
+    };
+
+    renderWithProviders(<ConnectedAppCard item={item} />);
+    await waitFor(() => screen.getByText('App A'));
+
+    expect(screen.queryByText('App A')).toBeInTheDocument();
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by?author=author+A'
+        )
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.pending')
+    ).toBeInTheDocument();
+    expect(screen.queryByText('category A1')).not.toBeInTheDocument();
+    expect(screen.queryByText('category A2')).toBeNull();
+
+    const openAppButton = expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
+    );
+    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.not.toHaveAttribute('disabled');
+    openAppButton.not.toHaveAttribute('aria-disabled', 'true');
+
+    const manageAppButton = expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')
+    );
+    manageAppButton.toHaveAttribute(
+        'href',
+        '#akeneo_connectivity_connection_connect_connected_apps_edit?connectionCode=connectionCodeA'
+    );
+    manageAppButton.not.toHaveAttribute('disabled');
+    manageAppButton.not.toHaveAttribute('aria-disabled', 'true');
+
+    expect(screen.queryByText('App A')).toBeInTheDocument();
+    expect(screen.queryByAltText('App A')).toBeInTheDocument();
     expect(AppIllustration).toHaveBeenCalled();
 });

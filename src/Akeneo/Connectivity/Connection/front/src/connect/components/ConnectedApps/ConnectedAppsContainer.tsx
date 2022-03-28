@@ -1,5 +1,5 @@
 import React, {FC, useRef} from 'react';
-import {ArrowSimpleUpIcon, getColor, IconButton, SectionTitle} from 'akeneo-design-system';
+import {ArrowSimpleUpIcon, DangerIcon, getColor, Helper, IconButton, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../../shared/scroll/hooks/useDisplayScrollTopButton';
@@ -41,6 +41,7 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
 
     const connectedTestApps = allConnectedApps.filter((connectedApp: ConnectedApp) => connectedApp.is_test_app);
     const connectedApps = allConnectedApps.filter((connectedApp: ConnectedApp) => !connectedApp.is_test_app);
+    const hasPendingApps = undefined !== allConnectedApps.find((connectedApp: ConnectedApp) => connectedApp.is_pending);
 
     const connectedAppCards = connectedApps.map((connectedApp: ConnectedApp) => (
         <ConnectedAppCard key={connectedApp.id} item={connectedApp} />
@@ -73,6 +74,11 @@ export const ConnectedAppsContainer: FC<Props> = ({allConnectedApps}) => {
                             )}
                         </SectionTitle.Information>
                     </SectionTitle>
+                    {hasPendingApps && (
+                        <Helper icon={<DangerIcon />} level='warning'>
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')}
+                        </Helper>
+                    )}
 
                     {0 === connectedAppCards.length && <NoConnectedApps />}
                     {connectedAppCards.length > 0 && <CardGrid>{connectedAppCards}</CardGrid>}
