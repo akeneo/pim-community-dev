@@ -282,7 +282,7 @@ describe('ManageOptionsModal', () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
 
     expect(await findCodeInput(19)).toBeInTheDocument();
-  }, 10000);
+  }, 20000);
 
   it('should prevent the user from adding a new option when reaching the limit', async () => {
     renderWithProviders(
