@@ -6,8 +6,8 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
@@ -19,9 +19,9 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateAppWithAuthorizationHandlerIntegration extends TestCase
+class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCase
 {
-    private UpdateAppWithAuthorizationHandler $handler;
+    private UpdateConnectedAppScopesWithAuthorizationHandler $handler;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private FindOneConnectedAppByIdQuery $findOneConnectedAppByIdQuery;
     private ConnectedAppLoader $connectedAppLoader;
@@ -35,7 +35,7 @@ class UpdateAppWithAuthorizationHandlerIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->handler = $this->get(UpdateAppWithAuthorizationHandler::class);
+        $this->handler = $this->get(UpdateConnectedAppScopesWithAuthorizationHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->findOneConnectedAppByIdQuery = $this->get(FindOneConnectedAppByIdQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
@@ -89,7 +89,7 @@ class UpdateAppWithAuthorizationHandlerIntegration extends TestCase
             'akeneo_print',
         );
 
-        $command = new UpdateAppWithAuthorizationCommand($clientId);
+        $command = new UpdateConnectedAppScopesWithAuthorizationCommand($clientId);
 
         $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -119,7 +119,7 @@ class UpdateAppWithAuthorizationHandlerIntegration extends TestCase
         $foundApp = $this->findOneConnectedAppByIdQuery->execute($appId);
         Assert::assertEquals($oldScopes, $foundApp->getScopes());
 
-        $this->handler->handle(new UpdateAppWithAuthorizationCommand($appId));
+        $this->handler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($appId));
 
         $foundApp = $this->findOneConnectedAppByIdQuery->execute($appId);
         Assert::assertEquals($newScopes, $foundApp->getScopes());

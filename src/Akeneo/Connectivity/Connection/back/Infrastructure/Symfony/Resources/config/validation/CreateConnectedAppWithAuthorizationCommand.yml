@@ -1,4 +1,4 @@
-Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand:
+Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand:
     constraints:
         -   Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReached: ~
     properties:

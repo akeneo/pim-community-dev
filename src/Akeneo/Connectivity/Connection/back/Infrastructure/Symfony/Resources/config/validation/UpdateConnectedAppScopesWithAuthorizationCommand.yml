@@ -1,4 +1,4 @@
-Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand:
+Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand:
     properties:
         clientId:
             -   NotBlank:

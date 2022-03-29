@@ -48,7 +48,7 @@ services:
         arguments:
             - '@database_connection'
             -
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppQuery:
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppScopesQuery:
         arguments:
             - '@database_connection'
             -

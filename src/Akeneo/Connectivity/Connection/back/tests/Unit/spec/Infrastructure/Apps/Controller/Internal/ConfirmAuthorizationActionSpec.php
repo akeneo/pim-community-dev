@@ -7,10 +7,10 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Int
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
@@ -47,7 +47,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ConfirmAuthorizationActionSpec extends ObjectBehavior
 {
     public function let(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
@@ -59,10 +59,10 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         GetAppQueryInterface $getAppQuery,
         FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
-        UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
+        UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
     ): void {
         $this->beConstructedWith(
-            $createAppWithAuthorizationHandler,
+            $createConnectedAppWithAuthorizationHandler,
             $marketplaceActivateFeatureFlag,
             $getAppConfirmationQuery,
             $violationListNormalizer,
@@ -74,7 +74,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
             $consentAppAuthenticationHandler,
             $getAppQuery,
             $findOneConnectedAppByIdQuery,
-            $updateAppWithAuthorizationHandler,
+            $updateConnectedAppScopesWithAuthorizationHandler,
         );
     }
 
@@ -185,7 +185,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_invalid_app_authorization_request_because_create_app_validation_failed(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
@@ -235,8 +235,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
-        $createAppWithAuthorizationHandler->handle(
-            new CreateAppWithAuthorizationCommand($clientId)
+        $createConnectedAppWithAuthorizationHandler->handle(
+            new CreateConnectedAppWithAuthorizationCommand($clientId)
         )->willThrow(new InvalidAppAuthorizationRequestException($constraintViolationList));
 
         $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
@@ -256,7 +256,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_invalid_app_authentication_exception_because_consent_app_validation_failed(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         ViolationListNormalizer $violationListNormalizer,
@@ -307,8 +307,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
-        $createAppWithAuthorizationHandler->handle(
-            new CreateAppWithAuthorizationCommand($clientId)
+        $createConnectedAppWithAuthorizationHandler->handle(
+            new CreateConnectedAppWithAuthorizationCommand($clientId)
         )->shouldBeCalledOnce();
         $consentAppAuthenticationHandler->handle(
             new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId)
@@ -331,7 +331,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
     }
 
     public function it_throws_a_logic_exception_because_there_is_no_active_app_authorization_in_session(
-        CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -367,8 +367,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(true);
         $connectedPimUserProvider->getCurrentUserId()->willReturn($connectedPimUserId);
 
-        $createAppWithAuthorizationHandler->handle(
-            new CreateAppWithAuthorizationCommand($clientId)
+        $createConnectedAppWithAuthorizationHandler->handle(
+            new CreateConnectedAppWithAuthorizationCommand($clientId)
         )->shouldBeCalledOnce();
         $consentAppAuthenticationHandler->handle(
             new ConsentAppAuthenticationCommand($clientId, $connectedPimUserId)
@@ -383,7 +383,7 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
     }
 
     public function it_updates_when_connected_app_already_exist(
-        UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
+        UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
         FeatureFlag $marketplaceActivateFeatureFlag,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -432,8 +432,8 @@ class ConfirmAuthorizationActionSpec extends ObjectBehavior
 
         $findOneConnectedAppByIdQuery->execute($clientId)->willReturn($connectedApp);
 
-        $updateAppWithAuthorizationHandler->handle(
-            new UpdateAppWithAuthorizationCommand($clientId)
+        $updateConnectedAppScopesWithAuthorizationHandler->handle(
+            new UpdateConnectedAppScopesWithAuthorizationCommand($clientId)
         )->shouldBeCalledOnce();
 
         $appAuthorization = AppAuthorization::createFromNormalized([

@@ -9,8 +9,8 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
@@ -48,7 +48,7 @@ final class AuthorizeAction
         private GetAppQueryInterface $getAppQuery,
         private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         private ScopeListComparatorInterface $scopeListComparator,
-        private UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
+        private UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
     ) {
     }
 
@@ -99,10 +99,10 @@ final class AuthorizeAction
         $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
         $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        $hasNewScopes = \count($this->scopeListComparator->diff(
+        $hasNewScopes = false === empty($this->scopeListComparator->diff(
             $requestedScopes,
             $originalScopes
-        )) > 0;
+        ));
 
         if (null === $appConfirmation || $hasNewScopes) {
             return new RedirectResponse(
@@ -112,7 +112,7 @@ final class AuthorizeAction
             );
         }
 
-        $this->updateAppWithAuthorizationHandler->handle(new UpdateAppWithAuthorizationCommand($clientId));
+        $this->updateConnectedAppScopesWithAuthorizationHandler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($clientId));
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 

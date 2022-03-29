@@ -1,5 +1,5 @@
 services:
-    Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler:
+    Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
@@ -11,11 +11,11 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
 
-    Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler:
+    Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppScopesQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
         arguments:

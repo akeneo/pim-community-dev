@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\UpdateConnectedAppQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\UpdateConnectedAppScopesQueryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -12,7 +12,7 @@ use Doctrine\DBAL\Types\Types;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class UpdateConnectedAppQuery implements UpdateConnectedAppQueryInterface
+final class UpdateConnectedAppScopesQuery implements UpdateConnectedAppScopesQueryInterface
 {
     public function __construct(private Connection $connection)
     {

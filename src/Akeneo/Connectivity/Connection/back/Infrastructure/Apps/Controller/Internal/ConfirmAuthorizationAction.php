@@ -7,10 +7,10 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthenticationException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
@@ -38,7 +38,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class ConfirmAuthorizationAction
 {
     public function __construct(
-        private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler,
+        private CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler,
         private FeatureFlag $marketplaceActivateFeatureFlag,
         private GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         private ViolationListNormalizer $violationListNormalizer,
@@ -50,7 +50,7 @@ final class ConfirmAuthorizationAction
         private ConsentAppAuthenticationHandler $consentAppAuthenticationHandler,
         private GetAppQueryInterface $getAppQuery,
         private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
-        private UpdateAppWithAuthorizationHandler $updateAppWithAuthorizationHandler,
+        private UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
     ) {
     }
 
@@ -83,9 +83,9 @@ final class ConfirmAuthorizationAction
             $connectedApp = $this->findOneConnectedAppByIdQuery->execute($clientId);
 
             if (null === $connectedApp) {
-                $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand($clientId));
+                $this->createConnectedAppWithAuthorizationHandler->handle(new CreateConnectedAppWithAuthorizationCommand($clientId));
             } else {
-                $this->updateAppWithAuthorizationHandler->handle(new UpdateAppWithAuthorizationCommand($clientId));
+                $this->updateConnectedAppScopesWithAuthorizationHandler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($clientId));
             }
 
             $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);

@@ -6,8 +6,8 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
+class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
 {
     public function let(
         ValidatorInterface $validator,
@@ -62,12 +62,12 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
 
     public function it_is_instantiable()
     {
-        $this->shouldHaveType(CreateAppWithAuthorizationHandler::class);
+        $this->shouldHaveType(CreateConnectedAppWithAuthorizationHandler::class);
     }
 
     public function it_throws_when_the_command_is_not_valid(ValidatorInterface $validator): void
     {
-        $command = new CreateAppWithAuthorizationCommand('');
+        $command = new CreateConnectedAppWithAuthorizationCommand('');
 
         $validator
             ->validate($command)
@@ -86,7 +86,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         GetAppQueryInterface $getAppQuery
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)
@@ -105,7 +105,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         AppAuthorizationSessionInterface $appAuthorizationSession,
         App $app
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)
@@ -127,7 +127,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         App $app,
         AppAuthorization $appAuthorization
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)
@@ -153,7 +153,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         Client $client,
         GroupInterface $userGroup
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)
@@ -184,7 +184,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         GroupInterface $userGroup,
         RoleInterface $role
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)
@@ -222,7 +222,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         User $user,
         ConnectionWithCredentials $connection
     ): void {
-        $command = new CreateAppWithAuthorizationCommand('an_app_id');
+        $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
         $validator
             ->validate($command)

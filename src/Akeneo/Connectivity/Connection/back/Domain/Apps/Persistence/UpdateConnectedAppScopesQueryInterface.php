@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Apps\Persistence;
 
-interface UpdateConnectedAppQueryInterface
+interface UpdateConnectedAppScopesQueryInterface
 {
     /**
      * @param string[] $scopes
