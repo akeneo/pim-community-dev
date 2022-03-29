@@ -122,7 +122,7 @@ final class SupplierContext implements Context
     public function iUpdateTheSupplierWith(string $code, TableNode $properties): void
     {
         $label = $properties->getHash()[0]['label'];
-        $contributors = explode(';', $properties->getHash()[0]['contributors']);
+        $contributors = array_filter(explode(';', $properties->getHash()[0]['contributors']));
 
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $contributors));
