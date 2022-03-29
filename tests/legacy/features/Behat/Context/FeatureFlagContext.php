@@ -23,7 +23,7 @@ class FeatureFlagContext implements Context
     {
         $this->featureFlags->deleteFile();
 
-        $tags = $scope->getScenario()->getTags();
+        $tags = [...$scope->getScenario()->getTags(), ...$scope->getFeature()->getTags()];
         $featureFlagTags = array_filter($tags, fn (string $tag) => preg_match('/-feature-enabled$/', $tag));
         $featureFlagsTagsWithoutSuffix = array_map(fn ($tag) => str_replace('-feature-enabled', '', $tag), $featureFlagTags);
         $featureFlags = array_map(fn ($tag) => str_replace('-', '_', $tag), $featureFlagsTagsWithoutSuffix);
