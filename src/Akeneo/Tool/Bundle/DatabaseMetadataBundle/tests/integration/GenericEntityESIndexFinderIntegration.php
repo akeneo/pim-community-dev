@@ -130,7 +130,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     {
         $assetManagerEs = EntityIndexConfiguration::create(
             ['identifier','updated_at'],
-            'akeneo_assetmanager_asset',
+            'akeneo_assetmanager_asset_test',
             'identifier',
             'es'
         );
