@@ -444,8 +444,6 @@ class DataGridContext extends PimContext implements PageObjectAware
         $this->getDatagrid()->validateColumnsPopin();
 
         $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(0)');
-
-        sleep(10);
     }
 
     /**

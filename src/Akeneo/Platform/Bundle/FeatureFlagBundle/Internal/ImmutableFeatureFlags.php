@@ -12,19 +12,10 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
  */
 class ImmutableFeatureFlags implements FeatureFlags
 {
-    /** @var Registry */
-    private $registry;
-
-    public function __construct(Registry $registry)
+    public function __construct(private Registry $registry)
     {
-        $this->registry = $registry;
     }
 
-    /**
-     * @param string $feature
-     *
-     * @return bool
-     */
     public function isEnabled(string $feature): bool
     {
         $flag = $this->registry->get($feature);

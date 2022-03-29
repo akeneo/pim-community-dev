@@ -11,7 +11,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
  * Registry of in memory feature flags. All existing feature flag are deactivated by default.
  **
- * A feature flag can be changed after Symfony container boot. It is mainly used for testing purpose. Its configuration shares the same lifecycle as the Symfoby container. Therefore, it cannot be used to configure feature flags in sub processes, or for end to end testing with multiple HTTP requests.
+ * A feature flag can be changed after Symfony container boot. It is mainly used for testing purpose. Its configuration shares the same lifecycle as the Symfony container. Therefore, it cannot be used to configure feature flags in sub processes, or for end to end testing with multiple HTTP requests.
  *
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -53,9 +53,6 @@ class InMemoryFeatureFlags implements FeatureFlags
         return $this->flags;
     }
 
-    /**
-     * @param string $feature
-     */
     private function throwExceptionIfFlagDoesNotExist(string $feature): void
     {
         $this->registry->get($feature);
