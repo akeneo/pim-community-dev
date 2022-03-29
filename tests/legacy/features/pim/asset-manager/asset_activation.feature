@@ -5,6 +5,9 @@ Feature: Assets are only available if the feature is enabled
     Given a "default" catalog configuration
     And an asset manager job import in CSV
     And I am logged in as "Julia"
+    And the following products:
+      | sku     |
+      | rangers |
 
   Scenario: Asset feature is not available when deactivated
     Given I am on the dashboard page
@@ -16,6 +19,8 @@ Feature: Assets are only available if the feature is enabled
     And I create a new attribute
     Then I should see the text "Text"
     And I should not see the text "Asset"
+    When I am on the "rangers" product page
+    And I should not see the text "Asset"
 
   @asset-manager-feature-enabled
   Scenario: Asset feature is available when activated
@@ -26,3 +31,5 @@ Feature: Assets are only available if the feature is enabled
     When I am on the attributes page
     And I create a new attribute
     And I should see the text "Asset collection"
+    When I am on the "rangers" product page
+    And I should see the text "Asset"
