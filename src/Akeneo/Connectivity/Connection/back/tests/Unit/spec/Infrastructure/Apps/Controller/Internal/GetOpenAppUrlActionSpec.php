@@ -108,7 +108,7 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
         $findOneConnectedAppByConnectionCodeQuery->execute('non_app_connection_code')->willReturn(null);
 
         $this
-            ->shouldThrow(new NotFoundHttpException('Connected App not found with connection code "non_app_connection_code"'))
+            ->shouldThrow(new NotFoundHttpException('Connected app with connection code non_app_connection_code does not exist.'))
             ->during('__invoke', [$request, 'non_app_connection_code']);
     }
 

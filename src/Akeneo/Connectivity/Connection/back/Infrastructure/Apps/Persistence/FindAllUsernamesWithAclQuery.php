@@ -16,6 +16,7 @@ class FindAllUsernamesWithAclQuery implements FindAllUsernamesWithAclQueryInterf
     public function __construct(private Connection $connection)
     {
     }
+
     /**
      * @inheritDoc
      */

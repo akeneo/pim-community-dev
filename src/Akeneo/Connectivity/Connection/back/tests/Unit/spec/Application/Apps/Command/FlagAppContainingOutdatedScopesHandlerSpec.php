@@ -93,7 +93,7 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             ->shouldHaveBeenCalled();
     }
 
-    public function it_does_not_flags_the_connected_app_on_less_scopes(
+    public function it_does_not_flag_the_connected_app_on_less_scopes(
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
@@ -121,7 +121,7 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             ->shouldNotHaveBeenCalled();
     }
 
-    public function it_does_not_flags_the_connected_app_on_same_scopes(
+    public function it_does_not_flag_the_connected_app_on_same_scopes(
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {

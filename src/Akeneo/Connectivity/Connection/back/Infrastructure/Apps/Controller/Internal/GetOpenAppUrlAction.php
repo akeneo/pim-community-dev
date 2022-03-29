@@ -46,12 +46,12 @@ final class GetOpenAppUrlAction
 
         $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
         if (null === $connectedApp) {
-            throw new NotFoundHttpException(\sprintf('Connected App not found with connection code "%s"', $connectionCode));
+            throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
         $app = $this->getAppQuery->execute($connectedApp->getId());
         if (null === $app) {
-            throw new \LogicException(\sprintf('App not found with connected app id "%s"', $connectedApp->getId()));
+            throw new \LogicException("App not found with connected app id \"{$connectedApp->getId()}\"");
         }
 
         $this->denyAccessUnlessGrantedToManage($app);

@@ -44,7 +44,7 @@ class GetOpenAppUrlActionEndToEnd extends WebTestCase
         $this->loadAppsFixtures();
     }
 
-    public function test_it_returns_a_url_to_open_app(): void
+    public function test_it_returns_an_url_to_open_app(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
             'a_client_id',
