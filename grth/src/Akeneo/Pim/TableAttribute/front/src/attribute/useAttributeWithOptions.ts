@@ -19,9 +19,9 @@ const useAttributeWithOptions: (
       setIsFetching(true);
       AttributeFetcher.findAttributeWithOptions(router, locale, currentPage * batchSize, batchSize).then(
         newAttributes => {
-          const isThereNextPages = newAttributes.length !== batchSize;
+          const isThereNextPages = newAttributes.length === batchSize;
           setAttributes(attributes => [...(attributes || []), ...newAttributes]);
-          setIsFetching(isThereNextPages);
+          setIsFetching(!isThereNextPages);
         }
       );
     }
