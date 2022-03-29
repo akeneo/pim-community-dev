@@ -16,6 +16,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
@@ -611,6 +614,7 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
     }
 
+    /** @test */
     public function it_updates_a_product_categories(): void
     {
         $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
@@ -834,6 +838,34 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Property "a_multi_reference_entity_attribute" expects valid record codes. The following records do not exist: "toto"');
         $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
+    }
+
+    /** @test */
+    public function it_can_modify_a_products_groups(): void
+    {
+        $this->updateProduct(new SetGroups(['groupA', 'groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+
+        $this->updateProduct(new RemoveFromGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA'], $product->getGroupCodes());
+
+        $this->updateProduct(new AddToGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_setting_an_unknown_group(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Property "groups" expects a valid group code. The group does not exist, "unknown" given.');
+
+        $this->updateProduct(new SetGroups(['unknown', 'groupB']));
     }
 
     private function getUserId(string $username): int

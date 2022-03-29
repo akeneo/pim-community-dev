@@ -117,3 +117,21 @@ services:
             - '@pim_catalog.updater.product'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\SetGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\AddToGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\Groups\RemoveFromGroupsApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
