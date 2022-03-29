@@ -11,11 +11,6 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\Sql\DatabaseRepository
-        arguments:
-            - '@database_connection'
-
     # Command/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
