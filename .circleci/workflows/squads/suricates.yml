@@ -26,6 +26,9 @@ workflows:
       - test_back_onboarder:
           requires:
             - build_srnt_dev
+      - test_database:
+          requires:
+            - build_srnt_dev
       - test_helm_generated_k8s_files:
           requires:
             - checkout
