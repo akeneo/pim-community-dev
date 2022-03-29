@@ -81,6 +81,8 @@ $rules = [
             // External dependencies coupling
             'PHPUnit\Framework',
             'Ramsey\Uuid\Uuid',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 
