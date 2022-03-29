@@ -27,11 +27,15 @@ class SearchConnectorRecordResultSpec extends ObjectBehavior
                 new ConnectorRecord(
                     RecordCode::fromString('record_code_1'),
                     [],
+                    new \DateTimeImmutable(),
+                    new \DateTimeImmutable()
                 ),
                 new \StdClass(),
                 new ConnectorRecord(
                     RecordCode::fromString('record_code_2'),
                     [],
+                    new \DateTimeImmutable(),
+                    new \DateTimeImmutable()
                 ),
             ],
             'last_sort_value'
@@ -45,10 +49,14 @@ class SearchConnectorRecordResultSpec extends ObjectBehavior
         $record1 = new ConnectorRecord(
             RecordCode::fromString('record_code_1'),
             [],
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable()
         );
         $record2 = new ConnectorRecord(
             RecordCode::fromString('record_code_2'),
             [],
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable()
         );
         $this->beConstructedThrough('createFromSearchAfterQuery', [
             [$record1, $record2],
