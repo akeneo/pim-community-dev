@@ -34,3 +34,7 @@ services:
     public: true
     arguments:
       - '@akeneo.tailored_import.handler.get_sample_data_handler'
+
+  akeneo.tailored_import.controller.get_new_sample_data_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetNewSampleDataAction
+    public: true

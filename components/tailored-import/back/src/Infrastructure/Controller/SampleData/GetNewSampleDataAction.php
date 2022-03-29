@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
-use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataHandler;
-use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Application\SampleData\GetNewSampleData\GetNewSampleDataHandler;
+use Akeneo\Platform\TailoredImport\Application\SampleData\GetNewSampleData\GetNewSampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetSampleDataAction
+final class GetNewSampleDataAction
 {
     public function __construct(
-        private GetSampleDataHandler $getSampleDataHandler,
-    ) {
-    }
+        private GetNewSampleDataHandler $getNewSampleDataHandler
+    ) {}
 
     public function __invoke(Request $request): Response
     {
@@ -29,6 +28,8 @@ final class GetSampleDataAction
         }
 
         if (
+            null === $request->get('index_to_change') ||
+            null === $request->get('current_sample') ||
             null === $request->get('file_key') ||
             null === $request->get('column_index') ||
             null === $request->get('sheet_name') ||
@@ -37,14 +38,16 @@ final class GetSampleDataAction
             throw new \HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
         }
 
-        $query = new GetSampleDataQuery();
+        $query = new GetNewSampleDataQuery();
+        $query->indexToChange = $request->get('index_to_change');
+        $query->currentSample = $request->get('current_sample');
         $query->fileKey = $request->get('file_key');
-        $query->columnIndex = intval($request->get('column_index'));
+        $query->columnIndex = $request->get('column_index');
         $query->sheetName = $request->get('sheet_name');
         $query->productLine = intval($request->get('product_line'));
 
-        $sampleData = $this->getSampleDataHandler->handle($query);
+        $getNewSampleDataResult = $this->getNewSampleDataHandler->handle($query);
 
-        return new JsonResponse($sampleData->normalize(), Response::HTTP_OK);
+        return new JsonResponse($getNewSampleDataResult->normalize(), Response::HTTP_OK);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\GetSampleData;
 
-use Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleData;
+use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
 use PHPUnit\Framework\TestCase;
 
 /**

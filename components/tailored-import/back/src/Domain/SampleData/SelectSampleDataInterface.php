@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Domain\GetSampleData;
+namespace Akeneo\Platform\TailoredImport\Domain\SampleData;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
