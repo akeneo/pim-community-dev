@@ -26,6 +26,37 @@ workflows:
       - test_back_onboarder:
           requires:
             - build_srnt_dev
+      - test_helm_generated_k8s_files:
+          requires:
+            - checkout
+      - deploy_pr_environment?:
+            name: "Deploy Onboarder PR environment?"
+            type: approval
+            filters:
+              branches:
+                only:
+                  - /SURI-.*/
+                  - /OB2-.*/
+                  - /OBS-.*/
+      - build_srnt_prod:
+            name: "Build srnt Prod for deploy PR"
+            requires:
+              - checkout
+              - test_helm_generated_k8s_files
+              - "Deploy Onboarder PR environment?"
+      - deploy_pr_environment:
+            name: "Deploy Onboarder PR environment"
+            requires:
+                - "Build srnt Prod for deploy PR"
+      - delete_pr_environment?:
+            name: "Delete Onboarder PR environment?"
+            type: approval
+            requires:
+                - "Deploy Onboarder PR environment"
+      - delete_pr_environment:
+            name: "Delete Onboarder PR environment"
+            requires:
+            - "Delete Onboarder PR environment?"
       - pull_request_success:
           requires:
             - test_front_onboarder

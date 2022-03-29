@@ -30,7 +30,6 @@ $rules = [
 
     $builder->only(
         [
-            'Webmozart\Assert\Assert',
             'Akeneo\Platform\TailoredImport\Domain',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',
@@ -41,7 +40,6 @@ $rules = [
         [
             'Box\Spout\Common',
             'Box\Spout\Reader',
-            'Psr\Log\LoggerInterface',
             'Symfony\Component',
             'Symfony\Contracts',
             'Webmozart\Assert\Assert',
@@ -51,7 +49,6 @@ $rules = [
 
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
-            'Akeneo\Pim\Enrichment\Product\API\UpsertProductHandlerInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Tool',
             'Akeneo\UserManagement\Component\Model\UserInterface',

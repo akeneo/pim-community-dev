@@ -141,6 +141,16 @@ describe('akeneo > asset family > application > reducer --- right', () => {
       )
     ).toBe(false);
 
+    expect(
+      canEditAssetFamily(
+        {
+          assetFamilyIdentifier: 'dEsIgNeR',
+          edit: true,
+        },
+        'DeSiGnEr'
+      )
+    ).toBe(true);
+
     expect(canEditAssetFamily([], 'designer')).toBe(false);
   });
 });

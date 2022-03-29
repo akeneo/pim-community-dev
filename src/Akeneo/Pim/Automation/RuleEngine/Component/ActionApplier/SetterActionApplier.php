@@ -103,7 +103,12 @@ class SetterActionApplier implements ActionApplierInterface
 
             if (null !== $parent && !empty(array_diff($parent->getCategoryCodes(), $newCategoryCodes))) {
                 throw new NonApplicableActionException(
-                    'The ancestor categories are missing'
+                    \sprintf(
+                        'You cannot set categories for this variant %s %s as the following categories from the parent product model are missing: %s',
+                        $entity instanceof ProductModelInterface ? 'product model' : 'product',
+                        $entity->getIdentifier(),
+                        \implode(\array_diff($parent->getCategoryCodes(), $newCategoryCodes))
+                    )
                 );
             }
         }
