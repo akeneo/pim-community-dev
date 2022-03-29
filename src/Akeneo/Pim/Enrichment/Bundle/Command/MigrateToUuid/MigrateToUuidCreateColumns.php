@@ -98,11 +98,11 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
 
         if ('pim_versioning_version' === $tableName) {
-            // TODO: remove this index once the pim_versioning_version is fully migrated
+            // TODO CPM-581: remove this index once the pim_versioning_version is fully migrated
             $this->connection->executeQuery(
                 <<<SQL
                 ALTER TABLE `pim_versioning_version`
-                ADD INDEX `resource_name_uuid_id_idx` (`resource_name`, `resource_uuid`, `resource_id`),
+                ADD INDEX `migrate_to_uuid_temp_index_to_delete` (`resource_name`, `resource_uuid`, `resource_id`),
                 ALGORITHM=INPLACE,
                 LOCK=NONE;
                 SQL
