@@ -126,7 +126,7 @@ test('it displays an attribute data mapping', async () => {
     <DataMappingDetails
       dataMapping={attributeDataMapping}
       fileKey={'/file_key'}
-      fileStructure={ fileStructure }
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={jest.fn()}
@@ -155,7 +155,7 @@ test('it can change target parameters', async () => {
     <DataMappingDetails
       dataMapping={{...attributeDataMapping, target: attributeTarget}}
       fileKey={'/file_key'}
-      fileStructure={ fileStructure }
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
@@ -181,7 +181,7 @@ test('it can add a source to a data mapping', async () => {
     <DataMappingDetails
       dataMapping={attributeDataMappingWithoutSource}
       fileKey={'/file_key'}
-      fileStructure={ fileStructure }
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}

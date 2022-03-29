@@ -38,7 +38,7 @@ test('it returns column from uuid', () => {
   expect(result).toEqual(colums[0]);
 });
 
-test("it return null when column is not find", () => {
+test('it return null when column is not find', () => {
   let colums = [
     {
       uuid: 'c33e67f4-a6f7-4950-81c1-1800a956b88f',
