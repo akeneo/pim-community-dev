@@ -452,7 +452,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
             )}
           </div>
           <Modal.TopRightButtons>
-            <ImportOptionsButton onClick={handleImportOptions} />
+            <ImportOptionsButton onClick={handleImportOptions} batchSize={25} />
             <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
               {confirmLabel ? confirmLabel : translate('pim_common.confirm')}
             </Button>

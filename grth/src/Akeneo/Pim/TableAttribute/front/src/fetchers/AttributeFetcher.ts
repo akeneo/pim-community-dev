@@ -1,4 +1,4 @@
-import {Router, LocaleCode} from '@akeneo-pim-community/shared';
+import {Router, LocaleCode, RouteParams} from '@akeneo-pim-community/shared';
 import {Attribute, AttributeCode, AttributeType, AttributeWithOptions} from '../models';
 
 const fetchAttribute = async (router: Router, attributeCode: AttributeCode): Promise<Attribute> => {
@@ -22,11 +22,25 @@ const query = async (router: Router, params: AttributeFetcherIndexParams): Promi
   return (await response.json()) as Attribute[];
 };
 
-const findAttributeWithOptions: (router: Router, locale: LocaleCode) => Promise<AttributeWithOptions[]> = async (
-  router,
-  locale
-) => {
-  const url = router.generate('pim_table_attribute_get_select_attributes_with_options_count', {locale});
+const findAttributeWithOptions: (
+  router: Router,
+  locale: LocaleCode,
+  offset?: number,
+  limit?: number,
+  search?: string
+) => Promise<AttributeWithOptions[]> = async (router, locale, offset, limit, search) => {
+  const params: RouteParams = {locale};
+  if (typeof offset !== 'undefined') {
+    params.offset = offset;
+  }
+  if (typeof limit !== 'undefined') {
+    params.limit = limit;
+  }
+  if (typeof search !== 'undefined') {
+    params.search = search;
+  }
+
+  const url = router.generate('pim_table_attribute_get_select_attributes_with_options_count', params);
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',

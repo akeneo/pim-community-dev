@@ -8,6 +8,7 @@ import {AttributeOptionFetcher} from '../fetchers';
 
 type ImportOptionsButtonProps = {
   onClick: (attributeOptions: AttributeOption[]) => void;
+  batchSize?: number;
 };
 
 const DropdownItem = styled(Dropdown.Item)`
@@ -28,11 +29,11 @@ const OptionsCount = styled.div`
   font-size: ${({theme}) => theme.fontSize.small};
 `;
 
-const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
+const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick, batchSize = 25}) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState();
   const [isImporting, setIsImporting] = React.useState<boolean>(false);
-  const attributes = useAttributeWithOptions(isOpen);
+  const {attributes, onNextPage} = useAttributeWithOptions(isOpen, batchSize);
   const router = useRouter();
 
   const handleClick = (selectAttributeCode: AttributeCode) => {
@@ -59,11 +60,11 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick}) => {
       </Button>
       {isOpen && !isImporting && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
-          <Dropdown.ItemCollection>
+          <Dropdown.ItemCollection onNextPage={onNextPage}>
             {attributes.map(attribute => {
               return (
                 <DropdownItem onClick={() => handleClick(attribute.code)} key={attribute.code}>
-                  <AttributeLabel>{(attribute.label || `[${attribute.code}]`)}</AttributeLabel>
+                  <AttributeLabel>{attribute.label || `[${attribute.code}]`}</AttributeLabel>
                   <OptionsCount>
                     {translate(
                       'pim_table_attribute.form.attribute.option_count',
