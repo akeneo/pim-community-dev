@@ -37,8 +37,14 @@ final class DatabaseRepository implements Supplier\Repository
     public function getByIdentifier(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
         $sql = <<<SQL
-            SELECT identifier, code, label
-            FROM `akeneo_onboarder_serenity_supplier`
+            WITH contributor AS (
+                SELECT supplier_identifier, JSON_ARRAYAGG(email) as contributor_emails
+                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
+                GROUP BY contributor.supplier_identifier
+            )
+            SELECT identifier, code, label, contributor.contributor_emails
+            FROM `akeneo_onboarder_serenity_supplier` supplier
+            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE identifier = :identifier
         SQL;
 
@@ -52,7 +58,8 @@ final class DatabaseRepository implements Supplier\Repository
         return false !== $row ? Supplier\Model\Supplier::create(
             $row['identifier'],
             $row['code'],
-            $row['label']
+            $row['label'],
+            null !== $row['contributor_emails'] ? json_decode($row['contributor_emails'], true) : [],
         ) : null;
     }
 
@@ -68,7 +75,7 @@ final class DatabaseRepository implements Supplier\Repository
     {
         $this->connection->delete(
             'akeneo_onboarder_serenity_supplier_contributor',
-            ['supplier_identifier' => (string) $supplierIdentifier]
+            ['supplier_identifier' => $supplierIdentifier]
         );
     }
 

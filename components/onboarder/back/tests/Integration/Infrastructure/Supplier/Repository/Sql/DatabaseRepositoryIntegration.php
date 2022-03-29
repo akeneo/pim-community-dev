@@ -18,22 +18,26 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code',
-            [],
+            'Supplier label',
+            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
             'other_supplier_code',
-            'Other supplier code',
+            'Other supplier label',
             [],
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
+        static::assertSame('supplier_code', $supplier['code']);
+        static::assertSame('Supplier label', $supplier['label']);
+        $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f02', 2);
 
-        static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $supplier);
-        static::assertSame('supplier_code', $supplier->code());
-        static::assertSame('Supplier code', $supplier->label());
+        $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f03');
+        static::assertSame('other_supplier_code', $supplier['code']);
+        static::assertSame('Other supplier label', $supplier['label']);
+        $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f03', 0);
     }
 
     /** @test */
@@ -44,21 +48,21 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code',
+            'Supplier label',
             [],
         ));
-
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
-            'New supplier code',
-            [],
+            'New supplier label',
+            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
 
-        static::assertSame('new_supplier_code', $supplier->code());
-        static::assertSame('New supplier code', $supplier->label());
+        static::assertSame('new_supplier_code', $supplier['code']);
+        static::assertSame('New supplier label', $supplier['label']);
+        $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f02', 2);
     }
 
     /** @test */
@@ -67,17 +71,76 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertNull($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02'));
     }
 
-    private function findSupplier(string $identifier): ?Write\Supplier\Model\Supplier
+    /** @test */
+    public function itGetsASUpplierByItsIdentifier(): void
+    {
+        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f02',
+            'supplier_code',
+            'Supplier label',
+            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+        ));
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f03',
+            'other_supplier_code',
+            'Other supplier label',
+            [],
+        ));
+
+        $supplier = $supplierRepository->getByidentifier(
+            Write\Supplier\ValueObject\Identifier::fromString(
+                '44ce8069-8da1-4986-872f-311737f46f02'
+            )
+        );
+
+        static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $supplier);
+        static::assertSame('supplier_code', $supplier->code());
+        static::assertSame('Supplier label', $supplier->label());
+        static::assertSame(['contributor1@akeneo.com', 'contributor2@akeneo.com'], $supplier->contributors()->toArray());
+
+        $supplier2 = $supplierRepository->getByidentifier(
+            Write\Supplier\ValueObject\Identifier::fromString(
+                '44ce8069-8da1-4986-872f-311737f46f03'
+            )
+        );
+        static::assertCount(0, $supplier2->contributors());
+    }
+
+    /** @test */
+    public function itDeletesASupplierAndItsContributors(): void
+    {
+        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f02',
+            'supplier_code',
+            'Supplier label',
+            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+        ));
+        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            '44ce8069-8da1-4986-872f-311737f46f01',
+            'other_supplier_code',
+            'Other supplier label',
+            [],
+        ));
+
+        $this->get(Write\Supplier\Repository::class)->delete(
+            Write\Supplier\ValueObject\Identifier::fromString(
+                '44ce8069-8da1-4986-872f-311737f46f02'
+            )
+        );
+        static::assertNull($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02'));
+        $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f02', 0);
+
+        static::assertIsArray($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f01'));
+    }
+
+    private function findSupplier(string $identifier): ?array
     {
         $sql = <<<SQL
-            WITH contributor AS (
-                SELECT contributor.supplier_identifier, JSON_OBJECTAGG(id, email) as contributors
-                FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
-                GROUP BY contributor.supplier_identifier
-            )
-            SELECT identifier, code, label, contributor.contributors
-            FROM `akeneo_onboarder_serenity_supplier` supplier
-            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
+            SELECT code, label
+            FROM `akeneo_onboarder_serenity_supplier`
             WHERE identifier = :identifier
         SQL;
 
@@ -86,36 +149,21 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             ->fetchAssociative()
         ;
 
-        return false !== $supplier ? Write\Supplier\Model\Supplier::create(
-            $supplier['identifier'],
-            $supplier['code'],
-            $supplier['label'],
-            null !== $supplier['contributors'] ? json_decode($supplier['contributors'], true) : [],
-        ): null;
+        return $supplier ?: null;
     }
 
-    /** @test */
-    public function itDeletesASupplier(): void
+    private function assertSupplierContributorCount(string $supplierIdentifier, int $expectedCount): void
     {
-        $supplierRepository = $this->get(Write\Supplier\Repository::class);
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier code',
-            [],
-        ));
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f01',
-            'supplier_code2',
-            'Supplier code2',
-            [],
-        ));
-        $this->get(Write\Supplier\Repository::class)->delete(
-            Write\Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f02'
-            )
-        );
-        static::assertNull($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02'));
-        static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f01'));
+        $sql = <<<SQL
+            SELECT COUNT(*)
+            FROM akeneo_onboarder_serenity_supplier_contributor
+            WHERE supplier_identifier = :supplierIdentifier
+        SQL;
+
+        $contributorNumber = $this->get(Connection::class)
+            ->executeQuery($sql, ['supplierIdentifier' => $supplierIdentifier])
+            ->fetchOne();
+        ;
+        static::AssertSame($expectedCount, (int) $contributorNumber);
     }
 }
