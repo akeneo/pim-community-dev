@@ -8,7 +8,6 @@ import {ArrowDownIcon, LinkIcon} from '../../icons';
 import {IconButton} from '../IconButton/IconButton';
 import {action} from '@storybook/addon-actions';
 import {GroupsIllustration} from '../../illustrations';
-import * as Illustrations from '../../illustrations';
 
 <Meta
   title="Components/Dropdown"
@@ -469,4 +468,46 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
       );
     }}
   </Story>
+</Canvas>
+
+## Full Width
+
+<Canvas>
+    <Story name="Full Width" height={300}>
+        {args => {
+            const [isOpen, open, close] = useBooleanState(true);
+            return (
+                <SpaceContainer height={290}>
+                    <Dropdown>
+                        <Button onClick={open}>
+                            Simple <ArrowDownIcon />
+                        </Button>
+                        {isOpen && (
+                            <Dropdown.Overlay verticalPosition="down" onClose={close} fullWidth={true}>
+                                <Dropdown.Header>
+                                    <Dropdown.Title>Elements</Dropdown.Title>
+                                </Dropdown.Header>
+                                <Dropdown.ItemCollection>
+                                    <Dropdown.Item>First item</Dropdown.Item>
+                                    <Dropdown.Item isActive={true}>Active item</Dropdown.Item>
+                                    <Dropdown.Item onClick={action('Clicked')}>A very long item</Dropdown.Item>
+                                    <Dropdown.Item onClick={action('Clicked')} disabled={true}>
+                                        This one is disabled
+                                    </Dropdown.Item>
+                                    <Dropdown.Item>
+                                        <Link target="_blank" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">
+                                            Item with a link
+                                        </Link>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item disabled={true}>
+                                        <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Disabled link</Link>
+                                    </Dropdown.Item>
+                                </Dropdown.ItemCollection>
+                            </Dropdown.Overlay>
+                        )}
+                    </Dropdown>
+                </SpaceContainer>
+            );
+        }}
+    </Story>
 </Canvas>

@@ -24,6 +24,7 @@ trait DenormalizeConnectedAppTrait
      *    categories: string,
      *    certified: bool,
      *    partner: ?string,
+     *    is_test_app: ?bool,
      *    has_outdated_scopes: bool,
      * } $dataRow
      */

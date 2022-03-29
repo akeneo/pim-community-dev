@@ -4,11 +4,10 @@ import {fetchProductQualityScore} from '../../fetcher/ProductEditForm/fetchProdu
 import {fetchProductModelQualityScore} from '../../fetcher/ProductEditForm/fetchProductModelQualityScore';
 import {ProductEditFormState} from '../../store';
 import {QualityScoreModel} from '../../../domain';
+import {ProductType} from '../../../domain/Product.interface';
 
 const MAXIMUM_RETRIES = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
-
-type ProductType = 'product' | 'product_model';
 
 /**
  * @example

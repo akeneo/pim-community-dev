@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: dag
     key_indicators:
       title: Belangrijkste indicatoren
-      products_to_work_on: '{1}Je hebt <button>1 product</button> om aan te werken.| ]1, 200[Je hebt <button>{{ count }} producten</button> om aan te werken. |[200, Inf[U heeft <button>meer dan {{ count }} producten</button> om aan te werken.'
       list:
         has_image:
           title: Producten met een afbeelding

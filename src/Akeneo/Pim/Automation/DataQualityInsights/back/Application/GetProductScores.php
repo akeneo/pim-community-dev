@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
@@ -14,19 +14,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class GetProductScores
 {
-    private GetLatestProductScoresQueryInterface $getLatestProductScoresQuery;
+    private GetProductScoresQueryInterface $getProductScoresQuery;
 
     private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
 
-    public function __construct(GetLatestProductScoresQueryInterface $getLatestProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
+    public function __construct(GetProductScoresQueryInterface $getProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
     {
-        $this->getLatestProductScoresQuery = $getLatestProductScoresQuery;
+        $this->getProductScoresQuery = $getProductScoresQuery;
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
     }
 
     public function get(ProductId $productId): array
     {
-        $productScores = $this->getLatestProductScoresQuery->byProductId($productId);
+        $productScores = $this->getProductScoresQuery->byProductId($productId);
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {

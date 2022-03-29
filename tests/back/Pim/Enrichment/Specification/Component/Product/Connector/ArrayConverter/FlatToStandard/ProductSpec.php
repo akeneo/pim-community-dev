@@ -78,7 +78,11 @@ class ProductSpec extends ObjectBehavior
             'PACK-products'          => 'sku-A,sku-B',
             'PACK-products-quantity' => '12|24',
             'PACK-product_models'    => 'sku-C',
-            'PACK-product_models-quantity' => '14'
+            'PACK-product_models-quantity' => '14',
+            123456 => 'numerical as field code',
+            '0123456' => 'numerical with trailing zero as field code',
+            '12.33' => 'string float as field code',
+            '1234567' => 'numerical as field code',
         ];
 
         $itemMerged = [
@@ -100,13 +104,29 @@ class ProductSpec extends ObjectBehavior
             'PACK-product_models'    => [
                 ['identifier' => 'sku-C', 'quantity' => '14']
             ],
+            123456 => 'numerical as field code',
+            '0123456' => 'numerical with trailing zero as field code',
+            '12.33' => 'string float as field code',
+            '1234567' => 'numerical as field code',
         ];
 
         $columnsMapper->map($item)->willReturn($item);
 
-        $attrColumnsResolver->resolveAttributeColumns()->willReturn(
-            ['sku', 'name', 'release_date-ecommerce', 'release_date-print', 7, 'price', 'price-EUR', 'price-USD']
-        );
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn([
+            'sku',
+            'name',
+            'release_date-ecommerce',
+            'release_date-print',
+            7,
+            'price',
+            'price-EUR',
+            'price-USD',
+            123456,
+            '0123456',
+            '12.33',
+            '1234567'
+        ]);
+
         $assocColumnsResolver->resolveAssociationColumns()->willReturn(
             [
                 'X_SELL-groups',
@@ -134,6 +154,11 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('release_date-ecommerce')->willReturn(false);
         $fieldConverter->supportsColumn('release_date-print')->willReturn(false);
         $fieldConverter->supportsColumn('7')->willReturn(false);
+        $fieldConverter->supportsColumn('price')->willReturn(false);
+        $fieldConverter->supportsColumn('123456')->willReturn(false);
+        $fieldConverter->supportsColumn('0123456')->willReturn(false);
+        $fieldConverter->supportsColumn('1234567')->willReturn(false);
+        $fieldConverter->supportsColumn('12.33')->willReturn(false);
         $fieldConverter->supportsColumn('price')->willReturn(false);
         $fieldConverter->supportsColumn('X_SELL-groups')->willReturn(true);
         $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
@@ -297,7 +322,11 @@ class ProductSpec extends ObjectBehavior
             'name'                   => 'Sony SRS-BTV25',
             'release_date-ecommerce' => '2011-08-21',
             'release_date-print'     => '2011-07-15',
-            'price'                  => '15 EUR, 10 USD'
+            'price'                  => '15 EUR, 10 USD',
+            123456 => 'numerical as field code',
+            '0123456' => 'numerical with trailing zero as field code',
+            '12.33' => 'string float as field code',
+            '1234567' => 'numerical as field code',
         ];
 
         $standardProductValues = [

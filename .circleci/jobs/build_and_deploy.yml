@@ -139,7 +139,7 @@ jobs:
                                 date +%F >> ~/php-docker-image.hash
                       - restore_cache:
                             name: Restore PHP docker image cache
-                            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+                            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
                       - run:
                             name: Build the latest EE Docker images
                             command: |
@@ -148,7 +148,7 @@ jobs:
                                 ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
                       - save_cache:
                             name: Save PHP docker image cache
-                            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+                            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
                             paths:
                                 - php-pim-image.tar
             - unless:
@@ -206,22 +206,22 @@ jobs:
                   command: sudo chown -R circleci:circleci .
             - restore_cache:
                   name: Restore front package DSM cache
-                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+                  key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
             - restore_cache:
                   name: Restore front package measurement cache
-                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+                  key: front-packages-measurement-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/measurement.hash" }}
             - restore_cache:
                   name: Restore front package Shared cache
-                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+                  key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
             - restore_cache:
                   name: Restore micro frontend Process tracker cache
-                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+                  key: micro-frontend-process-tracker-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/process-tracker.hash" }}
             - restore_cache:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
-                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+                  key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
             - restore_cache:
                   name: Restore micro-frontend Config cache
-                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
             - run:
                   name: Set directories owner to docker
                   command: sudo chown -R 1000:1000 ../project
@@ -238,35 +238,35 @@ jobs:
                   name: Save frontend dependency cache
                   paths:
                       - ~/.cache
-                  key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                  key: frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
             - save_cache:
                   name: Save backend dependency cache
                   paths:
                       - ~/.composer
-                  key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                  key: backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
             - save_cache:
                   name: Save front package DSM cache
-                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+                  key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/akeneo-design-system/
             - save_cache:
                   name: Save front package measurement cache
-                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+                  key: front-packages-measurement-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/measurement.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/measurement/
             - save_cache:
                   name: Save front package Shared cache
-                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+                  key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/shared/
             - save_cache:
                   name: Save micro frontend Process Tracker cache
-                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+                  key: micro-frontend-process-tracker-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/process-tracker.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker
             - save_cache:
                   name: Save micro-frontend Catalog Volume Monitoring cache
-                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+                  key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
             - save_cache:

@@ -2,50 +2,40 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\ListConnectionsAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.fetch_connections'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\CreateConnectionAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
             - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\GetConnectionAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
             - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\UpdateConnectionAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
             - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\DeleteConnectionAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.delete_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler'
             - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\RegenerateSecretAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_secret'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler'
             - '@oro_security.security_facade'
 
     Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection\RegeneratePasswordAction:
         public: true
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.regenerate_connection_password'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler'
             - '@oro_security.security_facade'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\ErrorManagement\ErrorManagementAction:
-        public: true
-        arguments:
-            - '@akeneo_connectivity.connection.application.error_management.handler.get_connection_business_errors'
-
-    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction:
-        public: true
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'

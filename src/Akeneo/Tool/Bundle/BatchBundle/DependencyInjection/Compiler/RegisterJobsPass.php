@@ -41,8 +41,9 @@ class RegisterJobsPass implements CompilerPassInterface
             foreach ($tags as $tag) {
                 $connector = isset($tag['connector']) ? $tag['connector'] : self::DEFAULT_CONNECTOR;
                 $type = isset($tag['type']) ? $tag['type'] : self::DEFAULT_JOB_TYPE;
+                $feature = $tag['feature'] ?? null;
                 $job = new Reference($serviceId);
-                $registryDefinition->addMethodCall('register', [$job, $type, $connector]);
+                $registryDefinition->addMethodCall('register', [$job, $type, $connector, $feature]);
             }
         }
     }

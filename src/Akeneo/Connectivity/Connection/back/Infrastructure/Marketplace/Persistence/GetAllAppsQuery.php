@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllConnectedAppsPublicIdsInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllAppsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllAppsQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -18,18 +18,11 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
 {
     private const MAX_REQUESTS = 10;
 
-    private WebMarketplaceApiInterface $webMarketplaceApi;
-    private GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery;
-    private int $pagination;
-
     public function __construct(
-        WebMarketplaceApiInterface $webMarketplaceApi,
-        GetAllConnectedAppsPublicIdsInterface $getAllConnectedAppsPublicIdsQuery,
-        int $pagination
+        private Connection $connection,
+        private WebMarketplaceApiInterface $webMarketplaceApi,
+        private int $pagination,
     ) {
-        $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->getAllConnectedAppsPublicIdsQuery = $getAllConnectedAppsPublicIdsQuery;
-        $this->pagination = $pagination;
     }
 
     public function execute(): GetAllAppsResult
@@ -38,7 +31,7 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
         $requests = 0;
         $offset = 0;
 
-        $connectedAppsIds = $this->getAllConnectedAppsPublicIdsQuery->execute();
+        $connectedAppsIds = $this->getAllConnectedAppsPublicIds();
 
         do {
             $result = $this->webMarketplaceApi->getApps($offset, $this->pagination);
@@ -54,5 +47,20 @@ final class GetAllAppsQuery implements GetAllAppsQueryInterface
         } while (\count($result['items']) > 0 && \count($apps) < $result['total'] && $requests < self::MAX_REQUESTS);
 
         return GetAllAppsResult::create($result['total'], $apps);
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAllConnectedAppsPublicIds(): array
+    {
+        $query = <<<SQL
+SELECT pim_api_client.marketplace_public_app_id
+FROM akeneo_connectivity_connected_app
+JOIN akeneo_connectivity_connection ON akeneo_connectivity_connected_app.connection_code = akeneo_connectivity_connection.code
+JOIN pim_api_client on akeneo_connectivity_connection.client_id = pim_api_client.id
+SQL;
+
+        return $this->connection->fetchFirstColumn($query);
     }
 }

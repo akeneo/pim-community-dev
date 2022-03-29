@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
-use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Persistence\Query\AreCredentialsValidCombinationQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

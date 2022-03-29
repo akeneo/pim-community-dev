@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -18,9 +18,9 @@ use PhpSpec\ObjectBehavior;
 final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetLatestProductScoresQueryInterface $getProductScoresQuery,
+        GetProductScoresQueryInterface                    $getProductScoresQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators $computeProductsKeyIndicators
+        ComputeProductsKeyIndicators                      $computeProductsKeyIndicators
     ) {
         $this->beConstructedWith($getProductScoresQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
     }

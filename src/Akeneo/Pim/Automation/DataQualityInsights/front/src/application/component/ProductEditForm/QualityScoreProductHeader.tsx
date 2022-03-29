@@ -23,7 +23,9 @@ const QualityScoreProductHeader = () => {
   } else if (isPending) {
     qualityScoreComponent = <QualityScorePending />;
   } else {
-    alignItems = 'baseline';
+    if (score !== 'A') {
+      alignItems = 'baseline';
+    }
     qualityScoreComponent = (
       <QualityScoreBar score={score} stacked={productType === 'product_model'} onClick={redirectToDqiTab} />
     );

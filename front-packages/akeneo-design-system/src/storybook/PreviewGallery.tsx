@@ -98,11 +98,12 @@ const Scrollable = styled.div<{height: number}>`
   height: ${({height}) => height}px;
 `;
 
-const SpaceContainer = styled.div<{width: number; height: number}>`
+const SpaceContainer = styled.div<{width?: number; height?: number; gap?: number}>`
   width: ${({width}) => (width ? `${width}px` : 'auto')};
   height: ${({height}) => (height ? `${height}px` : 'auto')};
   display: flex;
   flex-direction: column;
+  gap: ${({gap}) => (gap ? `${gap}px` : '0')};
 `;
 
 const fakeFetcher = async (page = 0, searchValue = '') => {

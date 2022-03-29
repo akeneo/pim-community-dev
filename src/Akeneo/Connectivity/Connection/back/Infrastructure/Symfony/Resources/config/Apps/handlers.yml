@@ -48,8 +48,14 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppDeletionQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteConnectedAppQuery'
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.user.delete_user'
             - '@akeneo_connectivity.connection.service.client.delete_client'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'

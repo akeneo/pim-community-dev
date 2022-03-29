@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
 use PhpSpec\ObjectBehavior;
 
 /**

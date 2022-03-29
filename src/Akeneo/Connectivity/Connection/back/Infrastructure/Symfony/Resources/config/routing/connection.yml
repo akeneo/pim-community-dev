@@ -47,8 +47,3 @@ wrong_credentials_combination_list:
     path: '/wrong-credentials-combination'
     controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\WrongCredentialsCombination\ListWrongCredentialsCombinationsAction
     methods: [GET]
-
-connections_max_limit_reached:
-    path: '/max-limit-reached'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\IsConnectionsNumberLimitReachedAction
-    methods: [GET]

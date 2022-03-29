@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 
@@ -15,68 +16,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
  */
 final class ConnectorProductModel
 {
-    /** @var int */
-    private $id;
-
-    /** @var string */
-    private $code;
-
-    /** @var \DateTimeInterface */
-    private $createdDate;
-
-    /** @var \DateTimeInterface */
-    private $updatedDate;
-
-    /** @var null|string */
-    private $parentCode;
-
-    /** @var string */
-    private $familyCode;
-
-    /** @var string */
-    private $familyVariantCode;
-
-    /** @var array */
-    private $metadata;
-
-    /** @var array */
-    private $associations;
-
-    /** @var array */
-    private $quantifiedAssociations;
-
-    /** @var array */
-    private $categoryCodes;
-
-    /** @var ReadValueCollection */
-    private $values;
-
     public function __construct(
-        int $id,
-        string $code,
-        \DateTimeInterface $createdDate,
-        \DateTimeInterface $updatedDate,
-        ?string $parentCode,
-        string $familyCode,
-        string $familyVariantCode,
-        array $metadata,
-        array $associations,
-        array $quantifiedAssociations,
-        array $categoryCodes,
-        ReadValueCollection $values
+        private int $id,
+        private string $code,
+        private \DateTimeInterface $createdDate,
+        private \DateTimeInterface $updatedDate,
+        private ?string $parentCode,
+        private string $familyCode,
+        private string $familyVariantCode,
+        private array $metadata,
+        private array $associations,
+        private array $quantifiedAssociations,
+        private array $categoryCodes,
+        private ReadValueCollection $values,
+        private ?QualityScoreCollection $qualityScores
     ) {
-        $this->id = $id;
-        $this->code = $code;
-        $this->createdDate = $createdDate;
-        $this->updatedDate = $updatedDate;
-        $this->parentCode = $parentCode;
-        $this->familyCode = $familyCode;
-        $this->familyVariantCode = $familyVariantCode;
-        $this->metadata = $metadata;
-        $this->associations = $associations;
-        $this->quantifiedAssociations = $quantifiedAssociations;
-        $this->categoryCodes = $categoryCodes;
-        $this->values = $values;
     }
 
     public function id(): int
@@ -137,6 +91,11 @@ final class ConnectorProductModel
     public function values(): ReadValueCollection
     {
         return $this->values;
+    }
+
+    public function qualityScores(): ?QualityScoreCollection
+    {
+        return $this->qualityScores;
     }
 
     public function attributeCodesInValues(): array
@@ -204,7 +163,8 @@ final class ConnectorProductModel
             $this->associations,
             $this->quantifiedAssociations,
             array_values(array_intersect($this->categoryCodes, $categoryCodesToKeep)),
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -233,7 +193,8 @@ final class ConnectorProductModel
             $this->associations,
             $this->quantifiedAssociations,
             $this->categoryCodes,
-            $values
+            $values,
+            $this->qualityScores
         );
     }
 
@@ -264,7 +225,8 @@ final class ConnectorProductModel
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->categoryCodes,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -295,7 +257,8 @@ final class ConnectorProductModel
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->categoryCodes,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -327,7 +290,8 @@ final class ConnectorProductModel
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->categoryCodes,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -358,7 +322,8 @@ final class ConnectorProductModel
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->categoryCodes,
-            $this->values
+            $this->values,
+            $this->qualityScores
         );
     }
 
@@ -376,7 +341,27 @@ final class ConnectorProductModel
             $this->associations,
             $this->quantifiedAssociations,
             $this->categoryCodes,
-            $this->values
+            $this->values,
+            $this->qualityScores
+        );
+    }
+
+    public function buildWithQualityScores(?QualityScoreCollection $productQualityScores): ConnectorProductModel
+    {
+        return new self(
+            $this->id,
+            $this->code,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->parentCode,
+            $this->familyCode,
+            $this->familyVariantCode,
+            $this->metadata,
+            $this->associations,
+            $this->quantifiedAssociations,
+            $this->categoryCodes,
+            $this->values,
+            $productQualityScores
         );
     }
 }

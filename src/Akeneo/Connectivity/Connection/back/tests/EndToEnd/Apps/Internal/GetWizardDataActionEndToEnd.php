@@ -29,7 +29,6 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     private UserGroupLoader $userGroupLoader;
     private ConnectedAppLoader $connectedAppLoader;
 
-
     public function test_to_get_wizard_data(): void
     {
         $this->authenticateAsAdmin();

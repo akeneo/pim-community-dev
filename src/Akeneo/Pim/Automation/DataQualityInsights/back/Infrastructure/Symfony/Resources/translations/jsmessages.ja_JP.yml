@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: 日
     key_indicators:
       title: 指標
-      products_to_work_on: '{1}作業する<button>商品が 1 個</button>あります。|]1, 200[作業する<button>商品が {{ count }} 個</button>あります。|[200, Inf[作業する<button>商品が {{ count }} 個以上</button>あります。'
       list:
         has_image:
           title: 画像付きの商品

@@ -38,6 +38,10 @@ final class InitializeJobs
         if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_prepare_evaluations')) {
             $this->createJobInstance('data_quality_insights_prepare_evaluations');
         }
+
+        if (!$this->isJobInstanceAlreadyCreated('data_quality_insights_recompute_products_scores')) {
+            $this->createJobInstance('data_quality_insights_recompute_products_scores');
+        }
     }
 
     private function createJobInstance(string $jobName): void

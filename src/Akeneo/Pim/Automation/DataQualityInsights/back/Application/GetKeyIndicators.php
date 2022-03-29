@@ -19,41 +19,53 @@ use Webmozart\Assert\Assert;
  */
 final class GetKeyIndicators implements GetKeyIndicatorsInterface
 {
-    private GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery;
-
     /** @var KeyIndicatorCode[] */
     private array $keyIndicatorCodes;
 
-    public function __construct(GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery, string... $keyIndicators)
-    {
-        $this->getProductKeyIndicatorsQuery = $getProductKeyIndicatorsQuery;
-        $this->keyIndicatorCodes = array_map(fn ($keyIndicator) => new KeyIndicatorCode($keyIndicator), $keyIndicators);
+    public function __construct(
+        private GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery,
+        private GetProductKeyIndicatorsQueryInterface $getProductModelKeyIndicatorsQuery,
+        string... $keyIndicators
+    ) {
+        $this->keyIndicatorCodes = array_map(static fn ($keyIndicator) => new KeyIndicatorCode($keyIndicator), $keyIndicators);
     }
 
     public function all(ChannelCode $channelCode, LocaleCode $localeCode): array
     {
-        return $this->formatKeyIndicators($this->getProductKeyIndicatorsQuery->all($channelCode, $localeCode, ...$this->keyIndicatorCodes));
+        $productKeyIndicators = $this->getProductKeyIndicatorsQuery->all($channelCode, $localeCode, ...$this->keyIndicatorCodes);
+        $productModelKeyIndicators = $this->getProductModelKeyIndicatorsQuery->all($channelCode, $localeCode, ...$this->keyIndicatorCodes);
+        return $this->formatKeyIndicators($productKeyIndicators, $productModelKeyIndicators);
     }
 
     public function byFamily(ChannelCode $channelCode, LocaleCode $localeCode, FamilyCode $family): array
     {
-        return $this->formatKeyIndicators($this->getProductKeyIndicatorsQuery->byFamily($channelCode, $localeCode, $family, ...$this->keyIndicatorCodes));
+        $productKeyIndicators = $this->getProductKeyIndicatorsQuery->byFamily($channelCode, $localeCode, $family, ...$this->keyIndicatorCodes);
+        $productModelKeyIndicators = $this->getProductModelKeyIndicatorsQuery->byFamily($channelCode, $localeCode, $family, ...$this->keyIndicatorCodes);
+        return $this->formatKeyIndicators($productKeyIndicators, $productModelKeyIndicators);
     }
 
     public function byCategory(ChannelCode $channelCode, LocaleCode $localeCode, CategoryCode $category): array
     {
-        return $this->formatKeyIndicators($this->getProductKeyIndicatorsQuery->byCategory($channelCode, $localeCode, $category, ...$this->keyIndicatorCodes));
+        $productKeyIndicators = $this->getProductKeyIndicatorsQuery->byCategory($channelCode, $localeCode, $category, ...$this->keyIndicatorCodes);
+        $productModelKeyIndicators = $this->getProductModelKeyIndicatorsQuery->byCategory($channelCode, $localeCode, $category, ...$this->keyIndicatorCodes);
+        return $this->formatKeyIndicators($productKeyIndicators, $productModelKeyIndicators);
     }
 
-    private function formatKeyIndicators(array $keyIndicators): array
+    private function formatKeyIndicators(array $productKeyIndicators, array $productModelKeyIndicators): array
     {
         $formattedKeyIndicators = [];
-        foreach ($keyIndicators as $keyIndicator) {
-            Assert::isInstanceOf($keyIndicator, KeyIndicator::class);
-            $formattedKeyIndicators[strval($keyIndicator->getCode())] = [
-                'ratioGood' => $keyIndicator->getRatioGood(),
-                'totalGood' => $keyIndicator->getTotalGood(),
-                'totalToImprove' => $keyIndicator->getTotalToImprove(),
+        foreach ($productKeyIndicators as $productKeyIndicator) {
+            Assert::isInstanceOf($productKeyIndicator, KeyIndicator::class);
+            $formattedKeyIndicators[(string)$productKeyIndicator->getCode()]['products'] = [
+                'totalGood' => $productKeyIndicator->getTotalGood(),
+                'totalToImprove' => $productKeyIndicator->getTotalToImprove(),
+            ];
+        }
+        foreach ($productModelKeyIndicators as $productModelKeyIndicator) {
+            Assert::isInstanceOf($productModelKeyIndicator, KeyIndicator::class);
+            $formattedKeyIndicators[(string)$productModelKeyIndicator->getCode()]['product_models'] = [
+                'totalGood' => $productModelKeyIndicator->getTotalGood(),
+                'totalToImprove' => $productModelKeyIndicator->getTotalToImprove(),
             ];
         }
 

@@ -8,7 +8,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\IsConnectionsNumberLimitReachedQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\IsConnectionsNumberLimitReachedQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\ConfirmAuthorizationAction:
         public: true
@@ -75,7 +75,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction:
@@ -83,8 +83,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
             - '@oro_security.security_facade'
-            - '@akeneo_connectivity.connection.application.handler.find_a_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction:
@@ -126,3 +126,10 @@ services:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction:
+        public: true
+        arguments:
+            - '@security.token_storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByUserIdQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler'

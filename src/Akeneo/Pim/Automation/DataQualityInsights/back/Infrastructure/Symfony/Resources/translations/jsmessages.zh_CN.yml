@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: 天
     key_indicators:
       title: 关键指标
-      products_to_work_on: '{1}您有 <button>1 个产品</button>待处理。|]1, 200[您有 <button>{{ count }} 个产品</button>待处理。|[200, Inf[您有超过 <button>{{ count }} 个产品</button>待处理。'
       list:
         has_image:
           title: 配有图像的产品

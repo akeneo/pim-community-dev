@@ -15,12 +15,15 @@ akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
     methods: [ GET ]
 
+akeneo_connectivity_connection_connect_apps_v1_scopes_update:
+    path: '/connect/apps/v1/scopes/update'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
+    methods: [ POST ]
+
 # Internal API
 
 akeneo_connectivity_connection_error_management_rest:
-    resource: ./routing/error-management.yml
-    name_prefix: akeneo_connectivity_connection_error_management_rest_
-    prefix: /rest/connections
+    resource: ./ErrorManagement/routing.yml
 
 akeneo_connectivity_connection_audit_rest:
     resource: ./Audit/routing.yml
@@ -30,6 +33,9 @@ akeneo_connectivity_connection_rest:
     name_prefix: akeneo_connectivity_connection_rest_
     prefix: /rest/connections
     trailing_slash_on_root: false
+
+akeneo_connectivity_connection_settings_rest:
+    resource: ./Settings/routing.yml
 
 akeneo_connectivity_connection_webhook_rest:
     resource: ./Webhook/routing.yml
@@ -67,15 +73,6 @@ akeneo_connectivity_connection_connect_apps_authorize:
 
 akeneo_connectivity_connection_connect_apps_authenticate:
     path: '/connect/apps/authenticate'
-
-## Error Management
-akeneo_connectivity_connection_error_management_dashboard:
-    path: '/connect/data-flows/business-errors'
-
-akeneo_connectivity_connection_error_management_connection_monitoring:
-    path: '/connect/connection-settings/{code}/monitoring'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
 
 ## Audit
 akeneo_connectivity_connection_audit_index:

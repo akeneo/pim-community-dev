@@ -14,6 +14,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -62,7 +63,7 @@ class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
         $this->userManager = $this->get('pim_user.manager');
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->findOneConnectedAppByIdQuery = $this->get(FindOneConnectedAppByIdQuery::class);
-        $this->connectionRepository = $this->get('akeneo_connectivity.connection.persistence.repository.connection');
+        $this->connectionRepository = $this->get(DbalConnectionRepository::class);
         $this->roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
         $this->scopeMapperRegistry = $this->get(ScopeMapperRegistry::class);
 

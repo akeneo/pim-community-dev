@@ -2,13 +2,6 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand:
         class: Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
         tags:
             - { name: 'console.command' }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Cli\PurgeConnectionErrorsCommand:
-        arguments:
-            - '@akeneo_connectivity_connection.persistence.query.select_all_auditable_connection_code'
-            - '@akeneo_connectivity_connection.persistence.query.purge_connection_errors'
-        tags:
-            - {name: 'console.command'}

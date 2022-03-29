@@ -1,0 +1,4 @@
+akeneo_connectivity_connection_rest_connections_max_limit_reached:
+    path: /rest/connections/max-limit-reached
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Settings\Controller\Internal\IsConnectionsNumberLimitReachedAction
+    methods: [GET]

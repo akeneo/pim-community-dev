@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQueryInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection as DbalConnection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -44,18 +43,18 @@ SQL;
         $result = $this->dbalConnection->executeQuery($sql)->fetchAllAssociative();
 
         /*
-         * Filter rows to keep only one row per webhook, while priorizing the non-default user groups.
+         * Filter rows to keep only one row per webhook, while prioritizing the non-default user groups.
          */
         $resultFilteredByGroup = [];
         foreach ($result as $row) {
             $code = $row['code'];
 
-            // Add webhook if it doesn't already exists.
+            // Add webhook if it doesn't already exist.
             if (!isset($resultFilteredByGroup[$code])) {
                 $resultFilteredByGroup[$code] = $row;
             }
 
-            // Overwrite webhook to priorize the non-default user group.
+            // Overwrite webhook to prioritize the non-default user group.
             if (User::GROUP_DEFAULT === $resultFilteredByGroup[$code]['group_name']) {
                 $resultFilteredByGroup[$code] = $row;
             }

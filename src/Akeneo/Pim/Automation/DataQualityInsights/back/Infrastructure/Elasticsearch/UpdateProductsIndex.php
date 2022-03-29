@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -20,12 +20,12 @@ class UpdateProductsIndex
 
     private ComputeProductsKeyIndicators $getProductsKeyIndicators;
 
-    private GetLatestProductScoresQueryInterface $getProductScoresQuery;
+    private GetProductScoresQueryInterface $getProductScoresQuery;
 
     public function __construct(
-        Client $esClient,
-        GetLatestProductScoresQueryInterface $getProductScoresQuery,
-        ComputeProductsKeyIndicators $getProductsKeyIndicators
+        Client                         $esClient,
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        ComputeProductsKeyIndicators   $getProductsKeyIndicators
     ) {
         $this->esClient = $esClient;
         $this->getProductsKeyIndicators = $getProductsKeyIndicators;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\API\Command;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -24,8 +26,8 @@ final class UpsertProductCommand
         private int $userId,
         private string $productIdentifier,
         private mixed $identifierUserIntent = null,
-        private mixed $familyUserIntent = null,
-        private mixed $categoryUserIntent = null,
+        private ?FamilyUserIntent $familyUserIntent = null,
+        private ?CategoryUserIntent $categoryUserIntent = null,
         private mixed $parentUserIntent = null,
         private mixed $groupsUserIntent = null,
         private ?SetEnabled $enabledUserIntent = null,
@@ -41,22 +43,29 @@ final class UpsertProductCommand
     public static function createFromCollection(int $userId, string $productIdentifier, array $userIntents): self
     {
         $valueUserIntents = [];
+        $categoryUserIntent = null;
         $enabledUserIntent = null;
-
+        $familyUserIntent = null;
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
-            }
-
-            if ($userIntent instanceof SetEnabled) {
-                Assert::null($enabledUserIntent, "Only one SetEnabled intent can be sent to the command.");
+            } elseif ($userIntent instanceof SetEnabled) {
+                Assert::null($enabledUserIntent, "Only one enabled intent can be passed to the command.");
                 $enabledUserIntent = $userIntent;
+            } elseif ($userIntent instanceof FamilyUserIntent) {
+                Assert::null($familyUserIntent, 'Only one family intent can be passed to the command.');
+                $familyUserIntent = $userIntent;
+            } elseif ($userIntent instanceof CategoryUserIntent) {
+                Assert::null($categoryUserIntent, 'Only one category intent can be passed to the command.');
+                $categoryUserIntent = $userIntent;
             }
         }
 
         return new self(
             userId: $userId,
             productIdentifier: $productIdentifier,
+            familyUserIntent: $familyUserIntent,
+            categoryUserIntent: $categoryUserIntent,
             enabledUserIntent: $enabledUserIntent,
             valueUserIntents: $valueUserIntents
         );
@@ -70,6 +79,16 @@ final class UpsertProductCommand
     public function productIdentifier(): string
     {
         return $this->productIdentifier;
+    }
+
+    public function familyUserIntent(): ?FamilyUserIntent
+    {
+        return $this->familyUserIntent;
+    }
+
+    public function categoryUserIntent(): ?CategoryUserIntent
+    {
+        return $this->categoryUserIntent;
     }
 
     /**

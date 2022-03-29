@@ -16,7 +16,7 @@ class SetNumberValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', 10);
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', '10');
     }
 
     function it_is_initializable()
@@ -42,6 +42,24 @@ class SetNumberValueSpec extends ObjectBehavior
 
     function it_returns_the_value()
     {
-        $this->value()->shouldReturn(10);
+        $this->value()->shouldReturn('10');
+    }
+
+    function it_accepts_int_string_as_value()
+    {
+        $this->beConstructedWith('name_string_int', 'ecommerce', 'en_US', '33');
+        $this->value()->shouldReturn('33');
+    }
+
+    function it_accepts_float_string_as_value()
+    {
+        $this->beConstructedWith('name_string_float', 'ecommerce', 'en_US', '33.33');
+        $this->value()->shouldReturn('33.33');
+    }
+
+    function it_throws_exception_when_value_is_not_numeric()
+    {
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', 'value');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

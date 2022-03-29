@@ -21,12 +21,12 @@ import {
 import ScopeMessage from '../../model/Apps/scope-message';
 
 export const ScopeItem = styled.li.attrs(
-    (props: {fontSize?: keyof FontSize; mode?: 'new' | 'old' | null} & AkeneoThemedProps) => ({
+    (props: {fontSize?: keyof FontSize; highlightMode?: 'new' | 'old' | null} & AkeneoThemedProps) => ({
         fontSize: props.fontSize || 'bigger',
-        mode: props.mode,
+        highlightMode: props.highlightMode,
     })
 )`
-    color: ${props => getColor('grey', props.mode === 'old' ? 120 : 140)};
+    color: ${props => getColor('grey', props.highlightMode === 'old' ? 120 : 140)};
     font-size: ${props => getFontSize(props.fontSize)};
     font-weight: normal;
     line-height: 24px;
@@ -61,10 +61,10 @@ const iconsMap: {[key: string]: React.ElementType} = {
 interface Props {
     scopeMessages: ScopeMessage[];
     itemFontSize?: string;
-    mode?: 'new' | 'old' | null;
+    highlightMode?: 'new' | 'old' | null;
 }
 
-export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, mode}) => {
+export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, highlightMode}) => {
     const translate = useTranslate();
 
     return (
@@ -76,7 +76,7 @@ export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, mode}) => {
                 const Icon = iconsMap[scopeMessage.icon] ?? CheckRoundIcon;
 
                 return (
-                    <ScopeItem key={key} fontSize={itemFontSize} mode={mode}>
+                    <ScopeItem key={key} fontSize={itemFontSize} highlightMode={highlightMode}>
                         <Icon title={entities} size={24} />
                         <div
                             dangerouslySetInnerHTML={{
@@ -84,7 +84,7 @@ export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, mode}) => {
                                     `akeneo_connectivity.connection.connect.apps.scope.type.${scopeMessage.type}`,
                                     {
                                         entities: `<span class='AknConnectivityConnection-helper--highlight${
-                                            'old' === mode ? '--lighter' : ''
+                                            'old' === highlightMode ? '--lighter' : ''
                                         }'>
                                                     ${entities}
                                                 </span>`,
@@ -92,7 +92,7 @@ export const ScopeList: FC<Props> = ({scopeMessages, itemFontSize, mode}) => {
                                 ),
                             }}
                         />
-                        {'new' === mode && (
+                        {'new' === highlightMode && (
                             <NewBadge level={'secondary'}>
                                 {translate('akeneo_connectivity.connection.connect.apps.scope.new')}
                             </NewBadge>

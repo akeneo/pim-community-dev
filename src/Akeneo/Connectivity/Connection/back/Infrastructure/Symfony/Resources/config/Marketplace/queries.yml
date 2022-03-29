@@ -11,8 +11,8 @@ services:
             -
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAllAppsQuery:
         arguments:
+            - '@database_connection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAllConnectedAppsPublicIdsQuery'
             - '%akeneo_pim_marketplace_api_pagination_size%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery:

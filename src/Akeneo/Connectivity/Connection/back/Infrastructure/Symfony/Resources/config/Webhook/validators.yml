@@ -4,7 +4,7 @@ parameters:
 services:
     Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator:
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
         tags:
             - { name: validator.constraint_validator, alias: connection_must_exist }
 

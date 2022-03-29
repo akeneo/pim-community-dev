@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
 
@@ -16,16 +16,16 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
  */
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
-    private GetLatestProductScoresQueryInterface $getProductScoresQuery;
+    private GetProductScoresQueryInterface $getProductScoresQuery;
 
     private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
 
     private ComputeProductsKeyIndicators $getProductsKeyIndicators;
 
     public function __construct(
-        GetLatestProductScoresQueryInterface $getProductScoresQuery,
+        GetProductScoresQueryInterface                    $getProductScoresQuery,
         GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators $getProductsKeyIndicators
+        ComputeProductsKeyIndicators                      $getProductsKeyIndicators
     ) {
         $this->getProductScoresQuery = $getProductScoresQuery;
         $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;

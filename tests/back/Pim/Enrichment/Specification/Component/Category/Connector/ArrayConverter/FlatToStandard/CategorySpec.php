@@ -2,18 +2,27 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class CategorySpec extends ObjectBehavior
 {
-    function let(FieldsRequirementChecker $fieldChecker)
+    function let(FieldsRequirementChecker $fieldChecker, LocaleRepositoryInterface $localeRepository)
     {
-        $this->beConstructedWith($fieldChecker);
+        $this->beConstructedWith($fieldChecker, $localeRepository);
     }
 
-    function it_converts()
+    function it_converts($localeRepository)
     {
+        $us = new Locale();
+        $us->setCode('en_US');
+        $fr = new Locale();
+        $fr->setCode('fr_FR');
+        $localeRepository->findAll()->willReturn([$us, $fr]);
+
         $fields = [
             'code'        => 'mycode',
             'parent'      => 'master',
@@ -42,6 +51,29 @@ class CategorySpec extends ObjectBehavior
         $this
             ->shouldThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'))
             ->during('convert', [$item]);
+    }
+
+    function it_throws_an_exception_if_label_is_wrongly_written($localeRepository)
+    {
+        $us = new Locale();
+        $us->setCode('en_US');
+        $fr = new Locale();
+        $fr->setCode('fr_FR');
+        $localeRepository->findAll()->willReturn([$us, $fr]);
+
+        $this
+            ->shouldThrow(StructureArrayConversionException::class)
+            ->during(
+                'convert',
+                [
+                    [
+                        'code'        => 'mycode',
+                        'parent'      => 'master',
+                        'label-fr_Fr' => 'Ma superbe catégorie',
+                        'label-en_US' => 'My awesome category',
+                    ]
+                ]
+            );
     }
 
     function it_throws_an_exception_if_required_field_code_is_empty($fieldChecker)

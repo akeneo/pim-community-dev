@@ -156,8 +156,8 @@ $rules = [
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
 
         // TIP-915: PIM/Enrichment should not be linked to AttributeOption
         // TIP-916: Do not check if entities exist in PQB filters or sorters
@@ -200,6 +200,7 @@ $rules = [
 
         // TIP-931: SearchQueryBuilder design problem
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult',
 
         // TIP-932: KeepOnlyValuesForVariation should use the public API related to the root aggregate Family Variant
         'Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection',

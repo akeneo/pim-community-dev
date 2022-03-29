@@ -80,18 +80,15 @@ export const ScopeListContainer: FC<Props> = ({appName, scopeMessages, oldScopeM
                 </NoScope>
             ) : (
                 <>
-                    <ScopeList
-                        scopeMessages={scopeMessages}
-                        mode={null !== oldScopeMessages && undefined !== oldScopeMessages ? 'new' : null}
-                    />
-                    {undefined !== oldScopeMessages && null !== oldScopeMessages && oldScopeMessages.length > 0 && (
+                    <ScopeList scopeMessages={scopeMessages} highlightMode={oldScopeMessages ? 'new' : null} />
+                    {oldScopeMessages && oldScopeMessages.length > 0 && (
                         <>
                             <ScopeListTitle>
                                 {translate(
                                     'akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to'
                                 )}
                             </ScopeListTitle>
-                            <ScopeList scopeMessages={oldScopeMessages} mode={'old'} />
+                            <ScopeList scopeMessages={oldScopeMessages} highlightMode={'old'} />
                         </>
                     )}
                 </>

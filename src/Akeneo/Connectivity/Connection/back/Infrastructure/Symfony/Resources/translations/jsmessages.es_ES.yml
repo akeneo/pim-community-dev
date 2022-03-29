@@ -77,6 +77,7 @@ akeneo_connectivity.connection:
             client_id: ID de cliente
             client_secret: Secreto del cliente
         errors:
+          page_not_found: Página no encontrada
           creation:
             name:
               min_length: El nombre de la aplicación de prueba es demasiado corto. Debe tener 3 caracteres o más.
@@ -107,6 +108,7 @@ akeneo_connectivity.connection:
           total: '{0} Ninguna aplicación|{1} 1 aplicación|[2,Inf] {{ total }} aplicaciones'
           empty: Aún no hay aplicaciones conectadas.
           check_marketplace: 'Comprueba el {{ marketplaceLink }} para navegar por todo el contenido disponible e instalar tu primera aplicación.'
+          marketplace_link_anchor: App Store
         test_apps:
           title: Mis aplicaciones de prueba
           removed_user: Usuario eliminado
@@ -187,6 +189,8 @@ akeneo_connectivity.connection:
           consent:
             label: 'Acepto la Política de privacidad y las Condiciones de uso de esta aplicación, que pueden consultarse en la página {{ app_marketplace_page }}.'
             contact_us: contáctenos
+          firstname: nombre
+          lastname: apellido
         authorize:
           title: '{{ app_name }} necesita'
           no_scope_title: '{{ app_name }} desea acceder a su PIM.'

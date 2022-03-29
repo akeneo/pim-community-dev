@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ApiBundle\Security;
 
-use Akeneo\Tool\Bundle\ApiBundle\EventSubscriber\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
+use Akeneo\Tool\Component\Api\Event\ApiAuthenticationFailedEvent;
 use Akeneo\UserManagement\Component\Model\User;
 use OAuth2\IOAuth2Storage;
 use OAuth2\Model\IOAuth2AccessToken;
@@ -48,6 +49,8 @@ class OAuth2 extends BaseOAuth2
 
             return $accessToken;
         } catch (OAuth2AuthenticateException $e) {
+            $this->eventDispatcher->dispatch(new ApiAuthenticationFailedEvent($e, $tokenParam));
+
             throw new HttpException(Response::HTTP_UNAUTHORIZED, $e->getDescription(), $e);
         }
     }

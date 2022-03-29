@@ -7,7 +7,7 @@ Feature: Classify a product model
   Background:
     Given the "catalog_modeling" catalog configuration
     And the following categories:
-      | code         | label_en_US  | parent  |
+      | code         | label-en_US  | parent  |
       | long_sleeves | Long sleeves | tshirts |
       | seasons      | Seasons      | tshirts |
       | summer       | Summer       | seasons |

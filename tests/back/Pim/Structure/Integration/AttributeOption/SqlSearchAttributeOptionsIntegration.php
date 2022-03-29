@@ -65,6 +65,43 @@ final class SqlSearchAttributeOptionsIntegration extends TestCase
         ], $searchResult->normalize());
     }
 
+    public function test_it_should_return_all_options_with_locale(): void
+    {
+        $searchParameters = new SearchAttributeOptionsParameters();
+        $searchParameters->setLocale('en_US');
+        $searchResult = $this->sqlSearchAttributeOptions->search('color', $searchParameters);
+
+        self::assertEquals([
+            'matches_count' => 6,
+            'items' => [
+                [
+                    'code' => 'white',
+                    'labels' => ['fr_FR' => 'Blanc', 'en_US' => 'White'],
+                ],
+                [
+                    'code' => 'brown',
+                    'labels' => ['fr_FR' => 'Brun', 'en_US' => 'Brown'],
+                ],
+                [
+                    'code' => 'blue',
+                    'labels' => ['fr_FR' => 'Bleu', 'en_US' => 'Blue'],
+                ],
+                [
+                    'code' => 'black',
+                    'labels' => ['fr_FR' => 'Noir', 'en_US' => 'Black'],
+                ],
+                [
+                    'code' => 'red',
+                    'labels' => ['fr_FR' => 'Rouge', 'en_US' => 'Red'],
+                ],
+                [
+                    'code' => 'yellow',
+                    'labels' => [],
+                ],
+            ]
+        ], $searchResult->normalize());
+    }
+
     public function test_it_searches_attribute_option_codes_on_all_locales(): void
     {
         $searchParameters = new SearchAttributeOptionsParameters();

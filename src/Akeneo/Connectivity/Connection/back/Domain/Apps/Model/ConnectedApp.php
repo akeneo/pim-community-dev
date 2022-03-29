@@ -108,6 +108,7 @@ final class ConnectedApp
      *  categories: array<string>,
      *  certified: bool,
      *  partner: string|null,
+     *  is_test_app: bool,
      *  has_outdated_scopes: bool
      * }
      */

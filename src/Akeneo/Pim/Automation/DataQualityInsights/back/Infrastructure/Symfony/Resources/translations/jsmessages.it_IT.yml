@@ -43,7 +43,6 @@ akeneo_data_quality_insights:
       day: giorno
     key_indicators:
       title: Indicatori chiave
-      products_to_work_on: '{1}Hai <button>1 prodotto</button> su cui lavorare.|]1, 200[Hai <button>{{ count }} prodotti</button> su cui lavorare.|[200, Inf[Hai <button>più di {{ count }} prodotti</button> su cui lavorare.'
       list:
         has_image:
           title: Prodotti con un'immagine

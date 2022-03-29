@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {getColor, getFontSize, Button, AppIllustration, DangerIcon} from 'akeneo-design-system';
+import {AppIllustration, Button, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
 import {useSecurity} from '../../../shared/security';
+import ConnectedAppCardDescription from './ConnectedAppCardDescription';
 
 const Grid = styled.section`
     margin: 20px 0;
@@ -44,7 +45,7 @@ const TextInformation = styled.div`
     max-width: 100%;
 `;
 
-const Name = styled.h1`
+const Name = styled.div`
     color: ${getColor('grey', 140)};
     font-size: ${getFontSize('big')};
     font-weight: bold;
@@ -52,56 +53,6 @@ const Name = styled.h1`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-`;
-
-const Author = styled.h3`
-    color: ${getColor('grey', 120)};
-    font-size: ${getFontSize('big')};
-    font-weight: normal;
-    margin: 0;
-    margin-bottom: 5px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
-const Warning = styled.h3`
-    color: ${getColor('grey', 120)};
-    font-size: ${getFontSize('small')};
-    font-weight: normal;
-    margin: 0;
-    margin-bottom: 5px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; ;
-`;
-
-const WarningIcon = styled(DangerIcon)`
-    color: ${getColor('yellow', 100)};
-    vertical-align: middle;
-    margin-right: 5px;
-`;
-
-const Tag = styled.span`
-    color: ${getColor('grey', 120)};
-    font-size: ${getFontSize('small')};
-    text-transform: uppercase;
-    font-weight: normal;
-
-    border: 1px ${getColor('grey', 120)} solid;
-    background: ${getColor('white')};
-    border-radius: 2px;
-
-    display: inline-block;
-    line-height: ${getFontSize('small')};
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    padding: 2px 5px;
-    margin-right: 5px;
 `;
 
 const Actions = styled.div`
@@ -125,8 +76,6 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: item.connection_code,
     })}`;
-    const author =
-        item.author ?? translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
     const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
 
     const canManageApp =
@@ -137,28 +86,12 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
         (!item.is_test_app && security.isGranted('akeneo_connectivity_connection_open_apps')) ||
         (item.is_test_app && security.isGranted('akeneo_connectivity_connection_manage_test_apps'));
 
-    const cardDescription = item.has_outdated_scopes ? (
-        <Warning>
-            <WarningIcon size={14} />
-            {translate(
-                'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
-            )}
-        </Warning>
-    ) : (
-        <Author>
-            {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.developed_by', {
-                author,
-            })}
-        </Author>
-    );
-
     return (
         <CardContainer>
             <LogoContainer> {logo} </LogoContainer>
             <TextInformation>
                 <Name>{item.name}</Name>
-                {cardDescription}
-                {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
+                <ConnectedAppCardDescription connectedApp={item} />
             </TextInformation>
             <Actions>
                 <Button ghost level='tertiary' href={connectedAppUrl} disabled={!canManageApp}>
