@@ -6,13 +6,13 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -32,6 +32,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             && !$userIntent instanceof SetTextareaValue
             && !$userIntent instanceof SetBooleanValue
             && !$userIntent instanceof SetSimpleSelectValue
+            && !$userIntent instanceof SetIdentifierValue
         ) {
             throw new \InvalidArgumentException('Not expected class');
         }
@@ -56,6 +57,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             SetTextareaValue::class,
             SetBooleanValue::class,
             SetSimpleSelectValue::class,
+            SetIdentifierValue::class,
         ];
     }
 }
