@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import styled from 'styled-components';
-import {useRouter} from '../../shared/router/use-router';
 import {useTranslate} from '../../shared/translate';
 import {NotificationLevel, useNotify} from '../../shared/notify';
 import {useParams} from 'react-router-dom';
+import {useFetchData} from '../../shared/hooks/use-fetch-data';
 
 const FullScreen = styled.div`
     position: fixed;
@@ -16,30 +16,25 @@ const FullScreen = styled.div`
 `;
 
 export const OpenAppPage: FC = () => {
-    const generateUrl = useRouter();
     const translate = useTranslate();
     const notify = useNotify();
 
     const {connectionCode} = useParams<{connectionCode: string}>();
 
-    const url = generateUrl('akeneo_connectivity_connection_apps_rest_get_open_app_url', {
-        connectionCode: connectionCode,
+    const {isLoading, data} = useFetchData<{url: string}>('akeneo_connectivity_connection_apps_rest_get_open_app_url', {
+        connectionCode,
     });
 
-    fetch(url, {
-        method: 'GET',
-        headers: [['X-Requested-With', 'XMLHttpRequest']],
-    })
-        .then(response => response.json())
-        .then(response => {
-            window.location.replace(response.url);
-        })
-        .catch(() => {
+    if (!isLoading) {
+        if (data === undefined) {
             notify(
                 NotificationLevel.ERROR,
                 translate('akeneo_connectivity.connection.connect.connected_apps.open.flash.error')
             );
-        });
+        } else {
+            window.location.replace(data.url);
+        }
+    }
 
     return <FullScreen />;
 };
