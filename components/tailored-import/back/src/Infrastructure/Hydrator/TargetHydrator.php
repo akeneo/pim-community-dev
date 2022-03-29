@@ -41,7 +41,10 @@ class TargetHydrator
             throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $normalizedTarget['code']));
         }
 
-        $sourceParameter = $this->sourceParameterHydrator->hydrate($normalizedTarget['source_parameter'], $attribute->type());
+        $sourceParameter = $this->sourceParameterHydrator->hydrate(
+            $normalizedTarget['source_parameter'] ?? null,
+            $attribute->type(),
+        );
 
         return TargetAttribute::create(
             $normalizedTarget['code'],

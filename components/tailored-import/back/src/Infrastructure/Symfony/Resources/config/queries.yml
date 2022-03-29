@@ -40,6 +40,11 @@ services:
             - '@security.token_storage'
             - '%akeneo.tailored_import.supported_attribute_types%'
 
+    akeneo.tailored_import.query.attribute.get_identifier_attribute_code:
+        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Attribute\GetIdentifierAttributeCode
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+
     akeneo.tailored_import.query.filesystem.store_file:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Filesystem\StoreFile
         arguments:

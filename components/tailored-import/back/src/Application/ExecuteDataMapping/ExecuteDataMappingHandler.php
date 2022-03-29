@@ -10,6 +10,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParamete
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Query\Attribute\GetIdentifierAttributeCodeInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -21,14 +22,15 @@ class ExecuteDataMappingHandler
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
         private UserIntentAggregatorInterface $userIntentAggregator,
-        private SourceParameterApplier $sourceParameterApplier
+        private SourceParameterApplier $sourceParameterApplier,
+        private GetIdentifierAttributeCodeInterface $getIdentifierAttributeCode,
     ) {
     }
 
     public function handle(ExecuteDataMappingQuery $executeDataMappingQuery): UpsertProductCommand
     {
         $row = $executeDataMappingQuery->getRow();
-        $identifierAttributeCode = $this->getIdentifierAttributeCode();
+        $identifierAttributeCode = $this->getIdentifierAttributeCode->execute();
         $userIntents = [];
         $productIdentifier = null;
 
@@ -57,11 +59,5 @@ class ExecuteDataMappingHandler
             $productIdentifier,
             $userIntents,
         );
-    }
-
-    // TODO: use the upcoming get by attribute type public api query
-    private function getIdentifierAttributeCode(): string
-    {
-        return 'sku';
     }
 }

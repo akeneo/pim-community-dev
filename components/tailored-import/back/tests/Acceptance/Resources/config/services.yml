@@ -1,0 +1,3 @@
+services:
+    akeneo.tailored_import.query.attribute.get_identifier_attribute_code:
+        class: Akeneo\Platform\TailoredImport\Test\Acceptance\FakeServices\Attribute\InMemoryGetIdentifierAttributeCode

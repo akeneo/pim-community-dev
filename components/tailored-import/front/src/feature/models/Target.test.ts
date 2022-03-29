@@ -1,5 +1,5 @@
 import {createAttributeTarget, createPropertyTarget, isAttributeTarget, isPropertyTarget} from './Target';
-import {Attribute} from '@akeneo-pim-enterprise/tailored-export';
+import {Attribute} from './Attribute';
 import {getDefaultTextTarget} from '../components/TargetDetails/Text/model';
 import {getDefaultNumberTarget} from '../components/TargetDetails/Number/model';
 
