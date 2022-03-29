@@ -78,10 +78,10 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         $this->assetManager->resetIndex();
         //dump($this->assetManager->resetIndex()); //RENVOIE NULL
         $searchEs = new GenericEntityESIndexFinder($this->assetManager);
-        $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
+        $results2 = $this->searchEs->findAllByOrder($entityIndexConfiguration);
         //dump($searchEs);
         //dump($this->searchEs);
-        //$results2 = $searchEs->findAllByOrder($entityIndexConfiguration); //PB Elasticsearch\Common\Exceptions\BadRequest400Exception: {"error":{"root_cause":[{"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10}],"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10},"status":400}
+        $results = $searchEs->findAllByOrder($entityIndexConfiguration); //PB Elasticsearch\Common\Exceptions\BadRequest400Exception: {"error":{"root_cause":[{"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10}],"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10},"status":400}
 
         for ($i = 0; $i < 4; $i++) {
             $identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
