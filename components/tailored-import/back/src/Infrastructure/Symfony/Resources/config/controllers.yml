@@ -30,11 +30,13 @@ services:
       - '@serializer'
 
   akeneo.tailored_import.controller.get_sample_data_action:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetSampleDataAction
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GetSampleDataAction
     public: true
     arguments:
       - '@akeneo.tailored_import.handler.get_sample_data_handler'
 
   akeneo.tailored_import.controller.get_new_sample_data_action:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetNewSampleDataAction
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GetNewSampleDataAction
     public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.sample_data.get_sample_data_handler'
