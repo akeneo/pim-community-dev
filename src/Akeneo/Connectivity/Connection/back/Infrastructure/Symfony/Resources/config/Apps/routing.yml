@@ -47,3 +47,8 @@ akeneo_connectivity_connection_apps_rest_update_connected_app_monitoring_setting
     path: '/connected-apps/{connectionCode}/monitoring-settings'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction
     methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_refresh:
+    path: '/connected-apps/{connectionCode}/refresh'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction
+    methods: [POST]

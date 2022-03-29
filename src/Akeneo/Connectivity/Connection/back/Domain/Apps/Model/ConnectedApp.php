@@ -127,4 +127,31 @@ final class ConnectedApp
             'is_pending' => $this->isPending,
         ];
     }
+
+    /**
+     * @param array<string> $categories
+     */
+    public function withUpdatedDescription(
+        string $name,
+        ?string $logo,
+        ?string $author,
+        array $categories = [],
+        bool $certified = false,
+        ?string $partner = null,
+    ): self {
+        return new self(
+            $this->id,
+            $name,
+            $this->scopes,
+            $this->connectionCode,
+            $logo,
+            $author,
+            $this->userGroupName,
+            $categories,
+            $certified,
+            $partner,
+            $this->isTestApp,
+            $this->isPending,
+        );
+    }
 }
