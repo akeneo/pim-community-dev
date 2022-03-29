@@ -9,7 +9,7 @@ import {CreateSupplier} from './components/CreateSupplier';
 
 const Container = styled.div``;
 
-const Supplier = () => {
+const SupplierIndex = () => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue);
@@ -69,4 +69,4 @@ const StyledPageContent = styled(PageContent)`
     flex-direction: column;
 `;
 
-export {Supplier};
+export {SupplierIndex};

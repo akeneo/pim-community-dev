@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Persistence\InMemory;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Code;

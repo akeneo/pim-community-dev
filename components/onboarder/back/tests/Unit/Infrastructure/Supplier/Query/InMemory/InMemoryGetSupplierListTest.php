@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Persistence\InMemory;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory\InMemoryRepository as ContributorRepository;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -15,14 +16,14 @@ final class InMemoryGetSupplierListTest extends TestCase
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoSupplier(): void
     {
-        static::assertCount(0, (new InMemoryGetSupplierList(new InMemoryRepository()))());
+        static::assertCount(0, (new InMemoryGetSupplierList(new InMemoryRepository(), new ContributorRepository()))());
     }
 
     /** @test */
     public function itGetsNoMoreThanFiftySuppliersAtATime(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository);
+        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
 
         for ($i = 1; $i <= 60; $i++) {
             $repository->save(Write\Supplier\Model\Supplier::create(
@@ -39,7 +40,7 @@ final class InMemoryGetSupplierListTest extends TestCase
     public function itSearchesOnSupplierLabel(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository);
+        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
 
         $repository->save(Write\Supplier\Model\Supplier::create(
             Uuid::uuid4()->toString(),
@@ -61,7 +62,7 @@ final class InMemoryGetSupplierListTest extends TestCase
     public function itPaginatesTheSupplierList(): void
     {
         $repository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierList($repository);
+        $sut = new InMemoryGetSupplierList($repository, new ContributorRepository());
 
         for ($i = 1; $i <= 110; $i++) {
             $repository->save(Write\Supplier\Model\Supplier::create(

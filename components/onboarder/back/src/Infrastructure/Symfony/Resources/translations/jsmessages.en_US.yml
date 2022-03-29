@@ -37,6 +37,24 @@ onboarder:
                 confirmation_question: Are you sure you want to delete this supplier?
                 warning: By deleting this supplier, any unsaved enrichment will be lost.
                 unknown_error: An error occured while deleting the supplier.
+        supplier_edit:
+            tabs:
+                configuration: Configuration
+                contributors: Contributors
+                product_files: Product files
+            configuration_form:
+                code: Code
+                label: Supplier label (required)
+            contributors_form:
+                info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                add_contributors: Add contributors
+                add_button: Add
+                search_by_email_address: Search by email address
+                columns:
+                    email: Email address
+                no_contributor: There are no contributors yet.
+            error: An error occured while loading the supplier.
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers
+    onboarder_serenity_supplier_edit: Edit a supplier

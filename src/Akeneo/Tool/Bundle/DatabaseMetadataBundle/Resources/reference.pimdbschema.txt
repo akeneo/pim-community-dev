@@ -28,6 +28,7 @@ akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
 akeneo_onboarder_serenity_supplier | BASE TABLE
+akeneo_onboarder_serenity_supplier_contributor | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
 akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
@@ -335,6 +336,9 @@ akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
 akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
 akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
 akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
+akeneo_onboarder_serenity_supplier_contributor | identifier | NO | char(36) | PRI
+akeneo_onboarder_serenity_supplier_contributor | email | NO | varchar(255) | UNI
+akeneo_onboarder_serenity_supplier_contributor | supplier_identifier | NO | char(36) |
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |
