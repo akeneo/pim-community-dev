@@ -1,5 +1,21 @@
 # 6.0.x
 
+# 6.0.18 (2022-03-24)
+
+# 6.0.17 (2022-03-24)
+
+# 6.0.16 (2022-03-24)
+
+## Bug fixes
+
+- PIM-10325: [Backport PIM-10229] Enforce lax same-site policy for session cookies
+
+# 6.0.15 (2022-03-23)
+
+# 6.0.14 (2022-03-22)
+
+- PIM-10317: [Backport PIM-10237] Order connector Assets with PHP to avoid memory issues
+
 # 6.0.13 (2022-03-18)
 
 # 6.0.12 (2022-03-17)
@@ -32,6 +48,7 @@
 - PIM-10316: [Backport PIM-10255] Fix LocaleCodeContext initialization place for table condition line inside rules
 - PIM-10326: [Bakport PIM-10228] Fix Asset transformations job crashing when having cache resources exhausted
 - PIM-10318: [Backport PIM-10259] Fix Arabic text being reversed in product PDF exports
+- PIM-10368: Fix deleted localizable or scopable values on drafts
 
 # 6.0.7 (2022-02-25)
 

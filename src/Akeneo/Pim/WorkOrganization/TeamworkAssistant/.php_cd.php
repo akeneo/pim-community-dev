@@ -15,7 +15,6 @@ $rules = [
         'Doctrine',
         'Symfony\Component',
         'Akeneo\Tool',
-        'Symfony\Bundle\FrameworkBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\WorkOrganization\TeamworkAssistant\Component',
@@ -66,7 +65,6 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes',
 
         // TIP-976: TWA should not be linked to Workflow
-        'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter\DatePresenter',
         'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Datagrid\Datasource\ProductProposalDatasource',
 
         // TIP-977: Move CommandExecutor to Tool

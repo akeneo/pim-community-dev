@@ -40,7 +40,6 @@ akeneo_data_quality_insights:
       aria_label: "次のスペル修正候補: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}調整が必要な<button>属性が 1 個</button>あります。|]1, 200[調整が必要な<button>属性が {{ count }} 個</button>あります。|[200, Inf[調整が必要な<button>属性が {{ count }} 個以上</button>あります。'
       list:
         has_image:
           no_data: アセットコレクションと画像の属性が空のようです。この指標で商品の品質を強調するには、画像をアップロードする必要があります。

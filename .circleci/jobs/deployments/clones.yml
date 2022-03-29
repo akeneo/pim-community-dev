@@ -64,6 +64,23 @@ jobs:
                       echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
                       echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
             - run:
+                  name: Display login information
+                  command: |
+                      PIM_USER=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.email)
+                      PIM_PASSWORD=$(yq r /root/project/deployments/instances/${TYPE}-${INSTANCE_NAME}/values.yaml pim.defaultAdminUser.password)
+                      PIM_URL="https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                      PIM_NAMESPACE=${TYPE}-${INSTANCE_NAME}
+
+                      echo ###########################################
+                      echo #      Akeneo pim release deployed        #
+                      echo ###########################################
+                      echo "Username: ${PIM_USER}"
+                      echo "Password: ${PIM_PASSWORD}"
+                      echo "Url: ${PIM_URL}"
+                      echo "K9S access: k9s -n ${PIM_NAMESPACE} -c pods"
+
+                      ###########################################
+            - run:
                   name: Prepare infrastructure artifacts
                   command: make -C deployments/ prepare-infrastructure-artifacts
                   when: on_fail

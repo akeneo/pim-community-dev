@@ -1,3 +1,6 @@
+client-to-clone-srnt: &client-to-clone-srnt
+client-to-clone-grth: &client-to-clone-grth
+
 workflows:
     blackhawks_dev_pull_request:
         when:
@@ -189,3 +192,99 @@ workflows:
                       - "[tria] Test deploy"
                       - "[srnt] Test upgrade from last release"
                       - "[grth] Test upgrade from last release"
+
+    # Description :
+    #    Beta workflows, current test:
+    #      - check test performance on cloned curstomer
+    nightly_beta:
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "nightly_beta", << pipeline.schedule.name >> ]
+        jobs:
+            - checkout
+            - build_env_vars:
+                  name: "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth", "srnt"]
+                  requires:
+                      - checkout
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - prepare_perf_sanity_checks:
+                  name: "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] test_clone_from-<< matrix.SOURCE_PFID >>"
+            # Currently useless, because we scale down all pods in dev and we did not test it long enough
+            - perf_sanity_checks:
+                  name: "[grth] perf-while-upgrade-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["grth"]
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - perf_sanity_checks:
+                  name: "[grth] perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-grth
+                  requires:
+                      - "[grth] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                      - "[grth] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+            - test_clone_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
+            - prepare_perf_sanity_checks:
+                  name: "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] test_clone_from-<< matrix.SOURCE_PFID >>"
+            # Currently useless, because we scale down all pods in dev and we did not test it long enough
+            - perf_sanity_checks:
+                  name: "[srnt] perf-while-upgrade-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                  name: "[<< matrix.PRODUCT_TYPE >>] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
+            - perf_sanity_checks:
+                  name: "[srnt] perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                  matrix:
+                      parameters:
+                          SOURCE_PFID: *client-to-clone-srnt
+                  requires:
+                      - "[srnt] prepare_perf-sanity_checks-<< matrix.SOURCE_PFID >>"
+                      - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"

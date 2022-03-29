@@ -34,43 +34,15 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterface
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ComparatorRegistry */
-    protected $comparatorRegistry;
-
-    /** @var GetAttributes */
-    protected $getAttributes;
-
-    /** @var EntityWithValuesDraftFactory */
-    protected $factory;
-
-    /** @var EntityWithValuesDraftRepositoryInterface */
-    protected $entityWithValuesDraftRepository;
-
-    /** @var WriteValueCollectionFactory */
-    protected $valueCollectionFactory;
-
-    /** @var ValueFactory */
-    protected $valueFactory;
-
     public function __construct(
-        NormalizerInterface $normalizer,
-        ComparatorRegistry $comparatorRegistry,
-        GetAttributes $getAttributes,
-        EntityWithValuesDraftFactory $factory,
-        EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
-        WriteValueCollectionFactory $valueCollectionFactory,
-        ValueFactory $valueFactory
+        protected NormalizerInterface $normalizer,
+        protected ComparatorRegistry $comparatorRegistry,
+        protected GetAttributes $getAttributes,
+        protected EntityWithValuesDraftFactory $factory,
+        protected EntityWithValuesDraftRepositoryInterface $entityWithValuesDraftRepository,
+        protected WriteValueCollectionFactory $valueCollectionFactory,
+        protected ValueFactory $valueFactory
     ) {
-        $this->normalizer = $normalizer;
-        $this->comparatorRegistry = $comparatorRegistry;
-        $this->getAttributes = $getAttributes;
-        $this->factory = $factory;
-        $this->entityWithValuesDraftRepository = $entityWithValuesDraftRepository;
-        $this->valueCollectionFactory = $valueCollectionFactory;
-        $this->valueFactory = $valueFactory;
     }
 
     /**
@@ -179,21 +151,20 @@ class EntityWithValuesDraftBuilder implements EntityWithValuesDraftBuilderInterf
      */
     private function fillNewValuesWithNullData(array $originalValues, array $newValues)
     {
+        $newValueKeys = [];
+        foreach ($newValues as $attributeCode => $newValueSet) {
+            foreach ($newValueSet as $newValue) {
+                $newValueKeys[$attributeCode][$newValue['scope'] ?? '<all_channels>'][$newValue['locale'] ?? '<all_locales>'] = true;
+            }
+        }
         foreach ($originalValues as $originalAttributeCode => $originalValueSet) {
-            foreach ($originalValueSet as $originalIndex => $originalValue) {
-                $foundValueDeleted = false;
-                if (isset($newValues[$originalAttributeCode])) {
-                    foreach ($newValues[$originalAttributeCode] as $newIndex => $newValue) {
-                        $foundValueDeleted = $foundValueDeleted || (
-                            $newValue['locale'] === $originalValue['locale'] &&
-                            $newValue['scope'] === $originalValue['scope']
-                        );
-                    }
-                }
-                if (!$foundValueDeleted) {
-                    $newValues[$originalAttributeCode][$originalIndex]['locale'] = $originalValue['locale'];
-                    $newValues[$originalAttributeCode][$originalIndex]['scope'] = $originalValue['scope'];
-                    $newValues[$originalAttributeCode][$originalIndex]['data'] = null;
+            foreach ($originalValueSet as $originalValue) {
+                if (!isset($newValueKeys[$originalAttributeCode][$originalValue['scope'] ?? '<all_channels>'][$originalValue['locale'] ?? '<all_locales>'])) {
+                    $newValues[$originalAttributeCode][] = [
+                        'locale' => $originalValue['locale'],
+                        'scope' => $originalValue['scope'],
+                        'data' => null,
+                    ];
                 }
             }
         }

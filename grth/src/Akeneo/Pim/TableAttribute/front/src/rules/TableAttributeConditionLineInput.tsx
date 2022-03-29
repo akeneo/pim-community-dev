@@ -23,17 +23,30 @@ const InnerTableAttributeConditionLine: React.FC<TableAttributeConditionLineProp
   const catalogLocale = userContext.get('catalogLocale');
 
   const handleChange = (value: PendingBackendTableFilterValue) => {
+    /**
+     * For backend:
+     * - if the value is null or undefined, it means the condition is applied on any row
+     * For FilterSelectorList:
+     * - if the value is undefined, we see the placeholder and the user have to select one
+     * - if the value is null, it means the user have selected "any row"
+     * For ReactHookForm:
+     * - null values are prohibited.
+     * So, we switch the empty value from FilterSelectorList;
+     * - if user selects "any row", we send "undefined" to RHF instead of null (which is not allowed by ReactHookForm).
+     * - if user removes the condition on column, we send "null" to RHF to have error message to force user to fill it.
+     */
+    const row = value.row === null ? undefined : value.row || null;
     onChange({
       ...value,
       column: value.column,
-      row: value.row,
+      row,
     });
   };
 
   return (
     <LocaleCodeContext.Provider value={{localeCode: catalogLocale}}>
       <AttributeContext.Provider value={{attribute: attributeState, setAttribute: setAttributeState}}>
-        <FilterSelectorList initialFilter={value} inline onChange={handleChange} />
+        <FilterSelectorList initialFilter={{...value, row: value.row || null}} inline onChange={handleChange} />
       </AttributeContext.Provider>
     </LocaleCodeContext.Provider>
   );
