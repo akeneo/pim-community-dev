@@ -3,6 +3,8 @@
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
@@ -22,23 +24,26 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class GenericEntityESIndexFinderIntegration extends KernelTestCase
+class GenericEntityESIndexFinderIntegration extends TestCase
 {
     private NativeClient $esClient;
-    private Client $client;
+    private Client $esProductClient;
+    private Client $assetManager;
+    private GenericEntityESIndexFinder $searchEs;
 
     public function setUp(): void
     {
-        self::bootKernel();
+        //self::bootKernel();
+        //parent::setUp();
         //Connection ES
         $clientBuilder = new ClientBuilder();
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
-        //$this->searchEs = new GenericEntityESIndexFinder($this->esClient);
-        $this->resetIndex("akeneo_elasticsearch.client.product_and_product_model");
-        $this->resetIndex("akeneo_assetmanager.client.asset");
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
+
+        //$this->resetIndex("akeneo_elasticsearch.client.product_and_product_model");
+        $this->resetIndex("akeneo_assetmanager.client.asset");
     }
 
     /**
@@ -68,8 +73,15 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
-        //$this->client->set($entityIndexConfiguration->getTableName());
+        $this->assetManager = $this->get('akeneo_assetmanager.client.asset'); //PASSE
+        //$this->assetManager = $this->get($entityIndexConfiguration->getTableName()); //PB NE TROUVE PAS L'INDEX - You have requested a non-existent service "akeneo_assetmanager_asset_test". Did you mean this: "akeneo_assetmanager.client.asset"?
+        $this->assetManager->resetIndex();
+        //dump($this->assetManager->resetIndex()); //RENVOIE NULL
+        $searchEs = new GenericEntityESIndexFinder($this->assetManager);
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
+        //dump($searchEs);
+        //dump($this->searchEs);
+        //$results2 = $searchEs->findAllByOrder($entityIndexConfiguration); //PB Elasticsearch\Common\Exceptions\BadRequest400Exception: {"error":{"root_cause":[{"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10}],"type":"parsing_exception","reason":"Unknown key for a VALUE_STRING in [index].","line":1,"col":10},"status":400}
 
         for ($i = 0; $i < 4; $i++) {
             $identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
@@ -84,7 +96,7 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
      * @dataProvider configProviderFilter
      * @return void
      */
-    public function test_it_results_request_filter_and_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
+    /*public function test_it_results_request_filter_and_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
         $fixtures = [
             ['product_1',null],
@@ -97,15 +109,22 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
+        $indexHost = $this->getParameter('index_hosts');
 
-        $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
+        $clientBuilder = new ClientBuilder();
+        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
+
+        $client = $clientBuilder->build();
+        $searchES = new GenericEntityESIndexFinder($client);
+        $results = $searchES->findAllByOrder($entityIndexConfiguration);
+        //$results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < 4; $i++) {
             $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
         Assert::assertEquals($resultsFixtures, $resultsOrderQuery);
-    }
+    }*/
 
     public function configProvider(): array
     {
@@ -156,5 +175,11 @@ class GenericEntityESIndexFinderIntegration extends KernelTestCase
     {
         $clientProduct = $this->getContainer()->get($str);
         $clientProduct->resetIndex();
+    }
+
+    protected function getConfiguration()
+    {
+        //return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
 }

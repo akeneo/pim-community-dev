@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
@@ -10,6 +11,7 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinde
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
@@ -26,7 +28,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 {
     private const DB_REFERENCE_FILE = __DIR__ . '/../Resources/referenceOutput.jsonl';
 
-    private NativeClient $esClient;
+    private Client $esClient;
     private $hosts;
     private GenericEntityMySQLIndexFinder $searchMySql;
     private GenericEntityESIndexFinder $searchEs;
@@ -169,7 +171,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     }
 
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }
