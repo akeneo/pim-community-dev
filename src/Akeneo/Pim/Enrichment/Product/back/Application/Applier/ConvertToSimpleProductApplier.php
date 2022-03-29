@@ -25,7 +25,7 @@ final class ConvertToSimpleProductApplier implements UserIntentApplier
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void
     {
         Assert::isInstanceOf($userIntent, ConvertToSimpleProduct::class);
-        if (null === $product->getParent()) {
+        if (!$product->isVariant()) {
             return;
         }
 

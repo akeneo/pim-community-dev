@@ -92,7 +92,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
-    public function it_changes_parent_to_another_family_by_clearing_parent_first(): void
+    public function it_can_only_change_parent_to_another_family_by_clearing_parent_first(): void
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
@@ -166,19 +166,6 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_throws_an_exception_with_unknown_parent_code(): void
     {
-        $command = UpsertProductCommand::createFromCollection(
-            $this->getUserId('betty'),
-            'variant_product',
-            [
-                new ConvertToSimpleProduct(),
-                new SetCategories(['suppliers', 'print']),
-                new SetSimpleSelectValue('main_color', null, null, 'green'),
-            ]
-        );
-        $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
             productIdentifier: 'variant_product',

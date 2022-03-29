@@ -38,7 +38,7 @@ class ConvertToSimpleProductApplierSpec extends ObjectBehavior
         $this->apply($removeParentIntent, $product, 1);
     }
 
-    function it_throws_an_exception_when_product_has_no_parent(
+    function it_does_nothing_when_product_has_no_parent(
         ProductInterface $product,
         RemoveParentInterface $removeParent
     ): void
