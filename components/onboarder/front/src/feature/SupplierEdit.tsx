@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
-import {Contributors} from './components/SupplierEdit/Contributors';
+import {ContributorsList} from './components/SupplierEdit/ContributorsList';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
@@ -56,7 +56,7 @@ const SupplierEdit = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && <Configuration supplier={supplier} />}
-                {isCurrent('contributors') && <Contributors contributors={supplier.contributors} />}
+                {isCurrent('contributors') && <ContributorsList contributors={supplier.contributors} />}
             </StyledPageContent>
         </Container>
     );
