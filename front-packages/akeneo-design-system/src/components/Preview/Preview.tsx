@@ -76,6 +76,7 @@ const RowContainer = styled.div`
   justify-content: space-between;
   margin: 0 -4px;
   padding: 4px;
+  min-height: 28px;
 
   &:hover {
     background: ${getColor('blue', 20)};
