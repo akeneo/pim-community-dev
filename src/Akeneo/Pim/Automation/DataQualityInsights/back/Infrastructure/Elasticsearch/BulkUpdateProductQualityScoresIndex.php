@@ -15,7 +15,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BulkUpdateProductsIndex implements BulkUpdateProductsInterface
+class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualityScoresInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';

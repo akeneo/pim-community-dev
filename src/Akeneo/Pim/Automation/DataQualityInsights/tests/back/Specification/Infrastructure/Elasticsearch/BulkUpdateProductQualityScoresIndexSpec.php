@@ -18,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
 
-class BulkUpdateProductsIndexSpec extends ObjectBehavior
+class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 {
     public function it_updates_products_index(
         Client $esClient,

@@ -36,14 +36,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductsIndexSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductQualityScoresIndexSubscriber:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_products_index'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductModelsIndexSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductModelQualityScoresIndexSubscriber:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_models_index'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
         tags:
             - { name: kernel.event_subscriber }

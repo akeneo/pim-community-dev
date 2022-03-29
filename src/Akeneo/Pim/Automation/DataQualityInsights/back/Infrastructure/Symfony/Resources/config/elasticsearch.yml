@@ -1,6 +1,6 @@
 services:
-    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_products_index:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductsIndex
+    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresIndex
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
@@ -8,8 +8,8 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
 
-    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_models_index:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductsIndex
+    akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresIndex
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
