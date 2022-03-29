@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
+namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use Doctrine\DBAL\Connection as DbalConnection;
-use Symfony\Component\Filesystem\Filesystem;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 
 /**
  * Not for production.
@@ -15,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
  * Registry of feature flags. All existing feature flag are deactivated by default. A feature flag can be changed after Symfony container boot.
  * Enabled feature flag are persisted in file. The goal of this class is to share a state of the enabled feature flags across multiple processes.
  *
- * The main purpose is for end to end test with the web browers. In that cases, feature flags should be enabled before starting the test itself. Then, all HTTP requests will share the same feature flag configuration.
+ * The main purpose is for end to end test with web browsers. In these cases, feature flags should be enabled before starting the test itself. Then, all HTTP requests will share the same feature flag configuration.
  *
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

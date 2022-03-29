@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
+namespace Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 
 /**
  * Not for production.

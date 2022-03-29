@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Internal;
+namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
@@ -35,5 +35,21 @@ class InMemoryFeatureFlagsSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_feature_does_not_exist()
     {
         $this->shouldThrow(InvalidArgumentException::class)->during('isEnabled', ['baz']);
+    }
+}
+
+class Enabled implements FeatureFlag
+{
+    public function isEnabled(): bool
+    {
+        return true;
+    }
+}
+
+class Disabled implements FeatureFlag
+{
+    public function isEnabled(): bool
+    {
+        return false;
     }
 }

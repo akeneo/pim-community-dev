@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Acceptance\FeatureFlag;
 
-use Akeneo\Pim\Structure\Component\Factory\FamilyFactory;
-use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags;
-use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
-use Behat\Gherkin\Node\TableNode;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

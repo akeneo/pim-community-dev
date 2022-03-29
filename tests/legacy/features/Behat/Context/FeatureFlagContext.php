@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilePersistedFeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 

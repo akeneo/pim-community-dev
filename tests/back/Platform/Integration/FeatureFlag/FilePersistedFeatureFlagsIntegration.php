@@ -3,8 +3,8 @@
 namespace AkeneoTest\Platform\Integration\FeatureFlag;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\FilePersistedFeatureFlags;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
