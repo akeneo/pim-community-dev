@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
@@ -17,12 +18,31 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
  */
 class AddScoresToProductAndProductModelRows
 {
+    public function __construct(private GetQualityScoresFactory $getQualityScoresFactory)
+    {
+    }
+
+
     /**
      * @param Row[] $rows
-     * @param ChannelLocaleRateCollection[] $scores
+     * @param 'product_model'|'product' $type
      */
-    public function __invoke(FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters, array $rows, array $scores): array
-    {
+    public function __invoke(
+        FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters,
+        array $rows,
+        string $type
+    ): array {
+        if (empty($rows)) {
+            return [];
+        }
+
+        $productIds = [];
+        foreach ($rows as $row) {
+            $productIds[] = new ProductId($row->technicalId());
+        }
+
+        $scores = ($this->getQualityScoresFactory)(ProductIdCollection::fromProductIds($productIds), $type);
+
         $channel = new ChannelCode($fetchProductAndProductModelRowsParameters->channelCode());
         $locale = new LocaleCode($fetchProductAndProductModelRowsParameters->localeCode());
 

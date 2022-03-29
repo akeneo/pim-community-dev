@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 
@@ -17,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductMod
 final class AddProductModelScoreProperty implements AddAdditionalProductModelProperties
 {
     public function __construct(
-        private GetProductModelScoresQueryInterface $getProductModelScores,
         private AddScoresToProductAndProductModelRows $addScoresToProductAndProductModelRows
     ) {
     }
@@ -27,17 +23,10 @@ final class AddProductModelScoreProperty implements AddAdditionalProductModelPro
      */
     public function add(FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters, array $rows): array
     {
-        if (empty($rows)) {
-            return [];
-        }
-
-        $productIds = [];
-        foreach ($rows as $row) {
-            $productIds[] = new ProductId($row->technicalId());
-        }
-
-        $scores = $this->getProductModelScores->byProductModelIds(ProductIdCollection::fromProductIds($productIds));
-
-        return ($this->addScoresToProductAndProductModelRows)($fetchProductAndProductModelRowsParameters, $rows, $scores);
+        return ($this->addScoresToProductAndProductModelRows)(
+            $fetchProductAndProductModelRowsParameters,
+            $rows,
+            'product_model'
+        );
     }
 }
