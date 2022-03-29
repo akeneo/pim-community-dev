@@ -1225,7 +1225,7 @@ class User implements UserInterface, EquatableInterface
 
     /**
      * Please note this function is inspired by User::isEqualTo
-     * But using AKeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
+     * But using Akeneo custom implementations roles are into token not User, and there are a few structural/implementation differences between Akeneo and Symfonu User ...
      * isAccountNonExpired isAccountNotLocked
      * @see \Symfony\Component\Security\Core\User\User::isEqualTo()
      * {@inheritdoc}

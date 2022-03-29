@@ -38,6 +38,7 @@ const connectedTestApps = [
         partner: 'partner A',
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
+        is_pending: false,
         has_outdated_scopes: false,
     },
     {
@@ -53,6 +54,7 @@ const connectedTestApps = [
         partner: 'partner B',
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
+        is_pending: false,
         has_outdated_scopes: false,
     },
 ];

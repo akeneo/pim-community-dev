@@ -34,10 +34,7 @@ $rules = [
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
         'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository',
-        'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
-
-        'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
 
         // TIP-947: UI Locale Provider should be part of UserManagement
         'Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider'
@@ -53,9 +50,6 @@ $rules = [
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
         'Symfony\Bundle\SecurityBundle',
-        'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
-        'OAuth2\OAuth2', // used by API client controller
-        'Swift_Mailer',
         'Twig\TwigFunction',
         'Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction',
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags',
@@ -70,7 +64,6 @@ $rules = [
         'Akeneo\Channel\Component\Model\Locale',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',

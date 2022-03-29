@@ -83,6 +83,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'certified' => false,
                 'partner' => 'partner A',
                 'is_test_app' => false,
+                'is_pending' => false,
                 'has_outdated_scopes' => false,
             ],
             [
@@ -97,6 +98,7 @@ class GetAllConnectedAppsActionEndToEnd extends WebTestCase
                 'certified' => true,
                 'partner' => null,
                 'is_test_app' => false,
+                'is_pending' => false,
                 'has_outdated_scopes' => false,
             ],
         ];

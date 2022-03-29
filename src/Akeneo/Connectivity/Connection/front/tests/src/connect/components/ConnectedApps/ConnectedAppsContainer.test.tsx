@@ -52,7 +52,10 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: false,
+        is_pending: false,
         has_outdated_scopes: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_b',
@@ -66,7 +69,10 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: true,
+        is_pending: false,
         has_outdated_scopes: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_c',
@@ -80,7 +86,10 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: true,
+        is_pending: false,
         has_outdated_scopes: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
     {
         id: 'app_id_d',
@@ -94,7 +103,10 @@ const connectedApps = [
         certified: true,
         partner: null,
         is_test_app: false,
+        is_pending: false,
         has_outdated_scopes: false,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
     },
 ];
 
@@ -166,6 +178,7 @@ test('The connected apps list renders a warning where at least one connected app
             certified: true,
             partner: null,
             is_test_app: false,
+            is_pending: false,
             has_outdated_scopes: false,
             is_loaded: true,
             is_listed_on_the_appstore: false,
@@ -178,5 +191,45 @@ test('The connected apps list renders a warning where at least one connected app
         await screen.findByText(
             'akeneo_connectivity.connection.connect.connected_apps.list.apps.at_least_one_is_not_listed_on_the_appstore'
         )
+    ).toBeInTheDocument();
+});
+
+test('The connected apps list renders with pending apps', async () => {
+    const pendingApp: ConnectedApp = {
+        id: 'pending_app_id',
+        name: 'Pending App',
+        scopes: [],
+        connection_code: 'pendingConnectionCode',
+        logo: 'http://www.example.test/path/to/logo/pending',
+        author: 'author pending',
+        user_group_name: 'user_group_pending',
+        categories: [],
+        certified: true,
+        partner: null,
+        is_test_app: false,
+        is_pending: true,
+        has_outdated_scopes: false,
+    };
+    renderWithProviders(<ConnectedAppsContainer allConnectedApps={[...connectedApps, pendingApp]} />);
+    await waitFor(() => screen.getByText('Helper mock'));
+
+    expect(ConnectedAppsContainerHelper).toBeCalledWith({count: 5}, {});
+
+    expect(ConnectedTestAppList).toHaveBeenCalledWith(
+        {
+            connectedTestApps: [connectedApps[1], connectedApps[2]],
+        },
+        {}
+    );
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.title')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.total?total=3')
+    ).toBeInTheDocument();
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.apps.pending_apps')
     ).toBeInTheDocument();
 });

@@ -2,13 +2,14 @@ import {renderHook} from '@testing-library/react-hooks';
 import {mockFetchResponses} from '../../../test-utils';
 import {useConnectedApps} from '@src/connect/hooks/use-connected-apps';
 import {useFeatureFlags} from '@src/shared/feature-flags/use-feature-flags';
-import {useNotify} from '@src/shared/notify';
-import {NotificationLevel} from '@src/shared/notify';
+import {NotificationLevel, useNotify} from '@src/shared/notify';
 import {TestApp} from '@src/model/app';
 import {ConnectedApp} from '@src/model/Apps/connected-app';
+import {useTriggerConnectedAppRefresh} from '@src/connect/hooks/use-trigger-connected-app-refresh';
 
 jest.mock('@src/shared/feature-flags/use-feature-flags');
 jest.mock('@src/shared/notify');
+jest.mock('@src/connect/hooks/use-trigger-connected-app-refresh');
 
 const notify = jest.fn();
 
@@ -93,6 +94,7 @@ test('it does not fail if it cannot retrieve marketplace apps', async () => {
         categories: ['category A1', 'category A2'],
         certified: false,
         partner: 'partner A',
+        is_pending: false,
     };
 
     mockFetchResponses({
@@ -133,6 +135,7 @@ test('it fetches connected apps', async () => {
         certified: false,
         partner: 'partner A',
         is_test_app: false,
+        is_pending: false,
         has_outdated_scopes: false,
     };
 
@@ -198,6 +201,7 @@ test('it fetches connected test apps', async () => {
         certified: false,
         partner: 'partner A',
         is_test_app: true,
+        is_pending: false,
         has_outdated_scopes: false,
     };
 
@@ -263,6 +267,7 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         certified: false,
         partner: 'partner A',
         is_test_app: false,
+        is_pending: false,
         has_outdated_scopes: false,
     };
 
@@ -289,4 +294,88 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
     expect(result.current).toEqual(null);
     await waitForNextUpdate();
     expect(result.current).toEqual([expectedApp]);
+});
+
+test('it triggers a connected app update if there is inconsistency between it and the app store data', async () => {
+    (useFeatureFlags as jest.Mock).mockImplementation(() => ({
+        isEnabled: (feature: string) => {
+            switch (feature) {
+                case 'marketplace_activate':
+                    return true;
+            }
+        },
+    }));
+
+    mockFetchResponses({
+        akeneo_connectivity_connection_apps_rest_get_all_connected_apps: {
+            json: [
+                {
+                    id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                    name: 'App A',
+                    scopes: ['scope A1'],
+                    connection_code: 'connectionCodeA',
+                    logo: 'http://www.example.com/path/to/logo/a',
+                    author: 'author A',
+                    user_group_name: 'app_123456abcde',
+                    categories: ['E-commerce'],
+                    certified: false,
+                    partner: 'Akeneo Partner',
+                },
+                {
+                    id: '0dfce574-2238-4b13-b8cc-8d257ce7645c',
+                    name: 'App B',
+                    scopes: ['scope A1'],
+                    connection_code: 'connectionCodeB',
+                    logo: 'http://www.example.com/path/to/logo/a',
+                    author: 'author A',
+                    user_group_name: 'app_123456abcde',
+                    categories: ['E-commerce'],
+                    certified: false,
+                    partner: 'Akeneo Partner',
+                },
+            ],
+        },
+        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+            json: {
+                total: 2,
+                apps: [
+                    {
+                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+                        name: 'App A WITH NEW TITLE',
+                        logo: 'http://www.example.com/path/to/logo/a',
+                        author: 'author A',
+                        partner: 'Akeneo Partner',
+                        description: 'Our Akeneo Connector',
+                        url: 'https://marketplace.akeneo.com/extension/extension_1',
+                        categories: ['E-commerce'],
+                        certified: false,
+                        activate_url: 'https://example.com/activate',
+                        callback_url: 'https://example.com/oauth2',
+                    },
+                    {
+                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645c',
+                        name: 'App B',
+                        logo: 'http://www.example.com/path/to/logo/a',
+                        author: 'author A',
+                        partner: 'Akeneo Partner',
+                        description: 'Our Akeneo Connector',
+                        url: 'https://marketplace.akeneo.com/extension/extension_1',
+                        categories: ['E-commerce'],
+                        certified: false,
+                        activate_url: 'https://example.com/activate',
+                        callback_url: 'https://example.com/oauth2',
+                    },
+                ],
+            },
+        },
+    });
+
+    const triggerConnectedAppRefresh = jest.fn();
+    (useTriggerConnectedAppRefresh as jest.Mock).mockImplementation(() => triggerConnectedAppRefresh);
+
+    const {result, waitForNextUpdate} = renderHook(() => useConnectedApps());
+    expect(result.current).toEqual(null);
+    await waitForNextUpdate();
+    expect(triggerConnectedAppRefresh).toHaveBeenCalledWith('connectionCodeA');
+    expect(triggerConnectedAppRefresh).not.toHaveBeenCalledWith('connectionCodeB');
 });

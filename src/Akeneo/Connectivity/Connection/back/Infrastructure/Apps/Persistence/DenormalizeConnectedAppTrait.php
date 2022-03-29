@@ -25,6 +25,7 @@ trait DenormalizeConnectedAppTrait
      *    certified: bool,
      *    partner: ?string,
      *    is_test_app: ?bool,
+     *    is_pending: ?bool,
      *    has_outdated_scopes: bool,
      * } $dataRow
      */
@@ -42,6 +43,7 @@ trait DenormalizeConnectedAppTrait
             (bool) $dataRow['certified'],
             $dataRow['partner'],
             (bool) ($dataRow['is_test_app'] ?? false),
+            (bool) ($dataRow['is_pending'] ?? false),
             (bool) $dataRow['has_outdated_scopes'],
         );
     }

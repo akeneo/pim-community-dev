@@ -172,6 +172,7 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
                 false,
                 null,
                 false,
+                false,
                 true
             ));
 

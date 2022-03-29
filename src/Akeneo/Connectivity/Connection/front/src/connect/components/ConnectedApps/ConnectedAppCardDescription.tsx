@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useTranslate} from '../../../shared/translate';
 import styled from 'styled-components';
-import {DangerIcon, getColor, getFontSize} from 'akeneo-design-system';
+import {DangerIcon, getColor, getFontSize, useTheme} from 'akeneo-design-system';
 
 const Warning = styled.div`
     color: ${getColor('grey', 120)};
@@ -72,12 +72,18 @@ const Author = styled.div`
     text-overflow: ellipsis;
 `;
 
+const IconBox = styled.span`
+    vertical-align: middle;
+    margin-right: 5px;
+`;
+
 type Props = {
     connectedApp: ConnectedApp;
 };
 
 const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
+    const theme = useTheme();
     const author =
         connectedApp.author ??
         translate('akeneo_connectivity.connection.connect.connected_apps.list.test_apps.removed_user');
@@ -86,7 +92,7 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
         return null;
     }
 
-    if (false === connectedApp.is_listed_on_the_appstore) {
+    if (false === connectedApp.is_listed_on_the_appstore && false === connectedApp.is_test_app) {
         const message = translate(
             'akeneo_connectivity.connection.connect.connected_apps.list.card.not_listed_on_the_appstore'
         );
@@ -96,6 +102,17 @@ const ConnectedAppCardDescription: FC<Props> = ({connectedApp}) => {
                 <ErrorIcon size={14} />
                 {message}
             </Error>
+        );
+    }
+
+    if (true === connectedApp.is_pending) {
+        return (
+            <>
+                <IconBox>
+                    <DangerIcon size={13} color={theme.color.yellow100} />
+                </IconBox>
+                {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.pending')}
+            </>
         );
     }
 

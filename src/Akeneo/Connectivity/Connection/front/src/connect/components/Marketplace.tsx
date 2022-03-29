@@ -60,6 +60,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     key={1}
                     id={app.id}
                     isConnected={app.connected}
+                    isPending={app.isPending}
                     isDisabled={!isManageAppsAuthorized || isLimitReached}
                 />,
             ]}

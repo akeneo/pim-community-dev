@@ -55,6 +55,12 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery'
 
+    Akeneo\Connectivity\Connection\Application\Apps\Command\RefreshConnectedAppHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppDescriptionQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+
     Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
