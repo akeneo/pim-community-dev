@@ -64,3 +64,4 @@ workflows:
           requires:
             - test_front_onboarder
             - test_back_onboarder
+            - test_database
