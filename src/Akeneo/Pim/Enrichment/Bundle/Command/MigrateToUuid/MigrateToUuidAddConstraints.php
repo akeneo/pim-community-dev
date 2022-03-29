@@ -16,206 +16,19 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
     use StatusAwareTrait;
-
-    private array $constraintsToAdd = [
-        [
-            'tableName' => 'pim_catalog_association',
-            'constraintName' => 'owner_uuid_association_type_id_idx',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association
-                    ADD CONSTRAINT {constraintName} UNIQUE (`owner_uuid`, `association_type_id`),
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL
-        ], [
-            'tableName' => 'pim_catalog_association',
-            'constraintName' => 'owner_uuid_association_type_id_idx',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association
-                    ADD CONSTRAINT `FK_CC27100147D93336` FOREIGN KEY (`owner_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL
-        ], [
-            'tableName' => 'pim_catalog_association_product',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association_product 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`association_id`, `product_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`association_id`, `product_uuid`), 
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE;
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_association_product',
-            'constraintName' => 'FK_3A3A49D45C977207',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association_product
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_association_product_model_to_product',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association_product_model_to_product 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`association_id`, `product_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`association_id`, `product_uuid`),
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_association_product_model_to_product',
-            'constraintName' => 'FK_3FF3ED195C977207',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_association_product_model_to_product 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_category_product',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_category_product 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`product_id`, `category_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`product_uuid`, `category_id`), 
-                    ALGORITHM=INPLACE, 
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_category_product',
-            'constraintName' => 'pim_catalog_category_product_todo_rename_with_doctrine_name',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_category_product 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_group_product',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_group_product 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`product_id`, `group_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`product_uuid`, `group_id`),
-                    ALGORITHM=INPLACE, 
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pim_catalog_group_product',
-            'constraintName' => 'pim_catalog_group_product_todo_rename_with_doctrine_name2',
-            'query' => <<<SQL
-                ALTER TABLE pim_catalog_group_product 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pim_data_quality_insights_product_criteria_evaluation',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_data_quality_insights_product_criteria_evaluation 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`product_id`, `criterion_code`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`product_uuid`, `criterion_code`), 
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL
-        ], [
-            'tableName' => 'pim_data_quality_insights_product_criteria_evaluation',
-            'constraintName' => 'FK_dqi_product_uuid_criteria_evaluation',
-            'query' => <<<SQL
-                ALTER TABLE pim_data_quality_insights_product_criteria_evaluation 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL
-        ], [
-            'tableName' => 'pim_data_quality_insights_product_score',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pim_data_quality_insights_product_score 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`product_id`, `evaluated_at`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`product_uuid`, `evaluated_at`), 
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pim_data_quality_insights_product_score',
-            'constraintName' => 'FK_dqi_product_uuid_score',
-            'query' => <<<SQL
-                ALTER TABLE pim_data_quality_insights_product_score 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pimee_teamwork_assistant_completeness_per_attribute_group',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pimee_teamwork_assistant_completeness_per_attribute_group 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`locale_id`,`channel_id`,`product_id`,`attribute_group_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`locale_id`,`channel_id`,`product_uuid`,`attribute_group_id`), 
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pimee_teamwork_assistant_completeness_per_attribute_group',
-            'constraintName' => 'attr_grp_completeness_product_uuid_foreign_key',
-            'query' => <<<SQL
-                ALTER TABLE pimee_teamwork_assistant_completeness_per_attribute_group 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pimee_teamwork_assistant_project_product',
-            'constraintName' => 'migrate_to_uuid_temp_index_to_delete',
-            'query' => <<<SQL
-                ALTER TABLE pimee_teamwork_assistant_project_product 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`project_id`,`product_id`),
-                    DROP PRIMARY KEY,
-                    ADD PRIMARY KEY (`project_id`,`product_uuid`), 
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pimee_teamwork_assistant_project_product',
-            'constraintName' => 'product_selection_project_uuid_foreign_key',
-            'query' => <<<SQL
-                ALTER TABLE pimee_teamwork_assistant_project_product 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pimee_workflow_product_draft',
-            'constraintName' => 'author_product_uuid_idx',
-            'query' => <<<SQL
-                ALTER TABLE pimee_workflow_product_draft 
-                    ADD CONSTRAINT {constraintName} UNIQUE (`author`, `product_uuid`),
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE
-            SQL,
-        ], [
-            'tableName' => 'pimee_workflow_product_draft',
-            'constraintName' => 'pimee_workflow_product_draft_todo_rename_with_doctrine_name',
-            'query' => <<<SQL
-                ALTER TABLE pimee_workflow_product_draft 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`product_uuid`) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE
-            SQL,
-        ], [
-            'tableName' => 'pimee_workflow_published_product',
-            'constraintName' => 'pimee_workflow_published_product_todo_rename_with_doctrine_name',
-            'query' => <<<SQL
-                ALTER TABLE pimee_workflow_published_product 
-                    ADD CONSTRAINT {constraintName} FOREIGN KEY (`original_product_uuid`) REFERENCES `pim_catalog_product` (`uuid`)
-            SQL,
-        ],
-    ];
-
-    private array $indexesToAdd = [
-        [
-            'tableName' => 'pim_versioning_version',
-            'indexName' => 'resource_name_resource_uuid_version_idx',
-            'query' => <<<SQL
-                    ALTER TABLE pim_versioning_version 
-                        ADD INDEX {indexName} (`resource_name`,`resource_uuid`,`version`),
-                        ALGORITHM=INPLACE,
-                        LOCK=NONE
-                SQL,
-        ]
-    ];
+//
+//    private array $indexesToAdd = [
+//        [
+//            'tableName' => 'pim_versioning_version',
+//            'indexName' => 'resource_name_resource_uuid_version_idx',
+//            'query' => <<<SQL
+//                    ALTER TABLE pim_versioning_version
+//                        ADD INDEX {indexName} (`resource_name`,`resource_uuid`,`version`),
+//                        ALGORITHM=INPLACE,
+//                        LOCK=NONE
+//                SQL,
+//        ]
+//    ];
 
     public function __construct(private Connection $connection, private LoggerInterface $logger)
     {
@@ -239,15 +52,24 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach ($this->constraintsToAdd as $constraint) {
-            if ($this->tableExists($constraint['tableName']) && !$this->constraintExists($constraint['tableName'], $constraint['constraintName'])) {
-                $count++;
-            }
-        }
-
-        foreach ($this->indexesToAdd as $indexToAdd) {
-            if ($this->tableExists($indexToAdd['tableName']) && !$this->indexExists($indexToAdd['tableName'], $indexToAdd['indexName'])) {
-                $count++;
+        foreach (self::TABLES as $tableName => $tableProperties) {
+            if ($this->tableExists($tableName)) {
+                if (null !== $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX] && !$this->hasPrimaryKey($tableName, $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX])) {
+                    $count++;
+                }
+                if (null !== $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX] && !$this->constraintExists($tableName, $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX])) {
+                    $count++;
+                }
+                foreach ($tableProperties[MigrateToUuidStep::CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
+                    if (!$this->constraintExists($tableName, $constraintName)) {
+                        $count++;
+                    }
+                }
+                foreach ($tableProperties[MigrateToUuidStep::INDEXES_INDEX] as $indexColumns) {
+                    if (null == $this->getIndexName($tableName, $indexColumns)) {
+                        $count++;
+                    }
+                }
             }
         }
 
@@ -259,30 +81,132 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
         $logContext = $context->logContext;
         $updatedItems = 0;
 
-        foreach ($this->constraintsToAdd as $constraint) {
-            $logContext->addContext('substep', 'add_constraint_' . $constraint['tableName']);
-
-            if ($this->tableExists($constraint['tableName']) && !$this->constraintExists($constraint['tableName'], $constraint['constraintName'])) {
-                $this->logger->notice(sprintf('Will add %s constraint', $constraint['constraintName']), $logContext->toArray());
-                if (!$context->dryRun()) {
-                    $this->connection->executeQuery(\strtr($constraint['query'], ['{constraintName}' => $constraint['constraintName']]));
-                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            if ($this->tableExists($tableName)) {
+                $logContext->addContext('substep', 'add_constraint_' . $tableName);
+                if (null !== $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX] && !$this->hasPrimaryKey($tableName, $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX])) {
+                    $this->logger->notice(sprintf('Will add %s primary key', $tableName), $logContext->toArray());
+                    if (!$context->dryRun()) {
+                        $this->setPrimaryKey($tableName, $tableProperties);
+                    }
                 }
-            }
-        }
-
-        foreach ($this->indexesToAdd as $indexToAdd) {
-            $logContext->addContext('substep', 'add_index_' . $indexToAdd['tableName']);
-
-            if ($this->tableExists($indexToAdd['tableName']) && !$this->indexExists($indexToAdd['tableName'], $indexToAdd['indexName'])) {
-                $this->logger->notice(sprintf('Will add %s index', $indexToAdd['indexName']), $logContext->toArray());
-                if (!$context->dryRun()) {
-                    $this->connection->executeQuery(\strtr($indexToAdd['query'], ['{indexName}' => $indexToAdd['indexName']]));
-                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+                if (null !== $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX] && !$this->constraintExists($tableName, $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX])) {
+                    $this->logger->notice(sprintf('Will add %s foreign key', $tableName), $logContext->toArray());
+                    if (!$context->dryRun()) {
+                        $this->addForeignKey($tableName, $tableProperties);
+                    }
+                }
+                foreach ($tableProperties[MigrateToUuidStep::CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
+                    if (!$this->constraintExists($tableName, $constraintName)) {
+                        $this->logger->notice(sprintf('Will add %s constraint %s', $tableName, $constraintName), $logContext->toArray());
+                        if (!$context->dryRun()) {
+                            $this->addConstraint($tableName, $constraintName, $constraintColumns);
+                        }
+                    }
+                }
+                foreach ($tableProperties[MigrateToUuidStep::INDEXES_INDEX] as $indexName => $indexColumns) {
+                    if (null == $this->getIndexName($tableName, $indexColumns)) {
+                        $this->logger->notice(sprintf('Will add %s constraint %s', $tableName, $indexName), $logContext->toArray());
+                        if (!$context->dryRun()) {
+                            $this->addIndex($tableName, $indexName, $indexColumns);
+                        }
+                    }
                 }
             }
         }
 
         return true;
+    }
+
+    private function hasPrimaryKey(string $tableName, array $primaryKeyColumns): bool
+    {
+        $expected = \json_encode($primaryKeyColumns);
+        $real = \json_encode($this->getPrimaryKey($tableName));
+
+        return $expected === $real;
+    }
+
+    /**
+     * This method switches primary to use a new one with a uuid.
+     * To keep performance, we add a temporary index named `migrate_to_uuid_temp_index_to_delete`.
+     * This index has to be dropped once everything is migrated.
+     */
+    private function setPrimaryKey(string $tableName, array $tableProperties): void
+    {
+        $sql = <<<SQL
+            ALTER TABLE {tableName}
+                ADD CONSTRAINT migrate_to_uuid_temp_index_to_delete UNIQUE ({formerColumnNames}),
+                DROP PRIMARY KEY,
+                ADD PRIMARY KEY ({newColumnNames}),
+                ALGORITHM=INPLACE,
+                LOCK=NONE
+        SQL;
+
+        $newColumnNames = $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX];
+        $formerColumnNames = $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX];
+        $indexOfUuid = \array_search($tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX], $tableProperties[MigrateToUuidStep::PRIMARY_KEY_UUID_INDEX]);
+        $formerColumnNames[$indexOfUuid] = $tableProperties[MigrateToUuidStep::ID_COLUMN_INDEX];
+
+        $query = \strtr($sql, [
+            '{tableName}' => $tableName,
+            '{formerColumnNames}' => \implode(', ', array_map(fn (string $columnName): string => sprintf('`%s`', $columnName), $formerColumnNames)),
+            '{newColumnNames}' => \implode(', ', array_map(fn (string $columnName): string => sprintf('`%s`', $columnName), $newColumnNames)),
+        ]);
+
+        $this->connection->executeQuery($query);
+    }
+
+    private function addForeignKey(string $tableName, array $tableProperties): void
+    {
+        $sql = <<<SQL
+            SET FOREIGN_KEY_CHECKS=0; 
+            ALTER TABLE {tableName} ADD CONSTRAINT {constraintName} FOREIGN KEY ({uuidColumnName}) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE,
+            ALGORITHM=INPLACE,
+            LOCK=NONE;
+            SET FOREIGN_KEY_CHECKS=1; 
+        SQL;
+
+        $query = \strtr($sql, [
+            '{tableName}' => $tableName,
+            '{constraintName}' => $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX],
+            '{uuidColumnName}' => $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX],
+        ]);
+
+        $this->connection->executeQuery($query);
+    }
+
+    private function addConstraint(string $tableName, string $constraintName, array $columnNames): void
+    {
+        $sql = <<<SQL
+            ALTER TABLE {tableName} ADD CONSTRAINT {constraintName} UNIQUE ({columnNames}),
+            ALGORITHM=INPLACE,
+            LOCK=NONE
+        SQL;
+
+        $query = \strtr($sql, [
+            '{tableName}' => $tableName,
+            '{constraintName}' => $constraintName,
+            '{columnNames}' => \implode(', ', array_map(fn (string $columnName): string => sprintf('`%s`', $columnName), $columnNames)),
+        ]);
+
+        $this->connection->executeQuery($query);
+    }
+
+    private function addIndex(string $tableName, string $indexName, array $columnNames): void
+    {
+        $sql = <<<SQL
+            ALTER TABLE {tableName}
+                ADD INDEX {indexName} ({columnNames}),
+                ALGORITHM=INPLACE,
+                LOCK=NONE
+        SQL;
+
+        $query = \strtr($sql, [
+            '{tableName}' => $tableName,
+            '{indexName}' => $indexName,
+            '{columnNames}' => \implode(', ', array_map(fn (string $columnName): string => sprintf('`%s`', $columnName), $columnNames)),
+        ]);
+
+        $this->connection->executeQuery($query);
     }
 }
