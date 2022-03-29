@@ -36,4 +36,25 @@ final class CreateSupplierHandlerTest extends TestCase
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
     }
+
+    /** @test */
+    public function itThrowsAnExceptionIfTheSupplierAlreadyExist(): void
+    {
+        $identifier = '01319d4c-81c4-4f60-a992-41ea3546824c';
+
+        $repository = new InMemoryRepository();
+        $supplierExists = new InMemorySupplierExists($repository);
+
+        $repository->save(Supplier\Model\Supplier::create($identifier, 'code', 'label', []));
+
+        $this->expectExceptionObject(new Supplier\Exception\SupplierAlreadyExistsException('code'));
+
+        $sut = new CreateSupplierHandler($repository, $supplierExists);
+        ($sut)(new CreateSupplier(
+            '01319d4c-81c4-4f60-a992-41ea3546824c',
+            'code',
+            'label',
+            []
+        ));
+    }
 }
