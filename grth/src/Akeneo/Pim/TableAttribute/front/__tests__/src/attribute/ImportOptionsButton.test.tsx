@@ -46,8 +46,7 @@ describe('ImportOptionsButton', () => {
   });
 
   it('should load next batch of attributes when the user scrolls to the bottom', async () => {
-    const handleClick = jest.fn();
-    renderWithProviders(<ImportOptionsButton onClick={handleClick} batchSize={2} />);
+    renderWithProviders(<ImportOptionsButton onClick={jest.fn()} batchSize={2} />);
     fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.import_from_existing_attribute'));
 
     expect(await screen.findByText('Simple Select 1')).toBeInTheDocument();
