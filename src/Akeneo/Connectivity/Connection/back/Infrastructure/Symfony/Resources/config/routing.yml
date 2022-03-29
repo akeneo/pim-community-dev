@@ -132,3 +132,8 @@ akeneo_connectivity_connection_connect_connected_apps_delete:
     path: '/connect/connected-apps/{connectionCode}/delete'
     requirements:
         connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_open:
+    path: '/connect/connected-apps/{connectionCode}/open'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'

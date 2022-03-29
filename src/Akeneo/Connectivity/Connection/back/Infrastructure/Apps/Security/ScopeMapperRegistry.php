@@ -125,6 +125,9 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
         return $this->scopeMappers[$scope];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getExhaustiveScopes(array $scopeList): array
     {
         $fullScopes = $scopeList;

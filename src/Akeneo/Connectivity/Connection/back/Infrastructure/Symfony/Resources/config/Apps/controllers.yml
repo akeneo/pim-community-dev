@@ -97,6 +97,16 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetOpenAppUrlAction:
+        public: true
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
+            - '@oro_security.security_facade'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator'
+
     ## PUBLIC
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction:
         public: true

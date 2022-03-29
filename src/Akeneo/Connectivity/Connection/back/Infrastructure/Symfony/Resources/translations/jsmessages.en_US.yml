@@ -42,6 +42,7 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
     akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
     akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
+    akeneo_connectivity_connection_connect_connected_apps_open: Open App
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -179,6 +180,9 @@ akeneo_connectivity.connection:
                 flash:
                     success: App successfully deleted.
                     error: Sorry, an error occured while deleting the app.
+            open:
+                flash:
+                    error: Sorry, an error occurred while opening the App.
         apps:
             loader:
                 message: Loading ...
@@ -560,3 +564,9 @@ pim_permissions:
             edit: Edit
             view: View
         all: All
+
+pim_notification:
+    types:
+        connected_app_authorizations: Connected App authorizations
+    connected_app_authorizations:
+        button_label: Open App

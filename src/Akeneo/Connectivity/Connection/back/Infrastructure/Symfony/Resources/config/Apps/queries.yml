@@ -68,6 +68,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery:
         arguments:
             - '@database_connection'
