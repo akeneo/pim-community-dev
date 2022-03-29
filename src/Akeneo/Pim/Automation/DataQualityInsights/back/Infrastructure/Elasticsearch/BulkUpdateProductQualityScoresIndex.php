@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndi
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
@@ -31,12 +32,17 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
 
     public function __invoke(ProductIdCollection $productIdCollection): void
     {
-        if ($this->documentType === ProductModelInterface::class) {
-            $scores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
-            $identifierPrefix = self::PRODUCT_MODEL_IDENTIFIER_PREFIX;
-        } else {
-            $scores = $this->getProductScoresQuery->byProductIds($productIdCollection);
-            $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
+        switch ($this->documentType) {
+            case ProductModelInterface::class:
+                $scores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
+                $identifierPrefix = self::PRODUCT_MODEL_IDENTIFIER_PREFIX;
+                break;
+            case ProductInterface::class:
+                $scores = $this->getProductScoresQuery->byProductIds($productIdCollection);
+                $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
         }
 
         $computedKeyIndicators = $this->computeProductsKeyIndicators->compute($productIdCollection);

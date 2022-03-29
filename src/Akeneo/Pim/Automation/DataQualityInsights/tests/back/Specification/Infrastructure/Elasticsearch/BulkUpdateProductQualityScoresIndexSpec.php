@@ -20,6 +20,25 @@ use PhpSpec\ObjectBehavior;
 
 class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 {
+    public function it_does_not_update_when_type_is_incorrect(
+        Client $esClient,
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery,
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators,
+    ) {
+        $this->beConstructedWith(
+            $esClient,
+            $getProductScoresQuery,
+            $getProductModelScoresQuery,
+            $computeProductsKeyIndicators,
+            'a_type'
+        );
+
+        $this
+            ->shouldThrow(\InvalidArgumentException::class)
+            ->during('__invoke', [(ProductIdCollection::fromInts([123, 456, 42]))]);
+    }
+
     public function it_updates_products_index(
         Client $esClient,
         GetProductScoresQueryInterface $getProductScoresQuery,
