@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Display the missing required attributes
   In order to ease the enrichment of products
   As a product manager
@@ -6,26 +6,6 @@ Feature: Display the missing required attributes
 
   Background:
     Given the "catalog_modeling" catalog configuration
-
-  @critical @skip @info unstable
-  Scenario: Display missing required attributes on product models
-    Given I am logged in as "Julia"
-    When I am on the "apollon" product model page
-    Then I should see the text "1 missing required attribute"
-    When I remove the "Model picture" file
-    And I save the product model
-    Then I should see the text "2 missing required attributes"
-    When I am on the "apollon_pink" product model page
-    Then I should see the text "5 missing required attributes"
-    When I am on the "medias" attribute group page
-    And I visit the "Permissions" tab
-    And I fill in the following information:
-      | Allowed to view attributes | IT support |
-      | Allowed to edit attributes | IT support |
-    And I save the attribute group
-    When I am on the "apollon_pink" product model page
-    Then I should not see the text "5 missing required attributes"
-    But I should see the text "3 missing required attributes"
 
   @critical
   Scenario: Don't display missing required attribute if attribute is not editable because of permission on attribute group
