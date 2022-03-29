@@ -26,8 +26,8 @@ const Operations = ({dataMapping}: OperationsProps) => {
       </SectionTitle>
       {dataMapping.sample_data.length > 0 && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
-          {dataMapping.sample_data.map(sampleData => (
-            <Preview.Row>{sampleData}</Preview.Row>
+          {dataMapping.sample_data.map((sampleData, key) => (
+            <Preview.Row key={key}>{sampleData}</Preview.Row>
           ))}
         </Preview>
       )}
