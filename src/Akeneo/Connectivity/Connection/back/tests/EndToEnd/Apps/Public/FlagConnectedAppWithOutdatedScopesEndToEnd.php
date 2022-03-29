@@ -43,10 +43,7 @@ class FlagConnectedAppWithOutdatedScopesEndToEnd extends ApiTestCase
         $apiClient = $this->createAuthenticatedAppClient('outdated_app_code');
         $apiClient->request(
             'POST',
-            '/connect/apps/v1/scopes/update',
-            [
-                'scopes' => 'read_catalog_structure'
-            ]
+            '/connect/apps/v1/scopes/update?scopes=read_catalog_structure',
         );
 
         self::assertEquals(Response::HTTP_OK, $apiClient->getResponse()->getStatusCode());
