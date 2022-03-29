@@ -15,7 +15,7 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\UpdateConnectedApp'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppQuery'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
         arguments:

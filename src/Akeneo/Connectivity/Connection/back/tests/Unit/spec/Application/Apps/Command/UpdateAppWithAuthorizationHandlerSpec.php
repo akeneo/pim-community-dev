@@ -7,9 +7,9 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateAppWithAuthorizationHandler;
-use Akeneo\Connectivity\Connection\Application\Apps\Service\UpdateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\UpdateConnectedAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -25,12 +25,12 @@ class UpdateAppWithAuthorizationHandlerSpec extends ObjectBehavior
     public function let(
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        UpdateConnectedAppInterface $updateConnectedApp,
+        UpdateConnectedAppQueryInterface $updateConnectedAppQuery,
     ): void {
         $this->beConstructedWith(
             $validator,
             $appAuthorizationSession,
-            $updateConnectedApp,
+            $updateConnectedAppQuery,
         );
     }
 
@@ -73,10 +73,10 @@ class UpdateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->during('handle', [$command]);
     }
 
-    public function it_update_a_connected_app_when_everything_is_valid(
+    public function it_updates_a_connected_app_when_everything_is_valid(
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
-        UpdateConnectedAppInterface $updateConnectedApp,
+        UpdateConnectedAppQueryInterface $updateConnectedAppQuery,
         AppAuthorization $appAuthorization,
     ): void {
         $command = new UpdateAppWithAuthorizationCommand('an_app_id');
@@ -89,7 +89,7 @@ class UpdateAppWithAuthorizationHandlerSpec extends ObjectBehavior
 
         $appAuthorization->getAuthorizationScopes()->willReturn(ScopeList::fromScopes(['a_scope']));
 
-        $updateConnectedApp
+        $updateConnectedAppQuery
             ->execute(['a_scope'], 'an_app_id')
             ->shouldBeCalled();
 

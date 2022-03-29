@@ -12,10 +12,6 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery'
 
-    Akeneo\Connectivity\Connection\Application\Apps\Service\UpdateConnectedApp:
-        arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppQuery'
-
     Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.connection'

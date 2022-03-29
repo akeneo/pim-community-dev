@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\UpdateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\UpdateConnectedAppQueryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -17,8 +18,8 @@ class UpdateAppWithAuthorizationHandler
 {
     public function __construct(
         private ValidatorInterface $validator,
-        private AppAuthorizationSessionInterface $session,
-        private UpdateConnectedAppInterface $updateConnectedApp,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private UpdateConnectedAppQueryInterface $updateConnectedAppQuery,
     ) {
     }
 
@@ -31,13 +32,13 @@ class UpdateAppWithAuthorizationHandler
 
         $appId = $command->getClientId();
 
-        $appAuthorization = $this->session->getAppAuthorization($appId);
+        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($appId);
 
         if (null === $appAuthorization) {
-            throw new \LogicException('AppAuthorization should exists in the session for the given app');
+            throw new \LogicException('There is no active app authorization in session');
         }
 
-        $this->updateConnectedApp->execute(
+        $this->updateConnectedAppQuery->execute(
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $appId,
         );

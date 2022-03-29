@@ -19,10 +19,10 @@ class ScopeListComparator implements ScopeListComparatorInterface
      */
     public function diff(array $source, array $filter): array
     {
-        $originalScopeList = $this->scopeMapperRegistry->getExhaustiveScopes($source);
-        $requestedScopeList = $this->scopeMapperRegistry->getExhaustiveScopes($filter);
+        $exhaustiveSourceScopeList = $this->scopeMapperRegistry->getExhaustiveScopes($source);
+        $exhaustiveFilterScopeList = $this->scopeMapperRegistry->getExhaustiveScopes($filter);
 
-        $newScopes = \array_unique(\array_diff($originalScopeList, $requestedScopeList));
+        $newScopes = \array_unique(\array_diff($exhaustiveSourceScopeList, $exhaustiveFilterScopeList));
 
         \sort($newScopes);
 
