@@ -6,7 +6,6 @@ namespace Akeneo\Platform\TailoredImport\Application\GetSampleData;
 
 use Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleDataInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Query\GetJobConfigurationInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

@@ -6,11 +6,9 @@ namespace Specification\Akeneo\Platform\TailoredImport\Application\GetSampleData
 
 use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataQuery;
 use Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleDataInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Domain\Model\JobConfiguration;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
-use Akeneo\Platform\TailoredImport\Domain\Query\GetJobConfigurationInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

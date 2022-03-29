@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
@@ -41,11 +41,9 @@ const DataMappingDetails = ({
   onDataMappingChange,
 }: DataMappingDetailsProps) => {
   const translate = useTranslate();
-  const [selectedSources, setSelectedSources] = useState<ColumnIdentifier[]>();
   const fetchSampleData = useFetchSampleData();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
-    setSelectedSources(sources);
     let sample_data: Array<string>;
     const column = getColumnByUuid(columns, sources[0]);
     if (sources.length > 0 && null !== column) {
