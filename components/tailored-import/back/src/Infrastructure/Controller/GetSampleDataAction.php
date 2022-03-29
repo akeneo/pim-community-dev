@@ -39,7 +39,7 @@ final class GetSampleDataAction
 
         $query = new GetSampleDataQuery();
         $query->fileKey = $request->get('file_key');
-        $query->columnIndex = $request->get('column_index');
+        $query->columnIndex = intval($request->get('column_index'));
         $query->sheetName = $request->get('sheet_name');
         $query->productLine = intval($request->get('product_line'));
 

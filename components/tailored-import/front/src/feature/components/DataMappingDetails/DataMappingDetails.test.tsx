@@ -64,6 +64,14 @@ const attributeDataMappingWithoutSource: DataMapping = {
   sample_data: [],
 };
 
+const fileStructure: FileStructure = {
+  header_row: 1,
+  first_column: 1,
+  first_product_row: 2,
+  unique_identifier_column: 1,
+  sheet_name: 'sheet_1',
+};
+
 jest.mock('./SourceDropdown', () => ({
   SourceDropdown: ({
     onColumnSelected,
@@ -118,15 +126,7 @@ test('it displays an attribute data mapping', async () => {
     <DataMappingDetails
       dataMapping={attributeDataMapping}
       fileKey={'/file_key'}
-      fileStructure={
-        {
-          header_row: 1,
-          first_column: 1,
-          first_product_row: 2,
-          unique_identifier_column: 1,
-          sheet_name: 'sheet_1',
-        } as FileStructure
-      }
+      fileStructure={ fileStructure }
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={jest.fn()}
@@ -155,15 +155,7 @@ test('it can change target parameters', async () => {
     <DataMappingDetails
       dataMapping={{...attributeDataMapping, target: attributeTarget}}
       fileKey={'/file_key'}
-      fileStructure={
-        {
-          header_row: 1,
-          first_column: 1,
-          first_product_row: 2,
-          unique_identifier_column: 1,
-          sheet_name: 'sheet_1',
-        } as FileStructure
-      }
+      fileStructure={ fileStructure }
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
@@ -189,15 +181,7 @@ test('it can add a source to a data mapping', async () => {
     <DataMappingDetails
       dataMapping={attributeDataMappingWithoutSource}
       fileKey={'/file_key'}
-      fileStructure={
-        {
-          header_row: 1,
-          first_column: 1,
-          first_product_row: 2,
-          unique_identifier_column: 1,
-          sheet_name: 'sheet_1',
-        } as FileStructure
-      }
+      fileStructure={ fileStructure }
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
@@ -220,22 +204,14 @@ test('it can remove a source', async () => {
     <DataMappingDetails
       dataMapping={attributeDataMapping}
       fileKey={'/file_key'}
-      fileStructure={
-        {
-          header_row: 1,
-          first_column: 1,
-          first_product_row: 2,
-          unique_identifier_column: 1,
-          sheet_name: 'sheet_1',
-        } as FileStructure
-      }
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
     />
   );
 
-  await userEvent.click(screen.getByTitle('pim_common.remove'));
+  userEvent.click(screen.getByTitle('pim_common.remove'));
 
   expect(handleDataMappingChange).toHaveBeenCalledWith({
     ...attributeDataMappingWithoutSource,

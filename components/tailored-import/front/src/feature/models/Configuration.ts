@@ -62,7 +62,7 @@ const generateColumnName = (index: number, label: string): string => {
   return `${label} (${columnLetter})`;
 };
 
-const getColumnByUuid = (columns: Array<Column>, uuid: string): Column | null => {
+const findColumnByUuid = (columns: Array<Column>, uuid: string): Column | null => {
   return columns.find((column: Column) => column.uuid === uuid) ?? null;
 };
 
@@ -76,5 +76,5 @@ export {
   MINIMUM_HEADER_ROW,
   getDefaultFileStructure,
   isValidErrorAction,
-  getColumnByUuid,
+  findColumnByUuid,
 };

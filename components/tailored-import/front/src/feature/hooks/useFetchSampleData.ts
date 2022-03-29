@@ -5,7 +5,7 @@ const useFetchSampleData = (): ((
   column_index: number,
   sheet_name: string | null,
   product_line: number
-) => Promise<Array<string>>) => {
+) => Promise<string[]>) => {
   const router = useRouter();
 
   return (

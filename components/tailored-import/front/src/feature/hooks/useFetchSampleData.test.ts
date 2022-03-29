@@ -9,9 +9,9 @@ test('it try to fetch sample data', async () => {
   }));
 
   const {result} = renderHookWithProviders(() => useFetchSampleData());
-  const sampleData = result.current;
+  const fetchSampleData = result.current;
 
-  await sampleData('/file_key', 2, 'sheet_1', 2);
+  await fetchSampleData('/file_key', 2, 'sheet_1', 2);
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_get_sample_data_action', {
     headers: {

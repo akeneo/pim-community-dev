@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, getColumnByUuid} from '../../models';
+import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, findColumnByUuid} from '../../models';
 import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
@@ -44,8 +44,8 @@ const DataMappingDetails = ({
   const fetchSampleData = useFetchSampleData();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
-    let sample_data: Array<string>;
-    const column = getColumnByUuid(columns, sources[0]);
+    let sample_data: string[];
+    const column = findColumnByUuid(columns, sources[0]);
     if (sources.length > 0 && null !== column) {
       sample_data = await fetchSampleData(
         fileKey,

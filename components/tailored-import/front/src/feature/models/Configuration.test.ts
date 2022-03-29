@@ -1,5 +1,4 @@
-import {generateColumnName, getDefaultFileStructure, getColumnByUuid} from './Configuration';
-import {Column} from '../../../lib';
+import {generateColumnName, getDefaultFileStructure, findColumnByUuid, Column} from './Configuration';
 
 test('it generates column name', () => {
   expect(generateColumnName(0, 'Sku')).toEqual('Sku (A)');
@@ -21,7 +20,7 @@ test('it can get the default file structure', () => {
   });
 });
 
-test('it find column from uuid', () => {
+test('it returns column from uuid', () => {
   let colums = [
     {
       uuid: 'c33e67f4-a6f7-4950-81c1-1800a956b88f',
@@ -35,11 +34,11 @@ test('it find column from uuid', () => {
     } as Column,
   ];
 
-  const result = getColumnByUuid(colums, 'c33e67f4-a6f7-4950-81c1-1800a956b88f');
+  const result = findColumnByUuid(colums, 'c33e67f4-a6f7-4950-81c1-1800a956b88f');
   expect(result).toEqual(colums[0]);
 });
 
-test("it can't find column from uuid", () => {
+test("it return null when column is not find", () => {
   let colums = [
     {
       uuid: 'c33e67f4-a6f7-4950-81c1-1800a956b88f',
@@ -53,6 +52,6 @@ test("it can't find column from uuid", () => {
     } as Column,
   ];
 
-  const result = getColumnByUuid(colums, '885bbc55-ed08-4392-8096-4d7fed9f0ca9');
+  const result = findColumnByUuid(colums, '885bbc55-ed08-4392-8096-4d7fed9f0ca9');
   expect(result).toBeNull();
 });

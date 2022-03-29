@@ -9,7 +9,7 @@ type DataMapping = {
   target: AttributeTarget | PropertyTarget;
   sources: ColumnIdentifier[];
   operations: [];
-  sample_data: Array<string>;
+  sample_data: string[];
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;

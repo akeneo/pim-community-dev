@@ -24,7 +24,7 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
         XlsxFileReaderInterface $fileReader
     ) {
         $query = new GetSampleDataQuery();
-        $query->columnIndex = "1";
+        $query->columnIndex = 1;
         $query->sheetName = "sheet1";
         $query->fileKey = "/filepath";
         $query->productLine = 2;

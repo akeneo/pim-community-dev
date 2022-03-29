@@ -12,7 +12,7 @@ final class GetSampleDataQuery
 {
     public string $fileKey;
 
-    public string $columnIndex;
+    public int $columnIndex;
 
     public string $sheetName;
 
