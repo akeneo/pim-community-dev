@@ -336,7 +336,7 @@ akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
 akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
 akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
 akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
-akeneo_onboarder_serenity_supplier_contributor | identifier | NO | char(36) | PRI
+akeneo_onboarder_serenity_supplier_contributor | id | NO | bigint unsigned | PRI
 akeneo_onboarder_serenity_supplier_contributor | email | NO | varchar(255) | UNI
 akeneo_onboarder_serenity_supplier_contributor | supplier_identifier | NO | char(36) | MUL
 akeneo_onboarder_supplier | id | NO | int | PRI
