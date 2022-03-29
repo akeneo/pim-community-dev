@@ -42,10 +42,9 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         ]);
 
         $command = UpsertProductCommand::createFromCollection(
-            $this->getUserId('betty'),
+            $this->getUserId('peter'),
             'variant_product',
             [
-                new ConvertToSimpleProduct(),
                 new SetCategories(['suppliers', 'print']),
                 new SetSimpleSelectValue('main_color', null, null, 'green'),
             ]
@@ -55,7 +54,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root')
         );
@@ -67,7 +66,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertEqualsCanonicalizing('root', $product->getParent()->getCode());
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
@@ -79,7 +78,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertEqualsCanonicalizing('root2', $product->getParent()->getCode());
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
@@ -116,7 +115,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         ]);
 
         $command = UpsertProductCommand::createFromCollection(
-            $this->getUserId('betty'),
+            $this->getUserId('peter'),
             'variant_product',
             [
                 new ChangeParent('root'),
@@ -129,7 +128,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
@@ -139,7 +138,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->messageBus->dispatch($command);
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ConvertToSimpleProduct()
         );
@@ -151,7 +150,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         Assert::assertEqualsCanonicalizing(null, $product->getParent());
 
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('root2')
         );
@@ -167,7 +166,7 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
     public function it_throws_an_exception_with_unknown_parent_code(): void
     {
         $command = new UpsertProductCommand(
-            userId: $this->getUserId('betty'),
+            userId: $this->getUserId('peter'),
             productIdentifier: 'variant_product',
             parentUserIntent: new ChangeParent('unknown')
         );

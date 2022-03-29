@@ -27,12 +27,11 @@ class ConvertToSimpleProductApplierSpec extends ObjectBehavior
 
     function it_applies_remove_parent_user_intent(
         RemoveParentInterface $removeParent,
-        ProductInterface $product,
-        ProductModelInterface $productModel
+        ProductInterface $product
     ): void
     {
         $removeParentIntent = new ConvertToSimpleProduct();
-        $product->getParent()->willReturn($productModel);
+        $product->isVariant()->willReturn(true);
         $removeParent->from($product)->shouldBeCalledOnce();
 
         $this->apply($removeParentIntent, $product, 1);
@@ -44,7 +43,7 @@ class ConvertToSimpleProductApplierSpec extends ObjectBehavior
     ): void
     {
         $removeParentIntent = new ConvertToSimpleProduct();
-        $product->getParent()->willReturn(null);
+        $product->isVariant()->willReturn(false);
 
         $removeParent->from($product)->shouldNotBeCalled();
 
