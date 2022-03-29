@@ -71,21 +71,33 @@ trait MigrateToUuidTrait
         )->fetchOne();
     }
 
-    protected function getIndexName(string $tableName, string $columnName): ?string
+    protected function getIndexName(string $tableName, array $columnNames): ?string
     {
         $sql = <<<SQL
-            SELECT INDEX_NAME FROM information_schema.STATISTICS
-            WHERE INDEX_SCHEMA = :schema AND TABLE_NAME = :table_name AND COLUMN_NAME = :column_name
+            SELECT INDEX_NAME, JSON_ARRAYAGG(COLUMN_NAME) AS columnNames 
+            FROM information_schema.STATISTICS
+            WHERE INDEX_SCHEMA = :schema 
+              AND TABLE_NAME = :table_name 
+            GROUP BY INDEX_NAME
             SQL;
 
-        return $this->connection->executeQuery(
+        $result = $this->connection->fetchAllKeyValue(
             $sql,
             [
                 'schema' => $this->connection->getDatabase(),
                 'table_name' => $tableName,
-                'column_name' => $columnName,
             ]
-        )->fetchOne();
+        );
+
+        foreach ($result as $indexName => $columnsJson) {
+            // There is a json_encode(json_decode()) because the format is not the same between PHP and mySQL.
+            $columns = (\json_decode($columnsJson, true));
+            if (\json_encode($columns) === \json_encode($columnNames)) {
+                return $indexName;
+            }
+        }
+
+        return null;
     }
 
     protected function indexExists(string $tableName, string $indexName): bool
@@ -105,5 +117,22 @@ trait MigrateToUuidTrait
                 'index_name' => $indexName,
             ]
         )->fetchOne();
+    }
+
+    protected function getPrimaryKey(string $tableName): array
+    {
+        $sql = <<<SQL
+            SELECT COLUMN_NAME 
+            FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE TABLE_SCHEMA=:schema 
+              AND TABLE_NAME=:table_name 
+              AND COLUMN_KEY='PRI'
+            ORDER BY ORDINAL_POSITION;
+        SQL;
+
+        return $this->connection->fetchFirstColumn($sql, [
+            'schema' => $this->connection->getDatabase(),
+            'table_name' => $tableName
+        ]);
     }
 }
