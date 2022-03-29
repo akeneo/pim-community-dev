@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;

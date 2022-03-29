@@ -21,7 +21,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyIsLinkedToAtLeastOne
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\InMemoryFeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
