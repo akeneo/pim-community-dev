@@ -1,1 +1,1 @@
-export * from './Supplier';
+export * from './SupplierApp';

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Repository\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
