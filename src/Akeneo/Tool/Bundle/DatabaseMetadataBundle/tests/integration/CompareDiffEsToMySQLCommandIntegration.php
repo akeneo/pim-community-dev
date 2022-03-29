@@ -162,7 +162,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     {
         $productProposalEs = EntityIndexConfiguration::create(
             ['id'],
-            'akeneo_pim_product_proposal',
+            'akeneo_pim_product_proposal_test',
             'id',
             'es');
         return [
