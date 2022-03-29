@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQueryInterface;
@@ -19,6 +20,7 @@ class FlagAppContainingOutdatedScopesHandler
         private ScopeMapperRegistryInterface $scopeMapperRegistry,
         private SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         private AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
+        private ScopeListComparatorInterface $scopeListComparator,
     ) {
     }
 
@@ -37,7 +39,12 @@ class FlagAppContainingOutdatedScopesHandler
             )
         );
 
-        if (false === $existingScopes->equals($allowedRequestedAuthorizationScopes)) {
+        $newScopes = $this->scopeListComparator->diff(
+            $allowedRequestedAuthorizationScopes->getScopes(),
+            $existingScopes->getScopes()
+        );
+
+        if (false === empty($newScopes)) {
             $this->saveConnectedAppOutdatedScopesFlagQuery->execute($connectedApp->getId(), true);
             $this->authorizationRequestNotifier->notify($connectedApp);
         }

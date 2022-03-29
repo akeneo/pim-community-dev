@@ -39,4 +39,12 @@ interface ScopeMapperRegistryInterface
      * @return string[]
      */
     public function getAcls(array $scopeList): array;
+
+    /**
+     * Given an array of scopes returns list of all inferred scopes from that list
+     *
+     * @param string[] $scopeList
+     * @return string[]
+     */
+    public function getExhaustiveScopes(array $scopeList): array;
 }

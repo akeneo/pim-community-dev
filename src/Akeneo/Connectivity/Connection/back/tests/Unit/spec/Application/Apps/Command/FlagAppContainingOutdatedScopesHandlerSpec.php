@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistry
 use Akeneo\Connectivity\Connection\Application\Apps\Service\AuthorizationRequestNotifierInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,10 +24,39 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
+        $scopeMapperRegistry->getAllScopes()->willReturn([
+            'read_scope_a',
+            'write_scope_a',
+            'read_scope_b',
+            'write_scope_b',
+            'read_scope_c',
+            'read_scope_d',
+        ]);
+
+        $scopeMapperRegistry
+            ->getExhaustiveScopes(['read_scope_a', 'write_scope_b'])
+            ->willReturn([
+                'read_scope_a',
+                'read_scope_b',
+                'write_scope_b',
+            ]);
+
+        $scopeMapperRegistry
+            ->getExhaustiveScopes(['read_scope_d'])
+            ->willReturn(['read_scope_d']);
+
+        $scopeMapperRegistry
+            ->getExhaustiveScopes(['read_scope_b', 'read_scope_d'])
+            ->willReturn([
+                'read_scope_b',
+                'read_scope_d',
+            ]);
+
         $this->beConstructedWith(
             $scopeMapperRegistry,
             $saveConnectedAppOutdatedScopesFlagQuery,
             $authorizationRequestNotifier,
+            new ScopeListComparator($scopeMapperRegistry->getWrappedObject()),
         );
     }
 
@@ -35,75 +65,87 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(FlagAppContainingOutdatedScopesHandler::class);
     }
 
-    public function it_updates_has_outdated_scopes_flag(
-        ScopeMapperRegistryInterface $scopeMapperRegistry,
+    public function it_flags_the_connected_app_on_new_scopes(
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
         $connectedApp = new ConnectedApp(
             'a_connected_app_id',
             'a_connected_app_name',
-            ['allowed_scope_d allowed_scope_b'],
+            ['read_scope_d', 'read_scope_b'],
             'random_connection_code',
             'a/path/to/a/logo',
             'an_author',
             'a_group',
         );
 
-        $scopeMapperRegistry->getAllScopes()->willReturn([
-            'allowed_scope_a',
-            'allowed_scope_b',
-            'allowed_scope_c',
-            'allowed_scope_d',
-        ]);
+        $this->handle(new FlagAppContainingOutdatedScopesCommand(
+            $connectedApp,
+            'read_scope_a openid_scope_a random noise write_scope_b'
+        ));
 
         $saveConnectedAppOutdatedScopesFlagQuery
             ->execute('a_connected_app_id', true)
-            ->shouldBeCalled();
+            ->shouldHaveBeenCalled();
 
         $authorizationRequestNotifier
             ->notify($connectedApp)
-            ->shouldBeCalled();
-
-        $this->handle(new FlagAppContainingOutdatedScopesCommand(
-            $connectedApp,
-            'allowed_scope_a openid_scope_a random noise allowed_scope_b'
-        ));
+            ->shouldHaveBeenCalled();
     }
 
-    public function it_does_not_update_has_outdated_scopes_flag(
-        ScopeMapperRegistryInterface $scopeMapperRegistry,
+    public function it_does_not_flags_the_connected_app_on_less_scopes(
         SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
         AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
     ): void {
         $connectedApp = new ConnectedApp(
             'a_connected_app_id',
             'a_connected_app_name',
-            ['allowed_scope_d', 'allowed_scope_b', 'allowed_scope_c'],
+            ['read_scope_d', 'read_scope_b'],
             'random_connection_code',
             'a/path/to/a/logo',
             'an_author',
             'a_group',
         );
 
-        $scopeMapperRegistry->getAllScopes()->willReturn([
-            'allowed_scope_a',
-            'allowed_scope_b',
-            'allowed_scope_c',
-            'allowed_scope_d',
-        ]);
+        $this->handle(new FlagAppContainingOutdatedScopesCommand(
+            $connectedApp,
+            'openid_scope_a random noise read_scope_d'
+        ));
 
         $saveConnectedAppOutdatedScopesFlagQuery
             ->execute('a_connected_app_id', true)
-            ->shouldNotBeCalled();
+            ->shouldNotHaveBeenCalled();
 
         $authorizationRequestNotifier
             ->notify($connectedApp)
-            ->shouldNotBeCalled();
+            ->shouldNotHaveBeenCalled();
+    }
+
+    public function it_does_not_flags_the_connected_app_on_same_scopes(
+        SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
+        AuthorizationRequestNotifierInterface $authorizationRequestNotifier,
+    ): void {
+        $connectedApp = new ConnectedApp(
+            'a_connected_app_id',
+            'a_connected_app_name',
+            ['read_scope_d', 'read_scope_b'],
+            'random_connection_code',
+            'a/path/to/a/logo',
+            'an_author',
+            'a_group',
+        );
 
         $this->handle(new FlagAppContainingOutdatedScopesCommand(
             $connectedApp,
-            'allowed_scope_c openid_scope_a random noise allowed_scope_b allowed_scope_d'
+            'read_scope_b openid_scope_a random noise read_scope_d'
         ));
+
+        $saveConnectedAppOutdatedScopesFlagQuery
+            ->execute('a_connected_app_id', true)
+            ->shouldNotHaveBeenCalled();
+
+        $authorizationRequestNotifier
+            ->notify($connectedApp)
+            ->shouldNotHaveBeenCalled();
     }
 }

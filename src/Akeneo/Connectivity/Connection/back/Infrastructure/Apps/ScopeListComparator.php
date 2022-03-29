@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps;
 
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
+use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
 
 class ScopeListComparator implements ScopeListComparatorInterface
 {
     public function __construct(
-        private ScopeMapperRegistry $scopeMapperRegistry,
+        private ScopeMapperRegistryInterface $scopeMapperRegistry,
     ) {
     }
 
