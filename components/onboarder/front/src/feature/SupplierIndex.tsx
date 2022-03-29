@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Breadcrumb, useDebounce} from 'akeneo-design-system';
 import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {useSuppliers} from './hooks/useSuppliers';
+import {useSuppliers} from './hooks';
 import {SupplierList} from './components/SupplierList';
 import {EmptySupplierList} from './components/EmptySupplierList';
 import {CreateSupplier} from './components/CreateSupplier';
@@ -13,7 +13,7 @@ const SupplierIndex = () => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue);
-    const [page, setPage] = useState<number>(0);
+    const [page, setPage] = useState<number>(1);
     const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(debouncedSearchValue, page);
 
     useEffect(() => {
