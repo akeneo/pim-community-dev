@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;

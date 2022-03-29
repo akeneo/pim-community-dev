@@ -7,7 +7,12 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Pub
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthenticationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction;
@@ -40,6 +45,9 @@ class AuthorizeActionSpec extends ObjectBehavior
         RequestAppAuthenticationHandler $requestAppAuthenticationHandler,
         SecurityFacade $security,
         GetAppQueryInterface $getAppQuery,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        ScopeListComparatorInterface $scopeListComparator,
+        UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
     ): void {
         $this->beConstructedWith(
             $requestAppAuthorizationHandler,
@@ -52,6 +60,9 @@ class AuthorizeActionSpec extends ObjectBehavior
             $requestAppAuthenticationHandler,
             $security,
             $getAppQuery,
+            $getConnectedAppScopesQuery,
+            $scopeListComparator,
+            $updateConnectedAppScopesWithAuthorizationHandler,
         );
     }
 
@@ -158,5 +169,158 @@ class AuthorizeActionSpec extends ObjectBehavior
         $this
             ->shouldThrow(AccessDeniedHttpException::class)
             ->during('__invoke', [$request, $clientId]);
+    }
+
+    public function it_redirects_when_there_are_new_scopes(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        RouterInterface $router,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        ScopeListComparatorInterface $scopeListComparator,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+    ): void {
+        $clientId = 'valid_client_id';
+
+        $this->setUpBeforeScopes(
+            $clientId,
+            $marketplaceActivateFeatureFlag,
+            $router,
+            $request,
+            $getAppQuery,
+            $security,
+        );
+
+        $requestedScopes = ['write_products'];
+        $originalScopes = ['read_products'];
+        $diffScopes = ['write_products'];
+
+        $appAuthorization = AppAuthorization::createFromNormalized([
+            'client_id' => $clientId,
+            'authorization_scope' => \implode(' ', $requestedScopes),
+            'authentication_scope' => '',
+            'redirect_uri' => 'http://url.test',
+            'state' => 'state'
+        ]);
+
+        $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
+
+        $appConfirmation = AppConfirmation::create(
+            $clientId,
+            1,
+            'user_group',
+            1
+        );
+
+        $getAppConfirmationQuery->execute($clientId)->willReturn($appConfirmation);
+
+        $getConnectedAppScopesQuery->execute($clientId)->willReturn($originalScopes);
+
+        $scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        )->willReturn($diffScopes);
+
+        $this->__invoke($request)
+            ->shouldBeLike(new RedirectResponse('/#/connect/apps/authorize'));
+    }
+
+    public function it_redirects_to_the_callback_url_when_there_are_unchanged_or_less_scopes(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        RouterInterface $router,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        ScopeListComparatorInterface $scopeListComparator,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        ConnectedPimUserProvider $connectedPimUserProvider,
+        RedirectUriWithAuthorizationCodeGeneratorInterface $redirectUriWithAuthorizationCodeGenerator,
+    ): void {
+        $clientId = 'valid_client_id';
+
+        $this->setUpBeforeScopes(
+            $clientId,
+            $marketplaceActivateFeatureFlag,
+            $router,
+            $request,
+            $getAppQuery,
+            $security,
+        );
+
+        $requestedScopes = ['read_products'];
+        $originalScopes = ['write_products'];
+        $diffScopes = [];
+
+        $appAuthorization = AppAuthorization::createFromNormalized([
+            'client_id' => $clientId,
+            'authorization_scope' => \implode(' ', $requestedScopes),
+            'authentication_scope' => '',
+            'redirect_uri' => 'http://url.test',
+            'state' => 'state'
+        ]);
+
+        $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
+
+        $appConfirmation = AppConfirmation::create(
+            $clientId,
+            1,
+            'user_group',
+            1
+        );
+
+        $getAppConfirmationQuery->execute($clientId)->willReturn($appConfirmation);
+
+        $getConnectedAppScopesQuery->execute($clientId)->willReturn($originalScopes);
+
+        $scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        )->willReturn($diffScopes);
+
+        $currentUserId = 1;
+
+        $connectedPimUserProvider->getCurrentUserId()->willReturn($currentUserId);
+
+        $redirectUriWithAuthorizationCodeGenerator->generate(
+            $appAuthorization,
+            $appConfirmation,
+            $currentUserId
+        )->willReturn('http://url.test');
+
+        $this->__invoke($request)
+            ->shouldBeLike(new RedirectResponse('http://url.test'));
+    }
+
+    private function setUpBeforeScopes(
+        string $clientId,
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        RouterInterface $router,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+    ) {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+
+        $request->query = new InputBag(['client_id' => $clientId]);
+        $router
+            ->generate('akeneo_connectivity_connection_connect_apps_authorize', [
+                'client_id' => $clientId,
+            ])
+            ->willReturn('/connect/apps/authorize');
+
+        $app = App::fromTestAppValues([
+            'id' => $clientId,
+            'name' => 'test app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+        ]);
+
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $security->isGranted('akeneo_connectivity_connection_manage_test_apps')->willReturn(true);
     }
 }
