@@ -219,6 +219,7 @@ akeneo_connectivity.connection:
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about app authorization,
                     helper_link: check out our Help Center article.
+                    is_allowed_to: 'Is already allowed to:'
                 flash:
                     success: App successfully configured.
                     error: Sorry, an error occurred while connecting the App.
@@ -246,6 +247,7 @@ akeneo_connectivity.connection:
                     reference_entity_record: reference entity records
                     asset_families: asset families
                     assets: assets
+                new: NEW
             error:
                 sub_text: Please contact the app developer or Akeneo support
                 app_not_found: The client_id does not match any existing app.

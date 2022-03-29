@@ -99,11 +99,7 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
     {
         \sort($scopeList);
 
-        $fullScopes = $scopeList;
-        foreach ($scopeList as $scope) {
-            \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
-        }
-        $fullScopes = \array_unique($fullScopes);
+        $fullScopes = $this->getExhaustiveScopes($scopeList);
 
         $acls = [];
         foreach ($fullScopes as $scope) {
@@ -127,5 +123,14 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
         }
 
         return $this->scopeMappers[$scope];
+    }
+
+    public function getExhaustiveScopes(array $scopeList): array
+    {
+        $fullScopes = $scopeList;
+        foreach ($scopeList as $scope) {
+            \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
+        }
+        return \array_unique($fullScopes);
     }
 }

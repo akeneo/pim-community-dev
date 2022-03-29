@@ -38,3 +38,7 @@ services:
             - '@pim_user.updater.group'
             - '@pim_user.saver.group'
             - '@validator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'

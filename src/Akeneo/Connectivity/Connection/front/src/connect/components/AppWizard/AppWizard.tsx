@@ -87,7 +87,11 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                         />
                     )}
                     {step.name === 'authorizations' && (
-                        <Authorizations appName={wizardData.appName} scopeMessages={wizardData.scopeMessages} />
+                        <Authorizations
+                            appName={wizardData.appName}
+                            scopeMessages={wizardData.scopeMessages}
+                            oldScopeMessages={wizardData.oldScopeMessages}
+                        />
                     )}
                 </>
             )}

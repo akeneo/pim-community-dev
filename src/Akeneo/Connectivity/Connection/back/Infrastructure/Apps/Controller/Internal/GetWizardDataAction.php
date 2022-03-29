@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,18 +24,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 final class GetWizardDataAction
 {
-    private GetAppQueryInterface $getAppQuery;
-    private AppAuthorizationSessionInterface $appAuthorizationSession;
-    private ScopeMapperRegistry $scopeMapperRegistry;
-
     public function __construct(
-        GetAppQueryInterface $getAppQuery,
-        AppAuthorizationSessionInterface $appAuthorizationSession,
-        ScopeMapperRegistry $scopeMapperRegistry
+        private GetAppQueryInterface $getAppQuery,
+        private AppAuthorizationSessionInterface $appAuthorizationSession,
+        private ScopeMapperRegistry $scopeMapperRegistry,
+        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
+        private ScopeListComparatorInterface $scopeListComparator,
     ) {
-        $this->getAppQuery = $getAppQuery;
-        $this->appAuthorizationSession = $appAuthorizationSession;
-        $this->scopeMapperRegistry = $scopeMapperRegistry;
     }
 
     public function __invoke(Request $request, string $clientId): Response
@@ -41,6 +41,7 @@ final class GetWizardDataAction
         }
 
         $app = $this->getAppQuery->execute($clientId);
+
         if (null === $app) {
             throw new NotFoundHttpException("Invalid app identifier");
         }
@@ -49,8 +50,18 @@ final class GetWizardDataAction
         if (null === $appAuthorization) {
             throw new NotFoundHttpException("Invalid app identifier");
         }
+        $originalScopes = $this->getConnectedAppScopesQuery->execute($app->getId());
+        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        $authorizationScopeMessages = $this->scopeMapperRegistry->getMessages($appAuthorization->getAuthorizationScopes()->getScopes());
+        $newScopes = $this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        );
+
+        $isFirstConnection = null === $this->findOneConnectedAppByIdQuery->execute($app->getId());
+
+        $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
+        $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
 
         $authenticationScopesThatRequireConsent = \array_filter(
             $appAuthorization->getAuthenticationScopes()->getScopes(),
@@ -61,7 +72,8 @@ final class GetWizardDataAction
             'appName' => $app->getName(),
             'appLogo' => $app->getLogo(),
             'appUrl' => $app->getUrl(),
-            'scopeMessages' => $authorizationScopeMessages,
+            'oldScopeMessages' => $oldAuthorizationScopeMessages,
+            'scopeMessages' => $newAuthorizationScopeMessages,
             'authenticationScopes' => \array_values($authenticationScopesThatRequireConsent)
         ]);
     }
