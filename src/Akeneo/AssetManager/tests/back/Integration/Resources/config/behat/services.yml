@@ -136,7 +136,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
-            - '@feature_flags'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
