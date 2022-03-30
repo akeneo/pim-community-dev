@@ -2,19 +2,16 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Test\Integration\Configuration;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -40,11 +37,10 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
 
         $this->resetIndex("akeneo_elasticsearch.client.product_and_product_model");
-        $this->resetIndex("akeneo_assetmanager.client.asset");
     }
 
     /**
-     * @dataProvider configProvider
+     * @dataProvider configProviderFilter
      * @return void
      */
     public function testFindIndex(EntityIndexConfiguration $entityIndexConfiguration): void
@@ -53,13 +49,16 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     }
 
     /**
-     * @dataProvider configProvider
+     * @dataProvider configProviderFilter
      * @return void
      */
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration)
     {
         $fixtures = [
-            ['product_model_draft_1', null]
+            ['product_model_1', null],
+            ['product_model_2', null],
+            ['product_model_3', null],
+            ['product_model_4', null]
         ];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
@@ -69,7 +68,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
 
-        for ($i = 0; $i < 2; $i++) {
+        for ($i = 0; $i < 4; $i++) {
             //$identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
             $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["id"], null);
         }
@@ -85,10 +84,10 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     public function test_it_results_request_filter_and_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
         $fixtures = [
-            ['product_1',null],
-            ['product_10', null],
-            ['product_100',null],
-            ['product_1000', null]
+            ['product_model_1', null],
+            ['product_model_2', null],
+            ['product_model_3', null],
+            ['product_model_4', null]
         ];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
@@ -112,19 +111,6 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         Assert::assertEquals($resultsFixtures, $resultsOrderQuery);
     }
 
-    public function configProvider(): array
-    {
-        $productProposal = EntityIndexConfiguration::create(
-            ['id'],
-            'akeneo_pim_product_proposal_test',
-            'id',
-            'es'
-        );
-        return [
-            'es' => [$productProposal]
-        ];
-    }
-
     public function configProviderFilter(): array
     {
         $productEs = EntityIndexConfiguration::create(
@@ -135,7 +121,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         );
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromString());
-        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class, '\\').'"');
+        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductModelInterface::class, '\\').'"');
 
         return [
             'es' => [$productEs]
@@ -163,8 +149,6 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        //return $this->catalog->useFunctionalCatalog('catalog_modeling');
-        //return $this->catalog->useMinimalCatalog();
         return $this->catalog->useTechnicalCatalog();
     }
 
