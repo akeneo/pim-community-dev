@@ -33,7 +33,7 @@ pim_enrich.entity.product:
   page_title:
     index: "]-Inf, 1]{{ count }} tulos|]1, Inf[{{ count }} tulosta"
     product: "]-Inf, 1]{{ count }} tuote|]1, Inf[{{ count }} tuotetta"
-    product_model: "]-Inf, 1]{{ count }} tuotemalli|]1, Inf[{{ count }} tuotemallia"
+    product_model: "]-Inf, 1]{{ count }} tuotemalli|]1, +Inf[{{ count }} tuotemallia"
     product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
