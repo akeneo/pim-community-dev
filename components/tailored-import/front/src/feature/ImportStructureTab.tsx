@@ -121,6 +121,8 @@ const ImportStructureTab = ({
             <DataMappingDetailsPlaceholder />
           ) : (
             <DataMappingDetails
+              fileKey={structureConfiguration.file_key}
+              fileStructure={structureConfiguration.file_structure}
               columns={structureConfiguration.import_structure.columns}
               dataMapping={selectedDataMapping}
               validationErrors={filterErrors(validationErrors, `[data_mappings][${selectedDataMapping.uuid}]`)}

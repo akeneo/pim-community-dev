@@ -22,8 +22,6 @@ class GetSampleDataResult
 
     public function normalize(): array
     {
-        return [
-            'sample_data' => $this->sampleData,
-        ];
+        return $this->sampleData;
     }
 }

@@ -32,6 +32,11 @@ akeneo.tailored_import:
   data_mapping:
     title: Data mapping
     no_data_mapping_selected: No data mapping selected
+    preview:
+      title: Preview
+      placeholder: N/A
+    operations:
+      title: Operations
     sources:
       title: Sources
       add:

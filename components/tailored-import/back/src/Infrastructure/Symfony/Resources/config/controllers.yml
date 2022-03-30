@@ -34,5 +34,3 @@ services:
     public: true
     arguments:
       - '@akeneo.tailored_import.handler.get_sample_data_handler'
-      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
-      - '@akeneo.tailored_import.query.get_job_configuration'

@@ -28,13 +28,20 @@ final class GetSampleDataAction
             return new RedirectResponse('/');
         }
 
-        if (null === $request->get('job_code') || null === $request->get('column_index')) {
+        if (
+            null === $request->get('file_key') ||
+            null === $request->get('column_index') ||
+            null === $request->get('sheet_name') ||
+            null === $request->get('product_line')
+        ) {
             throw new \HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
         }
 
         $query = new GetSampleDataQuery();
-        $query->jobCode = $request->get('job_code');
-        $query->columnIndex = $request->get('column_index');
+        $query->fileKey = $request->get('file_key');
+        $query->columnIndex = intval($request->get('column_index'));
+        $query->sheetName = $request->get('sheet_name');
+        $query->productLine = intval($request->get('product_line'));
 
         $sampleData = $this->getSampleDataHandler->handle($query);
 

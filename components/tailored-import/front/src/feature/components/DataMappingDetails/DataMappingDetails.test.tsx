@@ -3,7 +3,7 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {DataMappingDetails} from './DataMappingDetails';
-import {AttributeTarget, Column, DataMapping} from '../../models';
+import {AttributeTarget, Column, DataMapping, FileStructure} from '../../models';
 
 const columns: Column[] = [
   {
@@ -64,6 +64,14 @@ const attributeDataMappingWithoutSource: DataMapping = {
   sample_data: [],
 };
 
+const fileStructure: FileStructure = {
+  header_row: 1,
+  first_column: 1,
+  first_product_row: 2,
+  unique_identifier_column: 1,
+  sheet_name: 'sheet_1',
+};
+
 jest.mock('./SourceDropdown', () => ({
   SourceDropdown: ({
     onColumnSelected,
@@ -82,10 +90,26 @@ jest.mock('./SourceDropdown', () => ({
   ),
 }));
 
+jest.mock('../../hooks/useFetchSampleData', () => ({
+  useFetchSampleData: () => async () => {
+    return ['product_1', 'product_2', 'product_3'];
+  },
+}));
+
 test('it displays a property data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={propertyDataMapping}
+      fileKey={'/file_key'}
+      fileStructure={
+        {
+          header_row: 1,
+          first_column: 1,
+          first_product_row: 2,
+          unique_identifier_column: 1,
+          sheet_name: 'sheet_1',
+        } as FileStructure
+      }
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={jest.fn()}
@@ -101,6 +125,8 @@ test('it displays an attribute data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMapping}
+      fileKey={'/file_key'}
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={jest.fn()}
@@ -128,6 +154,8 @@ test('it can change target parameters', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={{...attributeDataMapping, target: attributeTarget}}
+      fileKey={'/file_key'}
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
@@ -152,16 +180,42 @@ test('it can add a source to a data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMappingWithoutSource}
+      fileKey={'/file_key'}
+      fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
       onDataMappingChange={handleDataMappingChange}
     />
   );
 
-  userEvent.click(screen.getByText('Add source'));
+  await userEvent.click(screen.getByText('Add source'));
 
   expect(handleDataMappingChange).toHaveBeenCalledWith({
     ...attributeDataMappingWithoutSource,
     sources: ['dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
+    sample_data: ['product_1', 'product_2', 'product_3'],
+  });
+});
+
+test('it can remove a source', async () => {
+  const handleDataMappingChange = jest.fn();
+
+  await renderWithProviders(
+    <DataMappingDetails
+      dataMapping={attributeDataMapping}
+      fileKey={'/file_key'}
+      fileStructure={fileStructure}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={handleDataMappingChange}
+    />
+  );
+
+  userEvent.click(screen.getByTitle('pim_common.remove'));
+
+  expect(handleDataMappingChange).toHaveBeenCalledWith({
+    ...attributeDataMappingWithoutSource,
+    sources: [],
+    sample_data: [],
   });
 });

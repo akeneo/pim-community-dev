@@ -4,6 +4,7 @@ import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community
 import {isAttributeTarget, Target} from '../../models';
 import {AttributeTargetParameters} from './AttributeTargetParameters';
 import {PropertyTargetParameters} from './PropertyTargetParameters';
+import styled from 'styled-components';
 
 type TargetParametersProps = {
   target: Target;
@@ -11,12 +12,18 @@ type TargetParametersProps = {
   onTargetChange: (target: Target) => void;
 };
 
+const TargetParametersContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
 const TargetParameters = ({target, validationErrors, onTargetChange}: TargetParametersProps) => {
   const translate = useTranslate();
   const codeErrors = filterErrors(validationErrors, '[code]');
 
   return (
-    <>
+    <TargetParametersContainer>
       <SectionTitle>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.tailored_import.data_mapping.target.title')}
@@ -36,7 +43,7 @@ const TargetParameters = ({target, validationErrors, onTargetChange}: TargetPara
       ) : (
         <PropertyTargetParameters target={target} onTargetChange={onTargetChange} />
       )}
-    </>
+    </TargetParametersContainer>
   );
 };
 
