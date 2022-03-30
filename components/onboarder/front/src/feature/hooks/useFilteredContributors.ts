@@ -1,22 +1,23 @@
 import {useCallback, useEffect, useState} from 'react';
-import {Contributors} from '../models';
+import {ContributorEmail} from '../models';
 
-const useFilteredContributors = (contributors: Contributors) => {
-    const [filteredContributors, setFilteredContributors] = useState<Contributors>([]);
+const useFilteredContributors = (contributors: ContributorEmail[]) => {
+    const [filteredContributors, setFilteredContributors] = useState<ContributorEmail[]>([]);
 
     useEffect(() => {
         setFilteredContributors(contributors);
     }, [contributors]);
 
-    const search = useCallback(
-        (searchValue: string) => {
-            const filteredResults = Object.entries(contributors).filter(([_, email]) =>
-                email.toLowerCase().includes(searchValue.toLowerCase().trim())
-            );
-            setFilteredContributors(Object.fromEntries(filteredResults.map(result => result)));
-        },
-        [contributors]
-    );
+  const search = useCallback(
+    (searchValue: string) => {
+      setFilteredContributors(
+        contributors.filter((contributor: ContributorEmail) =>
+          contributor.toLowerCase().includes(searchValue.toLowerCase().trim())
+        )
+      );
+    },
+    [contributors]
+  );
 
     return {
         filteredContributors,
