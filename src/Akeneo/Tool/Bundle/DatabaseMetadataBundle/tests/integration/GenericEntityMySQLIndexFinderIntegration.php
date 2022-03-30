@@ -32,45 +32,20 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         $this->connection = $this->get('database_connection');
     }
 
-
-    /**
-     * @dataProvider configProvider
-     * @return void
-     */
-    public function test_it_table_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
-    {
-        Assert::assertTrue($this->tableExists($entityIndexConfiguration->getTableName()));
-    }
-
-    /**
-     * @dataProvider configProvider
-     * @return void
-     */
-    public function test_it_columns_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
-    {
-        foreach ($entityIndexConfiguration->getColumnsName() as $column) {
-            if(substr($column,0,3)=== "CON"){
-                $column = substr($column, strrpos($column, 'AS') + strlen('as')+1);
-            }
-            Assert::assertTrue($this->columnExists($entityIndexConfiguration->getTableName(), $column));
-        }
-    }
-
     /**
      * @dataProvider configProvider
      * @return void
      */
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['product_1', null], ['product_10', null], ['product_100', null], ['product_101', null]];
-        $tests = new \ArrayIterator($fixtures);
-        foreach ($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
-        }
-        $resultsFixtures = new \ArrayIterator($resultsFormat);
+        $resultsFixtures = new \ArrayIterator(
+            array_map(["product_1", "product_10", "product_100", "product_101"],
+                function ($item) {
+                    return IndexResultsFactory::initIndexDateResults($item, null);
+                }));
 
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < sizeof($resultsFixtures); $i++) {
             $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($resultsQuery[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
@@ -84,12 +59,10 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
      */
     public function test_it_results_request_filter_and_is_ordered(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
-        $tests = new \ArrayIterator($fixtures);
-        foreach ($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
-        }
-        $resultsFixtures = new \ArrayIterator($resultsFormat);
+        $resultsFixtures = new \ArrayIterator(array_map(["product_1", "product_2", "product_3", "product_4"],
+            function ($item) {
+                return IndexResultsFactory::initIndexDateResults($item, null);
+            }));
 
         $resultsOrderFilterQueryFormat = [];
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
@@ -105,7 +78,7 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     {
         $productMysql = EntityIndexConfiguration::create(
             ['CONCAT("product_",id) AS id', 'updated'],
-            'pim_catalog_product', //'akeneo_asset_manager_asset'
+            'pim_catalog_product',
             'id',
             'mysql'
         );
@@ -130,25 +103,6 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         return [
             'mysql' => [$productMysql]
         ];
-    }
-
-
-    private function tableExists(string $tableName): bool
-    {
-        $rows = $this->connection->executeQuery(
-            'SHOW TABLES LIKE :tableName',
-            [
-                'tableName' => $tableName,
-            ]
-        )->fetchAllAssociative();
-
-        return count($rows) >= 1;
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        return 1 === $this->connection->executeQuery(sprintf("SHOW COLUMNS FROM %s LIKE '%s'", $tableName,
-                $columnName))->rowCount();
     }
 
     protected function getConfiguration()

@@ -4,15 +4,13 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\CompareDiffEsToMySQLCommand;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 
-
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
 
@@ -38,12 +36,11 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
         $this->searchMySql = $this->get(GenericEntityMySQLIndexFinder::class);
         $this->runResetIndexesCommand();
-
     }
 
     private function runResetIndexesCommand(): void
     {
-        $commandLauncher = new CommandLauncher(static::$kernel); // static::bootKernel(); //static::$kernel
+        $commandLauncher = new CommandLauncher(static::$kernel);
         $exitCode = $commandLauncher->execute('akeneo:elasticsearch:reset-indexes', null, ['inputs' => ['yes']]);
         $this->assertSame(0, $exitCode);
     }
@@ -53,7 +50,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
      * @dataProvider configProviderDB
      * @return void
      */
-    public function test_can_read_mysql_data(EntityIndexConfiguration $configMySQL): void
+    public function test_valid_configuration_MySQL(EntityIndexConfiguration $configMySQL): void
     {
         $results = $this->searchMySql->findAllByOrder($configMySQL);
         Assert::assertIsIterable($results);
@@ -63,7 +60,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
      * @dataProvider configProviderEs $configEs
      * @return void
      */
-    public function test_can_read_es_data(EntityIndexConfiguration $configEs): void
+    public function test_valid_configuration_ES(EntityIndexConfiguration $configEs): void
     {
         $clientBuilder = new ClientBuilder();
         $indexHost = $this->getParameter('index_hosts');
@@ -74,50 +71,17 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
         Assert::assertIsIterable($results);
     }
 
-    /**
-     * @dataProvider configProviderDB
-     * @return void
-     */
-    public function test_it_readMySQLData_returns(EntityIndexConfiguration $configMySQL): void
+    public function test_it_dumpItemToJsonFiles(): void
     {
-        $res = [];
-        $test = new \ArrayIterator($res);
-
-        $results = $this->searchMySql->findAllByOrder($configMySQL);
-
-        Assert::assertEquals($test,$results);
-    }
-
-    /**
-     * @dataProvider configProviderEsWithoutDate
-     * @return void
-     */
-    public function test_it_readEsData_returns(EntityIndexConfiguration $configEs): void
-    {
-        $res = [];
-        $test = new \ArrayIterator($res);
-        $clientBuilder = new ClientBuilder();
-        $indexHost = $this->getParameter('index_hosts');
-        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
-        $client = $clientBuilder->build();
-        $searchEs = new GenericEntityESIndexFinder($client);
-        $results = $searchEs->findAllByOrder($configEs);
-
-        Assert::assertEquals($test,$results);
-    }
-
-    public function test_it_dumpItemToJsonFiles_result()
-    {
-        $fixtures = [
+        $tests = new \ArrayIterator([
             ['identifer'=>'i1', 'date'=>Date('2022-01-01 00:00:00')],
             ['identifer'=>'i2', 'date'=>Date('2022-01-01 00:00:00')]
-        ];
-        $tests = new \ArrayIterator($fixtures);
+        ]);
 
         $file = __DIR__ . '/../Resources/test'.date('_Y_m_d_H_i_s').'.jsonl';
-        foreach ($tests as $it => $data) {
-            file_put_contents($file, json_encode($data) . "\n", FILE_APPEND);
-        }
+        $commandDiff = $this->getContainer()->get('akeneo.pim.migration_diff.command');
+        $commandDiff->dumpItemToJsonFiles($tests, $file);
+
         Assert::assertFileEquals(self::DB_REFERENCE_FILE, $file);
     }
 
