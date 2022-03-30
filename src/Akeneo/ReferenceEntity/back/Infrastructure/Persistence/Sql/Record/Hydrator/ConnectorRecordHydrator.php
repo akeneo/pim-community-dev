@@ -57,7 +57,12 @@ class ConnectorRecordHydrator
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
 
-        return new ConnectorRecord(RecordCode::fromString($recordCode), $normalizedValues);
+        return new ConnectorRecord(
+            RecordCode::fromString($recordCode),
+            $normalizedValues,
+            Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['created_at'], $this->platform),
+            Type::getType(Types::DATETIME_IMMUTABLE)->convertToPHPValue($row['updated_at'], $this->platform),
+        );
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array

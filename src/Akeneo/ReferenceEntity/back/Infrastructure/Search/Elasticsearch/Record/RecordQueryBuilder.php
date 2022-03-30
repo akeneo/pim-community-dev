@@ -40,7 +40,7 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
         $codeLabelFilter = ($recordQuery->hasFilter('code_label')) ? $recordQuery->getFilter('code_label') : null;
         $codeFilter = ($recordQuery->hasFilter('code')) ? $recordQuery->getFilter('code') : null;
         $completeFilter = ($recordQuery->hasFilter('complete')) ? $recordQuery->getFilter('complete') : null;
-        $updatedFilter = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFilter('updated') : null;
+        $updatedFilters = ($recordQuery->hasFilter('updated')) ? $recordQuery->getFiltersByField('updated') : [];
         $attributeFilters = ($recordQuery->hasFilter('values.*')) ? $recordQuery->getValueFilters() : [];
 
         $query = [
@@ -121,13 +121,45 @@ class RecordQueryBuilder implements RecordQueryBuilderInterface
             $query['sort'] = ['code' => 'asc'];
         }
 
-        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                'range' => [
-                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
-                ]
-            ];
-        }
+        $query['query']['constant_score']['filter']['bool'] = array_reduce(
+            $updatedFilters,
+            function (array $query, array $filter): array {
+                if (empty($filter['value'])) {
+                    return $query;
+                }
+                switch ($filter['operator']) {
+                    case '<':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'lt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case '>':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case 'BETWEEN':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'NOT BETWEEN':
+                        $query['must_not'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'SINCE LAST N DAYS':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
+                        ]]];
+                        break;
+                }
+                return $query;
+            },
+            $query['query']['constant_score']['filter']['bool']
+        );
 
         if (!empty($attributeFilters)) {
             foreach ($attributeFilters as $attributeFilter) {

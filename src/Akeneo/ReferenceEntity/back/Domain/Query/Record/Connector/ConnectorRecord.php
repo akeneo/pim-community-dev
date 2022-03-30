@@ -28,7 +28,9 @@ class ConnectorRecord
      */
     public function __construct(
         private RecordCode $code,
-        private array $normalizedValues
+        private array $normalizedValues,
+        private \DateTimeImmutable $createdAt,
+        private \DateTimeImmutable $updatedAt
     ) {
     }
 
@@ -37,6 +39,8 @@ class ConnectorRecord
         return [
             'code' => $this->code->normalize(),
             'values' => empty($this->normalizedValues) ? (object) [] : $this->normalizedValues,
+            'created' => $this->createdAt->format(DATE_ATOM),
+            'updated' => $this->updatedAt->format(DATE_ATOM),
         ];
     }
 
@@ -52,7 +56,7 @@ class ConnectorRecord
             }
         }
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 
     public function getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorRecord
@@ -64,6 +68,6 @@ class ConnectorRecord
 
         $filteredValues = array_filter($filteredValues, static fn ($filteredValue) => !empty($filteredValue));
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 }

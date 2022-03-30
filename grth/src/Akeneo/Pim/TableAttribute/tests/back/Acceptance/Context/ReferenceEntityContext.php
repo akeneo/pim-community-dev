@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Acceptance\Context;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordHandler;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
@@ -35,7 +36,16 @@ class ReferenceEntityContext implements Context
         private DeleteReferenceEntityHandler $deleteReferenceEntityHandler,
         private ReferenceEntityExistsInterface $referenceEntityExists,
         private CreateRecordHandler $createRecordHandler,
+        private InMemoryFeatureFlags $featureFlags
     ) {
+    }
+
+    /**
+     * @BeforeScenario @reference-entity-feature-enabled
+     */
+    public function enabledReferenceEntityFeatureFlag()
+    {
+        $this->featureFlags->enable('reference_entity');
     }
 
     /**

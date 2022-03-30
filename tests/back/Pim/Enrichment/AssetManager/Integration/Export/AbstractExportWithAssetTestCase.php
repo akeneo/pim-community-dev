@@ -77,6 +77,7 @@ abstract class AbstractExportWithAssetTestCase extends AbstractExportTestCase
         $this->attributeRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.attribute');
         $this->assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
+        $this->get('feature_flags')->enable('asset_manager');
         $this->loadAssets($this->loadAssetFamilyWithMediaFileAsMainMedia());
         $this->loadAssets($this->loadAssetFamilyWithMediaLinkAsMainMedia());
     }

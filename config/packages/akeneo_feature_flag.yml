@@ -12,3 +12,4 @@ akeneo_feature_flag:
         - { feature: 'onboarder_serenity_supplier', service: 'akeneo.onboarder_serenity.supplier.feature' }
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
+        - { feature: 'asset_manager', service: 'akeneo.feature_flag.service.only_serenity_feature' }

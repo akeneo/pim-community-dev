@@ -96,6 +96,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
 
     private function loadFixtures(): void
     {
+        $this->get('feature_flags')->enable('asset_manager');
         // create a packshot asset family
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
             new CreateAssetFamilyCommand('packshot', ['en_US' => 'Packshot'])

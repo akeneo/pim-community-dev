@@ -230,7 +230,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -398,7 +400,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -523,7 +527,9 @@ class GetConnectorRecordsContext implements Context
                             'data' => 'Italie'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
@@ -671,7 +677,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -752,7 +760,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -847,7 +857,9 @@ class GetConnectorRecordsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->findConnectorRecords->save($recordIdentifier, $connectorRecord);
@@ -984,7 +996,9 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;
@@ -1028,7 +1042,9 @@ class GetConnectorRecordsContext implements Context
 
             $connectorRecord = new ConnectorRecord(
                 $recordCode,
-                []
+                [],
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+                \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
             );
 
             $this->connectorRecordsByRecordIdentifier[(string) $recordIdentifier] = $connectorRecord;

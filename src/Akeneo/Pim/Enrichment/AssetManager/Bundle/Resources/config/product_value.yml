@@ -4,7 +4,7 @@ services:
         arguments:
             - 'reference_data_options'
         tags:
-            - { name: pim_catalog.attribute_type, alias: pim_catalog_asset_collection, entity: '%pim_catalog.entity.product.class%' }
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_asset_collection, entity: '%pim_catalog.entity.product.class%', feature: 'asset_manager'}
 
     akeneo_assetmanager.enrich.provider.asset_collection_provider:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Provider\AssetCollectionProvider

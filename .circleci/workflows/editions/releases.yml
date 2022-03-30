@@ -114,7 +114,7 @@ workflows:
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
                       - test_back_integration_reference_entities
-                      - test_onboarder_bundle
+#                      - test_onboarder_bundle
                       - test_front_onboarder
                       - test_back_onboarder
                       - test_back_performance
@@ -319,7 +319,7 @@ workflows:
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
                       - test_back_integration_reference_entities
-                      - test_onboarder_bundle
+#                      - test_onboarder_bundle
                       - test_back_onboarder
                       - test_front_onboarder
                       - test_back_performance
