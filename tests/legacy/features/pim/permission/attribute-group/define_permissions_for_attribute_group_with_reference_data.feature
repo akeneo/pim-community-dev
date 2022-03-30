@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Define permissions for an attribute group with reference data
   In order to be able to restrict access to some product data
   As an administrator

@@ -165,7 +165,7 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
         $this->byCategory($channel, $locale, $category)->shouldBeLike($expectedKeyIndicators);
     }
 
-    public function it_ignores_empty_key_indicators($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
+    public function it_does_not_ignore_empty_key_indicators($getProductsKeyIndicators, $computeAttributesPerfectSpelling)
     {
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
@@ -191,6 +191,14 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
                     'totalGood' => 8,
                     'totalToImprove' => 12,
                 ]
+            ],
+        ];
+
+        $attributes_key_indicators = [
+            'attributes_perfect_spelling' => [
+                'totalGood' => 0,
+                'totalToImprove' => 0,
+                'extraData' => []
             ]
         ];
 
@@ -200,6 +208,8 @@ final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
             new KeyIndicator(new KeyIndicatorCode(AttributesWithPerfectSpelling::CODE), 0, 0)
         );
 
-        $this->byCategory($channel, $locale, $category)->shouldBeLike($productKeyIndicators);
+        $expectedResult = array_merge($productKeyIndicators, $attributes_key_indicators);
+
+        $this->byCategory($channel, $locale, $category)->shouldBeLike($expectedResult);
     }
 }

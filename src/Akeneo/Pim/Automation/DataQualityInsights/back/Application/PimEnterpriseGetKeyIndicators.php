@@ -54,9 +54,6 @@ final class PimEnterpriseGetKeyIndicators implements GetKeyIndicatorsInterface
 
     private function mergeProductsAndStructureKeyIndicators(array $productsAndProductModelsKeyIndicators, KeyIndicator $structureKeyIndicator): array
     {
-        return $structureKeyIndicator->isEmpty()
-            ? $productsAndProductModelsKeyIndicators
-            : array_merge($productsAndProductModelsKeyIndicators, [strval($structureKeyIndicator->getCode()) => $structureKeyIndicator->toArray()])
-        ;
+        return array_merge($productsAndProductModelsKeyIndicators, [strval($structureKeyIndicator->getCode()) => $structureKeyIndicator->toArray()]);
     }
 }

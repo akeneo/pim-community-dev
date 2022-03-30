@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierListItem;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplierList implements GetSupplierList
@@ -21,18 +21,25 @@ final class DatabaseGetSupplierList implements GetSupplierList
     {
         $page = max($page, 1);
         $sql = <<<SQL
-            SELECT identifier, code, label
-            FROM `akeneo_onboarder_serenity_supplier`
+            WITH contributor AS (
+                SELECT contributor.supplier_identifier, COUNT(identifier) as contributors_count
+                FROM akeneo_onboarder_serenity_supplier_contributor contributor
+                GROUP BY contributor.supplier_identifier
+            )
+            SELECT identifier, code, label, IFNULL(contributors_count, 0) as contributors_count
+            FROM `akeneo_onboarder_serenity_supplier` as supplier
+            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             WHERE label LIKE :search
             ORDER BY label
             LIMIT :limit
             OFFSET :offset
         SQL;
 
-        return array_map(fn (array $supplier) => new Supplier(
+        return array_map(fn (array $supplier) => new SupplierListItem(
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],
+            (int) $supplier['contributors_count'],
         ), $this->connection->executeQuery(
             $sql,
             [

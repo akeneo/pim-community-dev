@@ -238,3 +238,6 @@ services:
     Akeneo\Connectivity\Connection\Tests\EndToEnd\Context\SettingsContext:
         - 'Context\EnterpriseFeatureContext'
         - '@kernel'
+
+    Pim\Behat\Context\FeatureFlagContext:
+        - '@feature_flags'

@@ -3,6 +3,8 @@ config:
     pim/controller-registry:
       controllers:
         onboarder_serenity_supplier_list:
-          module: onboarder/controller/supplier-list
+          module: onboarder/controller/supplier-management
+        onboarder_serenity_supplier_edit:
+          module: onboarder/controller/supplier-management
   paths:
-    onboarder/controller/supplier-list: akeneoonboarderserenity/js/controller/supplier-list.tsx
+    onboarder/controller/supplier-management: akeneoonboarderserenity/js/controller/supplier-management.tsx

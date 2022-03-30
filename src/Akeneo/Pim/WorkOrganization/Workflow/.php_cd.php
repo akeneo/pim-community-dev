@@ -13,7 +13,6 @@ $rules = [
         'Symfony\Component',
         'Symfony\Contracts',
         'Akeneo\Tool',
-        'Symfony\Bundle',
         'Psr\Log\LoggerInterface',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Webmozart\Assert\Assert',
@@ -58,16 +57,12 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
 
         // TIP-980: Workflow should not be linked to User
-        'Akeneo\UserManagement\Bundle\Manager\UserManager',
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ExternalApi\ProductRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\GetMetadataInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetMetadataInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator',
 
         // TODO: permission
@@ -80,12 +75,10 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-        'Akeneo\Pim\Structure\Component\Factory\AttributeFactory',
 
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
 
         // TIP-1017: Do not use public constants of AttributeTypes
         'Akeneo\Pim\Structure\Component\AttributeTypes',
@@ -106,16 +99,11 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductIdsQueryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper',
 
         // TIP-949: Assets should not be Reference Data
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface',// For the reference data PQB filter
-
-        // TIP-1031: Do not override PIM/Enrichment commands
-        'Akeneo\Pim\Enrichment\Bundle\Command\UpdateProductCommand',
-        'Akeneo\Pim\Enrichment\Bundle\Command\QueryProductCommand',
 
         // TIP-987: Published should be less coupled to Product
         // TIP-988: Split Published vs Draft/Proposal
@@ -125,14 +113,12 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
@@ -143,7 +129,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorRegistry',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory',
-        'Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface',
         'Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface',
         'Akeneo\Pim\Structure\Bundle\Event\AttributeEvents',
@@ -218,7 +203,6 @@ $rules = [
         //TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\AssociationRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
 
         // TIP-987: Published should be less coupled to Product
@@ -239,7 +223,6 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\FamilyInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductUniqueData',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor',
@@ -258,7 +241,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface',
 
         // TIP-1032: Workflow should not depend on PIM/Enrichment normalizers
-        'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\PropertiesNormalizer',
         'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
 

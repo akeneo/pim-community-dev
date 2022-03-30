@@ -14,7 +14,6 @@ $rules = [
         'DateTimeZone',
         'Akeneo\Tool\Component',
         'Webmozart\Assert\Assert',
-        'Symfony\Component\EventDispatcher\Event',
         'Symfony\Contracts',
     ])->in('Akeneo\ReferenceEntity\Domain'),
 
@@ -22,9 +21,7 @@ $rules = [
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
-        'Doctrine\Persistence',
         'Symfony\Component\EventDispatcher\EventSubscriberInterface',
-        'Symfony\Contracts',
         'Webmozart\Assert\Assert',
     ])->in('Akeneo\ReferenceEntity\Application'),
 
@@ -43,7 +40,6 @@ $rules = [
         'PDO',
         'Akeneo\UserManagement\Component\Model\GroupInterface', // Because of an EventSubscriber on UserGroup deletion
         'Akeneo\UserManagement\Component\Model\Group', // For a constant usage
-        'Liip\ImagineBundle',
         'Psr\Log\LoggerInterface', //Use logger in command
         // TODO: reference entities should not depend on PIM
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component',

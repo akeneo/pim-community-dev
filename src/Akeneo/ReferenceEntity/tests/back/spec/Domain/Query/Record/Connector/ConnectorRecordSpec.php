@@ -55,10 +55,16 @@ class ConnectorRecordSpec extends ObjectBehavior
                     'locale'    => 'en_US',
                     'data'      => '.one value per channel ecommerce / one value per locale en_US.',
                 ],
-            ]
+            ],
+
         ];
 
-        $this->beConstructedWith($recordCode, $valueCollection);
+        $this->beConstructedWith(
+            $recordCode,
+            $valueCollection,
+            new \DateTimeImmutable('2000-01-01 12:34:56'),
+            new \DateTimeImmutable('2001-02-02 21:45:07')
+        );
     }
 
      function it_is_initializable()
@@ -103,6 +109,8 @@ class ConnectorRecordSpec extends ObjectBehavior
                      ],
                  ]
              ],
+             'created' => '2000-01-01T12:34:56+00:00',
+             'updated' => '2001-02-02T21:45:07+00:00',
          ]);
      }
 
@@ -150,7 +158,12 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith($recordCode, $valueCollection);
+         $this->beConstructedWith(
+             $recordCode,
+             $valueCollection,
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+         );
 
          $expectedRecord = new ConnectorRecord(
              $recordCode,
@@ -181,7 +194,9 @@ class ConnectorRecordSpec extends ObjectBehavior
                          'data'    => 'Not scopable value.'
                      ]
                  ]
-             ]
+             ],
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
          );
 
          $this->getRecordWithValuesFilteredOnChannel(ChannelIdentifier::fromCode('ecommerce'))->shouldBeLike($expectedRecord);
@@ -241,7 +256,12 @@ class ConnectorRecordSpec extends ObjectBehavior
              ]
          ];
 
-         $this->beConstructedWith($recordCode, $valueCollection);
+         $this->beConstructedWith(
+             $recordCode,
+             $valueCollection,
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+         );
 
          $expectedRecord = new ConnectorRecord(
              $recordCode,
@@ -277,7 +297,9 @@ class ConnectorRecordSpec extends ObjectBehavior
                          'data'    => 'Not localizable value.'
                      ],
                  ],
-             ]
+             ],
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
+             \DateTimeImmutable::createFromFormat(DATE_ATOM,'2000-01-01T12:34:56+00:00'),
          );
 
          $this->getRecordWithValuesFilteredOnLocales(LocaleIdentifierCollection::fromNormalized([

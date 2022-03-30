@@ -21,7 +21,7 @@
                     columns: '{{ view.columns|join(',') }}'
                 });
 
-                router.redirectToRoute('pim_enrich_product_index');
+                router.redirectToRoute('pim_enrich_product_index', {'dataLocale': '{{ locale }}'});
             });
         }
     );

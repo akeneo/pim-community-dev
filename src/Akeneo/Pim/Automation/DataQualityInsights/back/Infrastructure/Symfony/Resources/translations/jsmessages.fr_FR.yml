@@ -40,6 +40,8 @@ akeneo_data_quality_insights:
       aria_label: "Suggestions orthographiques pour: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes: '{1}1 attribut|]1, 200[{{ count }} attributs|[200, Inf[plus de {{ count }} attributs'
+      attributes_to_work_on: 'Vous avez <improvable_attributes_count_link/> à améliorer.'
       list:
         has_image:
           no_data: Tous vos attributs image semblent vides. En téléchargeant des images, cet indicateur vous permettra de suivre la qualité de vos produits.
