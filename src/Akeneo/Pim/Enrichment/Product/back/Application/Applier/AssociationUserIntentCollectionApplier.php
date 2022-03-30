@@ -141,6 +141,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     ->getAssociatedProductModels($associationUserIntent->associationType())
                     ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [];
         }
+
         throw new \LogicException('Not implemented');
     }
 
