@@ -40,7 +40,7 @@ akeneo_connectivity.connection:
     marketplace:
       title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
       helper:
-        title: '{0} No hay aplicaciones o conectores compatibles con su versión PIM.{1} Hay {{ count }} aplicación o conector compatible con su versión PIM. [2,Inf] Hay {{ count }} aplicaciones y conectores compatibles con tu versión PIM.'
+        title: '{0} No hay aplicaciones o conectores compatibles con su versión PIM.|{1} Hay {{ count }} aplicación o conector compatible con su versión PIM. |[2,Inf] Hay {{ count }} aplicaciones y conectores compatibles con tu versión PIM.'
         title_without_apps: '{0} No hay conectores compatibles con su versión PIM.|{1} Hay {{ count }} conector compatible con su versión PIM. [2,Inf] Hay {{ count }} conectores compatibles con su versión PIM.'
       card:
         developed_by: 'Desarrollado por {{ author }}'
