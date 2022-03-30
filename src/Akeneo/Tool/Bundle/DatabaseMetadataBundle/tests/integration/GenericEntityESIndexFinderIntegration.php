@@ -164,7 +164,8 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     protected function getConfiguration()
     {
         //return $this->catalog->useFunctionalCatalog('catalog_modeling');
-        return $this->catalog->useMinimalCatalog();
+        //return $this->catalog->useMinimalCatalog();
+        return $this->catalog->useTechnicalCatalog();
     }
 
 }
