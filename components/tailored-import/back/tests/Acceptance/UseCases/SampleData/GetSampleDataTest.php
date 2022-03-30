@@ -16,7 +16,7 @@ class GetSampleDataTest extends TestCase
     public function test_it_select_3_different_value_from_a_column(): void
     {
         $selectSampleData = new SelectSampleData();
-        $sampleData = ["value1","value1","value2","value2","value3","value3"];
+        $sampleData = ["value1", "value1", "value2", "value2", "value3", "value3"];
         $result = $selectSampleData->fromExtractedColumn($sampleData);
 
         $this->assertCount(SelectSampleData::NUMBER_OF_VALUES, $result);
@@ -26,7 +26,7 @@ class GetSampleDataTest extends TestCase
     public function test_it_complete_selection_with_null(): void
     {
         $selectSampleData = new SelectSampleData();
-        $sampleData = ["value1","value2"];
+        $sampleData = ["value1", "value2"];
         $result = $selectSampleData->fromExtractedColumn($sampleData);
 
         $this->assertEqualsCanonicalizing(['value1', 'value2', null], $result);

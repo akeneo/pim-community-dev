@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\SampleData;
 
 use Akeneo\Platform\TailoredImport\Domain\SampleData\ReplaceSampleData;
-use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
 use PHPUnit\Framework\TestCase;
 
 class ReplaceSampleDataTest extends TestCase
 {
     public function test_it_replace_sample_data_with_a_sample_data_not_already_present(): void
     {
-        $replaceSampleData = new ReplaceSampleData(new SelectSampleData());
+        $replaceSampleData = new ReplaceSampleData();
         $values = ['value1', 'value2', 'value3', 'value3', 'value4'];
         $currentSampleData = ['value1', 'value2', 'value3'];
 
@@ -32,7 +31,7 @@ class ReplaceSampleDataTest extends TestCase
 
     public function test_it_replace_sample_data_with_null_when_sample_data_contain_all_column_values(): void
     {
-        $replaceSampleData = new ReplaceSampleData(new SelectSampleData());
+        $replaceSampleData = new ReplaceSampleData();
         $values = ['value1', 'value2', 'value3', 'value3'];
         $currentSampleData = ['value1', 'value2', 'value3'];
 
@@ -43,7 +42,7 @@ class ReplaceSampleDataTest extends TestCase
 
     public function test_it_replace_sample_data_with_a_sample_data_when_sample_data_contain_null(): void
     {
-        $replaceSampleData = new ReplaceSampleData(new SelectSampleData());
+        $replaceSampleData = new ReplaceSampleData();
         $values = ['value1', 'value2', 'value3', 'value3'];
         $currentSampleData = ['value1', 'value2', null];
 

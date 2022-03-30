@@ -35,7 +35,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
         $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
-    public function test_it_return_a_refreshed_sample_data()
+    public function test_it_return_a_refreshed_sample_data(): void
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../../Common/simple_import.xlsx');
         $this->webClientHelper->callApiRoute(

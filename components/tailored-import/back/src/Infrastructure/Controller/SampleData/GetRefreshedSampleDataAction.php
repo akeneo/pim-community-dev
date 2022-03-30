@@ -19,7 +19,8 @@ final class GetRefreshedSampleDataAction
 {
     public function __construct(
         private GetRefreshedSampleDataHandler $getRefreshedSampleDataHandler
-    ) {}
+    ) {
+    }
 
     public function __invoke(Request $request): Response
     {
