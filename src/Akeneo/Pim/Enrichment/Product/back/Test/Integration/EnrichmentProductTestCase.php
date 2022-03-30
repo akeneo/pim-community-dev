@@ -26,6 +26,7 @@ abstract class EnrichmentProductTestCase extends TestCase
     {
         $this->createUser('mary', ['ROLE_USER'], ['Redactor']);
         $this->createUser('betty', ['ROLE_USER'], ['Manager']);
+        $this->createUser('peter', ['ROLE_USER'], ['IT support']);
 
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
@@ -46,6 +47,11 @@ abstract class EnrichmentProductTestCase extends TestCase
                 'own' => ['all' => false, 'identifiers' => ['print']],
                 'edit' => ['all' => false, 'identifiers' => ['print']],
                 'view' => ['all' => false, 'identifiers' => ['print', 'sales']],
+            ]);
+            $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('IT Support', [
+                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
             ]);
         }
 
