@@ -20,9 +20,9 @@ use Akeneo\Test\IntegrationTestsBundle\Helper\WebClientHelper;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Symfony\Component\HttpFoundation\Response;
 
-class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
+class GetSampleDataActionTest extends ControllerIntegrationTestCase
 {
-    private const ROUTE = 'pimee_tailored_import_get_refreshed_sample_data_action';
+    private const ROUTE = 'pimee_tailored_import_get_sample_data_action';
     private WebClientHelper $webClientHelper;
     private FileStorer $fileStorer;
 
@@ -44,13 +44,11 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
             [],
             'GET',
             [
-                'index_to_change' => 1,
-                'current_sample' => ['Produit 1', 'Produit 4', 'Produit 3'],
                 'file_key' => $fileKey,
                 'column_index' => 1,
                 'sheet_name' => 'Products',
                 'product_line' => 2,
-            ]
+            ],
         );
 
         $response = $this->client->getResponse();
@@ -59,7 +57,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
         $response = \json_decode($response->getContent(), true);
         $expectResponse = ['Produit 1', 'Produit 2', 'Produit 3'];
 
-        $this->assertSame($expectResponse, $response);
+        $this->assertEqualsCanonicalizing($expectResponse, $response);
     }
 
     private function storeFile(string $filePath): string
