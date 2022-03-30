@@ -182,4 +182,17 @@ abstract class EnrichmentProductTestCase extends TestCase
 
         return $user;
     }
+
+    protected function getUserId(string $username): int
+    {
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        return $user->getId();
+    }
+
+    protected function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
 }

@@ -214,17 +214,4 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         Assert::assertSame('my_product', $product->getIdentifier());
         Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
     }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
-    private function clearDoctrineUoW(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
 }

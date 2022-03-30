@@ -176,17 +176,4 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 
         $this->messageBus->dispatch($command);
     }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
-    private function clearDoctrineUoW(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
 }
