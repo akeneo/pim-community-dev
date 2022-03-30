@@ -89,6 +89,7 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Entity\Repository\JobInstanceRepository'
         public: true
         arguments:
+            - '@akeneo_batch.job.job_registry'
             - '@doctrine.orm.entity_manager'
             - '%akeneo_batch.entity.job_instance.class%'
 

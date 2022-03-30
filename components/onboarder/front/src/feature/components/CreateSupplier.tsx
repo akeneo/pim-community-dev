@@ -42,6 +42,10 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         setCodeHasBeenChangedManually(false);
     };
 
+    const isSaveDisabled = () => {
+        return '' === code.trim() || '' === label.trim();
+    };
+
     const saveSupplier = async () => {
         const response = await fetch(saveRoute, {
             method: 'POST',
@@ -95,14 +99,6 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                         {translate('onboarder.supplier.supplier_create.modal.title')}
                     </Modal.SectionTitle>
                     <Modal.Title>{translate('pim_common.create')}</Modal.Title>
-                    <StyledField label={translate('onboarder.supplier.supplier_create.modal.code.label')}>
-                        <TextInput
-                            onChange={manuallyUpdateCode}
-                            value={code}
-                            maxLength={LABEL_AND_CODE_MAX_LENGTH}
-                            placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}
-                        />
-                    </StyledField>
                     <StyledField label={translate('onboarder.supplier.supplier_create.modal.label.label')}>
                         <TextInput
                             onChange={onChangeLabel}
@@ -111,11 +107,19 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
                             placeholder={translate('onboarder.supplier.supplier_create.modal.label.label')}
                         />
                     </StyledField>
+                    <StyledField label={translate('onboarder.supplier.supplier_create.modal.code.label')}>
+                        <TextInput
+                            onChange={manuallyUpdateCode}
+                            value={code}
+                            maxLength={LABEL_AND_CODE_MAX_LENGTH}
+                            placeholder={translate('onboarder.supplier.supplier_create.modal.code.label')}
+                        />
+                    </StyledField>
                     <Modal.BottomButtons>
                         <Button level="tertiary" onClick={onCloseModal}>
                             {translate('pim_common.cancel')}
                         </Button>
-                        <Button level="primary" onClick={saveSupplier}>
+                        <Button level="primary" onClick={saveSupplier} disabled={isSaveDisabled()}>
                             {translate('pim_common.save')}
                         </Button>
                     </Modal.BottomButtons>

@@ -42,9 +42,11 @@ class SqlFindConnectorRecordByReferenceEntityAndCode implements FindConnectorRec
     {
         $sql = <<<SQL
             SELECT 
-                identifier, 
-                code, 
-                reference_entity_identifier, 
+                identifier,
+                code,
+                reference_entity_identifier,
+                created_at,
+                updated_at,
                 value_collection
             FROM akeneo_reference_entity_record
             WHERE 

@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierListItem;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
+use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
 final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
@@ -92,5 +94,67 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         static::assertSame('supplier_code_a', $suppliers[0]->code);
         static::assertSame('supplier_code_b', $suppliers[1]->code);
+    }
+
+    /** @test */
+    public function itReturnsAContributorCountBySupplier(): void
+    {
+        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
+        $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f02', 'supplier_2', 'Supplier 2');
+        $this->createContributor('44ce8069-8da1-4986-872f-311737f46f03', 'contributor1@akeneo.com');
+        $this->createContributor('44ce8069-8da1-4986-872f-311737f46f02', 'contributor2@akeneo.com');
+
+        $suppliers = $this->get(GetSupplierList::class)();
+
+        static::AssertEquals(
+            new SupplierListItem(
+                '44ce8069-8da1-4986-872f-311737f46f00',
+                'supplier_1',
+                'Supplier 1',
+                0,
+            ),
+            $suppliers[0]
+        );
+        static::AssertEquals(
+            new SupplierListItem(
+                '44ce8069-8da1-4986-872f-311737f46f02',
+                'supplier_2',
+                'Supplier 2',
+                2,
+            ),
+            $suppliers[1]
+        );
+    }
+
+    private function createSupplier(string $identifier, string $code, string $label)
+    {
+        $sql = <<<SQL
+            INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
+            VALUES (:identifier, :code, :label)
+        SQL;
+
+        $this->get(Connection::class)->executeQuery(
+            $sql,
+            [
+                'identifier' => $identifier,
+                'code' => $code,
+                'label' => $label
+            ]
+        );
+    }
+
+    private function createContributor(string $identifier, string $email): void
+    {
+        $sql = <<<SQL
+INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (identifier, email, supplier_identifier)
+VALUES (:identifier, :email, :supplierIdentifier)
+SQL;
+        $this->get(Connection::class)->executeQuery(
+            $sql,
+            [
+                'identifier' => $identifier,
+                'email' => $email,
+                'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
+            ]);;
     }
 }

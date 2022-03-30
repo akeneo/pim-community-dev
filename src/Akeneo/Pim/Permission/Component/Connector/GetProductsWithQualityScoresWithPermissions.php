@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Permission\Component\Connector;
 
 use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
@@ -24,18 +24,11 @@ use Webmozart\Assert\Assert;
 
 final class GetProductsWithQualityScoresWithPermissions implements GetProductsWithQualityScoresInterface
 {
-    private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
-    private GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser;
-    private TokenStorageInterface $tokenStorage;
-
     public function __construct(
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
-        TokenStorageInterface $tokenStorage
+        private GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
+        private GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
+        private TokenStorageInterface $tokenStorage,
     ) {
-        $this->getProductsWithQualityScores = $getProductsWithQualityScores;
-        $this->getAllViewableLocalesForUser = $getAllViewableLocalesForUser;
-        $this->tokenStorage = $tokenStorage;
     }
 
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
@@ -60,21 +53,9 @@ final class GetProductsWithQualityScoresWithPermissions implements GetProductsWi
         return new ConnectorProductList($connectorProductList->totalNumberOfProducts(), $filteredProducts);
     }
 
-    public function fromNormalizedProduct(string $productIdentifier, array $normalizedProduct, ?string $channel = null, array $locales = []): array
+    private function filterQualityScoresByGrantedLocales(?QualityScoreCollection $qualityScores)
     {
-        $grantedLocales = array_values(array_intersect($locales, $this->getUserGrandtedLocales()));
-
-        return empty($grantedLocales)
-            ? $normalizedProduct
-            : $this->getProductsWithQualityScores->fromNormalizedProduct($productIdentifier, $normalizedProduct, $channel, $grantedLocales);
-    }
-
-    private function filterQualityScoresByGrantedLocales(?ChannelLocaleRateCollection $qualityScores)
-    {
-        if ($qualityScores === null) {
-            return new ChannelLocaleRateCollection();
-        }
-
+        $qualityScoresArray = null !== $qualityScores ? $qualityScores->qualityScores : [];
         $grantedLocaleCodes = $this->getUserGrandtedLocales();
 
         $filteredQualityScores = array_map(function (array $value) use ($grantedLocaleCodes) {
@@ -83,9 +64,9 @@ final class GetProductsWithQualityScoresWithPermissions implements GetProductsWi
                 fn ($localeCode) => in_array($localeCode, $grantedLocaleCodes),
                 ARRAY_FILTER_USE_KEY
             );
-        }, $qualityScores->toArrayInt());
+        }, $qualityScoresArray);
 
-        return ChannelLocaleRateCollection::fromArrayInt($filteredQualityScores);
+        return new QualityScoreCollection($filteredQualityScores);
     }
 
     private function getUserGrandtedLocales(): array

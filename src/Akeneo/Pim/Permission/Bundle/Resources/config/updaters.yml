@@ -115,3 +115,17 @@ services:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.product_query_builder_factory_without_permission'
+
+    # CE overrides
+    pim_catalog.updater.adder.association_field:
+        class: '%pim_catalog.updater.adder.association_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.repository.product_model_without_permission'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.association.missing_association_adder'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.association.two_way_association_updater'
+            - [ 'associations' ]
+        tags:
+            - { name: 'pim_catalog.updater.adder' }

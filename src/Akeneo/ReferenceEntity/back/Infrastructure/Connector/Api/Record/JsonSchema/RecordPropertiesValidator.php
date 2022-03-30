@@ -53,6 +53,8 @@ class RecordPropertiesValidator
                         '.+' => ['type' => 'array'],
                     ],
                 ],
+                'created' => 'string',
+                'updated' => 'string',
             ],
             'required' => ['code'],
             'additionalProperties' => false,

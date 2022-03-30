@@ -20,7 +20,7 @@ onboarder:
                 unknown_error: An error occured while creating the supplier.
                 supplier_already_exists: 'A supplier with code "{{ supplierCode }}" already exists.'
         supplier_list:
-            menu_item: Supplier list
+            menu_item: Suppliers
             title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
             no_supplier: There are no suppliers yet.
             search_by_supplier: Search by Supplier
@@ -30,6 +30,31 @@ onboarder:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
                 actions: Actions
+        supplier_delete:
+            sucess_message: The supplier was successfully deleted
+            modal:
+                title: Supplier
+                confirmation_question: Are you sure you want to delete this supplier?
+                warning: By deleting this supplier, any unsaved enrichment will be lost.
+                unknown_error: An error occured while deleting the supplier.
+        supplier_edit:
+            tabs:
+                configuration: Configuration
+                contributors: Contributors
+                product_files: Product files
+            configuration_form:
+                code: Code
+                label: Supplier label (required)
+            contributors_form:
+                info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                add_contributors: Add contributors
+                add_button: Add
+                search_by_email_address: Search by email address
+                columns:
+                    email: Email address
+                no_contributor: There are no contributors yet.
+            error: An error occured while loading the supplier.
 
 pim_title:
-    onboarder_serenity_supplier_list: Supplier list
+    onboarder_serenity_supplier_list: Suppliers
+    onboarder_serenity_supplier_edit: Edit a supplier

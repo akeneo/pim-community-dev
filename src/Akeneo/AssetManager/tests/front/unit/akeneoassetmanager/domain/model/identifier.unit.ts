@@ -18,6 +18,7 @@ describe('akeneo > asset family > domain > model --- identifier', () => {
   test('I can compare two identifiers', () => {
     expect(identifiersAreEqual(denormalizeIdentifier('michel'), denormalizeIdentifier('didier'))).toBe(false);
     expect(identifiersAreEqual(denormalizeIdentifier('didier'), denormalizeIdentifier('didier'))).toBe(true);
+    expect(identifiersAreEqual(denormalizeIdentifier('DiDiEr'), denormalizeIdentifier('dIdIeR'))).toBe(true);
   });
   test('I can check if an identifier is empty', () => {
     expect(isEmptyIdentifier(denormalizeIdentifier('michel'))).toBe(false);

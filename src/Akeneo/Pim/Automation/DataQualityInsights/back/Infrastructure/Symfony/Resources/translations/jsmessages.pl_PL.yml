@@ -40,7 +40,6 @@ akeneo_data_quality_insights:
       aria_label: "Sugestie poprawy pisowni dla: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
-      attributes_to_work_on: '{1}Masz <button>1 atrybut</button> do opracowania.|]1, 200[Masz <button>{{ count }} atrybutów</button> do opracowania. [200, Inf[Masz więcej niż <button>{{ count }} atrybutów</button> do opracowania.'
       list:
         has_image:
           no_data: Kolekcje zasobów i atrybuty obrazów wydają się być puste. Prześlij obrazy dla tego kluczowego wskaźnika, aby podkreślić jakość produktów.

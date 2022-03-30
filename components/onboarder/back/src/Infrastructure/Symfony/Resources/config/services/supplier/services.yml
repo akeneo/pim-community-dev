@@ -11,15 +11,29 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\Sql\DatabaseRepository
+        arguments:
+            - '@database_connection'
+
     # Command/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
 
+    Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+
     # Queries
     Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierList
+        arguments:
+            - '@database_connection'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplier
         arguments:
             - '@database_connection'
 
@@ -44,3 +58,13 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierDelete:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'

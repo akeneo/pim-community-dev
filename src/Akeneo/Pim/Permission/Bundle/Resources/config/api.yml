@@ -126,6 +126,7 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_score_models_with_permissions'
 
     akeneo.pim.enrichment.use_cases.validator.validate_granted_search_locale:
         class: Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedSearchLocale
@@ -198,5 +199,14 @@ services:
         decoration_inner_name: akeneo.pim.enrichment.use_cases.get_products_with_completenesses_without_permissions
         arguments:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses_without_permissions'
+            - '@pimee_security.query.get_all_viewable_locales_for_user'
+            - '@security.token_storage'
+
+    akeneo.pim.enrichment.use_cases.get_products_with_quality_score_models_with_permissions:
+        class: Akeneo\Pim\Permission\Component\Connector\GetProductModelsWithQualityScoresWithPermissions
+        decorates: akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores
+        decoration_inner_name: akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores_without_permissions
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores_without_permissions'
             - '@pimee_security.query.get_all_viewable_locales_for_user'
             - '@security.token_storage'

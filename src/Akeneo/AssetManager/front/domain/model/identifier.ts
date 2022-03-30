@@ -10,7 +10,8 @@ export const denormalizeIdentifier = (identifier: any): Identifier => {
   return identifier;
 };
 
-export const identifiersAreEqual = (first: Identifier, second: Identifier) => first === second;
+export const identifiersAreEqual = (first: Identifier, second: Identifier) =>
+  first.toLowerCase() === second.toLowerCase();
 export const identifierStringValue = (identifier: Identifier) => identifier;
 export const isIdentifier = isString;
 export const isEmptyIdentifier = (identifier: Identifier) => '' === identifier;

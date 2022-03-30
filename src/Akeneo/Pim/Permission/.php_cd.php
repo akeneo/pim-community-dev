@@ -53,7 +53,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
-        'Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
@@ -81,7 +80,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociationInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection',
-        'Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
@@ -150,17 +148,11 @@ $rules = [
         // TIP-1009: Remove TranslatedLabelsProviderInterface from Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
 
-        // TIP-1023: Drop CatalogContext
-        'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-
         // TIP-995: Move RegisterSerializerPass to Tool
         'Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\RegisterSerializerPass',
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-
-        //TODO: just because we override ProductController
-        'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
 
         // PIM-9393: Avoid user to remove all permissions to edit a job instance
         'Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException',
@@ -182,10 +174,13 @@ $rules = [
         'Akeneo\Tool',
 
         // Required to add quality scores into external API normalized products.
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList',
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface',
+        'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductModelsWithQualityScoresInterface',
 
         // Required to add completenesses into external API.
         'Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface',
@@ -248,7 +243,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Pim\Enrichment\Component\Product\Factory\Read\WriteValueCollectionFactory',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface',
     ])->in('Akeneo\Pim\Permission\Component'),
 ];

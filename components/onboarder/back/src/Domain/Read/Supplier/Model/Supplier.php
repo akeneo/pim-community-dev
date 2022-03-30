@@ -9,17 +9,20 @@ final class Supplier
     public function __construct(
         public string $identifier,
         public string $code,
-        public string $label
+        public string $label,
+        public array $contributors,
     ) {
     }
 
     public function toArray(): array
     {
+        $contributors = array_map(fn (Contributor $contributor) => $contributor->toArray(), $this->contributors);
+
         return [
             'identifier' => $this->identifier,
             'code' => $this->code,
             'label' => $this->label,
-            'contributorsCount' => 0, // @todo When we'll implement supplier contributors
+            'contributors' => $contributors,
         ];
     }
 }

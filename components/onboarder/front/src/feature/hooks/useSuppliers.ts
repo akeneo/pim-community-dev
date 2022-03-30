@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {useNotify, useRoute, useTranslate, NotificationLevel} from '@akeneo-pim-community/shared';
 
 export type SupplierRow = {
+    identifier: string;
     code: string;
     label: string;
     contributorsCount: number;

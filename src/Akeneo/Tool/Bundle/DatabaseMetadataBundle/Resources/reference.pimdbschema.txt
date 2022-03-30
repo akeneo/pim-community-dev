@@ -18,6 +18,7 @@ akeneo_connectivity_connection_audit_error | BASE TABLE
 akeneo_connectivity_connection_audit_product | BASE TABLE
 akeneo_connectivity_connection_events_api_request_count | BASE TABLE
 akeneo_connectivity_connection_wrong_credentials_combination | BASE TABLE
+akeneo_connectivity_revoked_app_token | BASE TABLE
 akeneo_connectivity_test_app | BASE TABLE
 akeneo_connectivity_user_consent | BASE TABLE
 akeneo_file_storage_file_info | BASE TABLE
@@ -27,6 +28,7 @@ akeneo_onboarder_nice_to_have_attribute | BASE TABLE
 akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
 akeneo_onboarder_serenity_supplier | BASE TABLE
+akeneo_onboarder_serenity_supplier_contributor | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
 akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
@@ -291,6 +293,7 @@ akeneo_connectivity_connection_events_api_request_count | updated | NO | datetim
 akeneo_connectivity_connection_wrong_credentials_combination | connection_code | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | username | NO | varchar(100) | PRI
 akeneo_connectivity_connection_wrong_credentials_combination | authentication_date | NO | datetime |
+akeneo_connectivity_revoked_app_token | token | NO | varchar(255) | PRI
 akeneo_connectivity_test_app | client_id | NO | varchar(36) | PRI
 akeneo_connectivity_test_app | client_secret | NO | varchar(100) |
 akeneo_connectivity_test_app | name | NO | varchar(255) |
@@ -334,6 +337,9 @@ akeneo_onboarder_retailer_contact | user_id | NO | int | PRI
 akeneo_onboarder_serenity_supplier | identifier | NO | char(36) | PRI
 akeneo_onboarder_serenity_supplier | code | NO | varchar(200) | UNI
 akeneo_onboarder_serenity_supplier | label | NO | varchar(200) |
+akeneo_onboarder_serenity_supplier_contributor | identifier | NO | char(36) | PRI
+akeneo_onboarder_serenity_supplier_contributor | email | NO | varchar(255) | UNI
+akeneo_onboarder_serenity_supplier_contributor | supplier_identifier | NO | char(36) | MUL
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |

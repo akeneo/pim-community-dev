@@ -142,7 +142,8 @@ jobs:
                           RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="tags~^growth-v[0-9]{14}$" --sort-by="~tags" --limit=1 --format="value(tags)")
                       fi
 
-                      echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                      IMAGE_TAG=${RELEASE_TO_DEPLOY}
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
 
                       echo "Release to deploy: ${IMAGE_TAG}"
             - run:
@@ -206,7 +207,3 @@ jobs:
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
                   when: on_fail
-            - persist_to_workspace:
-                  root: ~/
-                  paths:
-                      - project/persisted_env_vars

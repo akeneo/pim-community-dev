@@ -132,7 +132,9 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
                         'data'    => ['plastic', 'metal'],
                     ]
                 ],
-            ]
+            ],
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
+            \DateTimeImmutable::createFromFormat(DATE_ATOM, '2020-06-23T09:24:03-07:00'),
         );
 
         $recordFound = $this->findConnectorRecordQuery->find(ReferenceEntityIdentifier::fromString('designer'), $record->getCode());
@@ -369,9 +371,11 @@ class SqlFindConnectorRecordByReferenceEntityAndCodeTest extends SqlIntegrationT
     {
         $expectedRecord = $expectedRecord->normalize();
         $expectedRecord['values'] = $this->sortRecordValues($expectedRecord['values']);
+        unset($expectedRecord['created'], $expectedRecord['updated']);
 
         $currentRecord = $currentRecord->normalize();
         $currentRecord['values'] = $this->sortRecordValues($currentRecord['values']);
+        unset($currentRecord['created'], $currentRecord['updated']);
 
         $this->assertEquals($expectedRecord, $currentRecord);
     }

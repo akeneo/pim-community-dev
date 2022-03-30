@@ -17,12 +17,13 @@ services:
         - '@doctrine.dbal.default_connection'
         - '@pim_catalog.repository.product_without_permission'
         - '@pim_catalog.repository.product_model_without_permission'
-        - '@akeneo_rule_engine.runner.chained'
+        - '@akeneo_rule_engine.runner.strict_chained'
         - '@akeneo_rule_engine.repository.rule_definition'
         - '@pimee_catalog_rule.builder.product'
         - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
         - '@akeneo.pim.enrichment.product.query.get_product_completenesses'
         - '@pim_catalog.repository.family_variant'
+        - '@pim_connector.doctrine.cache_clearer'
 
     Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ExportRuleContext:
         - '@akeneo_rule_engine.repository.rule_definition'

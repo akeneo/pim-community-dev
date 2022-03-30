@@ -1,3 +1,5 @@
+envVarsDeployDev: &envVarsDeployDev
+dockerCloudDeployerNext: &dockerCloudDeployerNext
 executor-machine: &executor-machine
 
 jobs:
@@ -94,3 +96,82 @@ jobs:
                   path: cypress/videos
             - store_artifacts:
                   path: var/logs
+
+    # Description :
+    #    Create API connection for performance tests
+    prepare_perf_sanity_checks:
+        parameters:
+            SOURCE_PFID:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_dev
+            - restore_persisted_env_vars
+            - run:
+                  name: Create API connection
+                  command: |
+                      PFID=${TYPE}-${INSTANCE_NAME}
+                      POD_PIM_WEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
+                      kubectl exec -it -n ${PFID} ${POD_PIM_WEB} -- /bin/bash -c 'bin/console akeneo:connectivity-connection:create akeneo_api_k6_dst --flow-type data_destination' > /tmp/api_connection_info
+                      API_CLIENT_ID=$(cat /tmp/api_connection_info | grep "Client ID: " | awk -F': ' '{printf $2}' | tr -d '\r')
+                      API_SECRET=$(cat /tmp/api_connection_info | grep "Secret: " | awk -F': ' '{printf $2}' | tr -d '\r')
+                      API_USERNAME=$(cat /tmp/api_connection_info | grep "Username: " | awk -F': ' '{printf $2}' | tr -d '\r')
+                      API_PASSWORD=$(cat /tmp/api_connection_info | grep "Password: " | awk -F': ' '{printf $2}' | tr -d '\r')
+
+                      echo export API_CLIENT_ID=${API_CLIENT_ID} >> $BASH_ENV
+                      echo export API_SECRET=${API_SECRET} >> $BASH_ENV
+                      echo export API_USERNAME=${API_USERNAME} >> $BASH_ENV
+                      echo export API_PASSWORD=${API_PASSWORD} >> $BASH_ENV
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export API_CLIENT_ID=${API_CLIENT_ID} >> persisted_env_vars
+                      echo export API_SECRET=${API_SECRET} >> persisted_env_vars
+                      echo export API_USERNAME=${API_USERNAME} >> persisted_env_vars
+                      echo export API_PASSWORD=${API_PASSWORD} >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+
+    # Description :
+    #    Use k6 to run perf sanity checks on dev instances
+    #    Need prepare_perf_sanity_checks job before him
+    #    This job can be trigged after a deployment, clone, migration or upgrade job
+    perf_sanity_checks:
+        parameters:
+            SOURCE_PFID:
+                type: string
+                default: ""
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - restore_persisted_env_vars
+            - run:
+                  name: Prepare env
+                  command: |
+                      mkdir /tmp/k6-artifacts
+                      FQDN=${INSTANCE_NAME}.dev.cloud.akeneo.com
+
+                      echo export FQDN=${FQDN} >> $BASH_ENV
+            - run:
+                  name: Run k6 performance tests spike-test.js
+                  command: |
+                      docker run --rm -i grafana/k6 run - <deployments/test/loadtests/spike-test.js --env FQDN=${FQDN} --out json=full.json > /tmp/k6-artifacts/spike-test.js
+                  when: always
+            - run:
+                  name: Run k6 performance tests get-products.js
+                  command: |
+                      docker run --rm -i grafana/k6 run - <deployments/test/loadtests/get-products.js --env FQDN=${FQDN} --env API_CLIENT_ID=${API_CLIENT_ID} --env API_SECRET=${API_SECRET} --env API_USERNAME=${API_USERNAME} --env API_PASSWORD=${API_PASSWORD} --out json=full.json > /tmp/k6-artifacts/get-products.js
+                  when: always
+            - store_artifacts:
+                  path: /tmp/k6-artifacts

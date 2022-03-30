@@ -19,7 +19,6 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Symfony\Bundle\FrameworkBundle\Controller\AbstractController',
-        'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
 
         // TODO: the rule feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
@@ -31,24 +30,13 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
 
-        // TIP-1013: Rework Notification system
-        'Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface',
-        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
-
         // TIP-957: Do not use FQCN resolver
         'Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver',
-
-        // TIP-1019: Move presenters
-        'Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface',
-
-        // TIP-1022: Drop LocaleResolver
-        'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
         // TIP-1024: Drop UserContext
         'Akeneo\Pim\Permission\Bundle\User\UserContext',
 
         // internal API controllers
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
@@ -62,7 +50,6 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool\Component',
         'Doctrine\Common',
-        'Doctrine\Persistence',
         'Akeneo\Pim\Enrichment\Component\FileStorage',
         'Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException',
         'Akeneo\Tool\Component\FileStorage\Exception\FileTransferException',
@@ -77,9 +64,6 @@ $rules = [
         // TIP-960: Rule Engine should not be linked to Attribute
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
         'Akeneo\Pim\Structure\Component\AttributeTypes',
-
-        // TIP-961: Remove dependency to ProductRepositoryInterface
-        'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
 
         // TIP-962: Rule Engine depends on PIM/Enrichment
         // TIP-963: Define the Products public API
@@ -98,7 +82,6 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerRegistryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface', // the engine creates a fake product to allow validation
-        'Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext', // used to version products when a rule is applied

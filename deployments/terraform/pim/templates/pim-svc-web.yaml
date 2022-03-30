@@ -5,6 +5,26 @@ metadata:
   name: pim-web
   labels:
     {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    ad.datadoghq.com/service.check_names: '["http_check"]'
+    ad.datadoghq.com/service.init_configs: '[{}]'
+    ad.datadoghq.com/service.instances: |
+      [
+        [{
+          "name": "uptime_check",
+          "url": "https://{{ .Values.global.extraLabels.instance_dns_record }}.{{ .Values.global.extraLabels.instance_dns_zone }}:443/monitoring/services_status",
+          "timeout": 60,
+          "headers": {"X-Auth-Token": "{{ .Values.pim.monitoring.authenticationToken }}"},
+          "min_collection_interval": 300,
+          "tls_verify": "true",
+          "check_hostname": "true",
+          "ssl_server_name": "*.{{ .Values.global.extraLabels.instance_dns_zone }}",
+          "check_certificate_expiration": "true",
+          "include_content": "true",
+          "days_warning": 30,
+          "days_critical": 7
+        }]
+      ]
 spec:
   type: ClusterIP
   selector:

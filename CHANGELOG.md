@@ -21,7 +21,13 @@
 - PIM-10306: Batch thumbnail http calls to avoid parralel generations of thumbails at the same time in AM
 - PIM-10291: Fix table attribute edit blocked when locale recently deleted from channel
 - PIM-10338: Fix the number of options to improve is not correctly refreshed
+- PIM-10346: Fix spellcheck badge not displayed on attribute options
 - PIM-10340: Fix uncaught exception when creating the same asset twice in parrallel
+- PIM-10359: Fix missing locale parameter for TWA projects when redirecting from dashboard to product-grid
+- PIM-10363: Fix add association rule updater
+- PIM-10351: Improve error message for ancestor categories validation in process tracker
+- PIM-10347: Use the Vimeo oEmbed API to generate thumbnail
+- PIM-10367: Fix table attribute condition line handleChange values
 
 ## Improvements
 
