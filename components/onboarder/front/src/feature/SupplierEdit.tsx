@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
-import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
+import {useTranslate, PageContent, PageHeader, PimView, UnsavedChanges} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
@@ -13,6 +13,21 @@ const SupplierEdit = () => {
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
     const {supplier} = useSupplier(supplierIdentifier);
     const history = useHistory();
+    const [supplierLabel, setSupplierLabel] = useState('');
+
+    useEffect(() => {
+        if (null !== supplier) {
+            setSupplierLabel(supplier.label);
+        }
+    }, [supplier]);
+
+    const supplierHasChanges = () => {
+        if (null !== supplier) {
+            return supplierLabel !== supplier.label;
+        }
+
+        return false;
+    };
 
     if (!supplier) {
         return null;
@@ -42,6 +57,7 @@ const SupplierEdit = () => {
                     </Button>
                 </PageHeader.Actions>
                 <PageHeader.Title>{supplier.label}</PageHeader.Title>
+                <PageHeader.State>{supplierHasChanges() && <UnsavedChanges />}</PageHeader.State>
             </PageHeader>
             <StyledPageContent>
                 <TabBar moreButtonTitle="More">
@@ -55,7 +71,7 @@ const SupplierEdit = () => {
                         {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('configuration') && <Configuration supplier={supplier} />}
+                {isCurrent('configuration') && <Configuration code={supplier.code} label={supplierLabel} setLabel={setSupplierLabel} />}
                 {isCurrent('contributors') && <ContributorList contributors={supplier.contributors} />}
             </StyledPageContent>
         </Container>
