@@ -17,7 +17,7 @@ final class AssociateProducts implements AssociationUserIntent
      */
     public function __construct(
         private string $associationType,
-        private array $productIdentifiers = [],
+        private array $productIdentifiers,
     ) {
         Assert::notEmpty($productIdentifiers);
         Assert::allStringNotEmpty($productIdentifiers);

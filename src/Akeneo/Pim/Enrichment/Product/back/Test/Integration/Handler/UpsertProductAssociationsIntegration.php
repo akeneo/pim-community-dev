@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -103,6 +104,34 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->messageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertEmpty($this->getAssociatedProductIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_replaces_product_associations(): void
+    {
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateProducts('X_SELL', ['associated_product_identifier'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
+        $this->clearDoctrineUoW();
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'other_associated_product_identifier');
+        $this->messageBus->dispatch($command);
+        $associatedProduct = $this->productRepository->findOneByIdentifier('other_associated_product_identifier');
+        Assert::assertNotNull($associatedProduct);
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new ReplaceAssociatedProducts('X_SELL', ['other_associated_product_identifier'])
+        ]);
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['other_associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
     }
 
     /**

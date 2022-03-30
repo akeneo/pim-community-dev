@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociatePr
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
@@ -49,6 +50,17 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
                     $newAssociations
                 );
+            } elseif ($associationUserIntent instanceof ReplaceAssociatedProducts) {
+                \sort($formerAssociations);
+                $newAssociations = $associationUserIntent->productIdentifiers();
+                \sort($newAssociations);
+                if ($newAssociations === $formerAssociations) {
+                    continue;
+                }
+
+                $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
+                    \array_unique($associationUserIntent->productIdentifiers())
+                );
             }
         }
 
@@ -77,6 +89,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         if (
             $associationUserIntent instanceof AssociateProducts
             || $associationUserIntent instanceof DissociateProducts
+            || $associationUserIntent instanceof ReplaceAssociatedProducts
         ) {
             return $normalizedAssociations[$associationUserIntent->associationType()]['products'] ??
                 $product
