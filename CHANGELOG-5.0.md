@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10374: Revert PIM-10333 + Fix category translations are not displayed in the category tree when locale is not xx_XX
+
 # 5.0.88 (2022-03-23)
 
 # 5.0.87 (2022-03-23)
