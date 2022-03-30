@@ -54,14 +54,13 @@ class JobRegistry
      */
     public function get($jobName)
     {
-        $jobs = $this->getAllEnabledJobs();
-        if (!isset($jobs[$jobName])) {
+        if (!isset($this->jobs[$jobName])) {
             throw new UndefinedJobException(
                 sprintf('The job "%s" is not registered', $jobName)
             );
         }
 
-        return $jobs[$jobName]['job'];
+        return $this->jobs[$jobName]['job'];
     }
 
     /**
