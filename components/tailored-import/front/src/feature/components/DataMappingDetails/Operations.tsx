@@ -14,14 +14,14 @@ const OperationsContainer = styled.div`
   gap: 10px;
 `;
 
-const PreviewContent = styled.p`
+const PreviewContent = styled.div`
   overflow: hidden;
   max-width: 100ch;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-const Placeholder = styled.p`
+const Placeholder = styled.div`
   color: ${getColor('grey', 100)};
 `;
 
