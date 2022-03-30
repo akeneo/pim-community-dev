@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AddAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
@@ -30,7 +31,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 
         foreach ($userIntent->associationUserIntents() as $associationUserIntent) {
             $formerAssociations = $this->getFormerAssociations($associationUserIntent, $normalizedAssociations, $product);
-            if ($associationUserIntent instanceof AddAssociatedProducts) {
+            if ($associationUserIntent instanceof AssociateProducts) {
                 if (\count(\array_diff($associationUserIntent->productIdentifiers(), $formerAssociations)) === 0) {
                     continue;
                 }
@@ -38,6 +39,15 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     \array_unique(
                         \array_merge($formerAssociations, $associationUserIntent->productIdentifiers())
                     )
+                );
+            } elseif ($associationUserIntent instanceof DissociateProducts) {
+                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->productIdentifiers());
+                if (\count($newAssociations) === \count($formerAssociations)) {
+                    continue;
+                }
+
+                $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
+                    $newAssociations
                 );
             }
         }
@@ -64,7 +74,10 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
      */
     private function getFormerAssociations(AssociationUserIntent $associationUserIntent, array $normalizedAssociations, ProductInterface $product): array
     {
-        if ($associationUserIntent instanceof AddAssociatedProducts) {
+        if (
+            $associationUserIntent instanceof AssociateProducts
+            || $associationUserIntent instanceof DissociateProducts
+        ) {
             return $normalizedAssociations[$associationUserIntent->associationType()]['products'] ??
                 $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
