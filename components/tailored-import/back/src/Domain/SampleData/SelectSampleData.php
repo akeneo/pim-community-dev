@@ -12,16 +12,16 @@ final class SelectSampleData implements SelectSampleDataInterface
 {
     public const NUMBER_OF_VALUES = 3;
     
-    public function fromExtractedColumn(array $extractedColumn): array
+    public function fromExtractedColumn(array $extractedColumn,?int $length = SelectSampleData::NUMBER_OF_VALUES): array
     {
         $reducedValue = $this->filterUniqueValues($extractedColumn);
-        $sampleData = $this->pickRandomValues($reducedValue);
-        return $this->fillBlankValues($sampleData);
+        $sampleData = $this->pickRandomValues($reducedValue, $length);
+        return $this->fillBlankValues($sampleData, $length);
     }
 
-    private function fillBlankValues(array $sampleData): array
+    private function fillBlankValues(array $sampleData,int $length): array
     {
-        return array_pad($sampleData, SelectSampleData::NUMBER_OF_VALUES, null);
+        return array_pad($sampleData, $length, null);
     }
     
     private function filterUniqueValues(array $sampleData): array
@@ -29,9 +29,9 @@ final class SelectSampleData implements SelectSampleDataInterface
         return array_unique($sampleData);
     }
     
-    private function pickRandomValues(array $sampleData): array
+    private function pickRandomValues(array $sampleData, $length): array
     {
         shuffle($sampleData);
-        return array_slice($sampleData, 0, min(count($sampleData), SelectSampleData::NUMBER_OF_VALUES));
+        return array_slice($sampleData, 0, min(count($sampleData), $length));
     }
 }

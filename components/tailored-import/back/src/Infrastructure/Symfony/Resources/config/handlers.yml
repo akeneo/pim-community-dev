@@ -39,7 +39,7 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\SampleData\GetNewSampleData\GetNewSampleDataHandler
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
-      - '@akeneo.tailored_import.domain.get_sample_data.select_sample_data'
+      - '@akeneo.tailored_import.domain.get_sample_data.replace_sample_data'
 
   akeneo.tailored_import.operation_applier:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier

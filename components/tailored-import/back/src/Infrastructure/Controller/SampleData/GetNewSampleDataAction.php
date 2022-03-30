@@ -39,7 +39,7 @@ final class GetNewSampleDataAction
         }
 
         $query = new GetNewSampleDataQuery();
-        $query->indexToChange = $request->get('index_to_change');
+        $query->indexToChange = intval($request->get('index_to_change'));
         $query->currentSample = $request->get('current_sample');
         $query->fileKey = $request->get('file_key');
         $query->columnIndex = $request->get('column_index');
