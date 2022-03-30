@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -30,9 +31,9 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
     public function __construct(
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        private CompletenessCalculator $completenessCalculator,
-        private SaveProductCompletenesses $saveProductCompletenesses,
+        private ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         private JobRepositoryInterface $jobRepository,
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer
     ) {
     }
 
@@ -72,8 +73,8 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
     private function computeCompleteness(array $productIdentifiers): void
     {
-        $completenessCollections = $this->completenessCalculator->fromProductIdentifiers($productIdentifiers);
-        $this->saveProductCompletenesses->saveAll($completenessCollections);
+        $this->computeAndPersistProductCompletenesses->fromProductIdentifiers($productIdentifiers);
+        $this->productAndAncestorsIndexer->indexFromProductIdentifiers($productIdentifiers);
 
         $this->stepExecution->incrementProcessedItems(count($productIdentifiers));
         $this->jobRepository->updateStepExecution($this->stepExecution);
@@ -85,6 +86,7 @@ class ComputeCompletenessOfTableAttributeProductsTasklet implements TaskletInter
 
         $pqb->addFilter('family', Operators::IN_LIST, $familyCodes);
         $pqb->addFilter($attributeCode, Operators::IS_NOT_EMPTY, null);
+        $pqb->addFilter('entity_type', Operators::EQUALS, ProductInterface::class);
 
         return $pqb->execute();
     }

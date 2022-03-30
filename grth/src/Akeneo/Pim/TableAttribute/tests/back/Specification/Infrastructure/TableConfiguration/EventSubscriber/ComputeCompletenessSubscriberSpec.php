@@ -140,7 +140,7 @@ class ComputeCompletenessSubscriberSpec extends ObjectBehavior
             'family_codes' => ['family_code_1'],
         ])->shouldBeCalledOnce();
 
-        $this->aTableAttributeCompletenessHasBeenUpdated(new CompletenessHasBeenUpdated('table_attribute_code'));
+        $this->completenessHasBeenUpdated(new CompletenessHasBeenUpdated('table_attribute_code'));
         $this->launchComputeCompletenessJobIfNeeded($event);
     }
 }

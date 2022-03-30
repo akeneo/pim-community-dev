@@ -626,6 +626,6 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet:
         arguments:
             - '@pim_catalog.query.product_identifier_query_builder_factory'
-            - '@pim_catalog.completeness.calculator'
-            - '@akeneo.pim.enrichment.product.query.save_product_completenesses'
+            - '@pim_catalog.completeness.product.compute_and_persist'
             - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'

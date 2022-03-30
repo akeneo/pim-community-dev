@@ -12,13 +12,13 @@ declare(strict_types=1);
  */
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet;
 
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
-use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\SaveProductCompletenesses;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\Tasklet\ComputeCompletenessOfTableAttributeProductsTasklet;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
@@ -30,16 +30,16 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
 {
     function let(
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        CompletenessCalculator $completenessCalculator,
-        SaveProductCompletenesses $saveProductCompletenesses,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         JobRepositoryInterface $jobRepository,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
-            $productQueryBuilderFactory,
-            $completenessCalculator,
-            $saveProductCompletenesses,
-            $jobRepository
+        $productQueryBuilderFactory,
+        $computeAndPersistProductCompletenesses,
+        $jobRepository,
+        $productAndAncestorsIndexer
         );
 
         $this->setStepExecution($stepExecution);
@@ -52,14 +52,14 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
 
     /** @test */
     function it_compute_and_persists_the_completeness_of_products_of_table_attributes(
-        StepExecution $stepExecution,
-        SaveProductCompletenesses $saveProductCompletenesses,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductQueryBuilderInterface $productQueryBuilder,
-        CompletenessCalculator $completenessCalculator,
+        ComputeAndPersistProductCompletenesses $computeAndPersistProductCompletenesses,
         JobRepositoryInterface $jobRepository,
+        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        StepExecution $stepExecution,
+        JobParameters $jobParameters,
+        ProductQueryBuilderInterface $productQueryBuilder,
         CursorInterface $cursor,
-        JobParameters $jobParameters
     ) {
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('attribute_code')->willReturn('nutrition');
@@ -68,6 +68,7 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         $productQueryBuilderFactory->create()->shouldBeCalled()->willReturn($productQueryBuilder);
         $productQueryBuilder->addFilter('family', Operators::IN_LIST, ['food'])->shouldBeCalled();
         $productQueryBuilder->addFilter('nutrition', Operators::IS_NOT_EMPTY, null)->shouldBeCalled();
+        $productQueryBuilder->addFilter('entity_type', Operators::EQUALS, ProductInterface::class)->shouldBeCalled();
         $productQueryBuilder->execute()
             ->shouldBeCalledOnce()
             ->willReturn($cursor);
@@ -77,23 +78,13 @@ class ComputeCompletenessOfTableAttributeProductsTaskletSpec extends ObjectBehav
         $cursor->rewind()->shouldBeCalledOnce();
         $cursor->valid()->shouldBeCalledTimes(3)->willReturn(true, true, false);
         $cursor->next()->shouldBeCalledTimes(2);
-        $cursor->current()->shouldBeCalledTimes(2)->willReturn('identifier1', 'identifier2');
+        $identifierResult1 = new IdentifierResult('identifier1', ProductInterface::class);
+        $identifierResult2 = new IdentifierResult('identifier2', ProductInterface::class);
+        $cursor->current()->shouldBeCalledTimes(2)->willReturn($identifierResult1, $identifierResult2);
 
-        $completenessCollection = [
-            'identifier1' => new ProductCompletenessWithMissingAttributeCodesCollection(5, [
-                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
-                new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
-            ]),
-            'identifier2' => new ProductCompletenessWithMissingAttributeCodesCollection(5, [
-                new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 2, [1 => 'view']),
-                new ProductCompletenessWithMissingAttributeCodes('<all_channels>', '<all_locales>', 1, [])
-            ]),
-        ];
-        $completenessCalculator->fromProductIdentifiers(['identifier1', 'identifier2'])
-            ->shouldBeCalledOnce()
-            ->willReturn($completenessCollection);
+        $computeAndPersistProductCompletenesses->fromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
+        $productAndAncestorsIndexer->indexFromProductIdentifiers(['identifier1', 'identifier2'])->shouldBeCalledOnce();
 
-        $saveProductCompletenesses->saveAll($completenessCollection)->shouldBeCalledOnce();
         $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalledOnce();
 
