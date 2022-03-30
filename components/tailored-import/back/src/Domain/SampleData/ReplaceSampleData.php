@@ -16,10 +16,9 @@ final class ReplaceSampleData implements ReplaceSampleDataInterface
 
     public function fromExtractedColumn(array $extractedColumn,array $currentSample,int $indexToReplace): array
     {
-        $toRemove[] = $currentSample[$indexToReplace];
-        $diff = array_diff($extractedColumn, $toRemove);
-        $currentSample[$indexToReplace] = $this->selectSampleData->fromExtractedColumn($diff, 1)[0];
-        $currentSample = array_unique($currentSample);
-        return array_pad($currentSample, 3,null);
+        $diff = array_diff($extractedColumn, $currentSample);
+        $currentSample[$indexToReplace] = current($this->selectSampleData->fromExtractedColumn($diff, 1));
+
+        return array_pad($currentSample, 3, null);
     }
 }

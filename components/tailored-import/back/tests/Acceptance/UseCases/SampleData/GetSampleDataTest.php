@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\GetSampleData;
+namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\SampleData;
 
 use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ class GetSampleDataTest extends TestCase
         $sampleData = ["value1","value1","value2","value2","value3","value3"];
         $result = $selectSampleData->fromExtractedColumn($sampleData);
 
-        $this->assertEquals(SelectSampleData::NUMBER_OF_VALUES, count($result));
+        $this->assertCount(SelectSampleData::NUMBER_OF_VALUES, $result);
         $this->assertTrue(count($result) === count(array_unique($result)));
     }
 
@@ -29,8 +29,16 @@ class GetSampleDataTest extends TestCase
         $sampleData = ["value1","value2"];
         $result = $selectSampleData->fromExtractedColumn($sampleData);
 
-        $this->assertTrue(in_array(null, $result));
-        $this->assertTrue(in_array("value1", $result));
-        $this->assertTrue(in_array("value2", $result));
+        $this->assertEqualsCanonicalizing(['value1', 'value2', null], $result);
+    }
+
+    public function test_it_select_number_of_asked_values(): void
+    {
+        $selectSampleData = new SelectSampleData();
+        $sampleData = ["value1", "value1", "value2"];
+        $result = $selectSampleData->fromExtractedColumn($sampleData, 2);
+
+        $this->assertCount(2, $result);
+        $this->assertEqualsCanonicalizing(['value1', 'value2'], $result);
     }
 }

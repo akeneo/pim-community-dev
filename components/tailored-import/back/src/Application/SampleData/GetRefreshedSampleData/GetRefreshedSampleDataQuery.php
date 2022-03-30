@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetNewSampleData;
+namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetNewSampleDataQuery
+final class GetRefreshedSampleDataQuery
 {
     public int $indexToChange;
 
@@ -16,7 +16,7 @@ final class GetNewSampleDataQuery
 
     public string $fileKey;
 
-    public string $columnIndex;
+    public int $columnIndex;
 
     public string $sheetName;
 

@@ -33,10 +33,10 @@ services:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GetSampleDataAction
     public: true
     arguments:
-      - '@akeneo.tailored_import.handler.get_sample_data_handler'
+      - '@akeneo.tailored_import.handler.sample_data.get_sample_data_handler'
 
-  akeneo.tailored_import.controller.get_new_sample_data_action:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GetNewSampleDataAction
+  akeneo.tailored_import.controller.get_refreshed_sample_data_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GetRefreshedSampleDataAction
     public: true
     arguments:
-      - '@akeneo.tailored_import.handler.sample_data.get_sample_data_handler'
+      - '@akeneo.tailored_import.handler.sample_data.get_refreshed_sample_data_handler'

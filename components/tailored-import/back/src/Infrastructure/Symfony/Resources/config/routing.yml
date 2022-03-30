@@ -23,7 +23,7 @@ pimee_tailored_import_get_sample_data_action:
     defaults: { _controller: akeneo.tailored_import.controller.get_sample_data_action }
     methods: [GET]
 
-pimee_tailored_import_get_new_sample_data_action:
-    path: /rest/tailored-import/new-sample-data
-    defaults: { _controller: akeneo.tailored_import.controller.get_new_sample_data_action }
+pimee_tailored_import_get_refreshed_sample_data_action:
+    path: /rest/tailored-import/refresh-sample-data
+    defaults: { _controller: akeneo.tailored_import.controller.get_refreshed_sample_data_action }
     methods: [GET]
