@@ -16,6 +16,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
@@ -26,6 +29,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -142,6 +146,39 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->updateProduct(new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE));
         $this->assertProductHasCorrectValueByAttributeCode('a_text_area', self::TEXT_AREA_VALUE);
+    }
+
+    /** @test */
+    public function it_updates_a_product_s_identifier(): void
+    {
+        $this->updateProduct(new SetIdentifierValue('sku', 'new_identifier'));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        $updatedProduct = $this->productRepository->findOneByIdentifier('new_identifier');
+        Assert::assertNotNull($updatedProduct);
+        Assert::assertSame('new_identifier', $updatedProduct->getIdentifier());
+        Assert::assertSame('new_identifier', $updatedProduct->getValue('sku')?->getData());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_deleting_the_identifier_value()
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The identifier attribute cannot be empty.');
+        $this->updateProduct(new SetIdentifierValue('sku', ''));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_for_a_duplicate_identifier_value(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+            $this->getUserId('admin'),
+            'foo',
+            []
+        ));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The foo identifier is already used for another product.');
+        $this->updateProduct(new SetIdentifierValue('sku', 'foo'));
     }
 
     /** @test */
@@ -611,6 +648,7 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
     }
 
+    /** @test */
     public function it_updates_a_product_categories(): void
     {
         $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
@@ -836,6 +874,34 @@ final class UpsertProductIntegration extends TestCase
         $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
     }
 
+    /** @test */
+    public function it_can_modify_a_products_groups(): void
+    {
+        $this->updateProduct(new SetGroups(['groupA', 'groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+
+        $this->updateProduct(new RemoveFromGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA'], $product->getGroupCodes());
+
+        $this->updateProduct(new AddToGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_setting_an_unknown_group(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Property "groups" expects a valid group code. The group does not exist, "unknown" given.');
+
+        $this->updateProduct(new SetGroups(['unknown', 'groupB']));
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -912,6 +978,7 @@ final class UpsertProductIntegration extends TestCase
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+        $this->get('feature_flags')->enable('asset_manager');
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
         /** @phpstan-ignore-next-line */
