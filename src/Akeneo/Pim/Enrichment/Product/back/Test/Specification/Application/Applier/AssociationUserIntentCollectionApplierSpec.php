@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -201,6 +202,57 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             ]
         ]])->shouldBeCalledOnce();
 
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_replaces_associated_products(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+    ) {
+        $associatedProducts = [];
+        $associatedProduct = new Product();
+        $associatedProduct->setIdentifier('baz');
+        $associatedProducts[] = $associatedProduct;
+        $associatedProduct = new Product();
+        $associatedProduct->setIdentifier('qux');
+        $associatedProducts[] = $associatedProduct;
+
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection($associatedProducts)
+        );
+        $collection = new AssociationUserIntentCollection([
+            new ReplaceAssociatedProducts('X_SELL', ['quux', 'quuz', 'corge']),
+        ]);
+
+        $productUpdater->update($product, ['associations' => [
+            'X_SELL' => [
+                'products' => ['quux', 'quuz', 'corge'],
+            ]
+        ]])->shouldBeCalledOnce();
+
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_does_nothing_if_products_to_associate_are_the_same_as_existing_associated_products(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+    ) {
+        $associatedProducts = [];
+        $associatedProduct = new Product();
+        $associatedProduct->setIdentifier('baz');
+        $associatedProducts[] = $associatedProduct;
+        $associatedProduct = new Product();
+        $associatedProduct->setIdentifier('qux');
+        $associatedProducts[] = $associatedProduct;
+
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection($associatedProducts)
+        );
+        $collection = new AssociationUserIntentCollection([
+            new ReplaceAssociatedProducts('X_SELL', ['qux', 'baz']),
+        ]);
+
+        $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
         $this->apply($collection, $product, 42);
     }
 }

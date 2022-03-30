@@ -10,7 +10,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class DissociateProducts implements AssociationUserIntent
+final class ReplaceAssociatedProducts implements AssociationUserIntent
 {
     /**
      * @param array<string> $productIdentifiers
@@ -19,7 +19,6 @@ final class DissociateProducts implements AssociationUserIntent
         private string $associationType,
         private array $productIdentifiers,
     ) {
-        Assert::notEmpty($productIdentifiers);
         Assert::allStringNotEmpty($productIdentifiers);
     }
 
