@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Import categories
   In order to reuse the categories of my products
   As a product manager

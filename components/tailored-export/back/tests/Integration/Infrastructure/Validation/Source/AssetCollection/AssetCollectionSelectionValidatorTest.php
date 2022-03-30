@@ -316,6 +316,7 @@ class AssetCollectionSelectionValidatorTest extends AbstractValidationTest
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('asset_manager');
         $this->loadData();
     }
 

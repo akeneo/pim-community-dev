@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Apply defined category permissions on product grid row actions
   In order to know when I have the rights to do some actions
   As Julia

@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Edit attribute group with all permissions
   In order to be able to permit all groups
   As a product manager
