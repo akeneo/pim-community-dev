@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssociatedProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AddAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;

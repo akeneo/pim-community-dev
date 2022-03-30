@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssociatedProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AssociationsUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AddAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -22,7 +22,7 @@ class AddAssociatedProductsSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(AddAssociatedProducts::class);
-        $this->shouldImplement(AssociationsUserIntent::class);
+        $this->shouldImplement(AssociationUserIntent::class);
     }
 
     function it_returns_the_association_type()
