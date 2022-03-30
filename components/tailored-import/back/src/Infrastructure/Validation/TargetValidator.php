@@ -16,6 +16,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\FindUnit;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -27,8 +29,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class TargetValidator extends ConstraintValidator
 {
+    private const ATTRIBUTE_TYPE_NUMBER = 'pim_catalog_number';
+    private const ATTRIBUTE_TYPE_METRIC = 'pim_catalog_metric';
+
     public function __construct(
         private GetAttributes $getAttributes,
+        private FindUnit $findUnit,
         private array $supportedProperties,
     ) {
     }
@@ -115,6 +121,8 @@ class TargetValidator extends ConstraintValidator
             'allowExtraFields' => true,
         ]));
 
+        $this->validateSourceParameter($validator, $attributeTarget, $attribute);
+
         if (0 < $this->context->getViolations()->count()) {
             return;
         }
@@ -133,6 +141,47 @@ class TargetValidator extends ConstraintValidator
             )
                 ->atPath('[code]')
                 ->addViolation();
+        }
+    }
+
+    private function validateSourceParameter(ValidatorInterface $validator, array $attributeTarget, Attribute $attribute): void
+    {
+        $typesRequiringSourceParameter = [
+            self::ATTRIBUTE_TYPE_NUMBER,
+            self::ATTRIBUTE_TYPE_METRIC,
+        ];
+
+        if (!in_array($attribute->type(), $typesRequiringSourceParameter)) {
+            return;
+        }
+
+        $validator->inContext($this->context)->validate($attributeTarget, new Collection([
+            'fields' => [
+                'source_parameter' => [
+                    new Type('array'),
+                    new NotBlank(),
+                ],
+            ],
+            'allowExtraFields' => true,
+        ]));
+
+        if ($attribute->type() === self::ATTRIBUTE_TYPE_METRIC) {
+            $unitCode = $attributeTarget['source_parameter']['unit'];
+            $unit = $this->findUnit->byMeasurementFamilyCodeAndUnitCode($attribute->metricFamily(), $unitCode);
+
+            if (!$unit instanceof Unit) {
+                $this->context->buildViolation(
+                    Target::MEASUREMENT_UNIT_SHOULD_EXIST,
+                    [
+                        '{{ unit_code }}' => $unitCode,
+                        '{{ measurement_family }}' => $attribute->metricFamily(),
+                    ]
+                )
+                ->atPath('[source_parameter]')
+                ->addViolation();
+
+                return;
+            }
         }
     }
 }

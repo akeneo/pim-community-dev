@@ -72,6 +72,19 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'action_if_empty' => 'skip',
                 ]
             ],
+            'a valid measurement target' => [
+                [
+                    'code' => 'a_metric',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
+                    'source_parameter' => [
+                        'unit' => 'WATT',
+                    ]
+                ]
+            ],
         ];
     }
 
@@ -224,6 +237,21 @@ final class TargetValidatorTest extends AbstractValidationTest
                     'locale' => 'en_US',
                     'action_if_not_empty' => 'set',
                     'action_if_empty' => 'invalid',
+                ]
+            ],
+            'a target with invalid metric family unit in source_parameter' => [
+                'akeneo.tailored_import.validation.target.source_parameter.unit_should_exist',
+                '[source_parameter]',
+                [
+                    'code' => 'a_metric',
+                    'type' => 'attribute',
+                    'channel' => null,
+                    'locale' => null,
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip',
+                    'source_parameter' => [
+                        'unit' => 'FOO',
+                    ]
                 ]
             ],
         ];

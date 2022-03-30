@@ -8,3 +8,8 @@ services:
     public: true
     tags:
       - { name: akeneo.tailored_import.source_parameter_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\MeasurementSourceParameterApplier:
+    public: true
+    tags:
+      - { name: akeneo.tailored_import.source_parameter_applier }
