@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
+namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
 
 use Webmozart\Assert\Assert;
 
@@ -10,10 +10,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-// SetAssociatedProducts (permettre de set avec un tableau vide)
-// AddAssociatedProducts
-// RemoveAssociatedProducts
-final class AddAssociatedProducts implements AssociationsUserIntent
+final class AddAssociatedProducts implements AssociationUserIntent
 {
     /**
      * @param array<string> $productIdentifiers

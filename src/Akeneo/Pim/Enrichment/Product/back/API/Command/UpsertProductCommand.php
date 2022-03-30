@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\API\Command;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AssociationsUserIntent;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\GroupUserIntent;
@@ -30,12 +30,12 @@ final class UpsertProductCommand
         private int $userId,
         private string $productIdentifier,
         private mixed $identifierUserIntent = null,
-        private ?FamilyUserIntent   $familyUserIntent = null,
+        private ?FamilyUserIntent $familyUserIntent = null,
         private ?CategoryUserIntent $categoryUserIntent = null,
         private ?ParentUserIntent $parentUserIntent = null,
         private ?GroupUserIntent $groupUserIntent = null,
         private ?SetEnabled $enabledUserIntent = null,
-        private ?AssociationUserIntentCollection $associationsUserIntent = null,
+        private ?AssociationUserIntentCollection $associationUserIntent = null,
         private array $valueUserIntents = []
     ) {
         Assert::allImplementsInterface($this->valueUserIntents, ValueUserIntent::class);
@@ -52,7 +52,7 @@ final class UpsertProductCommand
         $enabledUserIntent = null;
         $familyUserIntent = null;
         $parentUserIntent = null;
-        $associationUserIntents = \array_filter($userIntents, fn ($userIntent): bool => $userIntent instanceof AssociationsUserIntent);
+        $associationUserIntents = \array_filter($userIntents, fn ($userIntent): bool => $userIntent instanceof AssociationUserIntent);
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
@@ -82,7 +82,7 @@ final class UpsertProductCommand
             parentUserIntent: $parentUserIntent,
             groupUserIntent: $groupUserIntent,
             enabledUserIntent: $enabledUserIntent,
-            associationsUserIntent: new AssociationUserIntentCollection($associationUserIntents),
+            associationUserIntent: new AssociationUserIntentCollection($associationUserIntents),
             valueUserIntents: $valueUserIntents
         );
     }
@@ -130,8 +130,8 @@ final class UpsertProductCommand
         return $this->enabledUserIntent;
     }
 
-    public function associationsUserIntent(): ?AssociationUserIntentCollection
+    public function associationUserIntent(): ?AssociationUserIntentCollection
     {
-        return $this->associationsUserIntent;
+        return $this->associationUserIntent;
     }
 }

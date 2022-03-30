@@ -90,7 +90,7 @@ final class UpsertProductHandler
                     'familyUserIntent' => $command->familyUserIntent(),
                     'categoryUserIntent' => $command->categoryUserIntent(),
                     'groupUserIntent' => $command->groupUserIntent(),
-                    'associationsUserIntent' => $command->associationsUserIntent(),
+                    'associationUserIntent' => $command->associationUserIntent(),
                 ]
             ),
             fn ($userIntent): bool => null !== $userIntent
