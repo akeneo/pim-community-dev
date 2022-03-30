@@ -59,10 +59,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration)
     {
         $fixtures = [
-            ['atmosphere_absorb_atmosphere_1', null],
-            ['atmosphere_absorb_atmosphere_2', null],
-            ['atmosphere_admete_atmosphere_1', null],
-            ['atmosphere_admete_atmosphere_2', null]
+            ['product_model_draft_1', null]
         ];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
@@ -72,9 +69,9 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
 
-        for ($i = 0; $i < 4; $i++) {
-            $identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($identifier, null);
+        for ($i = 0; $i < 2; $i++) {
+            //$identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["id"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -117,16 +114,14 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     public function configProvider(): array
     {
-        $assetManagerEs = EntityIndexConfiguration::create(
-            ['identifier','updated_at'],
-            'akeneo_assetmanager_asset_test',
-            'identifier',
+        $productProposal = EntityIndexConfiguration::create(
+            ['id'],
+            'akeneo_pim_product_proposal_test',
+            'id',
             'es'
         );
-        $assetManagerEs->setDateFieldName('updated_at');
-        $assetManagerEs->setDataProcessing(DateTimeFormat::formatFromInt());
         return [
-            'es' => [$assetManagerEs]
+            'es' => [$productProposal]
         ];
     }
 
@@ -168,7 +163,8 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
-        //return $this->catalog->useMinimalCatalog();
+        //return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
+
 }
