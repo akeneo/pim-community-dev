@@ -29,6 +29,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -145,6 +146,39 @@ final class UpsertProductIntegration extends TestCase
     {
         $this->updateProduct(new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE));
         $this->assertProductHasCorrectValueByAttributeCode('a_text_area', self::TEXT_AREA_VALUE);
+    }
+
+    /** @test */
+    public function it_updates_a_product_s_identifier(): void
+    {
+        $this->updateProduct(new SetIdentifierValue('sku', 'new_identifier'));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        $updatedProduct = $this->productRepository->findOneByIdentifier('new_identifier');
+        Assert::assertNotNull($updatedProduct);
+        Assert::assertSame('new_identifier', $updatedProduct->getIdentifier());
+        Assert::assertSame('new_identifier', $updatedProduct->getValue('sku')?->getData());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_deleting_the_identifier_value()
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The identifier attribute cannot be empty.');
+        $this->updateProduct(new SetIdentifierValue('sku', ''));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_for_a_duplicate_identifier_value(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+            $this->getUserId('admin'),
+            'foo',
+            []
+        ));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The foo identifier is already used for another product.');
+        $this->updateProduct(new SetIdentifierValue('sku', 'foo'));
     }
 
     /** @test */
