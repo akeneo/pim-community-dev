@@ -39,10 +39,11 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
         $resultsFixtures = new \ArrayIterator(
-            array_map(["product_1", "product_10", "product_100", "product_101"],
+            array_map(
                 function ($item) {
                     return IndexResultsFactory::initIndexDateResults($item, null);
-                }));
+                },
+                ["product_1", "product_10", "product_100", "product_101"]));
 
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < sizeof($resultsFixtures); $i++) {
@@ -59,10 +60,11 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
      */
     public function test_it_results_request_filter_and_is_ordered(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $resultsFixtures = new \ArrayIterator(array_map(["product_1", "product_2", "product_3", "product_4"],
+        $resultsFixtures = new \ArrayIterator(array_map(
             function ($item) {
                 return IndexResultsFactory::initIndexDateResults($item, null);
-            }));
+            },
+            ["product_1", "product_2", "product_3", "product_4"]));
 
         $resultsOrderFilterQueryFormat = [];
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
