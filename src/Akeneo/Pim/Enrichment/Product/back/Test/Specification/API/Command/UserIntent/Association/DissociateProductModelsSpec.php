@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociateProductModelsSpec extends ObjectBehavior
+class DissociateProductModelsSpec extends ObjectBehavior
 {
     function let()
     {
@@ -21,7 +21,7 @@ class AssociateProductModelsSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AssociateProductModels::class);
+        $this->shouldHaveType(DissociateProductModels::class);
         $this->shouldImplement(AssociationUserIntent::class);
     }
 

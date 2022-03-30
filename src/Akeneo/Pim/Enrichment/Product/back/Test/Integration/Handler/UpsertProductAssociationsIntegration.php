@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
@@ -145,6 +146,39 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->messageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_associating_with_unknown_product_model_identifier(): void
+    {
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateProductModels('X_SELL', ['unknown'])
+        ]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Property "associations" expects a valid product model identifier. The product model does not exist, "unknown" given.');
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_update_a_product_with_dissociate_product_model(): void
+    {
+        $this->createProductModel('product_model_identifier', 'color_variant_accessories', []);
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateProductModels('X_SELL', ['product_model_identifier'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new DissociateProductModels('X_SELL', ['product_model_identifier'])
+        ]);
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertEmpty($this->getAssociatedProductModelIdentifiers($updatedProduct));
     }
 
     /**

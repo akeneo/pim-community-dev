@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociatePr
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
@@ -77,6 +78,14 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                         \array_merge($formerAssociations, $associationUserIntent->productModelIdentifiers())
                     )
                 );
+            } elseif ($associationUserIntent instanceof DissociateProductModels) {
+                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->productModelIdentifiers());
+                if (\count($newAssociations) === \count($formerAssociations)) {
+                    continue;
+                }
+                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
+                    $newAssociations
+                );
             }
         }
 
@@ -113,6 +122,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [];
         } elseif (
             $associationUserIntent instanceof AssociateProductModels
+            || $associationUserIntent instanceof DissociateProductModels
         ) {
             return $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] ??
                 $product
