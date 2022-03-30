@@ -138,7 +138,6 @@ class ChannelUpdater implements ObjectUpdaterInterface
 
     /**
      * set labels on a channel, ensuring correct case of locale codes.
-     * 
      * @param ChannelInterface $channel
      * @param array            $localizedLabels
      */
