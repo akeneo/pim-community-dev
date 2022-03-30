@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
@@ -66,6 +68,15 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique(\array_merge($nonViewableProducts, $associationUserIntent->productIdentifiers()))
                 );
+            } elseif ($associationUserIntent instanceof AssociateProductModels) {
+                if (\count(\array_diff($associationUserIntent->productModelIdentifiers(), $formerAssociations)) === 0) {
+                    continue;
+                }
+                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
+                    \array_unique(
+                        \array_merge($formerAssociations, $associationUserIntent->productModelIdentifiers())
+                    )
+                );
             }
         }
 
@@ -100,6 +111,13 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [];
+        } elseif (
+            $associationUserIntent instanceof AssociateProductModels
+        ) {
+            return $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] ??
+                $product
+                    ->getAssociatedProductModels($associationUserIntent->associationType())
+                    ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [];
         }
         throw new \LogicException('Not implemented');
     }

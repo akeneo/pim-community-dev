@@ -6,6 +6,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
@@ -260,6 +262,48 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ]);
 
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_applies_associate_product_models(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+    ) {
+        $associatedProductModel = new ProductModel();
+        $associatedProductModel->setCode('foo');
+
+        $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$associatedProductModel])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new AssociateProductModels('X_SELL', ['bar', 'baz']),
+        ]);
+
+        $productUpdater->update($product, ['associations' => [
+            'X_SELL' => [
+                'product_models' => ['foo', 'bar', 'baz'],
+            ]
+        ]])->shouldBeCalledOnce();
+
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_does_nothing_if_product_models_are_already_associated(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+    ) {
+        $associatedProductModel = new ProductModel();
+        $associatedProductModel->setCode('foo');
+
+        $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$associatedProductModel])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new AssociateProductModels('X_SELL', ['foo']),
+        ]);
+
+        $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
+
         $this->apply($collection, $product, 42);
     }
 }

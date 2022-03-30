@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
@@ -129,5 +131,39 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_update_a_product_with_associate_product_model(): void
+    {
+        $this->createProductModel('product_model_identifier', 'color_variant_accessories', []);
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateProductModels('X_SELL', ['product_model_identifier'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getAssociatedProductIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProducts('X_SELL')
+            ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
+            ?->toArray() ?? [];
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getAssociatedProductModelIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProductModels('X_SELL')
+            ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())
+            ?->toArray() ?? [];
     }
 }
