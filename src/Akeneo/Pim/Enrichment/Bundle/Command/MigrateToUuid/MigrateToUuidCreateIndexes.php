@@ -68,8 +68,8 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
                         $indexName
                     );
                     $this->logger->notice(
-                        'Substep done',
-                        $logContext->toArray(['updated_items_count' => $updatedItems += 1])
+                        \sprintf('Substep done: indexes added for %s', $tableName),
+                        $logContext->toArray(['updated_items_count' => ++$updatedItems])
                     );
                 }
             }

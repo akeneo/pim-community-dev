@@ -73,7 +73,7 @@ class MigrateToUuidCommand extends Command
 
             if ($step->shouldBeExecuted()) {
                 $step->setStatusInProgress();
-                $this->logger->notice('Start add missing items', $logContext->toArray());
+                $this->logger->notice(\sprintf('Starting step %s', $step->getName()), $logContext->toArray());
                 if (!$step->addMissing($context)) {
                     $step->setStatusInError();
                     $this->logger->error('An item can not be migrated. Step stopped.', $logContext->toArray());
@@ -82,13 +82,13 @@ class MigrateToUuidCommand extends Command
                 }
                 $step->setStatusDone();
                 $this->logger->notice(
-                    \sprintf('Step done in %0.2f seconds', $step->getDuration()),
+                    \sprintf('Step done in %0.2f seconds (%s)', $step->getDuration(), $step->getName()),
                     $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
                 );
             } else {
                 $step->setStatusSkipped();
                 $this->logger->notice(
-                    'No items to migrate. Step skipped.',
+                    \sprintf('No items to migrate. Step %s skipped.', $step->getName()),
                     $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
                 );
             }
