@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
@@ -29,52 +29,14 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     public function setUp(): void
     {
+        parent::setUp();
         //Connection ES
         $clientBuilder = new ClientBuilder();
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
         $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
+        $this->loadData();
         $this->searchEs = new GenericEntityESIndexFinder($this->esClient);
-
-        $this->resetIndex("akeneo_elasticsearch.client.product_and_product_model");
-    }
-
-    /**
-     * @dataProvider configProviderFilter
-     * @return void
-     */
-    public function testFindIndex(EntityIndexConfiguration $entityIndexConfiguration): void
-    {
-        Assert::assertTrue($this->checkIndexExists($entityIndexConfiguration->getTableName()));
-    }
-
-    /**
-     * @dataProvider configProviderFilter
-     * @return void
-     */
-    public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration)
-    {
-        $fixtures = [
-            ['product_model_1', null],
-            ['product_model_2', null],
-            ['product_model_3', null],
-            ['product_model_4', null]
-        ];
-        $tests = new \ArrayIterator($fixtures);
-        foreach ($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
-        }
-        $resultsFixtures = new \ArrayIterator($resultsFormat);
-
-        $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
-
-        for ($i = 0; $i < 4; $i++) {
-            //$identifier = substr($results[$i]["identifier"], 0, strrpos($results[$i]["identifier"], '_'));
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["id"], null);
-        }
-        $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
-
-        Assert::assertEquals($resultsFixtures, $resultsOrderQuery);
     }
 
     /**
@@ -83,26 +45,14 @@ class GenericEntityESIndexFinderIntegration extends TestCase
      */
     public function test_it_results_request_filter_and_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [
-            ['product_model_1', null],
-            ['product_model_2', null],
-            ['product_model_3', null],
-            ['product_model_4', null]
-        ];
+        $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
-        $indexHost = $this->getParameter('index_hosts');
 
-        $clientBuilder = new ClientBuilder();
-        $clientBuilder->setHosts(is_string($indexHost) ? [$indexHost] : $indexHost);
-
-        $client = $clientBuilder->build();
-        $searchES = new GenericEntityESIndexFinder($client);
-        $results = $searchES->findAllByOrder($entityIndexConfiguration);
-        //$results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
+        $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < 4; $i++) {
             $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["identifier"], null);
         }
@@ -121,26 +71,13 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         );
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromString());
-        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductModelInterface::class, '\\').'"');
+        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class, '\\').'"');
 
         return [
             'es' => [$productEs]
         ];
     }
 
-    private function checkIndexExists(string $index): bool
-    {
-        $indexParams['index'] = $index;
-        if (!$this->esClient->indices()->exists($indexParams)) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @param string $str
-     * @return void
-     */
     public function resetIndex(string $str): void
     {
         $clientProduct = $this->getContainer()->get($str);
@@ -149,7 +86,21 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        return $this->catalog->useMinimalCatalog();
     }
 
+    private function loadData(): void
+    {
+        $product0 = $this->get('pim_catalog.builder.product')->createProduct('product_model_1');
+        $product1 = $this->get('pim_catalog.builder.product')->createProduct('product_model_2');
+        $product2 = $this->get('pim_catalog.builder.product')->createProduct('product_model_3');
+        $product3 = $this->get('pim_catalog.builder.product')->createProduct('product_model_4');
+        $productArray = [$product0,$product1,$product2, $product3];
+        foreach($productArray as $product){
+            $this->get('pim_catalog.updater.product')->update($product, []);
+            $this->get('pim_catalog.saver.product')->save($product);
+        }
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
 }

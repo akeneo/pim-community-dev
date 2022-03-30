@@ -2,16 +2,14 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
-
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
+
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
-use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
@@ -28,23 +26,15 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
 
     protected function setUp(): void
     {
-        /*$this->runResetIndexesCommand();*/
         parent::setUp();
 
         $this->query = $this->get(GenericEntityMySQLIndexFinder::class);
         $this->connection = $this->get('database_connection');
     }
 
-    /*private function runResetIndexesCommand(): void
-    {
-        $commandLauncher = new CommandLauncher(static::$kernel); // static::bootKernel(); //static::$kernel
-        $exitCode = $commandLauncher->execute('akeneo:elasticsearch:reset-indexes', null, ['inputs' => ['yes']]);
-        $this->assertSame(0, $exitCode);
-    }*/
-
 
     /**
-     * 0@dataProvider configProvider
+     * @dataProvider configProvider
      * @return void
      */
     public function test_it_table_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
@@ -53,7 +43,7 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     }
 
     /**
-     * 0@dataProvider configProvider
+     * @dataProvider configProvider
      * @return void
      */
     public function test_it_columns_mysql_exists(EntityIndexConfiguration $entityIndexConfiguration): void
@@ -67,15 +57,12 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     }
 
     /**
-     * 0@dataProvider configProvider
+     * @dataProvider configProvider
      * @return void
      */
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['product_1', null],
-            ['product_10', null],
-            ['product_100', null],
-            ['product_101', null]];
+        $fixtures = [['product_1', null], ['product_10', null], ['product_100', null], ['product_101', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
@@ -92,15 +79,12 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     }
 
     /**
-     * 0@dataProvider configProviderFilterOrderBy
+     * @dataProvider configProviderFilterOrderBy
      * @return void
      */
     public function test_it_results_request_filter_and_is_ordered(EntityIndexConfiguration $entityIndexConfiguration): void
     {
-        $fixtures = [['product_1', null],
-            ['product_2', null],
-            ['product_3', null],
-            ['product_4', null]];
+        $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
             $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
@@ -108,7 +92,6 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $resultsOrderFilterQueryFormat = [];
-
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         foreach ($resultsQuery as $value) {
             $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($value["identifier"], null);
@@ -152,7 +135,6 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
 
     private function tableExists(string $tableName): bool
     {
-        //$connection = $this->get('database_connection');
         $rows = $this->connection->executeQuery(
             'SHOW TABLES LIKE :tableName',
             [

@@ -28,10 +28,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 {
     private const DB_REFERENCE_FILE = __DIR__ . '/../Resources/referenceOutput.jsonl';
 
-    private Client $esClient;
-    private $hosts;
     private GenericEntityMySQLIndexFinder $searchMySql;
-    private GenericEntityESIndexFinder $searchEs;
 
     public function setUp(): void
     {
@@ -41,12 +38,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
         $this->searchMySql = $this->get(GenericEntityMySQLIndexFinder::class);
         $this->runResetIndexesCommand();
-        //Connection ES
-       /* $clientBuilder = new ClientBuilder();
-        $hosts = $_ENV['APP_INDEX_HOSTS'];
-        $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
-        $this->esClient = $clientBuilder->setHosts($this->hosts)->build();
-        $this->searchEs = new GenericEntityESIndexFinder($this->esClient);*/
+
     }
 
     private function runResetIndexesCommand(): void
@@ -83,7 +75,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     }
 
     /**
-     * Check if good results
      * @dataProvider configProviderDB
      * @return void
      */
@@ -98,8 +89,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     }
 
     /**
-     * Check if good results
-     * @dataProvider configProviderEs2
+     * @dataProvider configProviderEsWithoutDate
      * @return void
      */
     public function test_it_readEsData_returns(EntityIndexConfiguration $configEs): void
@@ -158,7 +148,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
         ];
     }
 
-    public function configProviderEs2(): array
+    public function configProviderEsWithoutDate(): array
     {
         $productProposalEs = EntityIndexConfiguration::create(
             ['id'],
@@ -169,7 +159,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
             'es' => [$productProposalEs]
         ];
     }
-
 
     protected function getConfiguration(): Configuration
     {
