@@ -10,6 +10,9 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
  */
 final class AssociationUserIntentCollection implements UserIntent
 {
+    /**
+     * @param array<AssociationsUserIntent> $associationsUserIntents
+     */
     public function __construct(
         private array $associationsUserIntents = []
     ) {
@@ -21,27 +24,5 @@ final class AssociationUserIntentCollection implements UserIntent
     public function associationsUserIntents(): array
     {
         return $this->associationsUserIntents;
-    }
-
-    /**
-     * @param array<AssociationsUserIntent> $formerValues
-     * @return array
-     */
-    public function merge(array $formerValues): array
-    {
-        $formattedValue = $formerValues;
-
-        foreach ($this->associationsUserIntents() as $associationUserIntent) {
-            if ($associationUserIntent instanceof AddAssociatedProducts) {
-                $formattedValue[$associationUserIntent->associationType()]['products'] = \array_unique(
-                    \array_merge(
-                        $formattedValue[$associationUserIntent->associationType()] ?? [],
-                        $associationUserIntent->productIdentifiers()
-                    )
-                );
-            }
-        }
-
-        return $formattedValue;
     }
 }

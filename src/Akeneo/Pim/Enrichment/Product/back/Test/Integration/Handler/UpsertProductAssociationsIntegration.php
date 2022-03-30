@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssociatedProducts;
-use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -39,7 +38,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_update_a_product_with_add_association(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
         $this->messageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
@@ -47,14 +46,14 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'associated_product_identifier');
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product_identifier');
         $this->messageBus->dispatch($command);
         $associatedProduct = $this->productRepository->findOneByIdentifier('associated_product_identifier');
         Assert::assertNotNull($associatedProduct);
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $command = UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'identifier', [
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AddAssociatedProducts('X_SELL', ['associated_product_identifier'])
         ]);
 
@@ -69,7 +68,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
     /** @test */
     public function it_throws_an_exception_when_adding_association_with_unknown_identifier(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
         $this->messageBus->dispatch($command);
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
@@ -77,12 +76,39 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
-        $command = UpsertProductCommand::createFromCollection($this->getUserId('admin'), 'identifier', [
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AddAssociatedProducts('X_SELL', ['associated_product_identifier'])
         ]);
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('Property "associations" expects a valid product identifier. The product does not exist, "associated_product_identifier" given.');
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_adding_association_with_unknown_association_type(): void
+    {
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
+        $this->messageBus->dispatch($command);
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEmpty($product->getAssociations());
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product_identifier');
+        $this->messageBus->dispatch($command);
+        $associatedProduct = $this->productRepository->findOneByIdentifier('associated_product_identifier');
+        Assert::assertNotNull($associatedProduct);
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AddAssociatedProducts('UNKNOWN', ['associated_product_identifier'])
+        ]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Property "associations" expects a valid association type code. The association type does not exist or is quantified, "UNKNOWN" given.');
         $this->messageBus->dispatch($command);
     }
 }

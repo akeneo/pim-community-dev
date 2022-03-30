@@ -49,11 +49,19 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         $this->productUpdater->update($product, ['associations' => $normalizedAssociations]);
     }
 
+    /** {@inheritDoc} */
     public function getSupportedUserIntents(): array
     {
         return [AssociationUserIntentCollection::class];
     }
 
+    /**
+     * @param AssociationsUserIntent $associationUserIntent
+     * @param array<string, array<string, array<string>>> $normalizedAssociations
+     * @param ProductInterface $product
+     *
+     * @return array<string>
+     */
     private function getFormerAssociations(AssociationsUserIntent $associationUserIntent, array $normalizedAssociations, ProductInterface $product): array
     {
         if ($associationUserIntent instanceof AddAssociatedProducts) {
