@@ -1,7 +1,7 @@
 import React from 'react';
 import {DataMapping} from '../../models';
 import styled from 'styled-components';
-import {SectionTitle, Preview,  getColor} from 'akeneo-design-system';
+import {SectionTitle, Preview, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type OperationsProps = {
@@ -38,9 +38,13 @@ const Operations = ({dataMapping}: OperationsProps) => {
       {dataMapping.sample_data.length > 0 && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
           {dataMapping.sample_data.map((sampleData, key) => (
-              <Preview.Row key={key}>
-                  { sampleData ? <PreviewContent>{sampleData}</PreviewContent> : <Placeholder>{translate('akeneo.tailored_import.data_mapping.preview.placeholder')}</Placeholder> }
-              </Preview.Row>
+            <Preview.Row key={key}>
+              {sampleData ? (
+                <PreviewContent>{sampleData}</PreviewContent>
+              ) : (
+                <Placeholder>{translate('akeneo.tailored_import.data_mapping.preview.placeholder')}</Placeholder>
+              )}
+            </Preview.Row>
           ))}
         </Preview>
       )}
