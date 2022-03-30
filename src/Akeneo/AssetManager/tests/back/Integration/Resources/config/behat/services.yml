@@ -136,6 +136,7 @@ services:
             - '@akeneo_assetmanager.infrastructure.validation.asset_family.product_link_rule.get_asset_collection_type_adapter'
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@oro_security.security_facade'
+            - '@feature_flags'
 
     akeneo_assetmanager.tests.back.integration.connector.distribute.get_connector_attribute_options_context:
         class: Akeneo\AssetManager\Integration\Connector\Api\Context\Distribute\GetConnectorAttributeOptionsContext
@@ -167,3 +168,8 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@oro_security.security_facade'
+
+    akeneo_assetmanager.tests.back.integration.connector.activate_asset_manager_before_scenario:
+        class: Akeneo\AssetManager\Integration\Connector\Api\Context\ActivateAssetManagerBeforeScenario
+        arguments:
+            - '@feature_flags'

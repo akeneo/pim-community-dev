@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Import attribute groups
   In order to setup my application
   As an administrator
