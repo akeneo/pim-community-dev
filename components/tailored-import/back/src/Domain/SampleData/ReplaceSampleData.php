@@ -10,17 +10,10 @@ namespace Akeneo\Platform\TailoredImport\Domain\SampleData;
  */
 final class ReplaceSampleData
 {
-    private SelectSampleData $selectSampleData;
-
-    public function __construct()
-    {
-        $this->selectSampleData = new SelectSampleData();
-    }
-
     public function fromExtractedColumn(array $extractedColumn, array $currentSample, int $indexToReplace): array
     {
         $diff = array_diff($extractedColumn, $currentSample);
-        $currentSample[$indexToReplace] = current($this->selectSampleData->fromExtractedColumn($diff, 1));
+        $currentSample[$indexToReplace] = current(SelectSampleData::fromExtractedColumn($diff, 1));
 
         return array_pad($currentSample, 3, null);
     }

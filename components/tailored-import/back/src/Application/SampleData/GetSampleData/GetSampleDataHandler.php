@@ -28,8 +28,7 @@ final class GetSampleDataHandler
             $getSampleDataQuery->columnIndex
         );
 
-        $selectSampleData = new SelectSampleData();
-        $sampleData = $selectSampleData->fromExtractedColumn($extractedColumn);
+        $sampleData = SelectSampleData::fromExtractedColumn($extractedColumn);
 
         return GetSampleDataResult::create($sampleData);
     }

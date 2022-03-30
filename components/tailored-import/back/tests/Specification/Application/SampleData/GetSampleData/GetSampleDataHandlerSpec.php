@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\TailoredImport\Application\SampleData;
+namespace Specification\Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataQuery;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
