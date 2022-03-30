@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -16,12 +17,11 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
 {
-    /** @var Client */
-    private $esClient;
+    private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
+    private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    public function __construct(Client $esClient)
+    public function __construct(private Client $esClient, private string $documentType)
     {
-        $this->esClient = $esClient;
     }
 
     /**
@@ -29,12 +29,16 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
      */
     public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
+        if ($this->documentType !== ProductModelInterface::class && $this->documentType !== ProductInterface::class) {
+            throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
+        }
+
         $query = [
             'bool' => [
                 'must' => [
                     [
                         'term' => [
-                            'document_type' => ProductInterface::class
+                            'document_type' => $this->documentType
                         ],
                     ],
                     [
@@ -93,7 +97,10 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
             throw new \Exception('No id not found in source when searching updated products');
         }
 
-        $productId =  intval(str_replace('product_', '', $productData['_source']['id']));
+        $identifierPrexis = $this->documentType === ProductModelInterface::class
+            ? self::PRODUCT_MODEL_IDENTIFIER_PREFIX
+            : self::PRODUCT_IDENTIFIER_PREFIX;
+        $productId =  intval(str_replace($identifierPrexis, '', $productData['_source']['id']));
 
         return new ProductId($productId);
     }
