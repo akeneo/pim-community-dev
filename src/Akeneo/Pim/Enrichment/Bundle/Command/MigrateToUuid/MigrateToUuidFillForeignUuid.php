@@ -58,16 +58,20 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
-        $processedItems = 0;
+
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            $processedItems = 0;
             $logContext->addContext('substep', $tableName);
             while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+                $this->logger->notice(
+                    \sprintf('Fill foreign uuids for table %s', $tableName),
+                    $logContext->toArray()
+                );
                 if (!$context->dryRun()) {
-                    $processedItems += self::BATCH_SIZE;
-                    $this->logger->notice('Foreign uuids in table under process', $logContext->toArray());
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $processedItems += self::BATCH_SIZE;
                     $this->logger->notice(
-                        'Substep done',
+                        \sprintf('Processed rows: %d', $processedItems),
                         $logContext->toArray(['processed_foreign_uuids_count' => $processedItems])
                     );
                 } else {

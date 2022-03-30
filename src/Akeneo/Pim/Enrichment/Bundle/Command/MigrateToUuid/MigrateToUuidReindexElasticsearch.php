@@ -73,9 +73,10 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
                     ]);
                 }
             }
+            $processedItems += \count($productIdentifiers);
             $this->logger->notice(
-                'Substep done',
-                $logContext->toArray(['reindexed_uuids_counter' => $processedItems += \count($productIdentifiers)])
+                \sprintf('Products reindexed: %d', $processedItems),
+                $logContext->toArray(['reindexed_uuids_counter' => $processedItems])
             );
             $productIdentifiers = $this->getProductIdentifiersToIndex();
             if ($context->dryRun()) {
