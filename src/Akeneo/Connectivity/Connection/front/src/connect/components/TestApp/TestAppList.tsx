@@ -28,6 +28,7 @@ export const TestAppList: FC<Props> = ({testApps}) => {
                     id={testApp.id}
                     isConnected={testApp.connected}
                     isDisabled={!isDeveloperModeEnabled}
+                    isPending={false}
                 />,
             ]}
         />

@@ -27,6 +27,7 @@ class ConnectedAppSpec extends ObjectBehavior
             true,
             'Akeneo partner',
             true,
+            false
         );
     }
 
@@ -85,6 +86,25 @@ class ConnectedAppSpec extends ObjectBehavior
         $this->getPartner()->shouldBe('Akeneo partner');
     }
 
+    public function it_could_be_pending(): void
+    {
+        $this->beConstructedWith(
+            '4028c158-d620-4903-9859-958b66a059e2',
+            'Example App',
+            ['Scope1', 'Scope2'],
+            'someConnectionCode',
+            'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
+            'Akeneo',
+            'app_123456abcdef',
+            ['E-commerce', 'print'],
+            true,
+            'Akeneo partner',
+            false,
+            true,
+        );
+        $this->isPending()->shouldReturn(true);
+    }
+
     public function it_is_normalizable(): void
     {
         $this->normalize()->shouldBe([
@@ -99,10 +119,11 @@ class ConnectedAppSpec extends ObjectBehavior
             'certified' => true,
             'partner' => 'Akeneo partner',
             'is_test_app' => true,
+            'is_pending' => false,
         ]);
     }
 
-    public function it_is_not_a_test_app_by_default(): void
+    public function it_is_neither_a_test_app_nor_pending_by_default(): void
     {
         $this->beConstructedWith(
             '4028c158-d620-4903-9859-958b66a059e2',
@@ -129,6 +150,34 @@ class ConnectedAppSpec extends ObjectBehavior
             'certified' => true,
             'partner' => 'Akeneo partner',
             'is_test_app' => false,
+            'is_pending' => false,
+        ]);
+    }
+
+    public function it_updates_description_properties(): void
+    {
+        $updated = $this->withUpdatedDescription(
+            'New Name',
+            'http://example.com/new-logo.png',
+            'New Author',
+            ['new category'],
+            true,
+            'Akeneo Premium Partner',
+        );
+
+        $updated->normalize()->shouldBe([
+            'id' => '4028c158-d620-4903-9859-958b66a059e2',
+            'name' => 'New Name',
+            'scopes' => ['Scope1', 'Scope2'],
+            'connection_code' => 'someConnectionCode',
+            'logo' => 'http://example.com/new-logo.png',
+            'author' => 'New Author',
+            'user_group_name' => 'app_123456abcdef',
+            'categories' => ['new category'],
+            'certified' => true,
+            'partner' => 'Akeneo Premium Partner',
+            'is_test_app' => true,
+            'is_pending' => false,
         ]);
     }
 }

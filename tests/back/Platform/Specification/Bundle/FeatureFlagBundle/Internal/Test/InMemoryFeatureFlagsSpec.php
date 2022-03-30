@@ -1,13 +1,13 @@
 <?php
 
-namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle;
+namespace Specification\Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Registry;
 use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 
-class FeatureFlagsSpec extends ObjectBehavior
+class InMemoryFeatureFlagsSpec extends ObjectBehavior
 {
     function let()
     {
@@ -18,10 +18,18 @@ class FeatureFlagsSpec extends ObjectBehavior
         $this->beConstructedWith($registry);
     }
 
-    function it_tells_if_a_feature_is_enabled_or_not()
+    function it_is_disabled_by_default_when_asking_for_an_existing_feature_flag()
     {
-        $this->isEnabled('foo')->shouldReturn(true);
+        $this->isEnabled('foo')->shouldReturn(false);
         $this->isEnabled('bar')->shouldReturn(false);
+    }
+
+    function it_is_enabled_only_if_explicitly_enable()
+    {
+        $this->enable('bar');
+
+        $this->isEnabled('foo')->shouldReturn(false);
+        $this->isEnabled('bar')->shouldReturn(true);
     }
 
     function it_throws_an_exception_if_the_feature_does_not_exist()

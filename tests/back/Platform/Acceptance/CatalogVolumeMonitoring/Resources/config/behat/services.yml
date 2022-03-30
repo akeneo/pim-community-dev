@@ -203,4 +203,3 @@ services:
         arguments:
             - '@test.catalog_volume_limits.report_context'
             - '@pim_volume_monitoring.persistence.query.average_max_category_levels'
-

@@ -26,6 +26,7 @@ final class ConnectedApp
         private bool $certified = false,
         private ?string $partner = null,
         private bool $isTestApp = false,
+        private bool $isPending = false,
     ) {
     }
 
@@ -90,6 +91,11 @@ final class ConnectedApp
         return $this->isTestApp;
     }
 
+    public function isPending(): bool
+    {
+        return $this->isPending;
+    }
+
     /**
      * @return array{
      *  id: string,
@@ -118,6 +124,34 @@ final class ConnectedApp
             'certified' => $this->certified,
             'partner' => $this->partner,
             'is_test_app' => $this->isTestApp,
+            'is_pending' => $this->isPending,
         ];
+    }
+
+    /**
+     * @param array<string> $categories
+     */
+    public function withUpdatedDescription(
+        string $name,
+        ?string $logo,
+        ?string $author,
+        array $categories = [],
+        bool $certified = false,
+        ?string $partner = null,
+    ): self {
+        return new self(
+            $this->id,
+            $name,
+            $this->scopes,
+            $this->connectionCode,
+            $logo,
+            $author,
+            $this->userGroupName,
+            $categories,
+            $certified,
+            $partner,
+            $this->isTestApp,
+            $this->isPending,
+        );
     }
 }
