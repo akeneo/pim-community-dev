@@ -54,6 +54,8 @@ onboarder:
                     email: Email address
                 no_contributor: There are no contributors yet.
             error: An error occured while loading the supplier.
+            sucess_message: The supplier was successfully updated
+            unknown_error: An error occured while updating the supplier.
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers

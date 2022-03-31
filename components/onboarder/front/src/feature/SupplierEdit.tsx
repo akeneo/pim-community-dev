@@ -1,38 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
-import {useTranslate, PageContent, PageHeader, PimView, UnsavedChanges} from '@akeneo-pim-community/shared';
+import {
+    PageContent,
+    PageHeader,
+    PimView,
+    UnsavedChanges,
+    useTranslate
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
 import {ContributorList} from './components/SupplierEdit/ContributorList';
-import {ContributorEmail} from "./models";
 
 const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
-    const {supplier} = useSupplier(supplierIdentifier);
+    const {
+        supplierCode,
+        supplierLabel,
+        supplierContributors,
+        setSupplierLabel,
+        setSupplierContributors,
+        isSupplierLoaded,
+        saveSupplier,
+        supplierHasChanges,
+    } = useSupplier(supplierIdentifier);
     const history = useHistory();
-    const [supplierLabel, setSupplierLabel] = useState('');
-    const [supplierContributors, setSupplierContributors] = useState<ContributorEmail[]>([]);
 
-    useEffect(() => {
-        if (null !== supplier) {
-            setSupplierLabel(supplier.label);
-            setSupplierContributors(supplier.contributors);
-        }
-    }, [supplier]);
-
-    const supplierHasChanges = () => {
-        if (null !== supplier) {
-            return supplierLabel !== supplier.label || JSON.stringify(supplierContributors) !== JSON.stringify(supplier.contributors);
-        }
-
-        return false;
-    };
-
-    if (!supplier) {
+    if (!isSupplierLoaded) {
         return null;
     }
 
@@ -45,7 +42,7 @@ const SupplierEdit = () => {
                         <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
                             {translate('onboarder.supplier.breadcrumb.suppliers')}
                         </Breadcrumb.Step>
-                        <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
+                        <Breadcrumb.Step>{supplierLabel}</Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
                 <PageHeader.UserActions>
@@ -55,11 +52,11 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={'primary'} onClick={() => {}}>
+                    <Button level={'primary'} onClick={saveSupplier}>
                         {translate('pim_common.save')}
                     </Button>
                 </PageHeader.Actions>
-                <PageHeader.Title>{supplier.label}</PageHeader.Title>
+                <PageHeader.Title>{supplierLabel}</PageHeader.Title>
                 <PageHeader.State>{supplierHasChanges() && <UnsavedChanges />}</PageHeader.State>
             </PageHeader>
             <StyledPageContent>
@@ -74,7 +71,7 @@ const SupplierEdit = () => {
                         {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('configuration') && <Configuration code={supplier.code} label={supplierLabel} setLabel={setSupplierLabel} />}
+                {isCurrent('configuration') && <Configuration code={supplierCode} label={supplierLabel} setLabel={setSupplierLabel} />}
                 {isCurrent('contributors') && <ContributorList contributors={supplierContributors} setContributors={setSupplierContributors} />}
             </StyledPageContent>
         </Container>
