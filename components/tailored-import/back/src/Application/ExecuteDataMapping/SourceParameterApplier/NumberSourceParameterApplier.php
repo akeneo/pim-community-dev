@@ -26,7 +26,10 @@ class NumberSourceParameterApplier implements SourceParameterApplierInterface
             throw new \InvalidArgumentException('Cannot apply Number source parameter on this value');
         }
 
-        // TODO: throw an error if separator different from one configured?
+        if (str_contains($value, self::DEFAULT_DECIMAL_SEPARATOR) && $sourceParameter->getDecimalSeparator() !== self::DEFAULT_DECIMAL_SEPARATOR) {
+            throw new \InvalidArgumentException(sprintf('Unexpected valid decimal separator "%s" on this value', self::DEFAULT_DECIMAL_SEPARATOR));
+        }
+
         return str_replace($sourceParameter->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value);
     }
 
