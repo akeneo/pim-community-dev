@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData;
 
-use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataResult;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\SampleData\ReplaceSampleData;
 
@@ -19,7 +18,7 @@ final class GetRefreshedSampleDataHandler
     ) {
     }
 
-    public function handle(GetRefreshedSampleDataQuery $getRefreshedSampleDataQuery): GetSampleDataResult
+    public function handle(GetRefreshedSampleDataQuery $getRefreshedSampleDataQuery): GetRefreshedSampleDataResult
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getRefreshedSampleDataQuery->fileKey);
 
@@ -32,6 +31,6 @@ final class GetRefreshedSampleDataHandler
         $replaceSampleData = new ReplaceSampleData();
         $sampleData = $replaceSampleData->fromExtractedColumn($extractedColumn, $getRefreshedSampleDataQuery->currentSample, $getRefreshedSampleDataQuery->indexToChange);
 
-        return GetSampleDataResult::create($sampleData);
+        return GetRefreshedSampleDataResult::create($sampleData);
     }
 }
