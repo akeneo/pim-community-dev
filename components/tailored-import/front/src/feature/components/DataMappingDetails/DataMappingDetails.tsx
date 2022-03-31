@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
@@ -43,6 +43,7 @@ const DataMappingDetails = ({
   const translate = useTranslate();
   const sampleDataFetcher = useSampleDataFetcher();
   const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
+  const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
     const column = findColumnByUuid(columns, sources[0]);
@@ -58,18 +59,21 @@ const DataMappingDetails = ({
   };
 
   const handleRefreshSampleData = async (index: number) => {
+    setLoadingSampleData(loadingSampleData => [...loadingSampleData, index]);
     const column = findColumnByUuid(columns, dataMapping.sources[0]);
-    const sampleData =
+    const refreshedData =
       null !== column
         ? await refreshedSampleDataFetcher(
             fileKey,
-            index,
             dataMapping.sample_data,
             column.index,
             fileStructure.sheet_name,
             fileStructure.first_product_row
           )
-        : [];
+        : null;
+
+    const sampleData = [...dataMapping.sample_data.slice(0, index), refreshedData, ...dataMapping.sample_data.slice(index + 1)]
+    setLoadingSampleData([]);
 
     onDataMappingChange({...dataMapping, sample_data: sampleData});
   };
@@ -91,7 +95,7 @@ const DataMappingDetails = ({
           validationErrors={filterErrors(validationErrors, '[sources]')}
           onSourcesChange={handleSourcesChange}
         />
-        <Operations dataMapping={dataMapping} onRefreshSampleData={handleRefreshSampleData} />
+        <Operations dataMapping={dataMapping} loadingSampleData={loadingSampleData} onRefreshSampleData={handleRefreshSampleData} />
       </Container>
     </DataMappingDetailsContainer>
   );

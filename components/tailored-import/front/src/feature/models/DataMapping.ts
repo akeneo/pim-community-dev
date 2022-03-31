@@ -4,12 +4,14 @@ import {Column, ColumnIdentifier} from './Configuration';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
 
+type SampleData = string | null;
+
 type DataMapping = {
   uuid: string;
   target: AttributeTarget | PropertyTarget;
   sources: ColumnIdentifier[];
   operations: [];
-  sample_data: string[];
+  sample_data: SampleData[];
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
@@ -63,7 +65,7 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
   return {...dataMapping, sources: [...dataMapping.sources, column.uuid]};
 };
 
-export type {DataMapping, DataMappingType};
+export type {DataMapping, DataMappingType, SampleData};
 export {
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_BY_DATA_MAPPING,
