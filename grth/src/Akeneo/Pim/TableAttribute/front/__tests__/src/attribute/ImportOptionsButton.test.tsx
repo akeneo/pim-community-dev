@@ -2,9 +2,11 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen, waitFor} from '@testing-library/react';
 import {ImportOptionsButton} from '../../../src/';
+import {mockScroll} from '../../shared/mockScroll';
 
 jest.mock('../../../src/fetchers/AttributeFetcher');
 jest.mock('../../../src/fetchers/AttributeOptionFetcher');
+const scroll = mockScroll();
 
 describe('ImportOptionsButton', () => {
   it('should render the component', () => {
@@ -20,7 +22,8 @@ describe('ImportOptionsButton', () => {
     fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.import_from_existing_attribute'));
     expect(await screen.findByText('Simple Select 1')).toBeInTheDocument();
     expect(await screen.findByText('Simple Select 2')).toBeInTheDocument();
-    expect(await screen.findAllByText('pim_table_attribute.form.attribute.option_count')).toHaveLength(2);
+    expect(await screen.findByText('Simple Select 3')).toBeInTheDocument();
+    expect(await screen.findAllByText('pim_table_attribute.form.attribute.option_count')).toHaveLength(3);
 
     act(() => {
       fireEvent.click(screen.getByText('Simple Select 1'));
@@ -40,5 +43,20 @@ describe('ImportOptionsButton', () => {
         labels: {fr_FR: 'Option 2 French'},
       },
     ]);
+  });
+
+  it('should load next batch of attributes when the user scrolls to the bottom', async () => {
+    renderWithProviders(<ImportOptionsButton onClick={jest.fn()} batchSize={2} />);
+    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.import_from_existing_attribute'));
+
+    expect(await screen.findByText('Simple Select 1')).toBeInTheDocument();
+    expect(screen.getByText('Simple Select 2')).toBeInTheDocument();
+    expect(screen.queryByText('Simple Select 3')).not.toBeInTheDocument();
+
+    act(() => scroll());
+
+    expect(screen.getByText('Simple Select 1')).toBeInTheDocument();
+    expect(screen.getByText('Simple Select 2')).toBeInTheDocument();
+    expect(await screen.findByText('Simple Select 3')).toBeInTheDocument();
   });
 });
