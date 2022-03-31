@@ -1,11 +1,12 @@
 import React from 'react';
 import {DataMapping} from '../../models';
 import styled from 'styled-components';
-import {SectionTitle, Preview, getColor} from 'akeneo-design-system';
+import {IconButton, RefreshIcon, SectionTitle, Preview, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 
 type OperationsProps = {
   dataMapping: DataMapping;
+  onRefreshSampleData: (index: number) => void;
 };
 
 const OperationsContainer = styled.div`
@@ -25,7 +26,7 @@ const Placeholder = styled.div`
   color: ${getColor('grey', 100)};
 `;
 
-const Operations = ({dataMapping}: OperationsProps) => {
+const Operations = ({dataMapping, onRefreshSampleData}: OperationsProps) => {
   const translate = useTranslate();
 
   return (
@@ -38,7 +39,7 @@ const Operations = ({dataMapping}: OperationsProps) => {
       {dataMapping.sample_data.length > 0 && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
           {dataMapping.sample_data.map((sampleData, key) => (
-            <Preview.Row key={key}>
+            <Preview.Row key={key} action={<IconButton icon={<RefreshIcon />} onClick={() => onRefreshSampleData(key)} title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}/>}>
               {sampleData ? (
                 <PreviewContent>{sampleData}</PreviewContent>
               ) : (

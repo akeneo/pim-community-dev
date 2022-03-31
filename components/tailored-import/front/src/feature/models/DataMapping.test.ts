@@ -26,6 +26,7 @@ const attribute: Attribute = {
 };
 
 test('it creates a default data mapping', () => {
+  const columnIdentifier = {uuid: 'columnUuid', index: 0, label: 'identifier'};
   const identifierAttribute: Attribute = {
     code: 'sku',
     type: 'pim_catalog_identifier',
@@ -36,10 +37,41 @@ test('it creates a default data mapping', () => {
     available_locales: [],
   };
 
-  expect(createDefaultDataMapping(identifierAttribute, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
+  expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, [])).toEqual({
     uuid: mockUuid,
     operations: [],
     sample_data: [],
+    sources: ['columnUuid'],
+    target: {
+      action_if_not_empty: 'set',
+      channel: null,
+      code: 'sku',
+      action_if_empty: 'skip',
+      source_parameter: null,
+      locale: null,
+      type: 'attribute',
+    },
+  });
+});
+
+
+test('it creates a default data mapping with sample data', () => {
+  const columnIdentifier = {uuid: 'columnUuid', index: 0, label: 'identifier'};
+  const identifierAttribute: Attribute = {
+    code: 'sku',
+    type: 'pim_catalog_identifier',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  };
+  const sampleData = ['value1', 'value2', 'value3'];
+
+  expect(createDefaultDataMapping(identifierAttribute, columnIdentifier, sampleData)).toEqual({
+    uuid: mockUuid,
+    operations: [],
+    sample_data: sampleData,
     sources: ['columnUuid'],
     target: {
       action_if_not_empty: 'set',

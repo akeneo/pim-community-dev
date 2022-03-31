@@ -7,6 +7,7 @@ import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
 import {useFetchSampleData} from '../../hooks/useFetchSampleData';
+import {useRefreshedSampleDataFetcher} from "../../hooks/useRefreshedSampleDataFetcher";
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -42,26 +43,28 @@ const DataMappingDetails = ({
 }: DataMappingDetailsProps) => {
   const translate = useTranslate();
   const fetchSampleData = useFetchSampleData();
+  const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
-    let sample_data: string[];
     const column = findColumnByUuid(columns, sources[0]);
-    if (sources.length > 0 && null !== column) {
-      sample_data = await fetchSampleData(
-        fileKey,
-        column.index,
-        fileStructure.sheet_name,
-        fileStructure.first_product_row
-      );
-    } else {
-      sample_data = [];
-    }
-    onDataMappingChange({...dataMapping, sources, sample_data});
+    const sampleData = sources.length > 0 && null !== column
+      ? await fetchSampleData(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+      : [];
+    onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };
 
   const handleTargetParametersChange = (target: Target) => {
     onDataMappingChange({...dataMapping, target});
   };
+
+  const handleRefreshSampleData = async (index: number) => {
+    const column = findColumnByUuid(columns, dataMapping.sources[0]);
+    const sampleData = null !== column
+      ? await refreshedSampleDataFetcher(fileKey, index, dataMapping.sample_data, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+      : [];
+
+    onDataMappingChange({...dataMapping, sample_data: sampleData});
+  }
 
   return (
     <DataMappingDetailsContainer>
@@ -80,7 +83,7 @@ const DataMappingDetails = ({
           validationErrors={filterErrors(validationErrors, '[sources]')}
           onSourcesChange={handleSourcesChange}
         />
-        <Operations dataMapping={dataMapping} />
+        <Operations dataMapping={dataMapping} onRefreshSampleData={handleRefreshSampleData}/>
       </Container>
     </DataMappingDetailsContainer>
   );
