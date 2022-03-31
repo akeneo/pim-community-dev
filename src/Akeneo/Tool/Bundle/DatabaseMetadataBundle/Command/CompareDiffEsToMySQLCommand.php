@@ -31,7 +31,7 @@ class CompareDiffEsToMySQLCommand extends Command
     private const EXTENSION = '.jsonl';
 
     protected static $defaultName = 'pimee:migration:diff';
-    protected static $defaultDescription = 'Check before migration between Flexibility to Serenity the consistency of MySQL and Elasticsearch';
+    protected static $defaultDescription = 'Check data consistency between MySQL and Elasticsearch before migrating from Flexibility to Serenity';
 
     private GenericEntityESIndexFinder $searchEs;
 
