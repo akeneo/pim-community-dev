@@ -77,8 +77,8 @@ class CompareDiffEsToMySQLCommand extends Command
             $indexComparisonStatusList[] = $status;
         }
 
-        foreach ($indexComparisonStatusList as $out) {
-            if ($out > 0) {
+        foreach ($indexComparisonStatusList as $comparisonStatus) {
+            if ($comparisonStatus > 0) {
                 return Command::FAILURE;
             }
         }
