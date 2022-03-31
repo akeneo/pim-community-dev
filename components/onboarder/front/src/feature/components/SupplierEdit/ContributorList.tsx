@@ -33,11 +33,15 @@ const ContributorList = ({contributors, setContributors}: Props) => {
       setNewContributors([]);
     };
 
+    const removeContributor = (emailToRemove: ContributorEmail) => {
+      setContributors(contributors.filter((email) => email !== emailToRemove));
+    }
+
     useEffect(() => {
       if ('' !== searchValue) {
         search(searchValue);
       }
-    }, [contributors]);
+    }, [contributors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <TabContainer>
@@ -78,7 +82,7 @@ const ContributorList = ({contributors, setContributors}: Props) => {
                                 <Table.Row key={email} data-testid={email}>
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
-                                        <DeleteIcon />
+                                        <DeleteIcon onClick={() => removeContributor(email)}/>
                                     </DeleteCell>
                                 </Table.Row>
                             ))}
