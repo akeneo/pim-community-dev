@@ -4,7 +4,7 @@ import {useSupplier} from "./useSupplier";
 
 const backendResponse = {
     identifier: "b2d485ef-49c4-45c8-b091-db0243b76055",
-    code: "tes",
+    code: "test",
     label: "supplier test",
     contributors: [
         "aa@aa.aa",
