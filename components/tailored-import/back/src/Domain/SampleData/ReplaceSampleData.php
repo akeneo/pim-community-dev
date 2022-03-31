@@ -14,15 +14,15 @@ final class ReplaceSampleData
     {
         $cleanedExtract = self::removeAlreadyPickedSample($extractedColumn, $currentSample);
         $currentSample[$indexToReplace] = self::extractOneNewNonPickedValue($cleanedExtract);
-        return self::fillBlankValues($currentSample, SelectSampleData::NUMBER_OF_VALUES);
+        return self::fillBlankValues($currentSample);
     }
 
-    private static function fillBlankValues(array $sampleData, int $length): array
+    private static function fillBlankValues(array $sampleData): array
     {
-        return array_pad($sampleData, $length, null);
+        return array_pad($sampleData, SelectSampleData::NUMBER_OF_VALUES, null);
     }
 
-    private static function removeAlreadyPickedSample(array $extractedColumn,array $currentSample): array
+    private static function removeAlreadyPickedSample(array $extractedColumn, array $currentSample): array
     {
         return array_diff($extractedColumn, $currentSample);
     }
