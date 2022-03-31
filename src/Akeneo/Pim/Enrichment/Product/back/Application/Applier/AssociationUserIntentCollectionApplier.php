@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\Association
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
@@ -86,6 +87,16 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
                     $newAssociations
                 );
+            } elseif ($associationUserIntent instanceof ReplaceAssociatedProductModels) {
+                \sort($formerAssociations);
+                $newAssociations = $associationUserIntent->productModelIdentifiers();
+                \sort($newAssociations);
+                if ($newAssociations === $formerAssociations) {
+                    continue;
+                }
+                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
+                    \array_unique($associationUserIntent->productModelIdentifiers())
+                );
             }
         }
 
@@ -123,6 +134,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         } elseif (
             $associationUserIntent instanceof AssociateProductModels
             || $associationUserIntent instanceof DissociateProductModels
+            || $associationUserIntent instanceof ReplaceAssociatedProductModels
         ) {
             return $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] ??
                 $product

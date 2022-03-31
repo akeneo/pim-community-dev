@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
@@ -13,6 +14,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociatePr
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
@@ -24,6 +26,7 @@ use PHPUnit\Framework\Assert;
 class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 {
     private ProductRepositoryInterface $productRepository;
+    private ProductModelRepositoryInterface $productModelRepository;
 
     /**
      * {@inheritdoc}
@@ -179,6 +182,29 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->messageBus->dispatch($command);
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertEmpty($this->getAssociatedProductModelIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_replaces_product_model_associations(): void
+    {
+        $this->createProductModel('product_model_identifier', 'color_variant_accessories', []);
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateProductModels('X_SELL', ['product_model_identifier'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['product_model_identifier'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
+        $this->clearDoctrineUoW();
+
+        $this->createProductModel('other_product_model', 'color_variant_accessories', []);
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new ReplaceAssociatedProductModels('X_SELL', ['other_product_model'])
+        ]);
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['other_product_model'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
     }
 
     /**
