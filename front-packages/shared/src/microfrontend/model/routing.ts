@@ -3,10 +3,10 @@ const createQueryParam = (parameters?: object) => {
 
   const queryParameters = Object.entries(parameters).map(([key, val]) => {
     if (Array.isArray(val)) {
-      return val.map(value => `${key}[]=${decodeURIComponent(value)}`).join('&');
+      return val.map(value => `${key}[]=${value}`).join('&');
     }
 
-    return `${key}=${decodeURIComponent(val)}`;
+    return `${key}=${val}`;
   });
 
   return queryParameters.length > 0 ? '?' + queryParameters.join('&') : '';
