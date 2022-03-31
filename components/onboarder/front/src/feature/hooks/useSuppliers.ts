@@ -12,7 +12,7 @@ export const SUPPLIERS_PER_PAGE = 50;
 
 const useSuppliers = (search: string, page: number): [SupplierRow[], number, () => void] => {
     const [suppliers, setSuppliers] = useState<SupplierRow[]>([]);
-    const [totalNumberOfSuppliers, setTotalNumberOfSuppliers] = useState<number>(0);
+    const [totalNumberOfSuppliers, setTotalNumberOfSuppliers] = useState<number>(page);
     const notify = useNotify();
     const translate = useTranslate();
 
@@ -31,7 +31,7 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
         const responseBody = await response.json();
         setSuppliers(responseBody['suppliers']);
         setTotalNumberOfSuppliers(responseBody['total']);
-    }, [page, search, getSuppliersRoute, translate, notify]);
+    }, [page, search, getSuppliersRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         (async () => {
