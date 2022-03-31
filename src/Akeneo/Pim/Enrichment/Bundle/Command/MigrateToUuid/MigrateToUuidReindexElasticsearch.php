@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\StatusAwareTrait;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 
@@ -57,23 +56,22 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
         $productIdentifiers = $this->getProductIdentifiersToIndex();
         $processedItems = 0;
         while (\count($productIdentifiers) > 0) {
-            $logContext->addContext('substep', 'reindex_product_uuid_batch');
-            if (!$context->dryRun()) {
-                $existingIdentifiers = $this->deleteNonExistingIdentifiers($productIdentifiers);
-                try {
-                    $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers, [
-                        'index_refresh' => Refresh::enable()
-                    ]);
-                } catch (ObjectNotFoundException) {
-                    // handle the case where a product was deleted right after checking for its existence in DB,
-                    // and just before computing the ES projections
-                    $existingIdentifiers = $this->deleteNonExistingIdentifiers($existingIdentifiers);
-                    $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers, [
-                        'index_refresh' => Refresh::enable()
-                    ]);
+            $chunkedIdentifiers = \array_chunk($productIdentifiers, self::BATCH_SIZE, true);
+            foreach ($chunkedIdentifiers as $batch) {
+                $logContext->addContext('substep', 'reindex_product_uuid_batch');
+                if (!$context->dryRun()) {
+                    $existingIdentifiers = $this->deleteNonExistingIdentifiers($batch);
+                    try {
+                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                    } catch (ObjectNotFoundException) {
+                        // handle the case where a product was deleted right after checking for its existence in DB,
+                        // and just before computing the ES projections
+                        $existingIdentifiers = $this->deleteNonExistingIdentifiers($existingIdentifiers);
+                        $this->productIndexer->indexFromProductIdentifiers($existingIdentifiers);
+                    }
                 }
+                $processedItems += \count($batch);
             }
-            $processedItems += \count($productIdentifiers);
             $this->logger->notice(
                 \sprintf('Products reindexed: %d', $processedItems),
                 $logContext->toArray(['reindexed_uuids_counter' => $processedItems])
@@ -109,6 +107,8 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
          * The document to reindex still have the previous id in the product_123 format, with 123 as mysql id.
          * The new documents will have an id like product_1e40-4c55-a415-89c7958b270d, with their uuid.
          */
+        $this->esClient->refreshIndex();
+
         return $this->esClient->search([
             'query' => [
                 'regexp' => [
@@ -117,7 +117,7 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
             ],
             'fields' => ['id', 'identifier'],
             '_source' => false,
-            'size' => self::BATCH_SIZE,
+            'size' => 10000,
         ]);
     }
 
