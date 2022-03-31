@@ -94,6 +94,38 @@ class IntrospectDatabaseCommand extends Command
             $outputContent($line);
         }
 
+        foreach ($this->inspector->getIndexes($dbName) as $row) {
+            $line = \sprintf(
+                "INDEX | %s | %s | %s\n",
+                $row['TABLE_NAME'],
+                $row['INDEX_NAME'],
+                $row['COLUMNS']
+            );
+            $outputContent($line);
+        }
+
+        foreach ($this->inspector->getForeignKeyConstraints($dbName) as $row) {
+            $line = \sprintf(
+                "FOREIGN CONSTRAINT | %s | %s.%s | %s.%s\n",
+                $row['CONSTRAINT_NAME'],
+                \explode('/', $row['FOR_NAME'])[1],
+                $row['FOR_COL_NAME'],
+                \explode('/', $row['REF_NAME'])[1],
+                $row['REF_COL_NAME']
+            );
+            $outputContent($line);
+        }
+
+        foreach ($this->inspector->getUniqueConstraints($dbName) as $row) {
+            $line = \sprintf(
+                "UNIQUE CONSTRAINT | %s | %s | %s\n",
+                $row['CONSTRAINT_NAME'],
+                $row['TABLE_NAME'],
+                $row['COLUMNS']
+            );
+            $outputContent($line);
+        }
+
         if ($jobs) {
             foreach ($this->inspector->getTableColumnValues('akeneo_batch_job_instance', 'label') as $row) {
                 $outputContent(sprintf("VALUE:JOB:%s\n", $row['value']));
