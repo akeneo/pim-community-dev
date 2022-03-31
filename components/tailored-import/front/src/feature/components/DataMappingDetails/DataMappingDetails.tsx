@@ -7,7 +7,7 @@ import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
 import {useFetchSampleData} from '../../hooks/useFetchSampleData';
-import {useRefreshedSampleDataFetcher} from "../../hooks/useRefreshedSampleDataFetcher";
+import {useRefreshedSampleDataFetcher} from '../../hooks/useRefreshedSampleDataFetcher';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -47,9 +47,10 @@ const DataMappingDetails = ({
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
     const column = findColumnByUuid(columns, sources[0]);
-    const sampleData = sources.length > 0 && null !== column
-      ? await fetchSampleData(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
-      : [];
+    const sampleData =
+      sources.length > 0 && null !== column
+        ? await fetchSampleData(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+        : [];
     onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };
 
@@ -59,12 +60,20 @@ const DataMappingDetails = ({
 
   const handleRefreshSampleData = async (index: number) => {
     const column = findColumnByUuid(columns, dataMapping.sources[0]);
-    const sampleData = null !== column
-      ? await refreshedSampleDataFetcher(fileKey, index, dataMapping.sample_data, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
-      : [];
+    const sampleData =
+      null !== column
+        ? await refreshedSampleDataFetcher(
+            fileKey,
+            index,
+            dataMapping.sample_data,
+            column.index,
+            fileStructure.sheet_name,
+            fileStructure.first_product_row
+          )
+        : [];
 
     onDataMappingChange({...dataMapping, sample_data: sampleData});
-  }
+  };
 
   return (
     <DataMappingDetailsContainer>
@@ -83,7 +92,7 @@ const DataMappingDetails = ({
           validationErrors={filterErrors(validationErrors, '[sources]')}
           onSourcesChange={handleSourcesChange}
         />
-        <Operations dataMapping={dataMapping} onRefreshSampleData={handleRefreshSampleData}/>
+        <Operations dataMapping={dataMapping} onRefreshSampleData={handleRefreshSampleData} />
       </Container>
     </DataMappingDetailsContainer>
   );

@@ -16,7 +16,7 @@ import {
   updateDataMapping,
 } from './models';
 import {useFetchers} from './contexts';
-import {useFetchSampleData} from "./hooks/useFetchSampleData";
+import {useFetchSampleData} from './hooks/useFetchSampleData';
 
 const Container = styled.div`
   display: flex;
@@ -53,9 +53,15 @@ const ImportStructureTab = ({
     const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
 
     if (attributeIdentifier) {
-      const sampleData = null !== identifierColumn
-        ? await fetchSampleData(fileKey, identifierColumn.index, fileStructure.sheet_name, fileStructure.first_product_row)
-        : [];
+      const sampleData =
+        null !== identifierColumn
+          ? await fetchSampleData(
+              fileKey,
+              identifierColumn.index,
+              fileStructure.sheet_name,
+              fileStructure.first_product_row
+            )
+          : [];
 
       const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn, sampleData);
 

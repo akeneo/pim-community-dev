@@ -39,7 +39,16 @@ const Operations = ({dataMapping, onRefreshSampleData}: OperationsProps) => {
       {dataMapping.sample_data.length > 0 && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
           {dataMapping.sample_data.map((sampleData, key) => (
-            <Preview.Row key={key} action={<IconButton icon={<RefreshIcon />} onClick={() => onRefreshSampleData(key)} title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}/>}>
+            <Preview.Row
+              key={key}
+              action={
+                <IconButton
+                  icon={<RefreshIcon />}
+                  onClick={() => onRefreshSampleData(key)}
+                  title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}
+                />
+              }
+            >
               {sampleData ? (
                 <PreviewContent>{sampleData}</PreviewContent>
               ) : (

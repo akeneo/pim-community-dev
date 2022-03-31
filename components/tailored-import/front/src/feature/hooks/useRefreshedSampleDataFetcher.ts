@@ -25,7 +25,7 @@ const useRefreshedSampleDataFetcher = (): ((
       column_index: columnIndex,
       sheet_name: sheetName,
       product_line: productLine,
-  });
+    });
 
     return new Promise<string[]>(async (resolve, reject) => {
       const response = await fetch(route, {

@@ -54,7 +54,6 @@ test('it creates a default data mapping', () => {
   });
 });
 
-
 test('it creates a default data mapping with sample data', () => {
   const columnIdentifier = {uuid: 'columnUuid', index: 0, label: 'identifier'};
   const identifierAttribute: Attribute = {
