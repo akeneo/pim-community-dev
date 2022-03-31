@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
-use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -19,47 +13,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
  */
 final class AddProductScoreProperty implements AddAdditionalProductProperties
 {
-    public function __construct(private GetProductScoresQueryInterface $getProductScores)
-    {
+    public function __construct(
+        private AddScoresToProductAndProductModelRows $addScoresToProductAndProductModelRows
+    ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function add(FetchProductAndProductModelRowsParameters $queryParameters, array $rows): array
+    public function add(FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters, array $rows): array
     {
-        if (empty($rows)) {
-            return [];
-        }
-
-        $productIds = [];
-        foreach ($rows as $row) {
-            $productIds[] = new ProductId($row->technicalId());
-        }
-
-        $productScores = $this->getProductScores->byProductIds(ProductIdCollection::fromProductIds($productIds));
-        $channel = new ChannelCode($queryParameters->channelCode());
-        $locale = new LocaleCode($queryParameters->localeCode());
-
-        $rowsWithAdditionalProperty = [];
-        foreach ($rows as $row) {
-            $scoreValue = $this->retrieveProductScore($row->technicalId(), $productScores, $channel, $locale);
-            $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
-            $rowsWithAdditionalProperty[] = $row->addAdditionalProperty($property);
-        }
-
-        return $rowsWithAdditionalProperty;
-    }
-
-    private function retrieveProductScore(int $productId, array $productScores, ChannelCode $channel, LocaleCode $locale): string
-    {
-        if (isset($productScores[$productId])) {
-            $score = $productScores[$productId]->getByChannelAndLocale($channel, $locale);
-            if ($score !== null) {
-                return $score->toLetter();
-            }
-        }
-
-        return 'N/A';
+        return ($this->addScoresToProductAndProductModelRows)(
+            $fetchProductAndProductModelRowsParameters,
+            $rows,
+            'product'
+        );
     }
 }
