@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteAccessTokenQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAccessTokenQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
@@ -36,15 +37,16 @@ class CreateAccessToken implements CreateAccessTokenInterface
         private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
         private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         private GetAccessTokenQueryInterface $getAccessTokenQuery,
+        private DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
     ) {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(string $clientId, string $code): array
+    public function create(string $appId, string $code): array
     {
-        $client = $this->clientProvider->findClientByAppId($clientId);
+        $client = $this->clientProvider->findClientByAppId($appId);
         if (null === $client) {
             throw new \InvalidArgumentException('No client found with the given client id.');
         }
@@ -55,15 +57,17 @@ class CreateAccessToken implements CreateAccessTokenInterface
             throw new \InvalidArgumentException('Unknown authorization code.');
         }
 
-        $scopes = $this->getConnectedAppScopesQuery->execute($clientId);
-        $authorizationScopesList = ScopeList::fromScopes($scopes);
+        $authorizationScopesList = ScopeList::fromScopes($this->getConnectedAppScopesQuery->execute($appId));
+        $scopeString = $authorizationScopesList->toScopeString();
 
-        if (null === $token = $this->getAccessTokenQuery->execute($clientId, $scopes)) {
+        if (null === $token = $this->getAccessTokenQuery->execute($appId, $scopeString)) {
+            $this->deleteAccessTokenQuery->execute($appId);
+
             $token = $this->randomCodeGenerator->generate();
 
-            $appUser = $this->getAppUser($clientId);
+            $appUser = $this->getAppUser($appId);
             /* @phpstan-ignore-next-line */
-            $this->storage->createAccessToken($token, $client, $appUser, null, $authorizationScopesList->toScopeString());
+            $this->storage->createAccessToken($token, $client, $appUser, null, $scopeString);
         }
 
         $this->storage->markAuthCodeAsUsed($code);
@@ -71,15 +75,15 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $accessToken = [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'scope' => $authorizationScopesList->toScopeString()
+            'scope' => $scopeString
         ];
 
-        return $this->appendOpenIdData($authCode, $clientId, $accessToken);
+        return $this->appendOpenIdData($authCode, $appId, $accessToken);
     }
 
-    private function getAppUser(string $clientId): UserInterface
+    private function getAppUser(string $appId): UserInterface
     {
-        $appConfirmation = $this->appConfirmationQuery->execute($clientId);
+        $appConfirmation = $this->appConfirmationQuery->execute($appId);
         $appUserId = $appConfirmation->getUserId();
 
         /** @var UserInterface|null */
@@ -91,7 +95,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         return $appUser;
     }
 
-    private function appendOpenIdData(IOAuth2AuthCode $authCode, string $clientId, array $accessToken): array
+    private function appendOpenIdData(IOAuth2AuthCode $authCode, string $appId, array $accessToken): array
     {
         /** @var UserInterface|mixed */
         $pimUser = $authCode->getData();
@@ -100,13 +104,13 @@ class CreateAccessToken implements CreateAccessTokenInterface
         }
 
         $authenticationScopes = ScopeList::fromScopes(
-            $this->getUserConsentedAuthenticationScopesQuery->execute($pimUser->getId(), $clientId)
+            $this->getUserConsentedAuthenticationScopesQuery->execute($pimUser->getId(), $appId)
         );
 
         if ($authenticationScopes->hasScope(AuthenticationScope::SCOPE_OPENID)) {
-            $ppid = $this->getUserConsentedAuthenticationUuidQuery->execute($pimUser->getId(), $clientId);
+            $ppid = $this->getUserConsentedAuthenticationUuidQuery->execute($pimUser->getId(), $appId);
             $accessToken['id_token'] = $this->createJsonWebToken->create(
-                $clientId,
+                $appId,
                 $ppid,
                 $authenticationScopes,
                 $pimUser->getFirstName(),

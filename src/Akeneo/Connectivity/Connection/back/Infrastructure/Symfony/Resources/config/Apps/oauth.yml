@@ -23,6 +23,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationUuidQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAccessTokenQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteAccessTokenQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:

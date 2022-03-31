@@ -42,7 +42,7 @@ class DeleteAccessTokenQueryIntegration extends TestCase
 
         $deleteCount = $this->query->execute('app_id');
 
-         Assert::assertEquals(1, $deleteCount, 'One row should be deleted');
+        Assert::assertEquals(1, $deleteCount, 'One row should be deleted');
     }
 
     public function test_it_does_nothing_on_unknown_app_id(): void
