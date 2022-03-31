@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -11,10 +12,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
@@ -204,5 +208,112 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_product_model'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function getAssociatedProductModelIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProductModels('X_SELL')
+            ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())
+            ?->toArray() ?? [];
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_associate_groups(): void
+    {
+        $this->createGroup('associated_group_code');
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateGroups('X_SELL', ['associated_group_code'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_update_a_product_with_group_disassociation(): void
+    {
+        $this->createGroup('associated_group_code');
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateGroups('X_SELL', ['associated_group_code'])
+        ]);
+
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
+        $this->clearDoctrineUoW();
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new DissociateGroups('X_SELL', ['associated_group_code'])
+        ]);
+        $this->messageBus->dispatch($command);
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertEmpty($this->getAssociatedGroupIdentifiers($updatedProduct));
+    }
+
+    /** @test */
+    public function it_replaces_group_associations(): void
+    {
+        $this->createGroup('associated_group_code');
+        $this->createGroup('other_associated_group_code');
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new AssociateGroups('X_SELL', ['associated_group_code'])
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
+        $this->clearDoctrineUoW();
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new ReplaceAssociatedGroups('X_SELL', ['other_associated_group_code'])
+        ]);
+        $this->messageBus->dispatch($command);
+        $this->clearDoctrineUoW();
+        $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertSame(['other_associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
+    }
+
+    private function createGroup(string $groupCode): GroupInterface
+    {
+        $group = $this->get('pim_catalog.factory.group')->createGroup('RELATED');
+        $this->get('pim_catalog.updater.group')->update($group, [
+            'code' => $groupCode
+        ]);
+
+        $errors = $this->get('validator')->validate($group);
+        if (0 !== $errors->count()) {
+            throw new \Exception(sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
+        }
+
+        $this->get('pim_catalog.saver.group')->save($group);
+
+        return $group;
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getAssociatedProductIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProducts('X_SELL')
+            ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
+            ?->toArray() ?? [];
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getAssociatedGroupIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedGroups('X_SELL')
+                ?->map(fn (GroupInterface $group): string => (string) $group->getCode())
+                ?->toArray() ?? [];
     }
 }

@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -104,6 +108,35 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                         \array_merge($nonViewableProductModels, $associationUserIntent->productModelCodes())
                     )
                 );
+            } elseif ($associationUserIntent instanceof AssociateGroups) {
+                if (\count(\array_diff($associationUserIntent->groupCodes(), $formerAssociations)) === 0) {
+                    continue;
+                }
+                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
+                    \array_unique(
+                        \array_merge($formerAssociations, $associationUserIntent->groupCodes())
+                    )
+                );
+            } elseif ($associationUserIntent instanceof DissociateGroups) {
+                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->groupCodes());
+                if (\count($newAssociations) === \count($formerAssociations)) {
+                    continue;
+                }
+
+                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
+                    $newAssociations
+                );
+            } elseif ($associationUserIntent instanceof ReplaceAssociatedGroups) {
+                \sort($formerAssociations);
+                $newAssociations = $associationUserIntent->groupCodes();
+                \sort($newAssociations);
+                if ($newAssociations === $formerAssociations) {
+                    continue;
+                }
+
+                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
+                    \array_unique($newAssociations)
+                );
             }
         }
 
@@ -147,6 +180,15 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 $product
                     ->getAssociatedProductModels($associationUserIntent->associationType())
                     ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [];
+        } elseif (
+            $associationUserIntent instanceof AssociateGroups
+            || $associationUserIntent instanceof DissociateGroups
+            || $associationUserIntent instanceof ReplaceAssociatedGroups
+        ) {
+            return $normalizedAssociations[$associationUserIntent->associationType()]['groups'] ??
+                $product
+                    ->getAssociatedGroups($associationUserIntent->associationType())
+                    ?->map(fn (GroupInterface $group): string => $group->getCode())?->toArray() ?? [];
         }
 
         throw new \LogicException('Not implemented');

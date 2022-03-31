@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
@@ -409,6 +411,48 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
             ->willReturn(['foo', 'bar']);
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_applies_associate_groups(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+        GroupInterface $group,
+    ) {
+        $group->getCode()->willReturn('group1');
+
+        $product->getAssociatedGroups('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$group->getWrappedObject()])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new AssociateGroups('X_SELL', ['group2', 'group3'])
+        ]);
+
+        $productUpdater->update($product, ['associations' => [
+            'X_SELL' => [
+                'groups' => ['group1', 'group2', 'group3'],
+            ]
+        ]])->shouldBeCalledOnce();
+
+        $this->apply($collection, $product, 42);
+    }
+
+    function it_does_nothing_if_groups_are_already_associated(
+        ObjectUpdaterInterface $productUpdater,
+        ProductInterface $product,
+        GroupInterface $group,
+    ) {
+        $group->getCode()->willReturn('group1');
+
+        $product->getAssociatedGroups('X_SELL')->shouldBeCalledOnce()->willReturn(
+            new ArrayCollection([$group->getWrappedObject()])
+        );
+        $collection = new AssociationUserIntentCollection([
+            new AssociateGroups('X_SELL', ['group1']),
+        ]);
+
+        $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
+
         $this->apply($collection, $product, 42);
     }
 }
