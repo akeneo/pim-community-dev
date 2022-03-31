@@ -3,20 +3,20 @@ import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-
 import {ContributorEmail, Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
-    const [supplier, setSupplier] = useState<Supplier | null>(null);
     const getSupplierRoute = useRoute('onboarder_serenity_supplier_edit', {identifier});
     const saveSupplierRoute = useRoute('onboarder_serenity_supplier_edit', {identifier});
-    const [supplierLabel, setSupplierLabel] = useState('');
-    const [supplierContributors, setSupplierContributors] = useState<ContributorEmail[]>([]);
+    const [originalSupplier, setOriginalSupplier] = useState<Supplier | null>(null);
+    const [supplier, setSupplier] = useState<Supplier | null>(null);
     const notify = useNotify();
     const translate = useTranslate();
 
-    useEffect(() => {
-        if (null !== supplier) {
-            setSupplierLabel(supplier.label);
-            setSupplierContributors(supplier.contributors);
-        }
-    }, [supplier]);
+    const setSupplierLabel = (newLabel: string) => {
+        setSupplier(supplier !== null ? {...supplier, label: newLabel} : null);
+    };
+
+    const setSupplierContributors = (newContributors: ContributorEmail[]) => {
+        setSupplier(supplier !== null ? {...supplier, contributors: newContributors} : null);
+    };
 
     const saveSupplier = async() => {
         const response = await fetch(saveSupplierRoute, {
@@ -25,7 +25,7 @@ const useSupplier = (identifier: string) => {
                 ['Content-type', 'application/json'],
                 ['X-Requested-With', 'XMLHttpRequest'],
             ],
-            body: JSON.stringify({label: supplierLabel, contributorEmails: supplierContributors}),
+            body: JSON.stringify(supplier),
         });
 
         if (!response.ok) {
@@ -45,18 +45,18 @@ const useSupplier = (identifier: string) => {
             return;
         }
 
-        setSupplier(await response.json());
+        const responseBody = await response.json();
+        setOriginalSupplier(responseBody);
+        setSupplier(responseBody);
     }
 
     const supplierHasChanges = () => {
         if (null !== supplier) {
-            return supplierLabel !== supplier.label || JSON.stringify(supplierContributors) !== JSON.stringify(supplier.contributors);
+            return JSON.stringify(supplier) !== JSON.stringify(originalSupplier);
         }
 
         return false;
     };
-
-    const isSupplierLoaded = () => supplier !== null;
 
     useEffect(() => {
         (async () => {
@@ -65,14 +65,11 @@ const useSupplier = (identifier: string) => {
     }, [getSupplierRoute]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {
-        supplierCode: null !== supplier ? supplier.code : '',
-        supplierLabel,
+        supplier,
         setSupplierLabel,
-        supplierContributors,
         setSupplierContributors,
         supplierHasChanges,
         saveSupplier,
-        isSupplierLoaded
     };
 };
 

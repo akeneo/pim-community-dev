@@ -21,13 +21,13 @@ final class SupplierUpdate
     {
         $requestContent = json_decode($request->getContent(), true);
 
-        if (!isset($requestContent['label']) && !isset($requestContent['contributorEmails'])){
+        if (!isset($requestContent['label']) && !isset($requestContent['contributors'])){
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
         try {
             ($this->updateSupplierHandler)(
-                new UpdateSupplier($identifier, $requestContent['label'], $requestContent['contributorEmails'])
+                new UpdateSupplier($identifier, $requestContent['label'], $requestContent['contributors'])
             );
         } catch (InvalidDataException $e) {
             return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);

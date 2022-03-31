@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Supplier} from "../../models";
 
 type Props = {
-    code: string;
-    label: string;
+    supplier: Supplier;
     setLabel: (value: string) => void;
 };
 
-const Configuration = ({code, label, setLabel}: Props) => {
+const Configuration = ({supplier, setLabel}: Props) => {
     const translate = useTranslate();
 
     return (
@@ -18,10 +18,10 @@ const Configuration = ({code, label, setLabel}: Props) => {
                 <SectionTitle.Title>{translate('pim_common.general_properties')}</SectionTitle.Title>
             </SectionTitle>
             <Field label={translate('onboarder.supplier.supplier_edit.configuration_form.code')}>
-                <TextInput readOnly value={code} />
+                <TextInput readOnly value={supplier.code} />
             </Field>
             <Field label={translate('onboarder.supplier.supplier_edit.configuration_form.label')}>
-                <TextInput onChange={setLabel} value={label} />
+                <TextInput onChange={setLabel} value={supplier.label} />
             </Field>
         </TabContainer>
     );

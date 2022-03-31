@@ -2,20 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {useTranslate, useDebounceCallback} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeleteIcon, Field, Helper, Search, Table, TagInput, Button} from 'akeneo-design-system';
-import {ContributorEmail} from '../../models';
+import {ContributorEmail, Supplier} from '../../models';
 import {useFilteredContributors} from '../../hooks';
 import {EmptyContributorList} from '../EmptyContributorList';
 
 type Props = {
-    contributors: ContributorEmail[];
+    supplier: Supplier;
     setContributors: (value: ContributorEmail[]) => void;
 };
 
-const ContributorList = ({contributors, setContributors}: Props) => {
+const ContributorList = ({supplier, setContributors}: Props) => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const [newContributors, setNewContributors] = useState<string[]>([]);
-    const {filteredContributors, search} = useFilteredContributors(contributors);
+    const {filteredContributors, search} = useFilteredContributors(supplier.contributors);
 
     const debouncedSearch = useDebounceCallback(search, 300);
 
@@ -29,12 +29,12 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     };
 
     const onClickAdd = () => {
-      setContributors(contributors.concat(newContributors));
+      setContributors(supplier.contributors.concat(newContributors));
       setNewContributors([]);
     };
 
     const removeContributor = (emailToRemove: ContributorEmail) => {
-      setContributors(contributors.filter((email) => email !== emailToRemove));
+      setContributors(supplier.contributors.filter((email) => email !== emailToRemove));
     }
 
     const isValidEmail = (email: string) => {
@@ -46,7 +46,7 @@ const ContributorList = ({contributors, setContributors}: Props) => {
       if ('' !== searchValue) {
         search(searchValue);
       }
-    }, [contributors]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [supplier.contributors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <TabContainer>

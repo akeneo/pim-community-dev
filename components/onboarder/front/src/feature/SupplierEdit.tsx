@@ -18,18 +18,15 @@ const SupplierEdit = () => {
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
     const {
-        supplierCode,
-        supplierLabel,
-        supplierContributors,
+        supplier,
         setSupplierLabel,
         setSupplierContributors,
-        isSupplierLoaded,
         saveSupplier,
         supplierHasChanges,
     } = useSupplier(supplierIdentifier);
     const history = useHistory();
 
-    if (!isSupplierLoaded) {
+    if (supplier === null) {
         return null;
     }
 
@@ -42,7 +39,7 @@ const SupplierEdit = () => {
                         <Breadcrumb.Step href={history.createHref({pathname: '/'})}>
                             {translate('onboarder.supplier.breadcrumb.suppliers')}
                         </Breadcrumb.Step>
-                        <Breadcrumb.Step>{supplierLabel}</Breadcrumb.Step>
+                        <Breadcrumb.Step>{supplier.label}</Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
                 <PageHeader.UserActions>
@@ -56,7 +53,7 @@ const SupplierEdit = () => {
                         {translate('pim_common.save')}
                     </Button>
                 </PageHeader.Actions>
-                <PageHeader.Title>{supplierLabel}</PageHeader.Title>
+                <PageHeader.Title>{supplier.label}</PageHeader.Title>
                 <PageHeader.State>{supplierHasChanges() && <UnsavedChanges />}</PageHeader.State>
             </PageHeader>
             <StyledPageContent>
@@ -71,8 +68,8 @@ const SupplierEdit = () => {
                         {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('configuration') && <Configuration code={supplierCode} label={supplierLabel} setLabel={setSupplierLabel} />}
-                {isCurrent('contributors') && <ContributorList contributors={supplierContributors} setContributors={setSupplierContributors} />}
+                {isCurrent('configuration') && <Configuration supplier={supplier} setLabel={setSupplierLabel} />}
+                {isCurrent('contributors') && <ContributorList supplier={supplier} setContributors={setSupplierContributors} />}
             </StyledPageContent>
         </Container>
     );
