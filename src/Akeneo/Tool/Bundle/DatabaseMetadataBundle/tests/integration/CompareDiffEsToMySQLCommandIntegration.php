@@ -9,7 +9,6 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
-
 use Elasticsearch\ClientBuilder;
 use PHPUnit\Framework\Assert;
 

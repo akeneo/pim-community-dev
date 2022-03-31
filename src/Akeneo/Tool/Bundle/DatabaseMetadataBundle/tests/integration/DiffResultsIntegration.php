@@ -5,7 +5,6 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\MysqlSyncReport;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Service\DiffResults;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\Resources\IndexDatasResults;
-
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query;
 
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
-
 use Traversable;
 
 /**

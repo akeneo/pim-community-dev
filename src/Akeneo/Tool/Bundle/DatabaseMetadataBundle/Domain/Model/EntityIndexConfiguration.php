@@ -15,9 +15,9 @@ use Closure;
  */
 class EntityIndexConfiguration
 {
-    public ?string $dateFieldName = null;
-    public ?Closure $dataProcessing = null;
-    public ?string  $filterFieldName = null;
+    private ?string $dateFieldName = null;
+    private ?Closure $dataProcessing = null;
+    private ?string  $filterFieldName = null;
 
     private function __construct(
         private array    $columnsName,
@@ -61,10 +61,9 @@ class EntityIndexConfiguration
         return $this->dateFieldName;
     }
 
-    public function setDateFieldName(?string $dateFieldName): EntityIndexConfiguration
+    public function setDateFieldName(?string $dateFieldName): void
     {
         $this->dateFieldName = $dateFieldName;
-        return $this;
     }
 
     public function getDataProcessing(): ?Closure
@@ -72,10 +71,9 @@ class EntityIndexConfiguration
         return $this->dataProcessing;
     }
 
-    public function setDataProcessing(?Closure $dataProcessing): EntityIndexConfiguration
+    public function setDataProcessing(?Closure $dataProcessing): void
     {
         $this->dataProcessing = $dataProcessing;
-        return $this;
     }
 
     public function getFilterFieldName(): ?string
@@ -83,9 +81,8 @@ class EntityIndexConfiguration
         return $this->filterFieldName;
     }
 
-    public function setFilterFieldName(?string $filterFieldName): EntityIndexConfiguration
+    public function setFilterFieldName(?string $filterFieldName): void
     {
         $this->filterFieldName = $filterFieldName;
-        return $this;
     }
 }

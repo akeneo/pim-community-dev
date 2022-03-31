@@ -51,7 +51,7 @@ services:
         class: 'Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\CompareDiffEsToMySQLCommand'
         arguments:
             - '@Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder'
-            - '%index_hosts%'
+            - ['%index_hosts%']
             - '@monolog.logger'
             - '%kernel.cache_dir%'
             - '@Akeneo\Platform\Bundle\FrameworkBundle\Logging\ContextLogProcessor'

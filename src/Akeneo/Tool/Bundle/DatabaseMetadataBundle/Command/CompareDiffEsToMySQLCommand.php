@@ -9,8 +9,6 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfigurat
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Service\DiffResults;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
-
-use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
 use Jfcherng\Diff\DiffHelper;
 use Psr\Log\LoggerInterface;
@@ -132,6 +130,6 @@ class CompareDiffEsToMySQLCommand extends Command
 
     public function initFilename(string $folder, $sql, int|string $indexName): string
     {
-return $folder . '/' . $sql->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
+        return $folder . '/' . $sql->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
     }
 }

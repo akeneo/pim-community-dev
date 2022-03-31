@@ -3,7 +3,6 @@
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\Unit;
 
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
-
 use DateTime;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;

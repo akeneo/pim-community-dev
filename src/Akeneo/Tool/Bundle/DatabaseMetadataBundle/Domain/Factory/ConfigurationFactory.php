@@ -55,7 +55,7 @@ final class ConfigurationFactory
         );
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromIso());
-        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class, '\\').'"');
+        $productEs->setFilterFieldName(sprintf('document_type="%s"', addcslashes(ProductInterface::class, '\\')));
         //PRODUCT_MODEL
         $productModelMySql = EntityIndexConfiguration::create(
             ['CONCAT("product_model_",id) AS id', 'updated'],
@@ -73,7 +73,7 @@ final class ConfigurationFactory
         );
         $productModelEs->setDateFieldName('updated');
         $productModelEs->setDataProcessing(DateTimeFormat::formatFromIso());
-        $productModelEs->setFilterFieldName('document_type="'.addcslashes(ProductModelInterface::class, '\\').'"');
+        $productModelEs->setFilterFieldName(sprintf('document_type="%s"', addcslashes(ProductModelInterface::class, '\\')));
         //PRODUCT_PROPOSAL
         $productProposalMySql = EntityIndexConfiguration::create(
             ['product_id'],

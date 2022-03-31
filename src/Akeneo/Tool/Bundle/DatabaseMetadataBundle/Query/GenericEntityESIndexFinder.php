@@ -5,7 +5,6 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query;
 
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
-
 use Traversable;
 
 /**
