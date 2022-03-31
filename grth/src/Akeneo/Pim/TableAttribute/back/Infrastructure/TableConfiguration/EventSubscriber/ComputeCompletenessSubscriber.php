@@ -78,6 +78,7 @@ class ComputeCompletenessSubscriber implements EventSubscriberInterface
         ];
         $user = $this->tokenStorage->getToken()->getUser();
         $this->jobLauncher->launch($this->getOrCreateJobInstance(), $user, $configuration);
+        $this->tableAttributesToCompute = [];
     }
 
     private function getOrCreateJobInstance(): JobInstance
