@@ -134,7 +134,6 @@ class CompareDiffEsToMySQLCommand extends Command
 
     public function initFilename(string $folder, $sql, int|string $indexName): string
     {
-        $filename = $folder . '/' . $sql->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
-        return $filename;
+return $folder . '/' . $sql->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
     }
 }
