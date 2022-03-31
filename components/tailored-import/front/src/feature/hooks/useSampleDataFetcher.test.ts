@@ -1,4 +1,4 @@
-import {useFetchSampleData} from './useFetchSampleData';
+import {useSampleDataFetcher} from './useSampleDataFetcher';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 
 test('it try to fetch sample data', async () => {
@@ -8,10 +8,10 @@ test('it try to fetch sample data', async () => {
     json: async () => response,
   }));
 
-  const {result} = renderHookWithProviders(() => useFetchSampleData());
-  const fetchSampleData = result.current;
+  const {result} = renderHookWithProviders(() => useSampleDataFetcher());
+  const sampleDataFetcher = result.current;
 
-  await fetchSampleData('/file_key', 2, 'sheet_1', 2);
+  await sampleDataFetcher('/file_key', 2, 'sheet_1', 2);
 
   expect(global.fetch).toBeCalledWith('pimee_tailored_import_get_sample_data_action', {
     headers: {

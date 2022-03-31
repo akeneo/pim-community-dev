@@ -1,6 +1,6 @@
 import {useRouter} from '@akeneo-pim-community/shared';
 
-const useFetchSampleData = (): ((
+const useSampleDataFetcher = (): ((
   file_key: string,
   column_index: number,
   sheet_name: string | null,
@@ -39,4 +39,4 @@ const useFetchSampleData = (): ((
   };
 };
 
-export {useFetchSampleData};
+export {useSampleDataFetcher};

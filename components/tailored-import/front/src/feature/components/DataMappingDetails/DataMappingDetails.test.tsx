@@ -90,8 +90,8 @@ jest.mock('./SourceDropdown', () => ({
   ),
 }));
 
-jest.mock('../../hooks/useFetchSampleData', () => ({
-  useFetchSampleData: () => async () => {
+jest.mock('../../hooks/useSampleDataFetcher', () => ({
+  useSampleDataFetcher: () => async () => {
     return ['product_1', 'product_2', 'product_3'];
   },
 }));

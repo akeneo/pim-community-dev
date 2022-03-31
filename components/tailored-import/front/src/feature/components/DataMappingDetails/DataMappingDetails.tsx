@@ -6,7 +6,7 @@ import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, findColumn
 import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
-import {useFetchSampleData, useRefreshedSampleDataFetcher} from '../../hooks';
+import {useSampleDataFetcher, useRefreshedSampleDataFetcher} from '../../hooks';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -41,14 +41,14 @@ const DataMappingDetails = ({
   onDataMappingChange,
 }: DataMappingDetailsProps) => {
   const translate = useTranslate();
-  const fetchSampleData = useFetchSampleData();
+  const sampleDataFetcher = useSampleDataFetcher();
   const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
     const column = findColumnByUuid(columns, sources[0]);
     const sampleData =
       sources.length > 0 && null !== column
-        ? await fetchSampleData(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+        ? await sampleDataFetcher(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
         : [];
     onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };

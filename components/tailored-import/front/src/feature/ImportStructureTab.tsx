@@ -16,7 +16,7 @@ import {
   updateDataMapping,
 } from './models';
 import {useFetchers} from './contexts';
-import {useFetchSampleData} from './hooks';
+import {useSampleDataFetcher} from './hooks';
 
 const Container = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ const ImportStructureTab = ({
       dataMapping => dataMapping.uuid === selectedDataMappingUuid
     ) ?? null;
   const attributeFetcher = useFetchers().attribute;
-  const fetchSampleData = useFetchSampleData();
+  const sampleDataFetcher = useSampleDataFetcher();
 
   const handleFileStructureInitialized = async (
     fileKey: string,
@@ -55,7 +55,7 @@ const ImportStructureTab = ({
     if (attributeIdentifier) {
       const sampleData =
         null !== identifierColumn
-          ? await fetchSampleData(
+          ? await sampleDataFetcher(
               fileKey,
               identifierColumn.index,
               fileStructure.sheet_name,
