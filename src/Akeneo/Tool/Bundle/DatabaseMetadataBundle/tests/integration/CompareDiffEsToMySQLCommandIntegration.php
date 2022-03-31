@@ -111,13 +111,15 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     public function configProviderEsWithoutDate(): array
     {
-        $productProposalEs = EntityIndexConfiguration::create(
-            ['id'],
-            'akeneo_pim_product_proposal_test',
-            'id',
-            'es');
         return [
-            'es' => [$productProposalEs]
+            'es' => [
+                EntityIndexConfiguration::create(
+                    ['id'],
+                    'akeneo_pim_product_proposal_test',
+                    'id',
+                    'es'
+                )
+            ]
         ];
     }
 
