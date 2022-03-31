@@ -12,9 +12,23 @@ final class ReplaceSampleData
 {
     public function fromExtractedColumn(array $extractedColumn, array $currentSample, int $indexToReplace): array
     {
-        $diff = array_diff($extractedColumn, $currentSample);
-        $currentSample[$indexToReplace] = current(SelectSampleData::fromExtractedColumn($diff, 1));
+        $cleanedExtract = self::removeAlreadyPickedSample($extractedColumn, $currentSample);
+        $currentSample[$indexToReplace] = self::extractOneNewNonPickedValue($cleanedExtract);
+        return self::fillBlankValues($currentSample, SelectSampleData::NUMBER_OF_VALUES);
+    }
 
-        return array_pad($currentSample, 3, null);
+    private static function fillBlankValues(array $sampleData, int $length): array
+    {
+        return array_pad($sampleData, $length, null);
+    }
+
+    private static function removeAlreadyPickedSample(array $extractedColumn,array $currentSample): array
+    {
+        return array_diff($extractedColumn, $currentSample);
+    }
+
+    private static function extractOneNewNonPickedValue(array $cleanedExtract): array
+    {
+        return current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
     }
 }

@@ -12,7 +12,7 @@ final class SelectSampleData
 {
     public const NUMBER_OF_VALUES = 3;
 
-    public static function fromExtractedColumn(array $extractedColumn, ?int $length = SelectSampleData::NUMBER_OF_VALUES): array
+    public static function fromExtractedColumn(array $extractedColumn, int $length = SelectSampleData::NUMBER_OF_VALUES): array
     {
         $reducedValue = self::filterUniqueValues($extractedColumn);
         $sampleData = self::pickRandomValues($reducedValue, $length);

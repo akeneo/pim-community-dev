@@ -36,7 +36,9 @@ final class GetRefreshedSampleDataAction
             null === $request->get('sheet_name') ||
             null === $request->get('product_line')
         ) {
-            throw new \HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
+            throw new \HttpInvalidParamException(
+                'missing or null params, required params are "index_to_change", "current_sample", "file_key", "column_index", "sheet_name", "product_line"'
+            );
         }
 
         $query = new GetRefreshedSampleDataQuery();
