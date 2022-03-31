@@ -35,15 +35,13 @@ class CompareDiffEsToMySQLCommand extends Command
     protected static $defaultName = 'pimee:migration:diff';
     protected static $defaultDescription = 'Check before migration between Flexibility to Serenity the consistency of MySQL and Elasticsearch';
 
-    private array $hosts;
-    private string $storeFiles;
     private GenericEntityESIndexFinder $searchEs;
 
     public function __construct(
         private GenericEntityMySQLIndexFinder $searchMySql,
-        $hosts,
+        private array $hosts,
         private LoggerInterface $logger,
-        $storeFiles,
+        private string $storeFiles,
         private ContextLogProcessor $contextLogProcessor
     ) {
         parent::__construct(self::$defaultName);
