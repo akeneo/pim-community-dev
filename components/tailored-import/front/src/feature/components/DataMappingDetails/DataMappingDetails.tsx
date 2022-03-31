@@ -6,8 +6,7 @@ import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, findColumn
 import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
-import {useFetchSampleData} from '../../hooks/useFetchSampleData';
-import {useRefreshedSampleDataFetcher} from '../../hooks/useRefreshedSampleDataFetcher';
+import {useFetchSampleData, useRefreshedSampleDataFetcher} from '../../hooks';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;

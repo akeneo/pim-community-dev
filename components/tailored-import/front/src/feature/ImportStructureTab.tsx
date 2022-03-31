@@ -16,7 +16,7 @@ import {
   updateDataMapping,
 } from './models';
 import {useFetchers} from './contexts';
-import {useFetchSampleData} from './hooks/useFetchSampleData';
+import {useFetchSampleData} from './hooks';
 
 const Container = styled.div`
   display: flex;
