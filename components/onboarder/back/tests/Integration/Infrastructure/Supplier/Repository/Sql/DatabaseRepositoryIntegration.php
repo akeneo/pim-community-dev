@@ -51,6 +51,10 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             'Supplier label',
             [],
         ));
+        $supplierBeforeUpdate = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
+        $updatedAtBeforeUpdate = $supplierBeforeUpdate['updated_at'];
+        sleep(1);
+
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
@@ -59,10 +63,12 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
+        $updatedAtAfterUpdate = $supplier['updated_at'];
 
         static::assertSame('new_supplier_code', $supplier['code']);
         static::assertSame('New supplier label', $supplier['label']);
         $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f02', 2);
+        static::assertGreaterThan($updatedAtBeforeUpdate, $updatedAtAfterUpdate);
     }
 
     /** @test */
@@ -139,7 +145,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     private function findSupplier(string $identifier): ?array
     {
         $sql = <<<SQL
-            SELECT code, label
+            SELECT code, label, updated_at
             FROM `akeneo_onboarder_serenity_supplier`
             WHERE identifier = :identifier
         SQL;

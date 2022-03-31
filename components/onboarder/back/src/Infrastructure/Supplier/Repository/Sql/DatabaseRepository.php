@@ -17,8 +17,8 @@ final class DatabaseRepository implements Supplier\Repository
     public function save(Supplier\Model\Supplier $supplier): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
-            VALUES (:identifier, :code, :label)
+            REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label, updated_at)
+            VALUES (:identifier, :code, :label, :updatedAt)
         SQL;
 
         $this->connection->executeStatement(
@@ -27,6 +27,7 @@ final class DatabaseRepository implements Supplier\Repository
                 'identifier' => $supplier->identifier(),
                 'code' => $supplier->code(),
                 'label' => $supplier->label(),
+                'updatedAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
             ]
         );
 

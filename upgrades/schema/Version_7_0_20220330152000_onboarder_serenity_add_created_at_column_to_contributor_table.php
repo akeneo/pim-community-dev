@@ -7,6 +7,9 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
+/**
+ * This migration adds created_at column to the Onboarder Serenity contributor table
+ */
 final class Version_7_0_20220330152000_onboarder_serenity_add_created_at_column_to_contributor_table extends AbstractMigration
 {
     private const TABLE_NAME = 'akeneo_onboarder_serenity_supplier_contributor';
