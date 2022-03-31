@@ -19,6 +19,12 @@ final class DictionaryWordSpec extends ObjectBehavior
         $this->__toString()->shouldReturn('nätvøerkstäckningsæområde');
     }
 
+    public function it_constructs_with_one_dot_separating_two_words()
+    {
+        $this->beConstructedWith('akeneo.com');
+        $this->__toString()->shouldReturn('akeneo.com');
+    }
+
     public function it_accepts_hyphens()
     {
         $this->beConstructedWith('coca-cola');
@@ -40,6 +46,9 @@ final class DictionaryWordSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
 
         $this->beConstructedWith('!?*$#');
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+
+        $this->beConstructedWith('akeneo.ziggy.com');
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }
