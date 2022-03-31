@@ -54,6 +54,8 @@ akeneo.tailored_import:
           comma: Comma (,)
           dot: Dot (.)
           arabic_comma: Arabic decimal separator (٫)
+        measurement_unit:
+          title: Unit
   form:
     job_instance:
       tab:

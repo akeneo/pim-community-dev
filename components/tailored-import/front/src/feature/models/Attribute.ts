@@ -9,6 +9,7 @@ type Attribute = {
   is_locale_specific: boolean;
   available_locales: LocaleCode[];
   metric_family?: string;
+  default_metric_unit?: string;
   reference_data_name?: string;
   decimals_allowed?: boolean;
 };

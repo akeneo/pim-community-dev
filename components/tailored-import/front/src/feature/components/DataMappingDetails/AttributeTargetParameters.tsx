@@ -14,7 +14,7 @@ import {AttributeTargetParameterConfiguratorProps, AttributeTarget, isIdentifier
 import {useAttribute, useChannels} from '../../hooks';
 import {ChannelDropdown} from './ChannelDropdown';
 import {LocaleDropdown} from './LocaleDropdown';
-import {NumberConfigurator} from '../TargetDetails';
+import {NumberConfigurator, MeasurementConfigurator} from '../TargetDetails';
 
 const Container = styled.div`
   display: flex;
@@ -26,6 +26,7 @@ const attributeTargetParameterConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeTargetParameterConfiguratorProps>;
 } = {
   pim_catalog_number: NumberConfigurator,
+  pim_catalog_metric: MeasurementConfigurator,
 };
 
 type AttributeTargetParametersProps = {

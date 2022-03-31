@@ -2,11 +2,12 @@ import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {getDefaultNumberTarget, NumberTarget} from '../components/TargetDetails/Number/model';
 import {Attribute} from './Attribute';
 import {getDefaultTextTarget, TextTarget} from '../components/TargetDetails/Text/model';
+import {getDefaultMeasurementTarget, MeasurementTarget} from '../components/TargetDetails/Measurement/model';
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
-type AttributeTarget = NumberTarget | TextTarget;
+type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget;
 
 type PropertyTarget = {
   code: string;
@@ -23,6 +24,8 @@ const createAttributeTarget = (
   locale: LocaleReference
 ): AttributeTarget => {
   switch (attribute.type) {
+    case 'pim_catalog_metric':
+      return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':
       return getDefaultNumberTarget(attribute, channel, locale);
     case 'pim_catalog_identifier':

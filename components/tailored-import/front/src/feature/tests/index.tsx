@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import {act} from '@testing-library/react';
 import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
-import {Attribute} from '../models';
+import {Attribute, MeasurementFamily} from '../models';
 import {FetcherContext} from '../contexts';
 
 const attributes: Attribute[] = [
@@ -151,6 +151,28 @@ const channels: Channel[] = [
   },
 ];
 
+const measurementFamilies: MeasurementFamily[] = [
+  {
+    code: 'Weight',
+    units: [
+      {
+        code: 'gram',
+        labels: {
+          en_US: 'Gram',
+          fr_FR: 'Gramme',
+        },
+      },
+      {
+        code: 'kilogram',
+        labels: {
+          en_US: 'Kilogram',
+          fr_FR: 'Kilogramme',
+        },
+      },
+    ],
+  },
+];
+
 const fetchers = {
   attribute: {
     fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
@@ -158,6 +180,10 @@ const fetchers = {
     fetchAttributeIdentifier: (): Promise<Attribute> => Promise.resolve(attributes[0]),
   },
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  measurementFamily: {
+    fetchByCode: (measurementFamilyCode: string): Promise<MeasurementFamily | undefined> =>
+      Promise.resolve(measurementFamilies.find(({code}) => code === measurementFamilyCode)),
+  },
 };
 
 type WrapperProps = {
