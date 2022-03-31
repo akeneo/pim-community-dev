@@ -16,10 +16,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDa
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DashboardProjectionType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\BulkUpdateProductQualityScoresInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -41,7 +40,7 @@ final class DemoHelperCommand extends Command
     private CreateCriteriaEvaluations $createProductsCriteriaEvaluations    ;
     private EvaluatePendingCriteria $evaluatePendingCriteria;
     private ConsolidateProductScores $consolidateProductScores;
-    private UpdateProductsIndex $updateProductsIndex;
+    private BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores;
     private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations;
     private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria;
 
@@ -54,7 +53,7 @@ final class DemoHelperCommand extends Command
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluatePendingCriteria,
         ConsolidateProductScores $consolidateProductScores,
-        UpdateProductsIndex $updateProductsIndex,
+        BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores,
         CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
         EvaluatePendingCriteria $evaluateProductModelsPendingCriteria
     ) {
@@ -68,7 +67,7 @@ final class DemoHelperCommand extends Command
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
         $this->evaluatePendingCriteria = $evaluatePendingCriteria;
         $this->consolidateProductScores = $consolidateProductScores;
-        $this->updateProductsIndex = $updateProductsIndex;
+        $this->bulkUpdateProductQualityScores = $bulkUpdateProductQualityScores;
         $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
         $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
     }
@@ -377,7 +376,7 @@ final class DemoHelperCommand extends Command
         $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         $this->evaluatePendingCriteria->evaluateAllCriteria($productIdCollection);
         $this->consolidateProductScores->consolidate($productIdCollection);
-        $this->updateProductsIndex->execute($productIdCollection);
+        ($this->bulkUpdateProductQualityScores)($productIdCollection);
     }
 
     private function evaluateProductModels(array $ids): void

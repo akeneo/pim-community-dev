@@ -14,7 +14,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributesCodesToEvaluateQuery:
         arguments:
             - '@database_connection'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetNumberOfProductsImpactedByAttributeSpellingMistakesQuery:
         arguments:
