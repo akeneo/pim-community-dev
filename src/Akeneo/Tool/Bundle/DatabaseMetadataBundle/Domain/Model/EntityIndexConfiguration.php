@@ -19,7 +19,7 @@ class EntityIndexConfiguration
     public ?Closure $dataProcessing = null;
     public ?string  $filterFieldName = null;
 
-    public function __construct(
+    private function __construct(
         private array    $columnsName,
         private string   $tableName,
         private string   $identifierFieldName,

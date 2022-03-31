@@ -64,12 +64,12 @@ class CompareDiffEsToMySQLCommand extends Command
             $this->contextLogProcessor->insertContext("index", $indexName);
 
             $mySqlConf = $indexMappingConfiguration->mySql;
-            $results = $this->readMySQLData($mySqlConf, $indexName);
-            $filenameSourceDB = $this->dumpItemToJsonFiles($results, $this->initFilename($folder, $mySqlConf, $indexName));
+            $resultsMySQLData = $this->readMySQLData($mySqlConf, $indexName);
+            $filenameSourceDB = $this->dumpItemToJsonFiles($resultsMySQLData, $this->initFilename($folder, $mySqlConf, $indexName));
 
             $esConf = $indexMappingConfiguration->elasticsearch;
-            $results = $this->readEsData($esConf, $indexName);
-            $filenameSourceES = $this->dumpItemToJsonFiles($results, $this->initFilename($folder, $esConf, $indexName));
+            $resultsEsData = $this->readEsData($esConf, $indexName);
+            $filenameSourceES = $this->dumpItemToJsonFiles($resultsEsData, $this->initFilename($folder, $esConf, $indexName));
 
             $status = $this->compareJsonFiles($filenameSourceDB, $filenameSourceES, $indexName);
             $indexComparisonStatusList[] = $status;

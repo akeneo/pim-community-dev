@@ -4,7 +4,6 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Command\CompareDiffEsToMySQLCommand;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityESIndexFinder;
@@ -30,7 +29,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     public function setUp(): void
     {
-        //create and launch the kernel to test
         static::bootKernel();
         parent::setUp();
 
@@ -48,7 +46,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     /**
      * @dataProvider configProviderDB
-     * @return void
      */
     public function test_valid_configuration_MySQL(EntityIndexConfiguration $configMySQL): void
     {
@@ -58,7 +55,6 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
 
     /**
      * @dataProvider configProviderEs $configEs
-     * @return void
      */
     public function test_valid_configuration_ES(EntityIndexConfiguration $configEs): void
     {
@@ -89,7 +85,7 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
     {
         $productMysql = EntityIndexConfiguration::create(
             ['CONCAT("product_",id) AS id', 'updated'],
-            'pim_catalog_product', //'akeneo_asset_manager_asset'
+            'pim_catalog_product',
             'id',
             'mysql'
         );

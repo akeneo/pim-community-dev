@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
@@ -30,7 +31,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        //Connection ES
+
         $clientBuilder = new ClientBuilder();
         $hosts = $_ENV['APP_INDEX_HOSTS'];
         $this->hosts = is_string($hosts) ? [$hosts] : $hosts; //all indexes ES
@@ -41,9 +42,8 @@ class GenericEntityESIndexFinderIntegration extends TestCase
 
     /**
      * @dataProvider configProviderFilter
-     * @return void
      */
-    public function test_it_results_request_filter_and_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
+    public function test_request_filter_with_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
         $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
         $tests = new \ArrayIterator($fixtures);
@@ -71,7 +71,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         );
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromString());
-        $productEs->setFilterFieldName('document_type="'.addcslashes(ProductInterface::class, '\\').'"');
+        $productEs->setFilterFieldName(sprintf('document_type="%s"',addcslashes(ProductInterface::class, '\\')));
 
         return [
             'es' => [$productEs]
@@ -84,7 +84,7 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         $clientProduct->resetIndex();
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }

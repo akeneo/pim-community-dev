@@ -2,12 +2,12 @@
 
 namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\integration;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Factory\IndexResultsFactory;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\EntityIndexConfiguration;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
 use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Query\GenericEntityMySQLIndexFinder;
-
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 
@@ -34,7 +34,6 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
 
     /**
      * @dataProvider configProvider
-     * @return void
      */
     public function test_it_results_request_order_by(EntityIndexConfiguration $entityIndexConfiguration): void
     {
@@ -56,7 +55,6 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
 
     /**
      * @dataProvider configProviderFilterOrderBy
-     * @return void
      */
     public function test_it_results_request_filter_and_is_ordered(EntityIndexConfiguration $entityIndexConfiguration): void
     {
@@ -107,7 +105,7 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         ];
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
