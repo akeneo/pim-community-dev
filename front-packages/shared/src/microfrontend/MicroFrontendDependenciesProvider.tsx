@@ -4,7 +4,7 @@ import {RouteParams, View} from '../DependenciesProvider.type';
 import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
-import {createQueryParam} from "./model/routing";
+import {createQueryParam} from './model/routing';
 
 type SecurityContext = {
   [acl: string]: boolean;
