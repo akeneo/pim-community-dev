@@ -106,7 +106,8 @@ class CompareDiffEsToMySQLCommandIntegration extends TestCase
             ['identifier', 'updated_at'],
             'akeneo_assetmanager_asset_test',
             'identifier',
-            'es');
+            'es'
+        );
         return [
             'es' => [$assetManagerEs]
         ];
