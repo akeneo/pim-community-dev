@@ -29,3 +29,10 @@ onboarder_serenity_supplier_delete:
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [DELETE]
+
+onboarder_serenity_supplier_update:
+    path: /{identifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate
+        _feature: onboarder_serenity_supplier
+    methods: [PUT]
