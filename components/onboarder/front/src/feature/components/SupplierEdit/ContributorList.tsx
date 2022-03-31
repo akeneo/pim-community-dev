@@ -25,7 +25,7 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     };
 
     const onChangeNewContributors = (newContributors: string[]) => {
-      setNewContributors(newContributors);
+      setNewContributors(newContributors.filter((contributorEmail) => isValidEmail(contributorEmail)));
     };
 
     const onClickAdd = () => {
@@ -36,6 +36,11 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     const removeContributor = (emailToRemove: ContributorEmail) => {
       setContributors(contributors.filter((email) => email !== emailToRemove));
     }
+
+    const isValidEmail = (email: string) => {
+      const emailRegex = /\S+@\S+\.\S+/;
+      return emailRegex.test(email);
+    };
 
     useEffect(() => {
       if ('' !== searchValue) {
