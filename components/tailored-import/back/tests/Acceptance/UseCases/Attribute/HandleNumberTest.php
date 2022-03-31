@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
@@ -66,7 +67,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                         ),
                         ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
-                        [],
+                        OperationCollection::create([]),
                         [],
                     ),
                     DataMapping::create(
@@ -81,7 +82,7 @@ final class HandleNumberTest extends AttributeTestCase
                             new NumberSourceParameter('.'),
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
-                        [],
+                        OperationCollection::create([]),
                         [],
                     ),
                     DataMapping::create(
@@ -96,7 +97,7 @@ final class HandleNumberTest extends AttributeTestCase
                             new NumberSourceParameter(',')
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
-                        [],
+                        OperationCollection::create([]),
                         [],
                     ),
                     DataMapping::create(
@@ -111,7 +112,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                         ),
                         ['25621f5a-504f-4893-8f0c-da684dfa84f7'],
-                        [],
+                        OperationCollection::create([]),
                         [],
                     ),
                 ],

@@ -18,7 +18,7 @@ services:
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
     arguments:
-      - '@akeneo.tailored_import.operation_applier'
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier'
@@ -34,9 +34,6 @@ services:
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
       - '@akeneo.tailored_import.domain.get_sample_data.select_sample_data'
-
-  akeneo.tailored_import.operation_applier:
-    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier
 
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry

@@ -44,6 +44,8 @@ class ExecuteDataMappingHandler
                 $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
             }
 
+            $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
+
             if ($target instanceof TargetAttribute && $target->getCode() === $identifierAttributeCode) {
                 $productIdentifier = $value;
             } else {

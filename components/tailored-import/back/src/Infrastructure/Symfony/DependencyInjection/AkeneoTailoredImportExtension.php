@@ -30,6 +30,7 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
+        $loader->load('operation_appliers.yml');
         $loader->load('processors.yml');
         $loader->load('queries.yml');
         $loader->load('ramsey.yml');

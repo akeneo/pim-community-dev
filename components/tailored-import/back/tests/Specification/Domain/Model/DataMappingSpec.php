@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use PhpSpec\ObjectBehavior;
 
@@ -27,7 +28,7 @@ class DataMappingSpec extends ObjectBehavior
                 null,
             ),
             [],
-            [],
+            OperationCollection::create([]),
             [],
         ]);
 
@@ -48,7 +49,7 @@ class DataMappingSpec extends ObjectBehavior
                 null,
             ),
             [],
-            [],
+            OperationCollection::create([]),
             [],
         ]);
 
