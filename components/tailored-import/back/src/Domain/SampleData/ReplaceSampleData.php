@@ -27,7 +27,7 @@ final class ReplaceSampleData
         return array_diff($extractedColumn, $currentSample);
     }
 
-    private static function extractOneNewNonPickedValue(array $cleanedExtract): array
+    private static function extractOneNewNonPickedValue(array $cleanedExtract): string|null
     {
         return current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
     }
