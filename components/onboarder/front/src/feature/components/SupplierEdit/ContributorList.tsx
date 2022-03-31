@@ -8,14 +8,14 @@ import {EmptyContributorList} from '../EmptyContributorList';
 
 type Props = {
     contributors: ContributorEmail[];
+    setContributors: (value: ContributorEmail[]) => void;
 };
 
-const ContributorList = ({contributors}: Props) => {
+const ContributorList = ({contributors, setContributors}: Props) => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const [newContributors, setNewContributors] = useState<string[]>([]);
-    const [allContributors, setAllContributors] = useState<ContributorEmail[]>(contributors);
-    const {filteredContributors, search} = useFilteredContributors(allContributors);
+    const {filteredContributors, search} = useFilteredContributors(contributors);
 
     const debouncedSearch = useDebounceCallback(search, 300);
 
@@ -29,7 +29,7 @@ const ContributorList = ({contributors}: Props) => {
     };
 
     const onClickAdd = () => {
-      setAllContributors(allContributors.concat(newContributors));
+      setContributors(contributors.concat(newContributors));
       setNewContributors([]);
     };
 
@@ -37,7 +37,7 @@ const ContributorList = ({contributors}: Props) => {
       if ('' !== searchValue) {
         search(searchValue);
       }
-    }, [allContributors]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [contributors]);
 
     return (
         <TabContainer>

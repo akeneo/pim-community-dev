@@ -6,6 +6,7 @@ import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
 import {ContributorList} from './components/SupplierEdit/ContributorList';
+import {ContributorEmail} from "./models";
 
 const SupplierEdit = () => {
     const translate = useTranslate();
@@ -14,16 +15,18 @@ const SupplierEdit = () => {
     const {supplier} = useSupplier(supplierIdentifier);
     const history = useHistory();
     const [supplierLabel, setSupplierLabel] = useState('');
+    const [supplierContributors, setSupplierContributors] = useState<ContributorEmail[]>([]);
 
     useEffect(() => {
         if (null !== supplier) {
             setSupplierLabel(supplier.label);
+            setSupplierContributors(supplier.contributors);
         }
     }, [supplier]);
 
     const supplierHasChanges = () => {
         if (null !== supplier) {
-            return supplierLabel !== supplier.label;
+            return supplierLabel !== supplier.label || JSON.stringify(supplierContributors) !== JSON.stringify(supplier.contributors);
         }
 
         return false;
@@ -72,7 +75,7 @@ const SupplierEdit = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && <Configuration code={supplier.code} label={supplierLabel} setLabel={setSupplierLabel} />}
-                {isCurrent('contributors') && <ContributorList contributors={supplier.contributors} />}
+                {isCurrent('contributors') && <ContributorList contributors={supplierContributors} setContributors={setSupplierContributors} />}
             </StyledPageContent>
         </Container>
     );
