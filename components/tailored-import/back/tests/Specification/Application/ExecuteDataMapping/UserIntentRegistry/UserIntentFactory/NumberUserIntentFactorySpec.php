@@ -32,12 +32,12 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
     }
 
     public function it_creates_a_set_number_value_object(
-        AttributeTarget $AttributeTarget
+        AttributeTarget $attributeTarget
     ) {
-        $AttributeTarget->getType()->willReturn('pim_catalog_number');
-        $AttributeTarget->getCode()->willReturn('an_attribute_code');
-        $AttributeTarget->getChannel()->willReturn(null);
-        $AttributeTarget->getLocale()->willReturn(null);
+        $attributeTarget->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getChannel()->willReturn(null);
+        $attributeTarget->getLocale()->willReturn(null);
 
         $expectedSetNumberValue = new SetNumberValue(
             'an_attribute_code',
@@ -46,22 +46,22 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
             '123.5'
         );
 
-        $this->create($AttributeTarget, '123.5')->shouldBeLike($expectedSetNumberValue);
+        $this->create($attributeTarget, '123.5')->shouldBeLike($expectedSetNumberValue);
     }
 
     public function it_supports_target_attribute_type_catalog_number(
-        AttributeTarget $AttributeTarget
+        AttributeTarget $attributeTarget
     ) {
-        $AttributeTarget->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getType()->willReturn('pim_catalog_number');
 
-        $this->supports($AttributeTarget)->shouldReturn(true);
+        $this->supports($attributeTarget)->shouldReturn(true);
     }
 
     public function it_does_not_support_others_target_attribute_type(
-        AttributeTarget $AttributeTarget
+        AttributeTarget $attributeTarget
     ) {
-        $AttributeTarget->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getType()->willReturn('pim_catalog_text');
 
-        $this->supports($AttributeTarget)->shouldReturn(false);
+        $this->supports($attributeTarget)->shouldReturn(false);
     }
 }
