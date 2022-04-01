@@ -62,7 +62,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
     private const SUPPORTED_FILE_FILENAME = __DIR__ . '/../../Common/TestFixtures/lardon.png';
     private const NOT_SUPPORTED_FILE_FILENAME = __DIR__ . '/../../Common/TestFixtures/lagan_utilisation.pdf';
 
-    private AttributeIdentifier $targetAttributeIdentifier;
+    private AttributeIdentifier $attributeTargetIdentifier;
 
     private string $workingDir;
 

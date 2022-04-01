@@ -16,15 +16,15 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class NumberUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
-        if (!$target instanceof TargetAttribute) {
-            throw new \InvalidArgumentException('The target must be a TargetAttribute');
+        if (!$target instanceof AttributeTarget) {
+            throw new \InvalidArgumentException('The target must be a AttributeTarget');
         }
 
         return new SetNumberValue(
@@ -37,6 +37,6 @@ class NumberUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof TargetAttribute && 'pim_catalog_number' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_number' === $target->getType();
     }
 }

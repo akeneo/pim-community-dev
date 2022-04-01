@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMa
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextareaUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
 class TextareaUserIntentFactorySpec extends ObjectBehavior
@@ -32,12 +32,12 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
     }
 
     public function it_create_a_set_textarea_value_object(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_text');
-        $targetAttribute->getCode()->willReturn('an_attribute_code');
-        $targetAttribute->getChannel()->willReturn(null);
-        $targetAttribute->getLocale()->willReturn(null);
+        $attributeTarget->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getChannel()->willReturn(null);
+        $attributeTarget->getLocale()->willReturn(null);
 
         $expectedSetNumberValue = new SetTextareaValue(
             'an_attribute_code',
@@ -46,22 +46,22 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
             'a_value'
         );
 
-        $this->create($targetAttribute, 'a_value')->shouldBeLike($expectedSetNumberValue);
+        $this->create($attributeTarget, 'a_value')->shouldBeLike($expectedSetNumberValue);
     }
 
     public function it_supports_target_attribute_type_catalog_textarea(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_textarea');
+        $attributeTarget->getType()->willReturn('pim_catalog_textarea');
 
-        $this->supports($targetAttribute)->shouldReturn(true);
+        $this->supports($attributeTarget)->shouldReturn(true);
     }
 
     public function it_does_not_support_others_target_attribute_type(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getType()->willReturn('pim_catalog_number');
 
-        $this->supports($targetAttribute)->shouldReturn(false);
+        $this->supports($attributeTarget)->shouldReturn(false);
     }
 }

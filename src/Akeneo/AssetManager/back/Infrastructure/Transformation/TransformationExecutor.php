@@ -52,7 +52,7 @@ class TransformationExecutor
             $storedFile = $this->fileStorer->store($transformedFile, Storage::FILE_STORAGE_ALIAS, true);
 
             $target = $transformation->getTarget();
-            $targetAttribute = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
+            $attributeTarget = $this->attributeRepository->getByCodeAndAssetFamilyIdentifier(
                 $target->getAttributeCode(),
                 $assetFamilyIdentifier
             );
@@ -61,7 +61,7 @@ class TransformationExecutor
         }
 
         return new EditMediaFileTargetValueCommand(
-            $targetAttribute,
+            $attributeTarget,
             $target->getChannelReference()->normalize(),
             $target->getLocaleReference()->normalize(),
             $storedFile->getKey(),

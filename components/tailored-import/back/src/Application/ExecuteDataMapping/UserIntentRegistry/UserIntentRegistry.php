@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class UserIntentRegistry
 {

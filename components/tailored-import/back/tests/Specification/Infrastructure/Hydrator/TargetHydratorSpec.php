@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetProperty;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator;
 use PhpSpec\ObjectBehavior;
 
@@ -65,7 +65,7 @@ class TargetHydratorSpec extends ObjectBehavior
             'action_if_empty' => 'skip',
             'source_parameter' => null,
         ], $indexedAttributes)->shouldBeLike(
-            TargetAttribute::create(
+            AttributeTarget::create(
                 'name',
                 'pim_catalog_text',
                 null,
@@ -111,7 +111,7 @@ class TargetHydratorSpec extends ObjectBehavior
                 'decimal_separator' => ','
             ]
         ], $indexedAttributes)->shouldBeLike(
-            TargetAttribute::create(
+            AttributeTarget::create(
                 'count',
                 'pim_catalog_number',
                 null,
@@ -131,7 +131,7 @@ class TargetHydratorSpec extends ObjectBehavior
             'action_if_not_empty' => 'set',
             'action_if_empty' => 'skip',
         ], [])->shouldBeLike(
-            TargetProperty::create(
+            PropertyTarget::create(
                 'family',
                 'set',
                 'skip',

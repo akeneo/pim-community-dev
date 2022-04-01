@@ -52,13 +52,13 @@ final class TextareaValueStringifier extends AbstractValueStringifier implements
             throw new \LogicException('The "target_attribute_code" option key must be provided.');
         }
 
-        $targetAttribute = $this->attributeRepository->findOneByIdentifier($options['target_attribute_code']);
-        if (null === $targetAttribute) {
+        $attributeTarget = $this->attributeRepository->findOneByIdentifier($options['target_attribute_code']);
+        if (null === $attributeTarget) {
             return '';
         }
 
-        if ($targetAttribute->getType() === AttributeTypes::TEXTAREA) {
-            if ($targetAttribute->isWysiwygEnabled()) {
+        if ($attributeTarget->getType() === AttributeTypes::TEXTAREA) {
+            if ($attributeTarget->isWysiwygEnabled()) {
                 return str_replace(["\r", "\n"], '<br/>', $value->__toString());
             }
 

@@ -25,11 +25,11 @@ class ReferenceEntityToStringDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $targetAttribute): bool
+    public function supportsAttributes(AttributeInterface $sourceAttribute, AttributeInterface $attributeTarget): bool
     {
         return AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT === $sourceAttribute->getType() &&
             in_array(
-                $targetAttribute->getType(),
+                $attributeTarget->getType(),
                 [
                     AttributeTypes::TEXT,
                     AttributeTypes::TEXTAREA,
@@ -41,7 +41,7 @@ class ReferenceEntityToStringDataConverter implements ValueDataConverter
     /**
      * {@inheritdoc}
      */
-    public function convert(ValueInterface $sourceValue, AttributeInterface $targetAttribute)
+    public function convert(ValueInterface $sourceValue, AttributeInterface $attributeTarget)
     {
         Assert::isInstanceOf($sourceValue->getData(), RecordCode::class);
 
