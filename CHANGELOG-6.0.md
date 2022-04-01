@@ -1,5 +1,13 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10323: [Backport PIM-10233] Fix the saved value by an empty wysiwyg
+
+# 6.0.19 (2022-03-28)
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
 # 6.0.18 (2022-03-24)
 
 # 6.0.17 (2022-03-24)
