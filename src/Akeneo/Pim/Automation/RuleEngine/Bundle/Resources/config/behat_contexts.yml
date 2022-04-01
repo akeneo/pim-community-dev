@@ -72,3 +72,6 @@ services:
 
     Context\ConnectivityContext:
         - '@messenger.transport.business_event'
+
+    Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\FeatureFlagContext:
+        - '@feature_flags'
