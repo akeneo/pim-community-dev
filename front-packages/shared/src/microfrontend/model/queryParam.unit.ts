@@ -1,4 +1,4 @@
-import {createQueryParam} from './routing';
+import {createQueryParam} from './queryParam';
 
 test('it returns empty query parameter when no parameter is given', () => {
   expect(createQueryParam()).toEqual('');
