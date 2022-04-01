@@ -18,8 +18,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator;
 use PhpSpec\ObjectBehavior;
 

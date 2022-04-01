@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator;
 use PhpSpec\ObjectBehavior;
 

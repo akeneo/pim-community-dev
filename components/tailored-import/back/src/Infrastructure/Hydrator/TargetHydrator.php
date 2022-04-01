@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class TargetHydrator
 {
