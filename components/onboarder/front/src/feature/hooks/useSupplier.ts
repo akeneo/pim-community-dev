@@ -18,7 +18,7 @@ const useSupplier = (identifier: string) => {
         setSupplier(supplier !== null ? {...supplier, contributors: newContributors} : null);
     };
 
-    const saveSupplier = async() => {
+    const saveSupplier = async () => {
         const response = await fetch(saveSupplierRoute, {
             method: 'PUT',
             headers: [
@@ -37,7 +37,7 @@ const useSupplier = (identifier: string) => {
         notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_edit.sucess_message'));
     };
 
-    const loadSupplier = async() => {
+    const loadSupplier = async () => {
         const response = await fetch(getSupplierRoute, {method: 'GET'});
 
         if (!response.ok) {
@@ -48,7 +48,7 @@ const useSupplier = (identifier: string) => {
         const responseBody = await response.json();
         setOriginalSupplier(responseBody);
         setSupplier(responseBody);
-    }
+    };
 
     const supplierHasChanges = () => {
         if (null !== supplier) {

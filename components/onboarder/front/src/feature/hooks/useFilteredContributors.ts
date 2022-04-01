@@ -8,16 +8,16 @@ const useFilteredContributors = (contributors: ContributorEmail[]) => {
         setFilteredContributors(contributors);
     }, [contributors]);
 
-  const search = useCallback(
-    (searchValue: string) => {
-      setFilteredContributors(
-        contributors.filter((contributor: ContributorEmail) =>
-          contributor.toLowerCase().includes(searchValue.toLowerCase().trim())
-        )
-      );
-    },
-    [contributors]
-  );
+    const search = useCallback(
+        (searchValue: string) => {
+            setFilteredContributors(
+                contributors.filter((contributor: ContributorEmail) =>
+                    contributor.toLowerCase().includes(searchValue.toLowerCase().trim())
+                )
+            );
+        },
+        [contributors]
+    );
 
     return {
         filteredContributors,

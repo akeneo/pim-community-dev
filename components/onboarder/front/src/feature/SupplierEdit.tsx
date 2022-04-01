@@ -1,12 +1,6 @@
 import React from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
-import {
-    PageContent,
-    PageHeader,
-    PimView,
-    UnsavedChanges,
-    useTranslate
-} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
@@ -17,13 +11,8 @@ const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
-    const {
-        supplier,
-        setSupplierLabel,
-        setSupplierContributors,
-        saveSupplier,
-        supplierHasChanges,
-    } = useSupplier(supplierIdentifier);
+    const {supplier, setSupplierLabel, setSupplierContributors, saveSupplier, supplierHasChanges} =
+        useSupplier(supplierIdentifier);
     const history = useHistory();
 
     if (supplier === null) {
@@ -69,7 +58,9 @@ const SupplierEdit = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && <Configuration supplier={supplier} setLabel={setSupplierLabel} />}
-                {isCurrent('contributors') && <ContributorList supplier={supplier} setContributors={setSupplierContributors} />}
+                {isCurrent('contributors') && (
+                    <ContributorList supplier={supplier} setContributors={setSupplierContributors} />
+                )}
             </StyledPageContent>
         </Container>
     );

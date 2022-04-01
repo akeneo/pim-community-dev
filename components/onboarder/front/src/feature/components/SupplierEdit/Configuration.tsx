@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Field, SectionTitle, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Supplier, LABEL_AND_CODE_MAX_LENGTH} from "../../models";
+import {Supplier, LABEL_AND_CODE_MAX_LENGTH} from '../../models';
 
 type Props = {
     supplier: Supplier;
@@ -21,7 +21,7 @@ const Configuration = ({supplier, setLabel}: Props) => {
                 <TextInput readOnly value={supplier.code} />
             </Field>
             <Field label={translate('onboarder.supplier.supplier_edit.configuration_form.label')}>
-                <TextInput onChange={setLabel} value={supplier.label} maxLength={LABEL_AND_CODE_MAX_LENGTH}/>
+                <TextInput onChange={setLabel} value={supplier.label} maxLength={LABEL_AND_CODE_MAX_LENGTH} />
             </Field>
         </TabContainer>
     );

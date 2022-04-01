@@ -25,27 +25,27 @@ const ContributorList = ({supplier, setContributors}: Props) => {
     };
 
     const onChangeNewContributors = (newContributors: string[]) => {
-      setNewContributors(newContributors.filter((contributorEmail) => isValidEmail(contributorEmail)));
+        setNewContributors(newContributors.filter(contributorEmail => isValidEmail(contributorEmail)));
     };
 
     const onClickAdd = () => {
-      setContributors(supplier.contributors.concat(newContributors));
-      setNewContributors([]);
+        setContributors(supplier.contributors.concat(newContributors));
+        setNewContributors([]);
     };
 
     const removeContributor = (emailToRemove: ContributorEmail) => {
-      setContributors(supplier.contributors.filter((email) => email !== emailToRemove));
-    }
+        setContributors(supplier.contributors.filter(email => email !== emailToRemove));
+    };
 
     const isValidEmail = (email: string) => {
-      const emailRegex = /\S+@\S+\.\S+/;
-      return emailRegex.test(email);
+        const emailRegex = /\S+@\S+\.\S+/;
+        return emailRegex.test(email);
     };
 
     useEffect(() => {
-      if ('' !== searchValue) {
-        search(searchValue);
-      }
+        if ('' !== searchValue) {
+            search(searchValue);
+        }
     }, [supplier.contributors]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
@@ -53,15 +53,14 @@ const ContributorList = ({supplier, setContributors}: Props) => {
             <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
 
             <Field label={translate('onboarder.supplier.supplier_edit.contributors_form.add_contributors')}>
-              <FieldContent>
-                <TagInputContainer>
-                  <TagInput
-                    onChange={onChangeNewContributors}
-                    value={newContributors}
-                  />
-                </TagInputContainer>
-                <Button level="tertiary" onClick={onClickAdd}>{translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}</Button>
-              </FieldContent>
+                <FieldContent>
+                    <TagInputContainer>
+                        <TagInput onChange={onChangeNewContributors} value={newContributors} />
+                    </TagInputContainer>
+                    <Button level="tertiary" onClick={onClickAdd}>
+                        {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
+                    </Button>
+                </FieldContent>
             </Field>
 
             {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
@@ -83,11 +82,11 @@ const ContributorList = ({supplier, setContributors}: Props) => {
                             <Table.HeaderCell />
                         </Table.Header>
                         <Table.Body>
-                            {filteredContributors.map((email) => (
+                            {filteredContributors.map(email => (
                                 <Table.Row key={email} data-testid={email}>
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
-                                        <DeleteIcon onClick={() => removeContributor(email)}/>
+                                        <DeleteIcon onClick={() => removeContributor(email)} />
                                     </DeleteCell>
                                 </Table.Row>
                             ))}
@@ -110,13 +109,13 @@ const DeleteCell = styled(Table.ActionCell)`
 `;
 
 const FieldContent = styled.div`
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 `;
 
 const TagInputContainer = styled.div`
-  flex: 1;
-  margin-right: 10px;
+    flex: 1;
+    margin-right: 10px;
 `;
 
 export {ContributorList};
