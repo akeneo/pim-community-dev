@@ -2,10 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
-use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  * Category Flat Converter
@@ -19,19 +17,12 @@ class Category implements ArrayConverterInterface
     /** @var FieldsRequirementChecker */
     protected $fieldChecker;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /**
      * @param FieldsRequirementChecker $fieldChecker
      */
-    public function __construct(
-        FieldsRequirementChecker $fieldChecker,
-        // TODO pull-up 6.0/master: make params non nullable
-        LocaleRepositoryInterface $localeRepository = null
-    ) {
+    public function __construct(FieldsRequirementChecker $fieldChecker)
+    {
         $this->fieldChecker = $fieldChecker;
-        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -59,7 +50,8 @@ class Category implements ArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validate($item);
+        $this->fieldChecker->checkFieldsPresence($item, ['code']);
+        $this->fieldChecker->checkFieldsFilling($item, ['code']);
 
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
@@ -89,39 +81,5 @@ class Category implements ArrayConverterInterface
         }
 
         return $convertedItem;
-    }
-
-    /**
-     * @throws StructureArrayConversionException
-     */
-    protected function validate(array $item)
-    {
-        $requiredFields = ['code'];
-
-        $this->fieldChecker->checkFieldsPresence($item, $requiredFields);
-        $this->fieldChecker->checkFieldsFilling($item, $requiredFields);
-
-        $authorizedFields = array_merge($requiredFields, ['parent']);
-        // TODO pull-up 6.0/master: remove conditional return
-        if (null === $this->localeRepository) {
-            return;
-        }
-
-        $locales = $this->localeRepository->findAll();
-        foreach ($locales as $locale) {
-            $authorizedFields[] = 'label-' . $locale->getCode();
-        }
-
-        foreach (array_keys($item) as $field) {
-            if (!in_array($field, $authorizedFields)) {
-                throw new StructureArrayConversionException(
-                    sprintf(
-                        'Field "%s" is provided, authorized fields are: "%s"',
-                        $field,
-                        implode(', ', $authorizedFields)
-                    )
-                );
-            }
-        }
     }
 }
