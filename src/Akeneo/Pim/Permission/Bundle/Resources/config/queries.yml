@@ -219,3 +219,9 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Persistence\Cache\LRUCachedIsAttributeEditable
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\GetNonViewableProducts
+        arguments:
+            - '@pimee_security.query.product_category_access_with_ids'
+            - '@pim_user.repository.user'
