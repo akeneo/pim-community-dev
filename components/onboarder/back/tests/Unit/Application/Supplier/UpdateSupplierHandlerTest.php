@@ -22,12 +22,13 @@ final class UpdateSupplierHandlerTest extends TestCase
 
         $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
-        $validatorSpy = $this->getValidatorSpyWithNoError($command);
+//        $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
         $repository = new InMemoryRepository();
         $repository->save(Supplier\Model\Supplier::create((string) $identifier, 'code', 'label', []));
 
-        $handler = new UpdateSupplierHandler($repository, $validatorSpy);
+//        $handler = new UpdateSupplierHandler($repository, $validatorSpy);
+        $handler = new UpdateSupplierHandler($repository);
         ($handler)($command);
 
         $supplier = $repository->find($identifier);
@@ -40,23 +41,49 @@ final class UpdateSupplierHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfTheCommandIsInvalid(): void
+    public function itFiltersInvalidDataBeforeSavingThem(): void
     {
         $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
-        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
+        $command = new UpdateSupplier(
+            (string) $identifier,
+            $this->generate300CharsLenghLabel(),
+            ['contributor1@example.com', 'invalidEmail', 'contributor2@example.com']
+        );
 
-        $violationsSpy = $this->createMock(ConstraintViolationListInterface::class);
-        $violationsSpy->expects($this->once())->method('count')->willReturn(1);
+//        $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
-        $validatorSpy = $this->createMock(ValidatorInterface::class);
-        $validatorSpy->expects($this->once())->method('validate')->with($command)->willReturn($violationsSpy);
+        $repository = new InMemoryRepository();
+        $repository->save(Supplier\Model\Supplier::create((string) $identifier, 'code', 'label', []));
 
-        $this->expectExceptionObject(new InvalidDataException($violationsSpy));
-
-        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $validatorSpy);
+//        $handler = new UpdateSupplierHandler($repository, $validatorSpy);
+        $handler = new UpdateSupplierHandler($repository);
         ($handler)($command);
+
+        $supplier = $repository->getByIdentifier($identifier);
+        static::assertSame(200, strlen($supplier->label()));
+        static::assertSame(['contributor1@akeneo.com', 'contributor2@akeneo.com'], $supplier->contributors()->toArray());
+        $this->assertSame(2, $repository->saveCallCounter);
     }
+
+//    /** @test */
+//    public function itThrowsAnExceptionIfTheCommandIsInvalid(): void
+//    {
+//        $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+//
+//        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@akeneo.com', 'contributor2@akeneo.com']);
+//
+//        $violationsSpy = $this->createMock(ConstraintViolationListInterface::class);
+//        $violationsSpy->expects($this->once())->method('count')->willReturn(1);
+//
+//        $validatorSpy = $this->createMock(ValidatorInterface::class);
+//        $validatorSpy->expects($this->once())->method('validate')->with($command)->willReturn($violationsSpy);
+//
+//        $this->expectExceptionObject(new InvalidDataException($violationsSpy));
+//
+//        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $validatorSpy);
+//        ($handler)($command);
+//    }
 
     /** @test */
     public function itDoesNothingIfTheSupplierDoesNotExist(): void
@@ -66,11 +93,17 @@ final class UpdateSupplierHandlerTest extends TestCase
         $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
         $repository = new InMemoryRepository();
-        $handler = new UpdateSupplierHandler($repository, $this->getValidatorSpyWithNoError($command));
+//        $handler = new UpdateSupplierHandler($repository, $this->getValidatorSpyWithNoError($command));
+        $handler = new UpdateSupplierHandler($repository);
 
         ($handler)($command);
 
         $this->assertSame(0, $repository->saveCallCounter);
+    }
+
+    private function generate300CharsLenghLabel(): string
+    {
+        return str_repeat('Supplier label too long', 13);
     }
 
     private function getValidatorSpyWithNoError(UpdateSupplier $command): ValidatorInterface
