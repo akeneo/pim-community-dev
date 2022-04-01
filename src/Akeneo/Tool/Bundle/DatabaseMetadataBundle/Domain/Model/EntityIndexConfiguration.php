@@ -20,18 +20,18 @@ class EntityIndexConfiguration
     private ?string  $filterFieldName = null;
 
     private function __construct(
-        private array    $columnsName,
-        private string   $tableName,
-        private string   $identifierFieldName,
-        private string   $sourceName
+        private array $columnsName,
+        private string $tableName,
+        private string $identifierFieldName,
+        private string $sourceName
     ) {
     }
 
     public static function create(
-        array   $columnsName,
-        string  $tableName,
-        string  $identifierFieldName,
-        string  $sourceName,
+        array $columnsName,
+        string $tableName,
+        string $identifierFieldName,
+        string $sourceName,
     ): self {
         return new self($columnsName, $tableName, $identifierFieldName, $sourceName);
     }

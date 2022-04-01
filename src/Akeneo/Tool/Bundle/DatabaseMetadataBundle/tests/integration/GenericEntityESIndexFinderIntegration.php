@@ -47,13 +47,13 @@ class GenericEntityESIndexFinderIntegration extends TestCase
         $fixtures = [['product_1', null], ['product_2', null], ['product_3', null], ['product_4', null]];
         $tests = new \ArrayIterator($fixtures);
         foreach ($tests as $test) {
-            $resultsFormat[] = IndexResultsFactory::initIndexDateResults($test[0], $test[1]);
+            $resultsFormat[] = IndexResultsFactory::initIndexFormatDataResults($test[0], $test[1]);
         }
         $resultsFixtures = new \ArrayIterator($resultsFormat);
 
         $results = $this->searchEs->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < 4; $i++) {
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($results[$i]["identifier"], null);
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexFormatDataResults($results[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 

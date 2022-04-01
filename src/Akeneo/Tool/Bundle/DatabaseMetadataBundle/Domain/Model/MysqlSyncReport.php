@@ -13,9 +13,9 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model;
 class MysqlSyncReport
 {
     public function __construct(
-        public array $missingLines=[],
-        public array $lines2Delete=[],
-        public array $obsoleteLines=[]
+        public array $missingLines = [],
+        public array $lines2Delete = [],
+        public array $obsoleteLines = []
     ) {
     }
 }

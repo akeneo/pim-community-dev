@@ -38,16 +38,16 @@ class GenericEntityMySQLIndexFinder implements GenericEntityIndexFinderInterface
 
         $resultsData = [];
         foreach ($results as $result) {
-            //correct format Date
             if ($entityIndexConfiguration->getDateFieldName() !== null) {
                 $dateField = $entityIndexConfiguration->getDateFieldName();
                 $dateFormat = $entityIndexConfiguration->getDataProcessing();
                 $result[$dateField] = $dateFormat($result[$dateField]);
 
-                $resultsData[] = IndexResultsFactory::initIndexDateResults($result[$entityIndexConfiguration->getIdentifierFieldName()], $entityIndexConfiguration->getDateFieldName()?$result[$entityIndexConfiguration->getDateFieldName()]:null);
+                $resultsData[] = IndexResultsFactory::initIndexFormatDataResults($result[$entityIndexConfiguration->getIdentifierFieldName()], $entityIndexConfiguration->getDateFieldName()?$result[$entityIndexConfiguration->getDateFieldName()]:null);
             }
         }
         sort($resultsData);
+
         return new \ArrayIterator($resultsData);
     }
 }

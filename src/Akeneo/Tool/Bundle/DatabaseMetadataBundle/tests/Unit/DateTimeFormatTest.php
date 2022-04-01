@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeFormatTest extends TestCase
 {
-    public function test_it_datetime_formatter_from_string(): void
+    public function test_it_formats_a_datetime_from_string(): void
     {
         $dateInput = '2022-03-07 13:56:37';
         $dateFormat = DateTimeFormat::formatFromString();
@@ -28,7 +28,7 @@ class DateTimeFormatTest extends TestCase
         Assert::assertEquals($dateExpected, $dateFormatted);
     }
 
-    public function test_it_datetime_formatter_from_integer(): void
+    public function test_it_formats_a_datetime_from_integer(): void
     {
         $dateInput = 1646661022;
         $dateFormat = DateTimeFormat::formatFromInt();
@@ -39,10 +39,9 @@ class DateTimeFormatTest extends TestCase
         Assert::assertEquals($dateExpected, $dateFormatted);
     }
 
-    public function test_it_datetime_formatter_from_iso(): void
+    public function test_it_formats_a_datetime_from_iso(): void
     {
         $dateInput = '2022-03-07T13:56:37.000000+0000';
-
         $dateFormat = DateTimeFormat::formatFromIso();
         $dateFormatted = $dateFormat($dateInput);
 

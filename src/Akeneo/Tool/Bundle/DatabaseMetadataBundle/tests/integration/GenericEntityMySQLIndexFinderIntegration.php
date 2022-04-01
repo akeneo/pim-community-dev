@@ -40,13 +40,13 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
         $resultsFixtures = new \ArrayIterator(
             array_map(
                 function ($item) {
-                    return IndexResultsFactory::initIndexDateResults($item, null);
+                    return IndexResultsFactory::initIndexFormatDataResults($item, null);
                 },
                 ["product_1", "product_10", "product_100", "product_101"]));
 
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         for ($i = 0; $i < sizeof($resultsFixtures); $i++) {
-            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexDateResults($resultsQuery[$i]["identifier"], null);
+            $resultsOrderQueryFormat[] = IndexResultsFactory::initIndexFormatDataResults($resultsQuery[$i]["identifier"], null);
         }
         $resultsOrderQuery = new \ArrayIterator($resultsOrderQueryFormat);
 
@@ -60,14 +60,14 @@ class GenericEntityMySQLIndexFinderIntegration extends TestCase
     {
         $resultsFixtures = new \ArrayIterator(array_map(
             function ($item) {
-                return IndexResultsFactory::initIndexDateResults($item, null);
+                return IndexResultsFactory::initIndexFormatDataResults($item, null);
             },
             ["product_1", "product_2", "product_3", "product_4"]));
 
         $resultsOrderFilterQueryFormat = [];
         $resultsQuery = $this->query->findAllByOrder($entityIndexConfiguration);
         foreach ($resultsQuery as $value) {
-            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexDateResults($value["identifier"], null);
+            $resultsOrderFilterQueryFormat[] = IndexResultsFactory::initIndexFormatDataResults($value["identifier"], null);
         }
         $resultsOrderFilterQuery = new \ArrayIterator($resultsOrderFilterQueryFormat);
 

@@ -11,10 +11,12 @@ use DateTime;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * Description : allows to type the results of the different indexes
  */
 final class IndexResultsFactory
 {
-    public static function initIndexDateResults(string $identifier, ?DateTime $dateTime): array
+    public static function initIndexFormatDataResults(string $identifier, ?DateTime $dateTime): array
     {
         return ['identifier' => $identifier, 'date' => $dateTime];
     }

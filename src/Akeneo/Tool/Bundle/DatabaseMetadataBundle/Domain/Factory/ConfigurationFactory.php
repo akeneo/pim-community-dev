@@ -16,12 +16,14 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Utils\DateTimeFormat;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * Description : configure the indexes according to the data source: MySQL or Elasticsearch
+ * with the columns, filters, data to order and dates to format
  */
 final class ConfigurationFactory
 {
     public static function initConfigurationList(): array
     {
-        //ASSET_MANAGER
         $assetManagerMySql = EntityIndexConfiguration::create(
             ['identifier', 'updated_at'],
             'akeneo_asset_manager_asset',
@@ -38,7 +40,7 @@ final class ConfigurationFactory
         );
         $assetManagerEs->setDateFieldName('updated_at');
         $assetManagerEs->setDataProcessing(DateTimeFormat::formatFromInt());
-        //PRODUCT
+
         $productMySql = EntityIndexConfiguration::create(
             ['CONCAT("product_",id) AS id', 'updated'],
             'pim_catalog_product',
@@ -56,7 +58,7 @@ final class ConfigurationFactory
         $productEs->setDateFieldName('updated');
         $productEs->setDataProcessing(DateTimeFormat::formatFromIso());
         $productEs->setFilterFieldName(sprintf('document_type="%s"', addcslashes(ProductInterface::class, '\\')));
-        //PRODUCT_MODEL
+
         $productModelMySql = EntityIndexConfiguration::create(
             ['CONCAT("product_model_",id) AS id', 'updated'],
             'pim_catalog_product_model',
@@ -74,7 +76,7 @@ final class ConfigurationFactory
         $productModelEs->setDateFieldName('updated');
         $productModelEs->setDataProcessing(DateTimeFormat::formatFromIso());
         $productModelEs->setFilterFieldName(sprintf('document_type="%s"', addcslashes(ProductModelInterface::class, '\\')));
-        //PRODUCT_PROPOSAL
+
         $productProposalMySql = EntityIndexConfiguration::create(
             ['product_id'],
             'pimee_workflow_product_draft',
@@ -88,7 +90,7 @@ final class ConfigurationFactory
             'id',
             'es'
         );
-        //PUBLISHED_PRODUCT
+
         $publishedProductMySql = EntityIndexConfiguration::create(
             ['identifier', 'updated'],
             'pimee_workflow_published_product',
@@ -105,7 +107,7 @@ final class ConfigurationFactory
         );
         $publishedProductMyEs->setDateFieldName('updated');
         $publishedProductMyEs->setDataProcessing(DateTimeFormat::formatFromString());
-        //REFERENCE_ENTITY
+
         $referenceEntityMySql = EntityIndexConfiguration::create(
             ['identifier', 'updated_at'],
             'akeneo_reference_entity_record',
@@ -122,6 +124,7 @@ final class ConfigurationFactory
         );
         $referenceEntityEs->setDateFieldName('updated_at');
         $referenceEntityEs->setDataProcessing(DateTimeFormat::formatFromInt());
+
         return [
             'assetManager' => new EntityIndexConfigurationPair($assetManagerMySql, $assetManagerEs),
             'product' => new EntityIndexConfigurationPair($productMySql, $productEs),

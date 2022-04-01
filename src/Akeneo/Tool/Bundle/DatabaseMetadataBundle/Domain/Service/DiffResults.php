@@ -14,10 +14,10 @@ use Akeneo\Tool\Bundle\DatabaseMetadataBundle\Domain\Model\MysqlSyncReport;
  */
 class DiffResults
 {
-    public static function exploitDiffHelperResults(string $datasResults): MysqlSyncReport
+    public static function exploitDiffHelperResults(string $dataResultsFromDiffHelper): MysqlSyncReport
     {
         $mysqlSyncReport = new MysqlSyncReport();
-        $resultsDiffHelper = json_decode($datasResults, true)?:[];
+        $resultsDiffHelper = json_decode($dataResultsFromDiffHelper, true)?:[];
         $mySqlArrayIdentifier = [];
         $esArrayIdentifier=[];
         foreach ($resultsDiffHelper as $arraysFromDiffHelper) {
@@ -36,21 +36,21 @@ class DiffResults
             }
         }
 
-        $mySQLOnly = array_diff(
+        $mysqlSyncReport->missingLines = array_diff(
             array_keys($mySqlArrayIdentifier),
             array_keys($esArrayIdentifier)
         );
-        $esOnly = array_diff(
+        $mysqlSyncReport->lines2Delete = array_diff(
             array_keys($esArrayIdentifier),
             array_keys($mySqlArrayIdentifier)
         );
-        $updated = array_diff(
+        $mysqlSyncReport->obsoleteLines = array_diff(
             array_keys($mySqlArrayIdentifier),
-            $mySQLOnly
+            array_diff(
+                array_keys($mySqlArrayIdentifier),
+                array_keys($esArrayIdentifier)
+            )
         );
-        $mysqlSyncReport->missingLines = $mySQLOnly;
-        $mysqlSyncReport->lines2Delete = $esOnly;
-        $mysqlSyncReport->obsoleteLines = $updated;
 
         return $mysqlSyncReport;
     }

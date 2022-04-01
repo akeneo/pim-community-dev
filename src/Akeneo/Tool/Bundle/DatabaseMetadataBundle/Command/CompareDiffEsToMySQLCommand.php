@@ -31,7 +31,7 @@ class CompareDiffEsToMySQLCommand extends Command
     private const EXTENSION = '.jsonl';
 
     protected static $defaultName = 'pimee:migration:diff';
-    protected static $defaultDescription = 'Check data consistency between MySQL and Elasticsearch before migrating from Flexibility to Serenity';
+    protected static $defaultDescription = 'Check before migration between Flexibility to Serenity the consistency of MySQL and Elasticsearch';
 
     private GenericEntityESIndexFinder $searchEs;
 
@@ -62,11 +62,11 @@ class CompareDiffEsToMySQLCommand extends Command
             $this->contextLogProcessor->insertContext("index", $indexName);
 
             $mySqlConf = $indexMappingConfiguration->mySql;
-            $resultsMySQLData = $this->readMySQLData($mySqlConf, $indexName);
+            $resultsMySQLData = $this->readMySQLData($mySqlConf);
             $filenameSourceDB = $this->dumpItemToJsonFiles($resultsMySQLData, $this->initFilename($folder, $mySqlConf, $indexName));
 
             $esConf = $indexMappingConfiguration->elasticsearch;
-            $resultsEsData = $this->readEsData($esConf, $indexName);
+            $resultsEsData = $this->readEsData($esConf);
             $filenameSourceES = $this->dumpItemToJsonFiles($resultsEsData, $this->initFilename($folder, $esConf, $indexName));
 
             $status = $this->compareJsonFiles($filenameSourceDB, $filenameSourceES, $indexName);
@@ -78,15 +78,16 @@ class CompareDiffEsToMySQLCommand extends Command
                 return Command::FAILURE;
             }
         }
+
         return Command::SUCCESS;
     }
 
-    public function readMySQLData(EntityIndexConfiguration $entityIndexConfiguration, string $indexName): \Traversable
+    public function readMySQLData(EntityIndexConfiguration $entityIndexConfiguration): \Traversable
     {
         return $this->searchMySql->findAllByOrder($entityIndexConfiguration);
     }
 
-    public function readEsData(EntityIndexConfiguration $entityIndexConfiguration, string $indexName): \Traversable
+    public function readEsData(EntityIndexConfiguration $entityIndexConfiguration): \Traversable
     {
         return $this->searchEs->findAllByOrder($entityIndexConfiguration);
     }
@@ -97,6 +98,7 @@ class CompareDiffEsToMySQLCommand extends Command
         foreach ($items as $it => $data) {
             file_put_contents($filename, json_encode($data) . "\n", FILE_APPEND);
         }
+
         return $filename;
     }
 
@@ -108,7 +110,8 @@ class CompareDiffEsToMySQLCommand extends Command
             'ignoreWhitespace' => true // ignore whitespace difference
         ];
         $rendererOptions = [
-            'jsonEncodeFlags' => \JSON_PRETTY_PRINT];
+            'jsonEncodeFlags' => \JSON_PRETTY_PRINT
+        ];
 
         $line = DiffHelper::calculateFiles($mysqlFiles, $esFiles, self::DIFF_MODE, $differOptions, $rendererOptions);
         $resultsDiff = DiffResults::exploitDiffHelperResults($line);
@@ -123,13 +126,14 @@ class CompareDiffEsToMySQLCommand extends Command
 
     public function initFolder(string $filename): string
     {
-        $folder = $filename . '/es_mysql_diff/' . uniqid();
+        $folder = sprintf('%s/es_mysql_diff/%s', $filename, uniqid());
         mkdir($folder, 0770, true);
+
         return $folder;
     }
 
-    public function initFilename(string $folder, $sql, int|string $indexName): string
+    public function initFilename(string $folder, EntityIndexConfiguration $entityIndexConfiguration, int|string $indexName): string
     {
-        return $folder . '/' . $sql->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
+        return $folder . '/' . $entityIndexConfiguration->getSourceName() . self::SEPARATOR . $indexName . self::EXTENSION;
     }
 }

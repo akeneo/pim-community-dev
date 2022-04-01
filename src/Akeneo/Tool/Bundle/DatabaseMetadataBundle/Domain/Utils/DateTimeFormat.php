@@ -20,7 +20,7 @@ class DateTimeFormat extends \DateTime
     {
         return function (string &$date) {
             $time = strtotime($date);
-            return (new \DateTime)->setTimestamp($time);
+            return (new DateTime)->setTimestamp($time);
         };
     }
 
@@ -34,7 +34,7 @@ class DateTimeFormat extends \DateTime
     public static function formatFromInt(): Closure
     {
         return function (int &$date) {
-            return (new \DateTime)->setTimestamp($date);
+            return (new DateTime)->setTimestamp($date);
         };
     }
 }

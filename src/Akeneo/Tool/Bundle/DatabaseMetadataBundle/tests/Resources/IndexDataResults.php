@@ -10,23 +10,17 @@ namespace Akeneo\Tool\Bundle\DatabaseMetadataBundle\tests\Resources;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class IndexDatasResults
+class IndexDataResults
 {
     public static function initDiffBlock(array $old, array $new): string
     {
-        $lineResult = '[[{"tag": 4,
+        return sprintf('[[{"tag": 4,
                     "old": {
                         "offset": 4,
-                        "lines":';
-        $lineResult .= json_encode($old);
-        $lineResult .= '},
+                        "lines":%s},
                     "new": {
                         "offset": 4,
-                        "lines": ';
-        $lineResult .= json_encode($new);
-        $lineResult .= '}
-              }]]';
-
-        return $lineResult;
+                        "lines": %s}
+                    }]]',json_encode($old),json_encode($new));
     }
 }
