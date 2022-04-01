@@ -28,6 +28,8 @@ const PreviewContent = styled.div<{isLoading: boolean}>`
 
 const EmptyPreviewContent = styled(PreviewContent)`
   color: ${getColor('grey', 100)};
+
+  ${({isLoading}) => isLoading && placeholderStyle}
 `;
 
 const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: OperationsProps) => {
