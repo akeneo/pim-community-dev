@@ -40,6 +40,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteAccessTokensQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery:
         arguments:
             - '@database_connection'
