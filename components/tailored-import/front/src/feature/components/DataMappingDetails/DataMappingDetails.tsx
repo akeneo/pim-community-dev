@@ -2,7 +2,15 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, findColumnByUuid} from '../../models';
+import {
+  Column,
+  DataMapping,
+  Target,
+  ColumnIdentifier,
+  FileStructure,
+  findColumnByUuid,
+  replaceSampleData,
+} from '../../models';
 import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
@@ -58,8 +66,8 @@ const DataMappingDetails = ({
     onDataMappingChange({...dataMapping, target});
   };
 
-  const handleRefreshSampleData = async (index: number) => {
-    setLoadingSampleData(loadingSampleData => [...loadingSampleData, index]);
+  const handleRefreshSampleData = async (indexToRefresh: number) => {
+    setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
     const column = findColumnByUuid(columns, dataMapping.sources[0]);
     const refreshedData =
       null !== column
@@ -72,10 +80,11 @@ const DataMappingDetails = ({
           )
         : null;
 
-    const sampleData = [...dataMapping.sample_data.slice(0, index), refreshedData, ...dataMapping.sample_data.slice(index + 1)]
-    setLoadingSampleData([]);
-
-    onDataMappingChange({...dataMapping, sample_data: sampleData});
+    setLoadingSampleData(loadingSampleData => loadingSampleData.filter(value => indexToRefresh !== value));
+    onDataMappingChange({
+      ...dataMapping,
+      sample_data: replaceSampleData(dataMapping.sample_data, indexToRefresh, refreshedData),
+    });
   };
 
   return (
@@ -95,7 +104,11 @@ const DataMappingDetails = ({
           validationErrors={filterErrors(validationErrors, '[sources]')}
           onSourcesChange={handleSourcesChange}
         />
-        <Operations dataMapping={dataMapping} loadingSampleData={loadingSampleData} onRefreshSampleData={handleRefreshSampleData} />
+        <Operations
+          dataMapping={dataMapping}
+          loadingSampleData={loadingSampleData}
+          onRefreshSampleData={handleRefreshSampleData}
+        />
       </Container>
     </DataMappingDetailsContainer>
   );

@@ -57,7 +57,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
 
         $response = \json_decode($response->getContent(), true);
 
-        $this->assertSame('Produit 2', $response);
+        $this->assertSame(['refreshed_data' => 'Produit 2'], $response);
     }
 
     private function storeFile(string $filePath): string

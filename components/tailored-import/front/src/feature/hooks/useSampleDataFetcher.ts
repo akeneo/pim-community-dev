@@ -32,6 +32,7 @@ const useSampleDataFetcher = (): ((
       if (response.ok) {
         const sampleData = await response.json();
         resolve(sampleData);
+        return;
       }
 
       reject();

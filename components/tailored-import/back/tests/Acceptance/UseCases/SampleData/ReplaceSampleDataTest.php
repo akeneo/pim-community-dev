@@ -24,9 +24,9 @@ class ReplaceSampleDataTest extends TestCase
         $values = ['value1', 'value2', 'value3', 'value3', 'value4'];
         $currentSampleData = ['value1', 'value2', 'value3'];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData, 2);
+        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
 
-        $this->assertEquals(['value1', 'value2', 'value4'], $result);
+        $this->assertEquals('value4', $result);
     }
 
     public function test_it_replace_sample_data_with_null_when_sample_data_contain_all_column_values(): void
@@ -35,9 +35,9 @@ class ReplaceSampleDataTest extends TestCase
         $values = ['value1', 'value2', 'value3', 'value3'];
         $currentSampleData = ['value1', 'value2', 'value3'];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData, 2);
+        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
 
-        $this->assertEquals(['value1', 'value2', null], $result);
+        $this->assertEquals(null, $result);
     }
 
     public function test_it_replace_sample_data_with_a_sample_data_when_sample_data_contain_null(): void
@@ -46,8 +46,8 @@ class ReplaceSampleDataTest extends TestCase
         $values = ['value1', 'value2', 'value3', 'value3'];
         $currentSampleData = ['value1', 'value2', null];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData, 2);
+        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
 
-        $this->assertEquals(['value1', 'value2', 'value3'], $result);
+        $this->assertEquals('value3', $result);
     }
 }

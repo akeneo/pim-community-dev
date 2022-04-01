@@ -3,7 +3,7 @@ import {DataMapping} from '../../models';
 import styled from 'styled-components';
 import {IconButton, RefreshIcon, SectionTitle, Preview, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {placeholderStyle} from "akeneo-design-system";
+import {placeholderStyle} from 'akeneo-design-system';
 
 type OperationsProps = {
   dataMapping: DataMapping;
@@ -17,28 +17,22 @@ const OperationsContainer = styled.div`
   gap: 10px;
 `;
 
-const PreviewRow = styled(Preview.Row)<{isLoading: boolean}>`
-  ${({isLoading}) => isLoading && placeholderStyle}
-  
-  &:hover {
-    ${({isLoading}) => isLoading && placeholderStyle}
-  }
-`;
-
-const PreviewContent = styled.div`
+const PreviewContent = styled.div<{isLoading: boolean}>`
   overflow: hidden;
   max-width: 100ch;
   text-overflow: ellipsis;
   white-space: nowrap;
+
+  ${({isLoading}) => isLoading && placeholderStyle}
 `;
 
-const Placeholder = styled.div`
+const EmptyPreviewContent = styled(PreviewContent)`
   color: ${getColor('grey', 100)};
 `;
 
 const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: OperationsProps) => {
   const translate = useTranslate();
-  console.log(loadingSampleData);
+
   return (
     <OperationsContainer>
       <SectionTitle sticky={0}>
@@ -49,27 +43,25 @@ const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: Opera
       {dataMapping.sample_data.length > 0 && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
           {dataMapping.sample_data.map((sampleData, key) => (
-            <PreviewRow
+            <Preview.Row
               key={key}
-              isLoading={loadingSampleData.includes(key)}
               action={
-                loadingSampleData.includes(key)
-                  ? undefined
-                  : (
-                    <IconButton
-                      icon={<RefreshIcon />}
-                      onClick={() => onRefreshSampleData(key)}
-                      title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}
-                    />
-                  )
+                <IconButton
+                  disabled={loadingSampleData.includes(key)}
+                  icon={<RefreshIcon />}
+                  onClick={() => onRefreshSampleData(key)}
+                  title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}
+                />
               }
             >
               {sampleData ? (
-                <PreviewContent>{sampleData}</PreviewContent>
+                <PreviewContent isLoading={loadingSampleData.includes(key)}>{sampleData}</PreviewContent>
               ) : (
-                <Placeholder>{translate('akeneo.tailored_import.data_mapping.preview.placeholder')}</Placeholder>
+                <EmptyPreviewContent isLoading={loadingSampleData.includes(key)}>
+                  {translate('akeneo.tailored_import.data_mapping.preview.placeholder')}
+                </EmptyPreviewContent>
               )}
-            </PreviewRow>
+            </Preview.Row>
           ))}
         </Preview>
       )}

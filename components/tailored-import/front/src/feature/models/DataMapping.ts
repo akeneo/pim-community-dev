@@ -65,6 +65,12 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
   return {...dataMapping, sources: [...dataMapping.sources, column.uuid]};
 };
 
+const replaceSampleData = (sampleData: SampleData[], index: number, value: SampleData) => [
+  ...sampleData.slice(0, index),
+  value,
+  ...sampleData.slice(index + 1),
+];
+
 export type {DataMapping, DataMappingType, SampleData};
 export {
   MAX_DATA_MAPPING_COUNT,
@@ -74,4 +80,5 @@ export {
   updateDataMapping,
   createDefaultDataMapping,
   addSourceToDataMapping,
+  replaceSampleData,
 };

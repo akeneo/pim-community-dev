@@ -7,6 +7,7 @@ import {
   createDefaultDataMapping,
   addSourceToDataMapping,
   createAttributeDataMapping,
+  replaceSampleData,
 } from './DataMapping';
 
 const mockUuid = 'uuid';
@@ -235,4 +236,25 @@ test('it updates a data mapping', () => {
   expect(updateDataMapping([], updatedDataMapping)).toEqual([]);
   expect(updateDataMapping(dataMappings, updatedDataMapping)).toEqual([dataMappings[0], updatedDataMapping]);
   expect(updateDataMapping(dataMappings, nonExistentDataMapping)).toEqual(dataMappings);
+});
+
+test('it replace a sample data', () => {
+  const sampleData = ['sample data 1', 'sample data 2', 'sample data 3'];
+  expect(replaceSampleData(sampleData, 0, 'new sample data')).toEqual([
+    'new sample data',
+    'sample data 2',
+    'sample data 3',
+  ]);
+
+  expect(replaceSampleData(sampleData, 1, 'another sample data')).toEqual([
+    'sample data 1',
+    'another sample data',
+    'sample data 3',
+  ]);
+
+  expect(replaceSampleData(sampleData, 2, 'refreshed sample data')).toEqual([
+    'sample data 1',
+    'sample data 2',
+    'refreshed sample data',
+  ]);
 });

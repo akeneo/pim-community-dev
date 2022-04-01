@@ -1,5 +1,5 @@
 import {useRouter} from '@akeneo-pim-community/shared';
-import {SampleData} from "../models";
+import {SampleData} from '../models';
 
 const useRefreshedSampleDataFetcher = (): ((
   fileKey: string,
@@ -36,6 +36,8 @@ const useRefreshedSampleDataFetcher = (): ((
       if (response.ok) {
         const sampleData = await response.json();
         resolve(sampleData.refreshed_data);
+
+        return;
       }
 
       reject();
