@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
+use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
 final class InMemoryGetSupplier implements GetSupplier
@@ -19,7 +19,7 @@ final class InMemoryGetSupplier implements GetSupplier
     {
         $supplier = $this->supplierRepository->getByIdentifier($identifier);
 
-        if ($supplier === null) {
+        if (null === $supplier) {
             return null;
         }
 

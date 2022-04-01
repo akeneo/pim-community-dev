@@ -94,7 +94,8 @@ SQL;
                 [
                     'email' => $email,
                     'supplierIdentifier' => $supplier->identifier(),
-                ]);
+                ]
+            );
         }
     }
 }

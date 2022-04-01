@@ -85,6 +85,7 @@ SQL;
             [
                 'email' => $email,
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
-            ]);
+            ]
+        );
     }
 }

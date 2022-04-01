@@ -6,9 +6,7 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteSupplierHandlerTest extends TestCase

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
+use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
-use Akeneo\OnboarderSerenity\Domain\Read;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplier implements GetSupplier
