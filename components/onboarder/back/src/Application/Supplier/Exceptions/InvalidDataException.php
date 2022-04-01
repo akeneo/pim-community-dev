@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Application\Supplier\Exceptions;
 
 final class InvalidDataException extends \Exception
 {
-    public function __construct(iterable $violations)
+    public function __construct(private iterable $violations)
     {
     }
 }

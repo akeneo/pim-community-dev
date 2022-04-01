@@ -132,7 +132,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         );
     }
 
-    private function createSupplier(string $identifier, string $code, string $label)
+    private function createSupplier(string $identifier, string $code, string $label): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)

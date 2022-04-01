@@ -171,7 +171,7 @@ final class SupplierContext implements Context
     /**
      * @Then I should have the following supplier:
      */
-    public function iShouldHaveTheSupplier(TableNode $properties)
+    public function iShouldHaveTheSupplier(TableNode $properties): void
     {
         $expectedSupplier = $properties->getHash()[0];
 
@@ -184,7 +184,7 @@ final class SupplierContext implements Context
         Assert::assertSame($expectedSupplier['contributors'], join(';', $this->supplier->contributors));
     }
 
-    private function loadSuppliers($search = ''): void
+    private function loadSuppliers(string $search = ''): void
     {
         $this->suppliers = ($this->getSupplierList)(1, $search);
     }
@@ -192,6 +192,6 @@ final class SupplierContext implements Context
     private function loadSupplier(string $code): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
-        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\identifier::fromString($supplier->identifier()));
+        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\Identifier::fromString($supplier->identifier()));
     }
 }

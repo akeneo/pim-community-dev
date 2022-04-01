@@ -35,7 +35,7 @@ final class Supplier
         );
     }
 
-    public function update($label, array $contributorEmails): self
+    public function update(string $label, array $contributorEmails): self
     {
         return new self(
             (string) $this->identifier,

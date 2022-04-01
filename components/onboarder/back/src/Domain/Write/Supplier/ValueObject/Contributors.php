@@ -14,7 +14,7 @@ final class Contributors implements \Countable
         $this->contributors = $contributors;
     }
 
-    public static function fromEmails(array $contributorEmails)
+    public static function fromEmails(array $contributorEmails): self
     {
         $contributors = [];
         foreach ($contributorEmails as $email) {

@@ -57,7 +57,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
         static::assertSame([], $supplier->contributors);
     }
 
-    private function createSupplier()
+    private function createSupplier(): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
