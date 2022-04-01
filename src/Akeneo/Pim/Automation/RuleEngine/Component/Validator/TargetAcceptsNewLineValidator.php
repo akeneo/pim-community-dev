@@ -50,9 +50,9 @@ final class TargetAcceptsNewLineValidator extends ConstraintValidator
             return;
         }
 
-        $attributeTarget = $this->getAttributes->forCode($action->to->field);
-        if (null === $attributeTarget
-            ||  in_array($attributeTarget->type(), static::ALLOWED_NEW_LINE_TARGET_TYPES)
+        $targetAttribute = $this->getAttributes->forCode($action->to->field);
+        if (null === $targetAttribute
+            ||  in_array($targetAttribute->type(), static::ALLOWED_NEW_LINE_TARGET_TYPES)
         ) {
             return;
         }
@@ -61,7 +61,7 @@ final class TargetAcceptsNewLineValidator extends ConstraintValidator
             if ($productSource->newLine) {
                 $this
                     ->context
-                    ->buildViolation($constraint->message, ['{{ targetField }}' => $attributeTarget->code()])
+                    ->buildViolation($constraint->message, ['{{ targetField }}' => $targetAttribute->code()])
                     ->atPath(sprintf('from[%d].new_line', $key))
                     ->addViolation()
                 ;

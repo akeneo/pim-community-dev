@@ -84,7 +84,7 @@ class EmptyUpdaterSpec extends ObjectBehavior
         GetTransformationsSource $getTransformationsSource,
         Transformation $transformation,
         AttributeRepositoryInterface $attributeRepository,
-        MediaFileAttribute $attributeTarget
+        MediaFileAttribute $targetAttribute
     ) {
         $asset->getAssetFamilyIdentifier()->willReturn(AssetFamilyIdentifier::fromString('packshot'));
 
@@ -105,12 +105,12 @@ class EmptyUpdaterSpec extends ObjectBehavior
             EmptyData::create()
         );
 
-        $attributeTarget->getCode()->willReturn(AttributeCode::fromString('target_attribute'));
-        $attributeTarget->getIdentifier()->willReturn(AttributeIdentifier::fromString('target_attribute_identifier'));
-        $attributeTarget->hasValuePerChannel()->willReturn(true);
-        $attributeTarget->hasValuePerLocale()->willReturn(false);
+        $targetAttribute->getCode()->willReturn(AttributeCode::fromString('target_attribute'));
+        $targetAttribute->getIdentifier()->willReturn(AttributeIdentifier::fromString('target_attribute_identifier'));
+        $targetAttribute->hasValuePerChannel()->willReturn(true);
+        $targetAttribute->hasValuePerLocale()->willReturn(false);
         $transformation->getTarget()->willReturn(Target::create(
-            $attributeTarget->getWrappedObject(),
+            $targetAttribute->getWrappedObject(),
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('e-commerce')),
             LocaleReference::noReference()
         ));
@@ -122,13 +122,13 @@ class EmptyUpdaterSpec extends ObjectBehavior
         )->willReturn([$transformation])->shouldBeCalled();
 
         $getTransformationsSource->forAttribute(
-            $attributeTarget,
+            $targetAttribute,
             ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('e-commerce')),
             LocaleReference::noReference()
         )->willReturn([])->shouldBeCalled();
 
         $attributeRepository->getByCodeAndAssetFamilyIdentifier('target_attribute', AssetFamilyIdentifier::fromString('packshot'))->willReturn(
-            $attributeTarget
+            $targetAttribute
         );
 
         $asset->setValue($value)->shouldBeCalled();

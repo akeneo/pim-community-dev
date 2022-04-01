@@ -143,9 +143,9 @@ final class ConcatenateActionApplier implements ActionApplierInterface
         EntityWithFamilyVariantInterface $entity,
         ProductConcatenateActionInterface $action
     ): void {
-        $attributeTarget = $this->attributeRepository->findOneByIdentifier($action->getTarget()->getField());
-        $isTextAreaType = null !== $attributeTarget && $attributeTarget->getType() === AttributeTypes::TEXTAREA;
-        $isWysiwyg = $isTextAreaType && $attributeTarget->isWysiwygEnabled();
+        $targetAttribute = $this->attributeRepository->findOneByIdentifier($action->getTarget()->getField());
+        $isTextAreaType = null !== $targetAttribute && $targetAttribute->getType() === AttributeTypes::TEXTAREA;
+        $isWysiwyg = $isTextAreaType && $targetAttribute->isWysiwygEnabled();
 
         $data = '';
         $lastSource = null;
