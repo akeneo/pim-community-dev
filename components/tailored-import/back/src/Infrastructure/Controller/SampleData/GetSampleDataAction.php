@@ -6,10 +6,13 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -19,6 +22,8 @@ final class GetSampleDataAction
 {
     public function __construct(
         private GetSampleDataHandler $getSampleDataHandler,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
     ) {
     }
 
@@ -28,13 +33,9 @@ final class GetSampleDataAction
             return new RedirectResponse('/');
         }
 
-        if (
-            null === $request->get('file_key') ||
-            null === $request->get('column_index') ||
-            null === $request->get('sheet_name') ||
-            null === $request->get('product_line')
-        ) {
-            throw new \HttpInvalidParamException('missing or null params, required params are "job_code" and "column_index"');
+        $violations = $this->validator->validate($request, new SampleDataQuery());
+        if ($violations->count() > 0) {
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         $query = new GetSampleDataQuery();
