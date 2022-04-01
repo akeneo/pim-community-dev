@@ -17,6 +17,8 @@ onboarder_serenity_supplier_edit:
     defaults:
         _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit
         _feature: onboarder_serenity_supplier
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
 
 onboarder_serenity_supplier_delete:
@@ -24,4 +26,6 @@ onboarder_serenity_supplier_delete:
     defaults:
         _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierDelete
         _feature: onboarder_serenity_supplier
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [DELETE]
