@@ -72,7 +72,15 @@ const ContributorList = ({supplier, setContributors}: Props) => {
                         placeholder={translate(
                             'onboarder.supplier.supplier_edit.contributors_form.search_by_email_address'
                         )}
-                    />
+                    >
+                        <Search.ResultCount>
+                            {translate(
+                                'onboarder.supplier.supplier_edit.contributors_form.result_counter',
+                                {count: filteredContributors.length},
+                                filteredContributors.length
+                            )}
+                        </Search.ResultCount>
+                    </Search>
 
                     <Table>
                         <Table.Header>
