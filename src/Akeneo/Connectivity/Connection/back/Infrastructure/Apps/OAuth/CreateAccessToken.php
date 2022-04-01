@@ -7,7 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteAccessTokenQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteAccessTokensQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAccessTokenQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
@@ -37,7 +37,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         private GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
         private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         private GetAccessTokenQueryInterface $getAccessTokenQuery,
-        private DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        private DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ) {
     }
 
@@ -61,7 +61,7 @@ class CreateAccessToken implements CreateAccessTokenInterface
         $scopeString = $authorizationScopesList->toScopeString();
 
         if (null === $token = $this->getAccessTokenQuery->execute($appId, $scopeString)) {
-            $this->deleteAccessTokenQuery->execute($appId);
+            $this->deleteAccessTokensQuery->execute($appId);
 
             $token = $this->randomCodeGenerator->generate();
 

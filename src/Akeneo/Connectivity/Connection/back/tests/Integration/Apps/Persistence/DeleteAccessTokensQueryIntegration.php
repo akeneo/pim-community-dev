@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteAccessTokenQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteAccessTokensQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -14,10 +14,10 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteAccessTokenQueryIntegration extends TestCase
+class DeleteAccessTokensQueryIntegration extends TestCase
 {
     private ConnectedAppLoader $connectedAppLoader;
-    private DeleteAccessTokenQuery $query;
+    private DeleteAccessTokensQuery $query;
 
     protected function getConfiguration(): Configuration
     {
@@ -28,7 +28,7 @@ class DeleteAccessTokenQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->query = $this->get(DeleteAccessTokenQuery::class);
+        $this->query = $this->get(DeleteAccessTokensQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 

@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateAccessTokenInterface;
 use Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppConfirmation;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteAccessTokenQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\DeleteAccessTokensQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAccessTokenQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
@@ -42,7 +42,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         GetUserConsentedAuthenticationUuidQueryInterface $getUserConsentedAuthenticationUuidQuery,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         GetAccessTokenQueryInterface $getAccessTokenQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ): void {
         $this->beConstructedWith(
             $storage,
@@ -55,7 +55,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
             $getUserConsentedAuthenticationUuidQuery,
             $getUserConsentedAuthenticationScopesQuery,
             $getAccessTokenQuery,
-            $deleteAccessTokenQuery,
+            $deleteAccessTokensQuery,
         );
     }
 
@@ -78,7 +78,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserInterface $pimUser,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         GetAccessTokenQueryInterface $getAccessTokenQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')
             ->willReturn($client);
@@ -109,7 +109,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         ];
         $getAccessTokenQuery->execute('client_id_1234', 'scope1 scope2')->willReturn(null);
 
-        $deleteAccessTokenQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
+        $deleteAccessTokensQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
         $storage->createAccessToken(
             'generated_token_123',
             $client,
@@ -131,7 +131,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserInterface $pimUser,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         GetAccessTokenQueryInterface $getAccessTokenQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')
             ->willReturn($client);
@@ -148,7 +148,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $getUserConsentedAuthenticationScopesQuery->execute(2, 'client_id_1234')
             ->willReturn([]);
 
-        $deleteAccessTokenQuery->execute(Argument::type('string'))->willReturn(1)->shouldNotBeCalled();
+        $deleteAccessTokensQuery->execute(Argument::type('string'))->willReturn(1)->shouldNotBeCalled();
         $storage->createAccessToken(Argument::cetera())->shouldNotBeCalled();
         $storage->markAuthCodeAsUsed('auth_code_1234')->shouldBeCalled();
 
@@ -167,7 +167,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         IOAuth2AuthCode $authCode,
         RandomCodeGeneratorInterface $randomCodeGenerator,
         GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
         GetAppConfirmationQueryInterface $appConfirmationQuery,
         UserRepositoryInterface $userRepository,
         UserInterface $appUser,
@@ -203,7 +203,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $getUserConsentedAuthenticationUuidQuery->execute(2, 'a_client_id')
             ->willReturn('a_ppid');
 
-        $deleteAccessTokenQuery->execute('a_client_id')->willReturn(1)->shouldBeCalled();
+        $deleteAccessTokensQuery->execute('a_client_id')->willReturn(1)->shouldBeCalled();
         $storage->createAccessToken(
             'a_token',
             $client,
@@ -273,7 +273,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserInterface $pimUser,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         GetAccessTokenQueryInterface $getAccessTokenQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')
             ->willReturn($client);
@@ -297,7 +297,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         $authCode->getData()
             ->willReturn($pimUser);
 
-        $deleteAccessTokenQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
+        $deleteAccessTokensQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
 
         $getAccessTokenQuery->execute('client_id_1234', 'scope1 scope2')->willReturn(null);
 
@@ -318,7 +318,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
         UserInterface $pimUser,
         GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
         GetAccessTokenQueryInterface $getAccessTokenQuery,
-        DeleteAccessTokenQueryInterface $deleteAccessTokenQuery,
+        DeleteAccessTokensQueryInterface $deleteAccessTokensQuery,
     ): void {
         $clientProvider->findClientByAppId('client_id_1234')
             ->willReturn($client);
@@ -344,7 +344,7 @@ class CreateAccessTokenSpec extends ObjectBehavior
 
         $getAccessTokenQuery->execute('client_id_1234', 'scope1 scope2')->willReturn(null);
 
-        $deleteAccessTokenQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
+        $deleteAccessTokensQuery->execute('client_id_1234')->willReturn(1)->shouldBeCalled();
 
         $storage->createAccessToken(
             'generated_token_123',
