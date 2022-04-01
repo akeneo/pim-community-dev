@@ -118,7 +118,7 @@ final class HandleTextareaTest extends AttributeTestCase
                 'data_mappings' => [
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'sku',
                             'pim_catalog_identifier',
                             null,
@@ -133,7 +133,7 @@ final class HandleTextareaTest extends AttributeTestCase
                     ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'name',
                             'pim_catalog_textarea',
                             null,
@@ -150,7 +150,7 @@ final class HandleTextareaTest extends AttributeTestCase
                     ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'description',
                             'pim_catalog_textarea',
                             'ecommerce',

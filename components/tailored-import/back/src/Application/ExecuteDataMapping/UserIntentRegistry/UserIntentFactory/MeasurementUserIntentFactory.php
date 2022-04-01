@@ -25,7 +25,7 @@ class MeasurementUserIntentFactory implements UserIntentFactoryInterface
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
         if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a TargetAttribute');
+            throw new \InvalidArgumentException('The target must be a AttributeTarget');
         }
 
         $sourceParameter = $target->getSourceParameter();
