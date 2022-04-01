@@ -16,7 +16,8 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
     # AkeneoJobBundle
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests/Integration/Resources/config/services.yml }
-
+    # Tailored Import
+    - { resource: ../../../components/tailored-import/back/tests/Integration/Resources/config/services.yml }
 services:
 
     _defaults:
