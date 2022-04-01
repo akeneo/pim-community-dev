@@ -16,8 +16,8 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class MeasurementUserIntentFactory implements UserIntentFactoryInterface

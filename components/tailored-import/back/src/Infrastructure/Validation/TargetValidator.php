@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\FindUnit;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Unit;
 use Symfony\Component\Validator\Constraint;
