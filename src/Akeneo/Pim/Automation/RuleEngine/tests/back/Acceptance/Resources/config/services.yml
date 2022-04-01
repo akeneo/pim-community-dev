@@ -53,6 +53,10 @@ services:
             - '@akeneo_rule_engine.repository.rule_definition'
             - '@pimee_catalog_rule.builder.product'
 
+    Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\FeatureFlagContext:
+        arguments:
+            - '@feature_flags'
+
     Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\EventSubscriberContext:
         tags:
             - { name: kernel.event_subscriber }

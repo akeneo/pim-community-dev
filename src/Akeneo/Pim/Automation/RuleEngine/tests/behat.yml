@@ -13,6 +13,7 @@ acceptance:
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ImportRuleContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExportRuleContext
                 - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\ExecuteRuleContext
+                - Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\Context\FeatureFlagContext
             filters:
                 tags: '@acceptance-back'
     extensions:
