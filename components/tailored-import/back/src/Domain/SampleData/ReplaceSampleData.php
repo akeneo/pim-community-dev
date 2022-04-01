@@ -13,7 +13,7 @@ final class ReplaceSampleData
     public function fromExtractedColumn(array $extractedColumn, array $currentSample, int $indexToReplace): array
     {
         $cleanedExtract = self::removeAlreadyPickedSample($extractedColumn, $currentSample);
-        $currentSample[$indexToReplace] = self::extractOneNewNonPickedValue($cleanedExtract);
+        $currentSample[$indexToReplace] = self::extractOneNewUnpickedValue($cleanedExtract);
         return self::fillBlankValues($currentSample);
     }
 
@@ -27,7 +27,7 @@ final class ReplaceSampleData
         return array_diff($extractedColumn, $currentSample);
     }
 
-    private static function extractOneNewNonPickedValue(array $cleanedExtract): string|null
+    private static function extractOneNewUnpickedValue(array $cleanedExtract): string|null
     {
         return current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
     }
