@@ -29,6 +29,7 @@
 - PIM-10351: Improve error message for ancestor categories validation in process tracker
 - PIM-10347: Use the Vimeo oEmbed API to generate thumbnail
 - PIM-10367: Fix table attribute condition line handleChange values
+- PIM-10381: allow words with dot in the dictionary
 
 ## Improvements
 
