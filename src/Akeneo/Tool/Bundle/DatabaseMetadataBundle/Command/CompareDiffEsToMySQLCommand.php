@@ -69,8 +69,7 @@ class CompareDiffEsToMySQLCommand extends Command
             $resultsEsData = $this->readEsData($esConf);
             $filenameSourceES = $this->dumpItemToJsonFiles($resultsEsData, $this->initFilename($folder, $esConf, $indexName));
 
-            $status = $this->compareJsonFiles($filenameSourceDB, $filenameSourceES, $indexName);
-            $indexComparisonStatusList[] = $status;
+            $indexComparisonStatusList[] = $this->compareJsonFiles($filenameSourceDB, $filenameSourceES, $indexName);
         }
 
         foreach ($indexComparisonStatusList as $comparisonStatus) {

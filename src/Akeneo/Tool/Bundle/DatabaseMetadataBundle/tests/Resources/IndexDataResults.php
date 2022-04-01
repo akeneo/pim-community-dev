@@ -14,13 +14,16 @@ class IndexDataResults
 {
     public static function initDiffBlock(array $old, array $new): string
     {
-        return sprintf('[[{"tag": 4,
-                    "old": {
-                        "offset": 4,
-                        "lines":%s},
-                    "new": {
-                        "offset": 4,
-                        "lines": %s}
-                    }]]',json_encode($old),json_encode($new));
+        $genericDiff = [
+            [
+                [
+                    "tag" => 4,
+                    "old" => ["offset" => 4, "lines" => $old],
+                    "new" => ["offset" => 4, "lines" => $new],
+                ],
+            ],
+        ];
+
+        return json_encode($genericDiff);
     }
 }
