@@ -101,6 +101,7 @@ const ContributorList = ({supplier, setContributors}: Props) => {
 const TabContainer = styled.div`
     & > * {
         margin: 0 0 20px 0;
+        max-width: none;
     }
 `;
 
@@ -114,8 +115,8 @@ const FieldContent = styled.div`
 `;
 
 const TagInputContainer = styled.div`
-    flex: 1;
     margin-right: 10px;
+    width: 460px;
 `;
 
 export {ContributorList};
