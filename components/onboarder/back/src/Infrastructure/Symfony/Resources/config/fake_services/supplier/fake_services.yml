@@ -18,3 +18,8 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierExport
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
