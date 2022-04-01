@@ -16,19 +16,6 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
     use StatusAwareTrait;
-//
-//    private array $indexesToAdd = [
-//        [
-//            'tableName' => 'pim_versioning_version',
-//            'indexName' => 'resource_name_resource_uuid_version_idx',
-//            'query' => <<<SQL
-//                    ALTER TABLE pim_versioning_version
-//                        ADD INDEX {indexName} (`resource_name`,`resource_uuid`,`version`),
-//                        ALGORITHM=INPLACE,
-//                        LOCK=NONE
-//                SQL,
-//        ]
-//    ];
 
     public function __construct(private Connection $connection, private LoggerInterface $logger)
     {
@@ -88,12 +75,14 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
                     $this->logger->notice(sprintf('Will add %s primary key', $tableName), $logContext->toArray());
                     if (!$context->dryRun()) {
                         $this->setPrimaryKey($tableName, $tableProperties);
+                        $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                     }
                 }
                 if (null !== $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX] && !$this->constraintExists($tableName, $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX])) {
                     $this->logger->notice(sprintf('Will add %s foreign key', $tableName), $logContext->toArray());
                     if (!$context->dryRun()) {
                         $this->addForeignKey($tableName, $tableProperties);
+                        $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                     }
                 }
                 foreach ($tableProperties[MigrateToUuidStep::CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
@@ -101,6 +90,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
                         $this->logger->notice(sprintf('Will add %s constraint %s', $tableName, $constraintName), $logContext->toArray());
                         if (!$context->dryRun()) {
                             $this->addConstraint($tableName, $constraintName, $constraintColumns);
+                            $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                         }
                     }
                 }
@@ -109,6 +99,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
                         $this->logger->notice(sprintf('Will add %s constraint %s', $tableName, $indexName), $logContext->toArray());
                         if (!$context->dryRun()) {
                             $this->addIndex($tableName, $indexName, $indexColumns);
+                            $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                         }
                     }
                 }
