@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetProperty;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 
 class TargetHydrator
 {
@@ -28,13 +28,13 @@ class TargetHydrator
     public function hydrate(array $normalizedTarget, array $indexedAttributes): TargetInterface
     {
         return match ($normalizedTarget['type']) {
-            TargetAttribute::TYPE => $this->hydrateAttribute($normalizedTarget, $indexedAttributes),
-            TargetProperty::TYPE => $this->hydrateProperty($normalizedTarget),
+            AttributeTarget::TYPE => $this->hydrateAttribute($normalizedTarget, $indexedAttributes),
+            PropertyTarget::TYPE => $this->hydrateProperty($normalizedTarget),
             default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" target type', $normalizedTarget['type'])),
         };
     }
 
-    private function hydrateAttribute(array $normalizedTarget, array $indexedAttributes): TargetAttribute
+    private function hydrateAttribute(array $normalizedTarget, array $indexedAttributes): AttributeTarget
     {
         $attribute = $indexedAttributes[$normalizedTarget['code']] ?? null;
         if (!$attribute instanceof Attribute) {
@@ -46,7 +46,7 @@ class TargetHydrator
             $attribute->type(),
         );
 
-        return TargetAttribute::create(
+        return AttributeTarget::create(
             $normalizedTarget['code'],
             $attribute->type(),
             $normalizedTarget['channel'],
@@ -57,9 +57,9 @@ class TargetHydrator
         );
     }
 
-    private function hydrateProperty(array $normalizedTarget): TargetProperty
+    private function hydrateProperty(array $normalizedTarget): PropertyTarget
     {
-        return TargetProperty::create(
+        return PropertyTarget::create(
             $normalizedTarget['code'],
             $normalizedTarget['action_if_not_empty'],
             $normalizedTarget['action_if_empty'],

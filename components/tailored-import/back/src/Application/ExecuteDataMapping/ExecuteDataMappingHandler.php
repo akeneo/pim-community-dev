@@ -9,7 +9,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationAppli
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Query\Attribute\GetIdentifierAttributeCodeInterface;
 
 /**
@@ -40,13 +40,13 @@ class ExecuteDataMappingHandler
 
             $value = $row->getCellData($sources[0]);
 
-            if ($target instanceof TargetAttribute && $target->getSourceParameter() !== null) {
+            if ($target instanceof AttributeTarget && $target->getSourceParameter() !== null) {
                 $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
             }
 
             $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
 
-            if ($target instanceof TargetAttribute && $target->getCode() === $identifierAttributeCode) {
+            if ($target instanceof AttributeTarget && $target->getCode() === $identifierAttributeCode) {
                 $productIdentifier = $value;
             } else {
                 $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);

@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
 final class HandleNumberTest extends AttributeTestCase
@@ -57,7 +57,7 @@ final class HandleNumberTest extends AttributeTestCase
                 'data_mappings' => [
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'sku',
                             'pim_catalog_identifier',
                             null,
@@ -72,7 +72,7 @@ final class HandleNumberTest extends AttributeTestCase
                     ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'year',
                             'pim_catalog_number',
                             null,
@@ -87,7 +87,7 @@ final class HandleNumberTest extends AttributeTestCase
                     ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'age',
                             'pim_catalog_number',
                             'ecommerce',
@@ -102,7 +102,7 @@ final class HandleNumberTest extends AttributeTestCase
                     ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                        TargetAttribute::create(
+                        AttributeTarget::create(
                             'quantity',
                             'pim_catalog_number',
                             'ecommerce',

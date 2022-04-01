@@ -18,8 +18,8 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator;
 use PhpSpec\ObjectBehavior;
 
@@ -36,7 +36,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
         TargetHydrator $targetHydrator,
         OperationCollectionHydrator $operationCollectionHydrator,
     ) {
-        $nameTarget = TargetAttribute::create(
+        $nameTarget = AttributeTarget::create(
             'name',
             'pim_catalog_text',
             null,
@@ -46,7 +46,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             null,
         );
 
-        $descriptionTarget = TargetAttribute::create(
+        $descriptionTarget = AttributeTarget::create(
             'description',
             'pim_catalog_text',
             'ecommerce',

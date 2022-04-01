@@ -17,15 +17,15 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
-        if (!$target instanceof TargetAttribute) {
-            throw new \InvalidArgumentException('The target must be a TargetAttribute');
+        if (!$target instanceof AttributeTarget) {
+            throw new \InvalidArgumentException('The target must be a AttributeTarget');
         }
 
         $sourceParameter = $target->getSourceParameter();
@@ -44,6 +44,6 @@ class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof TargetAttribute && 'pim_catalog_metric' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_metric' === $target->getType();
     }
 }

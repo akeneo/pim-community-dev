@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementUserIntentFactorySpec extends ObjectBehavior
@@ -33,15 +33,15 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
     }
 
     public function it_creates_a_set_measurement_value_object(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
         $measurementSourceParameter = new MeasurementSourceParameter('METER', '.');
 
-        $targetAttribute->getType()->willReturn('pim_catalog_metric');
-        $targetAttribute->getCode()->willReturn('an_attribute_code');
-        $targetAttribute->getChannel()->willReturn(null);
-        $targetAttribute->getLocale()->willReturn(null);
-        $targetAttribute->getSourceParameter()->willReturn($measurementSourceParameter);
+        $attributeTarget->getType()->willReturn('pim_catalog_metric');
+        $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getChannel()->willReturn(null);
+        $attributeTarget->getLocale()->willReturn(null);
+        $attributeTarget->getSourceParameter()->willReturn($measurementSourceParameter);
 
         $expected = new SetMetricValue(
             'an_attribute_code',
@@ -51,22 +51,22 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
             'METER',
         );
 
-        $this->create($targetAttribute, '123.5')->shouldBeLike($expected);
+        $this->create($attributeTarget, '123.5')->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_metric(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_metric');
+        $attributeTarget->getType()->willReturn('pim_catalog_metric');
 
-        $this->supports($targetAttribute)->shouldReturn(true);
+        $this->supports($attributeTarget)->shouldReturn(true);
     }
 
     public function it_does_not_support_others_target_attribute_type(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getType()->willReturn('pim_catalog_text');
 
-        $this->supports($targetAttribute)->shouldReturn(false);
+        $this->supports($attributeTarget)->shouldReturn(false);
     }
 }

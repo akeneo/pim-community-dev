@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Webmozart\Assert\Assert;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class DataMapping
 {

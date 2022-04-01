@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model;
+namespace Akeneo\Platform\TailoredImport\Domain\Model\Target;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

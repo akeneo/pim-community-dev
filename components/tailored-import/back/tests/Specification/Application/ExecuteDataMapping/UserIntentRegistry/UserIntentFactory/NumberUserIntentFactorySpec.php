@@ -16,7 +16,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMa
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\NumberUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
 class NumberUserIntentFactorySpec extends ObjectBehavior
@@ -32,12 +32,12 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
     }
 
     public function it_creates_a_set_number_value_object(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_number');
-        $targetAttribute->getCode()->willReturn('an_attribute_code');
-        $targetAttribute->getChannel()->willReturn(null);
-        $targetAttribute->getLocale()->willReturn(null);
+        $attributeTarget->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getChannel()->willReturn(null);
+        $attributeTarget->getLocale()->willReturn(null);
 
         $expectedSetNumberValue = new SetNumberValue(
             'an_attribute_code',
@@ -46,22 +46,22 @@ class NumberUserIntentFactorySpec extends ObjectBehavior
             '123.5'
         );
 
-        $this->create($targetAttribute, '123.5')->shouldBeLike($expectedSetNumberValue);
+        $this->create($attributeTarget, '123.5')->shouldBeLike($expectedSetNumberValue);
     }
 
     public function it_supports_target_attribute_type_catalog_number(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getType()->willReturn('pim_catalog_number');
 
-        $this->supports($targetAttribute)->shouldReturn(true);
+        $this->supports($attributeTarget)->shouldReturn(true);
     }
 
     public function it_does_not_support_others_target_attribute_type(
-        TargetAttribute $targetAttribute
+        AttributeTarget $attributeTarget
     ) {
-        $targetAttribute->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getType()->willReturn('pim_catalog_text');
 
-        $this->supports($targetAttribute)->shouldReturn(false);
+        $this->supports($attributeTarget)->shouldReturn(false);
     }
 }

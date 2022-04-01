@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Query\IsMultiSourceTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\Operation\CleanHTMLTagsOperationConstraint;
 use Symfony\Component\Validator\Constraint;
@@ -174,7 +174,7 @@ class DataMappingsValidator extends ConstraintValidator
         $targetType = $dataMapping['target']['type'];
         $targetCode = $dataMapping['target']['code'];
 
-        $isMultiSourceTarget = TargetAttribute::TYPE === $targetType ?
+        $isMultiSourceTarget = AttributeTarget::TYPE === $targetType ?
             $this->isMultiSourceTarget->isAttributeMultiSourceTarget($targetCode) :
             $this->isMultiSourceTarget->isSystemPropertyMultiSourceTarget($targetCode);
 
