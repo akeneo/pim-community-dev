@@ -80,6 +80,8 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         $this->get('akeneo_integration_tests.launcher.job_execution_observer')->purge(
             self::REMOVE_NON_EXISTENT_VALUES_JOB
         );
+
+        $this->get('feature_flags')->enable('reference_entity');
     }
 
     protected function getConfiguration(): Configuration

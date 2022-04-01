@@ -125,6 +125,7 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
     {
         parent::setUp();
         $this->loadFixtures();
+        $this->get('feature_flags')->enable('reference_entity');
     }
 
     /**

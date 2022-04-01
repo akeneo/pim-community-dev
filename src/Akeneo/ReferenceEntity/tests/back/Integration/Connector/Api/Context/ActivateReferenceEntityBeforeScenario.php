@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Integration\Connector\Api\Context;
+namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
 use Behat\Behat\Context\Context;

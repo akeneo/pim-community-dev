@@ -24,6 +24,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('reference_entity');
+
         $this->withReferenceEntity('nice_reference_entity');
         $this->withRecords('nice_reference_entity', 'super_record', 'not_so_nice_record');
         $this->withAttributes([

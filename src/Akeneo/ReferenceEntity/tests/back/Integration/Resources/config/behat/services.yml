@@ -150,6 +150,6 @@ services:
             - '@oro_security.security_facade'
 
     akeneo_referenceentity.tests.back.integration.connector.activate_reference_entity_before_scenario:
-        class: Akeneo\AssetManager\Integration\Connector\Api\Context\ActivateAssetManagerBeforeScenario
+        class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\ActivateReferenceEntityBeforeScenario
         arguments:
             - '@feature_flags'

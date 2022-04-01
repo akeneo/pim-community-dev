@@ -41,7 +41,7 @@ integration:
                 - 'Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\ImportProfilesContext'
                 - 'Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\JobContext'
                 - 'Akeneo\Test\Pim\Automation\RuleEngine\Common\Context\ExceptionContext'
-                - 'Akeneo\Test\Pim\Automation\RuleEn    gine\Integration\Context\FeatureFlagContext'
+                - 'Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context\FeatureFlagContext'
                 - 'Context\ConnectivityContext'
 
             filters:
