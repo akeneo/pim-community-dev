@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Platform\TailoredImport\Application\GetSampleData;
+namespace Specification\Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData;
 
-use Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataQuery;
-use Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleDataInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\JobConfiguration;
+use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataQuery;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,8 +17,6 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
 {
     public function it_return_a_sample_of_data(
         XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-        SelectSampleDataInterface $selectSampleData,
-        JobConfiguration $jobConfiguration,
         XlsxFileReaderInterface $fileReader
     ) {
         $query = new GetSampleDataQuery();
@@ -33,14 +29,10 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
         $fileReader->readColumnValues(
             $query->sheetName,
             $query->productLine,
-            intval($query->columnIndex)
+            $query->columnIndex
         )->willReturn(["value1","value1","value2","value2","value3","value3"])->shouldBeCalled();
-        $selectSampleData->fromExtractedColumn(["value1","value1","value2","value2","value3","value3"])->willReturn(["value1","value2","value3"])->shouldBeCalled();
 
-        $this->beConstructedWith(
-            $xlsxFileReaderFactory,
-            $selectSampleData
-        );
+        $this->beConstructedWith($xlsxFileReaderFactory);
 
         $this->shouldNotThrow()->during('handle', [$query]);
     }

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Application\GetSampleData;
+namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData;
 
-use Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleDataInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
+use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -15,7 +15,6 @@ final class GetSampleDataHandler
 {
     public function __construct(
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
-        private SelectSampleDataInterface $selectSampleData
     ) {
     }
 
@@ -26,10 +25,10 @@ final class GetSampleDataHandler
         $extractedColumn = $fileReader->readColumnValues(
             $getSampleDataQuery->sheetName,
             $getSampleDataQuery->productLine,
-            intval($getSampleDataQuery->columnIndex)
+            $getSampleDataQuery->columnIndex
         );
 
-        $sampleData = $this->selectSampleData->fromExtractedColumn($extractedColumn);
+        $sampleData = SelectSampleData::fromExtractedColumn($extractedColumn);
 
         return GetSampleDataResult::create($sampleData);
     }

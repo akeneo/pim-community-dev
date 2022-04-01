@@ -14,5 +14,3 @@ services:
         tags:
             - { name: pim_enrich.provider.form }
 
-    akeneo.tailored_import.domain.get_sample_data.select_sample_data:
-        class: Akeneo\Platform\TailoredImport\Domain\GetSampleData\SelectSampleData

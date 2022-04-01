@@ -29,11 +29,15 @@ services:
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
 
-  akeneo.tailored_import.handler.get_sample_data_handler:
-    class: Akeneo\Platform\TailoredImport\Application\GetSampleData\GetSampleDataHandler
+  akeneo.tailored_import.handler.sample_data.get_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataHandler
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
-      - '@akeneo.tailored_import.domain.get_sample_data.select_sample_data'
+
+  akeneo.tailored_import.handler.sample_data.get_refreshed_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
 
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
