@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.20 (2022-04-01)
+
 ## Bug fixes
 
 - PIM-10323: [Backport PIM-10233] Fix the saved value by an empty wysiwyg
