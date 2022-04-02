@@ -360,7 +360,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connessione eliminata correttamente.
   helper:
-    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> ]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
+    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.|{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> |]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
     description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
     link: Per scoprire di più sulle connessioni, consulta questa pagina
   flow_type_helper:

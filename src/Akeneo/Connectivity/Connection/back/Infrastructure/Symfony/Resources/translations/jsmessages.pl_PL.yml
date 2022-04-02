@@ -360,7 +360,7 @@ akeneo_connectivity.connection:
     flash:
       success: Połączenie pomyślnie usunięte.
   helper:
-    title: '{0} Na razie nie masz połączenia z aplikacjami zewnętrznymi.{1} Masz 1 połączenie PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.|]1,Inf] Masz {{ count }} połączeń PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.'
+    title: '{0} Na razie nie masz połączenia z aplikacjami zewnętrznymi.|{1} Masz 1 połączenie PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.|]1,Inf] Masz {{ count }} połączeń PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.'
     description: PIM bez integracji z innymi firmami nie jest bezużyteczny, prawda? Dzięki połączeniom możesz zadeklarować wszystkie przepływy danych, które zostaną przepchnięte i pobrane poza PIM.
     link: Aby dowiedzieć się więcej o Połączeniach, sprawdź tę stronę
   flow_type_helper:
