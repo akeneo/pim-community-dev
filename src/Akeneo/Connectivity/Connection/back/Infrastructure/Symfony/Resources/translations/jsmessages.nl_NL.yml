@@ -48,7 +48,7 @@ akeneo_connectivity.connection:
       link: Naar de marktplaats
       helper:
         title: '{0} Er zijn geen apps of connectoren compatibel met uw PIM-versie.|{1} Er is {{ count }} app of connector compatibel met uw PIM-versie.|[2,Inf] Er zijn {{ count }} apps of connectoren compatibel met uw PIM-versie.'
-        title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.{1} Er is {{ count }} connector compatibel met uw PIM-versie.## [2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
+        title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.|{1} Er is {{ count }} connector compatibel met uw PIM-versie.## |[2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje op onze marktplaats op internet.
         link: Ga naar marktplaats op internet
       card:
