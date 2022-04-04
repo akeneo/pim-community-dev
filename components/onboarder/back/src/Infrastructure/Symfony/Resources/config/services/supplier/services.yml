@@ -77,10 +77,17 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport'
-            - ['supplier_code', 'supplier_label', 'contributor_emails']
+            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
+
+    # Export
+    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Export\XlsxSupplierExport
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport'
+            - ['supplier_code', 'supplier_label', 'contributor_emails']

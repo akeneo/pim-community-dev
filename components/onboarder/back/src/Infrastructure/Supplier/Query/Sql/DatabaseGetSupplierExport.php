@@ -24,7 +24,8 @@ final class DatabaseGetSupplierExport implements GetSupplierExport
             )
             SELECT code, label, contributor.contributors
             FROM `akeneo_onboarder_serenity_supplier` supplier
-            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier;
+            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
+            ORDER BY code;
         SQL;
 
         return array_map(
