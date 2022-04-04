@@ -87,7 +87,6 @@ services:
     # Export
     Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Export\XlsxSupplierExport
-        public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport'
             - ['supplier_code', 'supplier_label', 'contributor_emails']
