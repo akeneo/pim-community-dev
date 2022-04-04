@@ -368,10 +368,10 @@ abstract class ApiTestCase extends WebTestCase
         return strtr(rawurlencode($string), $toReplace);
     }
 
-    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId, string $role = 'ROLE_ADMINISTRATOR'): void
     {
         $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
         $privilege = new AclPrivilege();
         $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
         $privilege
