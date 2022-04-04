@@ -10,16 +10,11 @@ namespace Akeneo\Platform\TailoredImport\Domain\SampleData;
  */
 final class ReplaceSampleData
 {
-    public function fromExtractedColumn(array $extractedColumn, array $currentSample, int $indexToReplace): array
+    public static function fromExtractedColumn(array $extractedColumn, array $currentSample): ?string
     {
         $cleanedExtract = self::removeAlreadyPickedSample($extractedColumn, $currentSample);
-        $currentSample[$indexToReplace] = self::extractOneNewUnpickedValue($cleanedExtract);
-        return self::fillBlankValues($currentSample);
-    }
 
-    private static function fillBlankValues(array $sampleData): array
-    {
-        return array_pad($sampleData, SelectSampleData::NUMBER_OF_VALUES, null);
+        return self::extractOneNewUnpickedValue($cleanedExtract);
     }
 
     private static function removeAlreadyPickedSample(array $extractedColumn, array $currentSample): array
@@ -27,7 +22,7 @@ final class ReplaceSampleData
         return array_diff($extractedColumn, $currentSample);
     }
 
-    private static function extractOneNewUnpickedValue(array $cleanedExtract): string|null
+    private static function extractOneNewUnpickedValue(array $cleanedExtract): ?string
     {
         return current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
     }

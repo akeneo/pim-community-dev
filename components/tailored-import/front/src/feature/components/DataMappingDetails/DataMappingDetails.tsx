@@ -1,12 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, Target, ColumnIdentifier, FileStructure, findColumnByUuid} from '../../models';
+import {
+  Column,
+  DataMapping,
+  Target,
+  ColumnIdentifier,
+  FileStructure,
+  findColumnByUuid,
+  replaceSampleData,
+} from '../../models';
 import {Sources} from './Sources';
 import {TargetParameters} from './TargetParameters';
 import {Operations} from './Operations';
-import {useFetchSampleData} from '../../hooks/useFetchSampleData';
+import {useSampleDataFetcher, useRefreshedSampleDataFetcher} from '../../hooks';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -41,26 +49,42 @@ const DataMappingDetails = ({
   onDataMappingChange,
 }: DataMappingDetailsProps) => {
   const translate = useTranslate();
-  const fetchSampleData = useFetchSampleData();
+  const sampleDataFetcher = useSampleDataFetcher();
+  const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
+  const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
-    let sample_data: string[];
     const column = findColumnByUuid(columns, sources[0]);
-    if (sources.length > 0 && null !== column) {
-      sample_data = await fetchSampleData(
-        fileKey,
-        column.index,
-        fileStructure.sheet_name,
-        fileStructure.first_product_row
-      );
-    } else {
-      sample_data = [];
-    }
-    onDataMappingChange({...dataMapping, sources, sample_data});
+    const sampleData =
+      sources.length > 0 && null !== column
+        ? await sampleDataFetcher(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+        : [];
+    onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };
 
   const handleTargetParametersChange = (target: Target) => {
     onDataMappingChange({...dataMapping, target});
+  };
+
+  const handleRefreshSampleData = async (indexToRefresh: number) => {
+    setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
+    const column = findColumnByUuid(columns, dataMapping.sources[0]);
+    const refreshedData =
+      null !== column
+        ? await refreshedSampleDataFetcher(
+            fileKey,
+            dataMapping.sample_data,
+            column.index,
+            fileStructure.sheet_name,
+            fileStructure.first_product_row
+          )
+        : null;
+
+    setLoadingSampleData(loadingSampleData => loadingSampleData.filter(value => indexToRefresh !== value));
+    onDataMappingChange({
+      ...dataMapping,
+      sample_data: replaceSampleData(dataMapping.sample_data, indexToRefresh, refreshedData),
+    });
   };
 
   return (
@@ -80,7 +104,11 @@ const DataMappingDetails = ({
           validationErrors={filterErrors(validationErrors, '[sources]')}
           onSourcesChange={handleSourcesChange}
         />
-        <Operations dataMapping={dataMapping} />
+        <Operations
+          dataMapping={dataMapping}
+          loadingSampleData={loadingSampleData}
+          onRefreshSampleData={handleRefreshSampleData}
+        />
       </Container>
     </DataMappingDetailsContainer>
   );

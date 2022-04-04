@@ -35,6 +35,7 @@ akeneo.tailored_import:
     preview:
       title: Preview
       placeholder: N/A
+      refresh: Refresh
     operations:
       title: Operations
     sources:

@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {DataMappingDetails} from './DataMappingDetails';
@@ -31,7 +31,7 @@ const attributeDataMapping: DataMapping = {
   },
   sources: ['dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
   operations: [],
-  sample_data: [],
+  sample_data: ['product_1', 'product_2', 'product_3'],
 };
 
 const propertyDataMapping: DataMapping = {
@@ -90,9 +90,15 @@ jest.mock('./SourceDropdown', () => ({
   ),
 }));
 
-jest.mock('../../hooks/useFetchSampleData', () => ({
-  useFetchSampleData: () => async () => {
+jest.mock('../../hooks/useSampleDataFetcher', () => ({
+  useSampleDataFetcher: () => async () => {
     return ['product_1', 'product_2', 'product_3'];
+  },
+}));
+
+jest.mock('../../hooks/useRefreshedSampleDataFetcher', () => ({
+  useRefreshedSampleDataFetcher: () => async () => {
+    return 'product_4';
   },
 }));
 
@@ -217,5 +223,33 @@ test('it can remove a source', async () => {
     ...attributeDataMappingWithoutSource,
     sources: [],
     sample_data: [],
+  });
+});
+
+test('it can refresh a sample data', async () => {
+  const handleDataMappingChange = jest.fn();
+  await renderWithProviders(
+    <DataMappingDetails
+      dataMapping={attributeDataMapping}
+      fileKey={'/file_key'}
+      fileStructure={fileStructure}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={handleDataMappingChange}
+    />
+  );
+
+  expect(screen.queryByText('product_1')).toBeInTheDocument();
+  expect(screen.queryByText('product_2')).toBeInTheDocument();
+  expect(screen.queryByText('product_3')).toBeInTheDocument();
+  expect(screen.queryByText('product_4')).not.toBeInTheDocument();
+
+  await act(async () => {
+    await userEvent.click(screen.getAllByTitle('akeneo.tailored_import.data_mapping.preview.refresh')[0]);
+  });
+
+  expect(handleDataMappingChange).toHaveBeenCalledWith({
+    ...attributeDataMapping,
+    sample_data: ['product_4', 'product_2', 'product_3'],
   });
 });

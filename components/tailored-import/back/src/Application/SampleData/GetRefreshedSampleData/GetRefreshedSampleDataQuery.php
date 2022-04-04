@@ -10,8 +10,6 @@ namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSamp
  */
 final class GetRefreshedSampleDataQuery
 {
-    public int $indexToChange;
-
     public array $currentSample;
 
     public string $fileKey;

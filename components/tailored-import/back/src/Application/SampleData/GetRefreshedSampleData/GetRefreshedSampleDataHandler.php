@@ -28,8 +28,7 @@ final class GetRefreshedSampleDataHandler
             $getRefreshedSampleDataQuery->columnIndex
         );
 
-        $replaceSampleData = new ReplaceSampleData();
-        $sampleData = $replaceSampleData->fromExtractedColumn($extractedColumn, $getRefreshedSampleDataQuery->currentSample, $getRefreshedSampleDataQuery->indexToChange);
+        $sampleData = ReplaceSampleData::fromExtractedColumn($extractedColumn, $getRefreshedSampleDataQuery->currentSample);
 
         return GetRefreshedSampleDataResult::create($sampleData);
     }

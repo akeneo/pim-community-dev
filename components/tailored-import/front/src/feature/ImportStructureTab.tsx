@@ -16,6 +16,7 @@ import {
   updateDataMapping,
 } from './models';
 import {useFetchers} from './contexts';
+import {useSampleDataFetcher} from './hooks';
 
 const Container = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ const ImportStructureTab = ({
       dataMapping => dataMapping.uuid === selectedDataMappingUuid
     ) ?? null;
   const attributeFetcher = useFetchers().attribute;
+  const sampleDataFetcher = useSampleDataFetcher();
 
   const handleFileStructureInitialized = async (
     fileKey: string,
@@ -51,7 +53,18 @@ const ImportStructureTab = ({
     const attributeIdentifier = await attributeFetcher.fetchAttributeIdentifier();
 
     if (attributeIdentifier) {
-      const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn);
+      const sampleData =
+        null !== identifierColumn
+          ? await sampleDataFetcher(
+              fileKey,
+              identifierColumn.index,
+              fileStructure.sheet_name,
+              fileStructure.first_product_row
+            )
+          : [];
+
+      const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn, sampleData);
+
       onStructureConfigurationChange({
         ...structureConfiguration,
         import_structure: {

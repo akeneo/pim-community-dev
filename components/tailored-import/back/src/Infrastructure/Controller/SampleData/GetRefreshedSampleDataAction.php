@@ -29,7 +29,6 @@ final class GetRefreshedSampleDataAction
         }
 
         if (
-            null === $request->get('index_to_change') ||
             null === $request->get('current_sample') ||
             null === $request->get('file_key') ||
             null === $request->get('column_index') ||
@@ -37,12 +36,11 @@ final class GetRefreshedSampleDataAction
             null === $request->get('product_line')
         ) {
             throw new \HttpInvalidParamException(
-                'missing or null params, required params are "index_to_change", "current_sample", "file_key", "column_index", "sheet_name", "product_line"'
+                'missing or null params, required params are "current_sample", "file_key", "column_index", "sheet_name", "product_line"'
             );
         }
 
         $query = new GetRefreshedSampleDataQuery();
-        $query->indexToChange = intval($request->get('index_to_change'));
         $query->currentSample = $request->get('current_sample');
         $query->fileKey = $request->get('file_key');
         $query->columnIndex = intval($request->get('column_index'));
