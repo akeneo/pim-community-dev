@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel\Query\Sql;
 
-use Akeneo\Channel\Infrastructure\Symfony\Query\Sql\SqlGetChannelCodeWithLocaleCodes;
+use Akeneo\Channel\Infrastructure\Query\Sql\SqlGetChannelCodeWithLocaleCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Bundle\Doctrine\Remover;
+namespace Specification\Akeneo\Channel\Infrastructure\Doctrine\Remover;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Query\IsChannelUsedInProductExportJobInterface;

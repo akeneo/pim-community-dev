@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Channel\Bundle\Storage\Orm;
+namespace Specification\Akeneo\Channel\Infrastructure\Storage\Orm;
 
 use Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Bundle\Doctrine\Repository;
+namespace Specification\Akeneo\Channel\Infrastructure\Doctrine\Repository;
 
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Doctrine\DBAL\Connection;

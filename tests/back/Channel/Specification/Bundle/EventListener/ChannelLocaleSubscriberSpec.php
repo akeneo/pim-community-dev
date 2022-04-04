@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Bundle\EventListener;
+namespace Specification\Akeneo\Channel\Infrastructure\EventListener;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;

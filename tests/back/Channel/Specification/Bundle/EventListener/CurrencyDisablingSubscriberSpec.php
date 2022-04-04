@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Bundle\EventListener;
+namespace Specification\Akeneo\Channel\Infrastructure\EventListener;
 
 use Akeneo\Channel\Infrastructure\Symfony\EventListener\CurrencyDisablingSubscriber;
 use PhpSpec\ObjectBehavior;
