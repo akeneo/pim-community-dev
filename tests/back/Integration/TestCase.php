@@ -60,7 +60,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function get(string $service)
     {
-        return static::getContainer()->get($service);
+        return self::$container->get($service);
     }
 
     /**
@@ -70,7 +70,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return static::getContainer()->getParameter($parameter);
+        return self::$container->getParameter($parameter);
     }
 
     /**
@@ -80,7 +80,7 @@ abstract class TestCase extends KernelTestCase
      */
     protected function hasParameter(string $parameter)
     {
-        return static::getContainer()->hasParameter($parameter);
+        return self::$container->hasParameter($parameter);
     }
 
     /**
