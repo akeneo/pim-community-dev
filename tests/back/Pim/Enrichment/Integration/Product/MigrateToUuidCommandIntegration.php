@@ -14,6 +14,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration\AbstractMigrateToUuidTestCase;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
@@ -23,24 +24,24 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->clean();
         $this->loadFixtures();
 
-        $this->assertTheColumnsDoNotExist();
+        $this->assertTheIndexesDoNotExist();
         $this->launchMigrationCommand();
-        $this->assertTheColumnsExist();
+        $this->assertTheIndexesExist();
         $this->assertAllProductsHaveUuid();
         $this->assertJsonHaveUuid();
         $this->assertTriggersExistAndWork();
         $this->assertProductsAreReindexed();
     }
 
-    private function assertTheColumnsDoNotExist(): void
+    private function assertTheIndexesDoNotExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName)) {
                 Assert::assertFalse(
-                    $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
+                    $this->indexExists($tableName, 'product_uuid'),
                     \sprintf(
-                        'The "%s" column exists in the "%s" table',
-                        $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX],
+                        'The "%s" index exists in the "%s" table',
+                        'product_uuid',
                         $tableName
                     )
                 );
@@ -48,15 +49,15 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         }
     }
 
-    private function assertTheColumnsExist(): void
+    private function assertTheIndexesExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             if ($this->tableExists($tableName)) {
                 Assert::assertTrue(
-                    $this->columnExists($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]),
+                    $this->indexExists($tableName, 'product_uuid'),
                     \sprintf(
-                        'The "%s" column does not exist in the "%s" table',
-                        $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX],
+                        'The "%s" index does not exist in the "%s" table',
+                        'product_uuid',
                         $tableName
                     )
                 );
@@ -370,8 +371,6 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                 productIdentifier: 'identifier_removed',
             )
         );
-        $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');
-        Assert::assertContains('identifier_removed', $this->getIndexedProducts());
 
         $this->createProductGroup(['code' => 'groupA', 'type' => 'RELATED']);
         $this->createProductGroup(['code' => 'groupB', 'type' => 'RELATED']);
@@ -401,5 +400,20 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                 ],
             ],
         ]);
+
+        // reindex products with their mysql ids
+        $esIndex = $this->get('pim_catalog.elasticsearch.indexer.product');
+        $esIndex->removeFromProductUuids(
+            \array_map(
+                static fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+                $this->connection->executeQuery('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product')->fetchFirstColumn()
+            )
+        );
+        $this->connection->executeQuery('UPDATE pim_catalog_product SET uuid = NULL');
+        $esIndex->indexFromProductIdentifiers(
+            $this->connection->executeQuery('SELECT identifier FROM pim_catalog_product')->fetchFirstColumn()
+        );
+        $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');
+        Assert::assertContains('identifier_removed', $this->getIndexedProducts());
     }
 }
