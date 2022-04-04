@@ -402,15 +402,15 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         ]);
 
         // reindex products with their mysql ids
-        $esIndex = $this->get('pim_catalog.elasticsearch.indexer.product');
-        $esIndex->removeFromProductUuids(
+        $productIndexer = $this->get('pim_catalog.elasticsearch.indexer.product');
+        $productIndexer->removeFromProductUuids(
             \array_map(
                 static fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
                 $this->connection->executeQuery('SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product')->fetchFirstColumn()
             )
         );
         $this->connection->executeQuery('UPDATE pim_catalog_product SET uuid = NULL');
-        $esIndex->indexFromProductIdentifiers(
+        $productIndexer->indexFromProductIdentifiers(
             $this->connection->executeQuery('SELECT identifier FROM pim_catalog_product')->fetchFirstColumn()
         );
         $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');

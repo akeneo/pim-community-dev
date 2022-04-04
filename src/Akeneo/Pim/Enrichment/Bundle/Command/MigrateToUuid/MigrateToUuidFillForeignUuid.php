@@ -104,10 +104,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             return false;
         }
 
-        if (!$this->columnExists($tableName, $uuidColumnName)) {
-            return true;
-        }
-
         $sql = <<<SQL
             SELECT EXISTS (
                 SELECT 1
@@ -136,11 +132,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             return 0;
         }
 
-        if ($this->columnExists($tableName, $uuidColumnName)) {
-            return $this->getNullForeignUuidCellsCount($tableName, $uuidColumnName, $idColumnName);
-        }
-
-        return $this->getNotNullForeignIdCellsCount($tableName, $idColumnName);
+        return $this->getNullForeignUuidCellsCount($tableName, $uuidColumnName, $idColumnName);
     }
 
     private function getNullForeignUuidCellsCount(string $tableName, string $uuidColumnName, string $idColumnName): int
@@ -156,27 +148,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         $query = \strtr($sql, [
             '{table_name}' => $tableName,
             '{uuid_column_name}' => $uuidColumnName,
-            '{id_column_name}' => $idColumnName,
-            '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
-                ' AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
-                ''
-        ]);
-
-        return (int) $this->connection->fetchOne($query);
-    }
-
-    private function getNotNullForeignIdCellsCount(string $tableName, string $idColumnName): int
-    {
-        $sql = <<<SQL
-            SELECT COUNT(*)
-            FROM {table_name}
-            INNER JOIN pim_catalog_product p ON p.id = {table_name}.{id_column_name}
-            WHERE {table_name}.{id_column_name} IS NOT NULL
-            {extra_condition}
-        SQL;
-
-        $query = \strtr($sql, [
-            '{table_name}' => $tableName,
             '{id_column_name}' => $idColumnName,
             '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
                 ' AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
