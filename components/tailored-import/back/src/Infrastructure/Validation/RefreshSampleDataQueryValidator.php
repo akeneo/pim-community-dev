@@ -43,10 +43,6 @@ class RefreshSampleDataQueryValidator extends ConstraintValidator
             $missingParams .= ' product_line,';
         }
 
-        if (null === $value->get('index_to_change')) {
-            $missingParams .= ' index_to_change,';
-        }
-
         if (null === $value->get('current_sample')) {
             $missingParams .= ' current_sample,';
         }

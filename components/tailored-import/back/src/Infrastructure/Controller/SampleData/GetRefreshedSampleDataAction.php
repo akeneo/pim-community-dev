@@ -6,10 +6,14 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -18,7 +22,9 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetRefreshedSampleDataAction
 {
     public function __construct(
-        private GetRefreshedSampleDataHandler $getRefreshedSampleDataHandler
+        private GetRefreshedSampleDataHandler $getRefreshedSampleDataHandler,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $violationNormalizer,
     ) {
     }
 
@@ -28,16 +34,9 @@ final class GetRefreshedSampleDataAction
             return new RedirectResponse('/');
         }
 
-        if (
-            null === $request->get('current_sample') ||
-            null === $request->get('file_key') ||
-            null === $request->get('column_index') ||
-            null === $request->get('sheet_name') ||
-            null === $request->get('product_line')
-        ) {
-            throw new \HttpInvalidParamException(
-                'missing or null params, required params are "current_sample", "file_key", "column_index", "sheet_name", "product_line"'
-            );
+        $violations = $this->validator->validate($request, new RefreshSampleDataQuery());
+        if ($violations->count() > 0) {
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         $query = new GetRefreshedSampleDataQuery();
