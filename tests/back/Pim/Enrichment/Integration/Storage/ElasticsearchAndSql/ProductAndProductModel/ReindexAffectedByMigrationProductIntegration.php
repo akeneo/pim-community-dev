@@ -3,10 +3,10 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\ProductAndProductModel;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -14,54 +14,32 @@ use Ramsey\Uuid\Uuid;
 
 class ReindexAffectedByMigrationProductIntegration extends TestCase
 {
-    public function test_it_deletes_and_reindex_affected_by_migration_product()
+    public function test_it_deletes_and_reindexes_products_affected_by_migration()
     {
-        $wasColumnDropped = false;
-        if ($this->uuidColumnExists()) {
-            $this->dropUuidColumn();
-            $wasColumnDropped = true;
-        }
-
-        $product = $this->getProductBuilder()->createProduct('foo');
-        $this->getProductSaver()->save($product);
+        $product = $this->createProduct('foo', false);
         $this->getElasticSearchClient()->refreshIndex();
         Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
         $formerProductId = $this->getElasticSearchClient()->search([])['hits']['hits'][0]['_id'];
+        Assert::assertSame('product_' . $product->getId(), $formerProductId);
 
-        $this->addUuidColumn();
-
-        $this->getElasticSearchProductProjection()->clearCache();
-        $this->getConnection()->executeQuery(strtr(<<<SQL
-        UPDATE pim_catalog_product
-        SET uuid=UUID_TO_BIN('{uuid}');
-        SQL, ['{uuid}' => Uuid::uuid4()->toString()]));
+        $uuid = Uuid::uuid4()->toString();
+        $this->getConnection()->executeQuery(<<<SQL
+            UPDATE pim_catalog_product
+            SET uuid=UUID_TO_BIN(:uuid);
+            SQL,
+            ['uuid' => $uuid]
+        );
         $this->getProductSaver()->save($product, ['force_save' => true]);
         $this->getElasticSearchClient()->refreshIndex();
         Assert::assertSame(1, $this->getElasticSearchClient()->count([])['count']);
         $newProductId = $this->getElasticSearchClient()->search([])['hits']['hits'][0]['_id'];
-
-        Assert::assertNotEquals($formerProductId, $newProductId);
-
-        if (!$wasColumnDropped) {
-            $this->dropUuidColumn();
-        }
+        Assert::assertSame('product_' . $uuid, $newProductId);
     }
 
     public function test_it_deletes_products_after_uuid_indexation()
     {
-        $wasColumnDropped = false;
-        if ($this->uuidColumnExists()) {
-            $this->dropUuidColumn();
-            $wasColumnDropped = true;
-        }
-
-        $productWithoutUuid = $this->getProductBuilder()->createProduct('product_without_uuid');
-        $this->getProductSaver()->save($productWithoutUuid);
-
-        $this->addUuidColumn();
-
-        $productWithUuid = $this->getProductBuilder()->createProduct('product_with_uuid');
-        $this->getProductSaver()->save($productWithUuid);
+        $productWithoutUuid = $this->createProduct('product_without_uuid', false);
+        $productWithUuid = $this->createProduct('product_with_uuid');
 
         $this->getElasticSearchClient()->refreshIndex();
         Assert::assertSame(2, $this->getElasticSearchClient()->count([])['count']);
@@ -69,10 +47,6 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         $this->getProductRemover()->removeAll([$productWithoutUuid, $productWithUuid]);
         $this->getElasticSearchClient()->refreshIndex();
         Assert::assertSame(0, $this->getElasticSearchClient()->count([])['count']);
-
-        if (!$wasColumnDropped) {
-            $this->dropUuidColumn();
-        }
     }
 
     protected function getConfiguration()
@@ -95,11 +69,6 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         return $this->get('pim_catalog.builder.product');
     }
 
-    private function getElasticSearchProductProjection()
-    {
-        return $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_projection');
-    }
-
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
@@ -110,20 +79,26 @@ class ReindexAffectedByMigrationProductIntegration extends TestCase
         return $this->get('pim_catalog.remover.product');
     }
 
-    private function addUuidColumn()
+    private function createProduct(string $identifier, $withUuid = true): ProductInterface
     {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product ADD uuid BINARY(16) DEFAULT NULL AFTER id, LOCK=NONE, ALGORITHM=INPLACE');
-    }
+        $product = $this->getProductBuilder()->createProduct($identifier);
+        $this->getProductSaver()->save($product);
 
-    private function dropUuidColumn()
-    {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product DROP COLUMN uuid, LOCK=NONE, ALGORITHM=INPLACE');
-    }
+        if (false === $withUuid) {
+            $connection = $this->getConnection();
+            $uuid = $connection->executeQuery(
+                'SELECT BIN_TO_UUID(uuid) from pim_catalog_product WHERE id = :id',
+                ['id' => $product->getId()]
+            )->fetchOne();
+            $productIndexer = $this->get('pim_catalog.elasticsearch.indexer.product');
+            $productIndexer->removeFromProductUuids([Uuid::fromString($uuid)]);
+            $connection->executeQuery(
+                'UPDATE pim_catalog_product SET uuid = NULL WHERE id = :id',
+                ['id' => $product->getId()]
+            );
+            $productIndexer->indexFromProductIdentifiers([$product->getIdentifier()]);
+        }
 
-    private function uuidColumnExists(): bool
-    {
-        $rows = $this->getConnection()->fetchAllAssociative('SHOW COLUMNS FROM pim_catalog_product LIKE "uuid"');
-
-        return count($rows) >= 1;
+        return $product;
     }
 }
