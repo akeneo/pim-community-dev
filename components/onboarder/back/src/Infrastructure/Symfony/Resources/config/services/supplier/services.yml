@@ -77,6 +77,7 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier:
         public: true
         arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport'
             - ['supplier_code', 'supplier_label', 'contributor_emails']
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate:

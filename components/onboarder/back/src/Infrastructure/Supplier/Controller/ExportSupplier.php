@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport;
 use Box\Spout\Common\Type;
 use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\Common\Creator\WriterFactory;
@@ -13,10 +14,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ExportSupplier
 {
+    private GetSupplierExport $getSupplierExport;
     private array $headers;
 
-    public function __construct(array $headers)
+    public function __construct(GetSupplierExport $getSupplierExport, array $headers)
     {
+        $this->getSupplierExport = $getSupplierExport;
         $this->headers = $headers;
     }
 
@@ -33,6 +36,18 @@ final class ExportSupplier
         $writer->openToFile($filePath);
 
         $writer->addRow(WriterEntityFactory::createRowFromArray($this->headers));
+
+        foreach (($this->getSupplierExport)() as $supplier) {
+            $writer->addRow(
+                WriterEntityFactory::createRowFromArray(
+                    [
+                        $supplier->code,
+                        $supplier->label,
+                        implode(', ', $supplier->contributors)
+                    ]
+                )
+            );
+        }
 
         $writer->close();
 

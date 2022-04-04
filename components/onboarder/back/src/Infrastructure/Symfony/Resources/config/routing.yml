@@ -1,10 +1,3 @@
 onboarder_serenity_supplier:
     resource: '@AkeneoOnboarderSerenityBundle/Resources/config/routing/supplier.yml'
     prefix: /supplier
-
-onboarder_serenity_supplier_export:
-    path: /export
-    defaults:
-        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier
-        _feature: onboarder_serenity_supplier
-    methods: [GET]
