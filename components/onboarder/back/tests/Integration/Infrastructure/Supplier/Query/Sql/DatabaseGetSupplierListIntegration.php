@@ -112,7 +112,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
 
         $suppliers = $this->get(GetSupplierList::class)();
 
-        static::AssertEquals(
+        static::assertEquals(
             new SupplierListItem(
                 '44ce8069-8da1-4986-872f-311737f46f00',
                 'supplier_1',
@@ -121,7 +121,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
             ),
             $suppliers[0]
         );
-        static::AssertEquals(
+        static::assertEquals(
             new SupplierListItem(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_2',

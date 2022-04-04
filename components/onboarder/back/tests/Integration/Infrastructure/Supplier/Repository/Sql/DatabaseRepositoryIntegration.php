@@ -170,6 +170,6 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             ->executeQuery($sql, ['supplierIdentifier' => $supplierIdentifier])
             ->fetchOne();
         ;
-        static::AssertSame($expectedCount, (int) $contributorNumber);
+        static::assertSame($expectedCount, (int) $contributorNumber);
     }
 }
