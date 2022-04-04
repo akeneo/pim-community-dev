@@ -95,7 +95,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             [],
         ));
 
-        $supplier = $supplierRepository->getByidentifier(
+        $supplier = $supplierRepository->find(
             Write\Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
@@ -106,7 +106,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertSame('Supplier label', $supplier->label());
         static::assertSame(['contributor1@akeneo.com', 'contributor2@akeneo.com'], $supplier->contributors()->toArray());
 
-        $supplier2 = $supplierRepository->getByidentifier(
+        $supplier2 = $supplierRepository->find(
             Write\Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f03'
             )

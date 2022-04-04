@@ -24,7 +24,7 @@ final class UpdateSupplierHandler
             throw new InvalidDataException($violations);
         }
 
-        $storageSupplier = $this->repository->getByIdentifier(Identifier::fromString($updateSupplier->identifier));
+        $storageSupplier = $this->repository->find(Identifier::fromString($updateSupplier->identifier));
 
         if (!$storageSupplier instanceof Supplier\Model\Supplier) {
             return;

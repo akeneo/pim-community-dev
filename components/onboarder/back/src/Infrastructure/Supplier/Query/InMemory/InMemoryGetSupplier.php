@@ -17,7 +17,7 @@ final class InMemoryGetSupplier implements GetSupplier
 
     public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
     {
-        $supplier = $this->supplierRepository->getByIdentifier($identifier);
+        $supplier = $this->supplierRepository->find($identifier);
 
         if (null === $supplier) {
             return null;

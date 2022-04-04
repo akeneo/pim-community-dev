@@ -24,7 +24,7 @@ final class InMemoryRepositoryTest extends TestCase
             )
         );
 
-        $supplier = $supplierRepository->getByIdentifier(
+        $supplier = $supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
@@ -68,7 +68,7 @@ final class InMemoryRepositoryTest extends TestCase
             )
         );
 
-        $supplier = $supplierRepository->getByIdentifier(
+        $supplier = $supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02'
             )
@@ -83,7 +83,7 @@ final class InMemoryRepositoryTest extends TestCase
     {
         static::assertNull(
             (new InMemoryRepository())
-                ->getByIdentifier(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
+                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
         );
     }
 
@@ -110,10 +110,10 @@ final class InMemoryRepositoryTest extends TestCase
         );
         $supplierRepository->delete($identifier);
 
-        $this->assertNull($supplierRepository->getByIdentifier($identifier));
+        $this->assertNull($supplierRepository->find($identifier));
         $this->assertInstanceOf(
             Supplier\Model\Supplier::class,
-            $supplierRepository->getByIdentifier(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
+            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
         );
     }
 }

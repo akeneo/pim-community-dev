@@ -35,7 +35,7 @@ final class DatabaseRepository implements Supplier\Repository
         $this->persistContributors($supplier);
     }
 
-    public function getByIdentifier(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
+    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
     {
         $sql = <<<SQL
             WITH contributor AS (
