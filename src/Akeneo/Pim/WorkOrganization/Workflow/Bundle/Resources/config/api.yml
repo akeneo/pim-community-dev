@@ -30,6 +30,8 @@ services:
             - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_workflow_controller.external_api.publish_product:
         class: '%pimee_workflow_controller.external_api.publish_product.class%'
