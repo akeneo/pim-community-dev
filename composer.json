@@ -23,7 +23,7 @@
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
             "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
-            "Akeneo\\Channel\\Component\\": "src/Akeneo/Channel/Component"
+            "Akeneo\\Channel\\Component\\": "src/Akeneo/Channel/back/Infrastructure/Component"
         }
     },
     "autoload-dev": {

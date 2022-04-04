@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Doctrine\Query;
 
-use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManagerInterface;

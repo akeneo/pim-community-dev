@@ -2,12 +2,12 @@
 
 namespace Specification\Akeneo\Channel\Bundle\Doctrine\Remover;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Query\IsChannelUsedInProductExportJobInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Query\IsChannelUsedInProductExportJobInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -59,7 +59,7 @@ class ChannelRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-            'Expects a "Akeneo\Channel\Component\Model\Channel", "%s" provided.',
+            'Expects a "Akeneo\Channel\Infrastructure\Component\Model\Channel", "%s" provided.',
                 get_class($anythingElse)
             )
         );

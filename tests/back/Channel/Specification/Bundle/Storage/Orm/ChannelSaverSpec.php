@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Channel\Bundle\Storage\Orm;
 
-use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Saver\ChannelSaverInterface;
+use Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Saver\ChannelSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;

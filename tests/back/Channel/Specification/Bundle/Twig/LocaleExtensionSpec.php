@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Bundle\Twig;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
 use Twig\Node\Node;

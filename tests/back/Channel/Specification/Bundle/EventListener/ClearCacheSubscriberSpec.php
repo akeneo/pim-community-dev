@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Channel\Infrastructure\Symfony\EventListener\ClearCacheSubscriber;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;

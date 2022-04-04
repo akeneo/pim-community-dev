@@ -28,7 +28,7 @@ class AkeneoLegacyChannelBundle extends Bundle
         ;
 
         $channelMappings = [
-            realpath(__DIR__.'/Resources/config/doctrine/model/') => 'Akeneo\Channel\Component\Model'
+            realpath(__DIR__.'/Resources/config/doctrine/model/') => 'Akeneo\Channel\Infrastructure\Component\Model'
         ];
 
         $container->addCompilerPass(

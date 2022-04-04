@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Normalizer\ExternalApi\CurrencyNormalizer;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi\CurrencyNormalizer;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CurrencyNormalizerSpec extends ObjectBehavior

@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Bundle\Doctrine\Repository;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\AbstractQuery;

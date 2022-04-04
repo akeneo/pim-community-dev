@@ -43,7 +43,7 @@ $rules = [
 
         // Public APIs
         'Akeneo\Pim\Enrichment\Category\API',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Channel\Locale\API',
 

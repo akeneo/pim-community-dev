@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi\ChannelNormalizer;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

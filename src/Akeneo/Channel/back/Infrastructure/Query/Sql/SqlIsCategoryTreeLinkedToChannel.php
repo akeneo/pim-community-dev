@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Query\Sql;
 
-use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Doctrine\DBAL\Connection;
 
 /**

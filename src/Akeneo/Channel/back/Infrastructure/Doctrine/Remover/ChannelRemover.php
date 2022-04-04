@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Infrastructure\Doctrine\Remover;
 
-use Akeneo\Channel\Component\Query\IsChannelUsedInProductExportJobInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\IsChannelUsedInProductExportJobInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;

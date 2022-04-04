@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\Standard;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\Standard;
 
-use Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\ChannelNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

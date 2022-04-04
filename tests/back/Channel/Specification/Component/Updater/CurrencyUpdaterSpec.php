@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Updater;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Updater;
 
-use Akeneo\Channel\Component\Updater\CurrencyUpdater;
+use Akeneo\Channel\Infrastructure\Component\Updater\CurrencyUpdater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
 
 class CurrencyUpdaterSpec extends ObjectBehavior
 {

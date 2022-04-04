@@ -21,6 +21,6 @@ Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation:
             - Length:
                 max: 100
         locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                 payload:
                     standardPropertyName: labels

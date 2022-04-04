@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Infrastructure\Doctrine\Repository;
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**

@@ -1,4 +1,4 @@
-Akeneo\Channel\Component\Model\Locale:
+Akeneo\Channel\Infrastructure\Component\Model\Locale:
     type: entity
     table: pim_catalog_locale
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -18,7 +18,7 @@ Akeneo\Channel\Component\Model\Locale:
             column: is_activated
     manyToMany:
         channels:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             mappedBy: locales
             cascade:
                 - persist

@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivated;
 use Symfony\Component\Validator\Constraint;
 
 class IsCurrencyActivatedSpec extends ObjectBehavior

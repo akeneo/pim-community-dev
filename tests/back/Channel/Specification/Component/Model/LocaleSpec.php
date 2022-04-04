@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Model;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Model;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use PhpSpec\ObjectBehavior;
 
 class LocaleSpec extends ObjectBehavior

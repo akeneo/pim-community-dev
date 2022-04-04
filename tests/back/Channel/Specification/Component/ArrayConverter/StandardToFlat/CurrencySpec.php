@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\ArrayConverter\StandardToFlat;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\ArrayConverter\StandardToFlat;
 
 use PhpSpec\ObjectBehavior;
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
-use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocaleValidator;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocaleValidator;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -1,4 +1,4 @@
-Akeneo\Channel\Component\Model\Channel:
+Akeneo\Channel\Infrastructure\Component\Model\Channel:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
         - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
@@ -16,13 +16,13 @@ Akeneo\Channel\Component\Model\Channel:
             - NotBlank:
                 payload:
                     standardPropertyName: tree
-            - Akeneo\Channel\Component\Validator\Constraint\IsRootCategory:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory:
                 payload:
                     standardPropertyName: tree
         currencies:
             - Count: { min: 1 }
             - All:
-                - Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated:
+                - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivated:
                     payload:
                       standardPropertyName: currencies
         locales:
@@ -30,14 +30,14 @@ Akeneo\Channel\Component\Model\Channel:
         translations:
             - Valid: ~
         conversionUnits:
-            - Akeneo\Channel\Component\Validator\Constraint\ConversionUnits: ~
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnits: ~
 
-Akeneo\Channel\Component\Model\ChannelTranslation:
+Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslation:
     properties:
         label:
             - Length:
                 max: 100
         locale:
-            - Akeneo\Channel\Component\Validator\Constraint\Locale:
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale:
                 payload:
                     standardPropertyName: labels

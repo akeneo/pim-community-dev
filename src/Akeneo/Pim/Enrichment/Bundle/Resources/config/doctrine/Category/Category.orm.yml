@@ -67,7 +67,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
                 - detach
             orphanRemoval: true
         channels:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             mappedBy: category
         children:
             targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface

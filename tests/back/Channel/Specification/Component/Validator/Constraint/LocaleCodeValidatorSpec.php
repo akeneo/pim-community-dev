@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Validator\Constraint\LocaleCode;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\LocaleCode;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

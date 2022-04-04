@@ -4,9 +4,9 @@ namespace Specification\Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Channel\Infrastructure\Symfony\EventListener\CurrencyDisablingSubscriber;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Exception\LinkedChannelException;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Exception\LinkedChannelException;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CurrencyDisablingSubscriberSpec extends ObjectBehavior

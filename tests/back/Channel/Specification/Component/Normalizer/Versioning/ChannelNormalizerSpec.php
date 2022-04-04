@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\Versioning;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\Versioning;
 
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\Versioning\ChannelNormalizer;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

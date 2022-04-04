@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**

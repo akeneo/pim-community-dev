@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Channel\Component\Query\PublicApi\Cache;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Cache;
 
-use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
-use Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale;
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use PhpSpec\ObjectBehavior;
 
 class CachedChannelExistsWithLocaleSpec extends ObjectBehavior

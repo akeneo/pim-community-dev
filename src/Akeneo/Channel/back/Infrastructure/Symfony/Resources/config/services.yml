@@ -1,12 +1,12 @@
 parameters:
-    pim_catalog.model.channel.interface: 'Akeneo\Channel\Component\Model\ChannelInterface'
-    akeneo_channel.model.locale.interface: 'Akeneo\Channel\Component\Model\LocaleInterface'
-    akeneo_channel.model.currency.interface: 'Akeneo\Channel\Component\Model\CurrencyInterface'
-    pim_catalog.entity.locale.class: 'Akeneo\Channel\Component\Model\Locale'
-    pim_catalog.entity.channel.class: 'Akeneo\Channel\Component\Model\Channel'
-    pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Component\Model\ChannelTranslationInterface'
-    pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Component\Model\ChannelTranslation'
-    pim_catalog.entity.currency.class: 'Akeneo\Channel\Component\Model\Currency'
+    pim_catalog.model.channel.interface: 'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface'
+    akeneo_channel.model.locale.interface: 'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface'
+    akeneo_channel.model.currency.interface: 'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface'
+    pim_catalog.entity.locale.class: 'Akeneo\Channel\Infrastructure\Component\Model\Locale'
+    pim_catalog.entity.channel.class: 'Akeneo\Channel\Infrastructure\Component\Model\Channel'
+    pim_catalog.model.channel_translation.interface: 'Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslationInterface'
+    pim_catalog.entity.channel_translation.class: 'Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslation'
+    pim_catalog.entity.currency.class: 'Akeneo\Channel\Infrastructure\Component\Model\Currency'
 
 services:
     ### Locale
@@ -23,26 +23,26 @@ services:
             - '%akeneo_channel.model.locale.interface%'
 
     pim_catalog.normalizer.standard.locale:
-        class: 'Akeneo\Channel\Component\Normalizer\Standard\LocaleNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\LocaleNormalizer'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
     pim_versioning.serializer.normalizer.flat.locale:
-        class: 'Akeneo\Channel\Component\Normalizer\Versioning\LocaleNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\Versioning\LocaleNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.locale'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_enrich.normalizer.locale:
-        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\LocaleNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\InternalApi\LocaleNormalizer'
         arguments:
             - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_api.normalizer.locale:
-        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\LocaleNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi\LocaleNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.locale'
         tags:
@@ -63,7 +63,7 @@ services:
             - '@pim_catalog.repository.locale'
 
     pim_catalog.updater.locale:
-        class: 'Akeneo\Channel\Component\Updater\LocaleUpdater'
+        class: 'Akeneo\Channel\Infrastructure\Component\Updater\LocaleUpdater'
 
     pim_enrich.event_subscriber.storage.channel_locale:
         class: 'Akeneo\Channel\Infrastructure\EventListener\ChannelLocaleSubscriber'
@@ -116,14 +116,14 @@ services:
             - '%pim_catalog.entity.channel.class%'
 
     pim_catalog.normalizer.standard.channel:
-        class: 'Akeneo\Channel\Component\Normalizer\Standard\ChannelNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\ChannelNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
     pim_catalog.updater.channel:
-        class: 'Akeneo\Channel\Component\Updater\ChannelUpdater'
+        class: 'Akeneo\Channel\Infrastructure\Component\Updater\ChannelUpdater'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.repository.locale'
@@ -145,7 +145,7 @@ services:
             - '%pim_catalog.entity.channel.class%'
 
     pim_enrich.normalizer.channel:
-        class: 'Akeneo\Channel\Component\Normalizer\InternalApi\ChannelNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\InternalApi\ChannelNormalizer'
         arguments:
             - '@pim_standard_format_serializer'
             - '@pim_enrich.normalizer.locale'
@@ -156,7 +156,7 @@ services:
             - { name: pim_internal_api_serializer.normalizer }
 
     pim_versioning.serializer.normalizer.flat.channel:
-        class: 'Akeneo\Channel\Component\Normalizer\Versioning\ChannelNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\Versioning\ChannelNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.channel'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
@@ -164,7 +164,7 @@ services:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_api.normalizer.channel:
-        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\ChannelNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi\ChannelNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.channel'
         tags:
@@ -178,17 +178,17 @@ services:
             - { name: 'pim_repository' }
 
     pim_catalog.updater.currency:
-        class: 'Akeneo\Channel\Component\Updater\CurrencyUpdater'
+        class: 'Akeneo\Channel\Infrastructure\Component\Updater\CurrencyUpdater'
 
     pim_api.normalizer.currency:
-        class: 'Akeneo\Channel\Component\Normalizer\ExternalApi\CurrencyNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\ExternalApi\CurrencyNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.currency'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.standard.currency:
-        class: 'Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer'
+        class: 'Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\CurrencyNormalizer'
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 

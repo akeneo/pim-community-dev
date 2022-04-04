@@ -1,11 +1,11 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivated;
-use Akeneo\Channel\Component\Validator\Constraint\IsCurrencyActivatedValidator;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivated;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsCurrencyActivatedValidator;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;

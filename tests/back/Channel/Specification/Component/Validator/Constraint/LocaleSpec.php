@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
-use Akeneo\Channel\Component\Validator\Constraint\Locale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\Locale;
 use PhpSpec\ObjectBehavior;
 
 class LocaleSpec extends ObjectBehavior

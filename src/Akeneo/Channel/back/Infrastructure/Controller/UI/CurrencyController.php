@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Infrastructure\Controller\UI;
 
-use Akeneo\Channel\Component\Exception\LinkedChannelException;
-use Akeneo\Channel\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Exception\LinkedChannelException;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;

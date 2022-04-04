@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\InternalApi;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {

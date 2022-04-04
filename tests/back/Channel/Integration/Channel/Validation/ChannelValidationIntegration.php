@@ -386,7 +386,7 @@ class ChannelValidationIntegration extends TestCase
     }
 
     /**
-     * @return \Akeneo\Channel\Component\Model\ChannelInterface
+     * @return \Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
      */
     protected function createChannel()
     {

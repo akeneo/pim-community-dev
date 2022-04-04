@@ -1,10 +1,10 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\Standard;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\Standard;
 
-use Akeneo\Channel\Component\Normalizer\Standard\CurrencyNormalizer;
+use Akeneo\Channel\Infrastructure\Component\Normalizer\Standard\CurrencyNormalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
 
 class CurrencyNormalizerSpec extends ObjectBehavior
 {

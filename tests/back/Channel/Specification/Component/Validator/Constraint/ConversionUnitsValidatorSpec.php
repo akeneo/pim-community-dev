@@ -1,14 +1,14 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Validator\Constraint\ConversionUnits;
-use Akeneo\Channel\Component\Validator\Constraint\ConversionUnitsValidator;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnits;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnitsValidator;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContext;

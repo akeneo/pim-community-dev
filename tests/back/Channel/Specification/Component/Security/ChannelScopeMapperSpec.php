@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Channel\Component\Security;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Security;
 
-use Akeneo\Channel\Component\Security\ChannelScopeMapper;
+use Akeneo\Channel\Infrastructure\Component\Security\ChannelScopeMapper;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 use PhpSpec\ObjectBehavior;
 

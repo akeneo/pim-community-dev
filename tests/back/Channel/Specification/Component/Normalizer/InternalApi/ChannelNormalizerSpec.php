@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Normalizer\InternalApi;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Normalizer\InternalApi;
 
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

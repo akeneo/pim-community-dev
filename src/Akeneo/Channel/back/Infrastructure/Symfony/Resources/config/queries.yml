@@ -5,7 +5,7 @@ services:
             - '@database_connection'
 
     pim_channel.query.cache.channel_exists_with_locale:
-        class: 'Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale'
+        class: 'Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale'
         arguments:
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
         tags: ['akeneo.pim.cached_query']

@@ -1,12 +1,12 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Updater;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Updater;
 
-use Akeneo\Channel\Component\Updater\LocaleUpdater;
+use Akeneo\Channel\Infrastructure\Component\Updater\LocaleUpdater;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 class LocaleUpdaterSpec extends ObjectBehavior
 {

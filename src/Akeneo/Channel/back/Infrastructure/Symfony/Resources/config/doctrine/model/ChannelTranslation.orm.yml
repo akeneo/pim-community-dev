@@ -1,4 +1,4 @@
-Akeneo\Channel\Component\Model\ChannelTranslation:
+Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslation:
     type: entity
     table: pim_catalog_channel_translation
     changeTrackingPolicy: DEFERRED_EXPLICIT
@@ -22,7 +22,7 @@ Akeneo\Channel\Component\Model\ChannelTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

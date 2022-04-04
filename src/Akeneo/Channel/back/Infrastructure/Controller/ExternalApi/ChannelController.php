@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Infrastructure\Controller\ExternalApi;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -325,7 +325,7 @@ class ChannelController
      * Validate a channel. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param \Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface $channel
      *
      * @throws ViolationHttpException
      */
@@ -340,7 +340,7 @@ class ChannelController
     /**
      * Get a response with a location header to the created or updated resource.
      *
-     * @param \Akeneo\Channel\Component\Model\ChannelInterface $channel
+     * @param \Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface $channel
      * @param int                                              $status
      *
      * @return Response

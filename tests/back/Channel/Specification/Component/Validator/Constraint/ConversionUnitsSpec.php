@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Validator\Constraint\ConversionUnits;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ConversionUnits;
 use Symfony\Component\Validator\Constraint;
 
 class ConversionUnitsSpec extends ObjectBehavior

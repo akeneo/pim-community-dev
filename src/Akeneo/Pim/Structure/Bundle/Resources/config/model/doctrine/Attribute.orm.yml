@@ -161,7 +161,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     onDelete: 'SET NULL'
     manyToMany:
         availableLocales:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinTable:
                 name: pim_catalog_attribute_locale
                 joinColumns:

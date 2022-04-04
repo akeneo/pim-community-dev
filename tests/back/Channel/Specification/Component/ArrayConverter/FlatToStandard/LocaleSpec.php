@@ -1,8 +1,8 @@
 <?php
 
-namespace Specification\Akeneo\Channel\Component\ArrayConverter\FlatToStandard;
+namespace Specification\Akeneo\Channel\Infrastructure\Component\ArrayConverter\FlatToStandard;
 
-use Akeneo\Channel\Component\ArrayConverter\FlatToStandard\Locale;
+use Akeneo\Channel\Infrastructure\Component\ArrayConverter\FlatToStandard\Locale;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
