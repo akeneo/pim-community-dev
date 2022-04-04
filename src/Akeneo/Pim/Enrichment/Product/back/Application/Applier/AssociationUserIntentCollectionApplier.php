@@ -22,7 +22,8 @@ use Webmozart\Assert\Assert;
 final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     public function __construct(
-        private ObjectUpdaterInterface $productUpdater
+        private ObjectUpdaterInterface $productUpdater,
+        private GetNonViewableProducts $getNonViewableProducts
     ) {
     }
 
@@ -60,11 +61,10 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
 
+                $nonViewableProducts = $this->getNonViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
                 $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    \array_unique($associationUserIntent->productIdentifiers())
+                    \array_merge($nonViewableProducts,\array_unique($associationUserIntent->productIdentifiers()))
                 );
-
-                // Merge nonViewableAssociations here
             }
         }
 

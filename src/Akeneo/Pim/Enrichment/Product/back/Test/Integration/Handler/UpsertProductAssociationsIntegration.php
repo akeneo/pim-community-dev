@@ -130,14 +130,4 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_associated_product_identifier'], $this->getAssociatedProductIdentifiers($updatedProduct));
     }
-
-    /**
-     * @return array<string>
-     */
-    private function getAssociatedProductIdentifiers(ProductInterface $product): array
-    {
-        return $product->getAssociatedProducts('X_SELL')
-            ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
-            ?->toArray() ?? [];
-    }
 }
