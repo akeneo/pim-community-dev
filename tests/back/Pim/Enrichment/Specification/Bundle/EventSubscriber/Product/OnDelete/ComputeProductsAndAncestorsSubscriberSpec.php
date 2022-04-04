@@ -109,7 +109,6 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
             ['sub1', 'root', 'sub2']
         )->shouldBeCalled();
 
-        $connection->fetchAllAssociative(Argument::any())->shouldBeCalled()->willReturn(['The uuid column exists']);
         $connection
             ->fetchFirstColumn(Argument::any(), ['product_ids' => [44, 56]], Argument::any())
             ->shouldBeCalled()

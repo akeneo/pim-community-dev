@@ -53,9 +53,6 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
-        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            return false;
-        }
 
         $productIdentifiers = $this->getProductIdentifiersToIndex();
         $processedItems = 0;
