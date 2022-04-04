@@ -59,3 +59,9 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.is_valid_file_template_information_query' }
     public: true
+
+  akeneo.tailored_import.validation.refresh_sample_data_query:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQueryValidator'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.refresh_sample_data_query' }
+    public: true

@@ -65,6 +65,7 @@ akeneo.tailored_import:
   validation:
     sample_data:
       get_sample_data_query: Following params is missing from the query:{{ missing_params }}
+      get_refresh_sample_data_query: Following params is missing from the query:{{ missing_params }}
     columns:
       max_count_reached: Your file must not contain more than {{ limit }} columns.
       uuid:
