@@ -25,33 +25,22 @@ class RefreshSampleDataQueryValidator extends ConstraintValidator
             return;
         }
 
-        $missingParams = "";
+        $requiredParams = [
+            'file_key',
+            'column_index',
+            'sheet_name',
+            'product_line',
+            'current_sample',
+        ];
 
-        if (null === $value->get('file_key')) {
-            $missingParams .= ' file_key,';
-        }
+        $missingParams = array_filter($requiredParams, fn($param) => null === $value->get($param));
+        $missingParamList = implode(', ', $missingParams);
 
-        if (null === $value->get('column_index')) {
-            $missingParams .= ' column_index,';
-        }
-
-        if (null === $value->get('sheet_name')) {
-            $missingParams .= ' sheet_name,';
-        }
-
-        if (null === $value->get('product_line')) {
-            $missingParams .= ' product_line,';
-        }
-
-        if (null === $value->get('current_sample')) {
-            $missingParams .= ' current_sample,';
-        }
-
-        if ("" !== $missingParams) {
+        if (count($missingParams) > 0) {
             $this->context->buildViolation(
-                RefreshSampleDataQuery::MISSING_PROPERTY,
+                RefreshSampleDataQuery::MISSING_QUERY_PARAMS,
                 [
-                    '{{ missing_params }}' => $missingParams,
+                    '{{ missing_params }}' => $missingParamList,
                 ]
             )->addViolation();
         }

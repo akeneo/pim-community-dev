@@ -12,5 +12,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class RefreshSampleDataQuery extends Constraint
 {
-    const MISSING_PROPERTY = "akeneo.tailored_import.validation.sample_data.get_refresh_sample_data_query";
+    const MISSING_QUERY_PARAMS = "akeneo.tailored_import.validation.sample_data.get_refresh_sample_data_query";
 }
