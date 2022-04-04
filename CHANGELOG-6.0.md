@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10311: [Backport PIM-10285] Fix concurrent bulk publish issue
+
 # 6.0.20 (2022-04-01)
 
 # 6.0.19 (2022-03-28)

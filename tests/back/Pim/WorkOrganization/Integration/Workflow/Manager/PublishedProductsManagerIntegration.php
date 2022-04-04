@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Elasticsearch\Indexer\PublishedProductIndexer;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\Projection\PublishedProductCompletenessCollection;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
@@ -32,6 +33,7 @@ class PublishedProductsManagerIntegration extends TestCase
 {
     use AssertEventCountTrait;
 
+    private PublishedProductIndexer $publishedProductIndexer;
     private PublishedProductManager $publishedProductManager;
     private PublishedProductRepositoryInterface $publishedProductRepository;
     private ProductRepositoryInterface $productRepository;
@@ -71,6 +73,7 @@ class PublishedProductsManagerIntegration extends TestCase
             )->build();
         $this->get('pim_catalog.saver.product')->saveAll([$foo, $bar]);
 
+        $this->publishedProductIndexer = $this->get('pim_catalog.elasticsearch.published_product_indexer');
         $this->publishedProductRepository = $this->get('pimee_workflow.repository.published_product');
         $this->publishedProductManager = $this->get('pimee_workflow.manager.published_product');
         $this->productRepository = $this->get('pim_catalog.repository.product');
@@ -163,6 +166,27 @@ class PublishedProductsManagerIntegration extends TestCase
 
         $this->publishedProductManager->unpublish($publishedProduct);
         $this->assertNull($this->publishedProductRepository->findOneByOriginalProduct($product));
+    }
+
+    public function testPublishAProductWithRemovedElasticSearchIndex(): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('foo');
+        $this->publishedProductManager->publish($product);
+
+        $product = $this->productRepository->findOneByIdentifier('foo');
+        $productValue = $product->getValue('a_scopable_price', null, 'ecommerce');
+        $product->removeValue($productValue);
+        $this->productSaver->save($product);
+
+        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
+        // remove published product from published product index
+        $this->publishedProductIndexer->remove($publishedProduct->getId());
+        $this->assertNull($this->publishedProductIndexer->index($publishedProduct));
+
+        $this->publishedProductManager->publish($product);
+
+        $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
+        $this->assertNull($publishedProduct->getValue('a_scopable_price', null, 'ecommerce'));
     }
 
     /**

@@ -15,10 +15,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -31,46 +33,17 @@ use Webmozart\Assert\Assert;
  */
 class ProductPublisher implements PublisherInterface
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var PublisherInterface */
-    protected $publisher;
-
-    /** @var RelatedAssociationPublisher */
-    protected $associationPublisher;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /**
-     * @param ProductBuilderInterface     $productBuilder
-     * @param PublisherInterface          $publisher
-     * @param RelatedAssociationPublisher $associationPublisher
-     * @param VersionManager              $versionManager
-     * @param NormalizerInterface         $normalizer
-     * @param ObjectUpdaterInterface      $productUpdater
-     */
     public function __construct(
-        ProductBuilderInterface $productBuilder,
-        PublisherInterface $publisher,
-        RelatedAssociationPublisher $associationPublisher,
-        VersionManager $versionManager,
-        NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $productUpdater
+        protected ProductBuilderInterface $productBuilder,
+        protected PublisherInterface $publisher,
+        protected RelatedAssociationPublisher $associationPublisher,
+        protected VersionManager $versionManager,
+        protected NormalizerInterface $normalizer,
+        protected ObjectUpdaterInterface $productUpdater,
+        // PULL-UP: remove nullable
+        protected ?PublishedProductRepositoryInterface $publishedProductRepository = null,
+        private ?TranslatorInterface $translator = null
     ) {
-        $this->publisher = $publisher;
-        $this->associationPublisher = $associationPublisher;
-        $this->versionManager = $versionManager;
-        $this->normalizer = $normalizer;
-        $this->productUpdater = $productUpdater;
-        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -90,6 +63,20 @@ class ProductPublisher implements PublisherInterface
         unset($standardProduct['parent']);
 
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
+
+        //PIM-10285: this prevents from trying to publish a product already published by a concurrent process
+        // PULL-UP: remove "null !== $this->publishedProductRepository && null !== $this->translator" case
+        if (null !== $this->publishedProductRepository
+            && null !== $this->translator
+            && null !== $this->publishedProductRepository->findOneByOriginalProduct($object)) {
+            throw new \LogicException(
+                $this->translator->trans(
+                    'pimee_enrich.mass_edit.product.operation.publish.already_published_product',
+                    ['{{ productId }}' => $object->getIdentifier()],
+                    'jsmessages'
+                )
+            );
+        }
         $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);
         Assert::implementsInterface($publishedProduct, PublishedProductInterface::class);
         $this->productUpdater->update($publishedProduct, $standardProduct);

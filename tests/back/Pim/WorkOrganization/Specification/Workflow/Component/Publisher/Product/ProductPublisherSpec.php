@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\ProductPublisher;
+use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\PublishedProductRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,6 +18,7 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\Product\RelatedAsso
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Publisher\PublisherInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProductPublisherSpec extends ObjectBehavior
 {
@@ -37,7 +39,9 @@ class ProductPublisherSpec extends ObjectBehavior
         VersionManager $versionManager,
         ProductInterface $product,
         NormalizerInterface $productNormalizer,
-        ObjectUpdaterInterface $productUpdater
+        ObjectUpdaterInterface $productUpdater,
+        PublishedProductRepositoryInterface $publishedProductRepository,
+        TranslatorInterface $translator,
     ) {
         $product->getGroups()->willReturn([]);
         $product->getCategories()->willReturn([]);
@@ -54,18 +58,20 @@ class ProductPublisherSpec extends ObjectBehavior
             $associationsPublisher,
             $versionManager,
             $productNormalizer,
-            $productUpdater
+            $productUpdater,
+            $publishedProductRepository,
+            $translator
         );
     }
 
     public function it_publishes_a_product_with_associations(
-        $builder,
-        $versionManager,
-        $product,
-        $productNormalizer,
-        $productUpdater,
-        $publisher,
-        $associationsPublisher,
+        ProductBuilderInterface $builder,
+        VersionManager $versionManager,
+        ProductInterface $product,
+        NormalizerInterface $productNormalizer,
+        ObjectUpdaterInterface $productUpdater,
+        PublisherInterface $publisher,
+        RelatedAssociationPublisher $associationsPublisher,
         Version $version,
         AssociationInterface $association,
         AssociationInterface $copiedAssociation,
@@ -93,11 +99,11 @@ class ProductPublisherSpec extends ObjectBehavior
     }
 
     public function it_sets_the_version_during_publishing(
-        $builder,
-        $versionManager,
-        $product,
-        $productNormalizer,
-        $productUpdater,
+        ProductBuilderInterface $builder,
+        VersionManager $versionManager,
+        ProductInterface $product,
+        NormalizerInterface $productNormalizer,
+        ObjectUpdaterInterface $productUpdater,
         Version $version,
         PublishedProductInterface $publishedProduct
     ) {
@@ -119,11 +125,11 @@ class ProductPublisherSpec extends ObjectBehavior
     }
 
     public function it_builds_the_version_if_needed_during_publishing(
-        $builder,
-        $versionManager,
-        $product,
-        $productNormalizer,
-        $productUpdater,
+        ProductBuilderInterface $builder,
+        VersionManager $versionManager,
+        ProductInterface $product,
+        NormalizerInterface $productNormalizer,
+        ObjectUpdaterInterface $productUpdater,
         ObjectManager $objectManager,
         Version $pendingVersion,
         Version $newVersion,
@@ -151,5 +157,25 @@ class ProductPublisherSpec extends ObjectBehavior
         $publishedProduct->setOriginalProduct($product)->shouldBeCalled();
 
         $this->publish($product)->shouldReturn($publishedProduct);
+    }
+
+    public function it_throws_an_exception_when_publishing_a_product_already_published_by_concurrent_process(
+        ProductInterface $product,
+        PublishedProductInterface $publishedProduct,
+        PublishedProductRepositoryInterface $publishedProductRepository,
+        TranslatorInterface $translator
+    ) {
+        $product->getIdentifier()->willReturn('sku-01');
+        $publishedProductRepository->findOneByOriginalProduct($product)->willReturn($publishedProduct);
+
+        $translator->trans(
+            'pimee_enrich.mass_edit.product.operation.publish.already_published_product',
+            ['{{ productId }}' => 'sku-01'],
+            'jsmessages'
+        )->shouldBeCalled()->willReturn('An error occurred while publishing product sku-01 ; Another process is publishing this product.');
+
+        $this->shouldThrow(
+            new \LogicException('An error occurred while publishing product sku-01 ; Another process is publishing this product.')
+        )->during('publish', [$product]);
     }
 }

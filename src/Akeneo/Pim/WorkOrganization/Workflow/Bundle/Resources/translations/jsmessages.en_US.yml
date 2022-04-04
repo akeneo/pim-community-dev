@@ -231,6 +231,7 @@ pimee_enrich.mass_edit.product:
             label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
             description: The products will be published
             warning: The {{ itemsCount }} selected products will be published.
+            already_published_product: "An error occurred while publishing product {{ productId }} ; Another process is publishing this product."
         unpublish:
             label: Unpublish
             label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Unpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"

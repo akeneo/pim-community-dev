@@ -24,7 +24,9 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\ORM\Exception\MissingIdentifierField;
 use Doctrine\Persistence\ObjectManager;
+use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -34,47 +36,22 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class PublishedProductManager
 {
-    protected ProductRepositoryInterface $productRepository;
-    protected AttributeRepositoryInterface $attributeRepository;
-    protected PublishedProductRepositoryInterface $publishedRepositoryWithPermission;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected PublisherInterface $publisher;
-    protected UnpublisherInterface $unpublisher;
-    protected ObjectManager $objectManager;
-    protected SaverInterface $publishedProductSaver;
-    protected BulkSaverInterface $publishedProductBulkSaver;
-    protected RemoverInterface $remover;
-    private BulkRemoverInterface $bulkRemover;
-    private PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        PublishedProductRepositoryInterface $publishedRepositoryWithPermission,
-        AttributeRepositoryInterface $attributeRepository,
-        EventDispatcherInterface $eventDispatcher,
-        PublisherInterface $publisher,
-        UnpublisherInterface $unpublisher,
-        ObjectManager $objectManager,
-        SaverInterface $publishedProductSaver,
-        BulkSaverInterface $publishedProductBulkSaver,
-        RemoverInterface $remover,
-        BulkRemoverInterface $bulkRemover,
-        PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission
+        protected ProductRepositoryInterface $productRepository,
+        protected PublishedProductRepositoryInterface $publishedRepositoryWithPermission,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected PublisherInterface $publisher,
+        protected UnpublisherInterface $unpublisher,
+        protected ObjectManager $objectManager,
+        protected SaverInterface $publishedProductSaver,
+        protected BulkSaverInterface $publishedProductBulkSaver,
+        protected RemoverInterface $remover,
+        private BulkRemoverInterface $bulkRemover,
+        private PublishedProductRepositoryInterface $publishedRepositoryWithoutPermission,
+        private array $timingsInMicroseconds = [1000000, 2000000, 5000000]
     ) {
-        $this->productRepository = $productRepository;
-        $this->publishedRepositoryWithPermission = $publishedRepositoryWithPermission;
-        $this->attributeRepository = $attributeRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->publisher = $publisher;
-        $this->unpublisher = $unpublisher;
-        $this->objectManager = $objectManager;
-        $this->publishedProductSaver = $publishedProductSaver;
-        $this->publishedProductBulkSaver = $publishedProductBulkSaver;
-        $this->remover = $remover;
-        $this->bulkRemover = $bulkRemover;
-        $this->publishedRepositoryWithoutPermission = $publishedRepositoryWithoutPermission;
     }
-
 
     /**
      * Find the published product
@@ -152,7 +129,7 @@ class PublishedProductManager
         $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
         if ($published) {
             $this->unpublisher->unpublish($published);
-            $this->remover->remove($published);
+            $this->removeWithRetries($product, $this->timingsInMicroseconds);
         }
 
         $published = $this->publisher->publish($originalProduct, $publishOptions);
@@ -273,5 +250,22 @@ class PublishedProductManager
     protected function dispatchEvent(string $name, ProductInterface $product, PublishedProductInterface $published = null)
     {
         $this->eventDispatcher->dispatch(new PublishedProductEvent($product, $published), $name);
+    }
+
+    private function removeWithRetries(ProductInterface $product, array $timings): void
+    {
+        try {
+            $published = $this->publishedRepositoryWithoutPermission->findOneByOriginalProduct($product);
+            if ($published) {
+                $this->remover->remove($published);
+            }
+        } catch (Missing404Exception | MissingIdentifierField $e) {
+            if (\count($timings) === 0) {
+                throw $e;
+            }
+            $timing = \array_shift($timings);
+            \usleep($timing);
+            $this->removeWithRetries($product, $timings);
+        }
     }
 }

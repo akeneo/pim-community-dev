@@ -25,6 +25,9 @@ $rules = [
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
 
+        // PIM-10285
+        'Elasticsearch\Common\Exceptions\Missing404Exception',
+
         // TIP-980: Workflow should not be linked to User
         // TIP-982: Rework User/Draft link
         'Akeneo\UserManagement\Component\Model\UserInterface',
