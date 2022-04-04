@@ -88,6 +88,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     $newAssociations
                 );
             } elseif ($associationUserIntent instanceof ReplaceAssociatedProductModels) {
+                $nonViewableProductModelIdentifiers = $this->getNonViewableProductModels->fromProductModelIdentifiers($formerAssociations, $userId);
                 \sort($formerAssociations);
                 $newAssociations = $associationUserIntent->productModelIdentifiers();
                 \sort($newAssociations);
@@ -95,7 +96,9 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
                 $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
-                    \array_unique($associationUserIntent->productModelIdentifiers())
+                    \array_unique(
+                        \array_merge($nonViewableProductModelIdentifiers,$associationUserIntent->productModelIdentifiers())
+                    )
                 );
             }
         }
