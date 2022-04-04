@@ -494,16 +494,19 @@ pim_api_refresh_token | scope | YES | varchar(255) |
 pim_catalog_association | id | NO | int | PRI
 pim_catalog_association | association_type_id | NO | int | MUL
 pim_catalog_association | owner_id | NO | int | MUL
+pim_catalog_association | owner_uuid | YES | binary(16) |
 pim_catalog_association_group | association_id | NO | int | PRI
 pim_catalog_association_group | group_id | NO | int | PRI
 pim_catalog_association_product | association_id | NO | int | PRI
 pim_catalog_association_product | product_id | NO | int | PRI
+pim_catalog_association_product | product_uuid | YES | binary(16) |
 pim_catalog_association_product_model | association_id | NO | int | PRI
 pim_catalog_association_product_model | product_model_id | NO | int | PRI
 pim_catalog_association_product_model_to_group | association_id | NO | int | PRI
 pim_catalog_association_product_model_to_group | group_id | NO | int | PRI
 pim_catalog_association_product_model_to_product | association_id | NO | int | PRI
 pim_catalog_association_product_model_to_product | product_id | NO | int | PRI
+pim_catalog_association_product_model_to_product | product_uuid | YES | binary(16) |
 pim_catalog_association_product_model_to_product_model | association_id | NO | int | PRI
 pim_catalog_association_product_model_to_product_model | product_model_id | NO | int | PRI
 pim_catalog_association_type | id | NO | int | PRI
@@ -588,6 +591,7 @@ pim_catalog_category | lft | NO | int | MUL
 pim_catalog_category | rgt | NO | int |
 pim_catalog_category_product | product_id | NO | int | PRI
 pim_catalog_category_product | category_id | NO | int | PRI
+pim_catalog_category_product | product_uuid | YES | binary(16) |
 pim_catalog_category_product_model | product_model_id | NO | int | PRI
 pim_catalog_category_product_model | category_id | NO | int | PRI
 pim_catalog_category_translation | id | NO | int | PRI
@@ -612,6 +616,7 @@ pim_catalog_completeness | channel_id | NO | int | MUL
 pim_catalog_completeness | product_id | NO | int | MUL
 pim_catalog_completeness | missing_count | NO | int |
 pim_catalog_completeness | required_count | NO | int |
+pim_catalog_completeness | product_uuid | YES | binary(16) |
 pim_catalog_currency | id | NO | int | PRI
 pim_catalog_currency | code | NO | varchar(3) | UNI
 pim_catalog_currency | is_activated | NO | tinyint(1) |
@@ -643,6 +648,7 @@ pim_catalog_group | type_id | NO | int | MUL
 pim_catalog_group | code | NO | varchar(100) | UNI
 pim_catalog_group_product | product_id | NO | int | PRI
 pim_catalog_group_product | group_id | NO | int | PRI
+pim_catalog_group_product | product_uuid | YES | binary(16) |
 pim_catalog_group_translation | id | NO | int | PRI
 pim_catalog_group_translation | foreign_key | YES | int | MUL
 pim_catalog_group_translation | label | YES | varchar(100) |
@@ -666,6 +672,7 @@ pim_catalog_product | raw_values | NO | json |
 pim_catalog_product | created | NO | datetime |
 pim_catalog_product | updated | NO | datetime |
 pim_catalog_product | quantified_associations | YES | json |
+pim_catalog_product | uuid | YES | binary(16) |
 pim_catalog_product_model | id | NO | int | PRI
 pim_catalog_product_model | parent_id | YES | int | MUL
 pim_catalog_product_model | family_variant_id | YES | int | MUL
@@ -681,6 +688,7 @@ pim_catalog_product_unique_data | id | NO | int | PRI
 pim_catalog_product_unique_data | product_id | NO | int | MUL
 pim_catalog_product_unique_data | attribute_id | NO | int | MUL
 pim_catalog_product_unique_data | raw_data | NO | varchar(255) |
+pim_catalog_product_unique_data | product_uuid | YES | binary(16) |
 pim_catalog_table_column | id | NO | varchar(137) | PRI
 pim_catalog_table_column | attribute_id | NO | int | MUL
 pim_catalog_table_column | code | NO | varchar(100) |
@@ -718,6 +726,7 @@ pim_data_quality_insights_product_criteria_evaluation | criterion_code | NO | va
 pim_data_quality_insights_product_criteria_evaluation | evaluated_at | YES | datetime |
 pim_data_quality_insights_product_criteria_evaluation | status | NO | varchar(15) | MUL
 pim_data_quality_insights_product_criteria_evaluation | result | YES | json |
+pim_data_quality_insights_product_criteria_evaluation | product_uuid | YES | binary(16) |
 pim_data_quality_insights_product_model_criteria_evaluation | product_id | NO | int | PRI
 pim_data_quality_insights_product_model_criteria_evaluation | criterion_code | NO | varchar(40) | PRI
 pim_data_quality_insights_product_model_criteria_evaluation | evaluated_at | YES | datetime |
@@ -729,6 +738,7 @@ pim_data_quality_insights_product_model_score | scores | NO | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
+pim_data_quality_insights_product_score | product_uuid | YES | binary(16) |
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
 pim_datagrid_view | label | NO | varchar(100) |
@@ -773,6 +783,7 @@ pim_versioning_version | context | YES | varchar(255) |
 pim_versioning_version | version | YES | int | MUL
 pim_versioning_version | logged_at | NO | datetime | MUL
 pim_versioning_version | pending | NO | tinyint(1) | MUL
+pim_versioning_version | resource_uuid | YES | binary(16) |
 pimee_data_quality_insights_text_checker_dictionary | id | NO | int | PRI
 pimee_data_quality_insights_text_checker_dictionary | locale_code | NO | varchar(20) | MUL
 pimee_data_quality_insights_text_checker_dictionary | word | NO | varchar(250) |
@@ -826,6 +837,7 @@ pimee_teamwork_assistant_completeness_per_attribute_group | attribute_group_id |
 pimee_teamwork_assistant_completeness_per_attribute_group | has_at_least_one_required_attribute_filled | NO | tinyint(1) |
 pimee_teamwork_assistant_completeness_per_attribute_group | is_complete | NO | tinyint(1) |
 pimee_teamwork_assistant_completeness_per_attribute_group | calculated_at | NO | datetime |
+pimee_teamwork_assistant_completeness_per_attribute_group | product_uuid | YES | binary(16) |
 pimee_teamwork_assistant_project | id | NO | int | PRI
 pimee_teamwork_assistant_project | datagrid_view_id | NO | int | UNI
 pimee_teamwork_assistant_project | owner_id | NO | int | MUL
@@ -839,6 +851,7 @@ pimee_teamwork_assistant_project | productFilters | YES | longtext |
 pimee_teamwork_assistant_project | is_completeness_computed | NO | tinyint(1) |
 pimee_teamwork_assistant_project_product | project_id | NO | int | PRI
 pimee_teamwork_assistant_project_product | product_id | NO | int | PRI
+pimee_teamwork_assistant_project_product | product_uuid | YES | binary(16) |
 pimee_teamwork_assistant_project_status | id | NO | int | PRI
 pimee_teamwork_assistant_project_status | user_id | NO | int | MUL
 pimee_teamwork_assistant_project_status | project_id | NO | int | MUL
@@ -860,6 +873,7 @@ pimee_workflow_product_draft | source | NO | varchar(255) |
 pimee_workflow_product_draft | source_label | NO | varchar(255) |
 pimee_workflow_product_draft | author | NO | varchar(255) | MUL
 pimee_workflow_product_draft | author_label | NO | varchar(255) |
+pimee_workflow_product_draft | product_uuid | YES | binary(16) |
 pimee_workflow_product_model_draft | id | NO | int | PRI
 pimee_workflow_product_model_draft | product_model_id | NO | int | MUL
 pimee_workflow_product_model_draft | created_at | NO | datetime |
@@ -889,6 +903,7 @@ pimee_workflow_published_product | identifier | NO | varchar(255) | UNI
 pimee_workflow_published_product | raw_values | NO | json |
 pimee_workflow_published_product | created | NO | datetime |
 pimee_workflow_published_product | updated | NO | datetime |
+pimee_workflow_published_product | original_product_uuid | YES | binary(16) |
 pimee_workflow_published_product_association | id | NO | int | PRI
 pimee_workflow_published_product_association | association_type_id | NO | int | MUL
 pimee_workflow_published_product_association | owner_id | NO | int | MUL
