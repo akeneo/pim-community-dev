@@ -15,7 +15,6 @@ namespace AkeneoTestEnterprise\Pim\Permission\Integration\Enrichment\Storage\Sql
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -41,13 +40,5 @@ class GetNonViewableProductsIntegration extends EnrichmentProductTestCase
         $nonViewableProducts = $this->getNonViewableProducts->fromProductIdentifiers(['product', 'other_product'], $this->getUserId('betty'));
 
         Assert::assertEquals(['product'], $nonViewableProducts);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 }

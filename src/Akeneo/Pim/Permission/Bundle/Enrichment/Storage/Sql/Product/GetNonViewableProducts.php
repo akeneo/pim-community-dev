@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
-
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts as GetNonViewableProductsInterface;
-use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
-use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,6 +10,13 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product;
+
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts as GetNonViewableProductsInterface;
+use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
+use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
+
 class GetNonViewableProducts implements GetNonViewableProductsInterface
 {
     public function __construct(
