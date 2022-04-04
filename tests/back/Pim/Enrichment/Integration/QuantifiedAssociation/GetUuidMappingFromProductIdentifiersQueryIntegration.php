@@ -31,14 +31,7 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
      */
     public function it_fetches_the_uuid_mapping_given_some_product_identifiers()
     {
-        $wasColumnAdded = false;
-        if (!$this->uuidColumnExists()) {
-            $this->addUuidColumn();
-            $wasColumnAdded = true;
-        }
-
         $productIdentifier = 'product_1';
-        Assert::assertTrue($this->uuidColumnExists());
         $this->createProduct($productIdentifier);
 
         $idMapping = $this->getUuidMappingFromProductIdentifiersQuery->execute([$productIdentifier]);
@@ -48,30 +41,6 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
         $actualUuid = $idMapping->getUuid($productIdentifier);
 
         self::assertEquals($expectedUuid->toString(), $actualUuid->toString());
-
-        if ($wasColumnAdded) {
-            $this->dropUuidColumn();
-        }
-    }
-
-    public function it_returns_empty_mapping_if_uuid_column_does_not_exist()
-    {
-        $wasColumnDropped = false;
-        if ($this->uuidColumnExists()) {
-            $this->dropUuidColumn();
-            $wasColumnDropped = true;
-        }
-
-        $productIdentifier = 'product_1';
-        Assert::assertFalse($this->uuidColumnExists());
-        $this->createProduct($productIdentifier);
-
-        $idMapping = $this->getUuidMappingFromProductIdentifiersQuery->execute([$productIdentifier]);
-        self::assertEquals([], $idMapping);
-
-        if ($wasColumnDropped) {
-            $this->addUuidColumn();
-        }
     }
 
     protected function getConfiguration()
@@ -108,25 +77,8 @@ class GetUuidMappingFromProductIdentifiersQueryIntegration extends TestCase
         return Uuid::fromString($result);
     }
 
-    private function addUuidColumn()
-    {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product ADD uuid BINARY(16) DEFAULT NULL AFTER id, LOCK=NONE, ALGORITHM=INPLACE');
-    }
-
-    private function dropUuidColumn()
-    {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product DROP COLUMN uuid, LOCK=NONE, ALGORITHM=INPLACE');
-    }
-
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
-    }
-
-    private function uuidColumnExists(): bool
-    {
-        $rows = $this->getConnection()->fetchAllAssociative('SHOW COLUMNS FROM pim_catalog_product LIKE "uuid"');
-
-        return count($rows) >= 1;
     }
 }
