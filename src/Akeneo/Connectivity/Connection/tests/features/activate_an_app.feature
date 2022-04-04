@@ -4,6 +4,7 @@ Feature: Activate an OAuth2 client application in the PIM
   As Julia
   I need to be able to go through the Authorization tunnel
 
+  @marketplace-activate-feature-enabled
   Scenario: julia is authorized to activate an App
     Given a "default" catalog configuration
     And the role "ROLE_CATALOG_MANAGER" has the ACL "Manage Apps"
@@ -26,6 +27,7 @@ Feature: Activate an OAuth2 client application in the PIM
       | pim_api_product_remove | true    |
     And it can exchange the authorization code for a token
 
+  @marketplace-activate-feature-enabled
   Scenario: Julia can activate and authenticate in an App
     Given a "default" catalog configuration
     And the role "ROLE_CATALOG_MANAGER" has the ACL "Manage Apps"
