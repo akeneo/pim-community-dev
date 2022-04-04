@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Application\Supplier\Exceptions;
+namespace Akeneo\OnboarderSerenity\Application\Supplier\Exception;
 
 final class InvalidDataException extends \Exception
 {

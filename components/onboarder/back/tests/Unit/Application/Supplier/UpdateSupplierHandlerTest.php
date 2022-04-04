@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
-use Akeneo\OnboarderSerenity\Application\Supplier\Exceptions\InvalidDataException;
+use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidDataException;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
