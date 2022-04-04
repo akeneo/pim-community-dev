@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
+
 # 6.0.20 (2022-04-01)
 
 ## Bug fixes
@@ -43,7 +47,6 @@
 - PLG-776: Fix Option page broken issue with small screen when creating a new option
 - PIM-10305: Do not allow disabled user to login
 - PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
-- PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
 - RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
 - PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
 - PIM-10315: [Backport PIM-10264] Optimize variant product ratio query
