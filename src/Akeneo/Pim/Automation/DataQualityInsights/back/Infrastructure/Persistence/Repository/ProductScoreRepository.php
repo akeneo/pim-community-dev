@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -61,15 +62,21 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             $evaluatedAt = sprintf('evaluatedAt_%d', $index);
             $scores = sprintf('scores_%d', $index);
 
-            $queries .= <<<SQL
+            $productScoreExist = $this->getProductScore($productScore->productId(), $productScore->getEvaluatedAt());
+
+            if ($productScoreExist) {
+                $this->updateProducScore($productScore);
+            } else {
+                $queries .= <<<SQL
 INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
 VALUES (:$productId, :$evaluatedAt, :$scores)
 ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
 SQL;
-            $queriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $queriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $queriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $queriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
+                $queriesParameters[$productId] = $productScore->getProductId()->toInt();
+                $queriesParametersTypes[$productId] = \PDO::PARAM_INT;
+                $queriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
+                $queriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
+            }
         }
 
         $this->dbConnection->executeQuery($queries, $queriesParameters, $queriesParametersTypes);
@@ -90,5 +97,44 @@ SQL;
             $query,
             ['purge_date' => $date->format('Y-m-d')]
         );
+    }
+
+    private function getProductScore(ProductId $productId, \DateTimeImmutable $evaluatedAt): ?Write\ProductScores
+    {
+        $productScoreExistQuery = <<<SQL
+SELECT *
+FROM pim_data_quality_insights_product_score
+WHERE product_id = :productId
+AND evaluated_at = :evaluatedAt
+SQL;
+
+        return $this->dbConnection->executeQuery(
+            $productScoreExistQuery, [
+            'productId' => $productId->toInt(),
+            'evaluatedAt' => $evaluatedAt->format('Y-m-d')
+        ],
+            [
+                'productId' => \PDO::PARAM_INT
+            ]
+        )->fetchOne();
+    }
+
+
+    private function updateProducScore(Write\ProductScores $productScore): void
+    {
+        $updateProductScoreQuery = <<<SQL
+UPDATE pim_data_quality_insights_product_score
+WHERE product_id = :productId
+AND evaluated_at = :evaluatedAt
+SET evaluated_at = :evaluatedAt, scores = :scores
+SQL;
+
+        $this->dbConnection->executeQuery($updateProductScoreQuery, [
+            'productId' => $productScore->getProductId()->toInt(),
+            'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
+            'scores' => \json_encode($productScore->getScores()->toNormalizedRates())
+        ], [
+            'productId' => \PDO::PARAM_INT
+        ]);
     }
 }
