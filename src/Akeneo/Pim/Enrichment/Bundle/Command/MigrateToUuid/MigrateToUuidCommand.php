@@ -22,7 +22,7 @@ class MigrateToUuidCommand extends Command
 
     public function __construct(
         private GetElasticsearchProductProjection $getElasticsearchProductProjection,
-        MigrateToUuidStep $migrateToUuidCreateColumns,
+        MigrateToUuidStep $migrateToUuidCreateIndexes,
         MigrateToUuidStep $migrateToUuidAddTriggers,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
@@ -32,7 +32,7 @@ class MigrateToUuidCommand extends Command
     ) {
         parent::__construct();
         $this->steps = [
-            $migrateToUuidCreateColumns,
+            $migrateToUuidCreateIndexes,
             $migrateToUuidAddTriggers,
             $migrateToUuidFillProductUuid,
             $migrateToUuidFillForeignUuid,
