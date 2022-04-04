@@ -29,19 +29,19 @@ class SampleDataQueryValidator extends ConstraintValidator
         $missingParams = "";
 
         if (null === $value->get('file_key')) {
-            $missingParams += ' file_key,';
+            $missingParams .= ' file_key,';
         }
 
         if (null === $value->get('column_index')) {
-            $missingParams += ' column_index,';
+            $missingParams .= ' column_index,';
         }
 
         if (null === $value->get('sheet_name')) {
-            $missingParams += ' sheet_name,';
+            $missingParams .= ' sheet_name,';
         }
 
         if (null === $value->get('product_line')) {
-            $missingParams += ' product_line';
+            $missingParams .= ' product_line';
         }
 
         if ("" !== $missingParams) {
