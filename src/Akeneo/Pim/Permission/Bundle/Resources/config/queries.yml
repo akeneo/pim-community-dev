@@ -224,3 +224,9 @@ services:
         class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\GetViewableProducts
         arguments:
             - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProductModels:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\GetNonViewableProductModels
+        arguments:
+            - '@pimee_security.query.product_model_category_access_with_ids'
+            - '@pim_user.repository.user'
