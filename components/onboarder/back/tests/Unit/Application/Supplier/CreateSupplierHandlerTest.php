@@ -38,7 +38,7 @@ final class CreateSupplierHandlerTest extends TestCase
     }
 
     /** @test */
-    public function itThrowsAnExceptionIfTheSupplierAlreadyExist(): void
+    public function itThrowsAnExceptionIfTheSupplierAlreadyExists(): void
     {
         $identifier = '01319d4c-81c4-4f60-a992-41ea3546824c';
 

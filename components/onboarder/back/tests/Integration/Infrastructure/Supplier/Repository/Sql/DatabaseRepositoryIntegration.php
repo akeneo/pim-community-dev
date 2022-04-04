@@ -78,7 +78,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function itGetsASUpplierByItsIdentifier(): void
+    public function itGetsASupplierByItsIdentifier(): void
     {
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
@@ -169,10 +169,10 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             WHERE supplier_identifier = :supplierIdentifier
         SQL;
 
-        $contributorNumber = $this->get(Connection::class)
+        $contributorCount = $this->get(Connection::class)
             ->executeQuery($sql, ['supplierIdentifier' => $supplierIdentifier])
             ->fetchOne();
         ;
-        static::assertSame($expectedCount, (int) $contributorNumber);
+        static::assertSame($expectedCount, (int) $contributorCount);
     }
 }

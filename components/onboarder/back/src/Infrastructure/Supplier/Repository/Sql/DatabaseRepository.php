@@ -83,9 +83,10 @@ final class DatabaseRepository implements Supplier\Repository
     private function persistContributors(Supplier\Model\Supplier $supplier): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
-VALUES (:email, :supplierIdentifier)
-SQL;
+            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+            VALUES (:email, :supplierIdentifier)
+        SQL;
+
         $contributors = $supplier->contributors();
 
         foreach ($contributors as $contributor) {
