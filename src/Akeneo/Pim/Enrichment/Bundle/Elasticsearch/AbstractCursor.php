@@ -91,7 +91,11 @@ abstract class AbstractCursor implements CursorInterface
      */
     protected function getNextItems(array $esQuery): array
     {
-        $identifierResults = $this->getNextIdentifiers($esQuery);
+        return $this->getNextItemsFromIdentifiers($this->getNextIdentifiers($esQuery));
+    }
+
+    protected function getNextItemsFromIdentifiers(IdentifierResults $identifierResults): array
+    {
         if ($identifierResults->isEmpty()) {
             return [];
         }
