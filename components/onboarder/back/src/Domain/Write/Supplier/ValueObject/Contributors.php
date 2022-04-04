@@ -26,7 +26,7 @@ final class Contributors implements \Countable
 
     public function toArray(): array
     {
-        return array_map(fn (Contributor $contributor) => $contributor->email(), $this->contributors);
+        return array_map(fn (Contributor $contributor) => ['email' => $contributor->email()], $this->contributors);
     }
 
     public function count(): int

@@ -15,7 +15,10 @@ class ContributorsTest extends TestCase
         $contributors = Contributors::fromEmails(['zoo@zoo.com', 'moo@moo.com']);
 
         static::assertInstanceOf(Contributors::class, $contributors);
-        static::assertSame(['zoo@zoo.com', 'moo@moo.com'], $contributors->toArray());
-        static::assertSame(2, $contributors->count());
+        static::assertSame([
+            ['email' => 'zoo@zoo.com'],
+            ['email' => 'moo@moo.com'],
+        ], $contributors->toArray());
+        static::assertCount(2, $contributors);
     }
 }

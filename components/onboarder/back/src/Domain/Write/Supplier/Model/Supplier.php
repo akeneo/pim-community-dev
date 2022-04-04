@@ -60,8 +60,8 @@ final class Supplier
         return (string) $this->label;
     }
 
-    public function contributors(): ValueObject\Contributors
+    public function contributors(): array
     {
-        return $this->contributors;
+        return $this->contributors->toArray();
     }
 }

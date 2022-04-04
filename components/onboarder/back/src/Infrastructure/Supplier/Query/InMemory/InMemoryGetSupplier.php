@@ -27,7 +27,7 @@ final class InMemoryGetSupplier implements GetSupplier
             $supplier->identifier(),
             $supplier->code(),
             $supplier->label(),
-            $supplier->contributors()->toArray()
+            $supplier->contributors()
         );
     }
 }

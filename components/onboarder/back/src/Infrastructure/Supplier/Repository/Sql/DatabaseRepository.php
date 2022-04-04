@@ -86,13 +86,13 @@ final class DatabaseRepository implements Supplier\Repository
 INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
 VALUES (:email, :supplierIdentifier)
 SQL;
-        $contributorEmails = $supplier->contributors()->toArray();
+        $contributors = $supplier->contributors();
 
-        foreach ($contributorEmails as $email) {
+        foreach ($contributors as $contributor) {
             $this->connection->executeQuery(
                 $sql,
                 [
-                    'email' => $email,
+                    'email' => $contributor['email'],
                     'supplierIdentifier' => $supplier->identifier(),
                 ]
             );

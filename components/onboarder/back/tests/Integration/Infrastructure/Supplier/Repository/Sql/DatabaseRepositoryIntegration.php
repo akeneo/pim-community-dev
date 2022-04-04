@@ -104,7 +104,10 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $supplier);
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
-        static::assertSame(['contributor1@akeneo.com', 'contributor2@akeneo.com'], $supplier->contributors()->toArray());
+        static::assertSame([
+            ['email' => 'contributor1@akeneo.com'],
+            ['email' => 'contributor2@akeneo.com'],
+        ], $supplier->contributors());
 
         $supplier2 = $supplierRepository->find(
             Write\Supplier\ValueObject\Identifier::fromString(

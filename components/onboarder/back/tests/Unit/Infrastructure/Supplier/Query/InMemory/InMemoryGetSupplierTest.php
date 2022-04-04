@@ -41,7 +41,7 @@ final class InMemoryGetSupplierTest extends TestCase
         static::assertSame('supplier_code', $supplier->code);
         static::assertSame('Supplier label', $supplier->label);
         static::assertCount(2, $supplier->contributors);
-        static::assertSame('foo@foo.bar', $supplier->contributors[0]);
-        static::assertSame('foo2@foo2.bar', $supplier->contributors[1]);
+        static::assertSame('foo@foo.bar', $supplier->contributors[0]['email']);
+        static::assertSame('foo2@foo2.bar', $supplier->contributors[1]['email']);
     }
 }

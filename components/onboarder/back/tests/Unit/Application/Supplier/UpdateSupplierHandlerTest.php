@@ -32,7 +32,10 @@ final class UpdateSupplierHandlerTest extends TestCase
 
         $supplier = $repository->find($identifier);
         static::assertSame('Updated label', $supplier->label());
-        static::assertSame(['contributor1@akeneo.com', 'contributor2@akeneo.com'], $supplier->contributors()->toArray());
+        static::assertSame([
+            ['email' => 'contributor1@akeneo.com'],
+            ['email' => 'contributor2@akeneo.com'],
+        ], $supplier->contributors());
         $this->assertSame(2, $repository->saveCallCounter);
     }
 

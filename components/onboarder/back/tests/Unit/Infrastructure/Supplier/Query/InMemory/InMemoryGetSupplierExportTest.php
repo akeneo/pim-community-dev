@@ -49,8 +49,8 @@ final class InMemoryGetSupplierExportTest extends TestCase
         static::assertSame('supplier1', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->code);
         static::assertSame('Supplier1', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->label);
         static::assertCount(2, $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->contributors);
-        static::assertSame('foo1@foo.bar', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->contributors[0]);
-        static::assertSame('foo2@foo.bar', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->contributors[1]);
+        static::assertSame('foo1@foo.bar', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->contributors[0]['email']);
+        static::assertSame('foo2@foo.bar', $suppliers['ca8baefd-0e05-4683-be48-6b9ff87e4cbc']->contributors[1]['email']);
         static::assertSame('supplier2', $suppliers['c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1']->code);
         static::assertSame('Supplier2', $suppliers['c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1']->label);
         static::assertCount(0, $suppliers['c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1']->contributors);
