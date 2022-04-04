@@ -5,11 +5,13 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-
+$finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
+        // Rules from Akeneo\Channel\Bundle
+
         'Doctrine',
         'Symfony\Component',
         'Symfony\Contracts',
@@ -23,8 +25,9 @@ $rules = [
 
         // TIP-1024: Drop UserContext
         'Akeneo\UserManagement\Bundle\Context\UserContext',
-    ])->in('Akeneo\Channel\Bundle'),
-    $builder->only([
+
+        // Rules from Akeneo\Channel\Component
+
         'Symfony\Component',
         'Symfony\Contracts',
         'Doctrine\Common',
@@ -49,7 +52,7 @@ $rules = [
         'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
 
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
-    ])->in('Akeneo\Channel\Component'),
+    ])->in('Akeneo\Channel\Infrastructure'),
 ];
 
 $config = new Configuration($rules, $finder);
