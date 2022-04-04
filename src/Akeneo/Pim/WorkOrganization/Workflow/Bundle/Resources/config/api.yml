@@ -19,6 +19,8 @@ services:
             - '@pimee_workflow.manager.product_draft'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_workflow.controller.external_api.product_draft:
         class: '%pimee_workflow.controller.external_api.product_draft.class%'
