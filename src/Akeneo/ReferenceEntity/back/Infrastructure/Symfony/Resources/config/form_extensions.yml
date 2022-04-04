@@ -21,7 +21,6 @@ extensions:
     # Attribute custom fields
     pim-attribute-form-reference-entity:
         module: pim/common/simple-view
-#        feature: reference_entity
         config:
             template: pim/template/common/drop-zone
 
