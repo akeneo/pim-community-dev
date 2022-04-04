@@ -45,7 +45,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Category\API',
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
-        'Akeneo\Channel\Locale\API',
+        'Akeneo\Channel\API',
 
         // Non public APIs
         'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',

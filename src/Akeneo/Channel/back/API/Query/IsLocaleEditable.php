@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Locale\API\Query;
+namespace Akeneo\Channel\API\Query;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)

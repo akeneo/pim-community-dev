@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Channel\Locale\Infrastructure\Query;
+namespace Specification\Akeneo\Channel\Infrastructure\Query;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
-use Akeneo\Channel\Locale\Infrastructure\Query\DummyIsLocaleEditable;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
+use Akeneo\Channel\Infrastructure\Query\DummyIsLocaleEditable;
 use PhpSpec\ObjectBehavior;
 
 class DummyIsLocaleEditableSpec extends ObjectBehavior

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Channel\Locale\Integration;
+namespace Akeneo\Test\Channel\Integration;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;

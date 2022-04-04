@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Channel\Locale\Infrastructure\Query;
+namespace Akeneo\Channel\Infrastructure\Query;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
-use Doctrine\DBAL\Connection;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
