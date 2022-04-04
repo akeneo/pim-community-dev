@@ -41,10 +41,6 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     public function shouldBeExecuted(): bool
     {
-        if (!$this->columnExists('pim_catalog_product', 'uuid')) {
-            return true;
-        }
-
         $sql = <<<SQL
             SELECT EXISTS (
                 SELECT 1
@@ -88,9 +84,7 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
 
     private function getMissingProductUuidCount(): int
     {
-        return $this->columnExists('pim_catalog_product', 'uuid') ?
-            $this->getNullUuidCount('uuid') :
-            $this->getProductCount();
+        return $this->getNullUuidCount('uuid');
     }
 
     private function getNullUuidCount(string $uuidColumnName): int
@@ -102,16 +96,6 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
         SQL;
 
         return (int) $this->connection->fetchOne(\strtr($sql, ['{uuid_column_name}' => $uuidColumnName]));
-    }
-
-    private function getProductCount(): int
-    {
-        $sql = <<<SQL
-            SELECT COUNT(*)
-            FROM pim_catalog_product
-        SQL;
-
-        return (int) $this->connection->fetchOne($sql);
     }
 
     private function fillMissingProductUuids(): void
