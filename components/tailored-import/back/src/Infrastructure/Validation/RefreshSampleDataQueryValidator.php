@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class RefreshSampleDataQueryValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof RefreshSampleDataQuery) {
             throw new UnexpectedTypeException($constraint, RefreshSampleDataQuery::class);
