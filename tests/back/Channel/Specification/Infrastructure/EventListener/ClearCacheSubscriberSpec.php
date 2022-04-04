@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\EventListener;
 
-use Akeneo\Channel\Infrastructure\Symfony\EventListener\ClearCacheSubscriber;
+use Akeneo\Channel\Infrastructure\EventListener\ClearCacheSubscriber;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
