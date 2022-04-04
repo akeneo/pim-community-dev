@@ -451,7 +451,7 @@ Feature: Import rules
     Then an exception with message "conditions[0].value[1]: This value should not be null." has been thrown
     And the rule list does not contain the "rule_with_null_category" rule
 
-  @integration-back
+  @integration-back @reference-entity-feature-enabled
   Scenario: Skip rules with integer values for IN
     Given the designers reference entity
     And the following attributes:

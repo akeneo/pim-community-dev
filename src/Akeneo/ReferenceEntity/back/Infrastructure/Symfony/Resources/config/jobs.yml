@@ -15,7 +15,7 @@ services:
             -
                 - '@pim_connector.step.csv_reference_entity_record.export'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%', feature: 'reference_entity'}
 
     pim_connector.job.xlsx_reference_entity_record_export:
         class: '%pim_connector.job.simple_job.class%'
@@ -26,7 +26,7 @@ services:
             -
                 - '@pim_connector.step.xlsx_reference_entity_record.export'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%', feature: 'reference_entity' }
 
     pim_connector.job.csv_reference_entity_record_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -38,7 +38,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_reference_entity_record.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%', feature: 'reference_entity' }
 
     pim_connector.job.xlsx_reference_entity_record_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -50,7 +50,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_reference_entity_record.import'
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%', feature: 'reference_entity' }
 
     akeneo_referenceentity.job.mass_delete_records:
         class: '%pim_connector.job.simple_job.class%'
@@ -58,11 +58,11 @@ services:
             - 'reference_entity_mass_delete_records'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - 
+            -
                 - '@akeneo_referenceentity.step.mass_delete_records'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_referenceentity.mass_delete_records' }
+            - { name: akeneo_batch.job, connector: 'internal', type: 'akeneo_referenceentity.mass_delete_records', feature: 'reference_entity' }
 
     # Job providers
     akeneo_referenceentity.job.provider.csv_reference_entity_record_export:

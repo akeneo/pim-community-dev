@@ -57,6 +57,7 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
      */
     public function it_finds_the_products_linked_to_a_specific_record_for_an_attribute()
     {
+        $this->get('feature_flags')->enable('reference_entity');
         $this->loadProductsLinkedToARecord();
         $this->assertRequestContractRespected();
     }
