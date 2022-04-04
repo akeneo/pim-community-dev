@@ -66,7 +66,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public function setProductUuidsCache(RemoveEvent $event): void
     {
         $products = $event->getSubject();
-        if (!is_array($products) || !is_array($event->getSubjectId())) {
+        if (!is_array($products)) {
             return;
         }
         $products = array_filter($products, function ($product) {
@@ -136,7 +136,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
 
     private function setProductUuidsCacheInner(array $productIds): void
     {
-        if (0 === count($productIds) || !$this->uuidColumnExists()) {
+        if (0 === count($productIds)) {
             $this->productUuidsCache = [];
 
             return;
@@ -157,16 +157,5 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
             $result
         );
-    }
-
-    private function uuidColumnExists(): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            <<<SQL
-            SHOW COLUMNS FROM pim_catalog_product LIKE 'uuid'
-        SQL
-        );
-
-        return count($rows) >= 1;
     }
 }

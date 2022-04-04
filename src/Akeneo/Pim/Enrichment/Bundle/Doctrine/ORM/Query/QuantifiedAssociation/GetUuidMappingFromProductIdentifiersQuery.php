@@ -22,7 +22,7 @@ class GetUuidMappingFromProductIdentifiersQuery implements GetUuidMappingFromPro
 
     public function execute(array $productIdentifiers): UuidMapping
     {
-        if (empty($productIdentifiers) || !$this->columnExists('pim_catalog_product', 'uuid')) {
+        if (empty($productIdentifiers)) {
             return UuidMapping::createFromMapping([]);
         }
 
@@ -40,17 +40,5 @@ class GetUuidMappingFromProductIdentifiersQuery implements GetUuidMappingFromPro
         )->fetchAllAssociative(), 'identifier', 'uuid');
 
         return UuidMapping::createFromMapping($mapping);
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-            [
-                'columnName' => $columnName,
-            ]
-        );
-
-        return count($rows) >= 1;
     }
 }
