@@ -61,6 +61,8 @@ services:
             - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@pimee_security.cached_authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_api.controller.product_model_proposal:
         class : '%pimee_api.controller.product_model_proposal.class%'
