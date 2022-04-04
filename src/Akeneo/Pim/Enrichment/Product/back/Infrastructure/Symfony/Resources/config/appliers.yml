@@ -151,5 +151,6 @@ services:
     Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier:
         arguments:
             - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }

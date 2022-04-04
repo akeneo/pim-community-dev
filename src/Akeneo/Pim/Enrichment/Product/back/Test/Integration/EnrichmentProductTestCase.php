@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -213,5 +213,15 @@ abstract class EnrichmentProductTestCase extends TestCase
     protected function clearDoctrineUoW(): void
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    /**
+     * @return array<string>
+     */
+    protected function getAssociatedProductIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProducts('X_SELL')
+                ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
+                ?->toArray() ?? [];
     }
 }
