@@ -66,7 +66,7 @@ class IntrospectDatabaseCommand extends Command
             $filesystem = null;
             $filename = null;
         }
-        
+
         $jobs = $input->getOption('jobs') === true ?: false;
 
         $outputContent = function (string $line) use ($output, $filesystem, $filename) {
@@ -83,14 +83,14 @@ class IntrospectDatabaseCommand extends Command
         }
 
         foreach ($this->inspector->getColumnInfo($dbName) as $row) {
-            $line = sprintf(
-                "%s | %s | %s | %s | %s\n",
+            $line = \trim(sprintf(
+                "%s | %s | %s | %s | %s",
                 $row['table_name'],
                 $row['column_name'],
                 $row['is_nullable'],
                 $row['column_type'],
                 $row['column_key']
-            );
+            )) . PHP_EOL;
             $outputContent($line);
         }
 
