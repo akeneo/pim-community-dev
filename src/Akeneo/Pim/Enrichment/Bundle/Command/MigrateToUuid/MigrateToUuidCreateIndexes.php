@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MigrateToUuidCreateColumns implements MigrateToUuidStep
+class MigrateToUuidCreateIndexes implements MigrateToUuidStep
 {
     use MigrateToUuidTrait;
     use StatusAwareTrait;
@@ -25,12 +25,12 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
 
     public function getDescription(): string
     {
-        return 'Add uuid columns for pim_catalog_product table and every foreign tables';
+        return 'Add indexes on uuid columns for pim_catalog_product table and every foreign table';
     }
 
     public function getName(): string
     {
-        return 'create_uuid_columns';
+        return 'create_uuid_indexes';
     }
 
     public function shouldBeExecuted(): bool
@@ -42,7 +42,7 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
     {
         $count = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
+            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
                 $count++;
             }
         }
@@ -57,13 +57,12 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         $updatedItems = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
             $logContext->addContext('substep', $tableName);
-            if ($this->tableExists($tableName) && !$this->columnExists($tableName, $columnNames[self::UUID_COLUMN_INDEX])) {
+            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
                 $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
-                    $this->addUuidColumnAndIndexOnUuid(
+                    $this->addIndexOnUuid(
                         $tableName,
-                        $columnNames[self::UUID_COLUMN_INDEX],
-                        $columnNames[self::ID_COLUMN_INDEX]
+                        $columnNames[self::UUID_COLUMN_INDEX]
                     );
                     $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                 }
@@ -73,13 +72,10 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
         return true;
     }
 
-    private function addUuidColumnAndIndexOnUuid(string $tableName, string $uuidColumName, string $idColumnName): void
+    private function addIndexOnUuid(string $tableName, string $uuidColumName): void
     {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
             ALTER TABLE `{table_name}`
-                ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL AFTER `{id_column_name}`,
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE,
                 ADD INDEX `{index_name}` (`{uuid_column_name}`),
                     ALGORITHM=INPLACE,
                     LOCK=NONE;
@@ -90,7 +86,6 @@ class MigrateToUuidCreateColumns implements MigrateToUuidStep
             [
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
-                '{id_column_name}' => $idColumnName,
                 '{index_name}' => self::INDEX_NAME,
             ]
         );

@@ -37,6 +37,21 @@ trait MigrateToUuidTrait
         return count($rows) >= 1;
     }
 
+    protected function indexExists(string $tableName, string $indexName): bool
+    {
+        $rows = $this->connection->executeQuery(
+            \strtr(
+                'SHOW INDEX FROM {table_name} WHERE KEY_NAME = :index',
+                ['{table_name}' => $tableName]
+            ),
+            [
+                'index' => $indexName,
+            ]
+        )->fetchAllAssociative();
+
+        return count($rows) > 0;
+    }
+
     protected function triggerExists(string $triggerName): bool
     {
         $schema = $this->connection->getDatabase();
