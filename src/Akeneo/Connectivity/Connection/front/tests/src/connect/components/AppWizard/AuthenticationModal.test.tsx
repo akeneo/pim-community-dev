@@ -7,14 +7,15 @@ import {pimTheme} from 'akeneo-design-system';
 import React from 'react';
 import {ThemeProvider} from 'styled-components';
 import {historyMock, mockFetchResponses, renderWithProviders} from '../../../../test-utils';
+import {Authentication} from '@src/connect/components/AppWizard/steps/Authentication/Authentication';
 
 const notify = jest.fn();
 const checkboxConsent = jest.fn(setScopesConsent => setScopesConsent(true));
 
 jest.mock('@src/connect/components/AppWizard/steps/Authentication/Authentication', () => ({
-    Authentication: ({setScopesConsent}: {setScopesConsent: (newValue: boolean) => void}) => (
+    Authentication: jest.fn(({setScopesConsent}: {setScopesConsent: (newValue: boolean) => void}) => (
         <div onClick={() => checkboxConsent(setScopesConsent)}>authentication-component</div>
-    ),
+    )),
 }));
 
 /*eslint-disable */
@@ -41,41 +42,46 @@ beforeEach(() => {
 
 test('it renders correctly', async () => {
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b': {
             json: {
-                total: 1,
-                apps: [
-                    {
-                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-                        name: 'Extension 1',
-                        logo: 'https://extension-1.test/logo.png',
-                    },
-                ],
+                appName: 'Extension 1',
+                appLogo: 'https://extension-1.test/logo.png',
+                appUrl: 'https://myapp.example.com',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: ['email', 'profile'],
+                oldAuthenticationScopes: null,
             },
         },
     });
 
-    renderWithProviders(
-        <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
-    );
+    renderWithProviders(<AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' />);
 
     await waitFor(() => screen.queryByText('authentication-component'));
 
     expect(screen.queryByText('authentication-component')).toBeInTheDocument();
+    expect(Authentication).toBeCalledWith(
+        expect.objectContaining({
+            appName: 'Extension 1',
+            scopes: ['email', 'profile'],
+            oldScopes: null,
+            appUrl: 'https://myapp.example.com',
+            scopesConsentGiven: false,
+        }),
+        {}
+    );
 });
 
 test('it consents to the authentication scopes & redirect the user', async () => {
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b': {
             json: {
-                total: 1,
-                apps: [
-                    {
-                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-                        name: 'Extension 1',
-                        logo: 'https://extension-1.test/logo.png',
-                    },
-                ],
+                appName: 'Extension 1',
+                appLogo: 'https://extension-1.test/logo.png',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
         'akeneo_connectivity_connection_apps_rest_confirm_authentication?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b':
@@ -89,7 +95,7 @@ test('it consents to the authentication scopes & redirect the user', async () =>
     render(
         <ThemeProvider theme={pimTheme}>
             <NotifyContext.Provider value={notify}>
-                <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
+                <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' />
             </NotifyContext.Provider>
         </ThemeProvider>
     );
@@ -120,23 +126,19 @@ test('it cancels the authentication', async () => {
     historyMock.history.push('/');
 
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b': {
             json: {
-                total: 1,
-                apps: [
-                    {
-                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-                        name: 'Extension 1',
-                        logo: 'https://extension-1.test/logo.png',
-                    },
-                ],
+                appName: 'Extension 1',
+                appLogo: 'https://extension-1.test/logo.png',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
     });
 
-    renderWithProviders(
-        <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
-    );
+    renderWithProviders(<AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' />);
 
     await waitFor(() => screen.queryByText('authentication-component'));
 
@@ -149,16 +151,14 @@ test('it cancels the authentication', async () => {
 
 test('it prevents redirection without user consent', async () => {
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_rest_get_all_apps: {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b': {
             json: {
-                total: 1,
-                apps: [
-                    {
-                        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
-                        name: 'Extension 1',
-                        logo: 'https://extension-1.test/logo.png',
-                    },
-                ],
+                appName: 'Extension 1',
+                appLogo: 'https://extension-1.test/logo.png',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
         'akeneo_connectivity_connection_apps_rest_confirm_authentication?clientId=0dfce574-2238-4b13-b8cc-8d257ce7645b':
@@ -171,7 +171,7 @@ test('it prevents redirection without user consent', async () => {
 
     renderWithProviders(
         <NotifyContext.Provider value={notify}>
-            <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' newAuthenticationScopes={[]} />
+            <AuthenticationModal clientId='0dfce574-2238-4b13-b8cc-8d257ce7645b' />
         </NotifyContext.Provider>
     );
 

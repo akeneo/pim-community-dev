@@ -23,6 +23,10 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\HasUserConsentForAppQuery:
+        arguments:
+            - '@database_connection'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateUserConsentQuery:
         arguments:
             - '@database_connection'

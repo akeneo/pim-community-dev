@@ -12,12 +12,15 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionT
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetWizardDataActionEndToEnd extends WebTestCase
@@ -28,6 +31,8 @@ class GetWizardDataActionEndToEnd extends WebTestCase
     private ConnectionLoader $connectionLoader;
     private UserGroupLoader $userGroupLoader;
     private ConnectedAppLoader $connectedAppLoader;
+    private UserConsentLoader $userConsentLoader;
+    private FakeClock $clock;
 
     public function test_to_get_wizard_data(): void
     {
@@ -78,8 +83,9 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'entities' => 'catalog_structure',
                 ],
             ],
-            'authenticationScopes' => ['email', 'profile'],
             'oldScopeMessages' => null,
+            'authenticationScopes' => ['email', 'profile'],
+            'oldAuthenticationScopes' => null,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -167,8 +173,9 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'entities' => 'catalog_structure',
                 ],
             ],
-            'authenticationScopes' => [],
             'oldScopeMessages' => null,
+            'authenticationScopes' => [],
+            'oldAuthenticationScopes' => null,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -204,8 +211,9 @@ class GetWizardDataActionEndToEnd extends WebTestCase
             'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
             'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
             'scopeMessages' => [],
-            'authenticationScopes' => [],
             'oldScopeMessages' => null,
+            'authenticationScopes' => [],
+            'oldAuthenticationScopes' => null,
         ], \json_decode($response->getContent(), true));
     }
 
@@ -277,7 +285,6 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'entities' => 'association_types',
                 ],
             ],
-            'authenticationScopes' => ['email', 'profile'],
             'oldScopeMessages' => [
                 [
                     'icon' => 'catalog_structure',
@@ -285,6 +292,96 @@ class GetWizardDataActionEndToEnd extends WebTestCase
                     'entities' => 'catalog_structure',
                 ],
             ],
+            'authenticationScopes' => ['email', 'profile'],
+            'oldAuthenticationScopes' => null,
+        ], \json_decode($response->getContent(), true));
+    }
+
+    public function test_old_authentication_scopes_are_not_empty()
+    {
+        $user = $this->authenticateAsAdmin();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+
+        $this->connectionLoader->createConnection(
+            'connectionCodeA',
+            'Connector A',
+            FlowType::DATA_DESTINATION,
+            false,
+            ConnectionType::APP_TYPE
+        );
+
+        $this->userGroupLoader->create(['name' => 'app_7891011ghijkl']);
+
+        $this->connectedAppLoader->createConnectedApp(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'App',
+            ['write_catalog_structure'],
+            'connectionCodeA',
+            'http://www.example.com/path/to/logo',
+            'author',
+            'app_7891011ghijkl',
+            [],
+            true,
+            null
+        );
+
+        $this->userConsentLoader->addUserConsent(
+            $user->getId(),
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            ['openid', 'email'],
+            Uuid::uuid4(),
+            $this->clock->now()
+        );
+
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+
+        $command = new RequestAppAuthorizationCommand(
+            '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'code',
+            'write_catalog_structure delete_products read_association_types openid profile email',
+            'http://anyurl.test'
+        );
+        $this->appAuthorizationHandler->handle($command);
+
+        $this->client->request(
+            'GET',
+            '/rest/apps/load-wizard-data/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        Assert::assertEquals([
+            'appName' => 'Akeneo Shopware 6 Connector by EIKONA Media',
+            'appLogo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+            'appUrl' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+            'scopeMessages' => [
+                [
+                    'icon' => 'products',
+                    'type' => 'delete',
+                    'entities' => 'products',
+                ],
+                [
+                    'icon' => 'association_types',
+                    'type' => 'view',
+                    'entities' => 'association_types',
+                ],
+            ],
+            'oldScopeMessages' => [
+                [
+                    'icon' => 'catalog_structure',
+                    'type' => 'edit',
+                    'entities' => 'catalog_structure',
+                ],
+            ],
+            'authenticationScopes' => ['profile'],
+            'oldAuthenticationScopes' => ['email'],
         ], \json_decode($response->getContent(), true));
     }
 
@@ -298,6 +395,8 @@ class GetWizardDataActionEndToEnd extends WebTestCase
         $this->connectionLoader = $this->get('akeneo_connectivity.connection.fixtures.connection_loader');
         $this->userGroupLoader = $this->get('akeneo_connectivity.connection.fixtures.enrichment.user_group_loader');
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
+        $this->userConsentLoader = $this->get(UserConsentLoader::class);
+        $this->clock = $this->get('akeneo_connectivity.connection.clock');
         $this->get('akeneo_connectivity.connection.marketplace_activate.feature')->enable();
         $this->loadAppsFixtures();
     }

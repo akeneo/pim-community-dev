@@ -6,10 +6,14 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetUserConsentedAuthenticationScopesQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\HasUserConsentForAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -30,6 +34,9 @@ final class GetWizardDataAction
         private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
         private ScopeListComparatorInterface $scopeListComparator,
+        private ConnectedPimUserProvider $connectedPimUserProvider,
+        private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery,
+        private HasUserConsentForAppQueryInterface $hasUserConsentForAppQuery,
     ) {
     }
 
@@ -49,23 +56,9 @@ final class GetWizardDataAction
         if (null === $appAuthorization) {
             throw new NotFoundHttpException("Invalid app identifier");
         }
-        $originalScopes = $this->getConnectedAppScopesQuery->execute($app->getId());
-        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
-        $newScopes = $this->scopeListComparator->diff(
-            $requestedScopes,
-            $originalScopes
-        );
-
-        $isFirstConnection = null === $this->findOneConnectedAppByIdQuery->execute($app->getId());
-
-        $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
-        $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
-
-        $authenticationScopesThatRequireConsent = \array_filter(
-            $appAuthorization->getAuthenticationScopes()->getScopes(),
-            fn (string $scope) => $scope !== AuthenticationScope::SCOPE_OPENID
-        );
+        [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages] = $this->getAuthorizationScopes($app->getId(), $appAuthorization);
+        [$oldAuthenticationScopes, $newAuthenticationScopes] = $this->getAuthenticationScopes($app->getId(), $appAuthorization);
 
         return new JsonResponse([
             'appName' => $app->getName(),
@@ -73,7 +66,58 @@ final class GetWizardDataAction
             'appUrl' => $app->getUrl(),
             'oldScopeMessages' => $oldAuthorizationScopeMessages,
             'scopeMessages' => $newAuthorizationScopeMessages,
-            'authenticationScopes' => \array_values($authenticationScopesThatRequireConsent)
+            'oldAuthenticationScopes' => $oldAuthenticationScopes,
+            'authenticationScopes' => $newAuthenticationScopes,
         ]);
+    }
+
+    private function getAuthorizationScopes(string $appId, AppAuthorization $appAuthorization): array
+    {
+        $originalScopes = $this->getConnectedAppScopesQuery->execute($appId);
+        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
+
+        $newScopes = $this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        );
+
+        $isFirstConnection = null === $this->findOneConnectedAppByIdQuery->execute($appId);
+
+        $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
+        $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
+
+        return [$oldAuthorizationScopeMessages, $newAuthorizationScopeMessages];
+    }
+
+    private function getAuthenticationScopes(string $appId, AppAuthorization $appAuthorization): array
+    {
+        $userId = $this->connectedPimUserProvider->getCurrentUserId();
+        $originalAuthenticationScopes = $this->filterAuthenticationScopesThatRequireConsent(
+            $this->getUserConsentedAuthenticationScopesQuery->execute($userId, $appId)
+        );
+
+        $requestedAuthenticationScopes = $this->filterAuthenticationScopesThatRequireConsent(
+            $appAuthorization->getAuthenticationScopes()->getScopes()
+        );
+        $newAuthenticationScopes = \array_unique(\array_diff($requestedAuthenticationScopes, $originalAuthenticationScopes));
+        \sort($newAuthenticationScopes);
+
+        $isFirstUserConnection = !$this->hasUserConsentForAppQuery->execute($userId, $appId);
+        $oldAuthenticationScopes = $isFirstUserConnection ? null : $originalAuthenticationScopes;
+
+        return [$oldAuthenticationScopes, $newAuthenticationScopes];
+    }
+
+    /**
+     * @param array<string> $scopes
+     *
+     * @return array<string>
+     */
+    private function filterAuthenticationScopesThatRequireConsent(array $scopes): array
+    {
+        return \array_values(\array_filter(
+            $scopes,
+            fn (string $scope) => $scope !== AuthenticationScope::SCOPE_OPENID
+        ));
     }
 }

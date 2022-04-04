@@ -96,6 +96,9 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppScopesQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\HasUserConsentForAppQuery'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetOpenAppUrlAction:
         public: true
