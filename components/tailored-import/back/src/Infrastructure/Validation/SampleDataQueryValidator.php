@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
-use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataQuery;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,7 +32,7 @@ class SampleDataQueryValidator extends ConstraintValidator
           "product_line"
         ];
 
-        $missingParams = array_filter($requiredParams, fn($param) => null === $value->get($param));
+        $missingParams = array_filter($requiredParams, fn ($param) => null === $value->get($param));
 
         if (count($missingParams) > 0) {
             $this->context->buildViolation(

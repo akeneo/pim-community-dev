@@ -33,7 +33,7 @@ class RefreshSampleDataQueryValidator extends ConstraintValidator
             'current_sample',
         ];
 
-        $missingParams = array_filter($requiredParams, fn($param) => null === $value->get($param));
+        $missingParams = array_filter($requiredParams, fn ($param) => null === $value->get($param));
 
         if (count($missingParams) > 0) {
             $this->context->buildViolation(
