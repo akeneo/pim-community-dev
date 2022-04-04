@@ -11,7 +11,9 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\Query;
 interface GetNonViewableProductModels
 {
     /**
+     * @param array<string> $productModelCodes
+     * @param int $userId
      * @return array<string>
      */
-    public function fromProductModelIdentifiers(array $productModelIdentifiers, int $userId): array;
+    public function fromProductModelCodes(array $productModelCodes, int $userId): array;
 }

@@ -88,7 +88,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     $newAssociations
                 );
             } elseif ($associationUserIntent instanceof ReplaceAssociatedProductModels) {
-                $nonViewableProductModelIdentifiers = $this->getNonViewableProductModels->fromProductModelIdentifiers($formerAssociations, $userId);
+                $nonViewableProductModelIdentifiers = $this->getNonViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
                 \sort($formerAssociations);
                 $newAssociations = $associationUserIntent->productModelIdentifiers();
                 \sort($newAssociations);

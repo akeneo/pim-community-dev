@@ -15,7 +15,7 @@ class GetNonViewableProductModels implements GetNonViewableProductModelsInterfac
     /**
      * @inerhitDoc
      */
-    public function fromProductModelIdentifiers(array $productModelIdentifiers, int $userId): array
+    public function fromProductModelCodes(array $productModelIdentifiers, int $userId): array
     {
         return [];
     }
