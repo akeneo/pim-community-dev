@@ -52,6 +52,9 @@ $rules = [
             // PIM coupling
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
+            'Box\Spout\Common\Type',
+            'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
+            'Box\Spout\Writer\Common\Creator\WriterFactory',
             'Doctrine\DBAL\Connection',
             'Ramsey\Uuid\Uuid',
             'Symfony',
@@ -66,6 +69,8 @@ $rules = [
             'Akeneo\OnboarderSerenity\Domain',
             // PIM coupling
             // External dependencies coupling
+            'Box\Spout\Common\Type',
+            'Box\Spout\Reader\Common\Creator\ReaderFactory',
             'Doctrine\DBAL\Connection',
             'Ramsey\Uuid\Uuid',
             'Symfony',
