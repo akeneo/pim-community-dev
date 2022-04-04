@@ -31,7 +31,7 @@ return [
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
     Akeneo\Channel\Locale\Infrastructure\Symfony\AkeneoLocaleBundle::class => ['all' => true],
-    Akeneo\Channel\Bundle\AkeneoLegacyChannelBundle::class => ['all' => true],
+    Akeneo\Channel\Infrastructure\Symfony\AkeneoLegacyChannelBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],

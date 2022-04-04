@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel\Query\Sql;
 
-use Akeneo\Channel\Bundle\Query\Sql\SqlIsCategoryTreeLinkedToChannel;
+use Akeneo\Channel\Infrastructure\Symfony\Query\Sql\SqlIsCategoryTreeLinkedToChannel;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

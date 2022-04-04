@@ -1,0 +1,34 @@
+services:
+    pim_channel.query.sql.get_channel_code_with_locale_codes:
+        class: 'Akeneo\Channel\Infrastructure\Query\Sql\SqlGetChannelCodeWithLocaleCodes'
+        arguments:
+            - '@database_connection'
+
+    pim_channel.query.cache.channel_exists_with_locale:
+        class: 'Akeneo\Channel\Component\Query\PublicApi\Cache\CachedChannelExistsWithLocale'
+        arguments:
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags: ['akeneo.pim.cached_query']
+
+    pim_channel.query.sql.is_category_tree_linked_to_channel:
+        class: 'Akeneo\Channel\Infrastructure\Query\Sql\SqlIsCategoryTreeLinkedToChannel'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Sql\IsChannelUsedInProductProductExportJob:
+        arguments:
+            - '@database_connection'
+            -
+                - '%pim_connector.job_name.xlsx_product_export%'
+                - '%pim_connector.job_name.xlsx_product_model_export%'
+                - '%pim_connector.job_name.csv_product_export%'
+                - '%pim_connector.job_name.csv_product_model_export%'
+                - 'akeneo_shared_catalog'
+                - 'csv_published_product_export'
+                - 'xlsx_published_product_export'
+
+    pimee_security.query.get_all_viewable_locales_for_user:
+        class: 'Akeneo\Channel\Infrastructure\Query\Sql\SqlGetAllViewableLocalesForUser'
+        arguments:
+            - '@database_connection'
+        tags: ['akeneo.pim.cached_query']

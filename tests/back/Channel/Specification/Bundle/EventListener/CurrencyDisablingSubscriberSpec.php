@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Bundle\EventListener;
 
-use Akeneo\Channel\Bundle\EventListener\CurrencyDisablingSubscriber;
+use Akeneo\Channel\Infrastructure\Symfony\EventListener\CurrencyDisablingSubscriber;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Channel\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Component\Model\CurrencyInterface;
