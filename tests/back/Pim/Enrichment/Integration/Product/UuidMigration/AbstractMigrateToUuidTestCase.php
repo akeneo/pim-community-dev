@@ -49,12 +49,15 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
 
     protected function clean(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
-                $this->removeColumn($tableName, $columnNames[MigrateToUuidStep::UUID_COLUMN_INDEX]);
-            }
-            $this->removeTriggers($tableName);
-        }
+        $kernel = new \Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+        $consoleApp = new Application($kernel);
+        $consoleApp->setAutoExit(false);
+
+        $input = new ArrayInput([
+            'command' => 'pim:installer:db',
+        ]);
+        $output = new BufferedOutput();
+        $consoleApp->run($input, $output);
     }
 
     protected function launchMigrationCommand(): void
@@ -82,16 +85,6 @@ abstract class AbstractMigrateToUuidTestCase extends TestCase
                 $this->connection->executeQuery('ALTER TABLE pim_versioning_version DROP INDEX resource_name_uuid_id_idx');
             }
         }
-    }
-
-    protected function tableExists(string $tableName): bool
-    {
-        $rows = $this->connection->fetchAllAssociative(
-            'SHOW TABLES LIKE :tableName',
-            ['tableName' => $tableName]
-        );
-
-        return \count($rows) >= 1;
     }
 
     protected function removeTriggers(string $tableName): void
