@@ -21,6 +21,9 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftIn
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -59,7 +62,9 @@ class ProductModelProposalController
         EntityWithValuesDraftRepositoryInterface $productModelDraftRepository,
         EntityWithValuesDraftManager $draftManager,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacade $security,
+        private LoggerInterface $apiAclLogger,
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
@@ -79,6 +84,8 @@ class ProductModelProposalController
      */
     public function createAction(Request $request, string $code): Response
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $decodedContent = json_decode($request->getContent(), true);
         if (null === $decodedContent) {
             throw new BadRequestHttpException('Invalid json message received.');
@@ -128,6 +135,21 @@ class ProductModelProposalController
             throw new ResourceAccessDeniedException($productModel, sprintf(
                 'You only have view permission on the product model "%s", you cannot send a draft for approval.',
                 $code
+            ));
+        }
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->security->isGranted('pim_api_product_edit')) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            Assert::isInstanceOf($user, UserInterface::class);
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUserIdentifier(),
+                implode(',', $user->getRoles()),
+                'pim_api_product_edit'
             ));
         }
     }

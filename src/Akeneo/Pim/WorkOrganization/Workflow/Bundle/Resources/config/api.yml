@@ -75,6 +75,8 @@ services:
             - '@pimee_workflow.manager.product_model_draft'
             - '@security.token_storage'
             - '@pimee_security.cached_authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     # URL generator
     pimee_workflow.router.proxy_product:
