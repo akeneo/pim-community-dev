@@ -20,7 +20,7 @@
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49),(6,867,49);
+INSERT INTO `pim_catalog_association` (`id`, `association_type_id`, `owner_id`) VALUES (9,865,49),(8,866,49),(7,868,49),(6,867,49);
 /*!40000 ALTER TABLE `pim_catalog_association` ENABLE KEYS */;
 
 --
@@ -28,7 +28,7 @@ INSERT INTO `pim_catalog_association` VALUES (9,865,49),(8,866,49),(7,868,49),(6
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association_group` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_group` VALUES (8,240),(9,241);
+INSERT INTO `pim_catalog_association_group` (`association_id`, `group_id`) VALUES (8,240),(9,241);
 /*!40000 ALTER TABLE `pim_catalog_association_group` ENABLE KEYS */;
 
 
@@ -37,7 +37,7 @@ INSERT INTO `pim_catalog_association_group` VALUES (8,240),(9,241);
 --
 
 /*!40000 ALTER TABLE `pim_catalog_association_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
+INSERT INTO `pim_catalog_association_product` (`association_id`, `product_id`) VALUES (7,47),(7,48),(9,47);
 /*!40000 ALTER TABLE `pim_catalog_association_product` ENABLE KEYS */;
 
 
@@ -46,7 +46,7 @@ INSERT INTO `pim_catalog_association_product` VALUES (7,47),(7,48),(9,47);
 --
 
 /*!40000 ALTER TABLE `pim_catalog_completeness` DISABLE KEYS */;
-INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,0,19),(774,21039,210,49,2,19),(775,21058,210,49,0,19),(776,21090,210,49,0,19);
+INSERT INTO `pim_catalog_completeness` (`id`, `locale_id`, `channel_id`, `product_id`, `missing_count`, `required_count`) VALUES (773,21058,209,49,0,19),(774,21039,210,49,2,19),(775,21058,210,49,0,19),(776,21090,210,49,0,19);
 /*!40000 ALTER TABLE `pim_catalog_completeness` ENABLE KEYS */;
 
 
@@ -55,7 +55,7 @@ INSERT INTO `pim_catalog_completeness` VALUES (773,21058,209,49,0,19),(774,21039
 --
 
 /*!40000 ALTER TABLE `pim_catalog_group_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_group_product` VALUES (49,239),(49,240),(49,241);
+INSERT INTO `pim_catalog_group_product` (`product_id`, `group_id`) VALUES (49,239),(49,240),(49,241);
 /*!40000 ALTER TABLE `pim_catalog_group_product` ENABLE KEYS */;
 
 --
@@ -84,11 +84,11 @@ INSERT INTO `pim_catalog_product` (`id`, `identifier`, `family_id`, `family_vari
 /*!40000 ALTER TABLE `pim_catalog_product` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `pim_catalog_category_product_model` DISABLE KEYS */;
-INSERT INTO `pim_catalog_category_product_model` VALUES (150,896),(151,899),(151,897);
+INSERT INTO `pim_catalog_category_product_model` (`product_model_id`, `category_id`) VALUES (150,896),(151,899),(151,897);
 /*!40000 ALTER TABLE `pim_catalog_category_product_model` ENABLE KEYS */;
 
 /*!40000 ALTER TABLE `pim_catalog_category_product` DISABLE KEYS */;
-INSERT INTO `pim_catalog_category_product` VALUES (49,897),(49,899),(50,898);
+INSERT INTO `pim_catalog_category_product` (`product_id`, `category_id`) VALUES (49,897),(49,899),(50,898);
 /*!40000 ALTER TABLE `pim_catalog_category_product` ENABLE KEYS */;
 
 

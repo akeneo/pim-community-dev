@@ -14,6 +14,9 @@ aliases:
 
 executor-machine: &executor-machine 'ubuntu-2004:202111-02'
 
+orbs:
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
+
 commands:
     set_gcloud_config_dev:
         description: "Authenticate on GCP services and set config and key to be used by other tools that need to authenticate."
@@ -62,15 +65,12 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - run:
-                  name: Download EE dev with the SSH key that we added above
+                  name: Clone EE branch if it exists, or master otherwise with the SSH key that we added above
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
-            - run:
-                  name: Checkout EE branch if it exists, or master otherwise
-                  command: |
+                      ENTREPRISE_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-enterprise-dev.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
+                      git clone --depth=1 --single-branch --branch $ENTREPRISE_BRANCH git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
                       cd /home/circleci/project
-                      git checkout ${CIRCLE_BRANCH} || git checkout master
                       echo "Current commit: $(git rev-parse --short HEAD)"
             - run:
                   name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
@@ -78,7 +78,7 @@ jobs:
                       mkdir -p tmp
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-                      git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+                      git clone --depth=1 --single-branch --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
             - run:
                   name: Require proper dev CE branch
                   command: |
@@ -102,7 +102,7 @@ jobs:
         machine:
             image: *executor-machine
         steps:
-            - checkout
+            - git-shallow-clone/checkout
             - install_yq
             - run:
                   name: Remove MySQL port translation (see BH-664)
@@ -170,11 +170,11 @@ jobs:
             - restore_cache:
                   name: Restore cache - yarn and Cypress dependency cache
                   keys:
-                      - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                      - frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
             - restore_cache:
                   name: Restore cache - composer dependency cache
                   keys:
-                      - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                      - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
             - run:
                   name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: |
@@ -271,7 +271,7 @@ jobs:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
             - save_cache:
                   name: Save micro-frontend Config cache
-                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front
             - persist_to_workspace:
