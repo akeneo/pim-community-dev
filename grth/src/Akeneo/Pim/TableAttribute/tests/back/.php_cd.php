@@ -105,6 +105,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
+            'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
             'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
@@ -136,6 +138,9 @@ $rules = [
             'Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\DeleteMeasurementFamily\DeleteMeasurementFamilyCommand',
             'Akeneo\Tool\Bundle\MeasureBundle\Application\SaveMeasurementFamily\SaveMeasurementFamilyCommand',
+
+            //Enrichment computing
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

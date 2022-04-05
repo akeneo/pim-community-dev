@@ -38,3 +38,14 @@ services:
             - 'clean_table_values_following_deleted_options'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\ComputeCompletenessSubscriber:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
+            - '@security.token_storage'
+            - 'compute_completeness_following_table_update'
+        tags:
+              - { name: kernel.event_subscriber }
