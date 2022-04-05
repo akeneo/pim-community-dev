@@ -73,15 +73,16 @@ final class GetWizardDataAction
 
     private function getAuthorizationScopes(string $appId, AppAuthorization $appAuthorization): array
     {
-        $originalScopes = $this->getConnectedAppScopesQuery->execute($appId);
+        $connectedApp = $this->findOneConnectedAppByIdQuery->execute($appId);
+        $isFirstConnection = null === $connectedApp;
+
+        $originalScopes = $isFirstConnection ? null : $connectedApp->getScopes();
         $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
 
         $newScopes = $this->scopeListComparator->diff(
             $requestedScopes,
-            $originalScopes
+            $originalScopes ?? []
         );
-
-        $isFirstConnection = null === $this->findOneConnectedAppByIdQuery->execute($appId);
 
         $oldAuthorizationScopeMessages = $isFirstConnection ? null : $this->scopeMapperRegistry->getMessages($originalScopes);
         $newAuthorizationScopeMessages = $this->scopeMapperRegistry->getMessages($newScopes);
@@ -92,18 +93,19 @@ final class GetWizardDataAction
     private function getAuthenticationScopes(string $appId, AppAuthorization $appAuthorization): array
     {
         $userId = $this->connectedPimUserProvider->getCurrentUserId();
-        $originalAuthenticationScopes = $this->filterAuthenticationScopesThatRequireConsent(
+        $isFirstUserConnection = !$this->hasUserConsentForAppQuery->execute($userId, $appId);
+
+        $oldAuthenticationScopes = $isFirstUserConnection ? null : $this->filterAuthenticationScopesThatRequireConsent(
             $this->getUserConsentedAuthenticationScopesQuery->execute($userId, $appId)
         );
 
-        $requestedAuthenticationScopes = $this->filterAuthenticationScopesThatRequireConsent(
+        $newAuthenticationScopes = $this->filterAuthenticationScopesThatRequireConsent(
             $appAuthorization->getAuthenticationScopes()->getScopes()
         );
-        $newAuthenticationScopes = \array_unique(\array_diff($requestedAuthenticationScopes, $originalAuthenticationScopes));
+        if (!$isFirstUserConnection) {
+            $newAuthenticationScopes = \array_unique(\array_diff($newAuthenticationScopes, $oldAuthenticationScopes ?? []));
+        }
         \sort($newAuthenticationScopes);
-
-        $isFirstUserConnection = !$this->hasUserConsentForAppQuery->execute($userId, $appId);
-        $oldAuthenticationScopes = $isFirstUserConnection ? null : $originalAuthenticationScopes;
 
         return [$oldAuthenticationScopes, $newAuthenticationScopes];
     }
