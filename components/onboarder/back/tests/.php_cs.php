@@ -21,7 +21,13 @@ return (new PhpCsFixer\Config())
             'single_quote' => [
                 'strings_containing_single_quote_chars' => false, // Convert double quotes to single quotes for simple strings.
             ],
-            'trailing_comma_in_multiline' => true, // Multi-line arrays, arguments list and parameters list must have a trailing comma.
+            'trailing_comma_in_multiline' => [
+                'elements' => [
+                    'arrays',
+                    'arguments',
+                    'parameters',
+                ],
+            ], // Multi-line arrays, arguments list and parameters list must have a trailing comma.
         ]
     )
     ->setCacheFile('var/php_cs.cache')

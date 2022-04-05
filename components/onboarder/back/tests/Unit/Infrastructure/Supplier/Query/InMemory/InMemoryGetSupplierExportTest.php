@@ -30,8 +30,8 @@ final class InMemoryGetSupplierExportTest extends TestCase
                 'ca8baefd-0e05-4683-be48-6b9ff87e4cbc',
                 'supplier1',
                 'Supplier1',
-                ['foo1@foo.bar', 'foo2@foo.bar']
-            )
+                ['foo1@foo.bar', 'foo2@foo.bar'],
+            ),
         );
 
         $supplierRepository->save(
@@ -39,8 +39,8 @@ final class InMemoryGetSupplierExportTest extends TestCase
                 'c6a23965-7e5d-4cf4-bdaa-41ddfe7481b1',
                 'supplier2',
                 'Supplier2',
-                []
-            )
+                [],
+            ),
         );
 
         $suppliers = ($sut)();

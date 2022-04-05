@@ -29,7 +29,7 @@ final class SupplierCreate
                 $supplierIdentifier,
                 $supplierCode,
                 $supplierLabel,
-                []
+                [],
             ));
         } catch (SupplierAlreadyExistsException) {
             return new JsonResponse(null, Response::HTTP_CONFLICT);

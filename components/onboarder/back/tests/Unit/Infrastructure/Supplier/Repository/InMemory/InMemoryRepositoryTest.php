@@ -20,14 +20,14 @@ final class InMemoryRepositoryTest extends TestCase
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
                 'Supplier code',
-                []
-            )
+                [],
+            ),
         );
 
         $supplier = $supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f02'
-            )
+                '44ce8069-8da1-4986-872f-311737f46f02',
+            ),
         );
 
         static::assertSame('supplier_code', $supplier->code());
@@ -44,8 +44,8 @@ final class InMemoryRepositoryTest extends TestCase
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
                 'Supplier code',
-                []
-            )
+                [],
+            ),
         );
 
         $supplier = $supplierRepository->findByCode(Supplier\ValueObject\Code::fromString('supplier_code'));
@@ -64,14 +64,14 @@ final class InMemoryRepositoryTest extends TestCase
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'new_supplier_code',
                 'New supplier code',
-                []
-            )
+                [],
+            ),
         );
 
         $supplier = $supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f02'
-            )
+                '44ce8069-8da1-4986-872f-311737f46f02',
+            ),
         );
 
         static::assertSame('new_supplier_code', $supplier->code());
@@ -83,7 +83,7 @@ final class InMemoryRepositoryTest extends TestCase
     {
         static::assertNull(
             (new InMemoryRepository())
-                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02'))
+                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')),
         );
     }
 
@@ -97,23 +97,23 @@ final class InMemoryRepositoryTest extends TestCase
                 (string) $identifier,
                 'supplier_code',
                 'Supplier code',
-                []
-            )
+                [],
+            ),
         );
         $supplierRepository->save(
             Supplier\Model\Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f01',
                 'supplier_code2',
                 'Supplier code2',
-                []
-            )
+                [],
+            ),
         );
         $supplierRepository->delete($identifier);
 
         $this->assertNull($supplierRepository->find($identifier));
         $this->assertInstanceOf(
             Supplier\Model\Supplier::class,
-            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01'))
+            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01')),
         );
     }
 }

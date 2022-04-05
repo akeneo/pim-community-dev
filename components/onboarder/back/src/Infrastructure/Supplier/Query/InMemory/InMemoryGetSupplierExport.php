@@ -21,9 +21,9 @@ final class InMemoryGetSupplierExport implements GetSupplierExport
             fn (Supplier $supplier) => new SupplierExport(
                 $supplier->code(),
                 $supplier->label(),
-                $supplier->contributors()
+                $supplier->contributors(),
             ),
-            $this->supplierRepository->findAll()
+            $this->supplierRepository->findAll(),
         );
     }
 }

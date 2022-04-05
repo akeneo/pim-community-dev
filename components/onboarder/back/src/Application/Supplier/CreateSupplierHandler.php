@@ -28,8 +28,8 @@ final class CreateSupplierHandler
                 $createSupplier->identifier,
                 $createSupplier->code,
                 $createSupplier->label,
-                $createSupplier->contributorEmails
-            )
+                $createSupplier->contributorEmails,
+            ),
         );
     }
 }

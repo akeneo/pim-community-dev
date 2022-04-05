@@ -24,11 +24,11 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
 
         static::assertTrue(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('supplier_code'))
+                ->fromCode(Supplier\ValueObject\Code::fromString('supplier_code')),
         );
         static::assertFalse(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('unknown_supplier_code'))
+                ->fromCode(Supplier\ValueObject\Code::fromString('unknown_supplier_code')),
         );
     }
 }

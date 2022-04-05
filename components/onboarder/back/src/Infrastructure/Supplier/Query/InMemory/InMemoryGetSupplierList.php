@@ -33,7 +33,7 @@ class InMemoryGetSupplierList implements GetSupplierList
         return array_slice(
             $suppliers,
             self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
-            self::NUMBER_OF_SUPPLIERS_PER_PAGE
+            self::NUMBER_OF_SUPPLIERS_PER_PAGE,
         );
     }
 
@@ -42,7 +42,7 @@ class InMemoryGetSupplierList implements GetSupplierList
         return array_filter(
             $suppliers,
             fn (Write\Supplier\Model\Supplier $supplier) =>
-                1 <= strpos(strtolower($supplier->label()), strtolower($search))
+                1 <= strpos(strtolower($supplier->label()), strtolower($search)),
         );
     }
 
@@ -52,7 +52,7 @@ class InMemoryGetSupplierList implements GetSupplierList
             $suppliers,
             function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
                 return strcmp($supplier1->label(), $supplier2->label());
-            }
+            },
         );
     }
 

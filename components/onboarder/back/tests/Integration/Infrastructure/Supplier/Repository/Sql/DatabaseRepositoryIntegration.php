@@ -97,8 +97,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $supplier = $supplierRepository->find(
             Write\Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f02'
-            )
+                '44ce8069-8da1-4986-872f-311737f46f02',
+            ),
         );
 
         static::assertInstanceOf(Write\Supplier\Model\Supplier::class, $supplier);
@@ -111,8 +111,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $supplier2 = $supplierRepository->find(
             Write\Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f03'
-            )
+                '44ce8069-8da1-4986-872f-311737f46f03',
+            ),
         );
         static::assertCount(0, $supplier2->contributors());
     }
@@ -136,8 +136,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $this->get(Write\Supplier\Repository::class)->delete(
             Write\Supplier\ValueObject\Identifier::fromString(
-                '44ce8069-8da1-4986-872f-311737f46f02'
-            )
+                '44ce8069-8da1-4986-872f-311737f46f02',
+            ),
         );
         static::assertNull($this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02'));
         $this->assertSupplierContributorCount('44ce8069-8da1-4986-872f-311737f46f02', 0);

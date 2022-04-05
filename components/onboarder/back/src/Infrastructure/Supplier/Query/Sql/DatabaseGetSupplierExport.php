@@ -35,7 +35,7 @@ final class DatabaseGetSupplierExport implements GetSupplierExport
                     ? json_decode($supplier['contributors'], true)
                     : [],
             ),
-            $this->connection->executeQuery($sql)->fetchAllAssociative()
+            $this->connection->executeQuery($sql)->fetchAllAssociative(),
         );
     }
 }

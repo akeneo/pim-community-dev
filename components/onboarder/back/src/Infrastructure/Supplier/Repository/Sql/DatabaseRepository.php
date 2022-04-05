@@ -28,7 +28,7 @@ final class DatabaseRepository implements Supplier\Repository
                 'code' => $supplier->code(),
                 'label' => $supplier->label(),
                 'updatedAt' => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
-            ]
+            ],
         );
 
         $this->deleteContributors($supplier->identifier());
@@ -53,7 +53,7 @@ final class DatabaseRepository implements Supplier\Repository
             $sql,
             [
                 'identifier' => (string) $identifier,
-            ]
+            ],
         )->fetchAssociative();
 
         return false !== $row ? Supplier\Model\Supplier::create(
@@ -68,7 +68,7 @@ final class DatabaseRepository implements Supplier\Repository
     {
         $this->connection->delete(
             'akeneo_onboarder_serenity_supplier',
-            ['identifier' => (string) $identifier]
+            ['identifier' => (string) $identifier],
         );
     }
 
@@ -76,7 +76,7 @@ final class DatabaseRepository implements Supplier\Repository
     {
         $this->connection->delete(
             'akeneo_onboarder_serenity_supplier_contributor',
-            ['supplier_identifier' => $supplierIdentifier]
+            ['supplier_identifier' => $supplierIdentifier],
         );
     }
 
@@ -95,7 +95,7 @@ final class DatabaseRepository implements Supplier\Repository
                 [
                     'email' => $contributor['email'],
                     'supplierIdentifier' => $supplier->identifier(),
-                ]
+                ],
             );
         }
     }

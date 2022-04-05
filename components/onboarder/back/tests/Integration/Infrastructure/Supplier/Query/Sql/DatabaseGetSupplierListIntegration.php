@@ -29,7 +29,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
-                []
+                [],
             ));
         }
 
@@ -45,14 +45,14 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
             Uuid::uuid4()->toString(),
             'walter_white',
             'Walter White',
-            []
+            [],
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             Uuid::uuid4()->toString(),
             'jessie_pinkman',
             'Jessie Pinkman',
-            []
+            [],
         ));
 
         static::assertSame($this->get(GetSupplierList::class)(1, 'Pin')[0]->code, 'jessie_pinkman');
@@ -119,7 +119,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
                 'Supplier 1',
                 0,
             ),
-            $suppliers[0]
+            $suppliers[0],
         );
         static::assertEquals(
             new SupplierListItem(
@@ -128,7 +128,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
                 'Supplier 2',
                 2,
             ),
-            $suppliers[1]
+            $suppliers[1],
         );
     }
 
@@ -145,7 +145,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
                 'identifier' => $identifier,
                 'code' => $code,
                 'label' => $label,
-            ]
+            ],
         );
     }
 
@@ -160,7 +160,7 @@ SQL;
             [
                 'email' => $email,
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
-            ]
+            ],
         );
         ;
     }

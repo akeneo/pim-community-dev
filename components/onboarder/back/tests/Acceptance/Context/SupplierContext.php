@@ -66,7 +66,7 @@ final class SupplierContext implements Context
             $supplierIdentifier,
             $code,
             $label ?: $code,
-            $contributorEmails
+            $contributorEmails,
         ));
     }
 
@@ -146,7 +146,7 @@ final class SupplierContext implements Context
     public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->findByCode(
-            Write\Supplier\ValueObject\Code::fromString($code)
+            Write\Supplier\ValueObject\Code::fromString($code),
         );
 
         Assert::assertSame($code, $supplier->code());
@@ -186,7 +186,7 @@ final class SupplierContext implements Context
     public function iShouldHaveASupplierWithCodeAndContributors(string $code, ?string $contributors): void
     {
         $supplier = $this->supplierRepository->findByCode(
-            Write\Supplier\ValueObject\Code::fromString($code)
+            Write\Supplier\ValueObject\Code::fromString($code),
         );
 
         $contributors = '' !== $contributors ? explode(';', $contributors) : [];

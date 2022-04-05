@@ -38,7 +38,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
                 'contributor1@akeneo.com',
                 'contributor2@akeneo.com',
             ],
-            array_values($supplier->contributors)
+            array_values($supplier->contributors),
         );
     }
 
@@ -70,7 +70,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
                 'identifier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'code' => 'supplier_code',
                 'label' => 'Supplier code',
-            ]
+            ],
         );
     }
 
@@ -85,7 +85,7 @@ SQL;
             [
                 'email' => $email,
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
-            ]
+            ],
         );
     }
 }

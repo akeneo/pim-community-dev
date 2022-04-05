@@ -32,7 +32,7 @@ final class DatabaseGetSupplier implements GetSupplier
             ,
             [
                 'identifier' => $identifier,
-            ]
+            ],
         )->fetchAssociative();
 
         return false !== $supplier ? new Read\Supplier\Model\Supplier(

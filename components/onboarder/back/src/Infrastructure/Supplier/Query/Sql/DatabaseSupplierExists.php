@@ -26,7 +26,7 @@ final class DatabaseSupplierExists implements SupplierExists
             $sql,
             [
                 'code' => (string) $supplierCode,
-            ]
+            ],
         )->rowCount();
     }
 }

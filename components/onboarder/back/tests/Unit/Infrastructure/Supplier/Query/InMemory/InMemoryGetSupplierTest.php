@@ -31,8 +31,8 @@ final class InMemoryGetSupplierTest extends TestCase
                 'ca8baefd-0e05-4683-be48-6b9ff87e4cbc',
                 'supplier_code',
                 'Supplier label',
-                ['foo@foo.bar', 'foo2@foo2.bar']
-            )
+                ['foo@foo.bar', 'foo2@foo2.bar'],
+            ),
         );
 
         $supplier = ($sut)(Identifier::fromString('ca8baefd-0e05-4683-be48-6b9ff87e4cbc'));

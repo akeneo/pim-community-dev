@@ -44,7 +44,7 @@ final class DatabaseGetSupplierExportIntegration extends SqlIntegrationTestCase
                 'identifier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'code' => 'supplier_code',
                 'label' => 'Supplier code',
-            ]
+            ],
         );
     }
 
@@ -60,7 +60,7 @@ final class DatabaseGetSupplierExportIntegration extends SqlIntegrationTestCase
             [
                 'email' => $email,
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
-            ]
+            ],
         );
     }
 }

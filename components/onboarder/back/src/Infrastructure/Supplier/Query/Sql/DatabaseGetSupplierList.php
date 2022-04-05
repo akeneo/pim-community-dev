@@ -51,7 +51,7 @@ final class DatabaseGetSupplierList implements GetSupplierList
                 'search' => \PDO::PARAM_STR,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
-            ]
+            ],
         )->fetchAllAssociative());
     }
 }

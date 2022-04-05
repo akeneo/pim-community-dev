@@ -24,13 +24,13 @@ final class CreateSupplierHandlerTest extends TestCase
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'supplier_code',
             'Supplier label',
-            []
+            [],
         ));
 
         $supplier = $supplierRepository->find(
             Supplier\ValueObject\Identifier::fromString(
-                '01319d4c-81c4-4f60-a992-41ea3546824c'
-            )
+                '01319d4c-81c4-4f60-a992-41ea3546824c',
+            ),
         );
 
         static::assertSame('supplier_code', $supplier->code());
@@ -54,7 +54,7 @@ final class CreateSupplierHandlerTest extends TestCase
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'code',
             'label',
-            []
+            [],
         ));
     }
 }

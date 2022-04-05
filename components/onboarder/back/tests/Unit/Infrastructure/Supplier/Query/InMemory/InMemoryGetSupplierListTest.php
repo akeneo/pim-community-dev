@@ -29,7 +29,7 @@ final class InMemoryGetSupplierListTest extends TestCase
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
-                []
+                [],
             ));
         }
 
@@ -46,7 +46,7 @@ final class InMemoryGetSupplierListTest extends TestCase
             Uuid::uuid4()->toString(),
             'walter_white',
             'Walter White',
-            []
+            [],
         ));
 
         $supplierIdentifier = Uuid::uuid4()->toString();
@@ -54,7 +54,7 @@ final class InMemoryGetSupplierListTest extends TestCase
             $supplierIdentifier,
             'jessie_pinkman',
             'Jessie Pinkman',
-            []
+            [],
         ));
 
         static::assertSame($sut(1, 'pin')[$supplierIdentifier]->code, 'jessie_pinkman');
@@ -71,7 +71,7 @@ final class InMemoryGetSupplierListTest extends TestCase
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
-                []
+                [],
             ));
         }
 
