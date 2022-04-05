@@ -1,10 +1,11 @@
 <?php
 
-namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\roductProposal;
+namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductProposal;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\ProductProposal\AbstractProposal;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
  * +----------+-----------------------------------------------+
  */
-class CreateProductProposalIntegration extends AbstractProposal
+class CreateProductProposalEndToEnd extends AbstractProposal
 {
     public function testCreateProductProposalSuccessful()
     {
@@ -46,7 +47,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testInvalidRequestBody()
@@ -63,7 +64,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testUserIsOwner()
@@ -80,7 +81,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testProductHasNoDraft()
@@ -97,7 +98,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testApprovalAlreadySubmitted()
@@ -115,7 +116,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testUserHasOnlyViewPermission()
@@ -136,7 +137,7 @@ JSON;
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testUserWithoutAnyPermission()
@@ -152,13 +153,13 @@ JSON;
 
         $expectedResponseContent =
             <<<JSON
-{"code":404,"message":"Product \\"product_with_draft\\" does not exist."}
+{"code":404,"message":"Product \\"product_with_draft\\" does not exist or you do not have permission to access it."}
 JSON;
 
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
     }
 
     public function testCreateProposalOnAnUnclassifiedProduct()
@@ -178,7 +179,27 @@ JSON;
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertSame($response->getContent(), $expectedResponseContent);
+        $this->assertSame($expectedResponseContent, $response->getContent());
+    }
+
+    public function testAccessDeniedWhenCreateProductProposalWithoutTheAcl()
+    {
+        $this->createDefaultProductDraft('mary', 'product_with_draft');
+        $this->removeAclFromRole('action:pim_api_product_edit', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('POST', 'api/rest/v1/products/product_with_draft/proposal', [], [], [], '{}');
+        $response = $client->getResponse();
+
+        $logger = self::getContainer()->get('monolog.logger.pim_api_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "mary" with roles ROLE_USER is not granted "pim_api_product_edit"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
     /**

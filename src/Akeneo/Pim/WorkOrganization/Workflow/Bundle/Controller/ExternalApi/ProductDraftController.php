@@ -16,11 +16,15 @@ use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author Laurent Petard <laurent.petard@akeneo.com>
@@ -59,7 +63,9 @@ class ProductDraftController
         DraftApplierInterface $productDraftApplier,
         NormalizerInterface $normalizer,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        private SecurityFacadeInterface $security,
+        private LoggerInterface $apiAclLogger,
     ) {
         $this->productRepository = $productRepository;
         $this->productDraftRepository = $productDraftRepository;
@@ -81,6 +87,8 @@ class ProductDraftController
      */
     public function getAction($code)
     {
+        $this->denyAccessUnlessAclIsGranted();
+
         $product = $this->productRepository->findOneByIdentifier($code);
 
         if (null === $product) {
@@ -117,5 +125,20 @@ class ProductDraftController
         $normalizedProductDraft = $this->normalizer->normalize($product, 'external_api');
 
         return new JsonResponse($normalizedProductDraft);
+    }
+
+    private function denyAccessUnlessAclIsGranted(): void
+    {
+        if (!$this->security->isGranted('pim_api_product_list')) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            Assert::isInstanceOf($user, UserInterface::class);
+
+            $this->apiAclLogger->warning(sprintf(
+                'User "%s" with roles %s is not granted "%s"',
+                $user->getUserIdentifier(),
+                implode(',', $user->getRoles()),
+                'pim_api_product_list'
+            ));
+        }
     }
 }
