@@ -22,10 +22,9 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -64,7 +63,6 @@ class ProductModelProposalController
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         private SecurityFacadeInterface $security,
-        private LoggerInterface $apiAclLogger,
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
@@ -142,15 +140,7 @@ class ProductModelProposalController
     private function denyAccessUnlessAclIsGranted(): void
     {
         if (!$this->security->isGranted('pim_api_product_edit')) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            Assert::isInstanceOf($user, UserInterface::class);
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUserIdentifier(),
-                implode(',', $user->getRoles()),
-                'pim_api_product_edit'
-            ));
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to create or update products.');
         }
     }
 }
