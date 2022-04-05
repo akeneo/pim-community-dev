@@ -24,6 +24,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class LocaleController
 {
+    private const AUTHORIZED_FIELD_FILTERS = ['enabled'];
+
     public function __construct(
         private ApiResourceRepositoryInterface $repository,
         private NormalizerInterface $normalizer,
@@ -120,7 +122,7 @@ class LocaleController
 
         foreach ($searchParameters as $searchKey => $searchParameter) {
             foreach ($searchParameter as $searchOperator) {
-                if (!in_array($searchKey, $this->authorizedFieldFilters)
+                if (!in_array($searchKey, self::AUTHORIZED_FIELD_FILTERS)
                     || '=' !== $searchOperator['operator']) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(
