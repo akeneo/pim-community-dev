@@ -1,4 +1,4 @@
-import {AkeneoThemedProps, Badge, FontSize, getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
+import {AkeneoThemedProps, Badge, getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../../../shared/translate';
