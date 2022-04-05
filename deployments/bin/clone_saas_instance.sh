@@ -162,6 +162,28 @@ kubectl scale -n ${PFID} deploy/elasticsearch-client --replicas=1 --timeout=0s |
 kubectl scale -n ${PFID} statefulsets elasticsearch-data --replicas=2 --timeout=0s || true
 kubectl scale -n ${PFID} statefulsets elasticsearch-master --replicas=2 --timeout=0s || true
 
+echo "- Wait ES"
+# Wait ES
+POD_ES_CLIENT=$(kubectl get pods --namespace=${PFID} -l component=client | awk '/client/ {print $1}')
+ES_CLIENT_URL="http://elasticsearch-client:9200"
+MAX_COUNTER=120
+COUNTER=1
+SLEEP_TIME=5
+
+echo "Checking Elasticsearch connectivity..."
+while ! (kubectl exec -n ${PFID} ${POD_ES_CLIENT} -- /bin/bash -c "curl --fail ${ES_CLIENT_URL}/_cluster/health?wait_for_status=yellow\&timeout=1s\&pretty"); do
+    kubectl exec -n ${PFID} ${POD_ES_CLIENT} -- /bin/bash -c "curl ${ES_CLIENT_URL}/_cluster/health?pretty" || true
+    COUNTER=$((${COUNTER} + 1))
+    if [ ${COUNTER} -gt ${MAX_COUNTER} ]; then
+        TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
+        echo "We have been waiting for Elasticsearch for too long: ${TIME_WAITED} seconds; failing." >&2
+        exit 1
+    fi;
+    sleep ${SLEEP_TIME}
+done
+TIME_WAITED=$(( COUNTER*SLEEP_TIME ))
+echo "We have been waiting for Elasticsearch ${TIME_WAITED} seconds!"
+
 echo "- Anonymize"
 PODSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ {print $1}')
 PODPIMWEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
