@@ -10,7 +10,7 @@ type Props = {
     contributors: Contributors;
 };
 
-const ContributorsList = ({contributors}: Props) => {
+const ContributorList = ({contributors}: Props) => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const {filteredContributors, search} = useFilteredContributors(contributors);
@@ -71,4 +71,4 @@ const DeleteCell = styled(Table.ActionCell)`
     width: 50px;
 `;
 
-export {ContributorsList};
+export {ContributorList};
