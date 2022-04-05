@@ -27,7 +27,6 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
     private ReadValueCollectionFactory $readValueCollectionFactory;
     /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
     private iterable $additionalDataProviders;
-    private ?bool $columnExistsCache = null;
 
     public function __construct(
         Connection $connection,
@@ -123,7 +122,8 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 WITH
     product as (
         SELECT
-            %s,
+            product.id,
+            BIN_TO_UUID(product.uuid) as uuid,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -292,12 +292,6 @@ WITH
         LEFT JOIN variant_product_attributes ON variant_product_attributes.family_variant_id = product.family_variant_id
 SQL;
 
-        if ($this->columnExists('pim_catalog_product', 'uuid')) {
-            $sql = sprintf($sql, 'product.id, BIN_TO_UUID(product.uuid) as uuid');
-        } else {
-            $sql = sprintf($sql, 'product.id, NULL as uuid');
-        }
-
         return $this
             ->connection
             ->fetchAllAssociative($sql, ['identifiers' => $productIdentifiers], ['identifiers' => Connection::PARAM_STR_ARRAY]);
@@ -391,26 +385,5 @@ SQL;
         }
 
         return $rowsIndexedByProductIdentifier;
-    }
-
-    public function clearCache(): void
-    {
-        $this->columnExistsCache = null;
-    }
-
-    private function columnExists(string $tableName, string $columnName): bool
-    {
-        if ($this->columnExistsCache === null) {
-            $rows = $this->connection->fetchAllAssociative(
-                sprintf('SHOW COLUMNS FROM %s LIKE :columnName', $tableName),
-                [
-                    'columnName' => $columnName,
-                ]
-            );
-
-            $this->columnExistsCache = count($rows) >= 1;
-        }
-
-        return $this->columnExistsCache;
     }
 }

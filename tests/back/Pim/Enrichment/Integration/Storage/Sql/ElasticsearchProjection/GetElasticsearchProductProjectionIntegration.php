@@ -488,14 +488,8 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->getProductProjection('unknown_product');
     }
 
-    public function test_that_it_returns_uuid_if_column_exists()
+    public function test_that_it_returns_uuid_if_column_is_filled()
     {
-        $wasColumnAdded = false;
-        if (!$this->uuidColumnExists()) {
-            $this->addUuidColumn();
-            $wasColumnAdded = true;
-        }
-
         $this->createProductWithFamily();
         /** @var AffectedByMigrationProjection $normalizedProductProjection */
         $normalizedProductProjection = $this->getProductProjection('bar');
@@ -506,33 +500,6 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         Assert::assertSame(1, $split);
         Assert::assertTrue(Uuid::isValid($matches['uuid']));
         Assert::assertTrue($normalizedProductProjection->shouldBeMigrated());
-
-        if ($wasColumnAdded) {
-            $this->dropUuidColumn();
-        }
-    }
-
-    public function test_that_it_does_not_return_uuid_if_column_does_not_exist()
-    {
-        $wasColumnDropped = false;
-        if ($this->uuidColumnExists()) {
-            $this->dropUuidColumn();
-            $wasColumnDropped = true;
-        }
-
-        $this->createProductWithFamily();
-        /** @var AffectedByMigrationProjection $normalizedProductProjection */
-        $normalizedProductProjection = $this->getProductProjection('bar');
-
-        $id = $normalizedProductProjection->toArray()['id'];
-        $split = preg_match('/^product_(?P<id>\d*)$/', $id);
-
-        Assert::assertSame(1, $split);
-        Assert::assertFalse($normalizedProductProjection->shouldBeMigrated());
-
-        if ($wasColumnDropped) {
-            $this->addUuidColumn();
-        }
     }
 
     protected function getConfiguration(): Configuration
@@ -787,22 +754,5 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     private function getConnection(): Connection
     {
         return $this->get('database_connection');
-    }
-
-    private function addUuidColumn()
-    {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product ADD uuid BINARY(16) DEFAULT NULL AFTER id, LOCK=NONE, ALGORITHM=INPLACE');
-    }
-
-    private function dropUuidColumn()
-    {
-        $this->getConnection()->executeQuery('ALTER TABLE pim_catalog_product DROP COLUMN uuid, LOCK=NONE, ALGORITHM=INPLACE');
-    }
-
-    private function uuidColumnExists(): bool
-    {
-        $rows = $this->getConnection()->fetchAllAssociative('SHOW COLUMNS FROM pim_catalog_product LIKE "uuid"');
-
-        return count($rows) >= 1;
     }
 }

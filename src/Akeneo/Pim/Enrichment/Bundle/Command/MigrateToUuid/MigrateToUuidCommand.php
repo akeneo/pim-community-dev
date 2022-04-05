@@ -21,8 +21,7 @@ class MigrateToUuidCommand extends Command
     private array $steps;
 
     public function __construct(
-        private GetElasticsearchProductProjection $getElasticsearchProductProjection,
-        MigrateToUuidStep $migrateToUuidCreateColumns,
+        MigrateToUuidStep $migrateToUuidCreateIndexes,
         MigrateToUuidStep $migrateToUuidAddTriggers,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
@@ -32,7 +31,7 @@ class MigrateToUuidCommand extends Command
     ) {
         parent::__construct();
         $this->steps = [
-            $migrateToUuidCreateColumns,
+            $migrateToUuidCreateIndexes,
             $migrateToUuidAddTriggers,
             $migrateToUuidFillProductUuid,
             $migrateToUuidFillForeignUuid,
@@ -57,7 +56,6 @@ class MigrateToUuidCommand extends Command
         $this->logger->notice('Migration start');
 
         foreach ($this->steps as $step) {
-            $this->getElasticsearchProductProjection->clearCache();
             $logContext = new LogContext($step);
             $context->logContext = $logContext;
 
