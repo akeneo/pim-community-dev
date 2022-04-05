@@ -11,7 +11,7 @@ import {
   useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {AttributeTarget, Attribute} from '../../models';
+import {AttributeTarget, Attribute, isIdentifierAttribute} from '../../models';
 import {useChannels} from '../../hooks';
 import {ChannelDropdown} from './ChannelDropdown';
 import {LocaleDropdown} from './LocaleDropdown';
@@ -73,6 +73,9 @@ const AttributeTargetParameters = ({
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
+      {isIdentifierAttribute(attribute) && (
+        <Helper>{translate('akeneo.tailored_import.data_mapping.target.identifier')}</Helper>
+      )}
       <Container>
         {0 < channels.length && null !== target.channel && (
           <ChannelDropdown
