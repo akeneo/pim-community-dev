@@ -69,7 +69,7 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'
 
-    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit:
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplier:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'
