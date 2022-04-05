@@ -59,7 +59,7 @@ final class SupplierContext implements Context
 
         $contributorEmails = [];
         for ($i = 1; $i <= $contributorsCount; $i++) {
-            $contributorEmails[] = 'email'.$i.'@akeneo.com';
+            $contributorEmails[] = 'email'.$i.'@example.com';
         }
 
         $this->supplierRepository->save(Write\Supplier\Model\Supplier::create(

@@ -23,8 +23,8 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     public function itGetsASupplierWithContributors(): void
     {
         $this->createSupplier();
-        $this->createContributor('contributor1@akeneo.com');
-        $this->createContributor('contributor2@akeneo.com');
+        $this->createContributor('contributor1@example.com');
+        $this->createContributor('contributor2@example.com');
 
         $supplier = ($this->get(GetSupplier::class))(
             Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
@@ -35,8 +35,8 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
         static::assertSame('Supplier code', $supplier->label);
         static::assertEquals(
             [
-                'contributor1@akeneo.com',
-                'contributor2@akeneo.com',
+                'contributor1@example.com',
+                'contributor2@example.com',
             ],
             array_values($supplier->contributors),
         );

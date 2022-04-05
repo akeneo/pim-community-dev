@@ -20,7 +20,7 @@ final class UpdateSupplierHandlerTest extends TestCase
     {
         $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
-        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@akeneo.com', 'contributor2@akeneo.com']);
+        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
@@ -33,8 +33,8 @@ final class UpdateSupplierHandlerTest extends TestCase
         $supplier = $repository->find($identifier);
         static::assertSame('Updated label', $supplier->label());
         static::assertSame([
-            ['email' => 'contributor1@akeneo.com'],
-            ['email' => 'contributor2@akeneo.com'],
+            ['email' => 'contributor1@example.com'],
+            ['email' => 'contributor2@example.com'],
         ], $supplier->contributors());
         $this->assertSame(2, $repository->saveCallCounter);
     }
@@ -44,7 +44,7 @@ final class UpdateSupplierHandlerTest extends TestCase
     {
         $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
-        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@akeneo.com', 'contributor2@akeneo.com']);
+        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
         $violationsSpy = $this->createMock(ConstraintViolationListInterface::class);
         $violationsSpy->expects($this->once())->method('count')->willReturn(1);
@@ -63,7 +63,7 @@ final class UpdateSupplierHandlerTest extends TestCase
     {
         $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
-        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@akeneo.com', 'contributor2@akeneo.com']);
+        $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
         $repository = new InMemoryRepository();
         $handler = new UpdateSupplierHandler($repository, $this->getValidatorSpyWithNoError($command));

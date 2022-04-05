@@ -107,8 +107,8 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     {
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f00', 'supplier_1', 'Supplier 1');
         $this->createSupplier('44ce8069-8da1-4986-872f-311737f46f02', 'supplier_2', 'Supplier 2');
-        $this->createContributor('contributor1@akeneo.com');
-        $this->createContributor('contributor2@akeneo.com');
+        $this->createContributor('contributor1@example.com');
+        $this->createContributor('contributor2@example.com');
 
         $suppliers = $this->get(GetSupplierList::class)();
 

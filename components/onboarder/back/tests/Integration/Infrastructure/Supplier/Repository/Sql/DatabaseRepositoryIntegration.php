@@ -19,7 +19,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
-            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+            ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
@@ -59,7 +59,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
             'New supplier label',
-            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+            ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
         $supplier = $this->findSupplier('44ce8069-8da1-4986-872f-311737f46f02');
@@ -86,7 +86,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
-            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+            ['contributor1@example.com', 'contributor2@example.com'],
         ));
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
@@ -105,8 +105,8 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
         static::assertSame([
-            ['email' => 'contributor1@akeneo.com'],
-            ['email' => 'contributor2@akeneo.com'],
+            ['email' => 'contributor1@example.com'],
+            ['email' => 'contributor2@example.com'],
         ], $supplier->contributors());
 
         $supplier2 = $supplierRepository->find(
@@ -125,7 +125,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
-            ['contributor1@akeneo.com', 'contributor2@akeneo.com'],
+            ['contributor1@example.com', 'contributor2@example.com'],
         ));
         $supplierRepository->save(Write\Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f01',
