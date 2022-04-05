@@ -20,12 +20,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 10px;
 `;
 
 const TargetParametersContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `;
 
 type AttributeTargetParametersProps = {
@@ -63,7 +63,7 @@ const AttributeTargetParameters = ({
 
   return (
     <TargetParametersContainer>
-      <SectionTitle>
+      <SectionTitle sticky={0}>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.tailored_import.data_mapping.target.title')}
         </SectionTitle.Title>

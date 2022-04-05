@@ -16,15 +16,14 @@ import {
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
-import {OperationBlockProps, CLEAN_HTML_TAGS_TYPE} from './Operation';
-import {CleanHTMLTagsOperationBlock} from './Operation/CleanHTMLTagsOperationBlock';
+import {CleanHTMLTagsOperationBlock, OperationBlockProps, CLEAN_HTML_TAGS_TYPE} from './Operation';
 
-const Container = styled.div`
+const OperationsContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const OperationsContainer = styled.div`
+const OperationBlocksContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -80,7 +79,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
   };
 
   return (
-    <Container>
+    <OperationsContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.tailored_import.data_mapping.operations.title')}
@@ -89,7 +88,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
       {0 === dataMapping.sources.length ? (
         <Helper>{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
       ) : (
-        <OperationsContainer>
+        <OperationBlocksContainer>
           <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
             {dataMapping.sample_data.map((sampleData, key) => (
               <Preview.Row
@@ -148,9 +147,9 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Dropdown.Overlay>
             )}
           </Dropdown>
-        </OperationsContainer>
+        </OperationBlocksContainer>
       )}
-    </Container>
+    </OperationsContainer>
   );
 };
 

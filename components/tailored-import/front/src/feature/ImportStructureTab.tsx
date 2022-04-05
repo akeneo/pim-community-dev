@@ -22,7 +22,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 40px;
-  height: 100%;
+  height: calc(100vh - 278px);
 `;
 
 type ImportStructureTabProps = {

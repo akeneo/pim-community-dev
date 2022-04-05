@@ -11,6 +11,7 @@ import {
 } from '../../models';
 import {useAttribute} from '../../hooks';
 import {IdentifierConfigurator, MeasurementConfigurator, NumberConfigurator, TextConfigurator} from './Attribute';
+import {AttributeDoesNotExist} from "./Placeholder";
 
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;
@@ -41,7 +42,7 @@ const AttributeDataMappingDetails = ({
   onSourcesChange,
   onTargetChange,
 }: AttributeDataMappingDetailsProps) => {
-  const attributeErrors = getErrorsForPath(validationErrors, '');
+  const attributeErrors = getErrorsForPath(validationErrors, '[target][code]');
   const translate = useTranslate();
   const [isFetching, attribute] = useAttribute(dataMapping.target.code);
 
@@ -55,6 +56,7 @@ const AttributeDataMappingDetails = ({
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
+        <AttributeDoesNotExist />
       </>
     );
   }
