@@ -23,23 +23,10 @@ final class AddUuidSubscriberIntegration extends AbstractMigrateToUuidTestCase
         $adminUser = $this->createAdminUser();
         $this->createAttribute(['code' => 'a_text', 'type' => AttributeTypes::TEXT]);
 
-        $this->assertProductCanBeCreatedBeforeMigration($adminUser->getId());
-
-        $this->launchMigrationCommand();
-
-        $this->assertProductCanBeCreatedAfterMigrationAndHaveUuid($adminUser->getId());
+        $this->assertProductCanBeCreatedAndHaveUuid($adminUser->getId());
     }
 
-    private function assertProductCanBeCreatedBeforeMigration(int $adminUserId): void
-    {
-        $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
-            userId: $adminUserId,
-            productIdentifier: 'product_without_uuid'
-        ));
-        Assert::assertNotNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_uuid'));
-    }
-
-    private function assertProductCanBeCreatedAfterMigrationAndHaveUuid(int $adminUserId): void
+    private function assertProductCanBeCreatedAndHaveUuid(int $adminUserId): void
     {
         $this->get('pim_enrich.product.message_bus')->dispatch(new UpsertProductCommand(
             userId: $adminUserId,

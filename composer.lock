@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e992882d962fc211dcfbf261921da870",
+    "content-hash": "1e58f58cdc489f481ec032d5bf5fab70",
     "packages": [
         {
             "name": "akeneo/oauth-server-bundle",
@@ -2229,23 +2229,28 @@
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v6.1.2",
+            "version": "v6.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "c297139da7c6873dbd67cbd1093f09ec0bbd0c50"
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/c297139da7c6873dbd67cbd1093f09ec0bbd0c50",
-                "reference": "c297139da7c6873dbd67cbd1093f09ec0bbd0c50",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/d28e6df83830252650da4623c78aaaf98fb385f3",
+                "reference": "d28e6df83830252650da4623c78aaaf98fb385f3",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.1||^8.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.5||9.5"
+                "guzzlehttp/guzzle": "^6.5||^7.4",
+                "phpspec/prophecy-phpunit": "^1.1",
+                "phpunit/phpunit": "^7.5||^9.5",
+                "psr/cache": "^1.0||^2.0",
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "suggest": {
                 "paragonie/sodium_compat": "Support EdDSA (Ed25519) signatures when libsodium is not present"
@@ -2280,9 +2285,9 @@
             ],
             "support": {
                 "issues": "https://github.com/firebase/php-jwt/issues",
-                "source": "https://github.com/firebase/php-jwt/tree/v6.1.2"
+                "source": "https://github.com/firebase/php-jwt/tree/v6.2.0"
             },
-            "time": "2022-04-21T14:37:18+00:00"
+            "time": "2022-05-13T20:54:50+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",
@@ -2600,26 +2605,25 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v3.6.0",
+            "version": "v3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine-extensions/DoctrineExtensions.git",
-                "reference": "20e682c5c376faa4c88421453707741e1dd1f131"
+                "reference": "42d9acf02281bb46f9b741f4a9f033e3453e2d36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/20e682c5c376faa4c88421453707741e1dd1f131",
-                "reference": "20e682c5c376faa4c88421453707741e1dd1f131",
+                "url": "https://api.github.com/repos/doctrine-extensions/DoctrineExtensions/zipball/42d9acf02281bb46f9b741f4a9f033e3453e2d36",
+                "reference": "42d9acf02281bb46f9b741f4a9f033e3453e2d36",
                 "shasum": ""
             },
             "require": {
                 "behat/transliterator": "~1.2",
                 "doctrine/annotations": "^1.13",
-                "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/collections": "^1.0",
                 "doctrine/common": "^2.13 || ^3.0",
                 "doctrine/event-manager": "^1.0",
-                "doctrine/persistence": "^2.2",
+                "doctrine/persistence": "^2.2 || ^3.0",
                 "php": "^7.2 || ^8.0",
                 "psr/cache": "^1 || ^2 || ^3",
                 "symfony/cache": "^4.4 || ^5.3 || ^6.0"
@@ -2627,17 +2631,17 @@
             "conflict": {
                 "doctrine/cache": "<1.11",
                 "doctrine/dbal": "<2.13.1 || ^3.0 <3.2",
-                "doctrine/mongodb-odm": "<2.2",
+                "doctrine/mongodb-odm": "<2.3",
                 "doctrine/orm": "<2.10.2",
                 "sebastian/comparator": "<2.0"
             },
             "require-dev": {
+                "doctrine/cache": "^1.11 || ^2.0",
                 "doctrine/dbal": "^2.13.1 || ^3.2",
-                "doctrine/deprecations": "^0.5.3",
                 "doctrine/doctrine-bundle": "^2.3",
-                "doctrine/mongodb-odm": "^2.2",
+                "doctrine/mongodb-odm": "^2.3",
                 "doctrine/orm": "^2.10.2",
-                "friendsofphp/php-cs-fixer": "~3.4.0",
+                "friendsofphp/php-cs-fixer": "^3.4.0",
                 "nesbot/carbon": "^2.55",
                 "phpstan/phpstan": "^1.1",
                 "phpstan/phpstan-doctrine": "^1.0",
@@ -2655,7 +2659,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "3.7-dev"
+                    "dev-main": "3.8-dev"
                 }
             },
             "autoload": {
@@ -2701,10 +2705,10 @@
             "support": {
                 "email": "gediminas.morkevicius@gmail.com",
                 "issues": "https://github.com/doctrine-extensions/DoctrineExtensions/issues",
-                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.6.0",
+                "source": "https://github.com/doctrine-extensions/DoctrineExtensions/tree/v3.7.0",
                 "wiki": "https://github.com/Atlantic18/DoctrineExtensions/tree/main/doc"
             },
-            "time": "2022-03-19T10:22:38+00:00"
+            "time": "2022-05-17T06:58:52+00:00"
         },
         {
             "name": "google/auth",
@@ -2766,16 +2770,16 @@
         },
         {
             "name": "google/cloud-core",
-            "version": "v1.44.4",
+            "version": "v1.45.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "971b7e163e0cc2b282c462d3a709891af7004d53"
+                "reference": "28181b5ec2d40e9c9cdf2085096b33bac1f237fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/971b7e163e0cc2b282c462d3a709891af7004d53",
-                "reference": "971b7e163e0cc2b282c462d3a709891af7004d53",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/28181b5ec2d40e9c9cdf2085096b33bac1f237fd",
+                "reference": "28181b5ec2d40e9c9cdf2085096b33bac1f237fd",
                 "shasum": ""
             },
             "require": {
@@ -2794,8 +2798,9 @@
                 "google/gax": "^1.9",
                 "opis/closure": "^3",
                 "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
+                "phpunit/phpunit": "^4.8|^5.0|^8.0",
+                "squizlabs/php_codesniffer": "2.*",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "suggest": {
                 "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
@@ -2824,22 +2829,22 @@
             ],
             "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.44.4"
+                "source": "https://github.com/googleapis/google-cloud-php-core/tree/v1.45.0"
             },
-            "time": "2022-05-04T00:38:37+00:00"
+            "time": "2022-05-13T22:51:50+00:00"
         },
         {
             "name": "google/cloud-pubsub",
-            "version": "v1.36.0",
+            "version": "v1.36.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-pubsub.git",
-                "reference": "fcb6a58f650bf0fdea118fb8dd92e6b863c8c35a"
+                "reference": "9f0e91ab98103b2224deb75e839fa9f746dd6fb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/fcb6a58f650bf0fdea118fb8dd92e6b863c8c35a",
-                "reference": "fcb6a58f650bf0fdea118fb8dd92e6b863c8c35a",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-pubsub/zipball/9f0e91ab98103b2224deb75e839fa9f746dd6fb4",
+                "reference": "9f0e91ab98103b2224deb75e839fa9f746dd6fb4",
                 "shasum": ""
             },
             "require": {
@@ -2849,8 +2854,9 @@
             "require-dev": {
                 "erusev/parsedown": "^1.6",
                 "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
+                "phpunit/phpunit": "^4.8|^5.0|^8.0",
+                "squizlabs/php_codesniffer": "2.*",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "suggest": {
                 "ext-grpc": "The gRPC extension enables use of the performant gRPC transport",
@@ -2877,29 +2883,29 @@
             ],
             "description": "Cloud PubSub Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.36.0"
+                "source": "https://github.com/googleapis/google-cloud-php-pubsub/tree/v1.36.1"
             },
-            "time": "2022-05-04T00:38:37+00:00"
+            "time": "2022-05-13T22:51:50+00:00"
         },
         {
             "name": "google/common-protos",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/common-protos-php.git",
-                "reference": "a1bcb7b37f1fa1c92d65c3c6339fc701a65916ee"
+                "reference": "4bad82f73a10f8ea4e6d078da93406a16c996044"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/a1bcb7b37f1fa1c92d65c3c6339fc701a65916ee",
-                "reference": "a1bcb7b37f1fa1c92d65c3c6339fc701a65916ee",
+                "url": "https://api.github.com/repos/googleapis/common-protos-php/zipball/4bad82f73a10f8ea4e6d078da93406a16c996044",
+                "reference": "4bad82f73a10f8ea4e6d078da93406a16c996044",
                 "shasum": ""
             },
             "require": {
-                "google/protobuf": "^3.6.1"
+                "google/protobuf": "^3.6.1, !=3.20.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.36",
+                "phpunit/phpunit": "^4.8.36||^8.5",
                 "sami/sami": "*"
             },
             "type": "library",
@@ -2920,9 +2926,9 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/common-protos-php/issues",
-                "source": "https://github.com/googleapis/common-protos-php/tree/2.0.0"
+                "source": "https://github.com/googleapis/common-protos-php/tree/2.1.0"
             },
-            "time": "2022-01-13T20:17:53+00:00"
+            "time": "2022-05-13T21:07:15+00:00"
         },
         {
             "name": "google/gax",
@@ -5069,6 +5075,73 @@
                 }
             ],
             "time": "2021-09-25T23:07:42+00:00"
+        },
+        {
+            "name": "ramsey/uuid-doctrine",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramsey/uuid-doctrine.git",
+                "reference": "1a6f235ba3faf1cd9ba18daf5b54d8dc9d3bc7d0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramsey/uuid-doctrine/zipball/1a6f235ba3faf1cd9ba18daf5b54d8dc9d3bc7d0",
+                "reference": "1a6f235ba3faf1cd9ba18daf5b54d8dc9d3bc7d0",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/dbal": "^2.5 || ^3.0",
+                "php": "^5.4 || ^7 || ^8",
+                "ramsey/uuid": "^3.5 || ^4"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.5",
+                "mockery/mockery": "^0.9.11 || ^1",
+                "php-parallel-lint/php-parallel-lint": "^1",
+                "phpunit/phpunit": "^4.8.36 || ^5.7 || ^6.5 || ^7 || ^8 || ^9",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ramsey\\Uuid\\Doctrine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ben Ramsey",
+                    "email": "ben@benramsey.com",
+                    "homepage": "https://benramsey.com"
+                }
+            ],
+            "description": "Use ramsey/uuid as a Doctrine field type.",
+            "keywords": [
+                "database",
+                "doctrine",
+                "guid",
+                "identifier",
+                "uuid"
+            ],
+            "support": {
+                "issues": "https://github.com/ramsey/uuid-doctrine/issues",
+                "source": "https://github.com/ramsey/uuid-doctrine/tree/1.8.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ramsey",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/ramsey/uuid-doctrine",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2022-01-15T23:54:44+00:00"
         },
         {
             "name": "react/promise",
@@ -7750,20 +7823,20 @@
         },
         {
             "name": "symfony/monolog-bundle",
-            "version": "v3.7.1",
+            "version": "v3.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/monolog-bundle.git",
-                "reference": "fde12fc628162787a4e53877abadc30047fd868b"
+                "reference": "a41bbcdc1105603b6d73a7d9a43a3788f8e0fb7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/fde12fc628162787a4e53877abadc30047fd868b",
-                "reference": "fde12fc628162787a4e53877abadc30047fd868b",
+                "url": "https://api.github.com/repos/symfony/monolog-bundle/zipball/a41bbcdc1105603b6d73a7d9a43a3788f8e0fb7d",
+                "reference": "a41bbcdc1105603b6d73a7d9a43a3788f8e0fb7d",
                 "shasum": ""
             },
             "require": {
-                "monolog/monolog": "~1.22 || ~2.0",
+                "monolog/monolog": "^1.22 || ^2.0 || ^3.0",
                 "php": ">=7.1.3",
                 "symfony/config": "~4.4 || ^5.0 || ^6.0",
                 "symfony/dependency-injection": "^4.4 || ^5.0 || ^6.0",
@@ -7811,7 +7884,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/monolog-bundle/issues",
-                "source": "https://github.com/symfony/monolog-bundle/tree/v3.7.1"
+                "source": "https://github.com/symfony/monolog-bundle/tree/v3.8.0"
             },
             "funding": [
                 {
@@ -7827,7 +7900,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-05T10:34:29+00:00"
+            "time": "2022-05-10T14:24:36+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -11197,16 +11270,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.3.10",
+            "version": "v3.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "8442df056c51b706793adf80a9fd363406dd3674"
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/8442df056c51b706793adf80a9fd363406dd3674",
-                "reference": "8442df056c51b706793adf80a9fd363406dd3674",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/e939eae92386b69b49cfa4599dd9bead6bf4a342",
+                "reference": "e939eae92386b69b49cfa4599dd9bead6bf4a342",
                 "shasum": ""
             },
             "require": {
@@ -11221,7 +11294,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -11257,7 +11330,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.3.10"
+                "source": "https://github.com/twigphp/Twig/tree/v3.4.1"
             },
             "funding": [
                 {
@@ -11269,7 +11342,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-06T06:47:41+00:00"
+            "time": "2022-05-17T05:48:52+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -13411,16 +13484,16 @@
         },
         {
             "name": "mcustiel/phiremock-client",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcustiel/phiremock-client.git",
-                "reference": "022655a3d15dc81188daf42601946b61b271cfad"
+                "reference": "c99286f3330145b8b6d90c47678a9e40a409120c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcustiel/phiremock-client/zipball/022655a3d15dc81188daf42601946b61b271cfad",
-                "reference": "022655a3d15dc81188daf42601946b61b271cfad",
+                "url": "https://api.github.com/repos/mcustiel/phiremock-client/zipball/c99286f3330145b8b6d90c47678a9e40a409120c",
+                "reference": "c99286f3330145b8b6d90c47678a9e40a409120c",
                 "shasum": ""
             },
             "require": {
@@ -13474,22 +13547,22 @@
             ],
             "support": {
                 "issues": "https://github.com/mcustiel/phiremock-client/issues",
-                "source": "https://github.com/mcustiel/phiremock-client/tree/v1.2.0"
+                "source": "https://github.com/mcustiel/phiremock-client/tree/v1.2.1"
             },
-            "time": "2021-07-07T17:59:23+00:00"
+            "time": "2022-05-14T13:47:06+00:00"
         },
         {
             "name": "mcustiel/phiremock-common",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcustiel/phiremock-common.git",
-                "reference": "b14934ba41acc8f5a0b76a49becee96efcc30c0b"
+                "reference": "36c1942ccf324a9390daa5e40a6772fc1cad45fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcustiel/phiremock-common/zipball/b14934ba41acc8f5a0b76a49becee96efcc30c0b",
-                "reference": "b14934ba41acc8f5a0b76a49becee96efcc30c0b",
+                "url": "https://api.github.com/repos/mcustiel/phiremock-common/zipball/36c1942ccf324a9390daa5e40a6772fc1cad45fa",
+                "reference": "36c1942ccf324a9390daa5e40a6772fc1cad45fa",
                 "shasum": ""
             },
             "require": {
@@ -13535,22 +13608,22 @@
             ],
             "support": {
                 "issues": "https://github.com/mcustiel/phiremock-common/issues",
-                "source": "https://github.com/mcustiel/phiremock-common/tree/v1.0.5"
+                "source": "https://github.com/mcustiel/phiremock-common/tree/v1.0.6"
             },
-            "time": "2022-03-12T14:31:17+00:00"
+            "time": "2022-04-21T12:56:49+00:00"
         },
         {
             "name": "mcustiel/phiremock-server",
-            "version": "v1.1.2",
+            "version": "v1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcustiel/phiremock-server.git",
-                "reference": "ec7c1c93ade56d77fadcb18b448f79560a20ae65"
+                "reference": "a0e5778d2fc306416ad354337efc780ebd1dd916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcustiel/phiremock-server/zipball/ec7c1c93ade56d77fadcb18b448f79560a20ae65",
-                "reference": "ec7c1c93ade56d77fadcb18b448f79560a20ae65",
+                "url": "https://api.github.com/repos/mcustiel/phiremock-server/zipball/a0e5778d2fc306416ad354337efc780ebd1dd916",
+                "reference": "a0e5778d2fc306416ad354337efc780ebd1dd916",
                 "shasum": ""
             },
             "require": {
@@ -13561,7 +13634,7 @@
                 "php": "^7.2|^8.0",
                 "psr/http-client": "^1.0",
                 "react/http": "^1.0",
-                "symfony/console": ">=3.0 <6.0"
+                "symfony/console": ">=3.0 <7.0"
             },
             "require-dev": {
                 "codeception/codeception": "^4.0",
@@ -13570,7 +13643,7 @@
                 "codeception/module-rest": "^1.0",
                 "guzzlehttp/guzzle": "^6.0",
                 "phpunit/phpunit": "^8.0|^9.0",
-                "symfony/process": ">=3.0 <6.0"
+                "symfony/process": ">=3.0 <7.0"
             },
             "suggest": {
                 "ext-pcntl": "Allows phiremock to handle system signals",
@@ -13608,9 +13681,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mcustiel/phiremock-server/issues",
-                "source": "https://github.com/mcustiel/phiremock-server/tree/v1.1.2"
+                "source": "https://github.com/mcustiel/phiremock-server/tree/v1.1.3"
             },
-            "time": "2021-02-07T11:46:59+00:00"
+            "time": "2022-05-14T13:28:56+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -18083,5 +18156,5 @@
         "ext-zip": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.1.0"
 }
