@@ -63,7 +63,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 
                 $nonViewableProducts = $this->getNonViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
                 $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    \array_merge($nonViewableProducts,\array_unique($associationUserIntent->productIdentifiers()))
+                    \array_unique(\array_merge($nonViewableProducts, $associationUserIntent->productIdentifiers()))
                 );
             }
         }
@@ -105,7 +105,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 
     private function getAssociationEntityType(AssociationUserIntent $userIntent): string
     {
-        if(
+        if (
             $userIntent instanceof AssociateProducts
             || $userIntent instanceof DissociateProducts
             || $userIntent instanceof ReplaceAssociatedProducts
@@ -113,9 +113,5 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             return 'products';
         }
         throw new \LogicException('Level does not exists');
-    }
-
-    private function mergeNonViewableAssociations(AssociationUserIntent $associationUserIntent, array &$normalizedAssociations)
-    {
     }
 }
