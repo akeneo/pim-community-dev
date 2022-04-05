@@ -62,9 +62,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $this->resetProductsScores();
         $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $unknownProductScore, $productScoreB]);
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 
@@ -108,11 +107,10 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 
         $this->resetProductsScores();
         $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $productScoreA3, $productScoreB]);
-        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-17'));
+        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-18'));
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 
