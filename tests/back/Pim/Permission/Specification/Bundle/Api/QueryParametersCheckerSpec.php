@@ -8,7 +8,7 @@ use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Api\QueryParametersChecker;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

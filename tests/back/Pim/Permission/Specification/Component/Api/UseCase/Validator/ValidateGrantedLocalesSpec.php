@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Permission\Component\Api\UseCase\Validator;
 
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateGrantedLocalesInterface;
 use Akeneo\Pim\Permission\Component\Api\UseCase\Validator\ValidateGrantedLocales;

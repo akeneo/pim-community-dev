@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Test\Channel\Locale\Integration;
+namespace AkeneoEnterprise\Test\Channel\Integration;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
-use Akeneo\Test\Channel\Locale\Integration\ChannelTestCase;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
+use Akeneo\Test\Channel\Integration\ChannelTestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 

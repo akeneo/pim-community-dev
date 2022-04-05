@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Channel\Locale\Infrastructure\Query;
+namespace AkeneoEnterprise\Channel\Infrastructure\Query;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use Doctrine\DBAL\Connection;
 

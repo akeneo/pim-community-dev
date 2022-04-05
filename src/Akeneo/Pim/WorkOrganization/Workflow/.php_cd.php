@@ -19,7 +19,7 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component',
         'Twig',
 
-        'Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
 
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
@@ -32,12 +32,12 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
         // TIP-984: Workflow should not be linked to Channel
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-986: Workflow should not be linked to Locale
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         //TODO: It uses the permissions
         'Akeneo\Pim\Permission\Component\Exception\ResourceAccessDeniedException',
@@ -181,10 +181,10 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute',
 
         // TODO: Workflow should not be linked to channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\CurrencyInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager',
@@ -252,7 +252,7 @@ $rules = [
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         // Normalization of published product
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder',
         'Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface',
         'Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface',

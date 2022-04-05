@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Channel\Locale\Infrastructure\Symfony\DependencyInjection;
+namespace AkeneoEnterprise\Channel\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class AkeneoEnterpriseLocaleExtension extends Extension
+final class AkeneoEnterpriseChannelExtension extends Extension
 {
     /**
      * {@inheritDoc}

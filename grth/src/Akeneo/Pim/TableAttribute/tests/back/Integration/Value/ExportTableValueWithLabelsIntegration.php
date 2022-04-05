@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

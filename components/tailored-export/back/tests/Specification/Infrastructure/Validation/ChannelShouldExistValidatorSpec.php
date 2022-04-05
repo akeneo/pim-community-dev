@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExistValidator;
 use PhpSpec\ObjectBehavior;

@@ -39,9 +39,9 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\Locale',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Locale',
 
         // TIP-963: Define the Products public API
         'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
@@ -55,7 +55,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
 
         // TODO: we put everything related to permissions at the same place
         'Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface',
@@ -67,8 +67,8 @@ $rules = [
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Exception\PublishedProductConsistencyException',
 
         // TIP-1002: Permissions should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
@@ -199,11 +199,11 @@ $rules = [
         'Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager',
 
         // TIP-1000: Permissions should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         // TIP-1002: Permissions should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',

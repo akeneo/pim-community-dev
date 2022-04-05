@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\InternalApi;
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCategoryCodes;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;

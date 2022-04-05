@@ -133,7 +133,7 @@ akeneo_authentication:
 shared_catalog:
     resource: "@AkeneoSharedCatalogBundle/Resources/config/routing.yml"
 akeneo_channel:
-    resource: "@AkeneoLegacyChannelBundle/Resources/config/routing.yml"
+    resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
 onboarder_serenity:
