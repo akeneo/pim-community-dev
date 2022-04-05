@@ -60,7 +60,7 @@ class IdFilter extends AbstractFieldFilter
         switch ($operator) {
             case Operators::EQUALS:
                 $clause = [
-                    'term' => [
+                    'terms' => [
                         'id' => $value
                     ]
                 ];
@@ -68,7 +68,7 @@ class IdFilter extends AbstractFieldFilter
                 break;
             case Operators::NOT_EQUAL:
                 $mustNotClause = [
-                    'term' => [
+                    'terms' => [
                         'id' => $value,
                     ],
                 ];
