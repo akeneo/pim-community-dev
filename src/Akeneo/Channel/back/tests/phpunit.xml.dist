@@ -21,7 +21,7 @@
 
     <testsuites>
         <testsuite name="Channel_Acceptance_Test">
-            <directory>Integration</directory>
+            <directory>Acceptance</directory>
         </testsuite>
         <testsuite name="Channel_Integration_Test">
             <directory>Integration</directory>
