@@ -274,6 +274,7 @@ services:
             - ['id']
             - ['IN', 'NOT IN', '=', '!=']
             - ''
+            - '@database_connection'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
@@ -283,6 +284,7 @@ services:
             - ['id']
             - ['IN', 'NOT IN', '=', '!=']
             - 'product_'
+            - '@database_connection'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
 
@@ -292,6 +294,7 @@ services:
             - ['id']
             - ['IN', 'NOT IN', '=', '!=']
             - 'product_model_'
+            - '@database_connection'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
 
@@ -481,6 +484,7 @@ services:
             - '@pim_catalog.repository.product'
             - ['self_and_ancestor.id']
             - ['IN', 'NOT IN']
+            - '@database_connection'
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 

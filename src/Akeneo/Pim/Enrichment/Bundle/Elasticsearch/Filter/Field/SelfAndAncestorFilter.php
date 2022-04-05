@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Doctrine\DBAL\Connection;
 
 /**
  * An ancestor is a product model that is either a parent or a grand parent.
@@ -38,26 +39,17 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 {
     private const ANCESTOR_ID_ES_FIELD = 'ancestors.ids';
 
-    /** @var ProductModelRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
-
     /**
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param ProductRepositoryInterface      $productRepository
-     * @param array                           $supportedFields
-     * @param array                           $supportedOperators
+     * @param string[] $supportedFields
+     * @param string[] $supportedOperators
      */
     public function __construct(
-        ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository,
+        private ProductModelRepositoryInterface $productModelRepository,
+        private ProductRepositoryInterface $productRepository,
         array $supportedFields,
-        array $supportedOperators
+        array $supportedOperators,
+        private Connection $connection
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->productRepository = $productRepository;
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
     }
@@ -76,6 +68,8 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
         }
 
         $this->checkValues($values);
+        $values = (array) $values;
+        $values = $this->addProductUuidsInValues($values);
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -159,5 +153,32 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
         $id = str_replace('product_', '', $value);
 
         return null !== $this->productRepository->findOneBy(['id' => $id]);
+    }
+
+    private function addProductUuidsInValues(array $values): array
+    {
+        $ids = [];
+        foreach ($values as $value) {
+            if (\strpos($value, 'product_') === false || \strpos($value, 'product_model_') !== false) {
+                continue;
+            }
+
+            $ids[] = \str_replace('product_', '', $value);
+        }
+
+        if ([] === $ids) {
+            return $values;
+        }
+
+        $uuids = $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id IN (:ids)',
+            ['ids' => $ids],
+            ['ids' => Connection::PARAM_STR_ARRAY]
+        )->fetchFirstColumn();
+
+        return \array_merge(
+            $values,
+            \array_map(static fn (string $uuid): string => \sprintf('product_%s', $uuid), $uuids)
+        );
     }
 }

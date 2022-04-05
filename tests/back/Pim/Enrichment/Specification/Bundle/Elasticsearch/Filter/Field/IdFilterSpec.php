@@ -2,23 +2,26 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Result;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class IdFilterSpec extends ObjectBehavior
 {
-    function let()
+    function let(Connection $connection)
     {
         $this->beConstructedWith(
             ['id'],
             ['IN', 'NOT IN', '=', '!='],
-            'product_'
+            'product_',
+            $connection
         );
     }
 
@@ -52,21 +55,30 @@ class IdFilterSpec extends ObjectBehavior
         $this->supportsField('a_not_supported_field')->shouldReturn(false);
     }
 
-    function it_adds_a_filter_with_operator_in_list(SearchQueryBuilder $sqb)
+    function it_adds_a_filter_with_operator_in_list(SearchQueryBuilder $sqb, Connection $connection, Result $result)
     {
         $sqb->addFilter(
             [
                 'terms' => [
-                    'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671', 'product_5F61FD3C-2448-11E7-93AE-92361F002671'],
+                    'id' => [
+                        'product_2',
+                        'product_3',
+                        'product_70d6073b-beb5-4913-a171-1fab0f52de27',
+                        'product_fa5cb34f-1070-4a89-a465-71f4b01bf601',
+                    ],
                 ],
             ]
         )->shouldBeCalled();
+
+        $connection->executeQuery(Argument::type('string'), ['ids' => ['2', '3']], ['ids' => Connection::PARAM_STR_ARRAY])
+            ->shouldBeCalledOnce()->willReturn($result);
+        $result->fetchFirstColumn()->willReturn(['70d6073b-beb5-4913-a171-1fab0f52de27', 'fa5cb34f-1070-4a89-a465-71f4b01bf601']);
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter(
             'id',
             Operators::IN_LIST,
-            ['4F3FCFEC-2448-11E7-93AE-92361F002671', '5F61FD3C-2448-11E7-93AE-92361F002671'],
+            ['2', '3'],
             null,
             null,
             []
@@ -99,7 +111,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addFilter(
             [
                 'term' => [
-                    'id' => 'product_4F3FCFEC-2448-11E7-93AE-92361F002671',
+                    'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671'],
                 ],
             ]
         )->shouldBeCalled();
@@ -113,7 +125,7 @@ class IdFilterSpec extends ObjectBehavior
         $sqb->addMustNot(
             [
                 'term' => [
-                    'id' => 'product_4F3FCFEC-2448-11E7-93AE-92361F002671',
+                    'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671'],
                 ],
             ]
         )->shouldBeCalled();

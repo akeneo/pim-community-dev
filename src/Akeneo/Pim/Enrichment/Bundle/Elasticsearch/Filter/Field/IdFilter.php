@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Doctrine\DBAL\Connection;
 
 /**
  * Id filter for an Elasticsearch query
@@ -16,25 +17,14 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class IdFilter extends AbstractFieldFilter
 {
-    /**
-     * @var string
-     */
-    private $prefix;
-
-    /**
-     * @var string
-     */
-    private $fieldName;
-
     public function __construct(
         array $supportedFields,
         array $supportedOperators,
-        string $prefix
+        private string $prefix,
+        private Connection $connection
     ) {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
-        $this->fieldName = $supportedFields[0];
-        $this->prefix = $prefix;
     }
 
     /**
@@ -62,8 +52,10 @@ class IdFilter extends AbstractFieldFilter
                 $value
             );
         } else {
-            $value = (string)$this->prefix.$value;
+            $value = [(string)$this->prefix.$value];
         }
+
+        $value = $this->addProductUuidsInValues($value);
 
         switch ($operator) {
             case Operators::EQUALS:
@@ -136,5 +128,35 @@ class IdFilter extends AbstractFieldFilter
                 }
             }
         }
+    }
+
+    private function addProductUuidsInValues(array $values): array
+    {
+        $ids = [];
+        foreach ($values as $value) {
+            if (\strpos($value, 'product_') === false || \strpos($value, 'product_model_') !== false) {
+                continue;
+            }
+
+            $id = \str_replace('product_', '', $value);
+            if (is_numeric($id)) {
+                $ids[] = $id;
+            }
+        }
+
+        if ([] === $ids) {
+            return $values;
+        }
+
+        $uuids = $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id IN (:ids)',
+            ['ids' => $ids],
+            ['ids' => Connection::PARAM_STR_ARRAY]
+        )->fetchFirstColumn();
+
+        return \array_merge(
+            $values,
+            \array_map(static fn (string $uuid): string => \sprintf('product_%s', $uuid), $uuids)
+        );
     }
 }
