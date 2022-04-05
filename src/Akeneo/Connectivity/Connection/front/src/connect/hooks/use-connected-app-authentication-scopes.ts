@@ -11,7 +11,7 @@ interface Result {
 }
 
 export const useAuthenticationScopes = (connectionCode: string): Result => {
-    const url = useRoute('akeneo_connectivity_connection_apps_rest_get_all_connected_app_authentication_scopes', {
+    const url = useRoute('akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes', {
         connectionCode,
     });
 

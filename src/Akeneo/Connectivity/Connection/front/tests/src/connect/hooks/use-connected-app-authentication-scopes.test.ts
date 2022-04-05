@@ -10,7 +10,7 @@ beforeEach(() => {
 
 test('it returns loading status and authenticationScopes values', async () => {
     mockFetchResponses({
-        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_authentication_scopes?connectionCode=some_connection_code':
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes?connectionCode=some_connection_code':
             {
                 json: ['openid', 'email', 'profile'],
             },
@@ -33,7 +33,7 @@ test('it returns loading status and authenticationScopes values', async () => {
 
 test('it returns loading status and empty values on fetch error', async () => {
     mockFetchResponses({
-        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_authentication_scopes?connectionCode=some_connection_code':
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes?connectionCode=some_connection_code':
             {
                 json: {},
                 reject: true,
