@@ -2,7 +2,7 @@ DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_ENV=test_fake php
 
 .PHONY: lint-back
-lint-back: #Doc: Run PHPStan for Onboarder Serenity
+lint-back: #Doc: Run PHPStan and PHPCSFixer for Onboarder Serenity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder/back/tests/phpstan.neon
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder/back/tests/.php_cs.php components/onboarder/back
 

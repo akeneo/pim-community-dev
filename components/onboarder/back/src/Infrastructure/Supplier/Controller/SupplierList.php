@@ -28,10 +28,10 @@ final class SupplierList
         return new JsonResponse([
             'suppliers' => array_map(
                 fn (SupplierListItem $supplier) => $supplier->toArray(),
-                $suppliers
+                $suppliers,
             ),
             'total' => ($this->getSupplierCount)($search),
-            'items_per_page' => GetSupplierList::NUMBER_OF_SUPPLIERS_PER_PAGE
+            'items_per_page' => GetSupplierList::NUMBER_OF_SUPPLIERS_PER_PAGE,
         ]);
     }
 }

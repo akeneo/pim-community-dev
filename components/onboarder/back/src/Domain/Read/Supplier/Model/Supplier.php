@@ -16,13 +16,11 @@ final class Supplier
 
     public function toArray(): array
     {
-        $contributors = array_map(fn (Contributor $contributor) => $contributor->toArray(), $this->contributors);
-
         return [
             'identifier' => $this->identifier,
             'code' => $this->code,
             'label' => $this->label,
-            'contributors' => $contributors,
+            'contributors' => $this->contributors,
         ];
     }
 }

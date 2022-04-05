@@ -18,8 +18,8 @@ final class Label
             throw new \InvalidArgumentException(
                 sprintf(
                     'The supplier label is too long. It should have %d characters or less.',
-                    self::MAX_LENGTH
-                )
+                    self::MAX_LENGTH,
+                ),
             );
         }
     }

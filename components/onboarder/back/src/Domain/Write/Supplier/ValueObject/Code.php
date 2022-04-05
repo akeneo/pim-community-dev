@@ -18,8 +18,8 @@ final class Code
             throw new \InvalidArgumentException(
                 sprintf(
                     'The supplier code is too long. It should have %d characters or less.',
-                    self::MAX_LENGTH
-                )
+                    self::MAX_LENGTH,
+                ),
             );
         }
 
@@ -27,7 +27,7 @@ final class Code
 
         if (!preg_match('/^[a-z0-9_]+$/', $code)) {
             throw new \InvalidArgumentException(
-                'The supplier code can only contain lowercase letters, numbers and underscores.'
+                'The supplier code can only contain lowercase letters, numbers and underscores.',
             );
         }
 

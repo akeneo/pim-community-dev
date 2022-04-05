@@ -26,7 +26,7 @@ final class DatabaseGetSupplierCount implements GetSupplierCount
             ],
             [
                 'search' => \PDO::PARAM_STR,
-            ]
+            ],
         )->fetchOne();
     }
 }
