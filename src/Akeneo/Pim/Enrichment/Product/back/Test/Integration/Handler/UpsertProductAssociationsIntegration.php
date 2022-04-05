@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -21,7 +20,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 {
-    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     /**
@@ -33,7 +31,6 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->loadEnrichmentProductFunctionalFixtures();
 
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
 
         $command = new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'identifier');
@@ -51,7 +48,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
-    public function it_update_a_product_with_associate_product(): void
+    public function it_updates_a_product_with_associate_product(): void
     {
         $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
             new AssociateProducts('X_SELL', ['associated_product_identifier'])

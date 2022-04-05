@@ -20,7 +20,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 abstract class EnrichmentProductTestCase extends TestCase
 {
-    private MessageBusInterface $messageBus;
+    protected MessageBusInterface $messageBus;
 
     /**
      * {@inheritdoc}
@@ -203,10 +203,11 @@ abstract class EnrichmentProductTestCase extends TestCase
 
     protected function getUserId(string $username): int
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        return intval($stmt->fetchColumn());
     }
 
     protected function clearDoctrineUoW(): void
