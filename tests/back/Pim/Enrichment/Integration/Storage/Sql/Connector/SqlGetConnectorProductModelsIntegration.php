@@ -45,7 +45,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
         $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
 
-        $expectedProductModelList = new ConnectorProductModelList(3, [
+        $expectedProductModelList = new ConnectorProductModelList(3, $this->sortByProductModelCode([
             new ConnectorProductModel(
                 (int)$dataSimplePm['id'],
                 'simple_pm',
@@ -208,7 +208,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ),
                 null
             ),
-        ]);
+        ]));
 
         Assert::assertEquals($expectedProductModelList, $actualProductModelList);
     }
@@ -234,7 +234,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $dataRootPm = $this->getIdAndDatesFromProductModelCode('root_pm');
         $dataSubPm = $this->getIdAndDatesFromProductModelCode('sub_pm_A');
 
-        $expectedProductModelList = new ConnectorProductModelList(3, [
+        $expectedProductModelList = new ConnectorProductModelList(3, $this->sortByProductModelCode([
             new ConnectorProductModel(
                 (int)$dataSimplePm['id'],
                 'simple_pm',
@@ -382,7 +382,7 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ),
                 null
             ),
-        ]);
+        ]));
 
         Assert::assertEquals($expectedProductModelList, $actualProductModelList);
     }
@@ -844,5 +844,15 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    private function sortByProductModelCode(array $connectorProductModels): array
+    {
+        \usort(
+            $connectorProductModels,
+            static fn (ConnectorProductModel $a, ConnectorProductModel $b) => \strcmp($a->code(), $b->code())
+        );
+
+        return $connectorProductModels;
     }
 }
