@@ -31,7 +31,7 @@ final class DatabaseGetSupplier implements GetSupplier
             SQL
             ,
             [
-                'identifier' => $identifier
+                'identifier' => $identifier,
             ]
         )->fetchAssociative();
 

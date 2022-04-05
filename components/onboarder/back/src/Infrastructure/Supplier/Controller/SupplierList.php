@@ -31,7 +31,7 @@ final class SupplierList
                 $suppliers
             ),
             'total' => ($this->getSupplierCount)($search),
-            'items_per_page' => GetSupplierList::NUMBER_OF_SUPPLIERS_PER_PAGE
+            'items_per_page' => GetSupplierList::NUMBER_OF_SUPPLIERS_PER_PAGE,
         ]);
     }
 }

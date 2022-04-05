@@ -144,7 +144,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
             [
                 'identifier' => $identifier,
                 'code' => $code,
-                'label' => $label
+                'label' => $label,
             ]
         );
     }

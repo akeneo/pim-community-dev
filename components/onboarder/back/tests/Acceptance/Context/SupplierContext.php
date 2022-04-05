@@ -119,7 +119,7 @@ final class SupplierContext implements Context
     /**
      * @When I update the supplier ":code" label with ":label"
      */
-    public function iUpdateTheSupplierLabelWith(string $code, string $label):  void
+    public function iUpdateTheSupplierLabelWith(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $supplier->contributors()));
@@ -128,7 +128,7 @@ final class SupplierContext implements Context
     /**
      * @When I update the supplier ":code" contributors with ":contributors"
      */
-    public function iUpdateTheSupplierContributorsWith(string $code, string $contributors):  void
+    public function iUpdateTheSupplierContributorsWith(string $code, string $contributors): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         ($this->updateSupplierHandler)(
@@ -174,7 +174,7 @@ final class SupplierContext implements Context
         $actualSuppliers = array_map(fn (Read\Supplier\Model\SupplierListItem $supplier) => [
             'code' => $supplier->code,
             'label' => $supplier->label,
-            'contributor_count' => $supplier->contributorsCount
+            'contributor_count' => $supplier->contributorsCount,
         ], $this->suppliers);
 
         Assert::assertEquals($expectedSuppliers, array_values($actualSuppliers));
