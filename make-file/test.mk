@@ -35,6 +35,7 @@ lint-back:
 	$(MAKE) data-quality-insights-phpstan
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
+	$(MAKE) channel-lint-back
 
 .PHONY: lint-front
 lint-front:
@@ -61,6 +62,7 @@ unit-front:
 acceptance-back:
 	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	$(MAKE) job-acceptance-back
+	$(MAKE) channel-acceptance-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Measurement_Acceptance
 else
@@ -77,7 +79,7 @@ integration-front:
 	$(YARN_RUN) integration
 
 .PHONY: pim-integration-back
-pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back
+pim-integration-back: var/tests/phpunit connectivity-connection-integration-back communication-channel-integration-back job-integration-back channel-integration-back
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php PIM_Integration_Test
 else
