@@ -1,11 +1,11 @@
-import {getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
-import React from 'react';
-import styled from 'styled-components';
+import React, {FC} from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
 import {useTranslate} from '../../../../../shared/translate';
 
-const List = styled.ul`
-    padding: 20px 0;
-    font-size: ${getFontSize('bigger')};
+const List = styled.ul<{viewMode: ViewMode} & AkeneoThemedProps>`
+    padding: ${({viewMode}) => (viewMode === 'settings' ? '0' : '20px 0')};
+    font-size: ${({viewMode}) => getFontSize(viewMode === 'settings' ? 'default' : 'bigger')};
 `;
 
 const Item = styled.li`
@@ -16,32 +16,36 @@ const Item = styled.li`
     margin-bottom: 10px;
 `;
 
-const StyledUserIcon = styled(UserIcon)`
+const baseIconStyle = css`
     color: ${getColor('grey', 100)};
-    width: 27px;
-    height: 27px;
+    width: ${({$viewMode}) => ($viewMode === 'settings' ? '24px' : '27px')};
+    height: ${({$viewMode}) => ($viewMode === 'settings' ? '24px' : '27px')};
 `;
 
-const StyledMailIcon = styled(MailIcon)`
-    color: ${getColor('grey', 100)};
-    width: 27px;
-    height: 27px;
+const StyledUserIcon = styled(UserIcon)`
+    ${baseIconStyle}
 `;
+const StyledMailIcon = styled(MailIcon)`
+    ${baseIconStyle}
+`;
+
+type ViewMode = 'wizard' | 'settings';
 
 type Props = {
     scopes: Array<'email' | 'profile'>;
+    viewMode?: ViewMode;
 };
 
-export const ConsentList = ({scopes}: Props) => {
+export const ConsentList: FC<Props> = ({scopes, viewMode = 'wizard'}) => {
     const translate = useTranslate();
     const firstname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.firstname');
     const lastname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.lastname');
     const email = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.email');
     return (
-        <List>
+        <List viewMode={viewMode}>
             {scopes.includes('profile') && (
                 <Item>
-                    <StyledUserIcon />
+                    <StyledUserIcon $viewMode={viewMode} />
                     <span
                         dangerouslySetInnerHTML={{
                             __html: translate(
@@ -63,7 +67,7 @@ export const ConsentList = ({scopes}: Props) => {
             )}
             {scopes.includes('email') && (
                 <Item>
-                    <StyledMailIcon />
+                    <StyledMailIcon $viewMode={viewMode} />
                     <span
                         dangerouslySetInnerHTML={{
                             __html: translate(

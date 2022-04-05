@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
+import {ConnectedAppAuthentication} from './ConnectedAppAuthentication';
 import {ConnectedAppAuthorizations} from './ConnectedAppAuthorizations';
 import {ConnectedAppMonitoringSettings} from './ConnectedAppMonitoringSettings';
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
@@ -18,6 +19,7 @@ export const ConnectedAppSettings: FC<Props> = ({connectedApp, monitoringSetting
                 handleSetMonitoringSettings={handleSetMonitoringSettings}
             />
             <ConnectedAppAuthorizations connectedApp={connectedApp} />
+            <ConnectedAppAuthentication connectedApp={connectedApp} />
         </>
     );
 };
