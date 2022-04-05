@@ -12,8 +12,6 @@ final class Version_7_0_20220404152647_dqi_purge_product_score_and_modify_pk ext
 {
     public function up(Schema $schema): void
     {
-        $date = new \DateTime();
-
         $purgeProductScoresQuery = <<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
@@ -22,9 +20,13 @@ INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     AND younger_scores.evaluated_at > old_scores.evaluated_at
 WHERE old_scores.evaluated_at < :purge_date;
 SQL;
+
+        $date = new \DateTime();
         $this->addSql($purgeProductScoresQuery, [
             'purge_date' =>  $date->format('Y-m-d'),
         ]);
+
+        $this->addSql('ALTER TABLE pim_data_quality_insights_product_score DROP PRIMARY KEY, ADD PRIMARY KEY (product_id), ALGORITHM=INPLACE, LOCK=NONE;');
     }
 
     public function down(Schema $schema): void
