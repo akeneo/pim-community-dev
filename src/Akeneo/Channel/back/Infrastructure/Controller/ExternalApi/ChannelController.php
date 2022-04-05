@@ -53,7 +53,7 @@ class ChannelController
 
     public function getAction(Request $request, string $code): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_channel_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_channel_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -72,7 +72,7 @@ class ChannelController
 
     public function listAction(Request $request): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_channel_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_channel_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -114,7 +114,7 @@ class ChannelController
 
     public function createAction(Request $request): Response
     {
-        if(!$this->securityFacade->isGranted('pim_api_channel_edit')) {
+        if (!$this->securityFacade->isGranted('pim_api_channel_edit')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -141,7 +141,7 @@ class ChannelController
 
     public function partialUpdateAction(Request $request, string $code): Response
     {
-        if(!$this->securityFacade->isGranted('pim_api_channel_edit')) {
+        if (!$this->securityFacade->isGranted('pim_api_channel_edit')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -177,7 +177,7 @@ class ChannelController
 
     public function partialUpdateListAction(Request $request): Response
     {
-        if(!$this->securityFacade->isGranted('pim_api_channel_edit')) {
+        if (!$this->securityFacade->isGranted('pim_api_channel_edit')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,

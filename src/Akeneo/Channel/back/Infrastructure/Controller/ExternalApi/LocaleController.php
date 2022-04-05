@@ -37,7 +37,7 @@ class LocaleController
 
     public function getAction(Request $request, string $code): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_locale_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_locale_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -56,7 +56,7 @@ class LocaleController
 
     public function listAction(Request $request): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_locale_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_locale_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,

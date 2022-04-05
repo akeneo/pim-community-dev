@@ -29,7 +29,7 @@ class CurrencyController
      */
     public function toggleAction(Currency $currency): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_enrich_currency_toggle')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_currency_toggle')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,

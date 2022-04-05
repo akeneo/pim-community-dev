@@ -79,7 +79,7 @@ class ChannelController
      */
     public function postAction(Request $request): Response
     {
-        if(!$this->securityFacade->isGranted('pim_enrich_channel_create')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_channel_create')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -100,7 +100,7 @@ class ChannelController
      */
     public function putAction(Request $request, string $code): Response
     {
-        if(!$this->securityFacade->isGranted('pim_enrich_channel_edit')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_channel_edit')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -121,7 +121,7 @@ class ChannelController
      */
     public function removeAction(Request $request, string $code): Response
     {
-        if(!$this->securityFacade->isGranted('pim_enrich_channel_remove')) {
+        if (!$this->securityFacade->isGranted('pim_enrich_channel_remove')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,

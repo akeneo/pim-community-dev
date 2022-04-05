@@ -33,7 +33,7 @@ class CurrencyController
 
     public function getAction(Request $request, string $code): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_currency_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_currency_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
@@ -52,7 +52,7 @@ class CurrencyController
 
     public function listAction(Request $request): JsonResponse
     {
-        if(!$this->securityFacade->isGranted('pim_api_currency_list')) {
+        if (!$this->securityFacade->isGranted('pim_api_currency_list')) {
             throw AccessDeniedException::create(
                 __CLASS__,
                 __METHOD__,
