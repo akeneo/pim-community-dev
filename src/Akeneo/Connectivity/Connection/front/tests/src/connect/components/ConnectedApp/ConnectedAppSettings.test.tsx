@@ -6,8 +6,8 @@ import {renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {FlowType} from '@src/model/flow-type.enum';
 
-jest.mock('@src/connect/components/ConnectedApp/ConnectedAppAuthentication', () => ({
-    ConnectedAppAuthentication: () => <div>ConnectedAppAuthentication</div>,
+jest.mock('@src/connect/components/ConnectedApp/Settings/Authentication', () => ({
+    Authentication: () => <div>ConnectedAppAuthentication</div>,
 }));
 
 test('Connected App Settings renders monitoring settings and authorizations', () => {

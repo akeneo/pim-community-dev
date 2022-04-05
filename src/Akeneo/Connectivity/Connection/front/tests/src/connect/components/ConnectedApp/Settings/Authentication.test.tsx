@@ -1,11 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {renderWithProviders} from '../../../../test-utils';
-import {ConnectedAppAuthentication} from '@src/connect/components/ConnectedApp/ConnectedAppAuthentication';
+import {renderWithProviders} from '../../../../../test-utils';
 import {screen, waitFor} from '@testing-library/react';
-import {ConsentList} from '@src/connect/components/AppWizard/steps/Authentication/ConsentList';
 import fetchMock from 'jest-fetch-mock';
 import {useAuthenticationScopes} from '@src/connect/hooks/use-connected-app-authentication-scopes';
+import {AuthenticationScopes} from '@src/connect/components/ConnectedApp/Settings/AuthenticationScopes';
+import {Authentication} from '@src/connect/components/ConnectedApp/Settings/Authentication';
 
 jest.mock('@src/connect/hooks/use-connected-app-authentication-scopes', () => ({
     useAuthenticationScopes: jest.fn(() => ({
@@ -14,8 +14,8 @@ jest.mock('@src/connect/hooks/use-connected-app-authentication-scopes', () => ({
     })),
 }));
 
-jest.mock('@src/connect/components/AppWizard/steps/Authentication/ConsentList', () => ({
-    ConsentList: jest.fn(() => <div>ConsentList</div>),
+jest.mock('@src/connect/components/ConnectedApp/Settings/AuthenticationScopes', () => ({
+    AuthenticationScopes: jest.fn(() => <div>AuthenticationScopes</div>),
 }));
 
 const connectedApp = {
@@ -39,7 +39,7 @@ beforeEach(() => {
 });
 
 test('it renders correctly', async () => {
-    renderWithProviders(<ConnectedAppAuthentication connectedApp={connectedApp} />);
+    renderWithProviders(<Authentication connectedApp={connectedApp} />);
 
     await waitFor(() => expect(useAuthenticationScopes).toHaveBeenCalledTimes(1));
 
@@ -54,10 +54,9 @@ test('it renders correctly', async () => {
         )
     ).toBeInTheDocument();
 
-    expect(ConsentList).toHaveBeenCalledWith(
+    expect(AuthenticationScopes).toHaveBeenCalledWith(
         {
             scopes: ['openid', 'email', 'profile'],
-            viewMode: 'settings',
         },
         {}
     );
@@ -69,7 +68,7 @@ test('it does not render if there is no scopes', async () => {
         authenticationScopes: [],
     }));
 
-    renderWithProviders(<ConnectedAppAuthentication connectedApp={connectedApp} />);
+    renderWithProviders(<Authentication connectedApp={connectedApp} />);
 
     await waitFor(() => expect(useAuthenticationScopes).toHaveBeenCalledTimes(1));
 
@@ -84,5 +83,5 @@ test('it does not render if there is no scopes', async () => {
         )
     ).not.toBeInTheDocument();
 
-    expect(ConsentList).not.toHaveBeenCalled();
+    expect(AuthenticationScopes).not.toHaveBeenCalled();
 });

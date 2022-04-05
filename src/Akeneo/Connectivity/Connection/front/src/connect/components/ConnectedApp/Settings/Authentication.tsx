@@ -1,21 +1,16 @@
 import React, {FC} from 'react';
-import styled from 'styled-components';
-import {ConnectedApp} from '../../../model/Apps/connected-app';
+import {ConnectedApp} from '../../../../model/Apps/connected-app';
 import {Helper, SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '../../../shared/translate';
-import {ConnectedAppScopeListIsLoading} from './ConnectedAppScopeListIsLoading';
-import {ConsentList} from '../AppWizard/steps/Authentication/ConsentList';
-import {useAuthenticationScopes} from '../../hooks/use-connected-app-authentication-scopes';
-
-const ConsentListContainer = styled.div`
-    margin: 10px 20px;
-`;
+import {useTranslate} from '../../../../shared/translate';
+import {ConnectedAppScopeListIsLoading} from '../ConnectedAppScopeListIsLoading';
+import {useAuthenticationScopes} from '../../../hooks/use-connected-app-authentication-scopes';
+import {AuthenticationScopes} from './AuthenticationScopes';
 
 type Props = {
     connectedApp: ConnectedApp;
 };
 
-export const ConnectedAppAuthentication: FC<Props> = ({connectedApp}) => {
+export const Authentication: FC<Props> = ({connectedApp}) => {
     const translate = useTranslate();
     const {isLoading, authenticationScopes} = useAuthenticationScopes(connectedApp.connection_code);
 
@@ -50,11 +45,7 @@ export const ConnectedAppAuthentication: FC<Props> = ({connectedApp}) => {
                 />
             </Helper>
             {isLoading && <ConnectedAppScopeListIsLoading />}
-            {authenticationScopesExists && (
-                <ConsentListContainer>
-                    <ConsentList scopes={authenticationScopes} viewMode={'settings'} />
-                </ConsentListContainer>
-            )}
+            {authenticationScopesExists && <AuthenticationScopes scopes={authenticationScopes} />}
         </>
     );
 };

@@ -1,11 +1,11 @@
-import {getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
-import React from 'react';
-import styled from 'styled-components';
-import {useTranslate} from '../../../../../shared/translate';
+import React, {FC} from 'react';
+import {useTranslate} from '../../../../shared/translate';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
 
-const List = styled.ul`
-    padding: 20px 0;
-    font-size: ${getFontSize('bigger')};
+const List = styled.ul<AkeneoThemedProps>`
+    margin: 10px 20px;
+    font-size: ${getFontSize('default')};
 `;
 
 const Item = styled.li`
@@ -16,27 +16,29 @@ const Item = styled.li`
     margin-bottom: 10px;
 `;
 
-const StyledUserIcon = styled(UserIcon)`
+const baseIconStyle = css`
     color: ${getColor('grey', 100)};
-    width: 27px;
-    height: 27px;
+    width: 24px;
+    height: 24px;
 `;
 
+const StyledUserIcon = styled(UserIcon)`
+    ${baseIconStyle}
+`;
 const StyledMailIcon = styled(MailIcon)`
-    color: ${getColor('grey', 100)};
-    width: 27px;
-    height: 27px;
+    ${baseIconStyle}
 `;
 
 type Props = {
     scopes: Array<'email' | 'profile'>;
 };
 
-export const ConsentList = ({scopes}: Props) => {
+export const AuthenticationScopes: FC<Props> = ({scopes}) => {
     const translate = useTranslate();
     const firstname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.firstname');
     const lastname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.lastname');
     const email = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.email');
+
     return (
         <List>
             {scopes.includes('profile') && (
