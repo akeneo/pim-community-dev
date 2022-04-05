@@ -1121,6 +1121,8 @@ final class UpsertProductIntegration extends TestCase
 
     private function createReferenceEntity(string $referenceEntityCode): void
     {
+        $this->get('feature_flags')->enable('reference_entity');
+
         /** @phpstan-ignore-next-line */
         $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntityCode, []);
         $validator = $this->get('validator');
