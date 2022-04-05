@@ -32,11 +32,12 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 
         foreach ($userIntent->associationUserIntents() as $associationUserIntent) {
             $formerAssociations = $this->getFormerAssociations($associationUserIntent, $normalizedAssociations, $product);
+            $entityType = $this->getAssociationEntityType($associationUserIntent);
             if ($associationUserIntent instanceof AssociateProducts) {
                 if (\count(\array_diff($associationUserIntent->productIdentifiers(), $formerAssociations)) === 0) {
                     continue;
                 }
-                $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
+                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique(
                         \array_merge($formerAssociations, $associationUserIntent->productIdentifiers())
                     )
@@ -47,7 +48,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
 
-                $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
+                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     $newAssociations
                 );
             } elseif ($associationUserIntent instanceof ReplaceAssociatedProducts) {
@@ -58,7 +59,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
 
-                $normalizedAssociations[$associationUserIntent->associationType()]['products'] = \array_values(
+                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique($associationUserIntent->productIdentifiers())
                 );
             }
@@ -97,5 +98,17 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [];
         }
         throw new \LogicException('Not implemented');
+    }
+
+    private function getAssociationEntityType(AssociationUserIntent $userIntent): string
+    {
+        if(
+            $userIntent instanceof AssociateProducts
+            || $userIntent instanceof DissociateProducts
+            || $userIntent instanceof ReplaceAssociatedProducts
+        ) {
+            return 'products';
+        }
+        throw new \LogicException('Level does not exists');
     }
 }
