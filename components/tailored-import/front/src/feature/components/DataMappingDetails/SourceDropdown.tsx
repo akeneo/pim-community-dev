@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Column, generateColumnName} from '../../models';
 import {
   BlockButton,
   Dropdown,
@@ -11,6 +10,7 @@ import {
   ArrowDownIcon,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Column, generateColumnName} from '../../models';
 
 type SourceDropdownProps = {
   columns: Column[];

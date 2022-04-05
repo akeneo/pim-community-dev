@@ -5,13 +5,6 @@ import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
 import {SourceDropdown} from './SourceDropdown';
 
-type SourcesProps = {
-  sources: ColumnIdentifier[];
-  columns: Column[];
-  validationErrors: ValidationError[];
-  onSourcesChange: (sources: ColumnIdentifier[]) => void;
-};
-
 const SourcesContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,6 +16,13 @@ const BlocksContainer = styled.div`
   flex-direction: column;
   gap: 5px;
 `;
+
+type SourcesProps = {
+  sources: ColumnIdentifier[];
+  columns: Column[];
+  validationErrors: ValidationError[];
+  onSourcesChange: (sources: ColumnIdentifier[]) => void;
+};
 
 const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesProps) => {
   const translate = useTranslate();
@@ -93,4 +93,5 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
   );
 };
 
+export type {SourcesProps};
 export {Sources};

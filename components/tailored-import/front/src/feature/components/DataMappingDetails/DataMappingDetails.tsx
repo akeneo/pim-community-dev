@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {SectionTitle} from 'akeneo-design-system';
-import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {
   Column,
   DataMapping,
-  Target,
   ColumnIdentifier,
   FileStructure,
   findColumnByUuid,
   replaceSampleData,
+  isAttributeDataMapping,
+  Target,
+  isAttributeTarget,
 } from '../../models';
-import {Sources} from './Sources';
-import {TargetParameters} from './TargetParameters';
-import {Operations} from './Operations';
 import {useSampleDataFetcher, useRefreshedSampleDataFetcher} from '../../hooks';
+import {AttributeDataMappingDetails} from './AttributeDataMappingDetails';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -51,7 +51,6 @@ const DataMappingDetails = ({
   const translate = useTranslate();
   const sampleDataFetcher = useSampleDataFetcher();
   const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
-  const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
     const column = findColumnByUuid(columns, sources[0]);
@@ -62,12 +61,13 @@ const DataMappingDetails = ({
     onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };
 
-  const handleTargetParametersChange = (target: Target) => {
-    onDataMappingChange({...dataMapping, target});
+  const handleTargetChange = (target: Target) => {
+    if (isAttributeTarget(target)) {
+      onDataMappingChange({...dataMapping, target});
+    }
   };
 
   const handleRefreshSampleData = async (indexToRefresh: number) => {
-    setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
     const column = findColumnByUuid(columns, dataMapping.sources[0]);
     const refreshedData =
       null !== column
@@ -80,7 +80,6 @@ const DataMappingDetails = ({
           )
         : null;
 
-    setLoadingSampleData(loadingSampleData => loadingSampleData.filter(value => indexToRefresh !== value));
     onDataMappingChange({
       ...dataMapping,
       sample_data: replaceSampleData(dataMapping.sample_data, indexToRefresh, refreshedData),
@@ -93,22 +92,16 @@ const DataMappingDetails = ({
         <SectionTitle.Title>{translate('akeneo.tailored_import.data_mapping.title')}</SectionTitle.Title>
       </SectionTitle>
       <Container>
-        <TargetParameters
-          target={dataMapping.target}
-          validationErrors={filterErrors(validationErrors, '[target]')}
-          onTargetChange={handleTargetParametersChange}
-        />
-        <Sources
-          sources={dataMapping.sources}
-          columns={columns}
-          validationErrors={filterErrors(validationErrors, '[sources]')}
-          onSourcesChange={handleSourcesChange}
-        />
-        <Operations
-          dataMapping={dataMapping}
-          loadingSampleData={loadingSampleData}
-          onRefreshSampleData={handleRefreshSampleData}
-        />
+        {isAttributeDataMapping(dataMapping) && (
+          <AttributeDataMappingDetails
+            columns={columns}
+            dataMapping={dataMapping}
+            validationErrors={validationErrors}
+            onTargetChange={handleTargetChange}
+            onRefreshSampleData={handleRefreshSampleData}
+            onSourcesChange={handleSourcesChange}
+          />
+        )}
       </Container>
     </DataMappingDetailsContainer>
   );

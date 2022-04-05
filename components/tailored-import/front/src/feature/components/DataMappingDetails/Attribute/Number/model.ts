@@ -1,10 +1,8 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../models';
+import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
+import {DecimalSeparator} from '../../common/DecimalSeparatorField';
 
-const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
-
-type NumberSeparator = keyof typeof availableDecimalSeparators;
-type NumberSourceParameter = {decimal_separator: NumberSeparator};
+type NumberSourceParameter = {decimal_separator: DecimalSeparator};
 
 const getDefaultNumberSourceParameter = (): NumberSourceParameter => ({decimal_separator: '.'});
 const getDefaultTargetAction = (): TargetAction => 'set';
@@ -36,14 +34,9 @@ const getDefaultNumberTarget = (
 
 const isNumberSourceParameter = (sourceParameter: any): sourceParameter is NumberSourceParameter =>
   'decimal_separator' in sourceParameter;
-const isNumberDecimalSeparator = (separator: any): separator is NumberSeparator =>
-  separator in availableDecimalSeparators;
 
-const isNumberTarget = (target: Target): target is NumberTarget => {
-  return (
-    'attribute' === target.type && null !== target.source_parameter && isNumberSourceParameter(target.source_parameter)
-  );
-};
+const isNumberTarget = (target: Target): target is NumberTarget =>
+  'attribute' === target.type && null !== target.source_parameter && isNumberSourceParameter(target.source_parameter);
 
 export type {NumberTarget, NumberSourceParameter};
-export {availableDecimalSeparators, getDefaultNumberTarget, isNumberDecimalSeparator, isNumberTarget};
+export {getDefaultNumberTarget, isNumberTarget};

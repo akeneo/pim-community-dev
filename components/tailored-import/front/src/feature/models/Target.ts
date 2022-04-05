@@ -1,8 +1,14 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {getDefaultNumberTarget, NumberTarget} from '../components/TargetDetails/Number/model';
+import {
+  getDefaultTextTarget,
+  getDefaultNumberTarget,
+  getDefaultMeasurementTarget,
+  NumberTarget,
+  MeasurementTarget,
+  TextTarget,
+} from '../components';
 import {Attribute} from './Attribute';
-import {getDefaultTextTarget, TextTarget} from '../components/TargetDetails/Text/model';
-import {getDefaultMeasurementTarget, MeasurementTarget} from '../components/TargetDetails/Measurement/model';
+import {AttributeDataMapping, DataMapping} from './DataMapping';
 
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
@@ -47,7 +53,10 @@ const createPropertyTarget = (code: string): PropertyTarget => ({
 const isAttributeTarget = (target: Target): target is AttributeTarget =>
   'attribute' === target.type && 'locale' in target && 'channel' in target;
 
+const isAttributeDataMapping = (dataMapping: DataMapping): dataMapping is AttributeDataMapping =>
+  isAttributeTarget(dataMapping.target);
+
 const isPropertyTarget = (target: Target): target is PropertyTarget => 'property' === target.type;
 
 export type {AttributeTarget, PropertyTarget, Target, TargetAction, TargetEmptyAction};
-export {createAttributeTarget, createPropertyTarget, isAttributeTarget, isPropertyTarget};
+export {createAttributeTarget, createPropertyTarget, isAttributeDataMapping, isAttributeTarget, isPropertyTarget};

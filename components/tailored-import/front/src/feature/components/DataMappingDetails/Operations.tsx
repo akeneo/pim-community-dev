@@ -1,15 +1,8 @@
-import React from 'react';
-import {DataMapping} from '../../models';
+import React, {useState} from 'react';
 import styled from 'styled-components';
-import {IconButton, RefreshIcon, SectionTitle, Preview, getColor} from 'akeneo-design-system';
+import {IconButton, placeholderStyle, RefreshIcon, SectionTitle, Preview, getColor} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {placeholderStyle} from 'akeneo-design-system';
-
-type OperationsProps = {
-  dataMapping: DataMapping;
-  onRefreshSampleData: (index: number) => void;
-  loadingSampleData: number[];
-};
+import {DataMapping} from '../../models';
 
 const OperationsContainer = styled.div`
   display: flex;
@@ -32,8 +25,20 @@ const EmptyPreviewContent = styled(PreviewContent)`
   ${({isLoading}) => isLoading && placeholderStyle}
 `;
 
-const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: OperationsProps) => {
+type OperationsProps = {
+  dataMapping: DataMapping;
+  onRefreshSampleData: (index: number) => Promise<void>;
+};
+
+const Operations = ({dataMapping, onRefreshSampleData}: OperationsProps) => {
   const translate = useTranslate();
+  const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
+
+  const handleRefreshSampleData = async (indexToRefresh: number) => {
+    setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
+    await onRefreshSampleData(indexToRefresh);
+    setLoadingSampleData(loadingSampleData => loadingSampleData.filter(value => indexToRefresh !== value));
+  };
 
   return (
     <OperationsContainer>
@@ -42,7 +47,7 @@ const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: Opera
           {translate('akeneo.tailored_import.data_mapping.operations.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      {dataMapping.sample_data.length > 0 && (
+      {0 < dataMapping.sample_data.length && (
         <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
           {dataMapping.sample_data.map((sampleData, key) => (
             <Preview.Row
@@ -51,12 +56,12 @@ const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: Opera
                 <IconButton
                   disabled={loadingSampleData.includes(key)}
                   icon={<RefreshIcon />}
-                  onClick={() => onRefreshSampleData(key)}
+                  onClick={() => handleRefreshSampleData(key)}
                   title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}
                 />
               }
             >
-              {sampleData ? (
+              {null !== sampleData ? (
                 <PreviewContent isLoading={loadingSampleData.includes(key)}>{sampleData}</PreviewContent>
               ) : (
                 <EmptyPreviewContent isLoading={loadingSampleData.includes(key)}>
@@ -72,3 +77,4 @@ const Operations = ({dataMapping, loadingSampleData, onRefreshSampleData}: Opera
 };
 
 export {Operations};
+export type {OperationsProps};

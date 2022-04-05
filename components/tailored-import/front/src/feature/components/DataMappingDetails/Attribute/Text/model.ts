@@ -1,5 +1,5 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, TargetAction, TargetEmptyAction} from '../../../models';
+import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
 
 const getDefaultTextSourceParameter = () => null;
 const getDefaultTargetAction = (): TargetAction => 'set';
@@ -29,5 +29,8 @@ const getDefaultTextTarget = (
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
+const isTextTarget = (target: Target): target is TextTarget =>
+  'attribute' === target.type && null === target.source_parameter;
+
 export type {TextTarget};
-export {getDefaultTextTarget};
+export {getDefaultTextTarget, isTextTarget};

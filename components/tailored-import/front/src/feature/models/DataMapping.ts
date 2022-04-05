@@ -6,9 +6,19 @@ import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTa
 
 type SampleData = string | null;
 
-type DataMapping = {
+type DataMapping = AttributeDataMapping | PropertyDataMapping;
+
+type AttributeDataMapping = {
   uuid: string;
-  target: AttributeTarget | PropertyTarget;
+  target: AttributeTarget;
+  sources: ColumnIdentifier[];
+  operations: [];
+  sample_data: SampleData[];
+};
+
+type PropertyDataMapping = {
+  uuid: string;
+  target: PropertyTarget;
   sources: ColumnIdentifier[];
   operations: [];
   sample_data: SampleData[];
@@ -41,7 +51,7 @@ const createPropertyDataMapping = (code: string): DataMapping => {
   };
 };
 
-const createAttributeDataMapping = (code: string, attribute: Attribute, channels: Channel[]): DataMapping => {
+const createAttributeDataMapping = (code: string, attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
   const channel = attribute.scopable ? channels[0].code : null;
   const locales = getLocalesFromChannel(channels, channel);
   const filteredLocaleSpecificLocales = attribute.is_locale_specific
@@ -71,7 +81,7 @@ const replaceSampleData = (sampleData: SampleData[], index: number, value: Sampl
   ...sampleData.slice(index + 1),
 ];
 
-export type {DataMapping, DataMappingType, SampleData};
+export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping, SampleData};
 export {
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_BY_DATA_MAPPING,

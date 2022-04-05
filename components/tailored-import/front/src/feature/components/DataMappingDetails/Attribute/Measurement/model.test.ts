@@ -1,18 +1,5 @@
-import {
-  getDefaultMeasurementTarget,
-  isMeasurementDecimalSeparator,
-  isMeasurementTarget,
-  MeasurementTarget,
-} from './model';
+import {getDefaultMeasurementTarget, isMeasurementTarget, MeasurementTarget} from './model';
 import {TextTarget} from '../Text/model';
-
-test('it returns true if it is a measurement decimal separator', () => {
-  expect(isMeasurementDecimalSeparator('.')).toBe(true);
-});
-
-test('it returns false if it is not a measurement decimal separator', () => {
-  expect(isMeasurementDecimalSeparator(' ')).toBe(false);
-});
 
 test('it returns true if it is a measurement target', () => {
   const measurementTarget: MeasurementTarget = {

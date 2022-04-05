@@ -1,12 +1,22 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {AttributeTargetParameters} from './AttributeTargetParameters';
-import {AttributeTarget} from '../../models';
+import {Attribute, AttributeTarget} from '../../models';
 import {renderWithProviders} from 'feature/tests';
 import userEvent from '@testing-library/user-event';
 
-const attributeTarget: AttributeTarget = {
+const attribute: Attribute = {
+  type: 'pim_catalog_text',
   code: 'description',
+  labels: {fr_FR: 'French name', en_US: 'English name'},
+  scopable: true,
+  localizable: true,
+  is_locale_specific: false,
+  available_locales: [],
+};
+
+const attributeTarget: AttributeTarget = {
+  code: attribute.code,
   type: 'attribute',
   action_if_not_empty: 'set',
   action_if_empty: 'skip',
@@ -19,7 +29,12 @@ test('it can change the target channel', async () => {
   const handleTargetChange = jest.fn();
 
   await renderWithProviders(
-    <AttributeTargetParameters target={attributeTarget} validationErrors={[]} onTargetChange={handleTargetChange} />
+    <AttributeTargetParameters
+      attribute={attribute}
+      target={attributeTarget}
+      validationErrors={[]}
+      onTargetChange={handleTargetChange}
+    />
   );
 
   userEvent.click(screen.getByLabelText('pim_common.channel'));
@@ -35,7 +50,12 @@ test('it can change the target locale', async () => {
   const handleTargetChange = jest.fn();
 
   await renderWithProviders(
-    <AttributeTargetParameters target={attributeTarget} validationErrors={[]} onTargetChange={handleTargetChange} />
+    <AttributeTargetParameters
+      attribute={attribute}
+      target={attributeTarget}
+      validationErrors={[]}
+      onTargetChange={handleTargetChange}
+    />
   );
 
   userEvent.click(screen.getByLabelText('pim_common.locale'));
@@ -52,7 +72,8 @@ test('it allows only available locales when attribute is locale-specific', async
 
   await renderWithProviders(
     <AttributeTargetParameters
-      target={{...attributeTarget, code: 'locale_specific'}}
+      attribute={{...attribute, is_locale_specific: true, available_locales: ['fr_FR']}}
+      target={attributeTarget}
       validationErrors={[]}
       onTargetChange={handleTargetChange}
     />
@@ -70,6 +91,7 @@ test('it allows only available locales on selected channel', async () => {
     <AttributeTargetParameters
       // No fr_FR locale on mobile channel in test fixtures
       target={{...attributeTarget, channel: 'mobile'}}
+      attribute={attribute}
       validationErrors={[]}
       onTargetChange={handleTargetChange}
     />
@@ -82,31 +104,17 @@ test('it allows only available locales on selected channel', async () => {
   expect(screen.queryByTitle('Français (France)')).not.toBeInTheDocument();
 });
 
-test('it can change the if_empty case when hitting the checkbox', async () => {
-  const handleTargetChange = jest.fn();
-
-  await renderWithProviders(
-    <AttributeTargetParameters target={attributeTarget} validationErrors={[]} onTargetChange={handleTargetChange} />
-  );
-
-  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
-
-  expect(handleTargetChange).toHaveBeenCalledWith({
-    ...attributeTarget,
-    action_if_empty: 'clear',
-  });
-});
-
 test('it displays general attribute error when attribute is not found', async () => {
   await renderWithProviders(
     <AttributeTargetParameters
+      attribute={attribute}
       target={{...attributeTarget, code: 'unknown'}}
       validationErrors={[
         {
           messageTemplate: 'code error message',
           parameters: {},
           message: '',
-          propertyPath: '',
+          propertyPath: '[code]',
           invalidValue: '',
         },
       ]}
@@ -115,16 +123,4 @@ test('it displays general attribute error when attribute is not found', async ()
   );
 
   expect(screen.getByText('code error message')).toBeInTheDocument();
-});
-
-test('it displays a helper when attribute is an identifier', async () => {
-  await renderWithProviders(
-    <AttributeTargetParameters
-      target={{...attributeTarget, code: 'sku'}}
-      validationErrors={[]}
-      onTargetChange={jest.fn()}
-    />
-  );
-
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.target.identifier')).toBeInTheDocument();
 });

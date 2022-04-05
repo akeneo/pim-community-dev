@@ -1,10 +1,14 @@
 import React from 'react';
-import {NumberConfigurator} from './NumberConfigurator';
-import {createAttributeTarget, createPropertyTarget} from '../../../models';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
+import {createAttributeDataMapping, createPropertyDataMapping} from '../../../../models';
+import {NumberConfigurator} from './NumberConfigurator';
+
+jest.mock('../../Operations');
+jest.mock('../../Sources');
+jest.mock('../../AttributeTargetParameters');
 
 const getNumberAttributeWithDecimal = () => ({
   code: 'alcohol_percentage',
@@ -29,14 +33,17 @@ test('it does not display a decimal separator selector if attribute does not sup
     decimals_allowed: false,
   };
 
-  const target = createAttributeTarget(numberAttribute, null, null);
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onTargetChange={jest.fn()}
+      onSourcesChange={jest.fn()}
       attribute={numberAttribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -47,14 +54,17 @@ test('it does not display a decimal separator selector if attribute does not sup
 
 test('it displays a decimal separator selector if attribute supports decimal numbers', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const target = createAttributeTarget(numberAttribute, null, null);
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onTargetChange={jest.fn()}
+      onSourcesChange={jest.fn()}
       attribute={numberAttribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -65,14 +75,17 @@ test('it displays a decimal separator selector if attribute supports decimal num
 
 test('it displays all decimal separators when opening the dropdown', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const target = createAttributeTarget(numberAttribute, null, null);
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onTargetChange={jest.fn()}
+      onSourcesChange={jest.fn()}
       attribute={numberAttribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -91,15 +104,18 @@ test('it displays all decimal separators when opening the dropdown', async () =>
 
 test('it defines the decimal separator of the target', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const target = createAttributeTarget(numberAttribute, null, null);
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
     <NumberConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onTargetChange={onTargetChange}
+      onSourcesChange={jest.fn()}
       attribute={numberAttribute}
       validationErrors={[]}
-      onTargetAttributeChange={onTargetChange}
     />
   );
 
@@ -107,26 +123,55 @@ test('it defines the decimal separator of the target', async () => {
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.target.parameters.decimal_separator.comma'));
 
   expect(onTargetChange).toHaveBeenCalledWith({
-    ...target,
+    ...dataMapping.target,
     source_parameter: {
       decimal_separator: ',',
     },
   });
 });
 
+test('it defines if the attribute should be cleared when empty', async () => {
+  const attribute = getNumberAttributeWithDecimal();
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', attribute, []);
+  const onTargetChange = jest.fn();
+
+  await renderWithProviders(
+    <NumberConfigurator
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
+      attribute={attribute}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
+
+  expect(onTargetChange).toHaveBeenCalledWith({
+    ...dataMapping.target,
+    action_if_empty: 'clear',
+  });
+});
+
 test('it throws an error if we setup this component with a wrong target', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const target = createPropertyTarget('family');
+  const dataMapping = createPropertyDataMapping('family');
 
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   await expect(async () => {
     await renderWithProviders(
       <NumberConfigurator
-        target={target}
+        columns={[]}
+        // @ts-expect-error invalid data mapping type
+        dataMapping={dataMapping}
+        onRefreshSampleData={jest.fn()}
+        onTargetChange={jest.fn()}
+        onSourcesChange={jest.fn()}
         attribute={numberAttribute}
         validationErrors={[]}
-        onTargetAttributeChange={jest.fn()}
       />
     );
   }).rejects.toThrow('Invalid target data "family" for number configurator');
@@ -134,9 +179,10 @@ test('it throws an error if we setup this component with a wrong target', async 
   mockedConsole.mockRestore();
 });
 
-test('it should display helper if there is decimal separator errors', async () => {
-  const numberAttribute = getNumberAttributeWithDecimal();
-  const target = createAttributeTarget(numberAttribute, null, null);
+test('it should display validation errors', async () => {
+  const attribute = getNumberAttributeWithDecimal();
+  const dataMapping = createAttributeDataMapping('alcohol_percentage', attribute, []);
+
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.global',
@@ -150,19 +196,38 @@ test('it should display helper if there is decimal separator errors', async () =
       invalidValue: '#',
       message: 'this is a decimal separator error',
       parameters: {},
-      propertyPath: '[decimal_separator]',
+      propertyPath: '[target][decimal_separator]',
+    },
+    {
+      messageTemplate: 'error.key.target',
+      invalidValue: '#',
+      message: 'this is a target error',
+      parameters: {},
+      propertyPath: '[target]',
+    },
+    {
+      messageTemplate: 'error.key.sources',
+      invalidValue: '#',
+      message: 'this is an sources error',
+      parameters: {},
+      propertyPath: '[sources]',
     },
   ];
 
   await renderWithProviders(
     <NumberConfigurator
-      target={target}
-      attribute={numberAttribute}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onTargetChange={jest.fn()}
+      onSourcesChange={jest.fn()}
+      attribute={attribute}
       validationErrors={validationErrors}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
+  expect(screen.getByText('error.key.sources')).toBeInTheDocument();
+  expect(screen.getByText('error.key.target')).toBeInTheDocument();
   expect(screen.getByText('error.key.decimal_separator')).toBeInTheDocument();
   expect(screen.queryByText('error.key.global')).not.toBeInTheDocument();
 });

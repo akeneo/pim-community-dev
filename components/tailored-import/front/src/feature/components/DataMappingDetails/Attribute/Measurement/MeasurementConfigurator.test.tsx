@@ -1,10 +1,10 @@
-import {renderWithProviders} from '../../../tests';
-import {act, screen} from '@testing-library/react';
 import React from 'react';
-import {createAttributeTarget, createPropertyTarget} from '../../../models';
-import {MeasurementConfigurator} from './MeasurementConfigurator';
+import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {ValidationError} from '@akeneo-pim-community/shared/lib/models/validation-error';
+import {createAttributeDataMapping, createPropertyDataMapping} from '../../../../models';
+import {MeasurementConfigurator} from './MeasurementConfigurator';
+import {renderWithProviders} from 'feature/tests';
+import {ValidationError} from '@akeneo-pim-community/shared';
 
 const flushPromises = () => new Promise(setImmediate);
 
@@ -21,16 +21,23 @@ const getMeasurementAttribute = (withDecimal: boolean) => ({
   default_metric_unit: 'kilogram',
 });
 
+jest.mock('../../Operations');
+jest.mock('../../Sources');
+jest.mock('../../AttributeTargetParameters');
+
 test('it does not display a decimal separator selector if attribute does not support decimal numbers', async () => {
   const attribute = getMeasurementAttribute(false);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -41,14 +48,17 @@ test('it does not display a decimal separator selector if attribute does not sup
 
 test('it displays a decimal separator selector if attribute supports decimal numbers', async () => {
   const attribute = getMeasurementAttribute(true);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -59,14 +69,17 @@ test('it displays a decimal separator selector if attribute supports decimal num
 
 test('it displays all decimal separators when opening the dropdown', async () => {
   const attribute = getMeasurementAttribute(true);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -87,15 +100,18 @@ test('it displays all decimal separators when opening the dropdown', async () =>
 
 test('it defines the decimal separator of the target', async () => {
   const attribute = getMeasurementAttribute(true);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={onTargetChange}
     />
   );
 
@@ -105,7 +121,7 @@ test('it defines the decimal separator of the target', async () => {
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.target.parameters.decimal_separator.comma'));
 
   expect(onTargetChange).toHaveBeenCalledWith({
-    ...target,
+    ...dataMapping.target,
     source_parameter: {
       decimal_separator: ',',
       unit: 'kilogram',
@@ -113,19 +129,48 @@ test('it defines the decimal separator of the target', async () => {
   });
 });
 
+test('it defines if the attribute should be cleared when empty', async () => {
+  const attribute = getMeasurementAttribute(true);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const onTargetChange = jest.fn();
+
+  await renderWithProviders(
+    <MeasurementConfigurator
+      columns={[]}
+      dataMapping={dataMapping}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
+      attribute={attribute}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
+
+  expect(onTargetChange).toHaveBeenCalledWith({
+    ...dataMapping.target,
+    action_if_empty: 'clear',
+  });
+});
+
 test('it throws an error if we setup this component with a wrong target', async () => {
   const attribute = getMeasurementAttribute(true);
-  const target = createPropertyTarget('family');
+  const dataMapping = createPropertyDataMapping('family');
 
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   await expect(async () => {
     await renderWithProviders(
       <MeasurementConfigurator
-        target={target}
+        columns={[]}
+        // @ts-expect-error invalid data mapping type
+        dataMapping={dataMapping}
+        onRefreshSampleData={jest.fn()}
+        onSourcesChange={jest.fn()}
+        onTargetChange={jest.fn()}
         attribute={attribute}
         validationErrors={[]}
-        onTargetAttributeChange={jest.fn()}
       />
     );
   }).rejects.toThrow('Invalid target data "family" for measurement configurator');
@@ -135,14 +180,17 @@ test('it throws an error if we setup this component with a wrong target', async 
 
 test('it should display a measurement unit selector', async () => {
   const attribute = getMeasurementAttribute(false);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      dataMapping={dataMapping}
+      columns={[]}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={jest.fn()}
     />
   );
 
@@ -157,15 +205,18 @@ test('it should display a measurement unit selector', async () => {
 
 test('it defines the measurement unit of the target', async () => {
   const attribute = getMeasurementAttribute(false);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
       attribute={attribute}
       validationErrors={[]}
-      onTargetAttributeChange={onTargetChange}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={onTargetChange}
     />
   );
 
@@ -179,7 +230,7 @@ test('it defines the measurement unit of the target', async () => {
   userEvent.click(screen.getByText('Gram'));
 
   expect(onTargetChange).toHaveBeenCalledWith({
-    ...target,
+    ...dataMapping.target,
     source_parameter: {
       decimal_separator: '.',
       unit: 'gram',
@@ -191,17 +242,20 @@ test('it throws an error if we setup this component with an attribute without me
   let attribute = getMeasurementAttribute(false);
   attribute.metric_family = '';
 
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
 
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   await expect(async () => {
     await renderWithProviders(
       <MeasurementConfigurator
-        target={target}
+        columns={[]}
+        dataMapping={dataMapping}
         attribute={attribute}
         validationErrors={[]}
-        onTargetAttributeChange={jest.fn()}
+        onRefreshSampleData={jest.fn()}
+        onSourcesChange={jest.fn()}
+        onTargetChange={jest.fn()}
       />
     );
   }).rejects.toThrow('Invalid metric family for measurement configurator');
@@ -211,7 +265,7 @@ test('it throws an error if we setup this component with an attribute without me
 
 test('it should display helper if there are validation errors', async () => {
   const attribute = getMeasurementAttribute(true);
-  const target = createAttributeTarget(attribute, null, null);
+  const dataMapping = createAttributeDataMapping('weight', attribute, []);
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.global',
@@ -225,27 +279,46 @@ test('it should display helper if there are validation errors', async () => {
       invalidValue: 'FOO',
       message: 'this is a measurement unit error',
       parameters: {},
-      propertyPath: '[unit]',
+      propertyPath: '[target][unit]',
     },
     {
       messageTemplate: 'error.key.decimal_separator',
       invalidValue: '#',
       message: 'this is a decimal separator error',
       parameters: {},
-      propertyPath: '[decimal_separator]',
+      propertyPath: '[target][decimal_separator]',
+    },
+    {
+      messageTemplate: 'error.key.target',
+      invalidValue: '#',
+      message: 'this is a target error',
+      parameters: {},
+      propertyPath: '[target]',
+    },
+    {
+      messageTemplate: 'error.key.sources',
+      invalidValue: '#',
+      message: 'this is an sources error',
+      parameters: {},
+      propertyPath: '[sources]',
     },
   ];
 
   await renderWithProviders(
     <MeasurementConfigurator
-      target={target}
+      columns={[]}
+      dataMapping={dataMapping}
       attribute={attribute}
       validationErrors={validationErrors}
-      onTargetAttributeChange={jest.fn()}
+      onRefreshSampleData={jest.fn()}
+      onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
     />
   );
 
   expect(screen.getByText('error.key.decimal_separator')).toBeInTheDocument();
+  expect(screen.getByText('error.key.sources')).toBeInTheDocument();
+  expect(screen.getByText('error.key.target')).toBeInTheDocument();
   expect(screen.getByText('error.key.unit')).toBeInTheDocument();
   expect(screen.queryByText('error.key.global')).not.toBeInTheDocument();
 });

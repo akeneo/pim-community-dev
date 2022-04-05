@@ -1,11 +1,9 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../models';
+import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
+import {DecimalSeparator} from '../../common/DecimalSeparatorField';
 
-const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
-
-type MeasurementDecimalSeparator = keyof typeof availableDecimalSeparators;
 type MeasurementSourceParameter = {
-  decimal_separator: MeasurementDecimalSeparator;
+  decimal_separator: DecimalSeparator;
   unit: string;
 };
 
@@ -42,8 +40,6 @@ const getDefaultMeasurementTarget = (
 
 const isMeasurementSourceParameter = (sourceParameter: any): sourceParameter is MeasurementSourceParameter =>
   'decimal_separator' in sourceParameter && 'unit' in sourceParameter;
-const isMeasurementDecimalSeparator = (separator: any): separator is MeasurementDecimalSeparator =>
-  separator in availableDecimalSeparators;
 
 const isMeasurementTarget = (target: Target): target is MeasurementTarget => {
   return (
@@ -54,4 +50,4 @@ const isMeasurementTarget = (target: Target): target is MeasurementTarget => {
 };
 
 export type {MeasurementTarget, MeasurementSourceParameter};
-export {availableDecimalSeparators, getDefaultMeasurementTarget, isMeasurementDecimalSeparator, isMeasurementTarget};
+export {getDefaultMeasurementTarget, isMeasurementTarget};

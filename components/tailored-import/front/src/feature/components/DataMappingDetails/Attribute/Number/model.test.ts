@@ -1,13 +1,5 @@
-import {isNumberDecimalSeparator, isNumberTarget, NumberTarget} from './model';
+import {isNumberTarget, NumberTarget} from './model';
 import {TextTarget} from '../Text/model';
-
-test('it returns true if it is a number decimal parameter', () => {
-  expect(isNumberDecimalSeparator('٫‎')).toEqual(true);
-});
-
-test('it returns false if it is not a number decimal parameter', () => {
-  expect(isNumberDecimalSeparator('#')).toEqual(false);
-});
 
 test('it returns true if it is a number target', () => {
   const numberTarget: NumberTarget = {

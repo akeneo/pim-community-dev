@@ -73,13 +73,7 @@ const fileStructure: FileStructure = {
 };
 
 jest.mock('./SourceDropdown', () => ({
-  SourceDropdown: ({
-    onColumnSelected,
-    disabled,
-  }: {
-    onColumnSelected: (selectedColumn: Column) => void;
-    disabled: boolean;
-  }) => (
+  SourceDropdown: ({onColumnSelected}: {onColumnSelected: (selectedColumn: Column) => void}) => (
     <button
       onClick={() =>
         onColumnSelected({uuid: 'dba0d9f8-2283-4a07-82b7-67e0435b7dcc', index: 0, label: 'Product identifier'})
@@ -106,7 +100,7 @@ test('it displays a property data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={propertyDataMapping}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={
         {
           header_row: 1,
@@ -123,15 +117,13 @@ test('it displays a property data mapping', async () => {
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.title')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.title')).toBeInTheDocument();
-  expect(screen.getByText('Product identifier (A)')).toBeInTheDocument();
 });
 
 test('it displays an attribute data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMapping}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
@@ -160,7 +152,7 @@ test('it can change target parameters', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={{...attributeDataMapping, target: attributeTarget}}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
@@ -186,7 +178,7 @@ test('it can add a source to a data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMappingWithoutSource}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
@@ -209,7 +201,7 @@ test('it can remove a source', async () => {
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMapping}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
@@ -228,10 +220,11 @@ test('it can remove a source', async () => {
 
 test('it can refresh a sample data', async () => {
   const handleDataMappingChange = jest.fn();
+
   await renderWithProviders(
     <DataMappingDetails
       dataMapping={attributeDataMapping}
-      fileKey={'/file_key'}
+      fileKey="/file_key"
       fileStructure={fileStructure}
       columns={columns}
       validationErrors={[]}
