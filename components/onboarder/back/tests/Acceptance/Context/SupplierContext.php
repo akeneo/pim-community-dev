@@ -117,15 +117,27 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @When I update the supplier ":code" with:
+     * @When I update the supplier ":code" label with ":label"
      */
-    public function iUpdateTheSupplierWith(string $code, TableNode $properties): void
+    public function iUpdateTheSupplierLabelWith(string $code, string $label):  void
     {
-        $label = $properties->getHash()[0]['label'];
-        $contributors = array_filter(explode(';', $properties->getHash()[0]['contributors']));
-
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
-        ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $contributors));
+        ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $supplier->contributors()));
+    }
+
+    /**
+     * @When I update the supplier ":code" contributors with ":contributors"
+     */
+    public function iUpdateTheSupplierContributorsWith(string $code, string $contributors):  void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        ($this->updateSupplierHandler)(
+            new UpdateSupplier(
+                $supplier->identifier(),
+                $supplier->label(),
+                '' !== $contributors ? explode(';', $contributors) : [],
+            )
+        );
     }
 
     /**
@@ -169,19 +181,19 @@ final class SupplierContext implements Context
     }
 
     /**
-     * @Then I should have the following supplier:
+     * @Then I should have a supplier with code ":code" and contributors ":contributors"
      */
-    public function iShouldHaveTheSupplier(TableNode $properties): void
+    public function iShouldHaveASupplierWithCodeAndContributors(string $code, ?string $contributors): void
     {
-        $expectedSupplier = $properties->getHash()[0];
+        $supplier = $this->supplierRepository->findByCode(
+            Write\Supplier\ValueObject\Code::fromString($code)
+        );
 
-        if (null === $this->supplier) {
-            $this->loadSupplier($expectedSupplier['code']);
-        }
+        $contributors = '' !== $contributors ? explode(';', $contributors) : [];
+        $contributors = array_map(fn ($contributor) => ['email' => $contributor], $contributors);
 
-        Assert::assertSame($expectedSupplier['code'], $this->supplier->code);
-        Assert::assertSame($expectedSupplier['label'], $this->supplier->label);
-        Assert::assertSame($expectedSupplier['contributors'], join(';', $this->supplier->contributors));
+        Assert::assertSame($code, $supplier->code());
+        Assert::assertSame($contributors, $supplier->contributors());
     }
 
     private function loadSuppliers(string $search = ''): void
