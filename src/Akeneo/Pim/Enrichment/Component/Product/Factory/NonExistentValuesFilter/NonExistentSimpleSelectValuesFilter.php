@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
@@ -13,33 +14,28 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAt
  */
 class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 {
-    /** @var GetExistingAttributeOptionCodes */
-    private $getExistingAttributeOptionCodes;
-
-    public function __construct(GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
+    public function __construct(private GetExistingAttributeOptionCodes $getExistingAttributeOptionCodes)
     {
-        $this->getExistingAttributeOptionCodes = $getExistingAttributeOptionCodes;
     }
 
     public function filter(OnGoingFilteredRawValues $onGoingFilteredRawValues): OnGoingFilteredRawValues
     {
         $selectValues = $onGoingFilteredRawValues->notFilteredValuesOfTypes(AttributeTypes::OPTION_SIMPLE_SELECT);
-
         if (empty($selectValues)) {
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
+        $optionCodes = $this->getExistingOptionCodes($selectValues);
 
         $filteredValues = [];
-
         foreach ($selectValues as $attributeCode => $productValueCollection) {
+            $existingCodes = $optionCodes[$attributeCode] ?? [];
             foreach ($productValueCollection as $productValues) {
                 $simpleSelectValues = [];
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $value) {
                         if (!\is_array($value)) {
-                            $simpleSelectValues[$channel][$locale] = ($optionCodes[$attributeCode] ?? [])[strtolower($value ?? '')] ?? '';
+                            $simpleSelectValues[$channel][$locale] = \in_array($value, $existingCodes) ? $value : '';
                         }
                     }
                 }
@@ -56,19 +52,26 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
+    private function getExistingOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
         $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
 
-        $caseInsensitiveOptionsCodes = [];
-        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
-            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
-                $caseInsensitiveOptionsCodes[$attributeCode][strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
+        foreach ($optionCodes as $attributeCode => $optionCodesForThisAttribute) {
+            $existingOptionCodesForAttribute = $existingOptionCodes[$attributeCode] ?? [];
+            if (empty($existingOptionCodesForAttribute)) {
+                $optionCodes[$attributeCode] = [];
+                continue;
             }
+
+            $existingOptionCodesForAttribute = \array_map('strtolower', $existingOptionCodesForAttribute);
+            $optionCodes[$attributeCode] = \array_filter(
+                $optionCodesForThisAttribute,
+                fn($code) => \in_array(\strtolower($code), $existingOptionCodesForAttribute)
+            );
         }
 
-        return $caseInsensitiveOptionsCodes;
+        return $optionCodes;
     }
 
     private function getOptionCodes(array $selectValues): array
@@ -89,7 +92,7 @@ class NonExistentSimpleSelectValuesFilter implements NonExistentValuesFilter
 
         $uniqueOptionCodes = [];
         foreach ($optionCodes as $attributeCode => $optionCodeForThisAttribute) {
-            $uniqueOptionCodes[$attributeCode] = array_unique($optionCodeForThisAttribute);
+            $uniqueOptionCodes[$attributeCode] = \array_unique($optionCodeForThisAttribute);
         }
 
         return $uniqueOptionCodes;
