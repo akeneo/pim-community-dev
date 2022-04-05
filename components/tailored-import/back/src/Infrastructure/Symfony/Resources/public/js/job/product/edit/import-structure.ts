@@ -71,7 +71,6 @@ class ColumnView extends BaseView {
         ...structureConfiguration,
       },
     });
-    this.render();
   }
 
   /**
