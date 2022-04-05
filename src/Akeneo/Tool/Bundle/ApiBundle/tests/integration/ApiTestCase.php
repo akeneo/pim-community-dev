@@ -7,6 +7,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -60,6 +61,10 @@ abstract class ApiTestCase extends WebTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
     }
 
     /**
