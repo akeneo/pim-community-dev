@@ -100,6 +100,11 @@ abstract class AbstractProduct implements ProductInterface
         return $this;
     }
 
+    public function getUuid(): ?UuidInterface
+    {
+        return $this->uuid;
+    }
+
     /**
      * {@inheritdoc}
      */
