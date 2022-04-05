@@ -105,6 +105,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer',
+            'Akeneo\Pim\Enrichment\Bundle\Product\ComputeAndPersistProductCompletenesses',
             'Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\AbstractFilter',
