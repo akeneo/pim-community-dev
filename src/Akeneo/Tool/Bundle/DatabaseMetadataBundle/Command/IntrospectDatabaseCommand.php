@@ -66,7 +66,7 @@ class IntrospectDatabaseCommand extends Command
             $filesystem = null;
             $filename = null;
         }
-        
+
         $jobs = $input->getOption('jobs') === true ?: false;
 
         $outputContent = function (string $line) use ($output, $filesystem, $filename) {
@@ -83,13 +83,45 @@ class IntrospectDatabaseCommand extends Command
         }
 
         foreach ($this->inspector->getColumnInfo($dbName) as $row) {
-            $line = sprintf(
-                "%s | %s | %s | %s | %s\n",
+            $line = \trim(sprintf(
+                "%s | %s | %s | %s | %s",
                 $row['table_name'],
                 $row['column_name'],
                 $row['is_nullable'],
                 $row['column_type'],
                 $row['column_key']
+            )) . PHP_EOL;
+            $outputContent($line);
+        }
+
+        foreach ($this->inspector->getIndexes($dbName) as $row) {
+            $line = \sprintf(
+                "INDEX | %s | %s | %s\n",
+                $row['TABLE_NAME'],
+                $row['INDEX_NAME'],
+                $row['COLUMNS']
+            );
+            $outputContent($line);
+        }
+
+        foreach ($this->inspector->getForeignKeyConstraints($dbName) as $row) {
+            $line = \sprintf(
+                "FOREIGN CONSTRAINT | %s | %s.%s | %s.%s\n",
+                $row['CONSTRAINT_NAME'],
+                \explode('/', $row['FOR_NAME'])[1],
+                $row['FOR_COL_NAME'],
+                \explode('/', $row['REF_NAME'])[1],
+                $row['REF_COL_NAME']
+            );
+            $outputContent($line);
+        }
+
+        foreach ($this->inspector->getUniqueConstraints($dbName) as $row) {
+            $line = \sprintf(
+                "UNIQUE CONSTRAINT | %s | %s | %s\n",
+                $row['CONSTRAINT_NAME'],
+                $row['TABLE_NAME'],
+                $row['COLUMNS']
             );
             $outputContent($line);
         }
