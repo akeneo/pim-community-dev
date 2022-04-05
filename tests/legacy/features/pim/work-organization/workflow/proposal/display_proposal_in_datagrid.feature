@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Display proposals in datagrid
   In order to summarize proposals
   As a product manager
