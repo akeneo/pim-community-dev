@@ -78,7 +78,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function itGetsASupplierByItsIdentifier(): void
+    public function itFindsASupplier(): void
     {
         $supplierRepository = $this->get(Write\Supplier\Repository::class);
 
