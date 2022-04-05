@@ -5,6 +5,7 @@ import {fireEvent, screen} from '@testing-library/react';
 import {
   columnDefinitionPropertiesMapping,
   getComplexTableAttribute,
+  getTableAttributeWithoutColumn,
   getEnUsLocale,
   getNumberColumnDefinitionWithId,
   getSelectColumnDefinitionWithId,
@@ -36,6 +37,25 @@ describe('ColumnDefinitionProperties', () => {
     ) as HTMLInputElement;
     expect(requiredForCompletenessInput).toBeInTheDocument();
     expect(requiredForCompletenessInput).toHaveAttribute('readonly');
+  });
+
+  it('should render the component even if the attribute is not yet updated', () => {
+    renderWithProviders(
+        <ColumnDefinitionProperties
+            selectedColumn={getSelectColumnDefinitionWithId()}
+            onChange={jest.fn()}
+            activeLocales={[getEnUsLocale()]}
+            catalogLocaleCode={'en_US'}
+            isDuplicateColumnCode={() => false}
+            savedColumnIds={[]}
+            attribute={getTableAttributeWithoutColumn()}
+            columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
+        />
+    );
+
+    expect(screen.getByText(/pim_table_attribute.form.attribute.column_code/)).toBeInTheDocument();
+    expect(screen.getByText(/pim_table_attribute.form.attribute.data_type/)).toBeInTheDocument();
+    expect(screen.getByText(/pim_table_attribute.form.attribute.labels/)).toBeInTheDocument();
   });
 
   it('should callback changes', () => {
