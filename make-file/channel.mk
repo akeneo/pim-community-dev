@@ -5,7 +5,7 @@ channel-lint-back: #Doc: launch PHPStan for channel bounded context
 
 .PHONY: channel-lint-fix-back
 channel-lint-fix-back: #Doc: launch PHPStan for channel bounded context
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=.php_cs.php src/Akeneo/Channel
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=src/Akeneo/Channel/back/tests/.php_cs.php
 
 .PHONY: channel-coupling-back
 channel-coupling-back: #Doc: launch coupling detector for channel bounded context

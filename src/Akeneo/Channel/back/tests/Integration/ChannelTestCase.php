@@ -57,7 +57,7 @@ class ChannelTestCase extends TestCase
         $user->setFirstName($username);
         $user->setLastName($username);
         $user->setPassword('password');
-        $user->setEmail($username . '@example.com');
+        $user->setEmail($username.'@example.com');
 
         $groups = $this->get('pim_user.repository.group')->findAll();
         foreach ($groups as $group) {

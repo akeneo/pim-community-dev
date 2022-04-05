@@ -13,7 +13,7 @@ return (new PhpCsFixer\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->in(__DIR__ . '/..')
-            ->exclude('tests')
+            ->notName('*Spec.php')
             ->exclude('Infrastructure')
             ->name('*.php')
     );
