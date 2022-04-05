@@ -357,6 +357,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_replaces_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
+        GetNonViewableProductModels $getNonViewableProductModels,
         ProductInterface $product,
     ) {
         $associatedProductModels = [];
@@ -364,7 +365,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $associatedProductModel->setCode('foo');
         $associatedProductModels[] = $associatedProductModel;
         $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('bar');
+        $associatedProductModel->setCode('non_viewable_product_model');
         $associatedProductModels[] = $associatedProductModel;
 
         $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
@@ -374,9 +375,12 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['quux', 'quuz', 'corge']),
         ]);
 
+        $getNonViewableProductModels->fromProductModelCodes(['foo', 'non_viewable_product_model'], 42)
+            ->shouldBeCalledOnce()
+            ->willReturn(['non_viewable_product_model']);
         $productUpdater->update($product, ['associations' => [
             'X_SELL' => [
-                'product_models' => ['quux', 'quuz', 'corge'],
+                'product_models' => ['non_viewable_product_model', 'quux', 'quuz', 'corge'],
             ]
         ]])->shouldBeCalledOnce();
 
@@ -385,6 +389,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_does_nothing_if_product_models_to_associate_are_the_same_as_existing_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
+        GetNonViewableProductModels $getNonViewableProductModels,
         ProductInterface $product,
     ) {
         $associatedProductModels = [];
@@ -402,6 +407,9 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['foo', 'bar']),
         ]);
 
+        $getNonViewableProductModels->fromProductModelCodes(['foo', 'bar'], 42)
+            ->shouldBeCalledOnce()
+            ->willReturn([]);
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
         $this->apply($collection, $product, 42);
     }

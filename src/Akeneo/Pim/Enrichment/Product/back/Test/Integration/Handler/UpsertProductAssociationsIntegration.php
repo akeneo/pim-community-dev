@@ -220,7 +220,7 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
     /**
      * @return array<string>
      */
-    private function getAssociatedProductModelIdentifiers(ProductInterface $product): array
+    public function getAssociatedProductModelIdentifiers(ProductInterface $product): array
     {
         return $product->getAssociatedProductModels('X_SELL')
             ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())

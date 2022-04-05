@@ -97,7 +97,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 }
                 $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
                     \array_unique(
-                        \array_merge($nonViewableProductModelIdentifiers,$associationUserIntent->productModelIdentifiers())
+                        \array_merge($nonViewableProductModelIdentifiers, $associationUserIntent->productModelIdentifiers())
                     )
                 );
             }
