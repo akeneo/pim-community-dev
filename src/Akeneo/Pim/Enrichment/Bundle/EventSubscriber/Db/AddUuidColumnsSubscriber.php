@@ -55,10 +55,7 @@ class AddUuidColumnsSubscriber implements EventSubscriberInterface
     private function addUuidColumn(string $tableName, string $uuidColumName): void
     {
         $addUuidColumnSql = <<<SQL
-            ALTER TABLE `{table_name}`
-                ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL,
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE;
+            ALTER TABLE `{table_name}` ADD `{uuid_column_name}` BINARY(16) DEFAULT NULL;
         SQL;
 
         $addUuidColumnQuery = \strtr(
