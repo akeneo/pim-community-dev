@@ -12,6 +12,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/*
+ * It was possible to create reference data attribute on our Serenity instances. As reference data is for customized code, it didn't make sense. Some customers played with it and created  reference attribute, even if it cannot be used.
+ * The UI prevents it now: it's not available anymore in Serenity. Purpose of this migration is to clean the attributes in the database for our Serenity customers if reference data exists.
+ * To not play in Flexibility for 7.0 ! As reference data for these customers can exist.
+ */
 final class Version_7_0_20220323110749_remove_multi_select_reference_data_asset_attributes extends AbstractMigration implements ContainerAwareInterface
 {
     private ?ContainerInterface $container;

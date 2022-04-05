@@ -5,6 +5,7 @@ extensions:
         # aclResourceId: pimee_product_asset_index //TODO einrich
         position: 33
         targetZone: mainMenu
+        feature: reference_entity
         config:
             title: pim_reference_entity.reference_entity.title
             iconModifier: iconReferenceEntity
@@ -20,6 +21,7 @@ extensions:
     # Attribute custom fields
     pim-attribute-form-reference-entity:
         module: pim/common/simple-view
+#        feature: reference_entity
         config:
             template: pim/template/common/drop-zone
 
@@ -76,6 +78,7 @@ extensions:
         parent: pim-catalog-volume-index
         targetZone: content
         position: 60
+        feature: reference_entity
         config:
             title: pim_catalog_volume.section.reference_entity.title
             hint:
@@ -91,6 +94,7 @@ extensions:
 
     akeneo-attribute-reference-entity-collection-filter:
         module: pimee/filter/attribute/reference-entity-collection
+        feature: reference_entity
         config:
             url: akeneo_reference_entities_record_index_rest
             operators:

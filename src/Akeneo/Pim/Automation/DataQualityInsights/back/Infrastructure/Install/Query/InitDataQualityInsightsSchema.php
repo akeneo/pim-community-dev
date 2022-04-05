@@ -23,7 +23,7 @@ final class InitDataQualityInsightsSchema
 CREATE TABLE pimee_data_quality_insights_text_checker_dictionary (
     id INT AUTO_INCREMENT NOT NULL,
     locale_code VARCHAR(20) NOT NULL,
-    word VARCHAR(250) NOT NULL,
+    word VARCHAR(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
     PRIMARY KEY (id),
     UNIQUE unique_locale_word (locale_code, word)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

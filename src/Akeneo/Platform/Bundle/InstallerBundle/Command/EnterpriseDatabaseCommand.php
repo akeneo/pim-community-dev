@@ -57,6 +57,7 @@ CREATE TABLE `pimee_teamwork_assistant_completeness_per_attribute_group` (
     `has_at_least_one_required_attribute_filled` TINYINT(1) NOT NULL, 
     `is_complete` TINYINT(1) NOT NULL,
     `calculated_at` DATETIME NOT NULL,
+    `product_uuid` BINARY(16) DEFAULT NULL,
     PRIMARY KEY(`locale_id`, `channel_id`, `product_id`, `attribute_group_id`),
     KEY `attr_grp_completeness_locale_index` (`locale_id`),
     KEY `attr_grp_completeness_channel_index` (`channel_id`),
@@ -72,6 +73,7 @@ DROP TABLE IF EXISTS `pimee_teamwork_assistant_project_product`;
 CREATE TABLE `pimee_teamwork_assistant_project_product` (
   `project_id` INT NOT NULL,
   `product_id` INT NOT NULL,
+  `product_uuid` BINARY(16) DEFAULT NULL,
   PRIMARY KEY (`project_id`,`product_id`),
   KEY `product_selection_project_index` (`project_id`),
   KEY `product_selection_product_index`  (`product_id`),

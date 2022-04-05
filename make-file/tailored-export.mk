@@ -21,11 +21,7 @@ endif
 
 .PHONY: acceptance-back
 acceptance-back: #Doc: launch PHPUnit acceptance tests for tailored export
-ifeq ($(CI),true)
-	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/tests/phpunit-ee.xml --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite TailoredExport_Acceptance_Test
-else
-	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/tests/phpunit-ee.xml --testsuite TailoredExport_Acceptance_Test $(O)
-endif
+	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/tailored-export/back/tests/phpunit-ee.xml --log-junit var/tests/phpunit/phpunit_tailored_export_acceptance.xml --testsuite TailoredExport_Acceptance_Test $(O)
 
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back

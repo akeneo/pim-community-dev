@@ -40,6 +40,7 @@ CSV;
     protected function loadFixtures(): void
     {
         $this->get('feature_flags')->enable('asset_manager');
+        $this->get('feature_flags')->enable('reference_entity');
         $this->createAttribute([
             'code'        => 'main_color',
             'type'        => 'pim_catalog_simpleselect',

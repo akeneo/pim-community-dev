@@ -68,6 +68,8 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->get('feature_flags')->enable('reference_entity');
         $this->loadFixtures();
 
         $jobInstance = $this->get('pim_enrich.repository.job_instance')
@@ -80,6 +82,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
         $this->get('akeneo_integration_tests.launcher.job_execution_observer')->purge(
             self::REMOVE_NON_EXISTENT_VALUES_JOB
         );
+
     }
 
     protected function getConfiguration(): Configuration

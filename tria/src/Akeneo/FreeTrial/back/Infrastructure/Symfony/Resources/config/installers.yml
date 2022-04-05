@@ -135,10 +135,20 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.mark_product_criteria_to_evaluate'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
-            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate'
         tags:
             - { name: 'free_trial.fixture_installer', alias: 'product_evaluation' }
+
+    Akeneo\FreeTrial\Infrastructure\Install\Installer\ProductModelEvaluationInstaller:
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.mark_product_model_criteria_to_evaluate'
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
+            - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_to_evaluate'
+        tags:
+            - { name: 'free_trial.fixture_installer', alias: 'product_model_evaluation' }
 
     akeneo.free_trial.installer.product_model:
         class: Akeneo\FreeTrial\Infrastructure\Install\Installer\SimpleFixtureInstaller
