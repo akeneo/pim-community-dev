@@ -13,16 +13,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
  */
 class CriteriaEvaluationRegistry
 {
-    private array $criterionEvaluationServices;
+    private array $criterionEvaluationServices = [];
 
-    public function __construct(iterable $criterionEvaluationServices)
+    public function register(EvaluateCriterionInterface $criterionEvaluationService): void
     {
-        $this->criterionEvaluationServices = [];
-        foreach ($criterionEvaluationServices as $criterionEvaluationService) {
-            if ($criterionEvaluationService instanceof EvaluateCriterionInterface) {
-                $this->criterionEvaluationServices[strval($criterionEvaluationService->getCode())] = $criterionEvaluationService;
-            }
-        }
+        $this->criterionEvaluationServices[strval($criterionEvaluationService->getCode())] = $criterionEvaluationService;
     }
 
     public function get(CriterionCode $code): EvaluateCriterionInterface
