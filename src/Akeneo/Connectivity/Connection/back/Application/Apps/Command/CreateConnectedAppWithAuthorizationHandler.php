@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInter
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
-use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -71,10 +71,9 @@ class CreateConnectedAppWithAuthorizationHandler
             throw new \LogicException('The user role should have a role code, like ROLE_*, got null.');
         }
 
-        $user = $this->createUser->execute(
+        $userId = $this->createUser->execute(
             $randomCode,
             $marketplaceApp->getName(),
-            ' ',
             [$group->getName()],
             [$role->getRole()]
         );
@@ -84,7 +83,7 @@ class CreateConnectedAppWithAuthorizationHandler
             $marketplaceApp->getName(),
             FlowType::OTHER,
             $client->getId(),
-            $user->id(),
+            $userId,
         );
 
         $this->createConnectedApp->execute(

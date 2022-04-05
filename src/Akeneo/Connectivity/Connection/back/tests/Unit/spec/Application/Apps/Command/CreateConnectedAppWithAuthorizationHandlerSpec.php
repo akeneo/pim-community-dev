@@ -10,7 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWi
 use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
-use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
@@ -236,11 +236,10 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
         $userGroup->getName()->willReturn('a_group');
         $appRoleWithScopesFactory->createRole('an_app_id', ['a_scope'])->willReturn($role);
         $role->getRole()->willReturn('ROLE_APP');
-        $createUser->execute(Argument::any(), Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn($user);
+        $createUser->execute(Argument::any(), Argument::any(), ['a_group'], ['ROLE_APP'])->willReturn(43);
 
         $client->getId()->willReturn(42);
         $app->getName()->willReturn('My App');
-        $user->id()->willReturn(43);
         $createConnection->execute(Argument::any(), 'My App', 'other', 42, 43)->willReturn($connection);
         $connection->code()->willReturn('random_connection_code');
 
