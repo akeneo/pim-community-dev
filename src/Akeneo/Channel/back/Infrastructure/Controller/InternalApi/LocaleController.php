@@ -17,38 +17,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class LocaleController
 {
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var CollectionFilterInterface */
-    protected $collectionFilter;
-
-    /**
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param NormalizerInterface       $normalizer
-     * @param CollectionFilterInterface $collectionFilter
-     */
     public function __construct(
-        LocaleRepositoryInterface $localeRepository,
-        NormalizerInterface $normalizer,
-        CollectionFilterInterface $collectionFilter
+        private LocaleRepositoryInterface $localeRepository,
+        private NormalizerInterface $normalizer,
+        private CollectionFilterInterface $collectionFilter
     ) {
-        $this->localeRepository = $localeRepository;
-        $this->normalizer = $normalizer;
-        $this->collectionFilter = $collectionFilter;
     }
 
     /**
      * Get the list of all locales
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         $filterLocales = $request->query->getBoolean('filter_locales', true);
         $locales = $request->get('activated', false) ?
@@ -60,10 +39,8 @@ class LocaleController
 
     /**
      * Get activated locales
-     *
-     * @return mixed
      */
-    protected function getActivated(bool $filterLocales)
+    private function getActivated(bool $filterLocales): mixed
     {
         $locales = $this->localeRepository->getActivatedLocales();
         $filteredLocales = $filterLocales ? $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') : $locales;

@@ -2,19 +2,18 @@
 
 namespace Akeneo\Channel\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Infrastructure\Component\Updater\ChannelUpdater;
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -29,60 +28,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ChannelController
 {
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ChannelUpdater */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RemoverInterface */
-    protected $remover;
-
-    /** @var SimpleFactoryInterface  */
-    protected $channelFactory;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /**
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param NormalizerInterface        $normalizer
-     * @param ObjectUpdaterInterface     $updater
-     * @param SaverInterface             $saver
-     * @param RemoverInterface           $remover
-     * @param SimpleFactoryInterface     $channelFactory
-     * @param ValidatorInterface         $validator
-     */
     public function __construct(
-        ChannelRepositoryInterface $channelRepository,
-        NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        SimpleFactoryInterface $channelFactory,
-        ValidatorInterface $validator
+        private ChannelRepositoryInterface $channelRepository,
+        private NormalizerInterface $normalizer,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private RemoverInterface $remover,
+        private SimpleFactoryInterface $channelFactory,
+        private ValidatorInterface $validator,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->channelRepository = $channelRepository;
-        $this->normalizer = $normalizer;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->remover = $remover;
-        $this->channelFactory = $channelFactory;
-        $this->validator = $validator;
     }
 
     /**
      * Lists all channels
-     *
-     * @return JsonResponse
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): JsonResponse
     {
         $channels = $this->channelRepository->findAll();
         $filterLocales = $request->query->getBoolean('filter_locales', true);
@@ -98,14 +59,8 @@ class ChannelController
 
     /**
      * Gets channel by code value
-     *
-     * @param string $identifier
-     *
-     * @throws HttpExceptionInterface
-     *
-     * @return JsonResponse
      */
-    public function getAction(Request $request, $identifier)
+    public function getAction(Request $request, string $identifier): JsonResponse
     {
         $channel = $this->getChannel($identifier);
         $filterLocales = $request->query->getBoolean('filter_locales', true);
@@ -121,19 +76,16 @@ class ChannelController
 
     /**
      * Saves new channel
-     *
-     * @AclAncestor("pim_enrich_channel_create")
-     *
-     * @param Request $request
-     *
-     * @throws PropertyException
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
-     *
-     * @return Response
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request): Response
     {
+        if(!$this->securityFacade->isGranted('pim_enrich_channel_create')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
@@ -145,21 +97,16 @@ class ChannelController
 
     /**
      * Updates channel
-     *
-     * @AclAncestor("pim_enrich_channel_edit")
-     *
-     * @param Request $request
-     * @param string  $code
-     *
-     * @throws HttpExceptionInterface
-     * @throws PropertyException
-     * @throws \LogicException
-     * @throws \InvalidArgumentException
-     *
-     * @return Response
      */
-    public function putAction(Request $request, $code)
+    public function putAction(Request $request, string $code): Response
     {
+        if(!$this->securityFacade->isGranted('pim_enrich_channel_edit')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
@@ -171,17 +118,16 @@ class ChannelController
 
     /**
      * Removes channel
-     *
-     * @AclAncestor("pim_enrich_channel_remove")
-     *
-     * @param Request $request
-     * @param string  $code
-     *
-     * @return Response
-     * @throws HttpExceptionInterface
      */
-    public function removeAction(Request $request, $code)
+    public function removeAction(Request $request, string $code): Response
     {
+        if(!$this->securityFacade->isGranted('pim_enrich_channel_remove')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
@@ -197,14 +143,7 @@ class ChannelController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @param $code
-     *
-     * @throws HttpExceptionInterface
-     *
-     * @return ChannelInterface
-     */
-    protected function getChannel($code)
+    private function getChannel(string $code): ChannelInterface
     {
         $channel = $this->channelRepository->findOneBy(
             [
@@ -221,17 +160,7 @@ class ChannelController
         return $channel;
     }
 
-    /**
-     * @param ChannelInterface $channel
-     * @param Request          $request
-     *
-     * @throws \LogicException
-     * @throws PropertyException
-     * @throws \InvalidArgumentException
-     *
-     * @return JsonResponse
-     */
-    protected function saveChannel($channel, $request)
+    private function saveChannel(ChannelInterface $channel, Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $this->updater->update($channel, $data);

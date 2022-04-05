@@ -2,11 +2,12 @@
 
 namespace Akeneo\Channel\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Doctrine\ORM\Repository\ApiResourceRepository;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,54 +21,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CurrencyController
 {
-    /** @var ApiResourceRepository */
-    protected $repository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /**
-     * @param ApiResourceRepository       $repository
-     * @param NormalizerInterface         $normalizer
-     * @param ParameterValidatorInterface $parameterValidator
-     * @param PaginatorInterface          $paginator
-     * @param array                       $apiConfiguration
-     */
     public function __construct(
-        ApiResourceRepository $repository,
-        NormalizerInterface $normalizer,
-        ParameterValidatorInterface $parameterValidator,
-        PaginatorInterface $paginator,
-        array $apiConfiguration
+        private ApiResourceRepository $repository,
+        private NormalizerInterface $normalizer,
+        private ParameterValidatorInterface $parameterValidator,
+        private PaginatorInterface $paginator,
+        private array $apiConfiguration,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
-        $this->parameterValidator = $parameterValidator;
-        $this->paginator = $paginator;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $code
-     *
-     * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
-     *
-     * @AclAncestor("pim_api_currency_list")
-     */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
+        if(!$this->securityFacade->isGranted('pim_api_currency_list')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         $currency = $this->repository->findOneByIdentifier($code);
         if (null === $currency) {
             throw new NotFoundHttpException(sprintf('Currency "%s" does not exist.', $code));
@@ -78,17 +50,15 @@ class CurrencyController
         return new JsonResponse($currencyApi);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @throws UnprocessableEntityHttpException
-     *
-     * @return JsonResponse
-     *
-     * @AclAncestor("pim_api_currency_list")
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
+        if(!$this->securityFacade->isGranted('pim_api_currency_list')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         try {
             $this->parameterValidator->validate($request->query->all());
         } catch (PaginationParametersException $e) {

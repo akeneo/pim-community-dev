@@ -18,6 +18,8 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.checker.query_parameters_locale'
             - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
+            - '@translator'
 
     pim_api.controller.channel:
         public: true
@@ -34,6 +36,7 @@ services:
             - '@pim_catalog.saver.channel'
             - '@pim_api.stream.channel_partial_update_stream'
             - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.rest.channel:
         public: true
@@ -46,6 +49,7 @@ services:
             - '@pim_catalog.remover.channel'
             - '@pim_catalog.factory.channel'
             - '@validator'
+            - '@oro_security.security_facade'
 
     pim_api.controller.currency:
         public: true
@@ -56,6 +60,7 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.pagination.offset_hal_paginator'
             - '%pim_api.configuration%'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.rest.currency:
         public: true
@@ -67,5 +72,5 @@ services:
         public: true
         class: 'Akeneo\Channel\Infrastructure\Controller\UI\CurrencyController'
         arguments:
-            - '@router'
             - '@pim_catalog.saver.currency'
+            - '@oro_security.security_facade'

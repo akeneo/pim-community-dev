@@ -4,10 +4,10 @@ namespace Akeneo\Channel\Infrastructure\Controller\UI;
 
 use Akeneo\Channel\Infrastructure\Component\Exception\LinkedChannelException;
 use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Currency controller for configuration
@@ -18,29 +18,24 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class CurrencyController
 {
-    /** @var RouterInterface */
-    private $router;
-
-    /** @var SaverInterface */
-    private $currencySaver;
-
     public function __construct(
-        RouterInterface $router,
-        SaverInterface $currencySaver
+        private SaverInterface $currencySaver,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->router = $router;
-        $this->currencySaver = $currencySaver;
     }
 
     /**
      * Activate/Deactivate a currency
-     *
-     * @AclAncestor("pim_enrich_currency_toggle")
-     *
-     * @return JsonResponse
      */
-    public function toggleAction(Currency $currency)
+    public function toggleAction(Currency $currency): JsonResponse
     {
+        if(!$this->securityFacade->isGranted('pim_enrich_currency_toggle')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         try {
             $currency->toggleActivation();
             $this->currencySaver->save($currency);

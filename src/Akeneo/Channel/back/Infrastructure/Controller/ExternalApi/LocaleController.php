@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Controller\ExternalApi;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Akeneo\Tool\Component\Api\Exception\PaginationParametersException;
 use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Akeneo\Tool\Component\Api\Pagination\ParameterValidatorInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,63 +24,26 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class LocaleController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $repository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var string[] */
-    protected $authorizedFieldFilters = ['enabled'];
-
-    /** @var QueryParametersCheckerInterface */
-    protected $queryParametersChecker;
-
-    /**
-     * @param ApiResourceRepositoryInterface  $repository
-     * @param NormalizerInterface             $normalizer
-     * @param PaginatorInterface              $paginator
-     * @param ParameterValidatorInterface     $parameterValidator
-     * @param QueryParametersCheckerInterface $queryParametersChecker
-     * @param array                           $apiConfiguration
-     */
     public function __construct(
-        ApiResourceRepositoryInterface $repository,
-        NormalizerInterface $normalizer,
-        PaginatorInterface $paginator,
-        ParameterValidatorInterface $parameterValidator,
-        QueryParametersCheckerInterface $queryParametersChecker,
-        array $apiConfiguration
+        private ApiResourceRepositoryInterface $repository,
+        private NormalizerInterface $normalizer,
+        private PaginatorInterface $paginator,
+        private ParameterValidatorInterface $parameterValidator,
+        private QueryParametersCheckerInterface $queryParametersChecker,
+        private array $apiConfiguration,
+        private SecurityFacadeInterface $securityFacade,
     ) {
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
-        $this->paginator = $paginator;
-        $this->parameterValidator = $parameterValidator;
-        $this->queryParametersChecker = $queryParametersChecker;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $code
-     *
-     * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
-     *
-     * @AclAncestor("pim_api_locale_list")
-     */
-    public function getAction(Request $request, $code): JsonResponse
+    public function getAction(Request $request, string $code): JsonResponse
     {
+        if(!$this->securityFacade->isGranted('pim_api_locale_list')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         $locale = $this->repository->findOneByIdentifier($code);
         if (null === $locale) {
             throw new NotFoundHttpException(sprintf('Locale "%s" does not exist.', $code));
@@ -91,17 +54,15 @@ class LocaleController
         return new JsonResponse($localeApi);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @throws UnprocessableEntityHttpException
-     *
-     * @return JsonResponse
-     *
-     * @AclAncestor("pim_api_locale_list")
-     */
     public function listAction(Request $request): JsonResponse
     {
+        if(!$this->securityFacade->isGranted('pim_api_locale_list')) {
+            throw AccessDeniedException::create(
+                __CLASS__,
+                __METHOD__,
+            );
+        }
+
         $searchCriterias = $this->validateSearchCriterias($request);
         $criterias = $this->prepareSearchCriterias($searchCriterias);
 
@@ -147,15 +108,8 @@ class LocaleController
      * Prepares criterias from search parameters
      * It throws exceptions if search parameters are not correctly filled
      * Only activated = filter is authorized today
-     *
-     * @param Request $request
-     *
-     * @throws UnprocessableEntityHttpException
-     * @throws BadRequestHttpException
-     *
-     * @return array
      */
-    protected function validateSearchCriterias(Request $request): array
+    private function validateSearchCriterias(Request $request): array
     {
         if (!$request->query->has('search')) {
             return [];
@@ -202,12 +156,8 @@ class LocaleController
      * Prepares search criterias
      * For now, only enabled filter with operator "=" are managed
      * Value is a boolean
-     *
-     * @param array $searchParameters
-     *
-     * @return array
      */
-    protected function prepareSearchCriterias(array $searchParameters): array
+    private function prepareSearchCriterias(array $searchParameters): array
     {
         if (empty($searchParameters)) {
             return [];

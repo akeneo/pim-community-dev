@@ -14,21 +14,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CurrencyController
 {
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository)
-    {
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(
+        private CurrencyRepositoryInterface $currencyRepository,
+    ) {
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function indexAction()
+    public function indexAction(): JsonResponse
     {
         $currencies = $this->currencyRepository->getActivatedCurrencies();
 
