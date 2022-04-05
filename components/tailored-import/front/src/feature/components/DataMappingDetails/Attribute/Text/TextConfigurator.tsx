@@ -5,7 +5,7 @@ import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {CLEAN_HTML_TAGS_TYPE} from '../../Operation';
-import {ClearIfEmpty} from "../../common/ClearIfEmpty";
+import {ClearIfEmpty} from '../../common/ClearIfEmpty';
 
 const TextConfigurator = ({
   dataMapping,

@@ -5,7 +5,7 @@ import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
-import {ClearIfEmpty} from "../../common/ClearIfEmpty";
+import {ClearIfEmpty} from '../../common/ClearIfEmpty';
 
 const NumberConfigurator = ({
   dataMapping,
@@ -21,7 +21,6 @@ const NumberConfigurator = ({
   const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
   if (!isNumberTarget(target)) {
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for number configurator`);
-
   }
 
   const handleSourceParameterChange = (updatedSourceParameter: NumberSourceParameter) =>

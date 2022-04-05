@@ -11,7 +11,7 @@ import {
 } from '../../models';
 import {useAttribute} from '../../hooks';
 import {IdentifierConfigurator, MeasurementConfigurator, NumberConfigurator, TextConfigurator} from './Attribute';
-import {AttributeDoesNotExist} from "./Placeholder";
+import {AttributeDoesNotExist} from './Placeholder';
 
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;

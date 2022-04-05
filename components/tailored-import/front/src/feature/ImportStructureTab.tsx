@@ -36,9 +36,8 @@ const ImportStructureTab = ({
   validationErrors,
   onStructureConfigurationChange,
 }: ImportStructureTabProps) => {
-  const [structureConfiguration, setStructureConfiguration] = useState<StructureConfiguration>(
-    initialStructureConfiguration
-  );
+  const [structureConfiguration, setStructureConfiguration] =
+    useState<StructureConfiguration>(initialStructureConfiguration);
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
   const selectedDataMapping =
     structureConfiguration.import_structure.data_mappings.find(

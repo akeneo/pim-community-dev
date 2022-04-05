@@ -7,7 +7,7 @@ import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError'
 import {useMeasurementFamily} from '../../../../hooks';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
-import {ClearIfEmpty} from "../../common/ClearIfEmpty";
+import {ClearIfEmpty} from '../../common/ClearIfEmpty';
 
 const MeasurementConfigurator = ({
   dataMapping,

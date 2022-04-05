@@ -1,7 +1,7 @@
 import React from 'react';
-import {Checkbox} from "akeneo-design-system";
-import {useTranslate} from "@akeneo-pim-community/shared";
-import {AttributeTarget} from "../../../models";
+import {Checkbox} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {AttributeTarget} from '../../../models';
 
 type ClearIfEmptyProps = {
   target: AttributeTarget;
@@ -20,6 +20,6 @@ const ClearIfEmpty = ({target, onTargetChange}: ClearIfEmptyProps) => {
       {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
     </Checkbox>
   );
-}
+};
 
 export {ClearIfEmpty};
