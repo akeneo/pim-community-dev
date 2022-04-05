@@ -10,6 +10,9 @@ $builder = new RuleBuilder();
 
 $rules = [
     $builder->only([
+        'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+        'Oro\Bundle\SecurityBundle\Exception\AccessDeniedException',
+
         // Rules from Akeneo\Channel\Bundle
 
         'Doctrine',
@@ -17,7 +20,6 @@ $rules = [
         'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\Channel',
-        'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Twig',
 
         // TIP-939: Remove filter system for permissions
