@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -23,9 +24,9 @@ use Prophecy\Argument;
  */
 class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $productUpdater)
+    function let(ObjectUpdaterInterface $productUpdater, GetNonViewableProducts $getNonViewableProducts)
     {
-        $this->beConstructedWith($productUpdater);
+        $this->beConstructedWith($productUpdater, $getNonViewableProducts);
     }
 
     function it_is_initializable()
@@ -207,6 +208,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_replaces_associated_products(
         ObjectUpdaterInterface $productUpdater,
+        GetNonViewableProducts $getNonViewableProducts,
         ProductInterface $product,
     ) {
         $associatedProducts = [];
@@ -214,7 +216,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $associatedProduct->setIdentifier('baz');
         $associatedProducts[] = $associatedProduct;
         $associatedProduct = new Product();
-        $associatedProduct->setIdentifier('qux');
+        $associatedProduct->setIdentifier('non_viewable_product');
         $associatedProducts[] = $associatedProduct;
 
         $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
@@ -224,11 +226,16 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProducts('X_SELL', ['quux', 'quuz', 'corge']),
         ]);
 
+        // product is updated with new values and non viewable product identifiers
         $productUpdater->update($product, ['associations' => [
             'X_SELL' => [
-                'products' => ['quux', 'quuz', 'corge'],
+                'products' => ['non_viewable_product', 'quux', 'quuz', 'corge'],
             ]
         ]])->shouldBeCalledOnce();
+
+        $getNonViewableProducts->fromProductIdentifiers(['baz', 'non_viewable_product'], 42)
+            ->shouldBeCalled()
+            ->willReturn(['non_viewable_product']);
 
         $this->apply($collection, $product, 42);
     }
