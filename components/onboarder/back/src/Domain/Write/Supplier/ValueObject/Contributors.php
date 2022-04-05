@@ -16,12 +16,7 @@ final class Contributors implements \Countable
 
     public static function fromEmails(array $contributorEmails): self
     {
-        $contributors = [];
-        foreach ($contributorEmails as $email) {
-            $contributors[] = Contributor::fromEmail($email);
-        }
-
-        return new self($contributors);
+        return new self(array_map(fn (string $email) => Contributor::fromEmail($email), $contributorEmails));
     }
 
     public function toArray(): array
