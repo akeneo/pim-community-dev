@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInte
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
@@ -57,6 +58,8 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
     private CountAssetsInterface $countAssets;
     private JobRepositoryInterface $jobRepository;
     private int $batchSize;
+    /** TODO pullup master: remove nullable for $eventAggregator */
+    private ?EventAggregatorInterface $eventAggregator;
 
     /** @var TransformationCollection[] */
     private array $cachedTransformationsPerAssetFamily = [];
@@ -71,7 +74,9 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         ValidatorInterface $validator,
         CountAssetsInterface $countAssets,
         JobRepositoryInterface $jobRepository,
-        int $batchSize
+        int $batchSize,
+        /** TODO pullup master: remove nullable for $eventAggregator */
+        EventAggregatorInterface $eventAggregator = null
     ) {
         $this->findIdentifiersByAssetFamily = $findIdentifiersByAssetFamily;
         $this->getTransformations = $getTransformations;
@@ -83,6 +88,7 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         $this->countAssets = $countAssets;
         $this->jobRepository = $jobRepository;
         $this->batchSize = $batchSize;
+        $this->eventAggregator = $eventAggregator;
     }
 
     public function setStepExecution(StepExecution $stepExecution)
@@ -118,6 +124,11 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
 
         $this->stepExecution->setTotalItems($totalItems);
         $this->doExecute($assetIdentifiers);
+
+        /** TODO pullup master: remove this condition as eventAggregator won't be null */
+        if (null !== $this->eventAggregator) {
+            $this->eventAggregator->flushEvents();
+        }
     }
 
     /**

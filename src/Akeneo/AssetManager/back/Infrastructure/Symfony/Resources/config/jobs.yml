@@ -225,4 +225,5 @@ services:
             - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.count_assets'
             - '@akeneo_batch.job_repository'
             - 100
+            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.index_asset_event_aggregator'
         public: false
