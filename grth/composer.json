@@ -43,8 +43,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-master",
-        "doctrine/doctrine-bundle": "2.5.2",
+        "akeneo/pim-community-dev": "6.0.x-dev@dev",
         "grpc/grpc": "1.30.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",

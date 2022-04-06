@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10311: [Backport PIM-10285] Fix concurrent bulk publish issue
+- PIM-10388: Fix error after creating the first column in an empty table attribute
 
 # 6.0.20 (2022-04-01)
 
