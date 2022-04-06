@@ -56,10 +56,6 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $insertQueriesParameters = [];
         $insertQueriesParametersTypes = [];
 
-        $deleteQueries = '';
-        $deleteQueriesParameters = [];
-        $deleteQueriesParametersTypes = [];
-
         foreach ($productsScores as $index => $productScore) {
             Assert::isInstanceOf($productScore, Write\ProductScores::class);
             $productId = sprintf('productId_%d', $index);
@@ -68,34 +64,16 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
 
             $insertQueries .= <<<SQL
 INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
-ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
+VALUES (:$productId, :$evaluatedAt, :$scores);
 SQL;
 
             $insertQueriesParameters[$productId] = $productScore->getProductId()->toInt();
             $insertQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
             $insertQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
             $insertQueriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
-
-            // We need to delete younger product scores after inserting the new ones,
-            // so we insure to have 1 product score per product
-            $deleteQueries .= <<<SQL
-DELETE old_scores
-FROM pim_data_quality_insights_product_score AS old_scores
-INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
-    AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id = :$productId
-AND old_scores.evaluated_at < :$evaluatedAt;
-SQL;
-
-            $deleteQueriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $deleteQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $deleteQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
         }
 
         $this->dbConnection->executeQuery($insertQueries, $insertQueriesParameters, $insertQueriesParametersTypes);
-        $this->dbConnection->executeQuery($deleteQueries, $deleteQueriesParameters, $deleteQueriesParametersTypes);
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void

@@ -34,7 +34,6 @@ final class PurgeOutdatedData
     public function purgeAllFrom(\DateTimeImmutable $date)
     {
         $this->purgeDashboardProjectionRatesFrom($date);
-        $this->purgeProductScoresFrom($date);
     }
 
     private function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
@@ -62,11 +61,5 @@ final class PurgeOutdatedData
             );
 
         $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);
-    }
-
-    private function purgeProductScoresFrom(\DateTimeImmutable $date): void
-    {
-        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
-        $this->productScoreRepository->purgeUntil($purgeDate);
     }
 }
