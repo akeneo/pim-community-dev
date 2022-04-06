@@ -7,6 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Apps\Command;
 use Akeneo\Connectivity\Connection\Application\Apps\AppAuthorizationSessionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Service\UpdateConnectedAppRoleWithScopesInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\UpdateConnectedAppScopesQueryInterface;
@@ -26,11 +27,13 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerSpec extends ObjectBehavio
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         UpdateConnectedAppScopesQueryInterface $updateConnectedAppScopesQuery,
+        UpdateConnectedAppRoleWithScopesInterface $updateConnectedAppRoleWithScopes,
     ): void {
         $this->beConstructedWith(
             $validator,
             $appAuthorizationSession,
             $updateConnectedAppScopesQuery,
+            $updateConnectedAppRoleWithScopes,
         );
     }
 
@@ -77,6 +80,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerSpec extends ObjectBehavio
         ValidatorInterface $validator,
         AppAuthorizationSessionInterface $appAuthorizationSession,
         UpdateConnectedAppScopesQueryInterface $updateConnectedAppScopesQuery,
+        UpdateConnectedAppRoleWithScopesInterface $updateConnectedAppRoleWithScopes,
         AppAuthorization $appAuthorization,
     ): void {
         $command = new UpdateConnectedAppScopesWithAuthorizationCommand('an_app_id');
@@ -91,6 +95,10 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerSpec extends ObjectBehavio
 
         $updateConnectedAppScopesQuery
             ->execute(['a_scope'], 'an_app_id')
+            ->shouldBeCalled();
+
+        $updateConnectedAppRoleWithScopes
+            ->execute('an_app_id', ['a_scope'])
             ->shouldBeCalled();
 
         $this->handle($command);

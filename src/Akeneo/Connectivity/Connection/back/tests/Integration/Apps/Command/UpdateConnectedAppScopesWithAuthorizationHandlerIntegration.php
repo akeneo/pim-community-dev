@@ -14,6 +14,9 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -25,6 +28,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private FindOneConnectedAppByIdQuery $findOneConnectedAppByIdQuery;
     private ConnectedAppLoader $connectedAppLoader;
+    private AccessDecisionManagerInterface $accessDecisionManager;
 
     protected function getConfiguration(): Configuration
     {
@@ -39,6 +43,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->findOneConnectedAppByIdQuery = $this->get(FindOneConnectedAppByIdQuery::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
+        $this->accessDecisionManager = $this->get('security.access.decision_manager');
     }
 
     public function throwExceptionDataProvider(): array
@@ -65,14 +70,69 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
             'more scopes' => [
                 ['read_products', 'write_categories'],
                 ['delete_products', 'read_association_types', 'write_catalog_structure'],
+                [
+                    'pim_api_overall_access' => true,
+                    //Delete products
+                    'pim_api_product_list' => true,
+                    'pim_api_product_edit' => true,
+                    'pim_api_product_remove' => true,
+
+                    //Read association types
+                    'pim_api_association_type_list' => true,
+                    'pim_api_association_type_edit' => false,
+
+                    //Write catalog structure
+                    'pim_api_attribute_edit' => true,
+                    'pim_api_attribute_group_edit' => true,
+                    'pim_api_family_edit' => true,
+                    'pim_api_family_variant_edit' => true,
+
+                    //No categories access
+                    'pim_api_category_list' => false,
+                    'pim_api_category_edit' => false,
+                ],
             ],
             'less scopes' => [
                 ['delete_products', 'read_association_types', 'write_catalog_structure'],
                 ['read_products', 'write_categories'],
+                [
+                    'pim_api_overall_access' => true,
+
+                    //Read products
+                    'pim_api_product_list' => true,
+                    'pim_api_product_edit' => false,
+                    'pim_api_product_remove' => false,
+
+                    //No association types access
+                    'pim_api_association_type_list' => false,
+                    'pim_api_association_type_edit' => false,
+
+                    //Write catalog structure
+                    'pim_api_attribute_edit' => false,
+                    'pim_api_attribute_group_edit' => false,
+                    'pim_api_family_edit' => false,
+                    'pim_api_family_variant_edit' => false,
+
+                    //Write categories access
+                    'pim_api_category_list' => true,
+                    'pim_api_category_edit' => true,
+                ],
             ],
             'same scopes' => [
                 ['read_products', 'write_categories'],
                 ['read_products', 'write_categories'],
+                [
+                    'pim_api_overall_access' => true,
+
+                    //Read products
+                    'pim_api_product_list' => true,
+                    'pim_api_product_edit' => false,
+                    'pim_api_product_remove' => false,
+
+                    //Write categories access
+                    'pim_api_category_list' => true,
+                    'pim_api_category_edit' => true,
+                ],
             ],
         ];
     }
@@ -99,7 +159,7 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
     /**
      * @dataProvider scopesDataProvider
      */
-    public function test_it_updates_scopes(array $oldScopes, array $newScopes)
+    public function test_it_updates_scopes(array $oldScopes, array $newScopes, array $expectedAcls): void
     {
         $appId = '0dfce574-2238-4b13-b8cc-8d257ce7645b';
 
@@ -123,5 +183,18 @@ class UpdateConnectedAppScopesWithAuthorizationHandlerIntegration extends TestCa
 
         $foundApp = $this->findOneConnectedAppByIdQuery->execute($appId);
         Assert::assertEquals($newScopes, $foundApp->getScopes());
+        $this->assertRoleIsUpdatedWithAcls('ROLE_AKENEO_PRINT', $expectedAcls);
+    }
+
+    private function assertRoleIsUpdatedWithAcls(string $role, array $acls): void
+    {
+        $token = new UsernamePasswordToken('username', null, 'main', [$role]);
+
+        foreach ($acls as $acl => $expectedValue) {
+            \assert(\is_bool($expectedValue));
+
+            $isAllowed = $this->accessDecisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
+            $this->assertEquals($expectedValue, $isAllowed, "$acl differs from expected value: $isAllowed");
+        }
     }
 }
