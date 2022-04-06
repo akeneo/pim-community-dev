@@ -30,6 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: Primero, díganos cuál es su principal misión, para que podamos ayudarle con el contenido más relevante.
   why_is_it_needed: '¿Por qué necesitamos esta información?'
+  save_button: Guardar y acceder a la App Store
   selector:
     placeholder: Seleccione una opción
     not_found: No se encontraron resultados
