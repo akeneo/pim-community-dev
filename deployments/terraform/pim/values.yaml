@@ -331,6 +331,14 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    clean-completeness-evaluation-results:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      schedule: "30 0 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
 
 # Onboarder
 onboarder:
