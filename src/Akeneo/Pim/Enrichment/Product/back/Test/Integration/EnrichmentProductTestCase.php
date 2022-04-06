@@ -209,8 +209,8 @@ abstract class EnrichmentProductTestCase extends TestCase
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
         $id = $stmt->fetchOne();
         Assert::assertNotNull($id);
-        return \intval($id);
 
+        return \intval($id);
     }
 
     protected function clearDoctrineUoW(): void
