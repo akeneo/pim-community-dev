@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.21 (2022-04-06)
+
 ## Bug fixes
 
 - PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
