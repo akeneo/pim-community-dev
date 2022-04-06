@@ -76,8 +76,8 @@ class XlsxFileReader implements XlsxFileReaderInterface
 
     public function readColumnValues(?string $sheetName, int $productLine, int $columnIndex): array
     {
-        $values = [];
         $rows = $this->readRows($sheetName, $productLine);
+
         return array_map(static fn (array $row) => $row[$columnIndex], $rows);
     }
 
@@ -124,7 +124,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
 
         return array_map(
             static fn (array $row) => array_pad($row, $maxCellPerRow, ''),
-            $rows
+            $rows,
         );
     }
 

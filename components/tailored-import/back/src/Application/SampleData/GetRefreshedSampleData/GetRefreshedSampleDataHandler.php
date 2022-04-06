@@ -25,7 +25,7 @@ final class GetRefreshedSampleDataHandler
         $extractedColumn = $fileReader->readColumnValues(
             $getRefreshedSampleDataQuery->sheetName,
             $getRefreshedSampleDataQuery->productLine,
-            $getRefreshedSampleDataQuery->columnIndex
+            $getRefreshedSampleDataQuery->columnIndex,
         );
 
         $sampleData = ReplaceSampleData::fromExtractedColumn($extractedColumn, $getRefreshedSampleDataQuery->currentSample);

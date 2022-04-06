@@ -21,7 +21,7 @@ jest.mock('../../AttributeTargetParameters');
 
 test('It displays an identifier configurator', async () => {
   const attribute = getIdentifierAttribute();
-  const dataMapping = createAttributeDataMapping('sku', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <IdentifierConfigurator
@@ -46,7 +46,7 @@ test('It displays an identifier configurator', async () => {
 
 test('it should display validation errors', async () => {
   const attribute = getIdentifierAttribute();
-  const dataMapping = createAttributeDataMapping('sku', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   const validationErrors: ValidationError[] = [
     {

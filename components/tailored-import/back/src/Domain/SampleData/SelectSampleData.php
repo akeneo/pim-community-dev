@@ -11,15 +11,14 @@ namespace Akeneo\Platform\TailoredImport\Domain\SampleData;
 final class SelectSampleData
 {
     public const NUMBER_OF_VALUES = 3;
-    public const SAMPLE_DATA_MAX_LENGTH = 100;
 
     public static function fromExtractedColumn(array $extractedColumn, int $length = self::NUMBER_OF_VALUES): array
     {
-        $uniqueValues = self::filterUniqueValues($extractedColumn);
+        $formattedValues = FormatSampleData::format($extractedColumn);
+        $uniqueValues = self::filterUniqueValues($formattedValues);
         $pickedValues = self::pickRandomValues($uniqueValues, $length);
-        $sampleData = self::formatValues($pickedValues);
 
-        return self::fillBlankValues($sampleData, $length);
+        return self::fillBlankValues($pickedValues, $length);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array
@@ -30,18 +29,6 @@ final class SelectSampleData
     private static function filterUniqueValues(array $sampleData): array
     {
         return \array_unique($sampleData);
-    }
-
-    private static function formatValues(array $sampleData): array
-    {
-        return \array_map(
-            static fn (string $value): string => \mb_substr(
-                $value,
-                0,
-                self::SAMPLE_DATA_MAX_LENGTH,
-            ),
-            $sampleData,
-        );
     }
 
     private static function pickRandomValues(array $sampleData, int $length): array

@@ -33,7 +33,7 @@ test('it does not display a decimal separator selector if attribute does not sup
     decimals_allowed: false,
   };
 
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
+  const dataMapping = createAttributeDataMapping(numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
@@ -55,7 +55,7 @@ test('it does not display a decimal separator selector if attribute does not sup
 
 test('it displays a decimal separator selector if attribute supports decimal numbers', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
+  const dataMapping = createAttributeDataMapping(numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
@@ -77,7 +77,7 @@ test('it displays a decimal separator selector if attribute supports decimal num
 
 test('it displays all decimal separators when opening the dropdown', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
+  const dataMapping = createAttributeDataMapping(numberAttribute, []);
 
   await renderWithProviders(
     <NumberConfigurator
@@ -107,7 +107,7 @@ test('it displays all decimal separators when opening the dropdown', async () =>
 
 test('it defines the decimal separator of the target', async () => {
   const numberAttribute = getNumberAttributeWithDecimal();
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', numberAttribute, []);
+  const dataMapping = createAttributeDataMapping(numberAttribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -136,7 +136,7 @@ test('it defines the decimal separator of the target', async () => {
 
 test('it defines if the attribute should be cleared when empty', async () => {
   const attribute = getNumberAttributeWithDecimal();
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -186,7 +186,7 @@ test('it throws an error if we setup this component with a wrong target', async 
 
 test('it should display validation errors', async () => {
   const attribute = getNumberAttributeWithDecimal();
-  const dataMapping = createAttributeDataMapping('alcohol_percentage', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   const validationErrors: ValidationError[] = [
     {

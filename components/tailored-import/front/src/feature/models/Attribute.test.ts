@@ -1,4 +1,4 @@
-import {Attribute, isMultiSourceAttribute, isIdentifierAttribute} from './Attribute';
+import {Attribute, isMultiSourceAttribute} from './Attribute';
 
 const createAttribute = (type: string): Attribute => ({
   code: type,

@@ -12,18 +12,19 @@ final class ReplaceSampleData
 {
     public static function fromExtractedColumn(array $extractedColumn, array $currentSample): ?string
     {
-        $cleanedExtract = self::removeAlreadyPickedSample($extractedColumn, $currentSample);
+        $formattedValues = FormatSampleData::format($extractedColumn);
+        $cleanedExtract = self::removeAlreadyPickedSample($formattedValues, $currentSample);
 
         return self::extractOneNewUnpickedValue($cleanedExtract);
     }
 
     private static function removeAlreadyPickedSample(array $extractedColumn, array $currentSample): array
     {
-        return array_diff($extractedColumn, $currentSample);
+        return \array_diff($extractedColumn, $currentSample);
     }
 
     private static function extractOneNewUnpickedValue(array $cleanedExtract): ?string
     {
-        return current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
+        return \current(SelectSampleData::fromExtractedColumn($cleanedExtract, 1));
     }
 }

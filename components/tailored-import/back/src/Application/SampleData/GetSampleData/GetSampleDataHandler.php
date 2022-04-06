@@ -25,7 +25,7 @@ final class GetSampleDataHandler
         $extractedColumn = $fileReader->readColumnValues(
             $getSampleDataQuery->sheetName,
             $getSampleDataQuery->productLine,
-            $getSampleDataQuery->columnIndex
+            $getSampleDataQuery->columnIndex,
         );
 
         $sampleData = SelectSampleData::fromExtractedColumn($extractedColumn);

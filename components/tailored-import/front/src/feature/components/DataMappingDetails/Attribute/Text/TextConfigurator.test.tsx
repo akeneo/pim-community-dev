@@ -22,7 +22,7 @@ jest.mock('../../AttributeTargetParameters');
 
 test('It display a text configurator', async () => {
   const attribute = getTextAttribute();
-  const dataMapping = createAttributeDataMapping('name', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <TextConfigurator
@@ -45,7 +45,7 @@ test('It display a text configurator', async () => {
 
 test('it defines if the attribute should be cleared when empty', async () => {
   const attribute = getTextAttribute();
-  const dataMapping = createAttributeDataMapping('name', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -96,7 +96,7 @@ test('it throws an error if we setup this component with a wrong target', async 
 
 test('it should display validation errors', async () => {
   const attribute = getTextAttribute();
-  const dataMapping = createAttributeDataMapping('name', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   const validationErrors: ValidationError[] = [
     {

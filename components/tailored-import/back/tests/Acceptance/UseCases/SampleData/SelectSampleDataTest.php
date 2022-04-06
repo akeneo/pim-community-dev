@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\SampleData;
 
+use Akeneo\Platform\TailoredImport\Domain\SampleData\FormatSampleData;
 use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
 use PHPUnit\Framework\TestCase;
 
@@ -42,18 +43,17 @@ class SelectSampleDataTest extends TestCase
     public function test_it_truncates_every_long_values(): void
     {
         $column = [
-            \str_repeat('a', SelectSampleData::SAMPLE_DATA_MAX_LENGTH),
-            \str_repeat('a', SelectSampleData::SAMPLE_DATA_MAX_LENGTH + 1),
-            \str_repeat('a', SelectSampleData::SAMPLE_DATA_MAX_LENGTH + 10),
+            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH),
+            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1),
+            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 10),
             'value2',
         ];
         $result = SelectSampleData::fromExtractedColumn($column);
 
-        foreach ($result as $sampleData) {
-            $this->assertLessThanOrEqual(
-                SelectSampleData::SAMPLE_DATA_MAX_LENGTH,
-                \mb_strlen($sampleData),
-            );
-        };
+        $this->assertEqualsCanonicalizing([
+            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH),
+            'value2',
+            null,
+        ], $result);
     }
 }
