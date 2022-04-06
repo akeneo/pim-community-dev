@@ -32,7 +32,6 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
-            "Akeneo\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test",
             "Akeneo\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",
