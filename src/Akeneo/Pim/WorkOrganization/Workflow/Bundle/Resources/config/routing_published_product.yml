@@ -19,7 +19,3 @@ pimee_datagrid_export:
 external_api_published_product:
     resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/published_product.yml'
     prefix: /api/rest/v1
-
-external_api_product_model:
-    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/product_model.yml'
-    prefix: /api/rest/v1
