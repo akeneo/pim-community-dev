@@ -10,7 +10,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transfo
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +25,7 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
     protected static $defaultName = 'pim:data-quality-insights:clean-completeness-evaluation-results';
     protected static $defaultDescription = 'Clean the results of the products completeness criteria to replace the list of attributes codes by their number.';
 
-    private const BULK_SIZE = 1000;
+    private int $bulkSize = 200;
 
     public function __construct(
         private Connection $dbConnection
@@ -31,8 +33,18 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
         parent::__construct();
     }
 
+    protected function configure()
+    {
+        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', $this->bulkSize));
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (null !== $input->getOption('bulk-size')) {
+            $this->bulkSize = \intval($input->getOption('bulk-size'));
+            Assert::greaterThan($this->bulkSize, 0, 'Bulk size must be greater than zero.');
+        }
+
         if (!$this->taskCanBeStarted(self::$defaultName)) {
             $output->writeln('This task has already been performed or is in progress.', OutputInterface::VERBOSITY_VERBOSE);
             return Command::SUCCESS;
@@ -74,7 +86,7 @@ final class CleanCompletenessEvaluationResultsCommand extends Command
 
     private function getBulksOfCriterionResultsToClean(string $tableName): \Generator
     {
-        $limit = self::BULK_SIZE;
+        $limit = $this->bulkSize;
 
         $query = <<<SQL
 SELECT product_id, criterion_code, status ,result
@@ -137,7 +149,9 @@ SQL;
             fn ($attributesByLocale) => array_map(
                 fn ($attributes) => count($attributes),
                 $attributesByLocale
-            ), $attributesList);
+            ),
+            $attributesList
+        );
     }
 
     private function saveBulkOfCleanedResults(string $tableName, array $cleanedResults): void
