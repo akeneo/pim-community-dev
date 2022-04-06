@@ -226,7 +226,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             new SetCategories(['print', 'sales']),
             new SetSimpleSelectValue('main_color', null, null, 'green'),
         ]);
-        $this->createProduct('my_product',
+        $this->createProduct(
+            'my_product',
             [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
         );
 
