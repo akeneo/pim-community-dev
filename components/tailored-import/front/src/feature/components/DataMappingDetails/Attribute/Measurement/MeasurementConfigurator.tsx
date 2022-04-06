@@ -5,9 +5,7 @@ import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {isMeasurementTarget, MeasurementSourceParameter} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {useMeasurementFamily} from '../../../../hooks';
-import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
-import {ClearIfEmpty} from '../../common/ClearIfEmpty';
+import {AttributeTargetParameters, ClearIfEmpty, DecimalSeparatorField, Operations, Sources} from '../../../../components';
 
 const MeasurementConfigurator = ({
   dataMapping,

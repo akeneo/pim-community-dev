@@ -71,7 +71,7 @@ const ImportStructureTab = ({
 
       const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn, sampleData);
 
-      setStructureConfiguration({
+      setStructureConfiguration(structureConfiguration => ({
         ...structureConfiguration,
         import_structure: {
           ...structureConfiguration.import_structure,
@@ -80,7 +80,7 @@ const ImportStructureTab = ({
         },
         file_key: fileKey,
         file_structure: fileStructure,
-      });
+      }));
     }
   };
 

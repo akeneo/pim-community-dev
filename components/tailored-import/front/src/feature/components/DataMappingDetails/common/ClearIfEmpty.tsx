@@ -5,7 +5,6 @@ import {AttributeTarget} from '../../../models';
 
 type ClearIfEmptyProps = {
   target: AttributeTarget;
-
   onTargetChange: (target: AttributeTarget) => void;
 };
 

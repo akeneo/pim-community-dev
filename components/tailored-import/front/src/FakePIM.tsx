@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
@@ -119,9 +119,7 @@ const FakePIM = () => {
     fetchJobConfiguration();
   }, [route]);
 
-  if (null === jobConfiguration) return null;
-
-  const handleStructureConfigurationChange = (newStructureConfiguration: StructureConfiguration): void => {
+  const handleStructureConfigurationChange = useCallback((newStructureConfiguration: StructureConfiguration) => {
     setJobConfiguration(jobConfiguration => ({
       ...jobConfiguration,
       configuration: {
@@ -129,7 +127,9 @@ const FakePIM = () => {
         ...newStructureConfiguration,
       },
     }));
-  };
+  }, []);
+
+  if (null === jobConfiguration) return null;
 
   const handleGlobalSettingsChange = (newGlobalSettings: GlobalSettings) => {
     setJobConfiguration({
