@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -52,9 +53,22 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             return;
         }
 
-        $insertQueries = '';
-        $insertQueriesParameters = [];
-        $insertQueriesParametersTypes = [];
+        $values = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            return sprintf(
+                "(%d, '%s', '%s')",
+                $productScore->getProductId()->toInt(),
+                $productScore->getEvaluatedAt()->format('Y-m-d'),
+                \json_encode($productScore->getScores()->toNormalizedRates())
+            );
+        }, $productsScores));
+
+        $query = <<<SQL
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+VALUES $values AS cleaned_values
+ON DUPLICATE KEY UPDATE evaluated_at = cleaned_values.evaluated_at, scores = cleaned_values.scores;
+SQL;
+
+        $this->dbConnection->executeQuery($query);
 
         $deleteQueries = '';
         $deleteQueriesParameters = [];
@@ -64,18 +78,6 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             Assert::isInstanceOf($productScore, Write\ProductScores::class);
             $productId = sprintf('productId_%d', $index);
             $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $scores = sprintf('scores_%d', $index);
-
-            $insertQueries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
-ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
-SQL;
-
-            $insertQueriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $insertQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $insertQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $insertQueriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
 
             // We need to delete younger product scores after inserting the new ones,
             // so we insure to have 1 product score per product
@@ -94,7 +96,6 @@ SQL;
             $deleteQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
         }
 
-        $this->dbConnection->executeQuery($insertQueries, $insertQueriesParameters, $insertQueriesParametersTypes);
         $this->dbConnection->executeQuery($deleteQueries, $deleteQueriesParameters, $deleteQueriesParametersTypes);
     }
 
