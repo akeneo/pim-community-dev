@@ -127,7 +127,7 @@ interface MigrateToUuidStep
     public const UUID_COLUMN_INDEX = 1;
     public const PRIMARY_KEY_UUID_INDEX = 2;
     public const FOREIGN_KEY_INDEX = 3;
-    public const CONSTRAINTS_INDEX = 4;
+    public const UNIQUE_CONSTRAINTS_INDEX = 4;
     public const INDEXES_INDEX = 5;
 
     /**

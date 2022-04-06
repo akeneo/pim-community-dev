@@ -47,7 +47,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
                 if (null !== $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX] && !$this->constraintExists($tableName, $tableProperties[MigrateToUuidStep::FOREIGN_KEY_INDEX])) {
                     $count++;
                 }
-                foreach ($tableProperties[MigrateToUuidStep::CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
+                foreach ($tableProperties[MigrateToUuidStep::UNIQUE_CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
                     if (!$this->constraintExists($tableName, $constraintName)) {
                         $count++;
                     }
@@ -85,11 +85,11 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
                         $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                     }
                 }
-                foreach ($tableProperties[MigrateToUuidStep::CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
+                foreach ($tableProperties[MigrateToUuidStep::UNIQUE_CONSTRAINTS_INDEX] as $constraintName => $constraintColumns) {
                     if (!$this->constraintExists($tableName, $constraintName)) {
                         $this->logger->notice(sprintf('Will add %s constraint %s', $tableName, $constraintName), $logContext->toArray());
                         if (!$context->dryRun()) {
-                            $this->addConstraint($tableName, $constraintName, $constraintColumns);
+                            $this->addUniqueConstraint($tableName, $constraintName, $constraintColumns);
                             $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
                         }
                     }
@@ -166,7 +166,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
         $this->connection->executeQuery($query);
     }
 
-    private function addConstraint(string $tableName, string $constraintName, array $columnNames): void
+    private function addUniqueConstraint(string $tableName, string $constraintName, array $columnNames): void
     {
         $sql = <<<SQL
             ALTER TABLE {tableName} ADD CONSTRAINT {constraintName} UNIQUE ({columnNames}),

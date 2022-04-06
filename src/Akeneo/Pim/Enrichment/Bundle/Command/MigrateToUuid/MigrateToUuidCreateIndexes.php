@@ -20,6 +20,11 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         'pim_catalog_association' => 'IDX_CC27100147D93336',
         'pim_catalog_association_product' => 'IDX_3A3A49D45C977207',
         'pim_catalog_association_product_model_to_product' => 'IDX_3FF3ED195C977207',
+        'pim_catalog_category_product' => 'IDX_512179C15C977207',
+        'pim_catalog_group_product' => 'IDX_7AC0C83A5C977207',
+        'pim_catalog_product_unique_data' => 'IDX_E0768BA35C977207',
+        'pimee_workflow_product_draft' => 'IDX_6F63A25F5C977207',
+        'pimee_workflow_published_product' => 'UNIQ_E3566E6987DBB431',
     ];
 
     public function __construct(
