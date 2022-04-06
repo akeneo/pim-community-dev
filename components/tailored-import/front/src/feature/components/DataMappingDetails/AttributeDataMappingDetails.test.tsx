@@ -64,7 +64,7 @@ test('it displays attribute errors when attribute is not found', async () => {
           messageTemplate: 'code error message',
           parameters: {},
           message: '',
-          propertyPath: '',
+          propertyPath: '[target][code]',
           invalidValue: '',
         },
       ]}
@@ -75,6 +75,7 @@ test('it displays attribute errors when attribute is not found', async () => {
     />
   );
 
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.attribute_not_found')).toBeInTheDocument();
   expect(screen.getByText('code error message')).toBeInTheDocument();
 });
 

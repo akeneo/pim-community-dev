@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 import {
@@ -22,7 +22,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   gap: 40px;
-  height: 100%;
+  height: calc(100vh - 278px);
 `;
 
 type ImportStructureTabProps = {
@@ -32,10 +32,12 @@ type ImportStructureTabProps = {
 };
 
 const ImportStructureTab = ({
-  structureConfiguration,
+  structureConfiguration: initialStructureConfiguration,
   validationErrors,
   onStructureConfigurationChange,
 }: ImportStructureTabProps) => {
+  const [structureConfiguration, setStructureConfiguration] =
+    useState<StructureConfiguration>(initialStructureConfiguration);
   const [selectedDataMappingUuid, setSelectedDataMappingUuid] = useState<string | null>(null);
   const selectedDataMapping =
     structureConfiguration.import_structure.data_mappings.find(
@@ -43,6 +45,10 @@ const ImportStructureTab = ({
     ) ?? null;
   const attributeFetcher = useFetchers().attribute;
   const sampleDataFetcher = useSampleDataFetcher();
+
+  useEffect(() => {
+    onStructureConfigurationChange(structureConfiguration);
+  }, [onStructureConfigurationChange, structureConfiguration]);
 
   const handleFileStructureInitialized = async (
     fileKey: string,
@@ -65,7 +71,7 @@ const ImportStructureTab = ({
 
       const dataMapping = createDefaultDataMapping(attributeIdentifier, identifierColumn, sampleData);
 
-      onStructureConfigurationChange({
+      setStructureConfiguration(structureConfiguration => ({
         ...structureConfiguration,
         import_structure: {
           ...structureConfiguration.import_structure,
@@ -74,12 +80,12 @@ const ImportStructureTab = ({
         },
         file_key: fileKey,
         file_structure: fileStructure,
-      });
+      }));
     }
   };
 
   const handleDataMappingChange = (dataMapping: DataMapping) => {
-    onStructureConfigurationChange({
+    setStructureConfiguration({
       ...structureConfiguration,
       import_structure: {
         ...structureConfiguration.import_structure,
@@ -93,7 +99,7 @@ const ImportStructureTab = ({
   };
 
   const handleDataMappingAdded = (dataMapping: DataMapping): void => {
-    onStructureConfigurationChange({
+    setStructureConfiguration({
       ...structureConfiguration,
       import_structure: {
         ...structureConfiguration.import_structure,
@@ -104,7 +110,7 @@ const ImportStructureTab = ({
   };
 
   const handleDataMappingRemoved = (dataMappingUuid: string): void => {
-    onStructureConfigurationChange({
+    setStructureConfiguration({
       ...structureConfiguration,
       import_structure: {
         ...structureConfiguration.import_structure,

@@ -1,11 +1,11 @@
 import React from 'react';
-import {Checkbox} from 'akeneo-design-system';
-import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors} from '@akeneo-pim-community/shared';
 import {isNumberTarget, NumberSourceParameter} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
+import {ClearIfEmpty} from '../../common/ClearIfEmpty';
 
 const NumberConfigurator = ({
   dataMapping,
@@ -18,18 +18,13 @@ const NumberConfigurator = ({
   onTargetChange,
 }: AttributeDataMappingConfiguratorProps) => {
   const target = dataMapping.target;
+  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
   if (!isNumberTarget(target)) {
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for number configurator`);
   }
 
-  const translate = useTranslate();
-  const decimalSeparatorErrors = filterErrors(validationErrors, '[target][decimal_separator]');
-
   const handleSourceParameterChange = (updatedSourceParameter: NumberSourceParameter) =>
     onTargetChange({...target, source_parameter: updatedSourceParameter});
-
-  const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>
-    onTargetChange({...target, action_if_empty: clearIfEmpty ? 'clear' : 'skip'});
 
   return (
     <>
@@ -39,9 +34,7 @@ const NumberConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
-          {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
-        </Checkbox>
+        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
         {attribute.decimals_allowed && (
           <DecimalSeparatorField
             value={target.source_parameter.decimal_separator}

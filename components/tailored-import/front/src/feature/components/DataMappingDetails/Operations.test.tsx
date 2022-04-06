@@ -89,6 +89,8 @@ test('it calls refresh sample data handler when user refreshes an empty data', a
 });
 
 test('it displays compatible operation when present in data mapping', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
   await renderWithProviders(
     <Operations
       dataMapping={{
@@ -109,6 +111,7 @@ test('it displays compatible operation when present in data mapping', async () =
   expect(
     screen.queryByText('akeneo.tailored_import.data_mapping.operations.unknown_operation')
   ).not.toBeInTheDocument();
+  mockedConsole.mockRestore();
 });
 
 test('it can add a compatible operation in data mapping', async () => {

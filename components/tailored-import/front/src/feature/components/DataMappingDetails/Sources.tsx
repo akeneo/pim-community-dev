@@ -8,13 +8,13 @@ import {SourceDropdown} from './SourceDropdown';
 const SourcesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
 `;
 
 const BlocksContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
+  margin-top: 10px;
 `;
 
 type SourcesProps = {
@@ -40,41 +40,35 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
 
   return (
     <SourcesContainer>
-      <div>
-        <SectionTitle sticky={0}>
-          <SectionTitle.Title level="secondary">
-            {translate('akeneo.tailored_import.data_mapping.sources.title')}
-          </SectionTitle.Title>
-        </SectionTitle>
-        {validationErrors.map((error, index) => (
-          <Helper key={index} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </div>
-      {0 < sources.length && (
-        <BlocksContainer>
-          {sources.map((uuid, index) => {
-            const column = columns.find(column => uuid === column.uuid);
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title level="secondary">
+          {translate('akeneo.tailored_import.data_mapping.sources.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      {validationErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+      <BlocksContainer>
+        {sources.map((uuid, index) => {
+          const column = columns.find(column => uuid === column.uuid);
 
-            return (
-              <Block
-                key={`${uuid}${index}`}
-                action={
-                  <IconButton
-                    icon={<CloseIcon />}
-                    onClick={() => handleRemoveSource(uuid)}
-                    title={translate('pim_common.remove')}
-                  />
-                }
-              >
-                {column ? generateColumnName(column.index, column.label) : ''}
-              </Block>
-            );
-          })}
-        </BlocksContainer>
-      )}
-      <>
+          return (
+            <Block
+              key={`${uuid}${index}`}
+              action={
+                <IconButton
+                  icon={<CloseIcon />}
+                  onClick={() => handleRemoveSource(uuid)}
+                  title={translate('pim_common.remove')}
+                />
+              }
+            >
+              {column ? generateColumnName(column.index, column.label) : ''}
+            </Block>
+          );
+        })}
         {canAddSource ? (
           <SourceDropdown columns={columnsAvailableToAddSource} onColumnSelected={handleAddSource} />
         ) : (
@@ -88,7 +82,7 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
             )}
           </Helper>
         )}
-      </>
+      </BlocksContainer>
     </SourcesContainer>
   );
 };

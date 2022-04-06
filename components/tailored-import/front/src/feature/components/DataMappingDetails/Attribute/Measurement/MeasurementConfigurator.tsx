@@ -1,12 +1,17 @@
 import React from 'react';
-import {Checkbox, Field, Helper, SelectInput} from 'akeneo-design-system';
+import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {isMeasurementTarget, MeasurementSourceParameter} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {useMeasurementFamily} from '../../../../hooks';
-import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
+import {
+  AttributeTargetParameters,
+  ClearIfEmpty,
+  DecimalSeparatorField,
+  Operations,
+  Sources,
+} from '../../../../components';
 
 const MeasurementConfigurator = ({
   dataMapping,
@@ -39,9 +44,6 @@ const MeasurementConfigurator = ({
     onTargetChange({...dataMapping.target, source_parameter: sourceParameter});
   };
 
-  const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>
-    onTargetChange({...target, action_if_empty: clearIfEmpty ? 'clear' : 'skip'});
-
   return (
     <>
       <AttributeTargetParameters
@@ -50,9 +52,7 @@ const MeasurementConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
-          {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
-        </Checkbox>
+        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
         <Field label={translate('akeneo.tailored_import.data_mapping.target.parameters.measurement_unit.title')}>
           {null !== measurementFamily && (
             <SelectInput
