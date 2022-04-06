@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts as GetNonV
 use Akeneo\Pim\Permission\Component\Query\ProductCategoryAccessQueryInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 
-class GetNonViewableProducts implements GetNonViewableProductsInterface
+final class GetNonViewableProducts implements GetNonViewableProductsInterface
 {
     public function __construct(
         private ProductCategoryAccessQueryInterface $productCategoryAccessQuery,
@@ -25,7 +25,10 @@ class GetNonViewableProducts implements GetNonViewableProductsInterface
     ) {
     }
 
-    public function fromProductIdentifiers(array $productIdentifiers, int $userId)
+    /**
+     * @inheritDoc
+     */
+    public function fromProductIdentifiers(array $productIdentifiers, int $userId): array
     {
         if (empty($productIdentifiers)) {
             return [];

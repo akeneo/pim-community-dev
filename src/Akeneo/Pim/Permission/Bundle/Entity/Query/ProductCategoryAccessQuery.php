@@ -74,8 +74,7 @@ FROM product_category
     INNER JOIN pimee_security_product_category_access category_access ON category_access.category_id = product_category.category_id
     INNER join pim_catalog_product on product_category.product_id = pim_catalog_product.id
         AND category_access.user_group_id IN (:user_groups_ids)
-WHERE pim_catalog_product.identifier IN (:product_ids)
-    AND category_access.view_items = 1
+WHERE category_access.view_items = 1
 UNION DISTINCT
 SELECT p.identifier
 FROM pim_catalog_product p
