@@ -168,7 +168,10 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
                 continue;
             }
 
-            $ids[] = \str_replace('product_', '', $value);
+            $id = \str_replace('product_', '', $value);
+            if (\is_numeric($id)) {
+                $ids[] = $id;
+            }
         }
 
         if ([] === $ids) {

@@ -139,7 +139,7 @@ class IdFilter extends AbstractFieldFilter
             }
 
             $id = \str_replace('product_', '', $value);
-            if (is_numeric($id)) {
+            if (\is_numeric($id)) {
                 $ids[] = $id;
             }
         }
