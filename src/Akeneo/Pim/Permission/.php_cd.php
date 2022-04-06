@@ -165,6 +165,8 @@ $rules = [
         'Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator',
         'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode',
 
+        'Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts'
+
     ])->in('Akeneo\Pim\Permission\Bundle'),
     $builder->only([
         'Symfony\Component',

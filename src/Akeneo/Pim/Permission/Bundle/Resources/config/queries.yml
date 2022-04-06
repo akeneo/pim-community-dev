@@ -220,8 +220,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts:
-        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\GetNonViewableProducts
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts:
+        class: Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\GetViewableProducts
         arguments:
-            - '@pimee_security.query.product_category_access_with_ids'
-            - '@pim_user.repository.user'
+            - '@akeneo.pim.permission.product.query.fetch_user_rights_on_product'
