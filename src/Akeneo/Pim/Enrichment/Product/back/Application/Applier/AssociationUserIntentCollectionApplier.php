@@ -11,7 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\Association
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
 
@@ -23,7 +23,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     public function __construct(
         private ObjectUpdaterInterface $productUpdater,
-        private GetNonViewableProducts $getNonViewableProducts
+        private GetViewableProducts $getViewableProducts
     ) {
     }
 
@@ -61,7 +61,8 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
 
-                $nonViewableProducts = $this->getNonViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
+                $viewableProducts = $this->getViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
+                $nonViewableProducts = \array_values(\array_diff($formerAssociations, $viewableProducts));
                 $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique(\array_merge($nonViewableProducts, $associationUserIntent->productIdentifiers()))
                 );

@@ -12,7 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
-use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableProducts;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -24,9 +24,9 @@ use Prophecy\Argument;
  */
 class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $productUpdater, GetNonViewableProducts $getNonViewableProducts)
+    function let(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
     {
-        $this->beConstructedWith($productUpdater, $getNonViewableProducts);
+        $this->beConstructedWith($productUpdater, $getViewableProducts);
     }
 
     function it_is_initializable()
@@ -208,7 +208,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_replaces_associated_products(
         ObjectUpdaterInterface $productUpdater,
-        GetNonViewableProducts $getNonViewableProducts,
+        GetViewableProducts $getViewableProducts,
         ProductInterface $product,
     ) {
         $associatedProducts = [];
@@ -233,9 +233,9 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             ]
         ]])->shouldBeCalledOnce();
 
-        $getNonViewableProducts->fromProductIdentifiers(['baz', 'non_viewable_product'], 42)
+        $getViewableProducts->fromProductIdentifiers(['baz', 'non_viewable_product'], 42)
             ->shouldBeCalled()
-            ->willReturn(['non_viewable_product']);
+            ->willReturn(['baz']);
 
         $this->apply($collection, $product, 42);
     }

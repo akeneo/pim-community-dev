@@ -82,7 +82,7 @@ final class UpsertProductCommand
             parentUserIntent: $parentUserIntent,
             groupUserIntent: $groupUserIntent,
             enabledUserIntent: $enabledUserIntent,
-            associationUserIntent: new AssociationUserIntentCollection($associationUserIntents),
+            associationUserIntent: empty($associationUserIntents) ? null : new AssociationUserIntentCollection($associationUserIntents),
             valueUserIntents: $valueUserIntents
         );
     }
