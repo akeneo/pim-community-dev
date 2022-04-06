@@ -218,6 +218,33 @@ test('it can remove a source', async () => {
   });
 });
 
+test('it can add an operation', async () => {
+  const handleDataMappingChange = jest.fn();
+
+  await renderWithProviders(
+    <DataMappingDetails
+      dataMapping={attributeDataMapping}
+      fileKey="/file_key"
+      fileStructure={fileStructure}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={handleDataMappingChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags'));
+
+  expect(handleDataMappingChange).toHaveBeenCalledWith({
+    ...attributeDataMapping,
+    operations: [
+      {
+        type: 'clean_html_tags',
+      },
+    ],
+  });
+});
+
 test('it can refresh a sample data', async () => {
   const handleDataMappingChange = jest.fn();
 

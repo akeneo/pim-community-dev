@@ -27,9 +27,10 @@ test('It displays an identifier configurator', async () => {
     <IdentifierConfigurator
       columns={[]}
       dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
-      onTargetChange={jest.fn()}
       onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
     />
@@ -38,7 +39,8 @@ test('It displays an identifier configurator', async () => {
   expect(screen.getByText('Attribute target parameters')).toBeInTheDocument();
   expect(screen.queryByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty')).not.toBeInTheDocument();
   expect(screen.getByText('Sources')).toBeInTheDocument();
-  expect(screen.getByText('Operations')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.identifier')).toBeInTheDocument();
 });
 
 test('it should display validation errors', async () => {
@@ -73,9 +75,10 @@ test('it should display validation errors', async () => {
     <IdentifierConfigurator
       columns={[]}
       dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
-      onTargetChange={jest.fn()}
       onSourcesChange={jest.fn()}
+      onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={validationErrors}
     />

@@ -3,6 +3,7 @@ import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier} from './Configuration';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
+import {Operation} from './Operation';
 
 type SampleData = string | null;
 
@@ -12,7 +13,7 @@ type AttributeDataMapping = {
   uuid: string;
   target: AttributeTarget;
   sources: ColumnIdentifier[];
-  operations: [];
+  operations: Operation[];
   sample_data: SampleData[];
 };
 
@@ -20,7 +21,7 @@ type PropertyDataMapping = {
   uuid: string;
   target: PropertyTarget;
   sources: ColumnIdentifier[];
-  operations: [];
+  operations: Operation[];
   sample_data: SampleData[];
 };
 

@@ -38,6 +38,11 @@ akeneo.tailored_import:
       refresh: Refresh
     operations:
       title: Operations
+      identifier: No operation available for identifier attribute
+      add: Add an operation
+      clean_html_tags: Clean HTML tags
+      no_result: No operation available
+      no_source: First, select a source, then you will have access to operations
     sources:
       title: Sources
       add:

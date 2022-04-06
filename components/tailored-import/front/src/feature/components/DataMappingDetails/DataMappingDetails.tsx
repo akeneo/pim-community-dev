@@ -12,6 +12,7 @@ import {
   isAttributeDataMapping,
   Target,
   isAttributeTarget,
+  Operation,
 } from '../../models';
 import {useSampleDataFetcher, useRefreshedSampleDataFetcher} from '../../hooks';
 import {AttributeDataMappingDetails} from './AttributeDataMappingDetails';
@@ -67,6 +68,8 @@ const DataMappingDetails = ({
     }
   };
 
+  const handleOperationsChange = (operations: Operation[]) => onDataMappingChange({...dataMapping, operations});
+
   const handleRefreshSampleData = async (indexToRefresh: number) => {
     const column = findColumnByUuid(columns, dataMapping.sources[0]);
     const refreshedData =
@@ -97,9 +100,10 @@ const DataMappingDetails = ({
             columns={columns}
             dataMapping={dataMapping}
             validationErrors={validationErrors}
-            onTargetChange={handleTargetChange}
+            onOperationsChange={handleOperationsChange}
             onRefreshSampleData={handleRefreshSampleData}
             onSourcesChange={handleSourcesChange}
+            onTargetChange={handleTargetChange}
           />
         )}
       </Container>

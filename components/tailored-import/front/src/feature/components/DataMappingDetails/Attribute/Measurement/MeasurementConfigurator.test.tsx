@@ -35,6 +35,7 @@ test('it does not display a decimal separator selector if attribute does not sup
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
@@ -56,6 +57,7 @@ test('it displays a decimal separator selector if attribute supports decimal num
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
@@ -77,6 +79,7 @@ test('it displays all decimal separators when opening the dropdown', async () =>
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
@@ -109,6 +112,7 @@ test('it defines the decimal separator of the target', async () => {
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={onTargetChange}
       attribute={attribute}
       validationErrors={[]}
@@ -140,6 +144,7 @@ test('it defines if the attribute should be cleared when empty', async () => {
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={onTargetChange}
       attribute={attribute}
       validationErrors={[]}
@@ -168,6 +173,7 @@ test('it throws an error if we setup this component with a wrong target', async 
         dataMapping={dataMapping}
         onRefreshSampleData={jest.fn()}
         onSourcesChange={jest.fn()}
+        onOperationsChange={jest.fn()}
         onTargetChange={jest.fn()}
         attribute={attribute}
         validationErrors={[]}
@@ -188,6 +194,7 @@ test('it should display a measurement unit selector', async () => {
       columns={[]}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
       attribute={attribute}
       validationErrors={[]}
@@ -216,6 +223,7 @@ test('it defines the measurement unit of the target', async () => {
       validationErrors={[]}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={onTargetChange}
     />
   );
@@ -255,6 +263,7 @@ test('it throws an error if we setup this component with an attribute without me
         validationErrors={[]}
         onRefreshSampleData={jest.fn()}
         onSourcesChange={jest.fn()}
+        onOperationsChange={jest.fn()}
         onTargetChange={jest.fn()}
       />
     );
@@ -312,6 +321,7 @@ test('it should display helper if there are validation errors', async () => {
       validationErrors={validationErrors}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
     />
   );

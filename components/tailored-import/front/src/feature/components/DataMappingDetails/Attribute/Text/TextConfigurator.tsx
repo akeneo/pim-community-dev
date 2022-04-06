@@ -5,15 +5,17 @@ import {isTextTarget} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
+import {CLEAN_HTML_TAGS_TYPE} from '../../Operation';
 
 const TextConfigurator = ({
   dataMapping,
   attribute,
   columns,
+  validationErrors,
+  onOperationsChange,
   onRefreshSampleData,
   onSourcesChange,
   onTargetChange,
-  validationErrors,
 }: AttributeDataMappingConfiguratorProps) => {
   const target = dataMapping.target;
 
@@ -44,7 +46,12 @@ const TextConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[sources]')}
         onSourcesChange={onSourcesChange}
       />
-      <Operations dataMapping={dataMapping} onRefreshSampleData={onRefreshSampleData} />
+      <Operations
+        dataMapping={dataMapping}
+        compatibleOperations={[CLEAN_HTML_TAGS_TYPE]}
+        onOperationsChange={onOperationsChange}
+        onRefreshSampleData={onRefreshSampleData}
+      />
     </>
   );
 };

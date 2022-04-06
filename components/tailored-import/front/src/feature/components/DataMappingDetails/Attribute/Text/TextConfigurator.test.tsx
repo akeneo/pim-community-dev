@@ -28,6 +28,7 @@ test('It display a text configurator', async () => {
     <TextConfigurator
       columns={[]}
       dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onTargetChange={jest.fn()}
       onSourcesChange={jest.fn()}
@@ -51,6 +52,7 @@ test('it defines if the attribute should be cleared when empty', async () => {
     <TextConfigurator
       columns={[]}
       dataMapping={dataMapping}
+      onOperationsChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
       onTargetChange={onTargetChange}
@@ -79,6 +81,7 @@ test('it throws an error if we setup this component with a wrong target', async 
         columns={[]}
         // @ts-expect-error invalid data mapping type
         dataMapping={dataMapping}
+        onOperationsChange={jest.fn()}
         onRefreshSampleData={jest.fn()}
         onSourcesChange={jest.fn()}
         onTargetChange={jest.fn()}
@@ -124,6 +127,7 @@ test('it should display validation errors', async () => {
       columns={[]}
       dataMapping={dataMapping}
       onRefreshSampleData={jest.fn()}
+      onOperationsChange={jest.fn()}
       onTargetChange={jest.fn()}
       onSourcesChange={jest.fn()}
       attribute={attribute}

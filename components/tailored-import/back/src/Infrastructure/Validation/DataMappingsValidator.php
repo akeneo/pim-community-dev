@@ -15,15 +15,12 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Query\IsMultiSourceTarget;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\Operation\CleanHTMLTagsOperationConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -138,10 +135,8 @@ class DataMappingsValidator extends ConstraintValidator
                         'message' => DataMappings::SOURCES_SHOULD_BE_UNIQUE,
                     ]),
                 ],
-                //TODO we need to validate by target type as we did in Tailored Export
-                'operations' => new Collection(['fields' => [
-                    CleanHTMLTagsOperation::TYPE => new Optional(new CleanHTMLTagsOperationConstraint()),
-                ]]),
+                // RAB-645: TODO we need to validate by target type as we did in Tailored Export
+                'operations' => new Type('array'),
                 'sample_data' => [
                     new Type('array'),
                 ],

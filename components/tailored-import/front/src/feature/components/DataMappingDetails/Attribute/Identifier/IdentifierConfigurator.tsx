@@ -1,15 +1,14 @@
 import React from 'react';
-import {Helper} from 'akeneo-design-system';
+import {Helper, SectionTitle} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
-import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
+import {AttributeTargetParameters, Sources} from '../../../../components';
 
 const IdentifierConfigurator = ({
   attribute,
   columns,
   dataMapping,
   onSourcesChange,
-  onRefreshSampleData,
   onTargetChange,
   validationErrors,
 }: AttributeDataMappingConfiguratorProps) => {
@@ -31,7 +30,14 @@ const IdentifierConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[sources]')}
         onSourcesChange={onSourcesChange}
       />
-      <Operations dataMapping={dataMapping} onRefreshSampleData={onRefreshSampleData} />
+      <div>
+        <SectionTitle sticky={0}>
+          <SectionTitle.Title level="secondary">
+            {translate('akeneo.tailored_import.data_mapping.operations.title')}
+          </SectionTitle.Title>
+        </SectionTitle>
+        <Helper>{translate('akeneo.tailored_import.data_mapping.operations.identifier')}</Helper>
+      </div>
     </>
   );
 };

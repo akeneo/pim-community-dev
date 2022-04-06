@@ -7,6 +7,7 @@ import {
   AttributeTarget,
   Column,
   ColumnIdentifier,
+  Operation,
 } from '../../models';
 import {useAttribute} from '../../hooks';
 import {IdentifierConfigurator, MeasurementConfigurator, NumberConfigurator, TextConfigurator} from './Attribute';
@@ -25,6 +26,7 @@ type AttributeDataMappingDetailsProps = {
   columns: Column[];
   dataMapping: AttributeDataMapping;
   validationErrors: ValidationError[];
+  onOperationsChange: (operations: Operation[]) => void;
   onRefreshSampleData: (index: number) => Promise<void>;
   onSourcesChange: (sources: ColumnIdentifier[]) => void;
   onTargetChange: (target: AttributeTarget) => void;
@@ -33,10 +35,11 @@ type AttributeDataMappingDetailsProps = {
 const AttributeDataMappingDetails = ({
   columns,
   dataMapping,
-  onTargetChange,
+  validationErrors,
+  onOperationsChange,
   onRefreshSampleData,
   onSourcesChange,
-  validationErrors,
+  onTargetChange,
 }: AttributeDataMappingDetailsProps) => {
   const attributeErrors = getErrorsForPath(validationErrors, '');
   const translate = useTranslate();
@@ -70,6 +73,7 @@ const AttributeDataMappingDetails = ({
       attribute={attribute}
       columns={columns}
       validationErrors={validationErrors}
+      onOperationsChange={onOperationsChange}
       onRefreshSampleData={onRefreshSampleData}
       onSourcesChange={onSourcesChange}
       onTargetChange={onTargetChange}

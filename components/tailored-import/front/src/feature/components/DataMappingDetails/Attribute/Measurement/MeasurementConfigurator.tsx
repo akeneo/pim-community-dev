@@ -12,10 +12,11 @@ const MeasurementConfigurator = ({
   dataMapping,
   columns,
   attribute,
+  validationErrors,
+  onOperationsChange,
   onRefreshSampleData,
   onSourcesChange,
   onTargetChange,
-  validationErrors,
 }: AttributeDataMappingConfiguratorProps) => {
   const target = dataMapping.target;
   if (!isMeasurementTarget(target)) {
@@ -91,7 +92,12 @@ const MeasurementConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[sources]')}
         onSourcesChange={onSourcesChange}
       />
-      <Operations dataMapping={dataMapping} onRefreshSampleData={onRefreshSampleData} />
+      <Operations
+        dataMapping={dataMapping}
+        compatibleOperations={[]}
+        onOperationsChange={onOperationsChange}
+        onRefreshSampleData={onRefreshSampleData}
+      />
     </>
   );
 };
