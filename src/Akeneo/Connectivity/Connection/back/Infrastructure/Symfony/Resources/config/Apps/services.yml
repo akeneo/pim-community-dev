@@ -47,3 +47,10 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
             - '@pim_notification.notifier'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\UpdateConnectedAppRoleWithScopes:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppRoleIdentifierQuery'
+            - '@pim_user.repository.role'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@pim_user.saver.role_with_permissions'
