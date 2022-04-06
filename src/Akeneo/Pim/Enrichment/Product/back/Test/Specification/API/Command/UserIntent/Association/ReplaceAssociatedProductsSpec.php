@@ -52,4 +52,10 @@ class ReplaceAssociatedProductsSpec extends ObjectBehavior
         $this->beConstructedWith('X_SELL', ['a', '', 'b']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    function it_cannot_be_instantiated_with_empty_association_type()
+    {
+        $this->beConstructedWith('', ['identifier1', 'identifier2']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }

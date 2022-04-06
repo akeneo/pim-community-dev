@@ -207,7 +207,10 @@ abstract class EnrichmentProductTestCase extends TestCase
             SELECT id FROM oro_user WHERE username = :username
         SQL;
         $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
-        return intval($stmt->fetchColumn());
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+        return \intval($id);
+
     }
 
     protected function clearDoctrineUoW(): void

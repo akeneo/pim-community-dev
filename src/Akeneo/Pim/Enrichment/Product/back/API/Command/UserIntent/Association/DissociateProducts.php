@@ -21,6 +21,7 @@ final class DissociateProducts implements AssociationUserIntent
     ) {
         Assert::notEmpty($productIdentifiers);
         Assert::allStringNotEmpty($productIdentifiers);
+        Assert::stringNotEmpty($associationType);
     }
 
     public function associationType(): string

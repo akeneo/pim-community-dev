@@ -20,6 +20,7 @@ final class ReplaceAssociatedProducts implements AssociationUserIntent
         private array $productIdentifiers,
     ) {
         Assert::allStringNotEmpty($productIdentifiers);
+        Assert::stringNotEmpty($associationType);
     }
 
     public function associationType(): string
