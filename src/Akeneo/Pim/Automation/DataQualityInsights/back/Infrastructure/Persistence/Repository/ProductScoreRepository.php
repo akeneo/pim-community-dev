@@ -6,9 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -52,28 +50,21 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             return;
         }
 
-        $insertQueries = '';
-        $insertQueriesParameters = [];
-        $insertQueriesParametersTypes = [];
+        $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            return sprintf(
+                "(%d, '%s', '%s')",
+                $productScore->getProductId()->toInt(),
+                $productScore->getEvaluatedAt()->format('Y-m-d'),
+                \json_encode($productScore->getScores()->toNormalizedRates())
+            );
+        }, $productsScores));
 
-        foreach ($productsScores as $index => $productScore) {
-            Assert::isInstanceOf($productScore, Write\ProductScores::class);
-            $productId = sprintf('productId_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $scores = sprintf('scores_%d', $index);
-
-            $insertQueries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores);
-SQL;
-
-            $insertQueriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $insertQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $insertQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $insertQueriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
-        }
-
-        $this->dbConnection->executeQuery($insertQueries, $insertQueriesParameters, $insertQueriesParametersTypes);
+        $this->dbConnection->executeQuery(<<<SQL
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+VALUES $insertValues AS product_score_values
+ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
+SQL
+        );
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void
