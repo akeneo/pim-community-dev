@@ -1001,7 +1001,7 @@ INDEX | akeneo_onboarder_retailer_contact | supplier_id | supplier_id
 INDEX | akeneo_onboarder_retailer_contact | user_id | user_id
 INDEX | akeneo_onboarder_serenity_supplier | PRIMARY | identifier
 INDEX | akeneo_onboarder_serenity_supplier | UC_supplier_code | code
-INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | identifier
+INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | id
 INDEX | akeneo_onboarder_serenity_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
 INDEX | akeneo_onboarder_serenity_supplier_contributor | UC_supplier_contributor_email | email
 INDEX | akeneo_onboarder_supplier | PRIMARY | id
