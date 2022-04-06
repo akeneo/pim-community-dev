@@ -15,7 +15,7 @@ onboarder_serenity_supplier_create:
 onboarder_serenity_supplier_edit:
     path: /{identifier}
     defaults:
-        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierEdit
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplier
         _feature: onboarder_serenity_supplier
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'

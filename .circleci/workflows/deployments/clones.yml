@@ -24,7 +24,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: ["grth-sirius-staging"]
+                          SOURCE_PFID: *client-to-clone-grth
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
             - test_upgrade_from_customer_db:
@@ -32,7 +32,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["grth"]
-                          SOURCE_PFID: ["grth-sirius-staging"]
+                          SOURCE_PFID: *client-to-clone-grth
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
             - test_clone_from_customer_db:
@@ -40,7 +40,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                          SOURCE_PFID: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] build_env_vars"
             - test_upgrade_from_customer_db:
@@ -48,14 +48,14 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt"]
-                          SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                          SOURCE_PFID: *client-to-clone-srnt
                   requires:
                       - "[<< matrix.PRODUCT_TYPE >>] test_clone_from-<< matrix.SOURCE_PFID >>"
             - ui_sanity_checks:
                   name: ui_sanity_checks-<< matrix.SOURCE_PFID >>
                   matrix:
                       parameters:
-                          SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                          SOURCE_PFID: *client-to-clone-srnt
                   requires:
                       - "[srnt] test_upgrade_from-<< matrix.SOURCE_PFID >>"
 

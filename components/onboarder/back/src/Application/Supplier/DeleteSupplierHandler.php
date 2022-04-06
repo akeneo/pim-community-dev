@@ -17,7 +17,7 @@ final class DeleteSupplierHandler
     public function __invoke(DeleteSupplier $deleteSupplier): void
     {
         $this->supplierRepository->delete(
-            Identifier::fromString($deleteSupplier->identifier)
+            Identifier::fromString($deleteSupplier->identifier),
         );
     }
 }

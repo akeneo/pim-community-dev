@@ -22,8 +22,8 @@ final class LabelTest extends TestCase
     {
         static::expectExceptionObject(
             new \InvalidArgumentException(
-                sprintf('The supplier label is too long. It should have %d characters or less.', 200)
-            )
+                sprintf('The supplier label is too long. It should have %d characters or less.', 200),
+            ),
         );
 
         Supplier\ValueObject\Label::fromString(str_repeat('a', 201));

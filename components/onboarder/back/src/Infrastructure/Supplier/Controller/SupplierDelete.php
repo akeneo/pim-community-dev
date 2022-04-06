@@ -15,7 +15,7 @@ final class SupplierDelete
     {
     }
 
-    public function __invoke($identifier): JsonResponse
+    public function __invoke(string $identifier): JsonResponse
     {
         ($this->deleteSupplierHandler)(new DeleteSupplier($identifier));
 

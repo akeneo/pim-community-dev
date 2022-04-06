@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Quer
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\Contributor;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -24,8 +23,8 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     public function itGetsASupplierWithContributors(): void
     {
         $this->createSupplier();
-        $this->createContributor('44ce8069-8da1-4986-872f-311737f46f03', 'contributor1@akeneo.com');
-        $this->createContributor('44ce8069-8da1-4986-872f-311737f46f04', 'contributor2@akeneo.com');
+        $this->createContributor('contributor1@example.com');
+        $this->createContributor('contributor2@example.com');
 
         $supplier = ($this->get(GetSupplier::class))(
             Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')
@@ -36,10 +35,10 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
         static::assertSame('Supplier code', $supplier->label);
         static::assertEquals(
             [
-                new Contributor('44ce8069-8da1-4986-872f-311737f46f03', 'contributor1@akeneo.com'),
-                new Contributor('44ce8069-8da1-4986-872f-311737f46f04', 'contributor2@akeneo.com'),
+                'contributor1@example.com',
+                'contributor2@example.com',
             ],
-            $supplier->contributors
+            array_values($supplier->contributors),
         );
     }
 
@@ -58,7 +57,7 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
         static::assertSame([], $supplier->contributors);
     }
 
-    private function createSupplier()
+    private function createSupplier(): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label)
@@ -70,23 +69,23 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
             [
                 'identifier' => '44ce8069-8da1-4986-872f-311737f46f02',
                 'code' => 'supplier_code',
-                'label' => 'Supplier code'
-            ]
+                'label' => 'Supplier code',
+            ],
         );
     }
 
-    private function createContributor(string $identifier, string $email): void
+    private function createContributor(string $email): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (identifier, email, supplier_identifier)
-VALUES (:identifier, :email, :supplierIdentifier)
+INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+VALUES (:email, :supplierIdentifier)
 SQL;
         $this->get(Connection::class)->executeQuery(
             $sql,
             [
-                'identifier' => $identifier,
                 'email' => $email,
                 'supplierIdentifier' => '44ce8069-8da1-4986-872f-311737f46f02',
-            ]);;
+            ],
+        );
     }
 }

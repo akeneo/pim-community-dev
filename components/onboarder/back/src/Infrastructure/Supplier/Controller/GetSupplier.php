@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier as GetSupplierQuery;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-final class SupplierEdit
+final class GetSupplier
 {
-    public function __construct(private GetSupplier $getSupplier)
+    public function __construct(private GetSupplierQuery $getSupplier)
     {
     }
 

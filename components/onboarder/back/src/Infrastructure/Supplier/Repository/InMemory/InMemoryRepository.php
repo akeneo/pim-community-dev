@@ -11,9 +11,12 @@ class InMemoryRepository implements Supplier\Repository
 {
     private array $suppliers = [];
 
+    public int $saveCallCounter = 0;
+
     public function save(Supplier\Model\Supplier $supplier): void
     {
         $this->suppliers[$supplier->identifier()] = $supplier;
+        $this->saveCallCounter++;
     }
 
     public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier

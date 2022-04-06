@@ -22,7 +22,7 @@ final class DatabaseGetSupplierList implements GetSupplierList
         $page = max($page, 1);
         $sql = <<<SQL
             WITH contributor AS (
-                SELECT contributor.supplier_identifier, COUNT(identifier) as contributors_count
+                SELECT contributor.supplier_identifier, COUNT(id) as contributors_count
                 FROM akeneo_onboarder_serenity_supplier_contributor contributor
                 GROUP BY contributor.supplier_identifier
             )
@@ -51,7 +51,7 @@ final class DatabaseGetSupplierList implements GetSupplierList
                 'search' => \PDO::PARAM_STR,
                 'offset' => \PDO::PARAM_INT,
                 'limit' => \PDO::PARAM_INT,
-            ]
+            ],
         )->fetchAllAssociative());
     }
 }

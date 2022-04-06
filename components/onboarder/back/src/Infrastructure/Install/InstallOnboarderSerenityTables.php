@@ -32,6 +32,8 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
               `identifier` char(36) NOT NULL,
               `code` varchar(200) NOT NULL,
               `label` varchar(200) NOT NULL,
+              `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+              `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
               PRIMARY KEY (`identifier`),
               CONSTRAINT UC_supplier_code UNIQUE (`code`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -44,10 +46,11 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     {
         $sql = <<<SQL
             CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_supplier_contributor` (
-              `identifier` char(36) NOT NULL,
+              `id` bigint UNSIGNED AUTO_INCREMENT NOT NULL,
               `email` varchar(255) NOT NULL,
+              `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
               `supplier_identifier` char(36) NOT NULL,
-              PRIMARY KEY (`identifier`),
+              PRIMARY KEY (`id`),
               CONSTRAINT UC_supplier_contributor_email UNIQUE (`email`),
               CONSTRAINT `supplier_identifier_foreign_key`
                 FOREIGN KEY (`supplier_identifier`)

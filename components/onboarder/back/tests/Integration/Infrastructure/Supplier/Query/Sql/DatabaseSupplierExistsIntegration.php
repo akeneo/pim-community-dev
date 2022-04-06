@@ -18,16 +18,17 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
         $supplierRepository->save(Supplier\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
-            'Supplier code'
+            'Supplier code',
+            [],
         ));
 
         static::assertTrue(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('supplier_code'))
+                ->fromCode(Supplier\ValueObject\Code::fromString('supplier_code')),
         );
         static::assertFalse(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('unknown_supplier_code'))
+                ->fromCode(Supplier\ValueObject\Code::fromString('unknown_supplier_code')),
         );
     }
 }
