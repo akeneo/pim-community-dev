@@ -18,7 +18,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 {
-    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     protected function setUp(): void

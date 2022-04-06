@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
@@ -17,7 +23,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
-    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     /**
@@ -207,5 +212,42 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         Assert::assertNotNull($product);
         Assert::assertSame('my_product', $product->getIdentifier());
         Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_products_on_replace_products_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProduct('product_non_viewable_by_manager', [new SetCategories(['suppliers'])]);
+        $this->createProduct('product_viewable_by_manager', [
+            new ChangeParent('product_model_non_viewable_by_manager'),
+            new SetCategories(['print', 'sales']),
+            new SetSimpleSelectValue('main_color', null, null, 'green'),
+        ]);
+        $this->createProduct('my_product',
+            [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
+        );
+
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedProducts('X_SELL', ['product_viewable_by_manager'])
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('my_product');
+
+        Assert::assertNotNull($product);
+        Assert::assertSame('my_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(
+            ['product_non_viewable_by_manager', 'product_viewable_by_manager'],
+            $this->getAssociatedProductIdentifiers($product)
+        );
     }
 }
