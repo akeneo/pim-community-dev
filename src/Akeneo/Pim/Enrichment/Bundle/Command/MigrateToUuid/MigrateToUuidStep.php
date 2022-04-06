@@ -20,6 +20,7 @@ interface MigrateToUuidStep
         'pim_catalog_association' => [
             self::ID_COLUMN_INDEX => 'owner_id',
             self::UUID_COLUMN_INDEX => 'owner_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_CC27100147D93336',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_CC27100147D93336',
             self::UNIQUE_CONSTRAINTS_INDEX => ['owner_uuid_association_type_id_idx' => ['owner_uuid', 'association_type_id']],
@@ -28,6 +29,7 @@ interface MigrateToUuidStep
         'pim_catalog_association_product' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_3A3A49D45C977207',
             self::PRIMARY_KEY_UUID_INDEX => ['association_id', 'product_uuid'],
             self::FOREIGN_KEY_INDEX => 'FK_3A3A49D45C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -36,6 +38,7 @@ interface MigrateToUuidStep
         'pim_catalog_association_product_model_to_product' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_3FF3ED195C977207',
             self::PRIMARY_KEY_UUID_INDEX => ['association_id', 'product_uuid'],
             self::FOREIGN_KEY_INDEX => 'FK_3FF3ED195C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -44,6 +47,7 @@ interface MigrateToUuidStep
         'pim_catalog_category_product' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_512179C15C977207',
             self::PRIMARY_KEY_UUID_INDEX => ['product_uuid', 'category_id'],
             self::FOREIGN_KEY_INDEX => 'FK_512179C15C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -52,6 +56,7 @@ interface MigrateToUuidStep
         'pim_catalog_group_product' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_7AC0C83A5C977207',
             self::PRIMARY_KEY_UUID_INDEX => ['product_uuid', 'group_id'],
             self::FOREIGN_KEY_INDEX => 'FK_7AC0C83A5C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -60,6 +65,7 @@ interface MigrateToUuidStep
         'pim_catalog_product_unique_data' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_E0768BA35C977207',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_E0768BA35C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -108,6 +114,7 @@ interface MigrateToUuidStep
         'pimee_workflow_product_draft' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_6F63A25F5C977207',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_6F63A25F5C977207',
             self::UNIQUE_CONSTRAINTS_INDEX => ['unique_author_product_idx' => ['author', 'product_uuid']],
@@ -116,6 +123,7 @@ interface MigrateToUuidStep
         'pimee_workflow_published_product' => [
             self::ID_COLUMN_INDEX => 'original_product_id',
             self::UUID_COLUMN_INDEX => 'original_product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'UNIQ_E3566E6987DBB431',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_E3566E6987DBB431',
             self::UNIQUE_CONSTRAINTS_INDEX => ['UNIQ_E3566E6987DBB431' => ['original_product_uuid']],
@@ -136,6 +144,7 @@ interface MigrateToUuidStep
     public const FOREIGN_KEY_INDEX = 3;
     public const UNIQUE_CONSTRAINTS_INDEX = 4;
     public const INDEXES_INDEX = 5;
+    public const UUID_COLUMN_INDEX_NAME_INDEX = 6;
 
     /**
      * Returns the exact item count to be migrated.
