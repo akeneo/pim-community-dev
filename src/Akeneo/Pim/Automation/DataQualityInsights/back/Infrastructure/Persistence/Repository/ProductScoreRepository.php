@@ -77,7 +77,6 @@ SQL;
         foreach ($productsScores as $index => $productScore) {
             Assert::isInstanceOf($productScore, Write\ProductScores::class);
             $productId = sprintf('productId_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
 
             // We need to delete younger product scores after inserting the new ones,
             // so we insure to have 1 product score per product
@@ -87,13 +86,11 @@ FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_id = old_scores.product_id
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id = :$productId
-AND old_scores.evaluated_at < :$evaluatedAt;
+WHERE old_scores.product_id = :$productId;
 SQL;
 
             $deleteQueriesParameters[$productId] = $productScore->getProductId()->toInt();
             $deleteQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $deleteQueriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
         }
 
         $this->dbConnection->executeQuery($deleteQueries, $deleteQueriesParameters, $deleteQueriesParametersTypes);

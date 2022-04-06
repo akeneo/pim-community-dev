@@ -17,8 +17,7 @@ DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_id = old_scores.product_id
-    AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.evaluated_at < :purge_date;
+    AND younger_scores.evaluated_at > old_scores.evaluated_at;
 SQL;
 
         $date = new \DateTime();
