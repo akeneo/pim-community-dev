@@ -36,7 +36,8 @@ test('It displays an identifier configurator', async () => {
     />
   );
 
-  expect(screen.getByText('Attribute target parameters')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.target.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.target.identifier')).toBeInTheDocument();
   expect(screen.queryByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty')).not.toBeInTheDocument();
   expect(screen.getByText('Sources')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.title')).toBeInTheDocument();
@@ -54,13 +55,6 @@ test('it should display validation errors', async () => {
       message: 'this is a global error',
       parameters: {},
       propertyPath: '',
-    },
-    {
-      messageTemplate: 'error.key.target',
-      invalidValue: '#',
-      message: 'this is a target error',
-      parameters: {},
-      propertyPath: '[target]',
     },
     {
       messageTemplate: 'error.key.sources',
@@ -85,6 +79,5 @@ test('it should display validation errors', async () => {
   );
 
   expect(screen.getByText('error.key.sources')).toBeInTheDocument();
-  expect(screen.getByText('error.key.target')).toBeInTheDocument();
   expect(screen.queryByText('error.key.global')).not.toBeInTheDocument();
 });
