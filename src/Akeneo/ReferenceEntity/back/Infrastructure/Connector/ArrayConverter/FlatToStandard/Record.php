@@ -220,7 +220,7 @@ final class Record implements ArrayConverterInterface
             RecordCollectionAttribute::ATTRIBUTE_TYPE,
             OptionCollectionAttribute::ATTRIBUTE_TYPE,
         ])) {
-            $data = explode(',', $data);
+            $data = $dataIsEmpty ? [] : explode(',', $data);
         } elseif (!empty($data) && ImageAttribute::ATTRIBUTE_TYPE === $attributeDetails->type) {
             $data = sprintf('%s%s%s', $directoryPath, DIRECTORY_SEPARATOR, $data);
         }

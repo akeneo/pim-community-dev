@@ -77,6 +77,24 @@ class RecordSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('convert', [$item, ['other' => 'option']]);
     }
 
+    function it_converts_an_empty_string_to_an_empty_array_for_collection_attributes()
+    {
+        $item = ['code' => 'ref1', 'referenceEntityIdentifier' => 'brand', 'records' => '', 'options' => ''];
+
+        $this->convert($item, [Record::DIRECTORY_PATH_OPTION_KEY => '/tmp/job'])
+            ->shouldReturn(
+                [
+                    'values' => [
+                        'label' => [],
+                        'records' => [['locale' => null, 'channel' => null, 'data' => []]],
+                        'options' => [['locale' => null, 'channel' => null, 'data' => []]],
+                    ],
+                    'code' => 'ref1',
+                    'reference_entity_identifier' => 'brand',
+                ]
+            );
+    }
+
     private function anItem(): array
     {
         return [

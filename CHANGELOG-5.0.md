@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10390: Assets are now correctly re-indexed in Elasticsearch after running the transformations on an Asset Family
+- PIM-10387: [Backport PIM-9805] Fix the import of ref entity records with empty multiselect attributes
 
 # 5.0.89 (2022-04-01)
 
