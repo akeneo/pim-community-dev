@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.90 (2022-04-06)
+
 ## Bug fixes
 
 - PIM-10390: Assets are now correctly re-indexed in Elasticsearch after running the transformations on an Asset Family
