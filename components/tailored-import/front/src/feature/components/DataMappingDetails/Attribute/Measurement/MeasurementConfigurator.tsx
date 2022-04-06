@@ -5,7 +5,13 @@ import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {isMeasurementTarget, MeasurementSourceParameter} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {useMeasurementFamily} from '../../../../hooks';
-import {AttributeTargetParameters, ClearIfEmpty, DecimalSeparatorField, Operations, Sources} from '../../../../components';
+import {
+  AttributeTargetParameters,
+  ClearIfEmpty,
+  DecimalSeparatorField,
+  Operations,
+  Sources,
+} from '../../../../components';
 
 const MeasurementConfigurator = ({
   dataMapping,

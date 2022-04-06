@@ -19,8 +19,7 @@ import {
   useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {ImportStructureTab, StructureConfiguration} from './feature';
-import {GlobalSettings, GlobalSettingsTab} from './feature/GlobalSettingsTab';
+import {GlobalSettings, GlobalSettingsTab, ImportStructureTab, StructureConfiguration} from './feature';
 
 const JOB_CODE = 'tailoredimport';
 
