@@ -110,7 +110,7 @@ class IdFilterSpec extends ObjectBehavior
     {
         $sqb->addFilter(
             [
-                'term' => [
+                'terms' => [
                     'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671'],
                 ],
             ]
@@ -124,7 +124,7 @@ class IdFilterSpec extends ObjectBehavior
     {
         $sqb->addMustNot(
             [
-                'term' => [
+                'terms' => [
                     'id' => ['product_4F3FCFEC-2448-11E7-93AE-92361F002671'],
                 ],
             ]

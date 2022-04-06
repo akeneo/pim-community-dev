@@ -152,9 +152,12 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 
         $idOrUuid = str_replace('product_', '', $value);
 
-        // @TODO CPM-596: remove the call with the id
-        return null !== $this->productRepository->findOneBy(['uuid' => $idOrUuid])
-            || null !== $this->productRepository->findOneBy(['id' => $idOrUuid]);
+        // @TODO CPM-596: remove
+        if (\is_numeric($idOrUuid)) {
+            return null !== $this->productRepository->findOneBy(['id' => $idOrUuid]);
+        }
+
+        return null !== $this->productRepository->findOneBy(['uuid' => $idOrUuid]);
     }
 
     private function addProductUuidsInValues(array $values): array
