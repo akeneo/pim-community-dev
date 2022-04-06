@@ -247,6 +247,42 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
     }
 
+
+    public function testListCategoriesWithPosition()
+    {
+        $categories = $this->getStandardizedCategorieswithPositionInformation();
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?with_position=true');
+
+        $expected = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true"
+        },
+        "first": {
+            "href": "http://localhost/api/rest/v1/categories?page=1&limit=10&with_count=false&with_position=true"
+        }
+    },
+    "current_page": 1,
+    "_embedded": {
+        "items": [
+            {$categories['master']},
+            {$categories['categoryA']},
+            {$categories['categoryA1']},
+            {$categories['categoryA2']},
+            {$categories['categoryB']},
+            {$categories['categoryC']},
+            {$categories['master_china']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertSameResponse($expected, $client->getResponse());
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -348,6 +384,120 @@ JSON;
     "code": "master_china",
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
+    "labels": {}
+}
+JSON;
+
+        return $categories;
+    }
+
+    public function getStandardizedCategorieswithPositionInformation(): array
+    {
+        $categories['master'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/master"
+        }
+    },
+    "code": "master",
+    "parent": null,
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 1,
+    "level" : 1,
+    "labels": {}
+}
+JSON;
+        $categories['categoryA'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/categoryA"
+        }
+    },
+    "code": "categoryA",
+    "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 1,
+    "level" : 2,
+    "labels": {
+        "en_US": "Category A",
+        "fr_FR": "Catégorie A"
+    }
+}
+JSON;
+        $categories['categoryA1'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/categoryA1"
+        }
+    },
+    "code": "categoryA1",
+    "parent": "categoryA",
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 1,
+    "level" : 3,
+    "labels": {}
+}
+JSON;
+        $categories['categoryA2'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/categoryA2"
+        }
+    },
+    "code": "categoryA2",
+    "parent": "categoryA",
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 2,
+    "level" : 3,
+    "labels": {}
+}
+JSON;
+        $categories['categoryB'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/categoryB"
+        }
+    },
+    "code": "categoryB",
+    "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 2,
+    "level" : 2,
+    "labels": {}
+}
+JSON;
+        $categories['categoryC'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/categoryC"
+        }
+    },
+    "code": "categoryC",
+    "parent": "master",
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 3,
+    "level" : 2,
+    "labels": {}
+}
+JSON;
+        $categories['master_china'] = <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/categories/master_china"
+        }
+    },
+    "code": "master_china",
+    "parent": null,
+    "updated" : "2016-06-14T13:12:50+02:00",
+    "position" : 1,
+    "level" : 1,
     "labels": {}
 }
 JSON;

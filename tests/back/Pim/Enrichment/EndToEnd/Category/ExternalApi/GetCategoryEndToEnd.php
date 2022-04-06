@@ -67,6 +67,31 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertSame('Category "not_found" does not exist.', $content['message']);
     }
 
+
+    public function testGetACategoryWithPosition()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories/categoryA?with_position=true');
+
+        $expectedCategory = [
+            'code' => 'categoryA',
+            'parent' => 'master',
+            'updated' => '2016-06-14T13:12:50+02:00',
+            'position' => 1,
+            'level' => 2,
+            'labels' => [
+                'en_US'=> 'Category A',
+                'fr_FR'=> 'Catégorie A',
+            ],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponse($response, $expectedCategory);
+    }
+
     private function assertResponse(Response $response, array $expected)
     {
         $result = json_decode($response->getContent(), true);
