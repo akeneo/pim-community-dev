@@ -53,7 +53,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             return;
         }
 
-        $values = implode(', ', array_map(function (Write\ProductScores $productScore) {
+        $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
             return sprintf(
                 "(%d, '%s', '%s')",
                 $productScore->getProductId()->toInt(),
@@ -62,38 +62,31 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             );
         }, $productsScores));
 
-        $query = <<<SQL
+        $this->dbConnection->executeQuery(<<<SQL
 INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
-VALUES $values AS cleaned_values
-ON DUPLICATE KEY UPDATE evaluated_at = cleaned_values.evaluated_at, scores = cleaned_values.scores;
-SQL;
+VALUES $insertValues AS product_score_values
+ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
+SQL
+        );
 
-        $this->dbConnection->executeQuery($query);
+        // We need to delete younger product scores after inserting the new ones,
+        // so we insure to have 1 product score per product
+        $deleteValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            return sprintf(
+                "%d",
+                $productScore->getProductId()->toInt(),
+            );
+        }, $productsScores));
 
-        $deleteQueries = '';
-        $deleteQueriesParameters = [];
-        $deleteQueriesParametersTypes = [];
-
-        foreach ($productsScores as $index => $productScore) {
-            Assert::isInstanceOf($productScore, Write\ProductScores::class);
-            $productId = sprintf('productId_%d', $index);
-
-            // We need to delete younger product scores after inserting the new ones,
-            // so we insure to have 1 product score per product
-            $deleteQueries .= <<<SQL
+        $this->dbConnection->executeQuery(<<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_id = old_scores.product_id
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id = :$productId;
-SQL;
-
-            $deleteQueriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $deleteQueriesParametersTypes[$productId] = \PDO::PARAM_INT;
-        }
-
-        $this->dbConnection->executeQuery($deleteQueries, $deleteQueriesParameters, $deleteQueriesParametersTypes);
+WHERE old_scores.product_id IN ($deleteValues);
+SQL
+        );
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void
