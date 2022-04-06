@@ -114,7 +114,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     {
         return \array_filter(
             self::TABLES,
-            fn (string $tableName): bool => !\in_array($tableName, ['pim_versioning_version', 'pim_catalog_product', 'pimee_workflow_published_product']) && $this->tableExists($tableName),
+            fn (string $tableName): bool => !\in_array($tableName, ['pim_versioning_version', 'pimee_workflow_published_product']) && $this->tableExists($tableName),
             ARRAY_FILTER_USE_KEY
         );
     }
