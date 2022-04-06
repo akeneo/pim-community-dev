@@ -35,13 +35,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertTheIndexesDoNotExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            if ($this->tableExists($tableName) && isset($tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX])) {
                 Assert::assertFalse(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX]),
                     \sprintf(
                         'The "%s" index exists in the "%s" table',
-                        'product_uuid',
+                        $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX],
                         $tableName
                     )
                 );
@@ -51,13 +51,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertTheIndexesExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            if ($this->tableExists($tableName) && isset($tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX])) {
                 Assert::assertTrue(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX]),
                     \sprintf(
                         'The "%s" index does not exist in the "%s" table',
-                        'product_uuid',
+                        $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX],
                         $tableName
                     )
                 );
