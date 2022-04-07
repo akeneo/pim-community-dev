@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAsso
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,9 +29,12 @@ use Prophecy\Argument;
  */
 class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
-    {
-        $this->beConstructedWith($productUpdater, $getViewableProducts);
+    function let(
+        ObjectUpdaterInterface $productUpdater,
+        GetViewableProducts $getViewableProducts,
+        GetViewableProductModels $getViewableProductModels
+    ) {
+        $this->beConstructedWith($productUpdater, $getViewableProducts, $getViewableProductModels);
     }
 
     function it_is_initializable()
@@ -313,13 +317,11 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ProductInterface $product,
     ) {
-        $associatedProductModels = [];
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('foo');
-        $associatedProductModels[] = $associatedProductModel;
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('bar');
-        $associatedProductModels[] = $associatedProductModel;
+        $associatedProductModel1 = new ProductModel();
+        $associatedProductModel1->setCode('foo');
+        $associatedProductModel2 = new ProductModel();
+        $associatedProductModel2->setCode('bar');
+        $associatedProductModels = [$associatedProductModel1, $associatedProductModel2];
 
         $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection($associatedProductModels)
@@ -348,7 +350,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ArrayCollection([$associatedProductModel])
         );
         $collection = new AssociationUserIntentCollection([
-            new DissociateProductModels('X_SELL', ['qux']),
+            new DissociateProductModels('X_SELL', ['not_associated_model_code']),
         ]);
 
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
@@ -357,15 +359,14 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_replaces_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
+        GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
     ) {
-        $associatedProductModels = [];
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('foo');
-        $associatedProductModels[] = $associatedProductModel;
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('bar');
-        $associatedProductModels[] = $associatedProductModel;
+        $associatedProductModel1 = new ProductModel();
+        $associatedProductModel1->setCode('viewable_product_model');
+        $associatedProductModel2 = new ProductModel();
+        $associatedProductModel2->setCode('non_viewable_product_model');
+        $associatedProductModels = [$associatedProductModel1, $associatedProductModel2];
 
         $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection($associatedProductModels)
@@ -374,9 +375,12 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['quux', 'quuz', 'corge']),
         ]);
 
+        $getViewableProductModels->fromProductModelCodes(['viewable_product_model', 'non_viewable_product_model'], 42)
+            ->shouldBeCalledOnce()
+            ->willReturn(['viewable_product_model']);
         $productUpdater->update($product, ['associations' => [
             'X_SELL' => [
-                'product_models' => ['quux', 'quuz', 'corge'],
+                'product_models' => ['non_viewable_product_model', 'quux', 'quuz', 'corge'],
             ]
         ]])->shouldBeCalledOnce();
 
@@ -385,15 +389,14 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_does_nothing_if_product_models_to_associate_are_the_same_as_existing_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
+        GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
     ) {
-        $associatedProductModels = [];
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('foo');
-        $associatedProductModels[] = $associatedProductModel;
-        $associatedProductModel = new ProductModel();
-        $associatedProductModel->setCode('bar');
-        $associatedProductModels[] = $associatedProductModel;
+        $associatedProductModel1 = new ProductModel();
+        $associatedProductModel1->setCode('foo');
+        $associatedProductModel2 = new ProductModel();
+        $associatedProductModel2->setCode('bar');
+        $associatedProductModels = [$associatedProductModel1, $associatedProductModel2];
 
         $product->getAssociatedProductModels('X_SELL')->shouldBeCalledOnce()->willReturn(
             new ArrayCollection($associatedProductModels)
@@ -402,6 +405,9 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['foo', 'bar']),
         ]);
 
+        $getViewableProductModels->fromProductModelCodes(['foo', 'bar'], 42)
+            ->shouldBeCalledOnce()
+            ->willReturn(['foo', 'bar']);
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
         $this->apply($collection, $product, 42);
     }

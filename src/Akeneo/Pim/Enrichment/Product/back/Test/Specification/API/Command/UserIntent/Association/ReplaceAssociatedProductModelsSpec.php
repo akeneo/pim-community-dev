@@ -16,7 +16,7 @@ class ReplaceAssociatedProductModelsSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('X_SELL', ['identifier1', 'identifier2']);
+        $this->beConstructedWith('X_SELL', ['code1', 'code2']);
     }
 
     function it_is_initializable()
@@ -30,20 +30,26 @@ class ReplaceAssociatedProductModelsSpec extends ObjectBehavior
         $this->associationType()->shouldReturn('X_SELL');
     }
 
-    function it_returns_the_product_model_identifiers()
+    function it_returns_the_product_model_codes()
     {
-        $this->productModelIdentifiers()->shouldReturn(['identifier1', 'identifier2']);
+        $this->productModelCodes()->shouldReturn(['code1', 'code2']);
     }
 
-    function it_can_only_be_instantiated_with_string_product_model_identifiers()
+    function it_can_only_be_instantiated_with_string_product_model_codes()
     {
         $this->beConstructedWith('X_SELL', ['test', 12, false]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_be_instantiated_if_one_of_the_product_model_identifiers_is_empty()
+    function it_cannot_be_instantiated_if_one_of_the_product_model_codes_is_empty()
     {
         $this->beConstructedWith('X_SELL', ['a', '', 'b']);
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_instantiated_with_empty_association_type()
+    {
+        $this->beConstructedWith('', ['code1', 'code2']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 }

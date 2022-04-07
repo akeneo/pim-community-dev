@@ -13,13 +13,14 @@ use Webmozart\Assert\Assert;
 final class ReplaceAssociatedProductModels implements AssociationUserIntent
 {
     /**
-     * @param array<string> $productModelIdentifiers
+     * @param array<string> $productModelCodes
      */
     public function __construct(
         private string $associationType,
-        private array $productModelIdentifiers,
+        private array  $productModelCodes,
     ) {
-        Assert::allStringNotEmpty($productModelIdentifiers);
+        Assert::allStringNotEmpty($productModelCodes);
+        Assert::stringNotEmpty($this->associationType);
     }
 
     public function associationType(): string
@@ -30,8 +31,8 @@ final class ReplaceAssociatedProductModels implements AssociationUserIntent
     /**
      * @return array<string>
      */
-    public function productModelIdentifiers(): array
+    public function productModelCodes(): array
     {
-        return $this->productModelIdentifiers;
+        return $this->productModelCodes;
     }
 }

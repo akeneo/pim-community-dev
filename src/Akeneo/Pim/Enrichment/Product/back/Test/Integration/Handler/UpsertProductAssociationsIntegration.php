@@ -26,7 +26,6 @@ use PHPUnit\Framework\Assert;
 class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
 {
     private ProductRepositoryInterface $productRepository;
-    private ProductModelRepositoryInterface $productModelRepository;
 
     /**
      * {@inheritdoc}
@@ -205,25 +204,5 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->clearDoctrineUoW();
         $updatedProduct = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertSame(['other_product_model'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function getAssociatedProductIdentifiers(ProductInterface $product): array
-    {
-        return $product->getAssociatedProducts('X_SELL')
-            ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
-            ?->toArray() ?? [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function getAssociatedProductModelIdentifiers(ProductInterface $product): array
-    {
-        return $product->getAssociatedProductModels('X_SELL')
-            ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())
-            ?->toArray() ?? [];
     }
 }
