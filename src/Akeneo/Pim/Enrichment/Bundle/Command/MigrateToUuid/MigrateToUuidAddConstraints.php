@@ -149,7 +149,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
 
     private function addForeignKey(string $tableName, array $tableProperties): void
     {
-        $sql = <<<SQL 
+        $sql = <<<SQL
             ALTER TABLE {tableName} ADD CONSTRAINT {constraintName} FOREIGN KEY ({uuidColumnName}) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE,
             ALGORITHM=INPLACE,
             LOCK=NONE; 
