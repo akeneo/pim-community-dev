@@ -16,7 +16,11 @@ pim_menu:
     connection_webhook_event_logs: 事件日志
     data_flows: 数据流
     connect_connection_settings: 连接设置
+    marketplace: Арр Store
+    connected_apps: 已连接的应用
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Арр Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: 连接
   akeneo_connectivity_connection_connect_apps_authorize: 连接
   akeneo_connectivity_connection_connect_apps_authenticate: 连接
@@ -31,6 +35,7 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
   akeneo_connectivity_connection_webhook_event_logs: 事件日志
   akeneo_connectivity_connection_settings_redirect: 连接
+  akeneo_connectivity_connection_connect_connected_apps: 已连接的应用
   akeneo_connectivity_connection_connect_connected_apps_edit: 应用设置
   akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 创建测试应用
@@ -39,15 +44,20 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: 想要将您的 PIM 连接到另一个应用程序？🤟
+      sub_title: 请检查我们的 App Store 以查看哪些应用程序可以与 Akeneo PIM 连接。
+      link: 访问 App Store
       helper:
         title: '{0} 没有与您的 PIM 版本兼容的应用或连接器。{1} 有 {{ count }} 个应用或连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个应用和连接器与您的 PIM 版本兼容。'
         title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
+        description: 这只是概览，还有更多内容，请探索 Akeneo App Store。
+        link: 前往 Akeneo App Store
       card:
         developed_by: '开发者：{{ author }}'
         read_more: 阅读更多
         more_info: 更多信息
         connect: 连接
         connected: 已连接
+        pending: 待定…
       extensions:
         title: 连接器
         total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
@@ -56,6 +66,7 @@ akeneo_connectivity.connection:
         title: 应用
         total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
         empty: 没有与您的版本兼容的应用
+      unreachable: 无法访问 App Store，请稍后再试。
       scroll_to_top: 滚动到顶部
       test_apps:
         title: 我的测试应用
@@ -77,6 +88,7 @@ akeneo_connectivity.connection:
             client_id: 客戶端 ID
             client_secret: 客户端密钥
         errors:
+          page_not_found: 未找到页面
           creation:
             name:
               min_length: 测试应用的名称太短。其必须包含至少 3 个字符。
@@ -97,6 +109,7 @@ akeneo_connectivity.connection:
           subtitle: 应用
           title: 确认删除 
           description: 您将要从该 PIM 中删除您的测试应用。
+          warning: 确认删除后，App Store 页面上的测试应用以及相关的连接应用都将被删除。
           flash:
             success: 测试应用已成功删除。
             error: 抱歉，删除测试应用时出现错误。
@@ -107,17 +120,23 @@ akeneo_connectivity.connection:
           total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
           empty: 尚未连接任何应用。
           check_marketplace: '检查 {{ marketplaceLink }} 以浏览所有可用的内容并安装您的第一个应用。'
+          marketplace_link_anchor: Арр Store
+          at_least_one_is_not_listed_on_the_appstore: 您已连接的一些应用与您的 PIM 版本不兼容，或者在 Akeneo App Store 上已不存在。请联系我们以获取更多信息。
+          pending_apps: 您的一些应用没有连接到 PIM。
         test_apps:
           title: 我的测试应用
           removed_user: 已移除用户
         helper:
           title: '[0,1] 您的 PIM 已与 {{ count }} 个应用连接。|[2,Inf] 您的 PIM 已与 {{ count }} 个应用连接。'
+          description_1: 我们定期开发新的应用，请随时关注并查看我们的 App Store 页面以探索如何连接您的 PIM。
           description_2: 想了解更多关于应用的信息？
           link: 查看我们的“帮助中心”获取更多信息。
         card:
           developed_by: '开发者：{{ author }}'
+          not_listed_on_the_appstore: 应用不再在 Akeneo App Store 上提供。请联系应用支持人员。
           manage_app: 管理应用
           open_app: 打开应用
+          pending: 应用未连接。打开应用后应该会修复该连接问题。
         flash:
           error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
@@ -134,6 +153,7 @@ akeneo_connectivity.connection:
             information: '要了解更多有关应用授权的信息，请查阅我们的 {{ link }}。'
             information_link_anchor: 帮助中心文章
             no_scope: 未请求特定的授权。
+          pending: 该应用未连接到您的 PIM。打开应用后应该会修复该连接问题。如果该问题仍然存在，请联系应用支持人员。
         error_monitoring:
           error: 哎呀，出错了!
           helper:
@@ -184,9 +204,16 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} 需要'
           helper: 要了解更多关于应用验证的信息，请查阅我们的文章
           helper_link: 如何将我的 PIM 与 App 进行连接？
+          scope_profile: '查看您的 {{ firstname }} 和 {{ lastname }}'
+          scope_email: '查看您的 {{ email }} 地址'
           consent:
             label: '我同意该应用的隐私政策和使用条款（可在 {{ app_marketplace_page }} 上查看）。'
+            app_marketplace_page: App Store 页面
+            subtext: '您确认知晓并同意您将被重定向到第三方应用。Akeneo 对该应用的内容不负责也无法负责。如果您在访问 Akeneo App Store 时遇到任何问题，请{{ contact_us }}。'
             contact_us: 联系我们
+          firstname: 名字
+          lastname: 姓氏
+          email: 电子邮件
         authorize:
           title: '{{ app_name }} 需要'
           no_scope_title: '{{ app_name }} 想要访问您的 PIM。'
@@ -222,6 +249,7 @@ akeneo_connectivity.connection:
           assets: 资产
       error:
         sub_text: 请联系应用开发者或 Akeneo 支持
+        app_not_found: client_id 与任何现有的应用都不匹配。
       constraint:
         client_id:
           not_blank: client_id 为必填项。
