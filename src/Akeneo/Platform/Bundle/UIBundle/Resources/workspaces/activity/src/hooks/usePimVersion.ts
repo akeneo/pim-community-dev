@@ -1,5 +1,5 @@
 import {useRouter} from '@akeneo-pim-community/shared';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 const DataCollector = require('pim/data-collector');
 
@@ -17,6 +17,24 @@ const usePimVersion = () => {
   const [analyticsUrl, setAnalyticsUrl] = useState<string>('');
   const [lastPatch, setLastPatch] = useState<string>('');
   const router = useRouter();
+  
+  const isVersionOutdated = useCallback((lastPatch: string) => {
+    const regexCurrentVersion = /\s(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)\s/;
+    const regexLastVersion = /v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/;
+    const matchCurrentVersion = version.match(regexCurrentVersion);
+    const matchLastVersion = lastPatch.match(regexLastVersion);
+
+    if (matchCurrentVersion === null || matchLastVersion === null) {
+      return false;
+    }
+    const [, majorCurrentVersion, minorCurrentVersion, patchCurrentVersion] = matchCurrentVersion;
+    const [, majorLastVersion, minorLastVersion, patchLastVersion] = matchLastVersion;
+    
+    if (parseInt(`${majorCurrentVersion}${minorCurrentVersion}${patchCurrentVersion}`) >= parseInt(`${majorLastVersion}${minorLastVersion}${patchLastVersion}`)) {
+      return false;
+    } 
+      return true;
+  }, [version]);
 
   useEffect(() => {
     (async () => {
@@ -39,7 +57,7 @@ const usePimVersion = () => {
         sessionStorage.setItem('analytics-called', '1');
         if (isLastPatchDisplayed && response.status === 200) {
           const lastPatchInfo: {last_patch: {name: string}} = await response.json();
-          if (lastPatchInfo.hasOwnProperty('last_patch')) {
+          if (lastPatchInfo.hasOwnProperty('last_patch') && isVersionOutdated(lastPatchInfo.last_patch.name)) {
             setLastPatch(lastPatchInfo.last_patch.name);
             sessionStorage.setItem('last-patch-available', lastPatchInfo.last_patch.name);
           }
@@ -47,9 +65,9 @@ const usePimVersion = () => {
       })();
     } else if (isLastPatchDisplayed) {
       const storedLastPatch = sessionStorage.getItem('last-patch-available');
-      storedLastPatch !== null && setLastPatch(storedLastPatch);
+      storedLastPatch !== null && isVersionOutdated(storedLastPatch) && setLastPatch(storedLastPatch);
     }
-  }, [isAnalyticsWanted, analyticsUrl]);
+  }, [isAnalyticsWanted, analyticsUrl, isVersionOutdated]);
 
   return {
     version,
