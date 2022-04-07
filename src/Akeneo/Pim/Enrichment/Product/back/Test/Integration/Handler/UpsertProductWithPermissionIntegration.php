@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
@@ -17,7 +23,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
-    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     /**
@@ -37,8 +42,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_user_category_is_not_granted(): void
     {
-        // Creates empty product (use command/handler when we can set a category)
-        $this->createProduct('identifier', ['categories' => ['print']]);
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
 
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
@@ -115,8 +119,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_updating_a_product_with_non_viewable_category(): void
     {
-        $this->createProduct('my_product', ['categories' => ['print']]);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('The "suppliers" category does not exist');
@@ -146,8 +149,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_there_is_no_more_owned_category_after_update(): void
     {
-        $this->createProduct('identifier', ['categories' => ['print']]);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
@@ -163,8 +165,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_there_is_no_more_owned_category_after_removing_category(): void
     {
-        $this->createProduct('identifier', ['categories' => ['print', 'sales']]);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $this->createProduct('identifier', [new SetCategories(['print', 'sales'])]);
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
@@ -180,8 +181,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_throws_an_exception_when_user_is_not_owner(): void
     {
-        $this->createProduct('my_product', ['categories' => ['sales']]);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $this->createProduct('my_product', [new SetCategories(['sales'])]);
 
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage("You don't have access to products in any tree, please contact your administrator");
@@ -197,8 +197,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
     /** @test */
     public function it_merges_non_viewable_category_on_update(): void
     {
-        $this->createProduct('my_product', ['categories' => ['print', 'suppliers']]); // "suppliers" is not viewable for Betty
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers'])]);
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('betty'),
@@ -215,16 +214,41 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
     }
 
-    private function getUserId(string $username): int
+    /** @test */
+    public function it_merges_non_viewable_associated_products_on_replace_products_association(): void
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProduct('product_non_viewable_by_manager', [new SetCategories(['suppliers'])]);
+        $this->createProduct('product_viewable_by_manager', [
+            new ChangeParent('product_model_non_viewable_by_manager'),
+            new SetCategories(['print', 'sales']),
+            new SetSimpleSelectValue('main_color', null, null, 'green'),
+        ]);
+        $this->createProduct(
+            'my_product',
+            [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
+        );
 
-        return $user->getId();
-    }
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedProducts('X_SELL', ['product_viewable_by_manager'])
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
 
-    private function clearDoctrineUoW(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $product = $this->productRepository->findOneByIdentifier('my_product');
+
+        Assert::assertNotNull($product);
+        Assert::assertSame('my_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(
+            ['product_non_viewable_by_manager', 'product_viewable_by_manager'],
+            $this->getAssociatedProductIdentifiers($product)
+        );
     }
 }

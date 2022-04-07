@@ -19,7 +19,7 @@ class AddAssetValueSpec extends ObjectBehavior
         $this->beConstructedWith('name', 'ecommerce', 'en_US', ['packshot1', 'packshot2']);
     }
 
-    function it_it_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(AddAssetValue::class);
         $this->shouldImplement(ValueUserIntent::class);

@@ -18,7 +18,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
 {
-    private MessageBusInterface $messageBus;
     private ProductRepositoryInterface $productRepository;
 
     protected function setUp(): void
@@ -175,18 +174,5 @@ final class UpsertProductVariantIntegration extends EnrichmentProductTestCase
         $this->expectExceptionMessage('Property "parent" expects a valid parent code. The parent product model does not exist, "unknown" given.');
 
         $this->messageBus->dispatch($command);
-    }
-
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
-    private function clearDoctrineUoW(): void
-    {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 }
