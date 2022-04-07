@@ -113,7 +113,7 @@ SQL;
     protected function getProductId(string $identifier): string
     {
         $query = <<<SQL
-SELECT id AS uuid FROM pim_catalog_product WHERE identifier = :identifier
+SELECT id FROM pim_catalog_product WHERE identifier = :identifier
 SQL;
 
         $stmt = $this->dbalConnection->prepare($query);
