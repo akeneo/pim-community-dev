@@ -74,7 +74,7 @@ trait MigrateToUuidTrait
     protected function getIndexName(string $tableName, array $columnNames): ?string
     {
         $sql = <<<SQL
-            SELECT INDEX_NAME, JSON_ARRAYAGG(COLUMN_NAME) AS columnNames 
+            SELECT INDEX_NAME, GROUP_CONCAT(COLUMN_NAME ORDER BY SEQ_IN_INDEX SEPARATOR ',') AS columnNames 
             FROM information_schema.STATISTICS
             WHERE INDEX_SCHEMA = :schema 
               AND TABLE_NAME = :table_name 
@@ -89,9 +89,9 @@ trait MigrateToUuidTrait
             ]
         );
 
-        foreach ($result as $indexName => $columnsJson) {
+        foreach ($result as $indexName => $indexColumns) {
             // There is a json_encode(json_decode()) because the format is not the same between PHP and mySQL.
-            $columns = (\json_decode($columnsJson, true));
+            $columns = \explode(',', $indexColumns);
             if (\json_encode($columns) === \json_encode($columnNames)) {
                 return $indexName;
             }
@@ -122,12 +122,12 @@ trait MigrateToUuidTrait
     protected function getPrimaryKey(string $tableName): array
     {
         $sql = <<<SQL
-            SELECT COLUMN_NAME 
-            FROM INFORMATION_SCHEMA.COLUMNS
+            SELECT COLUMN_NAME
+            FROM INFORMATION_SCHEMA.STATISTICS
             WHERE TABLE_SCHEMA=:schema 
               AND TABLE_NAME=:table_name 
-              AND COLUMN_KEY='PRI'
-            ORDER BY ORDINAL_POSITION;
+              AND INDEX_NAME='PRIMARY'
+            ORDER BY SEQ_IN_INDEX;
         SQL;
 
         return $this->connection->fetchFirstColumn($sql, [
