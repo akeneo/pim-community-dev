@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
 use Symfony\Component\Validator\Constraint;
 
