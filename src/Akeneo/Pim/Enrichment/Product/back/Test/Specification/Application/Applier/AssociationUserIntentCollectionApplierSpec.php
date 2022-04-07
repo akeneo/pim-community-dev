@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAsso
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,9 +29,12 @@ use Prophecy\Argument;
  */
 class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 {
-    function let(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
-    {
-        $this->beConstructedWith($productUpdater, $getViewableProducts);
+    function let(
+        ObjectUpdaterInterface $productUpdater,
+        GetViewableProducts $getViewableProducts,
+        GetViewableProductModels $getViewableProductModels
+    ) {
+        $this->beConstructedWith($productUpdater, $getViewableProducts, $getViewableProductModels);
     }
 
     function it_is_initializable()
@@ -357,7 +361,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_replaces_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
-        GetNonViewableProductModels $getNonViewableProductModels,
+        GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
     ) {
         $associatedProductModels = [];
@@ -375,9 +379,9 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['quux', 'quuz', 'corge']),
         ]);
 
-        $getNonViewableProductModels->fromProductModelCodes(['foo', 'non_viewable_product_model'], 42)
+        $getViewableProductModels->fromProductModelCodes(['foo', 'non_viewable_product_model'], 42)
             ->shouldBeCalledOnce()
-            ->willReturn(['non_viewable_product_model']);
+            ->willReturn(['foo']);
         $productUpdater->update($product, ['associations' => [
             'X_SELL' => [
                 'product_models' => ['non_viewable_product_model', 'quux', 'quuz', 'corge'],
@@ -389,7 +393,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_does_nothing_if_product_models_to_associate_are_the_same_as_existing_associated_product_models(
         ObjectUpdaterInterface $productUpdater,
-        GetNonViewableProductModels $getNonViewableProductModels,
+        GetViewableProductModels $getViewableProductModels,
         ProductInterface $product,
     ) {
         $associatedProductModels = [];
@@ -407,9 +411,9 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['foo', 'bar']),
         ]);
 
-        $getNonViewableProductModels->fromProductModelCodes(['foo', 'bar'], 42)
+        $getViewableProductModels->fromProductModelCodes(['foo', 'bar'], 42)
             ->shouldBeCalledOnce()
-            ->willReturn([]);
+            ->willReturn(['foo', 'bar']);
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
         $this->apply($collection, $product, 42);
     }

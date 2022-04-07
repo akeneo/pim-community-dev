@@ -15,6 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateP
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Webmozart\Assert\Assert;
@@ -27,7 +28,8 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
     public function __construct(
         private ObjectUpdaterInterface $productUpdater,
-        private GetViewableProducts $getViewableProducts
+        private GetViewableProducts $getViewableProducts,
+        private GetViewableProductModels $getViewableProductModels
     ) {
     }
 
@@ -65,8 +67,8 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                     continue;
                 }
 
-                $viewableProducts = $this->getViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
-                $nonViewableProducts = \array_values(\array_diff($formerAssociations, $viewableProducts));
+                $viewableProductIdentifiers = $this->getViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
+                $nonViewableProducts = \array_values(\array_diff($formerAssociations, $viewableProductIdentifiers));
                 $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique(\array_merge($nonViewableProducts, $associationUserIntent->productIdentifiers()))
                 );
@@ -84,20 +86,22 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
                 if (\count($newAssociations) === \count($formerAssociations)) {
                     continue;
                 }
-                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
+                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     $newAssociations
                 );
             } elseif ($associationUserIntent instanceof ReplaceAssociatedProductModels) {
-                $nonViewableProductModelIdentifiers = $this->getNonViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
-                \sort($formerAssociations);
+                $viewableProductModels = $this->getViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
+                \sort($viewableProductModels);
                 $newAssociations = $associationUserIntent->productModelIdentifiers();
                 \sort($newAssociations);
-                if ($newAssociations === $formerAssociations) {
+                if ($newAssociations === $viewableProductModels) {
                     continue;
                 }
-                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
+
+                $nonViewableProductModels = \array_values(\array_diff($formerAssociations, $viewableProductModels));
+                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
                     \array_unique(
-                        \array_merge($nonViewableProductModelIdentifiers, $associationUserIntent->productModelIdentifiers())
+                        \array_merge($nonViewableProductModels, $associationUserIntent->productModelIdentifiers())
                     )
                 );
             }
@@ -156,6 +160,12 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             || $userIntent instanceof ReplaceAssociatedProducts
         ) {
             return 'products';
+        } elseif (
+            $userIntent instanceof AssociateProductModels
+            || $userIntent instanceof DissociateProductModels
+            || $userIntent instanceof ReplaceAssociatedProductModels
+        ) {
+            return 'product_models';
         }
         throw new \LogicException('Level does not exists');
     }
