@@ -87,6 +87,19 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             }
         }
 
+        if (
+            $this->tableExists('pim_versioning_version')
+            && !$this->isColumnNullable('pim_versioning_version', 'resource_id')
+        ) {
+            $this->connection->executeQuery(<<<SQL
+                ALTER TABLE pim_versioning_version
+                MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                ALGORITHM=INPLACE,
+                LOCK=NONE;
+                SQL
+            );
+        }
+
         return true;
     }
 
