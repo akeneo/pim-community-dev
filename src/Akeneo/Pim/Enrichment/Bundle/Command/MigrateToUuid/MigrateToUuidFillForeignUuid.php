@@ -39,6 +39,12 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX], $columnNames[self::ID_COLUMN_INDEX])) {
                 return true;
             }
+            if (
+                $this->tableExists('pim_versioning_version') &&
+                $this->indexExists('pim_versioning_version', 'migrate_to_uuid_temp_index_to_delete')
+            ) {
+                return true;
+            }
         }
 
         return false;
@@ -78,6 +84,20 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                     $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
                     break;
                 }
+            }
+            if ('pim_versioning_version' === $tableName &&
+                $this->indexExists('pim_versioning_version', 'migrate_to_uuid_temp_index_to_delete')
+            ) {
+                $this->connection->executeQuery(
+                    <<<SQL
+                    ALTER TABLE pim_versioning_version
+                    DROP INDEX migrate_to_uuid_temp_index_to_delete;
+                    SQL
+                );
+                $this->logger->notice(
+                    'Temporary index dropped on table pim_versioning_version',
+                    $logContext->toArray()
+                );
             }
         }
 
