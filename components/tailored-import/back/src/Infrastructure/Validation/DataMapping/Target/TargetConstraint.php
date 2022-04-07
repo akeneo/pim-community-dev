@@ -11,15 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target;
 
 use Symfony\Component\Validator\Constraint;
 
-// TODO remove Constraint suffix like in the other classes
-class CleanHTMLTagsOperationConstraint extends Constraint
+abstract class TargetConstraint extends Constraint
 {
-    public function validatedBy(): string
+    public function __construct(private array $columns)
     {
-        return CleanHTMLTagsOperationValidator::class;
+        parent::__construct();
+    }
+
+    public function getColumns(): array
+    {
+        return $this->columns;
     }
 }

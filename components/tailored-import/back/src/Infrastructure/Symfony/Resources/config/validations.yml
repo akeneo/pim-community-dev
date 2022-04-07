@@ -1,9 +1,10 @@
 parameters:
   akeneo.tailored_import.attribute_target_constraints:
-    pim_catalog_metric: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint'
-    pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceConstraint'
-    pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
-    pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Text\TextSourceConstraint'
+    pim_catalog_identifier: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Identifier\Identifier'
+    pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\Measurement'
+    pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Number\Number'
+    pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
+    pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
 
   akeneo.tailored_import.property_target_constraints: []
 
@@ -37,7 +38,6 @@ services:
     class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
-      - '@akeneo.tailored_import.query.is_multi_source_target'
       - '%akeneo.tailored_import.attribute_target_constraints%'
       - '%akeneo.tailored_import.property_target_constraints%'
     tags:
