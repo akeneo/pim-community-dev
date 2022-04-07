@@ -1,6 +1,6 @@
 client-to-clone-srnt: &client-to-clone-srnt
 client-to-clone-grth: &client-to-clone-grth
-client-to-clone-flex: &client-to-clone-flex
+clients-to-clone-flex: &clients-to-clone-flex
 
 workflows:
     # Description :
@@ -63,9 +63,12 @@ workflows:
     #    Check upgrade from FLEX instance to SRNT
     clone_and_upgrade_flex_customers:
         when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "clone_and_upgrade_flex_customers", << pipeline.schedule.name >> ]
+            or:
+              - equal: [ true, << pipeline.parameters.trigger_ondemand >> ]
+              - and:
+                  - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                  - equal: [ "clone_and_upgrade_flex_customers", << pipeline.schedule.name >> ]
+
         jobs:
             - checkout
             - build_env_vars:
@@ -75,29 +78,57 @@ workflows:
                           PRODUCT_TYPE: ["srnt"]
                   requires:
                       - checkout
+            - build_srnt_prod:
+                name: "[srnt] Build"
+                requires:
+                  - "[srnt] build_env_vars"
             - test_migrate_from_flex_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["flex"]
-                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
+                          SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
                   requires:
-                      - build_env_vars
-            - test_upgrade_from_customer_db:
-                  name: "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                      - "[srnt] Build"
+            - validate_data_integrity:
+                  name: "[<< matrix.PRODUCT_TYPE >>] validate_data_integrity_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
                   matrix:
                       parameters:
-                          PRODUCT_TYPE: ["srnt"]
-                          SOURCE_PFID: *client-to-clone-flex
+                          PRODUCT_TYPE: ["flex"]
+                          SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
                   requires:
-                      - "[flex] test_migrate_from-<< matrix.SOURCE_PFID >>"
+                    - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+            - validate_db_schema:
+                name: "[<< matrix.PRODUCT_TYPE >>] validate_db_schema_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["flex"]
+                    SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+            - validate_indexing_diff:
+                name: "[<< matrix.PRODUCT_TYPE >>] validate_indexing_diff-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
+                matrix:
+                  parameters:
+                    PRODUCT_TYPE: ["flex"]
+                    SOURCE_PFID_SOURCE_PROJECT_ID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[<< matrix.PRODUCT_TYPE >>] test_migrate_from-<< matrix.SOURCE_PFID_SOURCE_PROJECT_ID >>"
             - ui_sanity_checks:
-                  name: sanity_checks-<< matrix.SOURCE_PFID >>
-                  matrix:
-                      parameters:
-                          SOURCE_PFID: *client-to-clone-flex
-                  requires:
-                      - "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                name: "[flex] sanity_checks_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                  parameters:
+                    SOURCE_PFID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[flex] test_migrate_from-<< matrix.SOURCE_PFID >>"
+            - test_upgrade_from_customer_db:
+                name: "[flex] test_upgrade_from-<< matrix.SOURCE_PFID >>"
+                matrix:
+                  parameters:
+                      PRODUCT_TYPE: ["srnt"]
+                      SOURCE_PFID: ["<< pipeline.parameters.client-to-clone-flex >>"]
+                requires:
+                  - "[flex] sanity_checks_from-<< matrix.SOURCE_PFID >>"
 
     # Description :
     #    Check doctrine migration from FLEX N-1 to FLEX N
@@ -120,7 +151,7 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["flex"]
-                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *clients-to-clone-flex
                   requires:
                       - build_env_vars
 
@@ -274,6 +305,6 @@ workflows:
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["flex"]
-                          SOURCE_PFID_SOURCE_PROJECT_ID: *client-to-clone-flex
+                          SOURCE_PFID_SOURCE_PROJECT_ID: *clients-to-clone-flex
                   requires:
                       - "[srnt] Build"
