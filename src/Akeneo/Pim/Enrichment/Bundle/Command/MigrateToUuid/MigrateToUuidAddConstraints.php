@@ -118,7 +118,7 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
     }
 
     /**
-     * This method switches primary to use a new one with a uuid.
+     * This method switches primary key to use a new one with a uuid.
      * To keep performance, we add a temporary index named `migrate_to_uuid_temp_index_to_delete`.
      * This index has to be dropped once everything is migrated.
      */
@@ -149,12 +149,10 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
 
     private function addForeignKey(string $tableName, array $tableProperties): void
     {
-        $sql = <<<SQL
-            SET FOREIGN_KEY_CHECKS=0; 
+        $sql = <<<SQL 
             ALTER TABLE {tableName} ADD CONSTRAINT {constraintName} FOREIGN KEY ({uuidColumnName}) REFERENCES `pim_catalog_product` (`uuid`) ON DELETE CASCADE,
             ALGORITHM=INPLACE,
-            LOCK=NONE;
-            SET FOREIGN_KEY_CHECKS=1; 
+            LOCK=NONE; 
         SQL;
 
         $query = \strtr($sql, [
@@ -163,7 +161,12 @@ final class MigrateToUuidAddConstraints implements MigrateToUuidStep
             '{uuidColumnName}' => $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX],
         ]);
 
-        $this->connection->executeQuery($query);
+        $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=0');
+        try {
+            $this->connection->executeQuery($query);
+        } finally {
+            $this->connection->executeQuery('SET FOREIGN_KEY_CHECKS=1');
+        }
     }
 
     private function addUniqueConstraint(string $tableName, string $constraintName, array $columnNames): void
