@@ -36,12 +36,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
     private function assertTheIndexesDoNotExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
-            if ($this->tableExists($tableName) && isset($tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX])) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertFalse(
-                    $this->indexExists($tableName, $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX]),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index exists in the "%s" table',
-                        $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX],
+                        $indexName,
                         $tableName
                     )
                 );
@@ -52,12 +53,13 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
     private function assertTheIndexesExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
-            if ($this->tableExists($tableName) && isset($tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX])) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertTrue(
-                    $this->indexExists($tableName, $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX]),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index does not exist in the "%s" table',
-                        $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX],
+                        $indexName,
                         $tableName
                     )
                 );
