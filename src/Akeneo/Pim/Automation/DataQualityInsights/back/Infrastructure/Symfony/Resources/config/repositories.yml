@@ -3,6 +3,14 @@ parameters:
     akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table: 'pim_data_quality_insights_product_model_criteria_evaluation'
 
 services:
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ProductPersistenceModel:
+        arguments:
+          - '%akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table%'
+
+      Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\ProductModelPersistenceModel:
+        arguments:
+          - '%akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table%'
+
       Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository:
           arguments:
               - '@database_connection'

@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,21 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class GetUpToDateCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
-    /** @var GetCriteriaEvaluationsByProductIdQueryInterface */
-    private $getLatestCriteriaEvaluationsByProductIdQuery;
-
-    /** @var HasUpToDateEvaluationQueryInterface */
-    private $hasUpToDateEvaluationQuery;
 
     public function __construct(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
+        private GetCriteriaEvaluationsByProductIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $this->getLatestCriteriaEvaluationsByProductIdQuery = $getLatestCriteriaEvaluationsByProductIdQuery;
-        $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
     }
 
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
         if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
             return new Read\CriterionEvaluationCollection();

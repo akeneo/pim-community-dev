@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
@@ -23,7 +24,7 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
         $this->dbConnection = $dbConnection;
     }
 
-    public function forProductId(ProductId $productId): bool
+    public function forProductId(ProductEntityIdInterface $productId): bool
     {
         $upToDateProducts = $this->forProductIdCollection(ProductIdCollection::fromProductId($productId));
 

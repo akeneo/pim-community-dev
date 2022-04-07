@@ -109,15 +109,6 @@ final class ProductIdCollectionSpec extends ObjectBehavior
         $this->toArrayInt()->shouldBeLike($idsExpected);
     }
 
-    public function it_adds_product_id()
-    {
-        $ids = [new ProductId(12), new ProductId(68), new ProductId(167)];
-        $this->beConstructedThrough('fromProductIds', [$ids]);
-
-        $this->addProductId(new ProductId(123));
-        $this->toArray()->shouldBeLike([new ProductId(12), new ProductId(68), new ProductId(167), new ProductId(123)]);
-    }
-
     public function it_finds_a_product_id()
     {
         $searchValue = new ProductId(12);

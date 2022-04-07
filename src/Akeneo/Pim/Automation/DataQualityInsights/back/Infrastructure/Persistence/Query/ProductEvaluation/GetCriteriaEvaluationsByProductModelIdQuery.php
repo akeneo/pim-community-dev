@@ -11,6 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
@@ -19,8 +20,9 @@ use Doctrine\DBAL\FetchMode;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
+final class GetCriteriaEvaluationsByProductModelIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
 {
+
 
     public function __construct(
         private Connection                            $db,
@@ -29,10 +31,11 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     ) {
     }
 
+
     public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
-        if (!($productId instanceof ProductId)) {
-            throw new \InvalidArgumentException("GetCriteriaEvaluationsByProductIdQuery must be used with ProductId");
+        if (!($productId instanceof ProductModelId)) {
+            throw new \InvalidArgumentException("GetCriteriaEvaluationsByProductModelIdQuery must be used with ProductModelId");
         }
 
         $sql = <<<SQL
@@ -42,7 +45,7 @@ SELECT
        evaluation.status,
        evaluation.evaluated_at,
        evaluation.result
-FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
+FROM pim_data_quality_insights_product_model_criteria_evaluation AS evaluation
 WHERE evaluation.product_id = :product_id
 SQL;
 
