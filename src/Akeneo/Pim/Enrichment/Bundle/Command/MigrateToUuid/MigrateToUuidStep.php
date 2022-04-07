@@ -12,7 +12,8 @@ interface MigrateToUuidStep
         'pim_catalog_product' => [
             self::ID_COLUMN_INDEX => 'id',
             self::UUID_COLUMN_INDEX => 'uuid',
-            self::PRIMARY_KEY_UUID_INDEX => null,
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'product_uuid',
+            self::PRIMARY_KEY_UUID_INDEX => ['uuid'],
             self::FOREIGN_KEY_INDEX => null,
             self::UNIQUE_CONSTRAINTS_INDEX => [],
             self::INDEXES_INDEX => [],
@@ -74,6 +75,7 @@ interface MigrateToUuidStep
         'pim_catalog_completeness' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'product_uuid',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => null,
             self::UNIQUE_CONSTRAINTS_INDEX => ['channel_locale_product_unique_idx' => ['channel_id', 'locale_id', 'product_uuid']],
@@ -82,6 +84,7 @@ interface MigrateToUuidStep
         'pim_data_quality_insights_product_criteria_evaluation' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => null,
             self::PRIMARY_KEY_UUID_INDEX => ['product_uuid', 'criterion_code'],
             self::FOREIGN_KEY_INDEX => 'FK_dqi_product_uuid_criteria_evaluation',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -90,6 +93,7 @@ interface MigrateToUuidStep
         'pim_data_quality_insights_product_score' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => null,
             self::PRIMARY_KEY_UUID_INDEX => ['product_uuid', 'evaluated_at'],
             self::FOREIGN_KEY_INDEX => 'FK_dqi_product_uuid_score',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -98,6 +102,7 @@ interface MigrateToUuidStep
         'pimee_teamwork_assistant_completeness_per_attribute_group' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'product_uuid',
             self::PRIMARY_KEY_UUID_INDEX => ['locale_id','channel_id','product_uuid','attribute_group_id'],
             self::FOREIGN_KEY_INDEX => 'attr_grp_completeness_product_uuid_foreign_key',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -106,6 +111,7 @@ interface MigrateToUuidStep
         'pimee_teamwork_assistant_project_product' => [
             self::ID_COLUMN_INDEX => 'product_id',
             self::UUID_COLUMN_INDEX => 'product_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => 'product_uuid',
             self::PRIMARY_KEY_UUID_INDEX => ['project_id','product_uuid'],
             self::FOREIGN_KEY_INDEX => 'product_selection_project_uuid_foreign_key',
             self::UNIQUE_CONSTRAINTS_INDEX => [],
@@ -117,7 +123,7 @@ interface MigrateToUuidStep
             self::UUID_COLUMN_INDEX_NAME_INDEX => 'IDX_6F63A25F5C977207',
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => 'FK_6F63A25F5C977207',
-            self::UNIQUE_CONSTRAINTS_INDEX => ['unique_author_product_idx' => ['author', 'product_uuid']],
+            self::UNIQUE_CONSTRAINTS_INDEX => ['unique_author_product_idx' => ['product_uuid', 'author']],
             self::INDEXES_INDEX => ['IDX_6F63A25F5C977207' => ['product_uuid']],
         ],
         'pimee_workflow_published_product' => [
@@ -132,6 +138,7 @@ interface MigrateToUuidStep
         'pim_versioning_version' => [
             self::ID_COLUMN_INDEX => 'resource_id',
             self::UUID_COLUMN_INDEX => 'resource_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => null,
             self::PRIMARY_KEY_UUID_INDEX => null,
             self::FOREIGN_KEY_INDEX => null,
             self::UNIQUE_CONSTRAINTS_INDEX => [],
