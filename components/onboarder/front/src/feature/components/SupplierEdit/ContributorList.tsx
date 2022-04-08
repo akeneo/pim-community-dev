@@ -22,7 +22,10 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     };
 
     const handleNewContributorsAdd = () => {
-        setContributors([...contributors, ...newContributors.filter(contributorEmail => isValidEmail(contributorEmail))]);
+        setContributors([
+            ...contributors,
+            ...newContributors.filter(contributorEmail => isValidEmail(contributorEmail)),
+        ]);
         setNewContributors([]);
     };
 
@@ -31,60 +34,60 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     };
 
     return (
-      <TabContainer>
-          <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
+        <TabContainer>
+            <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
 
-          <Field label={translate('onboarder.supplier.supplier_edit.contributors_form.add_contributors')}>
-              <FieldContent>
-                  <TagInputContainer>
-                      <TagInput onChange={onChangeNewContributors} value={newContributors} />
-                  </TagInputContainer>
-                  <Button level="tertiary" onClick={handleNewContributorsAdd}>
-                      {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
-                  </Button>
-              </FieldContent>
-          </Field>
+            <Field label={translate('onboarder.supplier.supplier_edit.contributors_form.add_contributors')}>
+                <FieldContent>
+                    <TagInputContainer>
+                        <TagInput onChange={onChangeNewContributors} value={newContributors} />
+                    </TagInputContainer>
+                    <Button level="tertiary" onClick={handleNewContributorsAdd}>
+                        {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
+                    </Button>
+                </FieldContent>
+            </Field>
 
-          {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
-          {(0 < filteredContributors.length || '' !== searchValue) && (
-            <>
-                <Search
-                  onSearchChange={setSearchValue}
-                  searchValue={searchValue}
-                  placeholder={translate(
-                    'onboarder.supplier.supplier_edit.contributors_form.search_by_email_address'
-                  )}
-                >
-                    <Search.ResultCount>
-                        {translate(
-                          'onboarder.supplier.supplier_edit.contributors_form.result_counter',
-                          {count: filteredContributors.length},
-                          filteredContributors.length
+            {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
+            {(0 < filteredContributors.length || '' !== searchValue) && (
+                <>
+                    <Search
+                        onSearchChange={setSearchValue}
+                        searchValue={searchValue}
+                        placeholder={translate(
+                            'onboarder.supplier.supplier_edit.contributors_form.search_by_email_address'
                         )}
-                    </Search.ResultCount>
-                </Search>
+                    >
+                        <Search.ResultCount>
+                            {translate(
+                                'onboarder.supplier.supplier_edit.contributors_form.result_counter',
+                                {count: filteredContributors.length},
+                                filteredContributors.length
+                            )}
+                        </Search.ResultCount>
+                    </Search>
 
-                <Table>
-                    <Table.Header>
-                        <Table.HeaderCell>
-                            {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
-                        </Table.HeaderCell>
-                        <Table.HeaderCell />
-                    </Table.Header>
-                    <Table.Body>
-                        {filteredContributors.map(email => (
-                          <Table.Row key={email} data-testid={email}>
-                              <Table.Cell>{email}</Table.Cell>
-                              <DeleteCell>
-                                  <DeleteIcon onClick={() => removeContributor(email)} />
-                              </DeleteCell>
-                          </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-            </>
-          )}
-      </TabContainer>
+                    <Table>
+                        <Table.Header>
+                            <Table.HeaderCell>
+                                {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
+                            </Table.HeaderCell>
+                            <Table.HeaderCell />
+                        </Table.Header>
+                        <Table.Body>
+                            {filteredContributors.map(email => (
+                                <Table.Row key={email} data-testid={email}>
+                                    <Table.Cell>{email}</Table.Cell>
+                                    <DeleteCell>
+                                        <DeleteIcon onClick={() => removeContributor(email)} />
+                                    </DeleteCell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                </>
+            )}
+        </TabContainer>
     );
 };
 

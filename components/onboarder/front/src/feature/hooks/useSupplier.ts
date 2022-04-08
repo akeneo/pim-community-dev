@@ -54,12 +54,7 @@ const useSupplier = (identifier: string) => {
         loadSupplier();
     }, [loadSupplier]);
 
-    return [
-        supplier,
-        setSupplier,
-        supplierHasChanges,
-        saveSupplier,
-    ] as const;
+    return [supplier, setSupplier, supplierHasChanges, saveSupplier] as const;
 };
 
 export {useSupplier};
