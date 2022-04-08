@@ -19,7 +19,7 @@ final class GetSupplier
     {
         $supplier = ($this->getSupplier)(Identifier::fromString($identifier));
 
-        if ($supplier === null) {
+        if (null === $supplier) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 

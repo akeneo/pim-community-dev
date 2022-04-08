@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Application\Supplier\Exceptions\InvalidDataException;
+use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
+use Akeneo\OnboarderSerenity\Application\Supplier\Exception\SupplierDoesNotExist;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,7 +22,7 @@ final class SupplierUpdate
     {
         $requestContent = json_decode($request->getContent(), true);
 
-        if (!isset($requestContent['label']) && !isset($requestContent['contributors'])){
+        if (!isset($requestContent['label']) && !isset($requestContent['contributors'])) {
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
@@ -29,8 +30,18 @@ final class SupplierUpdate
             ($this->updateSupplierHandler)(
                 new UpdateSupplier($identifier, $requestContent['label'], $requestContent['contributors'])
             );
-        } catch (InvalidDataException $e) {
-            return new JsonResponse(null, Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (InvalidData $e) {
+            $errors = [];
+            foreach ($e->violations() as $violation) {
+                $errors[] = [
+                    'propertyPath' => $violation->getPropertyPath(),
+                    'message' => $violation->getMessage(),
+                ];
+            }
+
+            return new JsonResponse(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+        } catch (SupplierDoesNotExist $e) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
