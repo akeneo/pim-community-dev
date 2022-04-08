@@ -123,6 +123,7 @@ class MigrateToUuidCommand extends Command
         $this->connection->executeQuery(<<<SQL
             INSERT INTO `pim_one_time_task` (`code`, `status`, `start_time`, `values`) 
             VALUES (:code, :status, NOW(), :values)
+            ON DUPLICATE KEY UPDATE status = VALUES.status
         SQL, [
             'code' => self::$defaultName,
             'status' => 'started',
