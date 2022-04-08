@@ -96,7 +96,7 @@ SQL;
     {
         switch ($type) {
             case 'product':
-                $idFromDatabase = $this->getProductId($identifier);
+                $idFromDatabase = $this->getProductUuid($identifier);
                 break;
             case 'product_model':
                 $idFromDatabase = $this->getProductModelId($identifier);
@@ -112,10 +112,28 @@ SQL;
 
     protected function getProductId(string $identifier): string
     {
+        $query = <<<SQL
+SELECT id FROM pim_catalog_product WHERE identifier = :identifier
+SQL;
+
+        $stmt = $this->dbalConnection->prepare($query);
+        $stmt->bindValue('identifier', $identifier);
+        $idFromDatabase = $stmt->executeQuery()->fetchOne();
+
+        if (false === $idFromDatabase) {
+            throw new \InvalidArgumentException(sprintf(
+                'Product with identifier "%s" does not exist.',
+                $identifier
+            ));
+        }
+
+        return $idFromDatabase;
+    }
+
+    protected function getProductUuid(string $identifier): string
+    {
             $query = <<<SQL
-SELECT id
-FROM pim_catalog_product
-WHERE identifier = :identifier
+SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier
 SQL;
 
         $stmt = $this->dbalConnection->prepare($query);
