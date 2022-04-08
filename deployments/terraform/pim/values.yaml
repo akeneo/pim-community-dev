@@ -339,6 +339,14 @@ pim:
         requests:
           cpu: "100m"
           memory: "256Mi"
+    clean-product-scores:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-product-scores --no-interaction"
+      schedule: "30 0 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
 
 # Onboarder
 onboarder:
