@@ -71,5 +71,6 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
             - '@monolog.logger'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
