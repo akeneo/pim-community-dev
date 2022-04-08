@@ -13,6 +13,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_by_attribute_option_code:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductModelIdsByAttributeOptionCodeQuery

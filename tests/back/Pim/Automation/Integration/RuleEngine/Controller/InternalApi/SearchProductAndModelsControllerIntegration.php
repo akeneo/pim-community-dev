@@ -31,9 +31,9 @@ class SearchProductAndModelsControllerIntegration extends ControllerIntegrationT
      */
     public function it_gets_all_identifiers()
     {
-        $this->assertIdentifiers(
-            ['abc123', 'def123', '123456', 'sub_abc123', 'model_123', 'model_abcdef', 'model_abc123']
-        );
+        $expected = ['abc123', 'def123', '123456', 'sub_abc123', 'model_123', 'model_abcdef', 'model_abc123'];
+        \sort($expected);
+        $this->assertIdentifiers($expected);
     }
 
     /**
@@ -41,8 +41,10 @@ class SearchProductAndModelsControllerIntegration extends ControllerIntegrationT
      */
     public function it_gets_identifiers_by_search()
     {
+        $expected = ['abc123', 'sub_abc123', 'model_abcdef', 'model_abc123'];
+        \sort($expected);
         $this->assertIdentifiers(
-            ['abc123', 'sub_abc123', 'model_abcdef', 'model_abc123'],
+            $expected,
             'abc'
         );
     }
@@ -52,8 +54,10 @@ class SearchProductAndModelsControllerIntegration extends ControllerIntegrationT
      */
     public function it_gets_product_identifiers()
     {
+        $expected = ['abc123', 'def123', '123456', 'sub_abc123'];
+        \sort($expected);
         $this->assertIdentifiers(
-            ['abc123', 'def123', '123456', 'sub_abc123'],
+            $expected,
             null,
             'product'
         );
@@ -64,8 +68,10 @@ class SearchProductAndModelsControllerIntegration extends ControllerIntegrationT
      */
     public function it_gets_product_model_codes()
     {
+        $expected = ['model_123', 'model_abcdef', 'model_abc123'];
+        \sort($expected);
         $this->assertIdentifiers(
-            ['model_123', 'model_abcdef', 'model_abc123'],
+            $expected,
             null,
             'product_model'
         );
@@ -77,21 +83,21 @@ class SearchProductAndModelsControllerIntegration extends ControllerIntegrationT
     public function it_paginates_results()
     {
         $this->assertIdentifiers(
-            ['abc123', 'def123', '123456'],
+            ['123456', 'abc123', 'def123'],
             null,
             null,
             1,
             3
         );
         $this->assertIdentifiers(
-            ['sub_abc123', 'model_123', 'model_abcdef'],
+            ['model_123', 'model_abc123', 'model_abcdef'],
             null,
             null,
             2,
             3
         );
         $this->assertIdentifiers(
-            ['model_abc123'],
+            ['sub_abc123'],
             null,
             null,
             3,
