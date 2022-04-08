@@ -340,7 +340,8 @@ class ProductController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productRepository->find($id);
+        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
+        $product = $this->productRepository->findOneBy(['id' => $id]);
 
         if (null === $product) {
             throw new NotFoundHttpException(

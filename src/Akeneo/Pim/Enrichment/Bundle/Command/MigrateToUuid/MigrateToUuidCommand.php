@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class MigrateToUuidCommand extends Command
 {
+    use MigrateToUuidTrait;
+
     protected static $defaultName = 'pim:product:migrate-to-uuid';
 
     private const DQI_JOB_NAME = 'data_quality_insights_evaluations';
@@ -62,6 +64,12 @@ class MigrateToUuidCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!$this->columnExists('pim_catalog_association', 'owner_id')) {
+            $output->writeln('Migration cannot be ran on a fresh install');
+
+            return self::SUCCESS;
+        }
+
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 

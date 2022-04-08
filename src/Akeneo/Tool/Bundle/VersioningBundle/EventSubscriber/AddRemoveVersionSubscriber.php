@@ -86,14 +86,18 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
             $author = $token->getUser()->getUsername();
         }
 
+        $resourceId = $this->shouldUseUuid($subject) ? null : ($subject->getId() ?? $event->getSubjectId());
+        $resourceUuid = $this->shouldUseUuid($subject) ? $subject->getUuid() : null;
         $previousVersion = $this->versionRepository->getNewestLogEntry(
             ClassUtils::getClass($subject),
-            $event->getSubjectId()
+            $resourceId,
+            $resourceUuid
         );
 
         $version = $this->versionFactory->create(
             ClassUtils::getClass($subject),
-            $event->getSubjectId(),
+            $resourceId,
+            $resourceUuid,
             $author,
             'Deleted'
         );
@@ -104,5 +108,12 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
 
         $options = $event->getArguments();
         $this->versionSaver->save($version, $options);
+    }
+
+    private function shouldUseUuid($subject): bool
+    {
+        return method_exists($subject, 'getUuid')
+            && get_class($subject) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+            ;
     }
 }

@@ -9,6 +9,7 @@ use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Version repository
@@ -25,28 +26,35 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getLogEntries($resourceName, $resourceId)
+    public function getLogEntries($resourceName, $resourceId, ?UuidInterface $resourceUuid)
     {
-        return $this->findBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['version' => 'desc']
-        );
+        $params = [
+            'resourceName' => $resourceName,
+            'pending' => false,
+        ];
+        if (null !== $resourceUuid) {
+            $params['resourceUuid'] = $resourceUuid;
+        } else {
+            $params['resourceId'] = $resourceId;
+        }
+
+        return $this->findBy($params, ['version' => 'desc']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
+    public function getOldestLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending = false)
     {
-        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'asc');
+        return $this->getOneLogEntry($resourceName, $resourceId, $resourceUuid, $pending, 'asc');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
+    public function getNewestLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending = false)
     {
-        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'desc');
+        return $this->getOneLogEntry($resourceName, $resourceId, $resourceUuid, $pending, 'desc');
     }
 
     /**
@@ -174,32 +182,6 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getNewestVersionIdForResource($resourceName, $resourceId)
-    {
-        $qb = $this->createQueryBuilder('v');
-        $qb->select('v.id')
-            ->where($qb->expr()->eq('v.resourceName', ':resource_name'))
-            ->andWhere(
-                $qb->expr()->eq('v.resourceId', ':resource_id')
-            )
-            ->orderBy('v.version', 'desc')
-            ->setMaxResults(1);
-
-        $qb->setParameter(':resource_name', $resourceName)
-            ->setParameter(':resource_id', $resourceId);
-
-        try {
-            $versionId = (int) $qb->getQuery()->getSingleScalarResult();
-        } catch (NoResultException $e) {
-            $versionId = null;
-        }
-
-        return $versionId;
-    }
-
-    /**
      * @param CursorFactoryInterface $cursorFactory
      */
     public function setCursorFactory(CursorFactoryInterface $cursorFactory)
@@ -211,15 +193,21 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
      * Get one log entry
      *
      * @param string    $resourceName
-     * @param string    $resourceId
+     * @param string|null    $resourceId
      * @param bool|null $pending
      * @param string    $sort
      *
      * @return \Akeneo\Tool\Component\Versioning\Model\Version|null
      */
-    protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
+    protected function getOneLogEntry($resourceName, $resourceId, ?UuidInterface $resourceUuid, $pending, $sort)
     {
-        $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
+        $criteria = ['resourceName' => $resourceName];
+        if (null !== $resourceUuid) {
+            $criteria['resourceUuid'] = $resourceUuid;
+        } else {
+            $criteria['resourceId'] = $resourceId;
+        }
+
         if (null !== $pending) {
             $criteria['pending'] = $pending;
         }
