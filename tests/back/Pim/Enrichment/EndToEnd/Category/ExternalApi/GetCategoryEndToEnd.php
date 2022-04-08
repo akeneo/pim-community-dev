@@ -79,7 +79,7 @@ class GetCategoryEndToEnd extends ApiTestCase
             'parent' => 'master',
             'updated' => '2016-06-14T13:12:50+02:00',
             'position' => 1,
-            'level' => 2,
+            'level' => 1,
             'labels' => [
                 'en_US'=> 'Category A',
                 'fr_FR'=> 'Catégorie A',
