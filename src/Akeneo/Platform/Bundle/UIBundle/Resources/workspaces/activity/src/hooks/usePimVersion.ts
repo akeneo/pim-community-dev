@@ -1,8 +1,6 @@
 import {useRouter} from '@akeneo-pim-community/shared';
 import {useCallback, useEffect, useState} from 'react';
 
-const DataCollector = require('pim/data-collector');
-
 type PimVersion = {
   version: string;
   is_last_patch_displayed: boolean;
@@ -52,7 +50,8 @@ const usePimVersion = () => {
   useEffect(() => {
     if (isAnalyticsWanted && analyticsUrl && !sessionStorage.getItem('analytics-called')) {
       (async () => {
-        const collectedData = await DataCollector.collect('pim_analytics_data_collect');
+        const collectedDataResponse = await fetch(router.generate('pim_analytics_data_collect'));
+        const collectedData = await collectedDataResponse.json();
         const response = await fetch(`${analyticsUrl}?${$.param(collectedData)}`);
         sessionStorage.setItem('analytics-called', '1');
         if (isLastPatchDisplayed && response.status === 200) {
