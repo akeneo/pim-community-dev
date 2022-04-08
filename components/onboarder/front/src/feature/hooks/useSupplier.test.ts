@@ -1,6 +1,7 @@
 import {act} from '@testing-library/react-hooks';
 import {mockedDependencies, NotificationLevel, renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useSupplier} from './useSupplier';
+import {waitFor} from '@testing-library/react';
 
 const backendResponse = {
     identifier: 'b2d485ef-49c4-45c8-b091-db0243b76055',
@@ -9,17 +10,15 @@ const backendResponse = {
     contributors: ['aa@aa.aa', 'bb@bb.bb', 'cc@cc.cc'],
 };
 
-test('it returns the supplier only when the data are loaded', async () => {
+test('it returns the supplier when the data are loaded', async () => {
     mockSuccessfulBackendResponse();
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useSupplier('id1'));
-    expect(result.current.supplier).toBeNull();
-    expect(result.current.supplierHasChanges()).toBe(false);
+    await act(async () => await waitForNextUpdate());
 
-    await waitForNextUpdate();
-
-    expect(result.current.supplier).toEqual(backendResponse);
-    expect(result.current.supplierHasChanges()).toBe(false);
+    const [supplier, , supplierHasChanges] = result.current;
+    expect(supplier).toEqual(backendResponse);
+    expect(supplierHasChanges).toBe(false);
 });
 
 test('it returns that the supplier has changes when the label is updated', async () => {
@@ -27,10 +26,17 @@ test('it returns that the supplier has changes when the label is updated', async
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useSupplier('id1'));
     await waitForNextUpdate();
-    await act(async () => result.current.setSupplierLabel('updated label'));
 
-    expect(result.current.supplier?.label).toBe('updated label');
-    expect(result.current.supplierHasChanges()).toBe(true);
+    const [supplier, setSupplier] = result.current;
+
+    await act(async () => setSupplier({...supplier, label: 'Jean Michel'}));
+
+    waitForNextUpdate();
+
+    const [updatedSupplier, , updatedSupplierHasChanges] = result.current;
+
+    expect(updatedSupplier.label).toBe('Jean Michel');
+    expect(updatedSupplierHasChanges).toBe(true);
 });
 
 test('it returns that the supplier has changes when the contributors are updated', async () => {
@@ -38,10 +44,17 @@ test('it returns that the supplier has changes when the contributors are updated
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useSupplier('id1'));
     await waitForNextUpdate();
-    await act(async () => result.current.setSupplierContributors(['dd@dd.dd']));
 
-    expect(result.current.supplier?.contributors).toEqual(['dd@dd.dd']);
-    expect(result.current.supplierHasChanges()).toBe(true);
+    const [supplier, setSupplier] = result.current;
+
+    await act(async () => setSupplier({...supplier, contributors: ['michel@michel.com']}));
+
+    waitForNextUpdate();
+
+    const [updatedSupplier, , updatedSupplierHasChanges] = result.current;
+
+    expect(updatedSupplier.contributors).toEqual(['michel@michel.com']);
+    expect(updatedSupplierHasChanges).toBe(true);
 });
 
 test('it saves a supplier', async () => {
@@ -50,13 +63,16 @@ test('it saves a supplier', async () => {
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useSupplier('id1'));
     await waitForNextUpdate();
-    await act(async () => result.current.setSupplierLabel('updated label'));
-    await act(async () => result.current.saveSupplier());
+
+    const [supplier, setSupplier, , saveSupplier] = result.current;
+
+    await act(async () => setSupplier({...supplier, label: 'new label'}));
+    await act(async () => saveSupplier());
 
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.SUCCESS,
-        'onboarder.supplier.supplier_edit.sucess_message'
+        'onboarder.supplier.supplier_edit.success_message'
     );
 });
 
@@ -76,8 +92,11 @@ test('it renders an error notification if the saving of the supplier failed', as
 
     const {result, waitForNextUpdate} = renderHookWithProviders(() => useSupplier('id1'));
     await waitForNextUpdate();
-    await act(async () => result.current.setSupplierLabel('updated label'));
-    await act(async () => result.current.saveSupplier());
+
+    const [supplier, setSupplier, , saveSupplier] = result.current;
+
+    await act(async () => setSupplier({...supplier, label: 'Jean Michel'}));
+    await act(async () => saveSupplier());
 
     expect(notify).toHaveBeenNthCalledWith(
         1,
@@ -94,7 +113,9 @@ test('it renders an error notification if the loading of the supplier failed', a
 
     await renderHookWithProviders(() => useSupplier('id1'));
 
-    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.error');
+    await waitFor(() => {
+        expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.error');
+    });
 });
 
 function mockSuccessfulBackendResponse() {

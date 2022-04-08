@@ -5,15 +5,15 @@ const contributors = ['contributor1@example.com', 'contributor2@example.com', 'a
 
 test('it returns all contributors by default', () => {
     const {result} = renderHook(() => useFilteredContributors(contributors, ''));
-    expect(result.current).toBe(contributors);
+    expect(result.current).toStrictEqual(contributors);
 });
 
 test('we can search contributors by email', async () => {
     const {result} = renderHook(() => useFilteredContributors(contributors, 'contributor'));
-    expect(result.current).toEqual(['contributor1@example.com', 'contributor2@example.com']);
+    expect(result.current).toStrictEqual(['contributor1@example.com', 'contributor2@example.com']);
 });
 
 test('it returns no result if the search does not match any email', async () => {
     const {result} = renderHook(() => useFilteredContributors(contributors, 'test'));
-    expect(result.current).toEqual([]);
+    expect(result.current).toStrictEqual([]);
 });
