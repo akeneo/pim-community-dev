@@ -261,7 +261,7 @@ SQL;
                 FLOOR(100 * (c.required_count - c.missing_count) / c.required_count) AS ratio
             FROM
                 pim_catalog_product p
-                JOIN pim_catalog_completeness c ON c.product_id = p.id
+                JOIN pim_catalog_completeness c ON c.product_uuid = p.uuid
                 JOIN pim_catalog_locale l ON l.id = c.locale_id
                 JOIN pim_catalog_channel ch ON ch.id = c.channel_id
             WHERE 
@@ -328,7 +328,7 @@ SQL;
                 JSON_ARRAYAGG(COALESCE(ft.label, CONCAT("[", g.code, "]"))) AS product_groups 
             FROM
                 pim_catalog_product p
-                JOIN pim_catalog_group_product gp ON gp.product_id = p.id
+                JOIN pim_catalog_group_product gp ON gp.product_uuid = p.uuid
                 JOIN pim_catalog_group g ON g.id = gp.group_id
                 LEFT JOIN pim_catalog_group_translation ft ON ft.foreign_key = g.id AND ft.locale = :locale_code
             WHERE 

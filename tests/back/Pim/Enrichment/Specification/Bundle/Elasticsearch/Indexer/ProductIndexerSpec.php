@@ -10,6 +10,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class ProductIndexerSpec extends ObjectBehavior
 {
@@ -173,8 +174,7 @@ class ProductIndexerSpec extends ObjectBehavior
     private function getElasticSearchProjection(string $identifier): ElasticsearchProductProjection
     {
         return new ElasticsearchProductProjection(
-            '1',
-            '1e40-4c55-a415-89c7958b270d',
+            Uuid::fromString('3bf35583-c54e-4f8a-8bd9-5693c142a1cf'),
             $identifier,
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),

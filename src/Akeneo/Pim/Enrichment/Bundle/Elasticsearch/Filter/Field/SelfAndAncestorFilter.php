@@ -47,8 +47,7 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
         private ProductModelRepositoryInterface $productModelRepository,
         private ProductRepositoryInterface $productRepository,
         array $supportedFields,
-        array $supportedOperators,
-        private Connection $connection
+        array $supportedOperators
     ) {
         $this->supportedFields = $supportedFields;
         $this->supportedOperators = $supportedOperators;
@@ -69,7 +68,6 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
 
         $this->checkValues($values);
         $values = (array) $values;
-        $values = $this->addProductUuidsInValues($values);
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -150,43 +148,8 @@ class SelfAndAncestorFilter extends AbstractFieldFilter
             return false;
         }
 
-        $idOrUuid = str_replace('product_', '', $value);
+        $uuid = str_replace('product_', '', $value);
 
-        // @TODO CPM-596: remove
-        if (\is_numeric($idOrUuid)) {
-            return null !== $this->productRepository->findOneBy(['id' => $idOrUuid]);
-        }
-
-        return null !== $this->productRepository->findOneBy(['uuid' => $idOrUuid]);
-    }
-
-    private function addProductUuidsInValues(array $values): array
-    {
-        $ids = [];
-        foreach ($values as $value) {
-            if (\strpos($value, 'product_') === false || \strpos($value, 'product_model_') !== false) {
-                continue;
-            }
-
-            $id = \str_replace('product_', '', $value);
-            if (\is_numeric($id)) {
-                $ids[] = $id;
-            }
-        }
-
-        if ([] === $ids) {
-            return $values;
-        }
-
-        $uuids = $this->connection->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE id IN (:ids)',
-            ['ids' => $ids],
-            ['ids' => Connection::PARAM_STR_ARRAY]
-        )->fetchFirstColumn();
-
-        return \array_merge(
-            $values,
-            \array_map(static fn (string $uuid): string => \sprintf('product_%s', $uuid), $uuids)
-        );
+        return null !== $this->productRepository->findOneBy(['uuid' => $uuid]);
     }
 }

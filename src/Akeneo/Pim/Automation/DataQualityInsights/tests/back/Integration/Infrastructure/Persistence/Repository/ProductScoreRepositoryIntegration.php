@@ -142,8 +142,9 @@ SQL
     private function assertProductScoreExists(ProductScores $expectedProductScore): void
     {
         $productScore = $this->get('database_connection')->executeQuery(<<<SQL
-SELECT * FROM pim_data_quality_insights_product_score
-WHERE product_id = :productId AND evaluated_at = :evaluatedAt;
+SELECT * FROM pim_data_quality_insights_product_score score
+    JOIN pim_catalog_product product ON product.uuid = score.product_uuid
+WHERE product.id = :productId AND evaluated_at = :evaluatedAt;
 SQL,
             [
                 'productId' => $expectedProductScore->getProductId()->toInt(),
