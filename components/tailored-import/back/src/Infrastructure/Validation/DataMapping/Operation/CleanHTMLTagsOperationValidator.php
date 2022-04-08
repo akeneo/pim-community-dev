@@ -14,15 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation as CleanHTMLTagsOperationConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class CleanHTMLTagsOperationValidator extends ConstraintValidator
 {
     public function validate($operation, Constraint $constraint): void
     {
+        if (!$constraint instanceof CleanHTMLTagsOperationConstraint) {
+            throw new UnexpectedTypeException($constraint, CleanHTMLTagsOperationConstraint::class);
+        }
+
         $this->context->getValidator()
             ->inContext($this->context)
             ->validate($operation, new Collection([

@@ -17,21 +17,16 @@ use Symfony\Component\Validator\Constraint;
 
 class Operations extends Constraint
 {
-    public const MAX_COUNT_REACHED = 'akeneo.tailored_import.validation.operations.max_count_reached';
+    public const INCOMPATIBLE_OPERATION_TYPE = 'akeneo.tailored_import.validation.operations.incompatible_operation_type';
 
     public function __construct(
-        private string $targetType,
+        private array $compatibleOperations,
     ) {
         parent::__construct();
     }
 
-    public function getTargetType(): string
+    public function getCompatibleOperations(): array
     {
-        return $this->targetType;
-    }
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.operations';
+        return $this->compatibleOperations;
     }
 }

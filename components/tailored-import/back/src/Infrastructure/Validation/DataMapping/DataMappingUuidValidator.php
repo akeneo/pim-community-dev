@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class DataMappingUuidValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof DataMappingUuid) {
             throw new UnexpectedTypeException($constraint, DataMappingUuid::class);

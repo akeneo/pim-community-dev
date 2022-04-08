@@ -11,11 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
-use Symfony\Component\Validator\Constraint;
-
-class MeasurementSourceParameter extends Constraint
+class CleanHTMLTagsOperation extends OperationConstraint
 {
-
 }

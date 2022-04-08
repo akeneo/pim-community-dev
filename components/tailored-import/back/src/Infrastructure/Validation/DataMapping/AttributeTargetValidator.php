@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttribute;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -25,7 +26,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeTargetValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof AttributeTarget) {
             throw new UnexpectedTypeException($constraint, AttributeTarget::class);
@@ -42,7 +43,10 @@ class AttributeTargetValidator extends ConstraintValidator
                     'channel' => new Type('string'),
                     'type' => new EqualTo('attribute'),
                     'action_if_not_empty' => new EqualTo(TargetInterface::ACTION_SET),
-                    'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
+                    'action_if_empty' => new Choice([
+                        TargetInterface::IF_EMPTY_CLEAR,
+                        TargetInterface::IF_EMPTY_SKIP,
+                    ]),
                 ], $constraint->getAdditionalConstraints()),
             ]),
             new IsValidAttribute(),

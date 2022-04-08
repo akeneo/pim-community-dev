@@ -17,10 +17,5 @@ use Symfony\Component\Validator\Constraint;
 
 class ChannelShouldExist extends Constraint
 {
-    public const NOT_EXIST_MESSAGE = 'akeneo.tailored_import.validation.channel.should_exist';
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.channel_should_exist';
-    }
+    public const NOT_EXIST = 'akeneo.tailored_import.validation.channel.should_exist';
 }

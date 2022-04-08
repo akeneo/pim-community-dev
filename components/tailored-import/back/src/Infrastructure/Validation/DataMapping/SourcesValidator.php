@@ -26,7 +26,7 @@ class SourcesValidator extends ConstraintValidator
     private const MONO_SOURCES_MAX_COUNT = 1;
     private const MULTI_SOURCES_MAX_COUNT = 4;
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Sources) {
             throw new UnexpectedTypeException($constraint, Sources::class);
@@ -43,14 +43,13 @@ class SourcesValidator extends ConstraintValidator
         $this->validateSourcesExist($value, $constraint);
     }
 
-    private function validateSourcesCount(array $dataMapping, Sources $constraint): void
+    private function validateSourcesCount(array $sources, Sources $constraint): void
     {
-        $maxSourcesCount = $constraint->supportsMultiSource() ? self::MONO_SOURCES_MAX_COUNT : self::MULTI_SOURCES_MAX_COUNT;
+        $maxSourcesCount = $constraint->supportsMultiSource() ? self::MULTI_SOURCES_MAX_COUNT : self::MONO_SOURCES_MAX_COUNT;
 
         $this->context->getValidator()
             ->inContext($this->context)
-            ->atPath(sprintf('[%s][sources]', $dataMapping['uuid'] ?? 'null'))
-            ->validate($dataMapping['sources'], new Count([
+            ->validate($sources, new Count([
                 'min' => self::SOURCES_MIN_COUNT,
                 'minMessage' => Sources::MIN_SOURCES_COUNT_REACHED,
                 'max' => $maxSourcesCount,
@@ -59,20 +58,18 @@ class SourcesValidator extends ConstraintValidator
             ]));
     }
 
-    private function validateSourcesExist(array $dataMapping, Sources $constraint): void
+    private function validateSourcesExist(array $sources, Sources $constraint): void
     {
         $columns = $constraint->getColumns();
         $columnsUuid = array_map(static fn (array $column) => $column['uuid'], $columns);
 
-        foreach ($dataMapping['sources'] as $source) {
+        foreach ($sources as $source) {
             if (!in_array($source, $columnsUuid)) {
                 $this->context->buildViolation(
                     Sources::SOURCES_SHOULD_EXIST,
                 )
-                    ->atPath(sprintf('[%s][sources]', $dataMapping['uuid']))
                     ->addViolation();
             }
         }
     }
-
 }

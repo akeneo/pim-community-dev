@@ -11,15 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceParameter;
 
 use Symfony\Component\Validator\Constraint;
 
-// TODO remove Constraint suffix like in the other classes
-class CleanHTMLTagsOperationConstraint extends Constraint
+class DecimalSeparator extends Constraint
 {
-    public function validatedBy(): string
-    {
-        return CleanHTMLTagsOperationValidator::class;
-    }
 }

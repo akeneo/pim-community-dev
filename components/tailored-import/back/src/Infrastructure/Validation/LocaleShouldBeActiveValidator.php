@@ -37,7 +37,7 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
 
         if (!$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
             $this->context->buildViolation(
-                LocaleShouldBeActive::NOT_ACTIVE_MESSAGE,
+                LocaleShouldBeActive::NOT_ACTIVE,
                 [
                     '{{ locale_code }}' => $localeCode,
                 ]

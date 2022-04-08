@@ -32,9 +32,4 @@ class DataMappings extends Constraint
     {
         return $this->columns;
     }
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.data_mappings';
-    }
 }

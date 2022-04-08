@@ -11,27 +11,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Identifier;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Sources;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class IdentifierValidator extends ConstraintValidator
+class TextValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Identifier) {
-            throw new UnexpectedTypeException($constraint, Identifier::class);
+        if (!$constraint instanceof Text) {
+            throw new UnexpectedTypeException($constraint, Text::class);
         }
 
         $validator = $this->context->getValidator();
@@ -39,11 +37,11 @@ class IdentifierValidator extends ConstraintValidator
             'fields' => [
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
+                    // TODO pluralize source_parameter everywhere in the codebase
                     'source_parameter' => new IsNull(),
-                    'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumns()),
-                'operations' => new Count(['max' => 0]),
+                'operations' => new Operations(['clean_html_tags']),
                 'sample_data' => new SampleData(),
             ],
         ]));

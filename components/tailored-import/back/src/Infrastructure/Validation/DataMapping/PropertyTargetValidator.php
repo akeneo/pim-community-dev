@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class PropertyTargetValidator extends ConstraintValidator
 {
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof PropertyTarget) {
             throw new UnexpectedTypeException($constraint, PropertyTarget::class);

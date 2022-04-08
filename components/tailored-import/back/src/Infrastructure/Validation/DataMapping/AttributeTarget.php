@@ -17,14 +17,12 @@ use Symfony\Component\Validator\Constraint;
 
 class AttributeTarget extends Constraint
 {
-    public function __construct(private array $additionalConstraints = [])
-    {
+    public function __construct(
+        private array $additionalConstraints,
+    ) {
         parent::__construct();
     }
 
-    /**
-     * @return array
-     */
     public function getAdditionalConstraints(): array
     {
         return $this->additionalConstraints;

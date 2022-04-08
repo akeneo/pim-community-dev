@@ -17,5 +17,4 @@ use Symfony\Component\Validator\Constraint;
 
 class DataMappingUuid extends Constraint
 {
-
 }

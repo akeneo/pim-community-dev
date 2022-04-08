@@ -11,21 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceParameter;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class MeasurementValidator extends ConstraintValidator
+class DecimalSeparatorValidator extends ConstraintValidator
 {
+    public function __construct(
+        private array $availableDecimalSeparators,
+    ) {
+    }
+
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof Measurement) {
-            throw new UnexpectedTypeException($constraint, Measurement::class);
+        if (!$constraint instanceof DecimalSeparator) {
+            throw new UnexpectedTypeException($constraint, DecimalSeparator::class);
         }
 
         $validator = $this->context->getValidator();
-        $validator->inContext($this->context)->validate($value, []); // TODO implement it with Axel
+        $validator->inContext($this->context)->validate($value, new Choice($this->availableDecimalSeparators));
     }
 }

@@ -37,7 +37,7 @@ class ChannelShouldExistValidator extends ConstraintValidator
 
         if (!$this->channelExistsWithLocale->doesChannelExist($channel)) {
             $this->context->buildViolation(
-                ChannelShouldExist::NOT_EXIST_MESSAGE,
+                ChannelShouldExist::NOT_EXIST,
                 [
                     '{{ channel_code }}' => $channel,
                 ]

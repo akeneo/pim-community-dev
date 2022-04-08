@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\OperationConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OperationsValidator extends ConstraintValidator
 {
-    private const MAX_OPERATION_COUNT = 5;
+    public function __construct(
+        private array $operationConstraints
+    ) {
+    }
 
     public function validate($operations, Constraint $constraint): void
     {
@@ -37,22 +35,44 @@ class OperationsValidator extends ConstraintValidator
         $validator = $this->context->getValidator();
         $validator->inContext($this->context)->validate($operations, [
             new Type('array'),
-            new Count([
-                'max' => self::MAX_OPERATION_COUNT,
-                'maxMessage' => Operations::MAX_COUNT_REACHED,
-            ])
         ]);
 
         if (0 < $this->context->getViolations()->count() || empty($operations)) {
             return;
         }
 
-        foreach ($operations as $operation) {
-            $this->validateOperation($validator, $operation);
+        foreach ($operations as $index => $operation) {
+            $this->validateOperation($constraint, sprintf('[%s]', $index), $operation);
         }
     }
 
-    private function validateOperation(ValidatorInterface $validator, array $operation) {
+    private function validateOperation(Operations $operationsConstraint, string $path, array $operation): void
+    {
+        $operationType = $operation['type'];
+        $compatibleOperationTypes = $operationsConstraint->getCompatibleOperations();
 
+        if (!in_array($operationType, $compatibleOperationTypes)) {
+            $this->context->buildViolation(Operations::INCOMPATIBLE_OPERATION_TYPE)
+                ->setParameter('{{ operation_type }}', $operationType)
+                ->atPath($path)
+                ->addViolation();
+
+            return;
+        }
+
+        $constraintClass = $this->operationConstraints[$operationType] ?? null;
+
+        if (!$this->isOperationConstraint($constraintClass)) {
+            return;
+        }
+
+        $operationConstraint = new $constraintClass();
+        $validator = $this->context->getValidator();
+        $validator->inContext($this->context)->atPath($path)->validate($operation, $operationConstraint);
+    }
+
+    private function isOperationConstraint(string $constraintClass): bool
+    {
+        return is_subclass_of($constraintClass, OperationConstraint::class, true);
     }
 }

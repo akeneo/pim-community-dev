@@ -17,5 +17,4 @@ use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\
 
 class Number extends TargetConstraint
 {
-
 }

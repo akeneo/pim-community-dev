@@ -17,8 +17,9 @@ use Symfony\Component\Validator\Constraint;
 
 abstract class TargetConstraint extends Constraint
 {
-    public function __construct(private array $columns)
-    {
+    public function __construct(
+        private array $columns,
+    ) {
         parent::__construct();
     }
 
