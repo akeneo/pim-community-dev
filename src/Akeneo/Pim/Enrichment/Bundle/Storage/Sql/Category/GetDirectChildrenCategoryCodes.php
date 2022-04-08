@@ -17,16 +17,12 @@ class GetDirectChildrenCategoryCodes implements GetDirectChildrenCategoryCodesIn
     {
     }
 
-    public function execute(CategoryInterface $category): array
+    public function execute(int $categoryId): array
     {
         $sql = <<<SQL
-            SELECT child.code
-            FROM pim_catalog_category parent
-            JOIN pim_catalog_category child ON child.lft > parent.lft AND child.lft < parent.rgt AND child.root = parent.root AND child.parent_id = :category_id
-            WHERE parent.id = :category_id
-            ORDER BY child.lft;
-SQL;
+          SELECT code FROM pim_catalog_category WHERE parent_id = :category_id ORDER BY lft
+        SQL;
 
-        return $this->connection->executeQuery($sql, ['category_id' => $category->getId()])->fetchFirstColumn();
+        return $this->connection->executeQuery($sql, ['category_id' => $categoryId])->fetchFirstColumn();
     }
 }

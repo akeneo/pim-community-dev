@@ -14,5 +14,5 @@ interface GetDirectChildrenCategoryCodesInterface
     /**
      * @return array<string>
      */
-    public function execute(CategoryInterface $category): array;
+    public function execute(int $categoryId): array;
 }

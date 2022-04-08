@@ -28,20 +28,7 @@ class PositionResolverSpec extends ObjectBehavior
 
     function it_gets_position_when_category_has_no_parent(CategoryInterface $category)
     {
-        $category->getParent()->willReturn(null);
-
-        $this->getPosition($category)->shouldReturn(1);
-    }
-
-    function it_gets_position_when_category_is_a_leaf_category(
-        GetDirectChildrenCategoryCodesInterface $getDirectChildrenCategoryCodes,
-        CategoryInterface $category,
-        CategoryInterface $categoryParent
-    ) {
-        $aListOfCategoryChildren = [];
-
-        $category->getParent()->willReturn($categoryParent);
-        $getDirectChildrenCategoryCodes->execute($categoryParent)->willReturn($aListOfCategoryChildren);
+        $category->isRoot()->willReturn(true);
 
         $this->getPosition($category)->shouldReturn(1);
     }
@@ -52,11 +39,15 @@ class PositionResolverSpec extends ObjectBehavior
         CategoryInterface $categoryParent
     ) {
         $aCategoryCode = 'categoryC';
-        $aListOfCategoryChildren = ['categoryA','categoryB','categoryC'];
+        $aCategoryParentId = 1;
+        $aListOfParentCategoryChildren = ['categoryA','categoryB','categoryC'];
 
         $category->getCode()->willReturn($aCategoryCode);
+        $category->isRoot()->willReturn(false);
         $category->getParent()->willReturn($categoryParent);
-        $getDirectChildrenCategoryCodes->execute($categoryParent)->willReturn($aListOfCategoryChildren);
+        $categoryParent->getId()->willReturn($aCategoryParentId);
+
+        $getDirectChildrenCategoryCodes->execute($aCategoryParentId)->willReturn($aListOfParentCategoryChildren);
 
         $this->getPosition($category)->shouldReturn(3);
     }

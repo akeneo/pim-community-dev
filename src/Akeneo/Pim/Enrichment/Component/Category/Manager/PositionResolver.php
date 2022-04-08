@@ -18,17 +18,18 @@ class PositionResolver implements PositionResolverInterface
 
     public function getPosition(CategoryInterface $category): int
     {
-        if (!$this->hasParent($category)) {
+        if ($category->isRoot()) {
             return 1;
         }
 
-        $children = $this->getDirectChildrenCategoryCodes->execute($category->getParent());
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getParent()->getId());
 
+        /*
         if ($this->isLeafCategory($children)) {
             return 1;
-        }
+        }*/
 
-        return $this->getCategoryPositionInChildren($category, $children);
+        return $this->getCategoryPositionAmongChildren($category, $children);
     }
 
     /**
@@ -39,15 +40,10 @@ class PositionResolver implements PositionResolverInterface
         return 0 === count($children);
     }
 
-    private function hasParent(CategoryInterface $category): bool
-    {
-        return null !== $category->getParent();
-    }
-
     /**
      * @param array<string> $children
      */
-    private function getCategoryPositionInChildren(CategoryInterface $category, array $children): int
+    private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {
         $search = array_search($category->getCode(), $children);
 

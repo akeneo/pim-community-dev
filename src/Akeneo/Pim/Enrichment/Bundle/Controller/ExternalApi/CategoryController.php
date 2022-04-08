@@ -112,9 +112,11 @@ class CategoryController
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $categoryNormalizerContext = true === $request->query->getBoolean('with_position') ? ['with_position'] : [];
-
-        $categoryApi = $this->normalizer->normalize($category, 'external_api', $categoryNormalizerContext);
+        $categoryApi = $this->normalizer->normalize(
+            $category,
+            'external_api',
+            ['with_position' => true === $request->query->getBoolean('with_position')]
+        );
 
         return new JsonResponse($categoryApi);
     }
@@ -166,10 +168,13 @@ class CategoryController
         ];
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
-        $categoryNormalizerContext = true === $request->query->getBoolean('with_position') ? ['with_position'] : [];
 
         $paginatedCategories = $this->paginator->paginate(
-            $this->normalizer->normalize($categories, 'external_api', $categoryNormalizerContext),
+            $this->normalizer->normalize(
+                $categories,
+                'external_api',
+                ['with_position' => true === $request->query->getBoolean('with_position')]
+            ),
             $parameters,
             $count
         );

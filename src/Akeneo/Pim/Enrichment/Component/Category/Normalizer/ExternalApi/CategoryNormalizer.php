@@ -36,7 +36,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
 
         if (in_array('with_position', $context)) {
             $normalizedCategory['position'] = $this->positionResolver->getPosition($category);
-            $normalizedCategory['level'] = $category->getLevel() + 1;
+            $normalizedCategory['level'] = $category->getLevel();
         }
 
         return $normalizedCategory;

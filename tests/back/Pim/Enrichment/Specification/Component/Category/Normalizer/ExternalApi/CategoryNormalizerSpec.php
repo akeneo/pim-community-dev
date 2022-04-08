@@ -45,12 +45,11 @@ class CategoryNormalizerSpec extends ObjectBehavior
         PositionResolverInterface $positionResolver
     ) {
         $aPosition = 1;
-        $aLevelInDatabase = 1;
-        $aLevel = $aLevelInDatabase + 1;
+        $aLevel = 1;
         $context = ['with_position'];
         $data = ['code' => 'my_category', 'labels' => []];
 
-        $category->getLevel()->willReturn($aLevelInDatabase);
+        $category->getLevel()->willReturn($aLevel);
         $stdNormalizer->normalize($category, 'standard', $context)->willReturn($data);
         $positionResolver->getPosition($category)->willReturn($aPosition);
 

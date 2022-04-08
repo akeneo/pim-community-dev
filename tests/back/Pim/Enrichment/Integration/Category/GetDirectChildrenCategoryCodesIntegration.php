@@ -50,7 +50,8 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
 
     public function testGetDirectChildrenOfARootCategory()
     {
-        $children = $this->getDirectChildrenCategoryCodes->execute($this->fetchCategory('master_catalog'));
+        $category = $this->fetchCategory('master_catalog');
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(3, $children);
         $this->assertCategoryCodeIsInPosition($children, 'cameras', 0);
@@ -60,14 +61,16 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
 
     public function testGetDirectChildrenOfALeafCategory()
     {
-        $children = $this->getDirectChildrenCategoryCodes->execute($this->fetchCategory('digital_cameras'));
+        $category = $this->fetchCategory('digital_cameras');
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(0, $children);
     }
 
     public function testGetDirectChildrenOfACategory()
     {
-        $children = $this->getDirectChildrenCategoryCodes->execute($this->fetchCategory('webcams'));
+        $category = $this->fetchCategory('webcams');
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(3, $children);
         $this->assertCategoryCodeIsInPosition($children, 'webcam1', 0);
@@ -77,7 +80,8 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
 
     public function testGetDirectChildrenOfIsolatedCategory()
     {
-        $children = $this->getDirectChildrenCategoryCodes->execute($this->fetchCategory('isolated_catalog'));
+        $category = $this->fetchCategory('isolated_catalog');
+        $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(0, $children);
     }
