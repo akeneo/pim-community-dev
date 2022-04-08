@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
-import {ContributorEmail, Supplier} from '../models';
+import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
     const getSupplierRoute = useRoute('onboarder_serenity_supplier_edit', {identifier});
@@ -10,15 +10,20 @@ const useSupplier = (identifier: string) => {
     const notify = useNotify();
     const translate = useTranslate();
 
-    const setSupplierLabel = (newLabel: string) => {
-        setSupplier(supplier !== null ? {...supplier, label: newLabel} : null);
-    };
+    const loadSupplier = useCallback(async () => {
+        const response = await fetch(getSupplierRoute, {method: 'GET'});
 
-    const setSupplierContributors = (newContributors: ContributorEmail[]) => {
-        setSupplier(supplier !== null ? {...supplier, contributors: newContributors} : null);
-    };
+        if (!response.ok) {
+            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.error'));
+            return;
+        }
 
-    const saveSupplier = async () => {
+        const responseBody = await response.json();
+        setOriginalSupplier(responseBody);
+        setSupplier(responseBody);
+    }, [getSupplierRoute, notify, translate, setOriginalSupplier, setSupplier]);
+
+    const saveSupplier = useCallback(async () => {
         const response = await fetch(saveSupplierRoute, {
             method: 'PUT',
             headers: [
@@ -33,44 +38,28 @@ const useSupplier = (identifier: string) => {
             return;
         }
 
-        loadSupplier();
-        notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_edit.sucess_message'));
-    };
+        notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_edit.success_message'));
+        await loadSupplier();
+    }, [saveSupplierRoute, supplier, notify, translate, loadSupplier]);
 
-    const loadSupplier = async () => {
-        const response = await fetch(getSupplierRoute, {method: 'GET'});
-
-        if (!response.ok) {
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.error'));
-            return;
-        }
-
-        const responseBody = await response.json();
-        setOriginalSupplier(responseBody);
-        setSupplier(responseBody);
-    };
-
-    const supplierHasChanges = () => {
+    const supplierHasChanges = useMemo(() => {
         if (null !== supplier) {
             return JSON.stringify(supplier) !== JSON.stringify(originalSupplier);
         }
 
         return false;
-    };
+    }, [supplier, originalSupplier]);
 
     useEffect(() => {
-        (async () => {
-            await loadSupplier();
-        })();
-    }, [getSupplierRoute]); // eslint-disable-line react-hooks/exhaustive-deps
+        loadSupplier();
+    }, [loadSupplier]);
 
-    return {
+    return [
         supplier,
-        setSupplierLabel,
-        setSupplierContributors,
+        setSupplier,
         supplierHasChanges,
         saveSupplier,
-    };
+    ] as const;
 };
 
 export {useSupplier};

@@ -1,28 +1,17 @@
-import {useCallback, useEffect, useState} from 'react';
 import {ContributorEmail} from '../models';
+import {useMemo} from "react";
+import {useDebounce} from "@akeneo-pim-community/shared";
 
-const useFilteredContributors = (contributors: ContributorEmail[]) => {
-    const [filteredContributors, setFilteredContributors] = useState<ContributorEmail[]>([]);
+const useFilteredContributors = (contributors: ContributorEmail[], searchValue: string) => {
+    const debouncedSearch = useDebounce(searchValue, 100);
 
-    useEffect(() => {
-        setFilteredContributors(contributors);
-    }, [contributors]);
+    const filteredContributors = useMemo(() => {
+        return contributors.filter((contributor: ContributorEmail) =>
+          contributor.toLowerCase().includes(debouncedSearch.toLowerCase().trim())
+        );
+    }, [contributors, debouncedSearch]);
 
-    const search = useCallback(
-        (searchValue: string) => {
-            setFilteredContributors(
-                contributors.filter((contributor: ContributorEmail) =>
-                    contributor.toLowerCase().includes(searchValue.toLowerCase().trim())
-                )
-            );
-        },
-        [contributors]
-    );
-
-    return {
-        filteredContributors,
-        search,
-    };
+    return filteredContributors;
 };
 
 export {useFilteredContributors};
