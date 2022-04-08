@@ -316,7 +316,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         }
     }
 
-    private function assertColumnsAreNullable()
+    private function assertColumnsAreNullable(): void
     {
         $tableWithNullableColumnsList = [
             'pim_versioning_version' => ['resource_id'],
@@ -324,7 +324,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
         foreach ($tableWithNullableColumnsList as $tableName => $columns) {
             foreach ($columns as $columnName) {
-                assertTrue($this->isColumnNullable($tableName, $columnName));
+                Assert::assertTrue($this->isColumnNullable($tableName, $columnName));
             }
         }
     }
