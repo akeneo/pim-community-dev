@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Delete only possible values
   In order to ease the cleaning of proposals
   As a product manager

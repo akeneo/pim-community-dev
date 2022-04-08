@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Unpublish many products at once
   In order to unfroze the product data
   As a product manager

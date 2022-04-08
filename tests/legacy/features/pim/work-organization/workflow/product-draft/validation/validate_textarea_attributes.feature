@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Validate textarea attributes of a draft
   In order to keep my data consistent
   As a regular user

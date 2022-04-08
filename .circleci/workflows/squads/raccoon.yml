@@ -1,6 +1,4 @@
 workflows:
-  version: 2
-
   raccoon_pull_request:
     when:
       not:

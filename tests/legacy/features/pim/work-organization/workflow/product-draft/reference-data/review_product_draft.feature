@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Review a product draft with reference data
   In order to control which data should be applied to a product
   As a product manager

@@ -19,6 +19,8 @@ services:
             - '@pimee_workflow.manager.product_draft'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_workflow.controller.external_api.product_draft:
         class: '%pimee_workflow.controller.external_api.product_draft.class%'
@@ -30,6 +32,8 @@ services:
             - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@security.authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_workflow_controller.external_api.publish_product:
         class: '%pimee_workflow_controller.external_api.publish_product.class%'
@@ -59,6 +63,8 @@ services:
             - '@pim_external_api_serializer'
             - '@security.token_storage'
             - '@pimee_security.cached_authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     pimee_api.controller.product_model_proposal:
         class : '%pimee_api.controller.product_model_proposal.class%'
@@ -69,6 +75,8 @@ services:
             - '@pimee_workflow.manager.product_model_draft'
             - '@security.token_storage'
             - '@pimee_security.cached_authorization_checker'
+            - '@oro_security.security_facade'
+            - '@monolog.logger.pim_api_acl'
 
     # URL generator
     pimee_workflow.router.proxy_product:

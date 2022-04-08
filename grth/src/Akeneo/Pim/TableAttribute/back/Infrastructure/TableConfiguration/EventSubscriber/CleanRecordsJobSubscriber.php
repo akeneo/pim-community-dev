@@ -14,7 +14,6 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubsc
  */
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetColumnsLinkedToAReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
@@ -40,26 +39,8 @@ class CleanRecordsJobSubscriber implements EventSubscriberInterface
     {
         return [
             /* @phpstan-ignore-next-line */
-            RecordDeletedEvent::class => 'whenARecordIsDeleted',
-            /* @phpstan-ignore-next-line */
             RecordsDeletedEvent::class => 'whenRecordsAreDeleted',
         ];
-    }
-
-    /* @phpstan-ignore-next-line */
-    public function whenARecordIsDeleted(RecordDeletedEvent $recordDeletedEvent): void
-    {
-        /* @phpstan-ignore-next-line */
-        if (!$recordDeletedEvent->isUnitary()) {
-            return;
-        }
-
-        $this->launchJobs(
-            /* @phpstan-ignore-next-line */
-            $recordDeletedEvent->getReferenceEntityIdentifier()->normalize(),
-            /* @phpstan-ignore-next-line */
-            [$recordDeletedEvent->getRecordCode()->normalize()]
-        );
     }
 
     /* @phpstan-ignore-next-line */

@@ -8,11 +8,10 @@ use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor\Repository\InMemory\InMemoryRepository as ContributorRepository;
 
 class InMemoryGetSupplierList implements GetSupplierList
 {
-    public function __construct(private SupplierRepository $repository, private ContributorRepository $contributoryRepository)
+    public function __construct(private SupplierRepository $repository)
     {
     }
 
@@ -34,7 +33,7 @@ class InMemoryGetSupplierList implements GetSupplierList
         return array_slice(
             $suppliers,
             self::NUMBER_OF_SUPPLIERS_PER_PAGE * ($page - 1),
-            self::NUMBER_OF_SUPPLIERS_PER_PAGE
+            self::NUMBER_OF_SUPPLIERS_PER_PAGE,
         );
     }
 
@@ -43,7 +42,7 @@ class InMemoryGetSupplierList implements GetSupplierList
         return array_filter(
             $suppliers,
             fn (Write\Supplier\Model\Supplier $supplier) =>
-                1 <= strpos(strtolower($supplier->label()), strtolower($search))
+                1 <= strpos(strtolower($supplier->label()), strtolower($search)),
         );
     }
 
@@ -53,16 +52,14 @@ class InMemoryGetSupplierList implements GetSupplierList
             $suppliers,
             function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
                 return strcmp($supplier1->label(), $supplier2->label());
-            }
+            },
         );
     }
 
     private function buildReadModels(array $suppliers): array
     {
         return array_map(function (Write\Supplier\Model\Supplier $supplier) {
-            $contributors = $this->contributoryRepository->findBySupplier(Write\Supplier\ValueObject\Identifier::fromString($supplier->identifier()));
-
-            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($contributors));
+            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
         }, $suppliers);
     }
 }

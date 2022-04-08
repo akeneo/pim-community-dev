@@ -1,4 +1,4 @@
-@javascript @jira https://akeneo.atlassian.net/browse/PIM-3331
+@javascript @proposal-feature-enabled @jira https://akeneo.atlassian.net/browse/PIM-3331
 Feature: Create product drafts for new attributes added to the product
   In order to be able to propose changes to product data for new attributes
   As a redactor
