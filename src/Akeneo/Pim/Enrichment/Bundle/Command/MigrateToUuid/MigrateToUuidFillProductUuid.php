@@ -61,9 +61,10 @@ class MigrateToUuidFillProductUuid implements MigrateToUuidStep
             $logContext->addContext('substep', 'missing_product_uuid_batch');
             if (!$context->dryRun()) {
                 $this->fillMissingProductUuids();
+                $processedItems += self::BATCH_SIZE;
                 $this->logger->notice(
-                    'Substep done',
-                    $logContext->toArray(['processed_uuids_counter' => $processedItems += self::BATCH_SIZE])
+                    \sprintf('Processed rows: %d', $processedItems),
+                    $logContext->toArray(['processed_uuids_counter' => $processedItems])
                 );
             } else {
                 $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
