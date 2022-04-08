@@ -31,6 +31,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->assertJsonHaveUuid();
         $this->assertTriggersExistAndWork();
         $this->assertProductsAreReindexed();
+        $this->assertColumnsAreNullable();
 
         // check that the migration can be launched twice without error
         $this->launchMigrationCommand();
@@ -315,6 +316,19 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         }
     }
 
+    private function assertColumnsAreNullable()
+    {
+        $tableWithNullableColumnsList = [
+            'pim_versioning_version' => ['resource_id'],
+        ];
+
+        foreach ($tableWithNullableColumnsList as $tableName => $columns) {
+            foreach ($columns as $columnName) {
+                assertTrue($this->isColumnNullable($tableName, $columnName));
+            }
+        }
+    }
+
     private function getIndexedProducts(): array
     {
         /** @var Client $esClient */
@@ -338,6 +352,25 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         }
 
         return $esProducts;
+    }
+
+    private function isColumnNullable(string $tableName, string $columnName): bool {
+        $schema = $this->connection->getDatabase();
+        $sql = <<<SQL
+            SELECT IS_NULLABLE 
+            FROM information_schema.columns 
+            WHERE table_schema=:schema 
+              AND table_name=:tableName
+              AND column_name=:columnName;
+        SQL;
+
+        $result = $this->connection->fetchOne($sql, [
+            'schema' => $schema,
+            'tableName' => $tableName,
+            'columnName' => $columnName
+        ]);
+
+        return $result !== 'NO';
     }
 
     private function loadFixtures(): void
