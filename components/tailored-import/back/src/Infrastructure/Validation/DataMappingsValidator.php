@@ -147,7 +147,7 @@ class DataMappingsValidator extends ConstraintValidator
         $this->context->getValidator()
             ->inContext($this->context)
             ->atPath(sprintf('[%s]', $dataMapping['uuid']))
-            ->validate($dataMapping, new $constraintClass($columns));
+            ->validate($dataMapping, new $constraintClass($columns, $attribute));
     }
 
     private function validatePropertyDataMapping(array $dataMapping, array $columns): void

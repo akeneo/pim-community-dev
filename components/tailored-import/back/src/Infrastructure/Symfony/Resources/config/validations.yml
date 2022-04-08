@@ -79,3 +79,9 @@ services:
       - [',', '.', '٫‎']
     tags:
       - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\UnitValidator:
+    arguments:
+      - '@akeneo_measurement.public_api.find_unit'
+    tags:
+      - { name: validator.constraint_validatorn }
