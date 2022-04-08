@@ -43,6 +43,10 @@ akeneo_data_quality_insights:
       day: 天
     key_indicators:
       title: 关键指标
+      products: '{1}1 个产品|]1, 200[{{ count }} 个产品|[200, Inf[超过 {{ count }} 个产品'
+      product_models: '{1}1 个产品模型|]1, 200[{{ count }} 个产品模型|[200, Inf[超过 {{ count }} 个产品模型'
+      entities_to_work_on: '您有 <improvable_products_count_link/> 个产品待处理。'
+      entities_to_work_on_2_kinds: '您有 <improvable_products_count_link/> 个产品和 <improvable_product_models_count_link/> 个产品模型待处理。'
       list:
         has_image:
           title: 配有图像的产品
@@ -151,5 +155,8 @@ akeneo_data_quality_insights:
       to_improve: 要改善
       "yes": "是"
       "no": "否　"
+  quality_score:
+    pending: 进行中
+    title: "质量评分："
 pim_title:
   akeneo_data_quality_insights_dashboard: 数据质量洞察
