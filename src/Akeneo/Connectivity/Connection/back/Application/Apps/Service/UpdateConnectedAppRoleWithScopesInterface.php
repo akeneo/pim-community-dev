@@ -10,5 +10,8 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
  */
 interface UpdateConnectedAppRoleWithScopesInterface
 {
+    /**
+     * @param string[] $scopes
+     */
     public function execute(string $appId, array $scopes): void;
 }
