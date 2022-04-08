@@ -11,6 +11,31 @@ $finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
+    // Domain should only use classes from Domain
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain',
+
+            // Exceptions
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\EventQueue\Author',
+            'Akeneo\Platform\Component\Webhook\EventBuildingExceptionInterface',
+
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved',
+            'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
+
+            'Webmozart\Assert\Assert',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain'),
+
     // Domain should only use classes from same Domain
     $builder->only(
         [
@@ -87,6 +112,50 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection'),
+
+    // Application should only use classes from Domain or Application
+    $builder->only(
+        [
+            'Akeneo\Connectivity\Connection\Domain',
+            'Akeneo\Connectivity\Connection\Application',
+
+            // Exceptions
+            'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\Validator\ConstraintValidator',
+            'Symfony\Component\Validator\ConstraintViolationInterface',
+            'Symfony\Component\Validator\ConstraintViolationListInterface',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+            'Symfony\Component\Validator\Exception\UnexpectedValueException',
+            'Symfony\Component\OptionsResolver\OptionsResolver',
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
+            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
+            'Symfony\Component\Security\Core\User\UserInterface',
+
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
+
+            'Akeneo\UserManagement\Component\Model\GroupInterface',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Model\RoleInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+
+            'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
+            'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
+            'Akeneo\Platform\Component\EventQueue\EventInterface',
+            'Akeneo\Platform\Component\Webhook\Context',
+            'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
+            'Akeneo\Platform\Component\Webhook\EventDataCollection',
+            'Akeneo\Platform\Component\EventQueue\BulkEvent',
+            'Akeneo\Platform\VersionProviderInterface',
+
+            'Psr\Log\LoggerInterface',
+            'Psr\Http\Message\ResponseInterface',
+
+            'FOS\RestBundle\Context\Context',
+            'FOS\RestBundle\Serializer\Serializer',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Application'),
 
     // Application should only use classes from same context in Domain or Application
     $builder->only(
