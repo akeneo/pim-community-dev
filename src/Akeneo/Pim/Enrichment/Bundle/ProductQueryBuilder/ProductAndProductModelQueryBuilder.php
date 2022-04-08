@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggre
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 
 /**
  * Provides a way to search product and product models.

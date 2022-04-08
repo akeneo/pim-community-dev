@@ -123,19 +123,19 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
     private function givenAProductNotEvaluatedYet(string $criterionCode): array
     {
-        $productId = $this->createProduct('not_evaluated_product')->getId();
+        $product = $this->createProduct('not_evaluated_product');
 
         $this->get('database_connection')->executeQuery(<<<SQL
-REPLACE INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, evaluated_at, status, result) 
-VALUES (:productId, :criterionCode, null, 'pending', null);
+REPLACE INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, evaluated_at, status, result) 
+VALUES (:productUuid, :criterionCode, null, 'pending', null);
 SQL,
             [
-                'productId' => $productId,
+                'productUuid' => $product->getUuid()->getBytes(),
                 'criterionCode' => $criterionCode,
             ]
         );
 
-        return [$productId => []];
+        return [$product->getId() => []];
     }
 
     private function saveEvaluationResults(int $productId, array $evaluationResults): void

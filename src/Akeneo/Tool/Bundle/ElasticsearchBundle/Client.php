@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\ElasticsearchProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
@@ -119,14 +119,10 @@ class Client
             'items' => [],
         ];
         foreach ($documents as $document) {
-            $extraActions = [];
-            if ($document instanceof AffectedByMigrationProjection) {
-                if ($document->shouldBeMigrated()) {
-                    $extraActions[] = ['delete' => ['_index' => $this->indexName, '_id' => $document->getFormerDocumentId()]];
-                }
+            $action = ['index' => ['_index' => $this->indexName]];
+            if ($document instanceof ElasticsearchProjection) {
                 $document = $document->toArray();
             }
-            $action = ['index' => ['_index' => $this->indexName]];
 
             if (null !== $keyAsId) {
                 if (!isset($document[$keyAsId])) {
@@ -136,7 +132,7 @@ class Client
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
-            $estimatedAddedSize = strlen(json_encode(array_merge([$action, $document], $extraActions)));
+            $estimatedAddedSize = strlen(json_encode([$action, $document]));
             if ($paramsComputedSize + $estimatedAddedSize >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
                 $params = [];
@@ -144,7 +140,6 @@ class Client
 
             $params['body'][] = $action;
             $params['body'][] = $document;
-            $params['body'] = array_merge($params['body'], $extraActions);
 
             $paramsComputedSize = strlen(json_encode($params));
 

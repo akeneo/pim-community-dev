@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletene
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -18,22 +19,22 @@ class SaveProductCompletenessesIntegration extends TestCase
 {
     public function test_that_it_clears_existing_completenesses_and_missing_attributes_if_provided_completenesses_are_empty()
     {
-        $productId = $this->createProduct('a_great_product');
-        Assert::assertNotEmpty($this->getCompletenessesFromDB($productId));
+        $productUuid = $this->createProduct('a_great_product');
+        Assert::assertNotEmpty($this->getCompletenessesFromDB($productUuid));
 
-        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productId, []));
-        Assert::assertEmpty($this->getCompletenessesFromDB($productId));
+        $this->executeSave(new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), []));
+        Assert::assertEmpty($this->getCompletenessesFromDB($productUuid));
     }
 
     public function test_that_it_saves_completenesses_given_a_product_id()
     {
-        $productId = $this->createProduct('a_great_product');
-        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+        $productUuid = $this->createProduct('a_great_product');
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), [
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, [])
         ]);
         $this->executeSave($collection);
 
-        $dbCompletenesses = $this->getCompletenessesFromDB($productId);
+        $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
         Assert::assertCount(1, $dbCompletenesses);
         Assert::assertEquals(
             [
@@ -48,9 +49,9 @@ class SaveProductCompletenessesIntegration extends TestCase
 
     public function test_that_it_saves_completenesses()
     {
-        $productId = $this->createProduct('a_great_product');
+        $productUuid = $this->createProduct('a_great_product');
 
-        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productUuid->toString(), [
             new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, ['a_text']),
             new ProductCompletenessWithMissingAttributeCodes(
                 'tablet',
@@ -69,7 +70,7 @@ class SaveProductCompletenessesIntegration extends TestCase
 
         $this->executeSave($collection);
 
-        $dbCompletenesses = $this->getCompletenessesFromDB($productId);
+        $dbCompletenesses = $this->getCompletenessesFromDB($productUuid);
         Assert::assertCount(2, $dbCompletenesses);
         Assert::assertEquals(
             [
@@ -101,25 +102,25 @@ class SaveProductCompletenessesIntegration extends TestCase
         $this->get('akeneo.pim.enrichment.product.query.save_product_completenesses')->save($completenesses);
     }
 
-    private function createProduct(string $identifier): int
+    private function createProduct(string $identifier): UuidInterface
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, 'familyA');
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $product->getId();
+        return $product->getUuid();
     }
 
-    private function getCompletenessesFromDB(int $productId): array
+    private function getCompletenessesFromDB(UuidInterface $productUuid): array
     {
         $sql = <<<SQL
 SELECT channel.code as channel_code, locale.code as locale_code, completeness.missing_count, completeness.required_count
 FROM pim_catalog_completeness completeness
     INNER JOIN pim_catalog_channel channel on channel.id = completeness.channel_id
     INNER JOIN pim_catalog_locale locale on locale.id = completeness.locale_id
-WHERE product_id = :productId
+WHERE completeness.product_uuid = :productUuid
 SQL;
         $results = [];
-        $rows = $this->get('database_connection')->executeQuery($sql, ['productId' => $productId])->fetchAll();
+        $rows = $this->get('database_connection')->executeQuery($sql, ['productUuid' => $productUuid->getBytes()])->fetchAll();
         foreach ($rows as $row) {
             $key = sprintf('%s-%s', $row['channel_code'], $row['locale_code']);
             $results[$key] = $row;
