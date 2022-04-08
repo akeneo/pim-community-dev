@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Result;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\SelfAndAncestorFilter;
@@ -14,18 +16,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Prophecy\Argument;
 
 class SelfAndAncestorFilterSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        Connection $connection
     ) {
         $this->beConstructedWith(
             $productModelRepository,
             $productRepository,
             ['self_and_ancestors.id'],
-            ['IN', 'NOT IN']
+            ['IN', 'NOT IN'],
+            $connection
         );
     }
 
@@ -57,6 +62,8 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_IN(
         $productModelRepository,
         $productRepository,
+        Connection $connection,
+        Result $result,
         SearchQueryBuilder $sqb,
         ProductModelInterface $productModel,
         ProductInterface $product
@@ -66,15 +73,19 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
         $productRepository->findOneBy(['id' => '1'])->willReturn($product);
         $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
 
+        $connection->executeQuery(Argument::type('string'), ['ids' => ['1']], ['ids' => Connection::PARAM_STR_ARRAY])
+            ->shouldBeCalledOnce()->willReturn($result);
+        $result->fetchFirstColumn()->willReturn(['70d6073b-beb5-4913-a171-1fab0f52de27']);
+
         $sqb->addShould(
             [
-                'terms' => ['id' => ['product_1', 'product_model_2']],
+                'terms' => ['id' => ['product_1', 'product_model_2', 'product_70d6073b-beb5-4913-a171-1fab0f52de27']],
             ]
         )->shouldBeCalled();
 
         $sqb->addShould(
             [
-                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2']],
+                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2', 'product_70d6073b-beb5-4913-a171-1fab0f52de27']],
             ]
         )->shouldBeCalled();
 
@@ -92,6 +103,8 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
     function it_adds_a_filter_with_operator_NOT_IN(
         $productModelRepository,
         $productRepository,
+        Connection $connection,
+        Result $result,
         SearchQueryBuilder $sqb,
         ProductModelInterface $productModel,
         ProductInterface $product
@@ -101,15 +114,19 @@ class SelfAndAncestorFilterSpec extends ObjectBehavior
         $productRepository->findOneBy(['id' => '1'])->willReturn($product);
         $productRepository->findOneBy(['id' => '2'])->shouldNotBeCalled();
 
+        $connection->executeQuery(Argument::type('string'), ['ids' => ['1']], ['ids' => Connection::PARAM_STR_ARRAY])
+            ->shouldBeCalledOnce()->willReturn($result);
+        $result->fetchFirstColumn()->willReturn(['70d6073b-beb5-4913-a171-1fab0f52de27']);
+
         $sqb->addMustNot(
             [
-                'terms' => ['id' => ['product_1', 'product_model_2']],
+                'terms' => ['id' => ['product_1', 'product_model_2', 'product_70d6073b-beb5-4913-a171-1fab0f52de27']],
             ]
         )->shouldBeCalled();
 
         $sqb->addMustNot(
             [
-                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2']],
+                'terms' => ['ancestors.ids' => ['product_1', 'product_model_2', 'product_70d6073b-beb5-4913-a171-1fab0f52de27']],
             ]
         )->shouldBeCalled();
 
