@@ -20,7 +20,7 @@ class MigrateToUuidCommand extends Command
 {
     protected static $defaultName = 'pim:product:migrate-to-uuid';
     private static $DQI_JOB_NAME = 'data_quality_insights_evaluations';
-    private static $WAIT_TIME = 30;
+    private static $WAIT_TIME_IN_SECONDS = 30;
 
     /** @var array<MigrateToUuidStep> */
     private array $steps;
@@ -72,10 +72,10 @@ class MigrateToUuidCommand extends Command
             $this->logger->notice(sprintf(
                 'There is a "%s" job in progress. Wait for %d secondes before retry migration start...',
                 self::$DQI_JOB_NAME,
-                self::$WAIT_TIME
+                self::$WAIT_TIME_IN_SECONDS
             ));
 
-            sleep(self::$WAIT_TIME);
+            sleep(self::$WAIT_TIME_IN_SECONDS);
         }
 
         $this->start();
@@ -123,7 +123,7 @@ class MigrateToUuidCommand extends Command
         $this->connection->executeQuery(<<<SQL
             INSERT INTO `pim_one_time_task` (`code`, `status`, `start_time`, `values`) 
             VALUES (:code, :status, NOW(), :values)
-            ON DUPLICATE KEY UPDATE status = VALUES.status
+            ON DUPLICATE KEY UPDATE status='started', start_time=NOW();
         SQL, [
             'code' => self::$defaultName,
             'status' => 'started',
