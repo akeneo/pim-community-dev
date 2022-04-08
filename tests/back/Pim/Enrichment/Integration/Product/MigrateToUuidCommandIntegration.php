@@ -31,17 +31,21 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->assertJsonHaveUuid();
         $this->assertTriggersExistAndWork();
         $this->assertProductsAreReindexed();
+
+        // check that the migration can be launched twice without error
+        $this->launchMigrationCommand();
     }
 
     private function assertTheIndexesDoNotExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertFalse(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index exists in the "%s" table',
-                        'product_uuid',
+                        $indexName,
                         $tableName
                     )
                 );
@@ -51,13 +55,14 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertTheIndexesExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertTrue(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index does not exist in the "%s" table',
-                        'product_uuid',
+                        $indexName,
                         $tableName
                     )
                 );
@@ -76,7 +81,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertJsonHaveUuid(): void
     {
-        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid, quantified_associations FROM pim_catalog_product';
+        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid, quantified_associations FROM pim_catalog_product ORDER BY id ASC';
 
         $result = $this->connection->fetchAllAssociative($query);
 

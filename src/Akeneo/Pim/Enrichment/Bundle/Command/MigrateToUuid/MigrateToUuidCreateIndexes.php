@@ -15,7 +15,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
-    private const INDEX_NAME = 'product_uuid';
+    private const DEFAULT_INDEX_NAME = 'product_uuid';
 
     public function __construct(
         private Connection $connection,
@@ -41,8 +41,9 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
                 $count++;
             }
         }
@@ -55,16 +56,21 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         $logContext = $context->logContext;
 
         $updatedItems = 0;
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
             $logContext->addContext('substep', $tableName);
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
-                $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
+            $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
+                $this->logger->notice(sprintf('Will add index for %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addIndexOnUuid(
                         $tableName,
-                        $columnNames[self::UUID_COLUMN_INDEX]
+                        $tableProperties[self::UUID_COLUMN_INDEX],
+                        $indexName
                     );
-                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+                    $this->logger->notice(
+                        'Substep done',
+                        $logContext->toArray(['updated_items_count' => $updatedItems += 1])
+                    );
                 }
             }
         }
@@ -72,21 +78,21 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         return true;
     }
 
-    private function addIndexOnUuid(string $tableName, string $uuidColumName): void
+    private function addIndexOnUuid(string $tableName, string $uuidColumName, string $indexName): void
     {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
-            ALTER TABLE `{table_name}`
-                ADD INDEX `{index_name}` (`{uuid_column_name}`),
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE;
+            ALTER TABLE `{table_name}` ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`),
+                ALGORITHM=INPLACE,
+                LOCK=NONE;
         SQL;
 
         $addUuidColumnAndIndexOnUuidQuery = \strtr(
             $addUuidColumnAndIndexOnUuidSql,
             [
+                '{unique}' => $tableName === 'pimee_workflow_published_product' ? 'UNIQUE' : '',
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
-                '{index_name}' => self::INDEX_NAME,
+                '{index_name}' => $indexName,
             ]
         );
 
