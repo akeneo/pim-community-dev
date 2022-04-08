@@ -53,8 +53,7 @@ const AttributeSelector: React.FC<AttributeSelectorProps> = ({
         onChange={handleChange}
         readOnly={readOnly}
         onSearchChange={setSearch}
-        clearLabel={translate('pim_common.clear')}
-      >
+        clearLabel={translate('pim_common.clear')}>
         {(attributes || []).map(attribute => (
           <SelectInput.Option value={attribute.code} key={attribute.code}>
             {getLabel(attribute.labels, catalogLocale, attribute.code)}

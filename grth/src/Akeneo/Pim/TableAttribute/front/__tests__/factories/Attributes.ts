@@ -46,7 +46,7 @@ const getComplexTableAttribute: (firstColumnType?: 'select' | 'reference_entity'
   };
 };
 
-const getTableAttributeWithoutColumn : () => TableAttribute = () => {
+const getTableAttributeWithoutColumn: () => TableAttribute = () => {
   return {
     code: 'nutrition',
     labels: {

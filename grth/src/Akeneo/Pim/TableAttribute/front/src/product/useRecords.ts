@@ -11,7 +11,9 @@ type UseRecordProps = {
   searchValue?: string;
 };
 
-const useRecords: (props: UseRecordProps) => {
+const useRecords: (
+  props: UseRecordProps
+) => {
   items?: ReferenceEntityRecord[];
   isLoading: boolean;
   handleNextPage: () => void;

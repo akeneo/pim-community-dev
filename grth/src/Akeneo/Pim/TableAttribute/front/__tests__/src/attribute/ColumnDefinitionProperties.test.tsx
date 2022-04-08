@@ -39,16 +39,16 @@ describe('ColumnDefinitionProperties', () => {
 
   it('should render the component even if the attribute is not yet updated', () => {
     renderWithProviders(
-        <ColumnDefinitionProperties
-            selectedColumn={getSelectColumnDefinitionWithId()}
-            onChange={jest.fn()}
-            activeLocales={[getEnUsLocale()]}
-            catalogLocaleCode={'en_US'}
-            isDuplicateColumnCode={() => false}
-            savedColumnIds={[]}
-            attribute={getTableAttributeWithoutColumn()}
-            columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
-        />
+      <ColumnDefinitionProperties
+        selectedColumn={getSelectColumnDefinitionWithId()}
+        onChange={jest.fn()}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => false}
+        savedColumnIds={[]}
+        attribute={getTableAttributeWithoutColumn()}
+        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
+      />
     );
 
     expect(screen.getByText(/pim_table_attribute.form.attribute.column_code/)).toBeInTheDocument();

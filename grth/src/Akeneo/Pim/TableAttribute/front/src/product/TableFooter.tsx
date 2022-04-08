@@ -62,8 +62,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
         <Dropdown>
           <SwitcherButton
             label={translate('pim_table_attribute.form.product.items_per_page')}
-            onClick={openItemsPerPage}
-          >
+            onClick={openItemsPerPage}>
             {itemsPerPage}
           </SwitcherButton>
           {isItemsPerPageOpen && (
@@ -77,8 +76,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
                     <Dropdown.Item
                       key={itemsPerPageChoice}
                       onClick={() => handleChangeItemsPerPage(itemsPerPageChoice)}
-                      isActive={itemsPerPage === itemsPerPageChoice}
-                    >
+                      isActive={itemsPerPage === itemsPerPageChoice}>
                       {itemsPerPageChoice}
                     </Dropdown.Item>
                   );

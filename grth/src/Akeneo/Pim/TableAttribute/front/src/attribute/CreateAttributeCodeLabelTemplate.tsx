@@ -38,20 +38,17 @@ const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps>
               label={translate('pim_table_attribute.form.attribute.template_label', {
                 templateLabel: template.code,
               })}
-              requiredLabel={translate('pim_common.required_label')}
-            >
+              requiredLabel={translate('pim_common.required_label')}>
               <SelectInput
                 emptyResultLabel={translate('pim_common.no_result')}
                 onChange={setTemplateVariationCode}
                 openLabel={translate('pim_common.open')}
-                value={templateVariationCode}
-              >
+                value={templateVariationCode}>
                 {template.template_variations.map(template_variation => (
                   <SelectInput.Option
                     key={template_variation.code}
                     title={translate(`pim_table_attribute.templates.${template_variation.code}`)}
-                    value={template_variation.code}
-                  >
+                    value={template_variation.code}>
                     {translate(`pim_table_attribute.templates.${template_variation.code}`)}
                   </SelectInput.Option>
                 ))}

@@ -43,8 +43,7 @@ const useRenderElements = (
               sessionStorage.setItem('current_form_tab', 'pim-attribute-edit-form-rules-tab');
               const route = Router.generate('pim_enrich_attribute_edit', {code: attributeCode});
               Router.redirect(route);
-            }}
-          >
+            }}>
             {matches.groups.link}
           </span>
           {matches.groups.right}

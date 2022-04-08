@@ -22,14 +22,12 @@ const MeasurementProperties: ColumnProperties = ({selectedColumn, handleChange})
     <>
       <Field
         label={translate('pim_table_attribute.form.attribute.measurement_family')}
-        requiredLabel={translate('pim_common.required_label')}
-      >
+        requiredLabel={translate('pim_common.required_label')}>
         <MeasurementFamilySelector readOnly value={column.measurement_family_code} />
       </Field>
       <Field
         label={translate('pim_table_attribute.form.attribute.measurement_default_unit')}
-        requiredLabel={translate('pim_common.required_label')}
-      >
+        requiredLabel={translate('pim_common.required_label')}>
         <MeasurementUnitSelector
           onChange={onChange}
           measurementFamilyCode={column.measurement_family_code}

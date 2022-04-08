@@ -20,7 +20,9 @@ const MultiSelectFilterValue: TableFilterValueRenderer = ({value, onChange, colu
     .filter(option => {
       return (
         option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
-        getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase())
+        getLabel(option.labels, catalogLocale, option.code)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
       );
     })
     .slice(0, (page + 1) * 20);
@@ -34,8 +36,7 @@ const MultiSelectFilterValue: TableFilterValueRenderer = ({value, onChange, colu
       onChange={onChange}
       onSearchChange={setSearchValue}
       placeholder={translate('pim_table_attribute.datagrid.select_your_value')}
-      onNextPage={() => setPage(page + 1)}
-    >
+      onNextPage={() => setPage(page + 1)}>
       {filteredOptions.map(option => (
         <MultiSelectInput.Option value={option.code} key={option.code}>
           {getLabel(option.labels, catalogLocale, option.code)}

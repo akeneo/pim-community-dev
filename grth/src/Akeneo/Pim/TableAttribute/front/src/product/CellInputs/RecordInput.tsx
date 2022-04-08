@@ -104,8 +104,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
     BottomHelper = (
       <Placeholder
         illustration={<AddingValueIllustration />}
-        title={translate('pim_table_attribute.form.product.no_records')}
-      >
+        title={translate('pim_table_attribute.form.product.no_records')}>
         {!hasEditPermission &&
           translate('pim_table_attribute.form.product.edit_records_unallowed', {
             referenceEntityLabel: getLabel(referenceEntity?.labels || {}, localeCode, referenceEntityCode),
@@ -134,8 +133,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
               });
             }}
             ghost
-            level='secondary'
-          >
+            level='secondary'>
             {translate('pim_table_attribute.form.product.manage_records')}
           </Button>
         </EditOptionsContainer>
@@ -158,8 +156,7 @@ const RecordInput: CellInput = ({columnDefinition, highlighted, inError, row, on
       inError={inError}
       onOpenChange={setIsVisible}
       bottomHelper={BottomHelper}
-      closeTick={closeTick}
-    >
+      closeTick={closeTick}>
       {items?.map(record => {
         const label = getLabel(record.labels, localeCode, record.code);
         const image = getImageUrl(record.image?.filePath);

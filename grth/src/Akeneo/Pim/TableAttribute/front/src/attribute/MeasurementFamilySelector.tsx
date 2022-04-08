@@ -23,14 +23,12 @@ const MeasurementFamilySelector: React.FC<MeasurementFamilySelectorProps> = ({va
       emptyResultLabel={translate('pim_common.no_result')}
       openLabel={translate('pim_common.open')}
       readOnly={readOnly}
-      clearLabel={translate('pim_common.clear_value')}
-    >
+      clearLabel={translate('pim_common.clear_value')}>
       {(measurementFamilies || []).map(measurementFamily => (
         <SelectInput.Option
           title={getLabel(measurementFamily.labels, catalogLocale, measurementFamily.code)}
           value={measurementFamily.code}
-          key={measurementFamily.code}
-        >
+          key={measurementFamily.code}>
           {getLabel(measurementFamily.labels, catalogLocale, measurementFamily.code)}
         </SelectInput.Option>
       ))}

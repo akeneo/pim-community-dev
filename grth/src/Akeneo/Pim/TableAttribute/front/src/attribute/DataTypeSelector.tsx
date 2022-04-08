@@ -42,14 +42,12 @@ const DataTypeSelector: React.FC<DataTypeSelectorProps> = ({dataType, onChange, 
       openLabel={translate('pim_common.open')}
       placeholder={translate('pim_table_attribute.form.attribute.select_type')}
       value={dataType}
-      clearable={false}
-    >
+      clearable={false}>
       {dataTypes.map(dataType => (
         <SelectInput.Option
           key={dataType}
           title={translate(`pim_table_attribute.properties.data_type.${dataType}`)}
-          value={dataType}
-        >
+          value={dataType}>
           {translate(`pim_table_attribute.properties.data_type.${dataType}`)}
         </SelectInput.Option>
       ))}

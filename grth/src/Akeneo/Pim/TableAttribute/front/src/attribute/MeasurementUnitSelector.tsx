@@ -23,8 +23,7 @@ const MeasurementUnitSelector: React.FC<MeasurementUnitSelectorProps> = ({value,
       openLabel={translate('pim_common.open')}
       onChange={(value: MeasurementUnitCode) => onChange(value)}
       readOnly={typeof measurementFamilyCode === 'undefined'}
-      clearable={false}
-    >
+      clearable={false}>
       {(measurementUnits || []).map(({code, labels}) => (
         <SelectInput.Option title={getLabel(labels, catalogLocale, code)} value={code} key={code}>
           {getLabel(labels, catalogLocale, code)}

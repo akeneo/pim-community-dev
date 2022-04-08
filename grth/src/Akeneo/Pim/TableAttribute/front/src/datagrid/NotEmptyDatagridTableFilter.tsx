@@ -96,8 +96,7 @@ const NotEmptyDatagridTableFilter: React.FC<NotEmptyDatagridTableFilterProps> = 
                 onChange={handleChange}
                 placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
                 value={(filterValue.operator as string) || null}
-                openLabel={translate('pim_common.open')}
-              >
+                openLabel={translate('pim_common.open')}>
                 <SelectInput.Option title={translate(`pim_common.operators.NOT EMPTY`)} value='NOT EMPTY'>
                   {translate(`pim_common.operators.NOT EMPTY`)}
                 </SelectInput.Option>

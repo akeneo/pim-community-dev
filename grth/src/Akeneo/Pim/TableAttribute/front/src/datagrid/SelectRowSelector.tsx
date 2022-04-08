@@ -28,7 +28,9 @@ const SelectRowSelector: React.FC<SelectRowSelectorProps> = ({onChange, value}) 
     .filter(option => {
       return (
         option.code.toLowerCase().includes(searchValue.toLowerCase()) ||
-        getLabel(option.labels, catalogLocale, option.code).toLowerCase().includes(searchValue.toLowerCase())
+        getLabel(option.labels, catalogLocale, option.code)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
       );
     })
     .slice(0, (page + 1) * 20);

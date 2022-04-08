@@ -23,8 +23,7 @@ const ColumnDefinitionSelector: React.FC<ColumnDefinitionSelectorProps> = ({onCh
       onChange={(code: string | null) => onChange(code || undefined)}
       placeholder={translate('pim_table_attribute.datagrid.select_your_column')}
       value={value || null}
-      openLabel={translate('pim_common.open')}
-    >
+      openLabel={translate('pim_common.open')}>
       {(attribute?.table_configuration || []).map(columnDefinition => {
         const label = getLabel(columnDefinition.labels, catalogLocale, columnDefinition.code);
         return (

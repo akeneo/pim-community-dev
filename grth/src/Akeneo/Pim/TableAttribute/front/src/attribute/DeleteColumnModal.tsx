@@ -39,8 +39,7 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({
         <Field
           label={translate('pim_table_attribute.form.attribute.please_type', {
             text: columnDefinitionCode,
-          })}
-        >
+          })}>
           <TextInput onChange={setTypedColumnCode} value={typedColumnCode} />
         </Field>
       </FieldsList>

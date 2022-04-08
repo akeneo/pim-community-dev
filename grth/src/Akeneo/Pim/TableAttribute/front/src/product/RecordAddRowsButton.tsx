@@ -53,10 +53,9 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
   const [searchValue, setSearchValue] = useState('');
   const debouncedSearchValue = useDebounce(searchValue, 200);
   const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
-  const lowercaseCheckedOptionCodes = useMemo(
-    () => checkedOptionCodes.map(code => code.toLowerCase()),
-    [checkedOptionCodes]
-  );
+  const lowercaseCheckedOptionCodes = useMemo(() => checkedOptionCodes.map(code => code.toLowerCase()), [
+    checkedOptionCodes,
+  ]);
   const referenceEntityCode = attribute
     ? castReferenceEntityColumnDefinition(attribute?.table_configuration[0]).reference_entity_identifier
     : undefined;
@@ -105,13 +104,11 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
               return (
                 <Dropdown.Item
                   key={item.code}
-                  disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}
-                >
+                  disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}>
                   <Checkbox
                     checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                     onChange={createToggleChange(item.code)}
-                    data-testid={`checkbox-${index}`}
-                  >
+                    data-testid={`checkbox-${index}`}>
                     <span title={item.code}>{label}</span>
                   </Checkbox>
                 </Dropdown.Item>
@@ -120,8 +117,7 @@ const RecordAddRowsButton: React.FC<RecordAddRowsButtonProps> = ({
             {searchValue === '' && !isLoading && (items || []).length === 0 && (
               <Placeholder
                 illustration={<AddingValueIllustration />}
-                title={translate('pim_table_attribute.form.product.no_options')}
-              >
+                title={translate('pim_table_attribute.form.product.no_options')}>
                 {!hasEditPermission &&
                   translate('pim_table_attribute.form.product.no_add_options_unallowed', {
                     attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),

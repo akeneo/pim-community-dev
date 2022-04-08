@@ -18,8 +18,7 @@ const BooleanFilterValue: TableFilterValueRenderer = ({value, onChange}) => {
       emptyResultLabel={translate('pim_common.no_result')}
       onChange={handleChange}
       placeholder={translate('pim_table_attribute.datagrid.select_your_value')}
-      clearLabel={translate('pim_common.clear_value')}
-    >
+      clearLabel={translate('pim_common.clear_value')}>
       <SelectInput.Option title={translate('pim_common.yes')} value={'yes'}>
         {translate('pim_common.yes')}
       </SelectInput.Option>
