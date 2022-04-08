@@ -147,3 +147,10 @@ services:
             - '@pim_catalog.updater.product'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\AssociationUserIntentCollectionApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }
