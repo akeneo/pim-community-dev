@@ -179,6 +179,4 @@ interface MigrateToUuidStep
     public function setStatusInError(): void;
 
     public function setStatusDone(): void;
-
-    public function setStatusSkipped(): void;
 }

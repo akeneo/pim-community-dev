@@ -34,11 +34,6 @@ trait StatusAwareTrait
         $this->status = 'in_error';
     }
 
-    public function setStatusSkipped(): void
-    {
-        $this->status = 'skipped';
-    }
-
     public function getDuration(): ?float
     {
         if ($this->startTime === null) {
