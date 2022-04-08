@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInte
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationFailedException;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
@@ -61,7 +62,8 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
         private ValidatorInterface $validator,
         private CountAssetsInterface $countAssets,
         private JobRepositoryInterface $jobRepository,
-        private int $batchSize
+        private EventAggregatorInterface $eventAggregator,
+        private int $batchSize,
     ) {
     }
 
@@ -98,6 +100,8 @@ class ComputeTransformations implements TaskletInterface, TrackableTaskletInterf
 
         $this->stepExecution->setTotalItems($totalItems);
         $this->doExecute($assetIdentifiers);
+
+        $this->eventAggregator->flushEvents();
     }
 
     /**
