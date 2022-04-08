@@ -23,7 +23,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->find(12)->willReturn($blender);
+        $productRepository->findOneBy(['id' => 12])->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -43,7 +43,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->find(12)->willReturn($blender);
+        $productRepository->findOneBy(['id' => 12])->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -65,7 +65,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->find(12)->willReturn(null);
+        $productRepository->findOneBy(['id' => 12])->willReturn(null);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')

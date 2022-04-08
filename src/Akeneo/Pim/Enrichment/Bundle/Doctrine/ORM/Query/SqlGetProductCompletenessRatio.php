@@ -28,7 +28,8 @@ SELECT FLOOR(((completeness.required_count - completeness.missing_count) / compl
 FROM pim_catalog_completeness completeness
 INNER JOIN pim_catalog_channel channel on completeness.channel_id = channel.id
 INNER JOIN pim_catalog_locale locale on completeness.locale_id = locale.id
-WHERE completeness.product_id = :productId
+    INNER JOIN pim_catalog_product p on p.uuid = completeness.product_uuid
+WHERE p.id = :productId
 AND channel.code = :channelCode
 AND locale.code = :localeCode
 SQL;

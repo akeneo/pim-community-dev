@@ -29,7 +29,7 @@ class FindProductIdentifiers implements FindProductIdentifiersInterface
         $query = <<<SQL
 SELECT product.identifier 
 FROM pim_catalog_group_product AS group_product
-INNER JOIN pim_catalog_product AS product ON group_product.product_id = product.id
+INNER JOIN pim_catalog_product AS product ON group_product.product_uuid = product.uuid
 WHERE group_product.group_id = :groupId
 SQL;
 

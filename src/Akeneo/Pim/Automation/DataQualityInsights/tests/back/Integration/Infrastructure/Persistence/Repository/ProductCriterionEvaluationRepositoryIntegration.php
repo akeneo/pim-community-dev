@@ -17,6 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -41,7 +42,8 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
     public function test_it_creates_a_collection_of_product_criteria_evaluations()
     {
         $this->assertCountProductCriterionEvaluations(0);
-        $productId = new ProductId($this->createProduct('ziggy')->getId());
+        $product = $this->createProduct('ziggy');
+        $productId = new ProductId($product->getId());
         $this->deleteAllProductCriterionEvaluations();
 
         $criteria = (new Write\CriterionEvaluationCollection)
@@ -62,13 +64,13 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->assertCount(2, $evaluations);
 
         $this->assertEquals('completeness', $evaluations[0]['criterion_code']);
-        $this->assertEquals($productId, $evaluations[0]['product_id']);
+        $this->assertEquals($product->getUuid(), Uuid::fromBytes($evaluations[0]['product_uuid']));
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[0]['status']);
         $this->assertNull($evaluations[0]['evaluated_at']);
         $this->assertNull($evaluations[0]['result']);
 
         $this->assertEquals('completion', $evaluations[1]['criterion_code']);
-        $this->assertEquals($productId, $evaluations[1]['product_id']);
+        $this->assertEquals($product->getUuid(), Uuid::fromBytes($evaluations[1]['product_uuid']));
         $this->assertEquals(CriterionEvaluationStatus::PENDING, $evaluations[1]['status']);
         $this->assertNull($evaluations[1]['result']);
     }
