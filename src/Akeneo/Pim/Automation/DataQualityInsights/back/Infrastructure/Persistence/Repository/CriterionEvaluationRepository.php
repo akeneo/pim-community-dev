@@ -26,7 +26,9 @@ class CriterionEvaluationRepository
     {
         $queryFormat = <<<SQL
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation
-    (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
+    (product_uuid, criterion_code, status)
+SELECT uuid, :%s, :%s
+FROM pim_catalog_product WHERE id = :%s
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
@@ -37,7 +39,7 @@ SQL;
     {
         $queryFormat = <<<SQL
 INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation
-    (product_id, criterion_code, status) VALUES (:%s, :%s, :%s)
+    (criterion_code, status, product_id) VALUES (:%s, :%s, :%s)
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
@@ -47,9 +49,9 @@ SQL;
     public function updateCriterionEvaluationsForProducts(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
         $queryFormat = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation
-SET evaluated_at = :%s, status = :%s, result = :%s
-WHERE product_id = :%s AND criterion_code = :%s;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.evaluated_at = :%s, e.status = :%s, e.result = :%s
+WHERE p.id = :%s AND p.uuid = e.product_uuid AND criterion_code = :%s;
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
@@ -78,7 +80,7 @@ SQL;
             $criterionCode = sprintf('criterionCode_%d', $index);
             $status = sprintf('status_%d', $index);
 
-            $queries[] = sprintf($queryFormat, $productId, $criterionCode, $status, $status);
+            $queries[] = sprintf($queryFormat, $criterionCode, $status, $productId, $status);
 
             $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
             $queryParametersValues[$productId] = (string)$criterionEvaluation->getProductId();

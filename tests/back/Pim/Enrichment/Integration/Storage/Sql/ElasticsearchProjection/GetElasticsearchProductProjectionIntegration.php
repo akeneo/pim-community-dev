@@ -499,7 +499,6 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
 
         Assert::assertSame(1, $split);
         Assert::assertTrue(Uuid::isValid($matches['uuid']));
-        Assert::assertTrue($normalizedProductProjection->shouldBeMigrated());
     }
 
     protected function getConfiguration(): Configuration

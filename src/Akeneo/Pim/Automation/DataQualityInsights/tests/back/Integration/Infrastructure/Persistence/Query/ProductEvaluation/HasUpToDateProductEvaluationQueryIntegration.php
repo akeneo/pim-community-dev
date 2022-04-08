@@ -225,7 +225,9 @@ SQL;
     private function updateProductEvaluationsAt(ProductId $productId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_data_quality_insights_product_criteria_evaluation SET evaluated_at = :evaluated_at WHERE product_id = :product_id;
+UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
+SET e.evaluated_at = :evaluated_at 
+WHERE p.id = :product_id AND p.uuid = e.product_uuid;
 SQL;
 
         $this->db->executeQuery($query, [

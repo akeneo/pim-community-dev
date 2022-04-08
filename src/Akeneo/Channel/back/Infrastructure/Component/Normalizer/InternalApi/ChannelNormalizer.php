@@ -69,11 +69,13 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $firstVersion = $this->versionRepository->getOldestLogEntry(
             ClassUtils::getClass($channel),
             $channel->getId(),
+            null,
             false
         );
         $lastVersion = $this->versionRepository->getNewestLogEntry(
             ClassUtils::getClass($channel),
             $channel->getId(),
+            null,
             false
         );
 
