@@ -99,9 +99,9 @@ return [
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
     Akeneo\OnboarderSerenity\Infrastructure\Symfony\AkeneoOnboarderSerenityBundle::class => ['all' => true],
+    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
 
     // Dev related bundles
-    Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],
     Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true, 'behat' => true],
     Akeneo\Onboarder\Bundle\PimOnboarderBundle::class => ['all' => true],

@@ -242,8 +242,7 @@ SQL;
                 new RecordDeletedEvent(
                     $identifiers[$recordCode->normalize()],
                     $recordCode,
-                    $referenceEntityIdentifier,
-                    false
+                    $referenceEntityIdentifier
                 ),
                 RecordDeletedEvent::class
             );
@@ -273,11 +272,19 @@ SQL;
         }
 
         $this->eventDispatcher->dispatch(
+            new RecordsDeletedEvent(
+                $identifiers,
+                [$code],
+                $referenceEntityIdentifier
+            ),
+            RecordsDeletedEvent::class
+        );
+
+        $this->eventDispatcher->dispatch(
             new RecordDeletedEvent(
                 $identifiers[$code->normalize()],
                 $code,
-                $referenceEntityIdentifier,
-                true
+                $referenceEntityIdentifier
             ),
             RecordDeletedEvent::class
         );

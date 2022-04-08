@@ -13,3 +13,4 @@ akeneo_feature_flag:
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'asset_manager', service: 'akeneo.feature_flag.service.only_serenity_feature' }
+        - { feature: 'reference_data', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }

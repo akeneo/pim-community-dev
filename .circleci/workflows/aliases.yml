@@ -1,4 +1,16 @@
 version: 2.1
+parameters:
+  client-to-clone-flex:
+    default: "assa-abloy-dev##akecld-assa-abloy"
+    type: string
+  skip_build:
+    default: false
+    type: boolean
+  trigger_ondemand:
+    default: false
+    type: boolean
+
+
 
 slack-fail-post-step: &slack-fail-post-step
   post-steps:
@@ -16,4 +28,4 @@ slack-post-step: &slack-post-step
 
 client-to-clone-srnt: &client-to-clone-srnt ["srnt-madeira-production", "srnt-pim-pce", "srnt-cto-pim", "srnt-iteshop"]
 client-to-clone-grth: &client-to-clone-grth ["grth-sirius-staging"]
-client-to-clone-flex: &client-to-clone-flex ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]
+clients-to-clone-flex: &clients-to-clone-flex ["assa-abloy-dev##akecld-assa-abloy", "curacao-production##akecld-curacao-pim"]

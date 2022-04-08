@@ -15,7 +15,7 @@ jobs:
                 type: string
                 default: "srnt-c3po"
         machine:
-            image: *executor-machine
+          image: *executor-machine
         resource_class: medium
         steps:
             - attach_workspace:
@@ -175,3 +175,72 @@ jobs:
                   when: always
             - store_artifacts:
                   path: /tmp/k6-artifacts
+
+    validate_data_integrity:
+        parameters:
+          SOURCE_PFID_SOURCE_PROJECT_ID:
+            type: string
+            default: ""
+          PRODUCT_TYPE:
+            type: string
+            default: "srnt"
+        environment:
+          <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+          - attach_workspace:
+              at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Launch data referential integrity validation command
+              command: |
+                POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+                kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console  pimee:database:batch-validate -vvv '
+
+    validate_db_schema:
+      parameters:
+        SOURCE_PFID_SOURCE_PROJECT_ID:
+          type: string
+          default: ""
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+            name: Launch data referential integrity validation command
+            command: |
+              POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:inspect -f && bin/console pimee:database:diff'                
+
+    validate_indexing_diff:
+      parameters:
+        SOURCE_PFID_SOURCE_PROJECT_ID:
+          type: string
+          default: ""
+        PRODUCT_TYPE:
+          type: string
+          default: "srnt"
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      resource_class: small
+      steps:
+        - attach_workspace:
+            at: ~/
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+            name: Launch data referential integrity validation command
+            command: |
+              POD_DAEMON=$(kubectl get pods --no-headers --namespace=${TYPE}-${INSTANCE_NAME} -l component=pim-daemon-webhook-consumer-process | awk 'NR==1{print $1}')
+              kubectl exec -it -n ${TYPE}-${INSTANCE_NAME} ${POD_DAEMON} -- /bin/bash -c 'bin/console pimee:database:indexing-diff'                

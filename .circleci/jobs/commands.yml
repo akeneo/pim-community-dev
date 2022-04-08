@@ -128,3 +128,16 @@ commands:
                                     ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
                                     echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
                                     sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+                              
+    skip_job:
+        description: "Skip following steps when turned on"
+        parameters:
+          skip:
+            type: boolean
+            description: "boolean to skip following steps."
+        steps:
+          - run:
+              name: skip if asked
+              command:   |
+                  [ "<< parameters.skip >>" = "true" ] && circleci step halt || echo "Skipping parameter received:  << parameters.skip >>"
+                

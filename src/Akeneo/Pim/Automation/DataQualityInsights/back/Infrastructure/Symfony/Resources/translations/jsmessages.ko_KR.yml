@@ -40,6 +40,8 @@ akeneo_data_quality_insights:
       aria_label: "다음에 대한 철자 제안: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes: '{1}1개 특성|]1, 200[{{ count }}개 특성|[200, Inf[{{ count }}개 초과한 특성'
+      attributes_to_work_on: '처리해야 할 <improvable_attributes_count_link/>이(가) 있습니다.'
       list:
         has_image:
           no_data: 애셋 컬렉션 및 이미지 특성이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 이미지를 업로드해야 합니다.

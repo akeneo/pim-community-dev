@@ -261,6 +261,8 @@ jobs:
         resource_class: medium
         working_directory: ~/project
         steps:
+            - skip_job:
+                  skip: << pipeline.parameters.skip_build >>
             - attach_workspace:
                   at: ~/
             - add_ssh_keys:
