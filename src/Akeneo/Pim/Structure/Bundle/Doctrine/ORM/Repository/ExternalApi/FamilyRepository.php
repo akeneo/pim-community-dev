@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -22,14 +23,18 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery;
+
     public function __construct(
         EntityManager $entityManager,
         $className,
-        FamilyRepositoryInterface $familyRepository
+        FamilyRepositoryInterface $familyRepository,
+        GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
 
         $this->familyRepository = $familyRepository;
+        $this->getFamilyIdsUsedByProductsQuery = $getFamilyIdsUsedByProductsQuery;
     }
 
     public function getIdentifierProperties(): array
@@ -104,6 +109,12 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         break;
                     case '>':
                         $qb->andWhere($qb->expr()->gt($field, $parameter));
+                        break;
+                    case '=':
+                        if ('has_products' === $property) {
+                            $familyIdsUsedByProducts = $this->getFamilyIdsUsedByProductsQuery->execute();
+                            $qb->andWhere($qb->expr()->in('r.id', $familyIdsUsedByProducts));
+                        }
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
