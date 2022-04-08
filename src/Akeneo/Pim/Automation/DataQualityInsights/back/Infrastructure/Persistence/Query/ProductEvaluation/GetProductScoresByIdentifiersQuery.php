@@ -39,9 +39,9 @@ final class GetProductScoresByIdentifiersQuery implements GetProductScoresByIden
         $query = <<<SQL
 SELECT product.identifier, latest_score.scores
 FROM pim_catalog_product product
-INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_score.product_id = product.id
+INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_score.product_uuid = product.uuid
 LEFT JOIN pim_data_quality_insights_product_score AS younger_score
-    ON younger_score.product_id = latest_score.product_id
+    ON younger_score.product_uuid = latest_score.product_uuid
     AND younger_score.evaluated_at > latest_score.evaluated_at
 WHERE product.identifier IN(:product_identifiers) 
   AND younger_score.evaluated_at IS NULL;

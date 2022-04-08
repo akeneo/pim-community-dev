@@ -71,7 +71,8 @@ class ProductController extends AbstractListCategoryController
      */
     protected function findEntityWithCategoriesOr404(string $id): ProductInterface
     {
-        $product = $this->productRepository->find($id);
+        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
+        $product = $this->productRepository->findBy(['id' => $id]);
         if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with with ID "%s" could not be found.', $id)

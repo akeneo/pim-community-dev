@@ -3,9 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByProduct;
+use Akeneo\Pim\Enrichment\Component\Product\Association\Query\GetAssociatedProductCodesByPublishedProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -20,12 +22,9 @@ use Webmozart\Assert\Assert;
  */
 class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var GetAssociatedProductCodesByProduct */
-    private $getAssociatedProductCodeByProduct;
-
-    public function __construct(GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct)
-    {
-        $this->getAssociatedProductCodeByProduct = $getAssociatedProductCodeByProduct;
+    public function __construct(
+        private GetAssociatedProductCodesByProduct $getAssociatedProductCodeByProduct
+    ) {
     }
 
     /**
@@ -46,7 +45,8 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof EntityWithAssociationsInterface && 'standard' === $format;
+        return $data instanceof EntityWithAssociationsInterface && 'standard' === $format
+            && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 
     public function hasCacheableSupportsMethod(): bool
@@ -96,11 +96,13 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     foreach ($association->getProducts() as $product) {
                         $data[$code]['products'][] = $product->getReference();
                     }
-                } else {
+                } elseif ($associationAwareEntity instanceof ProductInterface) {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
-                        $associationAwareEntity->getId(),
+                        $associationAwareEntity->getUuid(),
                         $association
                     ));
+                } else {
+                    throw new \InvalidArgumentException(\sprintf('No expected class: "%s"', \get_class($associationAwareEntity)));
                 }
 
                 $data[$code]['product_models'] = $data[$code]['product_models'] ?? [];

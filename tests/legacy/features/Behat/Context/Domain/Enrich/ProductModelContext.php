@@ -181,7 +181,8 @@ class ProductModelContext extends PimContext
         $productModel = $this->getProductModel($code);
         $lastVersion = $this->versionRepository->getNewestLogEntry(
             ClassUtils::getClass($productModel),
-            $productModel->getId()
+            $productModel->getId(),
+            null
         );
         $actualChangeset = $lastVersion->getChangeset();
 

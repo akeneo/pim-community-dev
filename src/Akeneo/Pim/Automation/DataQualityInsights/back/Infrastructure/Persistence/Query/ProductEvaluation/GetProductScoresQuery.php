@@ -37,12 +37,13 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
         }
 
         $query = <<<SQL
-SELECT latest_score.product_id, latest_score.scores
-FROM pim_data_quality_insights_product_score AS latest_score
+SELECT p.id AS product_id, latest_score.scores
+FROM pim_catalog_product p
+    INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_score.product_uuid = p.uuid
     LEFT JOIN pim_data_quality_insights_product_score AS younger_score
-        ON younger_score.product_id = latest_score.product_id
+        ON younger_score.product_uuid = latest_score.product_uuid
         AND younger_score.evaluated_at > latest_score.evaluated_at
-WHERE latest_score.product_id IN(:product_ids)
+WHERE p.id IN(:product_ids)
     AND younger_score.evaluated_at IS NULL;
 SQL;
 
