@@ -22,8 +22,6 @@ final class Version_7_0_20220404152647_dqi_update_pk_on_product_score_Integratio
     {
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        dump($this->getPrimaryKeyColumnName());
-
         Assert::assertNotContains('evaluated_at', $this->getPrimaryKeyColumnName());
     }
 
