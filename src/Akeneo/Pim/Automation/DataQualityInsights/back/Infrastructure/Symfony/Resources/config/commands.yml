@@ -4,6 +4,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
 
