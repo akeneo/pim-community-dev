@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -22,14 +23,15 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         FeatureFlag                     $dataQualityInsightsFeature,
         CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
         LoggerInterface                 $logger,
-        ProductEntityIdFactoryInterface $idFactory
+        ProductEntityIdFactoryInterface $idFactory,
+        Connection $connection
     )
     {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
             $logger,
-            $idFactory
+            $connection
         );
     }
 
