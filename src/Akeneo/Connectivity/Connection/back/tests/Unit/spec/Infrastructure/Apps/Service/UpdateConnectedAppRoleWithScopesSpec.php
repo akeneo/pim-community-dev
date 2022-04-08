@@ -46,7 +46,6 @@ class UpdateConnectedAppRoleWithScopesSpec extends ObjectBehavior
         BulkSaverInterface $roleWithPermissionsSaver,
         RoleInterface $role
     ): void {
-
         $this->execute('connected_app_id', ['scopeA', 'scopeB', 'scopeC']);
 
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role->getWrappedObject(), [
