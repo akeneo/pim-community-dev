@@ -63,9 +63,9 @@ class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;name-en_US
-french;;1;localized;;
-english;;1;localized;;"English name"
 complete;;1;localized;;"English complete"
+english;;1;localized;;"English name"
+french;;1;localized;;
 
 CSV;
 
@@ -155,10 +155,10 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;name-en_US
-french;;1;localized;;
-english;;1;localized;;"English name"
 complete;;1;localized;;"English complete"
 empty;;1;localized;;
+english;;1;localized;;"English name"
+french;;1;localized;;
 
 CSV;
 

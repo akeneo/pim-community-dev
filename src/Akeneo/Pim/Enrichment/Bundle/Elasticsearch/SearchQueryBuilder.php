@@ -146,6 +146,11 @@ class SearchQueryBuilder
         return $this;
     }
 
+    public function hasSort(string $field): bool
+    {
+        return \array_key_exists($field, $this->sortClauses);
+    }
+
     /**
      * Returns an Elastic search Query
      *

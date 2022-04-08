@@ -16,7 +16,6 @@ use Oro\Bundle\PimDataGridBundle\Normalizer\IdEncoder;
  */
 class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndProductModelQueryBuilderTestCase
 {
-
     /**
      * @group critical
      */

@@ -38,12 +38,14 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
+            - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductIdsQuery
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
+            - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
