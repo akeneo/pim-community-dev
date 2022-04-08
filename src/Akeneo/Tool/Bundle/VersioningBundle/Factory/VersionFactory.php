@@ -3,6 +3,7 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Factory;
 
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * Version factory
@@ -34,8 +35,8 @@ class VersionFactory
      *
      * @return Version
      */
-    public function create($resourceName, $resourceId, $author, $context = null)
+    public function create($resourceName, $resourceId, ?UuidInterface $resourceUuid, $author, $context = null)
     {
-        return new $this->versionClass($resourceName, $resourceId, $author, $context);
+        return new $this->versionClass($resourceName, $resourceId, $resourceUuid, $author, $context);
     }
 }

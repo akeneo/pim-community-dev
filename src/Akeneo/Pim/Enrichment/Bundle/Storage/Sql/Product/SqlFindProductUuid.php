@@ -11,7 +11,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlFindProductId implements FindId
+final class SqlFindProductUuid implements FindId
 {
     public function __construct(private Connection $connection)
     {
@@ -19,11 +19,11 @@ final class SqlFindProductId implements FindId
 
     public function fromIdentifier(string $identifier): null|string
     {
-        $id = $this->connection->executeQuery(
-            'SELECT id FROM pim_catalog_product WHERE identifier = :identifier',
+        $uuid = $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) AS uuid FROM pim_catalog_product WHERE identifier = :identifier',
             ['identifier' => $identifier]
         )->fetchOne();
 
-        return false === $id ? null : (string)$id;
+        return false === $uuid ? null : (string)$uuid;
     }
 }

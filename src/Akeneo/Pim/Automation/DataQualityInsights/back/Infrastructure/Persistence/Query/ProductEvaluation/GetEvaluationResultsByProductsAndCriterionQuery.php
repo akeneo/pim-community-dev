@@ -29,9 +29,10 @@ final class GetEvaluationResultsByProductsAndCriterionQuery implements GetEvalua
     public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $query = <<<SQL
-SELECT product_id, result
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN (:productIds) AND criterion_code = :criterionCode;
+SELECT p.id AS product_id, e.result
+FROM pim_data_quality_insights_product_criteria_evaluation e
+    JOIN pim_catalog_product p ON p.uuid = e.product_uuid
+WHERE p.id IN (:productIds) AND e.criterion_code = :criterionCode;
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
