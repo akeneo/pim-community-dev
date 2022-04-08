@@ -357,9 +357,9 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
     private function isColumnNullable(string $tableName, string $columnName): bool {
         $schema = $this->connection->getDatabase();
         $sql = <<<SQL
-            SELECT IS_NULLABLE 
-            FROM information_schema.columns 
-            WHERE table_schema=:schema 
+            SELECT IS_NULLABLE
+            FROM information_schema.columns
+            WHERE table_schema=:schema
               AND table_name=:tableName
               AND column_name=:columnName;
         SQL;
