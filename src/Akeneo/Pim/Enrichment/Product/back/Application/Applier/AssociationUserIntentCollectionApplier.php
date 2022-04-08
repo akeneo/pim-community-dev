@@ -7,16 +7,16 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -30,6 +30,10 @@ use Webmozart\Assert\Assert;
  */
 final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 {
+    private const PRODUCTS = 'products';
+    private const PRODUCT_MODELS = 'product_models';
+    private const GROUPS = 'groups';
+
     public function __construct(
         private ObjectUpdaterInterface $productUpdater,
         private GetViewableProducts $getViewableProducts,
@@ -43,101 +47,23 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         $normalizedAssociations = [];
 
         foreach ($userIntent->associationUserIntents() as $associationUserIntent) {
-            $formerAssociations = $this->getFormerAssociations($associationUserIntent, $normalizedAssociations, $product);
+            $values = null;
             $entityType = $this->getAssociationEntityType($associationUserIntent);
-            if ($associationUserIntent instanceof AssociateProducts) {
-                if (\count(\array_diff($associationUserIntent->productIdentifiers(), $formerAssociations)) === 0) {
-                    continue;
-                }
-                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    \array_unique(
-                        \array_merge($formerAssociations, $associationUserIntent->productIdentifiers())
-                    )
-                );
-            } elseif ($associationUserIntent instanceof DissociateProducts) {
-                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->productIdentifiers());
-                if (\count($newAssociations) === \count($formerAssociations)) {
-                    continue;
-                }
+            $formerAssociations = $this->getFormerAssociations($associationUserIntent, $normalizedAssociations, $product, $entityType);
+            $entityAssociations = $this->userIntentEntityAssociations($associationUserIntent, $entityType);
 
-                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    $newAssociations
-                );
-            } elseif ($associationUserIntent instanceof ReplaceAssociatedProducts) {
-                \sort($formerAssociations);
-                $newAssociations = $associationUserIntent->productIdentifiers();
-                \sort($newAssociations);
-                if ($newAssociations === $formerAssociations) {
-                    continue;
-                }
-
-                $viewableProductIdentifiers = $this->getViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
-                $nonViewableProducts = \array_values(\array_diff($formerAssociations, $viewableProductIdentifiers));
-                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    \array_unique(\array_merge($nonViewableProducts, $associationUserIntent->productIdentifiers()))
-                );
-            } elseif ($associationUserIntent instanceof AssociateProductModels) {
-                if (\count(\array_diff($associationUserIntent->productModelCodes(), $formerAssociations)) === 0) {
-                    continue;
-                }
-                $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] = \array_values(
-                    \array_unique(
-                        \array_merge($formerAssociations, $associationUserIntent->productModelCodes())
-                    )
-                );
-            } elseif ($associationUserIntent instanceof DissociateProductModels) {
-                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->productModelCodes());
-                if (\count($newAssociations) === \count($formerAssociations)) {
-                    continue;
-                }
-                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    $newAssociations
-                );
-            } elseif ($associationUserIntent instanceof ReplaceAssociatedProductModels) {
-                $viewableProductModels = $this->getViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
-                \sort($viewableProductModels);
-                $newAssociations = $associationUserIntent->productModelCodes();
-                \sort($newAssociations);
-                if ($newAssociations === $viewableProductModels) {
-                    continue;
-                }
-
-                $nonViewableProductModels = \array_values(\array_diff($formerAssociations, $viewableProductModels));
-                $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = \array_values(
-                    \array_unique(
-                        \array_merge($nonViewableProductModels, $associationUserIntent->productModelCodes())
-                    )
-                );
-            } elseif ($associationUserIntent instanceof AssociateGroups) {
-                if (\count(\array_diff($associationUserIntent->groupCodes(), $formerAssociations)) === 0) {
-                    continue;
-                }
-                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
-                    \array_unique(
-                        \array_merge($formerAssociations, $associationUserIntent->groupCodes())
-                    )
-                );
-            } elseif ($associationUserIntent instanceof DissociateGroups) {
-                $newAssociations = \array_diff($formerAssociations, $associationUserIntent->groupCodes());
-                if (\count($newAssociations) === \count($formerAssociations)) {
-                    continue;
-                }
-
-                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
-                    $newAssociations
-                );
-            } elseif ($associationUserIntent instanceof ReplaceAssociatedGroups) {
-                \sort($formerAssociations);
-                $newAssociations = $associationUserIntent->groupCodes();
-                \sort($newAssociations);
-                if ($newAssociations === $formerAssociations) {
-                    continue;
-                }
-
-                $normalizedAssociations[$associationUserIntent->associationType()]['groups'] = \array_values(
-                    \array_unique($newAssociations)
-                );
+            $values = match($associationUserIntent::class) {
+                AssociateProducts::class, AssociateProductModels::class, AssociateGroups::class =>
+                    $this->associateEntities($formerAssociations, $entityAssociations),
+                DissociateProducts::class, DissociateProductModels::class, DissociateGroups::class =>
+                    $this->dissociateEntities($formerAssociations, $entityAssociations),
+                ReplaceAssociatedProducts::class, ReplaceAssociatedProductModels::class, ReplaceAssociatedGroups::class =>
+                    $this->replaceAssociatedEntities($formerAssociations, $entityAssociations, $entityType, $userId)
+            };
+            if (\is_null($values)) {
+                continue;
             }
+            $normalizedAssociations[$associationUserIntent->associationType()][$entityType] = $values;
         }
 
         if ([] === $normalizedAssociations) {
@@ -157,58 +83,110 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
      * @param AssociationUserIntent $associationUserIntent
      * @param array<string, array<string, array<string>>> $normalizedAssociations
      * @param ProductInterface $product
+     * @param string $entityType
      *
      * @return array<string>
      */
-    private function getFormerAssociations(AssociationUserIntent $associationUserIntent, array $normalizedAssociations, ProductInterface $product): array
+    private function getFormerAssociations(AssociationUserIntent $associationUserIntent, array $normalizedAssociations, ProductInterface $product, string $entityType): array
     {
-        if (
-            $associationUserIntent instanceof AssociateProducts
-            || $associationUserIntent instanceof DissociateProducts
-            || $associationUserIntent instanceof ReplaceAssociatedProducts
-        ) {
-            return $normalizedAssociations[$associationUserIntent->associationType()]['products'] ??
-                $product
+        $values = match($entityType) {
+            self::PRODUCTS => $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
-                    ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [];
-        } elseif (
-            $associationUserIntent instanceof AssociateProductModels
-            || $associationUserIntent instanceof DissociateProductModels
-            || $associationUserIntent instanceof ReplaceAssociatedProductModels
-        ) {
-            return $normalizedAssociations[$associationUserIntent->associationType()]['product_models'] ??
-                $product
+                    ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [],
+            self::PRODUCT_MODELS => $product
                     ->getAssociatedProductModels($associationUserIntent->associationType())
-                    ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [];
-        } elseif (
-            $associationUserIntent instanceof AssociateGroups
-            || $associationUserIntent instanceof DissociateGroups
-            || $associationUserIntent instanceof ReplaceAssociatedGroups
-        ) {
-            return $normalizedAssociations[$associationUserIntent->associationType()]['groups'] ??
-                $product
+                    ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())?->toArray() ?? [],
+            self::GROUPS => $product
                     ->getAssociatedGroups($associationUserIntent->associationType())
-                    ?->map(fn (GroupInterface $group): string => $group->getCode())?->toArray() ?? [];
-        }
+                    ?->map(fn (GroupInterface $group): string => $group->getCode())?->toArray() ?? [],
+            default => throw new \LogicException('Not implemented')
+        };
 
-        throw new \LogicException('Not implemented');
+        return $normalizedAssociations[$associationUserIntent->associationType()][$entityType] ?? $values ?? [];
     }
 
     private function getAssociationEntityType(AssociationUserIntent $userIntent): string
     {
-        if (
-            $userIntent instanceof AssociateProducts
-            || $userIntent instanceof DissociateProducts
-            || $userIntent instanceof ReplaceAssociatedProducts
-        ) {
-            return 'products';
-        } elseif (
-            $userIntent instanceof AssociateProductModels
-            || $userIntent instanceof DissociateProductModels
-            || $userIntent instanceof ReplaceAssociatedProductModels
-        ) {
-            return 'product_models';
+        return match($userIntent::class) {
+            AssociateProducts::class, DissociateProducts::class, ReplaceAssociatedProducts::class => self::PRODUCTS,
+            AssociateProductModels::class, DissociateProductModels::class, ReplaceAssociatedProductModels::class => self::PRODUCT_MODELS,
+            AssociateGroups::class, DissociateGroups::class, ReplaceAssociatedGroups::class => self::GROUPS,
+            default => throw new \LogicException('Level does not exists')
+        };
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function userIntentEntityAssociations(AssociationUserIntent $associationUserIntent, string $entityType): array
+    {
+        if ($entityType === self::PRODUCTS && \method_exists($associationUserIntent, 'productIdentifiers')) {
+            return $associationUserIntent->productIdentifiers();
+        } elseif ($entityType === self::PRODUCT_MODELS && \method_exists($associationUserIntent, 'productModelCodes')) {
+            return $associationUserIntent->productModelCodes();
+        } elseif ($entityType === self::GROUPS && \method_exists($associationUserIntent, 'groupCodes')) {
+            return $associationUserIntent->groupCodes();
         }
-        throw new \LogicException('Level does not exists');
+        throw new \LogicException('Not Implemented');
+    }
+
+    /**
+     * @param array<string> $formerAssociations
+     * @param array<string> $entityAssociations
+     * @return array<string>|null
+     */
+    private function associateEntities(array $formerAssociations, array $entityAssociations): ?array
+    {
+        if (\count(\array_diff($entityAssociations, $formerAssociations)) === 0) {
+            return null;
+        }
+        return \array_values(\array_unique(\array_merge($formerAssociations, $entityAssociations)));
+    }
+
+    /**
+     * @param array<string> $formerAssociations
+     * @param array<string> $entityAssociations
+     * @return array<string>|null
+     */
+    private function dissociateEntities(array $formerAssociations, array $entityAssociations): ?array
+    {
+        $newAssociations = \array_diff($formerAssociations, $entityAssociations);
+        if (\count($newAssociations) === \count($formerAssociations)) {
+            return null;
+        }
+
+        return \array_values($newAssociations);
+    }
+
+    /**
+     * @param array<string> $formerAssociations
+     * @param array<string> $entityAssociations
+     * @param string $entityType
+     * @param int $userId
+     * @return array<string>|null
+     */
+    private function replaceAssociatedEntities(array $formerAssociations, array $entityAssociations, string $entityType, int $userId): ?array
+    {
+        $newEntityAssociations = $entityAssociations;
+        \sort($formerAssociations);
+        \sort($newEntityAssociations);
+        if ($newEntityAssociations === $formerAssociations) {
+            return null;
+        }
+
+        $nonViewableEntities = [];
+        if (self::PRODUCTS === $entityType) {
+            $viewableProductIdentifiers = $this->getViewableProducts->fromProductIdentifiers($formerAssociations, $userId);
+            $nonViewableEntities = \array_values(\array_diff($formerAssociations, $viewableProductIdentifiers));
+        } elseif (self::PRODUCT_MODELS === $entityType) {
+            $viewableProductModels = $this->getViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
+            $nonViewableEntities = \array_values(\array_diff($formerAssociations, $viewableProductModels));
+        }
+
+        if (empty($nonViewableEntities)) {
+            return \array_values(\array_unique($entityAssociations));
+        }
+
+        return \array_values(\array_unique(\array_merge($nonViewableEntities, $entityAssociations)));
     }
 }

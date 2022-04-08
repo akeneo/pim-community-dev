@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -110,7 +111,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $associatedProduct = new Product();
         $associatedProduct->setIdentifier('baz');
         $product->getAssociatedProducts('X_SELL')
-            ->shouldBeCalledOnce()
+            ->shouldBeCalledTimes(2)
             ->willReturn(new ArrayCollection([$associatedProduct]));
 
         $collection = new AssociationUserIntentCollection([
@@ -199,7 +200,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
         $associatedProduct = new Product();
         $associatedProduct->setIdentifier('baz');
 
-        $product->getAssociatedProducts('X_SELL')->shouldBeCalledOnce()->willReturn(
+        $product->getAssociatedProducts('X_SELL')->shouldBeCalledTimes(2)->willReturn(
             new ArrayCollection([$associatedProduct])
         );
         $collection = new AssociationUserIntentCollection([
@@ -377,7 +378,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['quux', 'quuz', 'corge']),
         ]);
 
-        $getViewableProductModels->fromProductModelCodes(['viewable_product_model', 'non_viewable_product_model'], 42)
+        $getViewableProductModels->fromProductModelCodes(['non_viewable_product_model', 'viewable_product_model'], 42)
             ->shouldBeCalledOnce()
             ->willReturn(['viewable_product_model']);
         $productUpdater->update($product, ['associations' => [
@@ -407,9 +408,7 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
             new ReplaceAssociatedProductModels('X_SELL', ['foo', 'bar']),
         ]);
 
-        $getViewableProductModels->fromProductModelCodes(['foo', 'bar'], 42)
-            ->shouldBeCalledOnce()
-            ->willReturn(['foo', 'bar']);
+        $getViewableProductModels->fromProductModelCodes(Argument::cetera())->shouldNotBeCalled();
         $productUpdater->update(Argument::cetera())->shouldNotBeCalled();
         $this->apply($collection, $product, 42);
     }
@@ -439,13 +438,13 @@ class AssociationUserIntentCollectionApplierSpec extends ObjectBehavior
 
     function it_does_nothing_if_groups_are_already_associated(
         ObjectUpdaterInterface $productUpdater,
-        ProductInterface $product,
-        GroupInterface $group,
+        ProductInterface $product
     ) {
-        $group->getCode()->willReturn('group1');
+        $group = new Group();
+        $group->setCode('group1');
 
         $product->getAssociatedGroups('X_SELL')->shouldBeCalledOnce()->willReturn(
-            new ArrayCollection([$group->getWrappedObject()])
+            new ArrayCollection([$group])
         );
         $collection = new AssociationUserIntentCollection([
             new AssociateGroups('X_SELL', ['group1']),

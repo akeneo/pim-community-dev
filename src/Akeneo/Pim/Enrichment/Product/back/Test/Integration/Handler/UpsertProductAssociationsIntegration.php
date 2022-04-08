@@ -7,18 +7,17 @@ namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
@@ -295,16 +294,6 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         $this->get('pim_catalog.saver.group')->save($group);
 
         return $group;
-    }
-
-    /**
-     * @return array<string>
-     */
-    private function getAssociatedProductIdentifiers(ProductInterface $product): array
-    {
-        return $product->getAssociatedProducts('X_SELL')
-            ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
-            ?->toArray() ?? [];
     }
 
     /**

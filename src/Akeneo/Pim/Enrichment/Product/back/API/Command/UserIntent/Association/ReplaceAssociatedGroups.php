@@ -19,8 +19,8 @@ final class ReplaceAssociatedGroups implements AssociationUserIntent
         private string $associationType,
         private array  $groupCodes,
     ) {
-        Assert::notEmpty($groupCodes);
         Assert::allStringNotEmpty($groupCodes);
+        Assert::stringNotEmpty($this->associationType);
     }
 
     public function associationType(): string

@@ -21,6 +21,7 @@ final class AssociateGroups implements AssociationUserIntent
     ) {
         Assert::notEmpty($groupCodes);
         Assert::allStringNotEmpty($groupCodes);
+        Assert::stringNotEmpty($this->associationType);
     }
 
     public function associationType(): string
