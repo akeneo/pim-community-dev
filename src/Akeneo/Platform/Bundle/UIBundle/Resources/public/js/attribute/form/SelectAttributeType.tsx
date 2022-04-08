@@ -1,6 +1,6 @@
 import React from 'react';
 import {AddAttributeIcon, IconProps, Modal, Tile, Tiles} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useFeatureFlags, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import * as icons from 'akeneo-design-system/lib/icons';
 import styled from 'styled-components';
 import {CreateAttributeButtonStepProps} from './CreateAttributeButtonApp';
@@ -19,9 +19,14 @@ type SelectAttributeTypeModalProps = CreateAttributeButtonStepProps & {
   iconsMap: {[attributeType: string]: string};
 };
 
+//TODO RAC-1225: Remove this function
+const isReferenceDataAttributeType = (attributeType: AttributeType): boolean =>
+  ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect'].includes(attributeType);
+
 const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap, onStepConfirm, onClose}) => {
   const translate = useTranslate();
   const Router = useRouter();
+  const featureFlags = useFeatureFlags();
 
   const [attributeTypes, setAttributeTypes] = React.useState<AttributeType[] | undefined>();
   const castIcons = icons as {[component: string]: React.FC<IconProps>};
@@ -29,7 +34,13 @@ const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({iconsMap,
   React.useEffect(() => {
     fetch(Router.generate('pim_enrich_attribute_type_index')).then(response => {
       response.json().then(attributeTypes => {
-        const newAttributeTypes = Object.keys(attributeTypes);
+        let newAttributeTypes = Object.keys(attributeTypes);
+
+        //TODO RAC-1225: Remove this condition
+        if (!featureFlags.isEnabled('reference_data')) {
+          newAttributeTypes = newAttributeTypes.filter(attributeType => !isReferenceDataAttributeType(attributeType));
+        }
+
         const sortedAttributeTypes = newAttributeTypes.sort((a, b) => {
           return translate(`pim_enrich.entity.attribute.property.type.${a}`).localeCompare(
             translate(`pim_enrich.entity.attribute.property.type.${b}`)
