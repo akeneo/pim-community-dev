@@ -24,20 +24,7 @@ class PositionResolver implements PositionResolverInterface
 
         $children = $this->getDirectChildrenCategoryCodes->execute($category->getParent()->getId());
 
-        /*
-        if ($this->isLeafCategory($children)) {
-            return 1;
-        }*/
-
         return $this->getCategoryPositionAmongChildren($category, $children);
-    }
-
-    /**
-     * @param array<string> $children
-     */
-    private function isLeafCategory(array $children): bool
-    {
-        return 0 === count($children);
     }
 
     /**
