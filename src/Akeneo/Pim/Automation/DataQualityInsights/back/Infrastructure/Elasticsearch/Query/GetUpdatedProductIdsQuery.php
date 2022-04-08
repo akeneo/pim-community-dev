@@ -10,6 +10,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -20,7 +23,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    public function __construct(private Client $esClient, private string $documentType)
+    public function __construct(private Client $esClient, private string $documentType, private Connection $connection)
     {
     }
 
@@ -100,9 +103,12 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         $identifierPrexis = $this->documentType === ProductModelInterface::class
             ? self::PRODUCT_MODEL_IDENTIFIER_PREFIX
             : self::PRODUCT_IDENTIFIER_PREFIX;
-        $productId =  intval(str_replace($identifierPrexis, '', $productData['_source']['id']));
+        $productId =  \str_replace($identifierPrexis, '', $productData['_source']['id']);
+        if (Uuid::isValid($productId)) {
+            $productId = $this->getProductIdFromUuid(Uuid::fromString($productId));
+        }
 
-        return new ProductId($productId);
+        return new ProductId((int) $productId);
     }
 
     private function countUpdatedProducts(array $query): int
@@ -112,5 +118,14 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         ]);
 
         return $count['count'] ?? 0;
+    }
+
+    private function getProductIdFromUuid(UuidInterface $productUuid): int
+    {
+        $id = $this->connection
+            ->executeQuery('SELECT id FROM pim_catalog_product WHERE uuid = ?', [$productUuid->getBytes()])
+            ->fetchOne();
+
+        return $id ? (int) $id : 0;
     }
 }
