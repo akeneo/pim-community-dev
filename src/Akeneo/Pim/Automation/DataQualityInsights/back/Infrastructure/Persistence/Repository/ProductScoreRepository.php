@@ -62,7 +62,8 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             );
         }, $productsScores));
 
-        $this->dbConnection->executeQuery(<<<SQL
+        $this->dbConnection->executeQuery(
+            <<<SQL
 INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
 VALUES $insertValues AS product_score_values
 ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
@@ -78,7 +79,8 @@ SQL
             );
         }, $productsScores));
 
-        $this->dbConnection->executeQuery(<<<SQL
+        $this->dbConnection->executeQuery(
+            <<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
