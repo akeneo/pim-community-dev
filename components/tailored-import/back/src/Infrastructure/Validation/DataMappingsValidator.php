@@ -58,10 +58,6 @@ class DataMappingsValidator extends ConstraintValidator
             ]),
         ]);
 
-        if ($this->isThereViolations() || empty($dataMappings)) {
-            return;
-        }
-
         $columns = $dataMappingsConstraint->getColumns();
         foreach ($dataMappings as $dataMapping) {
             $this->validateDataMapping($dataMapping, $columns);
@@ -130,38 +126,6 @@ class DataMappingsValidator extends ConstraintValidator
             PropertyTarget::TYPE => $this->validatePropertyDataMapping($dataMapping, $columns),
             default => new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $targetType)),
         };
-//
-//        $validator = $this->context->getValidator();
-//        $violations = $validator->validate($dataMapping, new Collection([
-//            'fields' => [
-//                'uuid' => [
-//                    new Uuid(),
-//                    new NotBlank(),
-//                ],
-//                'target' => new Target(),
-//                'sources' => new Sources(false, $columns),
-//                // RAB-645: TODO we need to validate by target type as we did in Tailored Export
-//                'operations' => new Type('array'),
-//                'sample_data' => [
-//                    new Type('array'),
-//                ],
-//            ],
-//        ]));
-//
-//        if (0 < $violations->count()) {
-//            foreach ($violations as $violation) {
-//                $builder = $this->context->buildViolation(
-//                    $violation->getMessage(),
-//                    $violation->getParameters()
-//                )
-//                    ->atPath(sprintf('[%s]%s', $dataMapping['uuid'] ?? 'null', $violation->getPropertyPath()))
-//                    ->setInvalidValue($violation->getInvalidValue());
-//                if ($violation->getPlural()) {
-//                    $builder->setPlural((int)$violation->getPlural());
-//                }
-//                $builder->addViolation();
-//            }
-//        }
     }
 
     private function validateAttributeDataMapping(array $dataMapping, array $columns): void
