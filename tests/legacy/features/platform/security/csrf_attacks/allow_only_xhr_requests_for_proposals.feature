@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Allow only XHR requests for some proposals actions
   In order to protect proposals from CSRF attacks
   As a developer

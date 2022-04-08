@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Copy value from my draft
   In order to reuse enrich values in other languages
   As a redactor

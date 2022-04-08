@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Mass edit products through product draft
   In order to prevent changes on product when I am not allowed to
   As a contributor

@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Export published products in XLSX
   In order to export validated product data
   As a product manager

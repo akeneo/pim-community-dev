@@ -20,6 +20,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class CreateProductProposalEndToEnd extends AbstractProposal
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
+    }
+
     public function testCreateProductProposalSuccessful()
     {
         $productDraft = $this->createDefaultProductDraft('mary', 'product_with_draft');

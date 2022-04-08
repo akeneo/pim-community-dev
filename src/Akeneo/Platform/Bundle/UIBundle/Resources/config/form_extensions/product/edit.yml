@@ -47,6 +47,7 @@ extensions:
         parent: pim-product-edit-form-secondary-actions
         targetZone: secondary-actions
         position: 30
+        feature: published_product
 
     pim-product-edit-form-convert-to-simple-product:
         module: pimee/product-edit-form/convert-to-simple-product
@@ -116,6 +117,7 @@ extensions:
         config:
             datagridName: product-draft-grid
             tabCode: pim-product-or-product-model-edit-form-proposals
+        feature: proposal
 
     pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories

@@ -43,6 +43,8 @@ imports:
     - { resource: ../../../grth/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
     - { resource: ../../../grth/src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services_ee.yml }
 
+    # FeatureFlag
+    - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
 
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:

@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Compare and copy from working copy
   In order to reuse enrich values from the working copy
   As a redactor
