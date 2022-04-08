@@ -9,6 +9,8 @@ use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\VersioningBundle\Doctrine\Query\SqlGetPurgeableVersionListQuery;
 use Akeneo\Tool\Component\Versioning\Model\Version;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -91,7 +93,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $loggedAt = clone $limitDate;
         $versionIds = [];
         for ($i = 0; $i < $count; $i++) {
-            $versionIds[] = $this->createVersion(Product::class, 42, $loggedAt);
+            $versionIds[] = $this->createVersion(Product::class, null, Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'), $loggedAt);
             $loggedAt->modify('+1 DAY');
         }
 
@@ -104,7 +106,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         for ($i = $count; $i > 0; $i--) {
             $loggedAt = clone $limitDate;
             $loggedAt->modify(sprintf('-%d DAY', $i));
-            $versionIds[] = $this->createVersion(Product::class, 42, $loggedAt);
+            $versionIds[] = $this->createVersion(Product::class, 42, Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'), $loggedAt);
         }
 
         return $versionIds;
@@ -115,7 +117,7 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $loggedAt = clone $limitDate;
         $loggedAt->modify('+1 DAY');
 
-        $this->createVersion(Attribute::class, 123, $loggedAt);
+        $this->createVersion(Attribute::class, 123, null, $loggedAt);
     }
 
     private function givenAttributeVersionOlderThan(\DateTime $limitDate): void
@@ -123,14 +125,14 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
         $loggedAt = clone $limitDate;
         $loggedAt->modify('-1 DAY');
 
-        $this->createVersion(Attribute::class, 123, $loggedAt);
+        $this->createVersion(Attribute::class, 123, null, $loggedAt);
     }
 
-    private function createVersion(string $resourceName, int $resourceId, \DateTime $loggedAt): int
+    private function createVersion(string $resourceName, ?int $resourceId, ?UuidInterface $resourceUuid, \DateTime $loggedAt): int
     {
         $entityManager = $this->get('doctrine.orm.default_entity_manager');
 
-        $version = new Version($resourceName, $resourceId, 'system');
+        $version = new Version($resourceName, $resourceId, $resourceUuid, 'system');
         $entityManager->persist($version);
         $entityManager->flush();
 

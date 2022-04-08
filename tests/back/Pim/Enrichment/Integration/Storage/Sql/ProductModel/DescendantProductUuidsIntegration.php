@@ -5,35 +5,37 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 
 use Akeneo\Test\Integration\TestCase;
+use Ramsey\Uuid\UuidInterface;
 
-class DescendantProductIdsIntegration extends TestCase
+class DescendantProductUuidsIntegration extends TestCase
 {
-    public function test_it_fetches_product_ids_from_product_model_ids()
+    public function test_it_fetches_product_uuids_from_product_model_ids()
     {
         $query = $this->get('pim_catalog.query.descendant_product_ids');
 
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('amor');
         $productModel2 = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('aphrodite');
 
-        $expectedProductIds = array_map(function ($product) {
-            return (int) $product->getId();
-        }, $productModel->getProducts()->toArray());
+        $expectedProductUuids = array_map(
+            fn ($product): UuidInterface => $product->getUuid(),
+            $productModel->getProducts()->toArray()
+        );
 
         $resultRows = $query->fetchFromProductModelIds([$productModel->getId()]);
-        $this->assertCount(count($expectedProductIds), $resultRows);
-        $this->assertSame($expectedProductIds, $resultRows);
+        $this->assertCount(count($expectedProductUuids), $resultRows);
+        $this->assertEquals($expectedProductUuids, $resultRows);
 
         $products = array_merge($productModel->getProducts()->toArray(), $productModel2->getProducts()->toArray());
-        $expectedProductIds = array_map(function ($product) {
-            return (int) $product->getId();
-        }, $products);
+        $expectedProductUuids = array_map(
+            fn ($product): UuidInterface => $product->getUuid(),
+            $products
+        );
 
         $resultRows = $query->fetchFromProductModelIds([$productModel->getId(), $productModel2->getId()]);
-        $this->assertCount(count($expectedProductIds), $resultRows);
-        $this->assertSame($expectedProductIds, $resultRows);
+        $this->assertCount(count($expectedProductUuids), $resultRows);
+        $this->assertEquals($expectedProductUuids, $resultRows);
 
-        $this->assertNull($this->get('pim_catalog.repository.product_model')->find(81));
-        $resultRows = $query->fetchFromProductModelIds([81]);
+        $resultRows = $query->fetchFromProductModelIds([0]);
         $this->assertCount(0, $resultRows);
     }
 

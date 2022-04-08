@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Completeness;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks;
 
 /**
@@ -37,14 +38,18 @@ class MissingRequiredAttributesCalculator implements MissingRequiredAttributesCa
     public function fromEntityWithFamily(
         EntityWithFamilyInterface $entityWithFamily
     ): ProductCompletenessWithMissingAttributeCodesCollection {
+        $entityId = \method_exists($entityWithFamily, 'getUuid')
+            ?  $entityWithFamily->getUuid()->toString()
+            : (string) $entityWithFamily->getId();
+
         if (null === $entityWithFamily->getFamily()) {
-            return new ProductCompletenessWithMissingAttributeCodesCollection($entityWithFamily->getId(), []);
+            return new ProductCompletenessWithMissingAttributeCodesCollection($entityId, []);
         }
         $familyCode = $entityWithFamily->getFamily()->getCode();
         $requiredAttributesMasks = $this->getRequiredAttributesMasks->fromFamilyCodes([$familyCode]);
 
         $productMask = $this->getCompletenessProductMasks->fromValueCollection(
-            $entityWithFamily->getId(),
+            $entityId,
             $entityWithFamily->getIdentifier(),
             $familyCode,
             $entityWithFamily->getValues()

@@ -30,9 +30,10 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
         $query = <<<SQL
-SELECT product_id, JSON_EXTRACT(result, '$ratesPath') AS rates
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN (:productIds) AND criterion_code = :criterionCode;
+SELECT p.id AS product_id, JSON_EXTRACT(e.result, '$ratesPath') AS rates
+FROM pim_catalog_product p
+    JOIN pim_data_quality_insights_product_criteria_evaluation e ON e.product_uuid = p.uuid
+WHERE p.id IN (:productIds) AND e.criterion_code = :criterionCode;
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(

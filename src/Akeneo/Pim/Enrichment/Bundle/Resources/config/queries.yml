@@ -113,7 +113,7 @@ services:
             - '@database_connection'
 
     pim_catalog.query.descendant_product_ids:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductIdsQuery'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\DescendantProductUuidsQuery'
         public: true
         arguments:
             - '@database_connection'
@@ -181,7 +181,7 @@ services:
             - '@pim_reference_data.repository_resolver'
 
     akeneo.pim.enrichment.product.query.find_id:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductId'
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductUuid'
         arguments:
             - '@database_connection'
 

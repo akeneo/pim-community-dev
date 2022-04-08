@@ -93,7 +93,7 @@ class PurgeVersioningCommandIntegration extends TestCase
     {
         $entityManager = $this->get('doctrine.orm.default_entity_manager');
 
-        $version = new Version($resourceName, $resourceId, 'system');
+        $version = new Version($resourceName, $resourceId, null, 'system');
         $version->setVersion($versionNumber);
         $entityManager->persist($version);
         $entityManager->flush();
