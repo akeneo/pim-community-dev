@@ -1,4 +1,4 @@
-@javascript
+@published-product-feature-enabled @javascript
 Feature: View the completeness of a published product
   In order to know the completeness of a published product
   As a contributor

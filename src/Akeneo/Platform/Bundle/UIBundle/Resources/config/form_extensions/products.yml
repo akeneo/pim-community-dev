@@ -14,3 +14,4 @@ extensions:
             buttonClass: 'AknDropdown-menuLink'
             route: pimee_workflow_published_product_index
             label: pim_menu.navigation.published_products
+        feature: published_product

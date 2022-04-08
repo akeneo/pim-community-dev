@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: List proposals
   In order to easily view, approve and refuse proposals
   As a product manager

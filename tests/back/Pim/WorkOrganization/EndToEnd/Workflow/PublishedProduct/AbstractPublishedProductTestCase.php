@@ -14,6 +14,13 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+    }
+
+
     /**
      * @param ProductInterface $product
      *

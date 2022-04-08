@@ -15,3 +15,4 @@ extensions:
         config:
             title: pim_menu.item.proposal
             to: pimee_workflow_proposal_index
+        feature: proposal

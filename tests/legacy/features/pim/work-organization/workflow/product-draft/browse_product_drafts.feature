@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Browse product drafts for a specific product
   In order to list the existing product drafts for a specific product
   As a product manager
