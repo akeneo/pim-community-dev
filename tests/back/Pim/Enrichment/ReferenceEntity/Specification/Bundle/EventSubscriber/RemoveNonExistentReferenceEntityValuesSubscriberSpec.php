@@ -6,7 +6,6 @@ namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\EventSubscr
 
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -54,39 +53,6 @@ class RemoveNonExistentReferenceEntityValuesSubscriberSpec extends ObjectBehavio
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith($tokenStorage, $jobInstanceRepository, $jobLauncher, $connection);
-    }
-
-    function it_should_launch_a_job_per_attribute_on_record_deleted(
-        JobLauncherInterface $jobLauncher,
-        JobInstance $jobInstance,
-        UserInterface $user
-    )
-    {
-        $event = new RecordDeletedEvent(
-            RecordIdentifier::fromString('black_identifier'),
-            RecordCode::fromString('black'),
-            ReferenceEntityIdentifier::fromString('color')
-        );
-
-        $jobLauncher->launch(
-            $jobInstance,
-            $user,
-            [
-                'attribute_code' => 'attribute_1',
-                'attribute_options' => ['black'],
-            ]
-        )->shouldBeCalledOnce();
-
-        $jobLauncher->launch(
-            $jobInstance,
-            $user,
-            [
-                'attribute_code' => 'attribute_2',
-                'attribute_options' => ['black'],
-            ]
-        )->shouldBeCalledOnce();
-
-        $this->onRecordDeleted($event);
     }
 
     function it_should_launch_a_job_per_attribute_on_records_deleted(

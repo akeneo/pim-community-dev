@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetColumnsLinkedToAReferenceEntity;
-use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 use Akeneo\ReferenceEntity\Domain\Model\Record\RecordIdentifier;
@@ -49,119 +48,6 @@ class CleanRecordsJobSubscriberSpec extends ObjectBehavior
             $getColumnsLinkedToAReferenceEntity,
             'jobName'
         );
-    }
-
-    function it_does_nothing_when_the_event_is_not_unitary(JobLauncherInterface $jobLauncher)
-    {
-        $recordDeletedEvent = new RecordDeletedEvent(
-            RecordIdentifier::create('id', 'code', 'fingerprint'),
-            RecordCode::fromString('code'),
-            ReferenceEntityIdentifier::fromString('id'),
-            false
-        );
-
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-        $this->whenARecordIsDeleted($recordDeletedEvent);
-    }
-
-    function it_launches_a_job_when_the_event_is_unitary(
-        JobLauncherInterface $jobLauncher,
-        GetColumnsLinkedToAReferenceEntity $getColumnsLinkedToAReferenceEntity,
-        TokenStorageInterface $tokenStorage,
-        JobInstanceRepository $jobInstanceRepository,
-        JobInstance $jobInstance
-    ) {
-        $recordDeletedEvent = new RecordDeletedEvent(
-            RecordIdentifier::create('id', 'code', 'fingerprint'),
-            RecordCode::fromString('code'),
-            ReferenceEntityIdentifier::fromString('id'),
-            true
-        );
-
-        $getColumnsLinkedToAReferenceEntity->forIdentifier('id')->willReturn(
-            [
-                ['attribute_code' => 'attribute_code', 'column_code' => 'column_code'],
-                ['attribute_code' => 'attribute_code_2', 'column_code' => 'column_code_2'],
-            ]
-        );
-        $user = new User();
-        $tokenStorage->getToken()->willReturn(new SystemUserToken($user));
-        $jobInstanceRepository->findOneByIdentifier('jobName')->willReturn($jobInstance);
-        $jobLauncher->launch(
-            $jobInstance,
-            $user,
-            [
-                'attribute_code' => 'attribute_code',
-                'removed_options_per_column_code' => [
-                    'column_code' => ['code'],
-                ],
-            ]
-        )->shouldBeCalledOnce();
-        $jobLauncher->launch(
-            $jobInstance,
-            $user,
-            [
-                'attribute_code' => 'attribute_code_2',
-                'removed_options_per_column_code' => [
-                    'column_code_2' => ['code'],
-                ],
-            ]
-        )->shouldBeCalledOnce();
-        $this->whenARecordIsDeleted($recordDeletedEvent);
-    }
-
-    function it_launches_a_job_by_attribute_when_the_event_is_unitary(
-        JobLauncherInterface $jobLauncher,
-        GetColumnsLinkedToAReferenceEntity $getColumnsLinkedToAReferenceEntity,
-        TokenStorageInterface $tokenStorage,
-        JobInstanceRepository $jobInstanceRepository,
-        JobInstance $jobInstance
-    ) {
-        $recordDeletedEvent = new RecordDeletedEvent(
-            RecordIdentifier::create('id', 'code', 'fingerprint'),
-            RecordCode::fromString('code'),
-            ReferenceEntityIdentifier::fromString('id'),
-            true
-        );
-
-        $getColumnsLinkedToAReferenceEntity->forIdentifier('id')->willReturn(
-            [
-                ['attribute_code' => 'attribute_code', 'column_code' => 'column_code'],
-                ['attribute_code' => 'attribute_code', 'column_code' => 'column_code_2'],
-            ]
-        );
-        $user = new User();
-        $tokenStorage->getToken()->willReturn(new SystemUserToken($user));
-        $jobInstanceRepository->findOneByIdentifier('jobName')->willReturn($jobInstance);
-        $jobLauncher->launch(
-            $jobInstance,
-            $user,
-            [
-                'attribute_code' => 'attribute_code',
-                'removed_options_per_column_code' => [
-                    'column_code' => ['code'],
-                    'column_code_2' => ['code'],
-                ],
-            ]
-        )->shouldBeCalledOnce();
-        $this->whenARecordIsDeleted($recordDeletedEvent);
-    }
-
-    function it_does_nothing_when_no_columns_are_linked_to_the_reference_entity(
-        JobLauncherInterface $jobLauncher,
-        GetColumnsLinkedToAReferenceEntity $getColumnsLinkedToAReferenceEntity
-    ) {
-        $recordDeletedEvent = new RecordDeletedEvent(
-            RecordIdentifier::create('id', 'code', 'fingerprint'),
-            RecordCode::fromString('code'),
-            ReferenceEntityIdentifier::fromString('id'),
-            true
-        );
-
-        $getColumnsLinkedToAReferenceEntity->forIdentifier('id')->willReturn([]);
-
-        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
-        $this->whenARecordIsDeleted($recordDeletedEvent);
     }
 
     function it_does_nothing_when_no_columns_are_linked_to_the_reference_entity_with_bulk_event(
