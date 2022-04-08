@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Save a product draft
   In order to update the product even if I'm not owner
   As a redactor

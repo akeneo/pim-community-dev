@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Remove notifications
   In order to easily quickly now if my proposals have been removed
   As a proposal redactor

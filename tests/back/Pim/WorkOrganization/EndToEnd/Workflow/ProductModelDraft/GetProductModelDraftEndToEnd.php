@@ -10,6 +10,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelDraftEndToEnd extends ApiTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
+    }
+
     public function testGetRootProductModelDraft()
     {
         $this->createProductModelDraft('mary', 'jack');

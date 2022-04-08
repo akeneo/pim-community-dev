@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Quick export many published products from datagrid
   In order to quick export a set of published products
   As a product manager

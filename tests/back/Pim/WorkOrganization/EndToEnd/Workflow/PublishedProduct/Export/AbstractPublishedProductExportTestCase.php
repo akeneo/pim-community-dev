@@ -17,6 +17,7 @@ class AbstractPublishedProductExportTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');

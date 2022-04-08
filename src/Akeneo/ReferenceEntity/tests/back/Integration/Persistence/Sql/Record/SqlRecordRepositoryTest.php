@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
 use Akeneo\ReferenceEntity\Domain\Event\RecordDeletedEvent;
+use Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\RecordUpdatedEvent;
 use Akeneo\ReferenceEntity\Domain\Event\ReferenceEntityRecordsDeletedEvent;
 use Akeneo\ReferenceEntity\Domain\Model\ChannelIdentifier;
@@ -556,6 +557,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
         Assert::assertEquals(3, $this->repository->count());
 
         $this->repository->deleteByReferenceEntityAndCodes($referenceEntityIdentifier, $recordCodesToDelete);
+        $this->eventDispatcherMock->assertEventDispatched(RecordsDeletedEvent::class);
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         Assert::assertEquals(1, $this->repository->count());
     }
@@ -578,6 +580,7 @@ class SqlRecordRepositoryTest extends SqlIntegrationTestCase
 
         $this->repository->deleteByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);
 
+        $this->eventDispatcherMock->assertEventDispatched(RecordsDeletedEvent::class);
         $this->eventDispatcherMock->assertEventDispatched(RecordDeletedEvent::class);
         $this->expectException(RecordNotFoundException::class);
         $this->repository->getByReferenceEntityAndCode($referenceEntityIdentifier, $recordCode);

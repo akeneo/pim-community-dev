@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Send a product draft for approval
   In order to apply my product draft
   As a contributor

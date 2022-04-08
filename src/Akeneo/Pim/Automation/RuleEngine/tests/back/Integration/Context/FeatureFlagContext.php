@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Integration\Context;
 
-use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\InMemoryFeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Behat\Behat\Context\Context;
 
 class FeatureFlagContext implements Context
 {
     public function __construct(
-        private InMemoryFeatureFlags $featureFlags
+        private FilePersistedFeatureFlags $featureFlags
     ) {
     }
 
