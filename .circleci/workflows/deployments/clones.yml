@@ -290,10 +290,10 @@ workflows:
     #       You can also changed the client list by changing the variable `client-to-clone-flex` in the `.circleci/workflows/aliases.yml` file
     #       You will need the GCP project id and the instance name that you want to check
     on_demand_clone_and_test_migrate_flex_customers:
-#        when:
-#            and:
-#                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-#                - equal: [ "on_demand_clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
+        when:
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "on_demand_clone_and_test_migrate_flex_customers", << pipeline.schedule.name >> ]
         jobs:
             - checkout
             - build_srnt_prod:
