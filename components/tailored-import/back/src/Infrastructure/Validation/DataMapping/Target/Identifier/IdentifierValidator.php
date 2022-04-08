@@ -16,11 +16,11 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Sources;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -42,8 +42,8 @@ class IdentifierValidator extends ConstraintValidator
                     'source_parameter' => new IsNull(),
                     'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
                 ]),
-                'sources' => new Sources(false, $constraint->getColumns()),
-                'operations' => new Count(['max' => 0]),
+                'sources' => new Sources(false, $constraint->getColumnUuids()),
+                'operations' => new Operations([]),
                 'sample_data' => new SampleData(),
             ],
         ]));

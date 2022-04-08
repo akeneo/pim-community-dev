@@ -19,15 +19,15 @@ use Symfony\Component\Validator\Constraint;
 abstract class TargetConstraint extends Constraint
 {
     public function __construct(
-        private array $columns,
+        private array $columnsUuids,
         private Attribute $attribute,
     ) {
         parent::__construct();
     }
 
-    public function getColumns(): array
+    public function getColumnUuids(): array
     {
-        return $this->columns;
+        return $this->columnsUuids;
     }
 
     public function getAttribute(): Attribute

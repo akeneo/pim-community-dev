@@ -23,6 +23,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use Webmozart\Assert\Assert;
 
 class DataMappingsValidator extends ConstraintValidator
 {
@@ -51,7 +52,7 @@ class DataMappingsValidator extends ConstraintValidator
             ]),
         ]);
 
-        $columns = $dataMappingsConstraint->getColumns();
+        $columns = $dataMappingsConstraint->getColumnUuids();
         foreach ($dataMappings as $dataMapping) {
             $this->validateDataMapping($dataMapping, $columns);
         }
@@ -117,23 +118,27 @@ class DataMappingsValidator extends ConstraintValidator
         match ($targetType) {
             AttributeTarget::TYPE => $this->validateAttributeDataMapping($dataMapping, $columns),
             PropertyTarget::TYPE => $this->validatePropertyDataMapping($dataMapping, $columns),
-            default => new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $targetType)),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $targetType)),
         };
     }
 
     private function validateAttributeDataMapping(array $dataMapping, array $columns): void
     {
-        $attributeCode = $dataMapping['target']['code'];
-        $attribute = $this->getAttributes->forCode($attributeCode);
+        $dataMappingUuid = $dataMapping['uuid'] ?? null;
+        $attributeCode = $dataMapping['target']['code'] ?? null;
 
+        Assert::notNull($attributeCode);
+        Assert::notNull($dataMappingUuid);
+
+        $attribute = $this->getAttributes->forCode($attributeCode);
         if (!$attribute instanceof Attribute) {
             $this->context->buildViolation(
-                Target::ATTRIBUTE_SHOULD_EXIST,
+                DataMappings::ATTRIBUTE_SHOULD_EXIST,
                 [
                     '{{ attribute_code }}' => $attributeCode,
                 ],
             )
-                ->atPath(sprintf('[%s][target][code]', $dataMapping['uuid']))
+                ->atPath(sprintf('[%s][target][code]', $dataMappingUuid))
                 ->addViolation();
 
             return;
@@ -146,7 +151,7 @@ class DataMappingsValidator extends ConstraintValidator
 
         $this->context->getValidator()
             ->inContext($this->context)
-            ->atPath(sprintf('[%s]', $dataMapping['uuid']))
+            ->atPath(sprintf('[%s]', $dataMappingUuid))
             ->validate($dataMapping, new $constraintClass($columns, $attribute));
     }
 

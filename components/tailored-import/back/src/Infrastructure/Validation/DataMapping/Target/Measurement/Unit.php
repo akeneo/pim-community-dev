@@ -11,6 +11,7 @@ class Unit extends Constraint
     public function __construct(
         private string $familyCode
     ) {
+        parent::__construct();
     }
 
     public function getFamilyCode(): string

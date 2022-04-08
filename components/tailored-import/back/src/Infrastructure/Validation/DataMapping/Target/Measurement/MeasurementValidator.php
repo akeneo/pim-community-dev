@@ -39,7 +39,7 @@ class MeasurementValidator extends ConstraintValidator
                     // TODO pluralize source_parameter everywhere in the codebase
                     'source_parameter' => new MeasurementSourceParameter($constraint->getAttribute()->metricFamily()),
                 ]),
-                'sources' => new Sources(false, $constraint->getColumns()),
+                'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),
                 'sample_data' => new SampleData(),
             ],

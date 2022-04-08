@@ -25,7 +25,7 @@ class Sources extends Constraint
 
     public function __construct(
         private bool $supportsMultiSource,
-        private array $columns,
+        private array $columnsUuids,
     ) {
         parent::__construct();
     }
@@ -35,8 +35,8 @@ class Sources extends Constraint
         return $this->supportsMultiSource;
     }
 
-    public function getColumns(): array
+    public function getColumnUuids(): array
     {
-        return $this->columns;
+        return $this->columnsUuids;
     }
 }

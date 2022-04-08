@@ -54,7 +54,7 @@ class OperationsValidator extends ConstraintValidator
         if (!in_array($operationType, $compatibleOperationTypes)) {
             $this->context->buildViolation(Operations::INCOMPATIBLE_OPERATION_TYPE)
                 ->setParameter('{{ operation_type }}', $operationType)
-                ->atPath($path)
+                ->atPath(sprintf('%s[type]', $path))
                 ->addViolation();
 
             return;

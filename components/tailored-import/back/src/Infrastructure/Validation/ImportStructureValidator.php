@@ -26,11 +26,12 @@ class ImportStructureValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ImportStructure::class);
         }
 
+        $columnsUuid = array_map(static fn (array $column) => $column['uuid'], $importStructure['columns'] ?? []);
         $validator = $this->context->getValidator();
         $validator->inContext($this->context)->validate($importStructure, new Collection([
             'fields' => [
                 'columns' => new Columns(),
-                'data_mappings' => new DataMappings($importStructure['columns'] ?? []),
+                'data_mappings' => new DataMappings($columnsUuid),
             ]
         ]));
     }

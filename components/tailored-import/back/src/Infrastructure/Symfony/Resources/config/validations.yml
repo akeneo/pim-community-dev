@@ -39,14 +39,6 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\TargetValidator:
-    arguments:
-      - '@akeneo.pim.structure.query.get_attributes'
-      - '@akeneo_measurement.public_api.find_unit'
-      - '%akeneo.tailored_import.supported_system_properties%'
-    tags:
-      - { name: validator.constraint_validatorn }
-
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKeyValidator:
     arguments:
       - '@akeneo_file_storage.file_storage.filesystem_provider'
@@ -84,4 +76,4 @@ services:
     arguments:
       - '@akeneo_measurement.public_api.find_unit'
     tags:
-      - { name: validator.constraint_validatorn }
+      - { name: validator.constraint_validator }

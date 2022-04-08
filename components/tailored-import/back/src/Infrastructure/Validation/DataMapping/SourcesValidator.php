@@ -32,7 +32,7 @@ class SourcesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Sources::class);
         }
 
-        $this->context->getValidator()->validate($value, [
+        $this->context->getValidator()->inContext($this->context)->validate($value, [
             new Type('array'),
             new Unique([
                 'message' => Sources::SOURCES_SHOULD_BE_UNIQUE,
@@ -60,14 +60,13 @@ class SourcesValidator extends ConstraintValidator
 
     private function validateSourcesExist(array $sources, Sources $constraint): void
     {
-        $columns = $constraint->getColumns();
-        $columnsUuid = array_map(static fn (array $column) => $column['uuid'], $columns);
+        $columns = $constraint->getColumnUuids();
 
-        foreach ($sources as $source) {
-            if (!in_array($source, $columnsUuid)) {
-                $this->context->buildViolation(
-                    Sources::SOURCES_SHOULD_EXIST,
-                )
+        foreach ($sources as $index => $source) {
+            if (!in_array($source, $columns)) {
+                $this->context
+                    ->buildViolation(Sources::SOURCES_SHOULD_EXIST)
+                    ->atPath(sprintf('[%s]', $index))
                     ->addViolation();
             }
         }

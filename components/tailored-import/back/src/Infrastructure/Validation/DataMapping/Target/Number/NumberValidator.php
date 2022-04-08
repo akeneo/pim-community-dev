@@ -38,8 +38,8 @@ class NumberValidator extends ConstraintValidator
                 'target' => new AttributeTarget([
                     'source_parameter' => new NumberSourceParameter(),
                 ]),
-                'sources' => new Sources(false, $constraint->getColumns()),
-                'operations' => new Operations(['clean_html_tags']),
+                'sources' => new Sources(false, $constraint->getColumnUuids()),
+                'operations' => new Operations([]),
                 'sample_data' => new SampleData(),
             ],
         ]));

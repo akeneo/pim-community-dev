@@ -40,7 +40,7 @@ class TextValidator extends ConstraintValidator
                     // TODO pluralize source_parameter everywhere in the codebase
                     'source_parameter' => new IsNull(),
                 ]),
-                'sources' => new Sources(false, $constraint->getColumns()),
+                'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations(['clean_html_tags']),
                 'sample_data' => new SampleData(),
             ],
