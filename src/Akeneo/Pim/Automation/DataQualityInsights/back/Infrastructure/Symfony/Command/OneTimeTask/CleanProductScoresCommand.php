@@ -26,8 +26,7 @@ final class CleanProductScoresCommand extends Command
 
     public function __construct(
         private Connection $dbConnection
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -105,7 +104,8 @@ SQL;
 
     private function cleanProductScores(string $productIds): void
     {
-        $this->dbConnection->executeQuery(<<<SQL
+        $this->dbConnection->executeQuery(
+            <<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores

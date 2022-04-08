@@ -19,16 +19,9 @@ final class PurgeOutdatedData
     public const CONSOLIDATION_RETENTION_MONTHS = 15;
     public const CONSOLIDATION_RETENTION_YEARS = 3;
 
-    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
-
-    private ProductScoreRepositoryInterface $productScoreRepository;
-
     public function __construct(
-        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
-        ProductScoreRepositoryInterface $productScoreRepository
+        private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
     ) {
-        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
-        $this->productScoreRepository = $productScoreRepository;
     }
 
     public function purgeAllFrom(\DateTimeImmutable $date)
