@@ -52,7 +52,7 @@ lint: lint-back lint-front #Doc: Run front and back lint for Onboarder Serenity
 tests-onboarder: tests-front-onboarder tests-back-onboarder #Doc: Run front and back tests for Onboarder Serenity
 
 .PHONY: tests-back-onboarder
-tests-back-onboarder: coupling coupling-list-unused-requirements unit-back acceptance-back integration-back #Doc: Run back tests for Onboarder Serenity
+tests-back-onboarder: lint-back coupling coupling-list-unused-requirements unit-back acceptance-back integration-back #Doc: Run back tests for Onboarder Serenity
 
 .PHONY: tests-front-onboarder
 tests-front-onboarder: lint-front unit-front #Doc: Run front tests for Onboarder Serenity
