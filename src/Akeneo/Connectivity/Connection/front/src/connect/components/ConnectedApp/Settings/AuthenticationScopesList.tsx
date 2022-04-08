@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import {useTranslate} from '../../../../shared/translate';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize, MailIcon, UserIcon} from 'akeneo-design-system';
+import {AuthenticationScopes} from '../../../../model/Apps/authentication-scopes';
 
 const List = styled.ul<AkeneoThemedProps>`
     margin: 10px 20px;
@@ -30,17 +31,26 @@ const StyledMailIcon = styled(MailIcon)`
 `;
 
 type Props = {
-    scopes: Array<'email' | 'profile'>;
+    scopes: AuthenticationScopes;
 };
 
-export const AuthenticationScopes: FC<Props> = ({scopes}) => {
+export const AuthenticationScopesList: FC<Props> = ({scopes}) => {
     const translate = useTranslate();
     const firstname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.firstname');
     const lastname = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.lastname');
     const email = translate('akeneo_connectivity.connection.connect.apps.wizard.authentication.email');
+    const openid = translate(
+        'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authentication.openid_only'
+    );
 
     return (
         <List>
+            {scopes.length === 1 && scopes.includes('openid') && (
+                <Item>
+                    <StyledUserIcon />
+                    {openid}
+                </Item>
+            )}
             {scopes.includes('profile') && (
                 <Item>
                     <StyledUserIcon />

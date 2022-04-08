@@ -4,7 +4,7 @@ import {Helper, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '../../../../shared/translate';
 import {ConnectedAppScopeListIsLoading} from '../ConnectedAppScopeListIsLoading';
 import {useAuthenticationScopes} from '../../../hooks/use-connected-app-authentication-scopes';
-import {AuthenticationScopes} from './AuthenticationScopes';
+import {AuthenticationScopesList} from './AuthenticationScopesList';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -45,7 +45,7 @@ export const Authentication: FC<Props> = ({connectedApp}) => {
                 />
             </Helper>
             {isLoading && <ConnectedAppScopeListIsLoading />}
-            {authenticationScopesExists && <AuthenticationScopes scopes={authenticationScopes} />}
+            {authenticationScopesExists && <AuthenticationScopesList scopes={authenticationScopes} />}
         </>
     );
 };

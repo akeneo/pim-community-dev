@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useRoute} from '../../shared/router';
-
-type AuthenticationScopes = Array<'email' | 'profile'>;
+import {AuthenticationScopes} from '../../model/Apps/authentication-scopes';
 
 const defaultState: AuthenticationScopes = [];
 

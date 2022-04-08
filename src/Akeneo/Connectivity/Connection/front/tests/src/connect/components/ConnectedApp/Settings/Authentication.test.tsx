@@ -4,7 +4,7 @@ import {renderWithProviders} from '../../../../../test-utils';
 import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
 import {useAuthenticationScopes} from '@src/connect/hooks/use-connected-app-authentication-scopes';
-import {AuthenticationScopes} from '@src/connect/components/ConnectedApp/Settings/AuthenticationScopes';
+import {AuthenticationScopesList} from '@src/connect/components/ConnectedApp/Settings/AuthenticationScopesList';
 import {Authentication} from '@src/connect/components/ConnectedApp/Settings/Authentication';
 
 jest.mock('@src/connect/hooks/use-connected-app-authentication-scopes', () => ({
@@ -14,8 +14,8 @@ jest.mock('@src/connect/hooks/use-connected-app-authentication-scopes', () => ({
     })),
 }));
 
-jest.mock('@src/connect/components/ConnectedApp/Settings/AuthenticationScopes', () => ({
-    AuthenticationScopes: jest.fn(() => <div>AuthenticationScopes</div>),
+jest.mock('@src/connect/components/ConnectedApp/Settings/AuthenticationScopesList', () => ({
+    AuthenticationScopesList: jest.fn(() => <div>AuthenticationScopesList</div>),
 }));
 
 const connectedApp = {
@@ -54,7 +54,7 @@ test('it renders correctly', async () => {
         )
     ).toBeInTheDocument();
 
-    expect(AuthenticationScopes).toHaveBeenCalledWith(
+    expect(AuthenticationScopesList).toHaveBeenCalledWith(
         {
             scopes: ['openid', 'email', 'profile'],
         },
@@ -83,5 +83,5 @@ test('it does not render if there is no scopes', async () => {
         )
     ).not.toBeInTheDocument();
 
-    expect(AuthenticationScopes).not.toHaveBeenCalled();
+    expect(AuthenticationScopesList).not.toHaveBeenCalled();
 });

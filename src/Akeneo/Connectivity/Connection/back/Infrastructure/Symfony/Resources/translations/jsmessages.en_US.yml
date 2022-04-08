@@ -159,7 +159,7 @@ akeneo_connectivity.connection:
                         title: authentication
                         information: 'To know more about app authentication, check out our {{ link }}.'
                         information_link_anchor: Help Center article
-                        no_scope: No specific authorizations have been requested.
+                        openid_only: This app uses Akeneo App authentication without using your personal data.
                     pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
                 error_monitoring:
                     error: Oups, something went wrong!
