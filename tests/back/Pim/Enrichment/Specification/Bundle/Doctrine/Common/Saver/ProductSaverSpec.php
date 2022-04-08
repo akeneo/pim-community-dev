@@ -41,7 +41,7 @@ class ProductSaverSpec extends ObjectBehavior
     )
     {
         $product->isDirty()->willReturn(true);
-        $product->getId()->willReturn(null);
+        $product->getCreated()->willReturn(null);
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
@@ -68,7 +68,7 @@ class ProductSaverSpec extends ObjectBehavior
     )
     {
         $product->isDirty()->willReturn(true);
-        $product->getId()->willReturn(1);
+        $product->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE)->shouldBeCalled();
         $objectManager->persist($product)->shouldBeCalled();
         $uniqueDataSynchronizer->synchronize($product)->shouldBeCalled();
@@ -109,9 +109,9 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface              $product2
     )
     {
-        $product1->getId()->willReturn(42);
+        $product1->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product1->isDirty()->willReturn(true);
-        $product2->getId()->willReturn(44);
+        $product2->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product2->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
@@ -154,9 +154,9 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface              $product2
     )
     {
-        $product1->getId()->willReturn(null);
+        $product1->getCreated()->willReturn(null);
         $product1->isDirty()->willReturn(true);
-        $product2->getId()->willReturn(42);
+        $product2->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product2->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
@@ -186,11 +186,11 @@ class ProductSaverSpec extends ObjectBehavior
         ProductInterface              $product3
     )
     {
-        $product1->getId()->willReturn(1);
+        $product1->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product1->isDirty()->willReturn(true);
-        $product2->getId()->willReturn(2);
+        $product2->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product2->isDirty()->willReturn(false);
-        $product3->getId()->willReturn(3);
+        $product3->getCreated()->willReturn(\DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-28 12:12:12'));
         $product3->isDirty()->willReturn(true);
 
         $eventDispatcher->dispatch(Argument::type(GenericEvent::class), StorageEvents::PRE_SAVE_ALL)->shouldBeCalled();
