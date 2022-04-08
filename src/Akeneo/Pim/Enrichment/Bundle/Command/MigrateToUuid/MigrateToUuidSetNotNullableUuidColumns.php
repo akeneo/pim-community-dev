@@ -45,6 +45,10 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             }
         }
 
+        if (!$this->isColumnNullable('pim_versioning_version', 'resource_id')) {
+            $count++;
+        }
+
         return $count;
     }
 
@@ -87,10 +91,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             }
         }
 
-        if (
-            $this->tableExists('pim_versioning_version')
-            && !$this->isColumnNullable('pim_versioning_version', 'resource_id')
-        ) {
+        if (!$this->isColumnNullable('pim_versioning_version', 'resource_id')) {
             $this->connection->executeQuery(<<<SQL
                 ALTER TABLE pim_versioning_version
                 MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -98,6 +99,10 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
                 LOCK=NONE;
                 SQL
             );
+            $this->logger->notice('Substep done', $logContext->toArray([
+                'updated_items_count' => $updatedItems+=1,
+                'substep' => 'pim_versioning_version'
+            ]));
         }
 
         return true;
