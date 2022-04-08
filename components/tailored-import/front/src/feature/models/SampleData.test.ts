@@ -24,6 +24,7 @@ test('it replaces a sample data', () => {
 
 test('it truncates a too long sample data and add an ellipsis character', () => {
   expect(formatSampleData('sample data')).toHaveLength(11);
+  expect(formatSampleData('X'.repeat(100))).toEqual('X'.repeat(100));
+  expect(formatSampleData('X'.repeat(101))).toEqual('X'.repeat(100) + '…');
   expect(formatSampleData('X'.repeat(110))).toEqual('X'.repeat(100) + '…');
-  expect(formatSampleData('X'.repeat(110))).toHaveLength(101);
 });
