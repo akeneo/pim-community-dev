@@ -52,8 +52,9 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
 
         $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
             return sprintf(
-                "(%d, '%s', '%s')",
-                (int) (string) $productScore->getProductId(),
+                "(%s, '%s', '%s')",
+                // TODO This is not implemented yet, it will crash.
+                (string) $productScore->getProductUuid(),
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates())
             );
@@ -61,7 +62,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
 
         $this->dbConnection->executeQuery(
             <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores) 
 VALUES $insertValues AS product_score_values
 ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
 SQL
@@ -89,7 +90,7 @@ SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
+    ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
 WHERE old_scores.evaluated_at < :purge_date;
 SQL;

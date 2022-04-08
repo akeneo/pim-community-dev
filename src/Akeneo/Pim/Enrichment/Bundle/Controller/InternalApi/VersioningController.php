@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi;
 use Akeneo\Pim\Enrichment\Bundle\Resolver\FQCNResolver;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -57,9 +58,16 @@ class VersioningController
      */
     public function getAction($entityType, $entityId)
     {
+        // @todo CPM-577: if a product, change the call to send uuid instead of id.
+        $entityUuid = null;
+        if (Uuid::isValid($entityId)) {
+            $entityUuid = Uuid::fromString($entityId);
+            $entityId = null;
+        }
+
         return new JsonResponse(
             $this->normalizer->normalize(
-                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
+                $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId, $entityUuid),
                 'internal_api'
             )
         );

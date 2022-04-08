@@ -44,7 +44,20 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     {
         $criterionEvaluationTable = $this->tableName;
 
-        $sql = <<<SQL
+        if ('pim_data_quality_insights_product_criteria_evaluation' === $criterionEvaluationTable) {
+            $sql = <<<SQL
+SELECT
+       product.id AS product_id,
+       evaluation.criterion_code,
+       evaluation.status,
+       evaluation.evaluated_at,
+       evaluation.result
+FROM $criterionEvaluationTable AS evaluation
+    JOIN pim_catalog_product product ON product.uuid = evaluation.product_uuid
+WHERE product.id = :product_id
+SQL;
+        } else {
+            $sql = <<<SQL
 SELECT
        evaluation.product_id,
        evaluation.criterion_code,
@@ -54,6 +67,7 @@ SELECT
 FROM $criterionEvaluationTable AS evaluation
 WHERE evaluation.product_id = :product_id
 SQL;
+        }
 
         $rows = $this->db->executeQuery(
             $sql,

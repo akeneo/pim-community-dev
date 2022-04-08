@@ -29,14 +29,14 @@ class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterf
     {
         $query = <<<'SQL'
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
-  product_id int NOT NULL,
+  product_uuid BINARY(16) NOT NULL,
   criterion_code varchar(40) NOT NULL,
   evaluated_at datetime NULL,
   status varchar(15) NOT NULL,
   result json DEFAULT NULL,
-  PRIMARY KEY (product_id, criterion_code),
+  PRIMARY KEY (product_uuid, criterion_code),
   INDEX status_index (status),
-  CONSTRAINT FK_dqi_product_criteria_evaluation FOREIGN KEY (product_id) REFERENCES pim_catalog_product (id) ON DELETE CASCADE
+  CONSTRAINT FK_dqi_product_uuid_criteria_evaluation FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
@@ -51,12 +51,12 @@ CREATE TABLE pim_data_quality_insights_product_model_criteria_evaluation (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_score (
-    product_id INT NOT NULL,
+    product_uuid BINARY(16) NOT NULL,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
-    PRIMARY KEY (product_id, evaluated_at),
+    PRIMARY KEY (product_uuid, evaluated_at),
     INDEX evaluated_at_index (evaluated_at),
-    CONSTRAINT FK_dqi_product_score FOREIGN KEY (product_id) REFERENCES pim_catalog_product (id) ON DELETE CASCADE
+    CONSTRAINT FK_dqi_product_uuid_score FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE pim_data_quality_insights_product_model_score (

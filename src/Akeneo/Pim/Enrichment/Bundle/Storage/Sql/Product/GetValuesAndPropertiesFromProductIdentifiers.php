@@ -32,7 +32,7 @@ final class GetValuesAndPropertiesFromProductIdentifiers
 WITH groupCodes AS (
     SELECT p.id AS pid, JSON_ARRAYAGG(g.code) AS group_codes
     FROM pim_catalog_product p
-    LEFT JOIN pim_catalog_group_product pg ON p.id = pg.product_id
+    LEFT JOIN pim_catalog_group_product pg ON p.uuid = pg.product_uuid
     LEFT JOIN pim_catalog_group g ON pg.group_id = g.id
     WHERE p.identifier IN (?)
     GROUP BY p.id

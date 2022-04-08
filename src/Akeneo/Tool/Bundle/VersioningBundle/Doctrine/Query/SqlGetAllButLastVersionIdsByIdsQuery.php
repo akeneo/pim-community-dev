@@ -33,7 +33,8 @@ WHERE current.id IN (:version_ids)
 AND EXISTS(
     SELECT 1 FROM pim_versioning_version AS latest 
     WHERE latest.resource_name = current.resource_name
-        AND latest.resource_id = current.resource_id
+        AND (latest.resource_id = current.resource_id OR current.resource_id IS NULL)
+        AND (latest.resource_uuid = current.resource_uuid OR current.resource_uuid IS NULL)
         AND latest.version > current.version
 )
 SQL;

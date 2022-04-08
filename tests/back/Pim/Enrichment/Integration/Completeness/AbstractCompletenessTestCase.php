@@ -12,6 +12,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Julien Janvier <j.janvier@gmail.com>
