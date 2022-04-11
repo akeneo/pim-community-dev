@@ -47,7 +47,6 @@ describe('ColumnDefinitionProperties', () => {
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
         attribute={getTableAttributeWithoutColumn()}
-        columnDefinitionPropertiesMapping={columnDefinitionPropertiesMapping}
       />
     );
 
