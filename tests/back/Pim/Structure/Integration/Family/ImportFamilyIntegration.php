@@ -168,8 +168,8 @@ final class ImportFamilyIntegration extends TestCase
         self::assertSame(0, $this->productValidator->validate($product)->count());
         $this->productSaver->save($product);
 
-        $productCompletenessCollection = $this->getProductCompletenesses->fromProductId(
-            $this->productRepository->findOneByIdentifier('test1')->getId()
+        $productCompletenessCollection = $this->getProductCompletenesses->fromProductUuid(
+            $this->productRepository->findOneByIdentifier('test1')->getUuid()
         );
         $productCompleteness = $productCompletenessCollection->getCompletenessForChannelAndLocale('mobile', 'en_US');
         self::assertNotNull($productCompleteness);
@@ -191,8 +191,8 @@ final class ImportFamilyIntegration extends TestCase
         self::assertSame('manufacturer,name,sku', $this->getRequirementAttributeCodes($heelsFamily, 'mobile'));
 
         $this->get('akeneo.pim.structure.query.get_required_attributes_masks')->clearCache();
-        $productCompletenessCollection = $this->getProductCompletenesses->fromProductId(
-            $this->productRepository->findOneByIdentifier('test1')->getId()
+        $productCompletenessCollection = $this->getProductCompletenesses->fromProductUuid(
+            $this->productRepository->findOneByIdentifier('test1')->getUuid()
         );
         $productCompleteness = $productCompletenessCollection->getCompletenessForChannelAndLocale('mobile', 'en_US');
         self::assertNotNull($productCompleteness);
