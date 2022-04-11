@@ -31,16 +31,6 @@ interface ProductIndexerInterface
     public function indexFromProductIdentifiers(array $productIdentifiers, array $options = []): void;
 
     /**
-     * @param int   $productId
-     */
-    public function removeFromProductId(int $productId): void;
-
-    /**
-     * @param int[] $productIds
-     */
-    public function removeFromProductIds(array $productIds): void;
-
-    /**
      * @param UuidInterface[] $productUuids
      */
     public function removeFromProductUuids(array $productUuids): void;

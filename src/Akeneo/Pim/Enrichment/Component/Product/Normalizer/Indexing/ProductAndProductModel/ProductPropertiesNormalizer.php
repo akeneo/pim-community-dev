@@ -105,7 +105,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
         $data[self::FIELD_COMPLETENESS] = $this->normalizer->normalize(
             $completenesses,
             ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,

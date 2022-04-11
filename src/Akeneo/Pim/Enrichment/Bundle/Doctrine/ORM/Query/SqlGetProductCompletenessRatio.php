@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -21,22 +22,21 @@ class SqlGetProductCompletenessRatio implements GetProductCompletenessRatio
         $this->connection = $connection;
     }
 
-    public function forChannelCodeAndLocaleCode(int $productId, string $channelCode, string $localeCode): ?int
+    public function forChannelCodeAndLocaleCode(UuidInterface $productUuid, string $channelCode, string $localeCode): ?int
     {
         $sql = <<<SQL
 SELECT FLOOR(((completeness.required_count - completeness.missing_count) / completeness.required_count) * 100) AS ratio
 FROM pim_catalog_completeness completeness
-INNER JOIN pim_catalog_channel channel on completeness.channel_id = channel.id
-INNER JOIN pim_catalog_locale locale on completeness.locale_id = locale.id
-    INNER JOIN pim_catalog_product p on p.uuid = completeness.product_uuid
-WHERE p.id = :productId
+    INNER JOIN pim_catalog_channel channel on completeness.channel_id = channel.id
+    INNER JOIN pim_catalog_locale locale on completeness.locale_id = locale.id
+WHERE completeness.product_uuid = :productUuid
 AND channel.code = :channelCode
 AND locale.code = :localeCode
 SQL;
         $ratio = $this->connection->executeQuery(
             $sql,
             [
-                'productId' => $productId,
+                'productUuid' => $productUuid->getBytes(),
                 'channelCode' => $channelCode,
                 'localeCode' => $localeCode,
             ]
