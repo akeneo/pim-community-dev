@@ -138,7 +138,6 @@ jobs:
                       echo "export PHPINSIGHTS_SCORE_STYLE=$(sed -n 's/^\[MISC[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPCD_UNUSED_RULES=$(cat unused-rules.txt | grep -c '<warning>' | awk '{if ($1==0) print ":white_check_mark:"; else print ":warning:"}')" >> $BASH_ENV
             -   slack-app/notify:
-                    channel: "C03AZNXQGLB"
                     custom: |
                         {
                             "blocks": [

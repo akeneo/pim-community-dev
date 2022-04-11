@@ -14,8 +14,6 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Connectivity\Connection\Domain\Audit',
-            'Oro\Bundle\SecurityBundle\SecurityFacade',
-
 
             // Could be in \Audit
             'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
