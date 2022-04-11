@@ -15,24 +15,30 @@ const usePimVersion = () => {
   const [analyticsUrl, setAnalyticsUrl] = useState<string>('');
   const [lastPatch, setLastPatch] = useState<string>('');
   const router = useRouter();
-  
-  const isVersionOutdated = useCallback((lastPatch: string) => {
-    const regexCurrentVersion = /\s(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)\s/;
-    const regexLastVersion = /v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/;
-    const matchCurrentVersion = version.match(regexCurrentVersion);
-    const matchLastVersion = lastPatch.match(regexLastVersion);
 
-    if (matchCurrentVersion === null || matchLastVersion === null) {
-      return false;
-    }
-    const [, majorCurrentVersion, minorCurrentVersion, patchCurrentVersion] = matchCurrentVersion;
-    const [, majorLastVersion, minorLastVersion, patchLastVersion] = matchLastVersion;
-    
-    if (parseInt(`${majorCurrentVersion}${minorCurrentVersion}${patchCurrentVersion}`) >= parseInt(`${majorLastVersion}${minorLastVersion}${patchLastVersion}`)) {
-      return false;
-    } 
+  const isVersionOutdated = useCallback(
+    (lastPatch: string) => {
+      const regexCurrentVersion = /\s(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)\s/;
+      const regexLastVersion = /v(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/;
+      const matchCurrentVersion = version.match(regexCurrentVersion);
+      const matchLastVersion = lastPatch.match(regexLastVersion);
+
+      if (matchCurrentVersion === null || matchLastVersion === null) {
+        return false;
+      }
+      const [, majorCurrentVersion, minorCurrentVersion, patchCurrentVersion] = matchCurrentVersion;
+      const [, majorLastVersion, minorLastVersion, patchLastVersion] = matchLastVersion;
+
+      if (
+        parseInt(`${majorCurrentVersion}${minorCurrentVersion}${patchCurrentVersion}`) >=
+        parseInt(`${majorLastVersion}${minorLastVersion}${patchLastVersion}`)
+      ) {
+        return false;
+      }
       return true;
-  }, [version]);
+    },
+    [version]
+  );
 
   useEffect(() => {
     (async () => {
