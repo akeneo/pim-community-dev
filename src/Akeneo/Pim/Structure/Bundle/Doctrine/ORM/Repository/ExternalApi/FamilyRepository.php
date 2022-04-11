@@ -20,21 +20,13 @@ use Symfony\Component\Validator\Validation;
  */
 class FamilyRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
-    protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery;
-
     public function __construct(
         EntityManager $entityManager,
         $className,
-        FamilyRepositoryInterface $familyRepository,
-        GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery
+        protected FamilyRepositoryInterface $familyRepository,
+        protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
-
-        $this->familyRepository = $familyRepository;
-        $this->getFamilyIdsUsedByProductsQuery = $getFamilyIdsUsedByProductsQuery;
     }
 
     public function getIdentifierProperties(): array
@@ -51,13 +43,10 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
      * Find resources with offset > $offset and filtered by $criteria
      *
      * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
-     * @param array $orders
-     * @param int   $limit
-     * @param int   $offset
      *
      * @return array
      */
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -106,20 +95,24 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 switch ($criterion['operator']) {
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
                         break;
                     case '>':
                         $qb->andWhere($qb->expr()->gt($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
                         break;
                     case '=':
                         if ('has_products' === $property) {
-                            $familyIdsUsedByProducts = $this->getFamilyIdsUsedByProductsQuery->execute();
-                            $qb->andWhere($qb->expr()->in('r.id', $familyIdsUsedByProducts));
+                            $qb->andWhere($qb->expr()->in('r.id', 'family_ids_used_by_products'));
+                            $qb->setParameter(
+                                'family_ids_used_by_products',
+                                implode(',', $this->getFamilyIdsUsedByProductsQuery->execute())
+                            );
                         }
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
-                $qb->setParameter($parameter, $criterion['value']);
             }
         }
 
@@ -159,6 +152,20 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                     ]),
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
+            ]),
+            'has_products' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on family has_product you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'In order to search on family has_product you must send a {{ type }} value, {{ value }} given.',
+                        ]),
+                    ],
+                ]),
             ]),
         ];
         $availableSearchFilters = array_keys($constraints);
