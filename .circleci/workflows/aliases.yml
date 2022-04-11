@@ -9,6 +9,13 @@ parameters:
   trigger_ondemand:
     default: false
     type: boolean
+  # parameters for instance deletion
+  trigger_delete_instance:
+    default: false
+    type: boolean
+  instance:
+    default: ""
+    type: string
 
 
 
