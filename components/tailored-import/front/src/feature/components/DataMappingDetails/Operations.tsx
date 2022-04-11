@@ -15,7 +15,7 @@ import {
   useBooleanState,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
+import {DataMapping, formatSampleData, getDefaultOperation, Operation, OperationType} from '../../models';
 import {CleanHTMLTagsOperationBlock, OperationBlockProps, CLEAN_HTML_TAGS_TYPE} from './Operation';
 
 const OperationsContainer = styled.div`
@@ -31,11 +31,6 @@ const OperationBlocksContainer = styled.div`
 `;
 
 const PreviewContent = styled.div<{isLoading: boolean}>`
-  overflow: hidden;
-  max-width: 100ch;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
   ${({isLoading}) => isLoading && placeholderStyle}
 `;
 
@@ -103,7 +98,9 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 }
               >
                 {null !== sampleData ? (
-                  <PreviewContent isLoading={loadingSampleData.includes(key)}>{sampleData}</PreviewContent>
+                  <PreviewContent isLoading={loadingSampleData.includes(key)}>
+                    {formatSampleData(sampleData)}
+                  </PreviewContent>
                 ) : (
                   <EmptyPreviewContent isLoading={loadingSampleData.includes(key)}>
                     {translate('akeneo.tailored_import.data_mapping.preview.placeholder')}

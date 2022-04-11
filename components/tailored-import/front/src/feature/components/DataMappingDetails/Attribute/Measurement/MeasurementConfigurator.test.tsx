@@ -27,7 +27,7 @@ jest.mock('../../AttributeTargetParameters');
 
 test('it does not display a decimal separator selector if attribute does not support decimal numbers', async () => {
   const attribute = getMeasurementAttribute(false);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
@@ -49,7 +49,7 @@ test('it does not display a decimal separator selector if attribute does not sup
 
 test('it displays a decimal separator selector if attribute supports decimal numbers', async () => {
   const attribute = getMeasurementAttribute(true);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
@@ -71,7 +71,7 @@ test('it displays a decimal separator selector if attribute supports decimal num
 
 test('it displays all decimal separators when opening the dropdown', async () => {
   const attribute = getMeasurementAttribute(true);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
@@ -103,7 +103,7 @@ test('it displays all decimal separators when opening the dropdown', async () =>
 
 test('it defines the decimal separator of the target', async () => {
   const attribute = getMeasurementAttribute(true);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -135,7 +135,7 @@ test('it defines the decimal separator of the target', async () => {
 
 test('it defines if the attribute should be cleared when empty', async () => {
   const attribute = getMeasurementAttribute(true);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -186,7 +186,7 @@ test('it throws an error if we setup this component with a wrong target', async 
 
 test('it should display a measurement unit selector', async () => {
   const attribute = getMeasurementAttribute(false);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   await renderWithProviders(
     <MeasurementConfigurator
@@ -212,7 +212,7 @@ test('it should display a measurement unit selector', async () => {
 
 test('it defines the measurement unit of the target', async () => {
   const attribute = getMeasurementAttribute(false);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const onTargetChange = jest.fn();
 
   await renderWithProviders(
@@ -250,7 +250,7 @@ test('it throws an error if we setup this component with an attribute without me
   let attribute = getMeasurementAttribute(false);
   attribute.metric_family = '';
 
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
 
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
@@ -274,7 +274,7 @@ test('it throws an error if we setup this component with an attribute without me
 
 test('it should display helper if there are validation errors', async () => {
   const attribute = getMeasurementAttribute(true);
-  const dataMapping = createAttributeDataMapping('weight', attribute, []);
+  const dataMapping = createAttributeDataMapping(attribute, []);
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'error.key.global',

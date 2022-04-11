@@ -43,7 +43,7 @@ const AddDataMappingDropdown = ({canAddDataMapping, onDataMappingAdded}: AddData
       handleClose();
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([targetCode]);
-      onDataMappingAdded(createAttributeDataMapping(targetCode, attribute, channels));
+      onDataMappingAdded(createAttributeDataMapping(attribute, channels));
       handleClose();
     }
   };

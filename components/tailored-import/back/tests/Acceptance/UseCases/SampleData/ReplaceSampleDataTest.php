@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\SampleData;
 
+use Akeneo\Platform\TailoredImport\Domain\SampleData\FormatSampleData;
 use Akeneo\Platform\TailoredImport\Domain\SampleData\ReplaceSampleData;
 use PHPUnit\Framework\TestCase;
 
@@ -49,5 +50,27 @@ class ReplaceSampleDataTest extends TestCase
         $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
 
         $this->assertEquals('value3', $result);
+    }
+
+    public function test_it_replaces_sample_data_with_a_truncated_sample_data(): void
+    {
+        $replaceSampleData = new ReplaceSampleData();
+        $values = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1), 'value2', 'value3', 'value3'];
+        $currentSampleData = ['value3', 'value2', null];
+
+        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+
+        $this->assertEquals(\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH), $result);
+    }
+
+    public function test_it_handles_truncated_current_sample_data(): void
+    {
+        $replaceSampleData = new ReplaceSampleData();
+        $values = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1), 'value2'];
+        $currentSampleData = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH), 'value2', null];
+
+        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+
+        $this->assertEquals(null, $result);
     }
 }

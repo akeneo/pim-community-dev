@@ -4,8 +4,7 @@ import {Column, ColumnIdentifier} from './Configuration';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
 import {Operation} from './Operation';
-
-type SampleData = string | null;
+import {SampleData} from './SampleData';
 
 type DataMapping = AttributeDataMapping | PropertyDataMapping;
 
@@ -30,7 +29,7 @@ const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 1;
 
 type DataMappingType = 'attribute' | 'property';
 
-const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null, sampleData: string[]) => {
+const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null, sampleData: SampleData[]) => {
   const defaultDataMapping: DataMapping = {
     uuid: uuid(),
     target: createAttributeTarget(attribute, null, null),
@@ -52,7 +51,7 @@ const createPropertyDataMapping = (code: string): DataMapping => {
   };
 };
 
-const createAttributeDataMapping = (code: string, attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
+const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
   const channel = attribute.scopable ? channels[0].code : null;
   const locales = getLocalesFromChannel(channels, channel);
   const filteredLocaleSpecificLocales = attribute.is_locale_specific
@@ -72,17 +71,12 @@ const createAttributeDataMapping = (code: string, attribute: Attribute, channels
 const updateDataMapping = (dataMappings: DataMapping[], updatedDataMapping: DataMapping): DataMapping[] =>
   dataMappings.map(dataMapping => (dataMapping.uuid === updatedDataMapping.uuid ? updatedDataMapping : dataMapping));
 
-const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataMapping => {
-  return {...dataMapping, sources: [...dataMapping.sources, column.uuid]};
-};
+const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataMapping => ({
+  ...dataMapping,
+  sources: [...dataMapping.sources, column.uuid],
+});
 
-const replaceSampleData = (sampleData: SampleData[], index: number, value: SampleData) => [
-  ...sampleData.slice(0, index),
-  value,
-  ...sampleData.slice(index + 1),
-];
-
-export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping, SampleData};
+export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_BY_DATA_MAPPING,
@@ -91,5 +85,4 @@ export {
   updateDataMapping,
   createDefaultDataMapping,
   addSourceToDataMapping,
-  replaceSampleData,
 };

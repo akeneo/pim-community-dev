@@ -12,28 +12,29 @@ final class SelectSampleData
 {
     public const NUMBER_OF_VALUES = 3;
 
-    public static function fromExtractedColumn(array $extractedColumn, int $length = SelectSampleData::NUMBER_OF_VALUES): array
+    public static function fromExtractedColumn(array $extractedColumn, int $length = self::NUMBER_OF_VALUES): array
     {
-        $reducedValue = self::filterUniqueValues($extractedColumn);
-        $sampleData = self::pickRandomValues($reducedValue, $length);
+        $formattedValues = FormatSampleData::format($extractedColumn);
+        $uniqueValues = self::filterUniqueValues($formattedValues);
+        $pickedValues = self::pickRandomValues($uniqueValues, $length);
 
-        return self::fillBlankValues($sampleData, $length);
+        return self::fillBlankValues($pickedValues, $length);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array
     {
-        return array_pad($sampleData, $length, null);
+        return \array_pad($sampleData, $length, null);
     }
 
     private static function filterUniqueValues(array $sampleData): array
     {
-        return array_unique($sampleData);
+        return \array_unique($sampleData);
     }
 
     private static function pickRandomValues(array $sampleData, int $length): array
     {
-        shuffle($sampleData);
+        \shuffle($sampleData);
 
-        return array_slice($sampleData, 0, min(count($sampleData), $length));
+        return \array_slice($sampleData, 0, \min(\count($sampleData), $length));
     }
 }
