@@ -49,13 +49,11 @@ class ProductAndAncestorsIndexer
      * Deletes products from the search engine and reindexes their ancestors. As the products do not exist anymore,
      * we need to provide the ancestors' codes in order to reindex them.
      *
-     * @param int[] $productIds
      * @param UuidInterface[] $productUuids
      * @param string[] $ancestorProductModelCodes
      */
-    public function removeFromProductIdsAndReindexAncestors(array $productIds, array $productUuids, array $ancestorProductModelCodes): void
+    public function removeFromProductUuidsAndReindexAncestors(array $productUuids, array $ancestorProductModelCodes): void
     {
-        $this->productIndexer->removeFromProductIds($productIds);
         $this->productIndexer->removeFromProductUuids($productUuids);
         $this->productModelIndexer->indexFromProductModelCodes($ancestorProductModelCodes);
     }
