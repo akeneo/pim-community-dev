@@ -154,7 +154,7 @@ class SqlGetConnectorProducts implements Query\GetConnectorProducts
             $row = $rows[$identifier];
 
             $products[] = new ConnectorProduct(
-                $row['id'],
+                $row['uuid'],
                 $row['identifier'],
                 $row['created'],
                 $row['updated'],

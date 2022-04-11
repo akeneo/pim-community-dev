@@ -20,6 +20,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
         $product = $this->createNonVariantProduct();
         $productId = $product->getUuid();
 
+        // Unused, to delete
         $deletedProductsCount = $this->get('pim_catalog.repository.product_mass_action')->deleteFromIds([$productId]);
         $this->assertSame(1, $deletedProductsCount);
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneById($productId));
