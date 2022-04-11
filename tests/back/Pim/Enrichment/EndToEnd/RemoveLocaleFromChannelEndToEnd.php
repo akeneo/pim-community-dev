@@ -12,6 +12,8 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -64,15 +66,15 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $this->waitForJobExecutionToEnd();
 
-        $blueJean = $this->getProductId('blue_jean');
-        $blueJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJean, 'ecommerce', 'en_US');
-        $blueJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJean, 'ecommerce', 'fr_FR');
+        $blueJeanUuid = $this->getProductUuid('blue_jean');
+        $blueJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJeanUuid, 'ecommerce', 'en_US');
+        $blueJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($blueJeanUuid, 'ecommerce', 'fr_FR');
         $this->assertEquals(100, $blueJeanRatioEn);
         $this->assertNull($blueJeanRatioFr);
 
-        $yellowJean = $this->getProductId('yellow_jean');
-        $yellowJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJean, 'ecommerce', 'en_US');
-        $yellowJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJean, 'ecommerce', 'fr_FR');
+        $yellowJeanUuid = $this->getProductUuid('yellow_jean');
+        $yellowJeanRatioEn = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJeanUuid, 'ecommerce', 'en_US');
+        $yellowJeanRatioFr = $this->getCompletenessRatio->forChannelCodeAndLocaleCode($yellowJeanUuid, 'ecommerce', 'fr_FR');
         $this->assertEquals(50, $yellowJeanRatioEn);
         $this->assertNull($yellowJeanRatioFr);
     }
@@ -201,13 +203,13 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
-    private function getProductId(string $productIdentifier): int
+    private function getProductUuid(string $productIdentifier): UuidInterface
     {
-        $productId = $this->get('database_connection')->executeQuery(
-            "SELECT id FROM pim_catalog_product WHERE identifier = :identifier;",
+        $productUuid = $this->get('database_connection')->executeQuery(
+            "SELECT BIN_TO_UUID(uuid) as uuid FROM pim_catalog_product WHERE identifier = :identifier;",
             ['identifier' => $productIdentifier]
         )->fetchOne();
 
-        return (int) $productId;
+        return Uuid::fromString($productUuid);
     }
 }

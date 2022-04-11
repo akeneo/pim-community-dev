@@ -36,7 +36,7 @@ class GetProductsWithCompletenessesSpec extends ObjectBehavior
         ];
         $completenessCollection = new ProductCompletenessCollection(42, $completenesses);
         $connectorProduct = $this->getConnectorProduct(42);
-        $getProductCompletenesses->fromProductId(42)->willReturn($completenessCollection);
+        $getProductCompletenesses->fromProductUuid(42)->willReturn($completenessCollection);
         $productWithCompleteness = $this->fromConnectorProduct($connectorProduct);
 
         $productWithCompleteness->completenesses()->shouldReturn($completenessCollection);
@@ -63,7 +63,7 @@ class GetProductsWithCompletenessesSpec extends ObjectBehavior
         );
 
         $getProductCompletenesses
-            ->fromProductIds([42, 13, 5], 'ecommerce', ['fr_FR', 'en_US'])
+            ->fromProductUuids([42, 13, 5], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn($completenessesList);
 
         $productListWithCompleteness = $this->fromConnectorProductList($connectorProductList, 'ecommerce', ['fr_FR', 'en_US']);

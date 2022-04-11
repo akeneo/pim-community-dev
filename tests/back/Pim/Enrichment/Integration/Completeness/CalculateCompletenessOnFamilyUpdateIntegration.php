@@ -110,7 +110,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         string $channelCode,
         string $localeCode
     ): ?ProductCompleteness {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getId());
 
         foreach ($completenesses as $completeness) {
             if ($channelCode === $completeness->channelCode() &&
