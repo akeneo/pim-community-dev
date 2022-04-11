@@ -36,7 +36,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function getCurrentCompleteness(ProductInterface $product)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
 
         return $completenesses->getIterator()->current();
     }
@@ -47,7 +47,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function assertCompletenessesCount(ProductInterface $product, $expectedNumberOfCompletenesses)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
         $this->assertCount($expectedNumberOfCompletenesses, $completenesses);
     }
 
