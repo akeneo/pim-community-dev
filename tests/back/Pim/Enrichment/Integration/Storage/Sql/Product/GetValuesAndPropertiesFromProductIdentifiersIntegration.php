@@ -9,6 +9,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -87,7 +88,7 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'productA' => [
-                'id' => 'doc: we can not check the id',
+                'uuid' => 'doc: we can not check the uuid',
                 'identifier' => 'productA',
                 'is_enabled' => true,
                 'product_model_code' => null,
@@ -102,8 +103,8 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         ];
         $actual = $this->getQuery()->fetchByProductIdentifiers(['productA']);
 
-        Assert::integer($actual['productA']['id']);
-        unset($expected['productA']['id'], $actual['productA']['id']);
+        Assert::isInstanceOf($actual['productA']['uuid'], UuidInterface::class);
+        unset($expected['productA']['uuid'], $actual['productA']['uuid']);
 
         $this->assertEquals($expected, $actual);
     }
@@ -121,7 +122,7 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         $platform = $this->getDatabaseConnection()->getDatabasePlatform();
         $expected = [
             'VariantProductA' => [
-                'id' => 'doc: we can not check the id',
+                'uuid' => 'doc: we can not check the uuid',
                 'identifier' => 'VariantProductA',
                 'is_enabled' => true,
                 'product_model_code' => 'SubProductModel',
@@ -138,8 +139,8 @@ class GetValuesAndPropertiesFromProductIdentifiersIntegration extends TestCase
         ];
         $actual = $this->getQuery()->fetchByProductIdentifiers(['VariantProductA']);
 
-        Assert::integer($actual['VariantProductA']['id']);
-        unset($expected['VariantProductA']['id'], $actual['VariantProductA']['id']);
+        Assert::isInstanceOf($actual['VariantProductA']['uuid'], UuidInterface::class);
+        unset($expected['VariantProductA']['uuid'], $actual['VariantProductA']['uuid']);
 
         $this->assertEqualsCanonicalizing($expected, $actual);
     }
