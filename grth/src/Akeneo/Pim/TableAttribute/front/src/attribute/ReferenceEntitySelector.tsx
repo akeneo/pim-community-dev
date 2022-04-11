@@ -56,7 +56,8 @@ const ReferenceEntitySelector = ({
       value={value || null}
       openLabel={openLabel}
       clearLabel={clearLabel}
-      clearable={true}>
+      clearable={true}
+    >
       {(referenceEntities || []).map((referenceEntity: ReferenceEntity) => {
         const label = getLabel(referenceEntity.labels, catalogLocale, referenceEntity.identifier);
         return (

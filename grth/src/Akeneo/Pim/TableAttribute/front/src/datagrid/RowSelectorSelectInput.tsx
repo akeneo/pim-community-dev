@@ -51,7 +51,8 @@ const RowSelectorSelectInput = <T extends RowSelectorSelectInputOption>({
       value={typeof value === 'undefined' ? null : value === null ? ANY_OPTION_CODE : value}
       openLabel={translate('pim_common.open')}
       onNextPage={onNextPage}
-      onSearchChange={setSearchValue}>
+      onSearchChange={setSearchValue}
+    >
       <SelectInput.Option title={translate('pim_table_attribute.datagrid.any_row')} value={ANY_OPTION_CODE}>
         {translate('pim_table_attribute.datagrid.any_row')}
       </SelectInput.Option>

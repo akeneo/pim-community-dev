@@ -148,7 +148,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             <Table.Body>
               <Table.Row
                 onClick={() => setSelectedColumnId(firstColumnDefinition.id)}
-                isSelected={firstColumnDefinition.id === selectedColumnId}>
+                isSelected={firstColumnDefinition.id === selectedColumnId}
+              >
                 <EmptyTableCell />
                 <Table.Cell rowTitle={true}>
                   {getLabel(firstColumnDefinition.labels, userContext.get('catalogLocale'), firstColumnDefinition.code)}
@@ -175,7 +176,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             <Table.Row
               key={columnDefinition.id}
               onClick={() => setSelectedColumnId(columnDefinition.id)}
-              isSelected={columnDefinition.id === selectedColumnId}>
+              isSelected={columnDefinition.id === selectedColumnId}
+            >
               <Table.Cell rowTitle={true}>
                 {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
               </Table.Cell>
@@ -219,7 +221,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             title={translate('pim_table_attribute.form.attribute.add_column')}
             ghost
             level='secondary'
-            onClick={openNewColumnModal}>
+            onClick={openNewColumnModal}
+          >
             {translate('pim_table_attribute.form.attribute.add_column')}
           </AddNewColumnButton>
         </CenteredHelper>
@@ -253,7 +256,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           )}{' '}
           <Link
             href='https://help.akeneo.com/pim/serenity/articles/manage-multidimensional-data-in-a-table.html'
-            target='_blank'>
+            target='_blank'
+          >
             {translate('pim_table_attribute.form.attribute.table_structure_helper_link')}
           </Link>
         </Helper>

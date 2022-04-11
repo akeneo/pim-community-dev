@@ -102,7 +102,8 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
     BottomHelper = (
       <Placeholder
         illustration={<AddingValueIllustration />}
-        title={translate('pim_table_attribute.form.product.no_options')}>
+        title={translate('pim_table_attribute.form.product.no_options')}
+      >
         {!hasEditPermission &&
           translate('pim_table_attribute.form.product.no_add_options_unallowed', {
             attributeLabel: getLabel(attribute.labels, localeCode, attribute.code),
@@ -128,7 +129,8 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
               openManageOptions();
             }}
             ghost
-            level='secondary'>
+            level='secondary'
+          >
             {translate('pim_table_attribute.form.attribute.manage_options')}
           </Button>
         </EditOptionsContainer>
@@ -153,7 +155,8 @@ const SelectInput: React.FC<TableInputSelectProps> = ({
         closeTick={closeTick}
         bottomHelper={BottomHelper}
         withSearch={searchValue !== '' || itemsToDisplay.length > 0}
-        {...rest}>
+        {...rest}
+      >
         {itemsToDisplay.map(option => {
           return (
             <Dropdown.Item key={option.code} onClick={() => onChange(option.code)}>

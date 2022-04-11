@@ -59,7 +59,8 @@ const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm
                 onClick={() => onStepConfirm({template: template.code})}
                 key={template.code}
                 icon={<Icon />}
-                title={translate(`pim_table_attribute.templates.${template.code}`)}>
+                title={translate(`pim_table_attribute.templates.${template.code}`)}
+              >
                 {translate(`pim_table_attribute.templates.${template.code}`)}
               </Tile>
             );

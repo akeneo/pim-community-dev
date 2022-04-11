@@ -30,7 +30,8 @@ const OperatorSelector: React.FC<OperatorSelectorProps> = ({columnCode, value, o
       placeholder={translate('pim_table_attribute.datagrid.select_your_operator')}
       value={(value as string) || null}
       openLabel={translate('pim_common.open')}
-      readOnly={typeof dataType === 'undefined'}>
+      readOnly={typeof dataType === 'undefined'}
+    >
       {(operators || []).map(operator => {
         return (
           <SelectInput.Option title={translate(`pim_common.operators.${operator}`)} value={operator} key={operator}>

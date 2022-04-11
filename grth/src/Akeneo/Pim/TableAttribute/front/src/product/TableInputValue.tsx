@@ -265,7 +265,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           <TableInput
             readOnly={readOnly}
             isDragAndDroppable={isDragAndDroppable}
-            onReorder={isDragAndDroppable ? handleReorder : undefined}>
+            onReorder={isDragAndDroppable ? handleReorder : undefined}
+          >
             <TableInput.Header>
               {attribute.table_configuration.map(columnDefinition => (
                 <TableInput.HeaderCell key={columnDefinition.code}>
@@ -333,7 +334,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
               illustration={<AddingValueIllustration />}
               title={translate('pim_table_attribute.form.product.no_rows_title', {
                 attributeLabel: getLabel(attribute.labels, localeCode, attribute.code),
-              })}>
+              })}
+            >
               {visibility === 'CANNOT_EDIT' &&
                 translate('pim_table_attribute.form.product.no_rows_subtitle_no_permission')}
               {visibility === 'CAN_EDIT' && translate('pim_table_attribute.form.product.no_rows_subtitle')}

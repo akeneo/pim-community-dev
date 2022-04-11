@@ -76,7 +76,8 @@ const MeasurementFilterInput: React.FC<MeasurementFilterInputProps> = ({value, o
         onChange={handleUnitChange}
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
-        openLabel={translate('pim_common.open')}>
+        openLabel={translate('pim_common.open')}
+      >
         {unitsTranslated.map(unit => {
           return (
             <SelectInput.Option value={unit.value} key={unit.value}>

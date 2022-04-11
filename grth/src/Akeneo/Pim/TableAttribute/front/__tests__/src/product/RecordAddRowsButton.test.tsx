@@ -72,9 +72,9 @@ describe('RecordAddRowsButton', () => {
 
   it('should show no options', async () => {
     const tableAttributeRecordWithoutRecord = getComplexTableAttribute('reference_entity');
-    (tableAttributeRecordWithoutRecord
-      .table_configuration[0] as ReferenceEntityColumnDefinition).reference_entity_identifier =
-      'empty_reference_entity';
+    (
+      tableAttributeRecordWithoutRecord.table_configuration[0] as ReferenceEntityColumnDefinition
+    ).reference_entity_identifier = 'empty_reference_entity';
     renderWithProviders(
       <TestAttributeContextProvider attribute={tableAttributeRecordWithoutRecord}>
         <RecordAddRowsButton checkedOptionCodes={[]} toggleChange={jest.fn()} itemsPerPage={3} />

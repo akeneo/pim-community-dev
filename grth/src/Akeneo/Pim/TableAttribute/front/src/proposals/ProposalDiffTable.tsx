@@ -217,7 +217,8 @@ const ProposalDiffTableInner: React.FC<ProposalDiffTableProps> = ({accessor, cha
               <StretchedBodyCell>
                 <TableInput.CellContent
                   inError={accessor === 'before' && hasOrderChanged(row[firstColumnCode] as string)}
-                  highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}>
+                  highlighted={accessor === 'after' && hasOrderChanged(row[firstColumnCode] as string)}
+                >
                   {i + 1}
                 </TableInput.CellContent>
               </StretchedBodyCell>

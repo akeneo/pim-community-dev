@@ -176,12 +176,10 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
         columnDefinition.reference_entity_identifier;
     }
     if (columnDefinition.data_type === 'measurement') {
-      castMeasurementColumnDefinition(
-        newColumn
-      ).measurement_family_code = columnDefinition.measurement_family_code as MeasurementFamilyCode;
-      castMeasurementColumnDefinition(
-        newColumn
-      ).measurement_default_unit_code = columnDefinition.measurement_default_unit_code as MeasurementUnitCode;
+      castMeasurementColumnDefinition(newColumn).measurement_family_code =
+        columnDefinition.measurement_family_code as MeasurementFamilyCode;
+      castMeasurementColumnDefinition(newColumn).measurement_default_unit_code =
+        columnDefinition.measurement_default_unit_code as MeasurementUnitCode;
     }
     onCreate(newColumn);
   };
@@ -225,7 +223,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <DataTypeSelector
             dataType={columnDefinition.data_type}
             onChange={handleDataTypeChange}
@@ -256,7 +255,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
           <>
             <Field
               label={translate('pim_table_attribute.form.attribute.measurement_family')}
-              requiredLabel={translate('pim_common.required_label')}>
+              requiredLabel={translate('pim_common.required_label')}
+            >
               <MeasurementFamilySelector
                 onChange={handleMeasurementChange}
                 value={columnDefinition.measurement_family_code}
@@ -264,7 +264,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             </Field>
             <Field
               label={translate('pim_table_attribute.form.attribute.measurement_default_unit')}
-              requiredLabel={translate('pim_common.required_label')}>
+              requiredLabel={translate('pim_common.required_label')}
+            >
               <MeasurementUnitSelector
                 measurementFamilyCode={columnDefinition.measurement_family_code}
                 onChange={handleMeasurementUnitChange}

@@ -53,7 +53,8 @@ const ImportOptionsButton: React.FC<ImportOptionsButtonProps> = ({onClick, batch
         onClick={() => {
           !isImporting && open();
         }}
-        disabled={isImporting}>
+        disabled={isImporting}
+      >
         {translate('pim_table_attribute.form.attribute.import_from_existing_attribute')}{' '}
         {isImporting ? <LoaderIcon data-testid={'isLoading'} /> : <ArrowDownIcon />}
       </Button>

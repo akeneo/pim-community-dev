@@ -81,7 +81,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       <FieldsList>
         <Field
           label={translate('pim_table_attribute.form.attribute.column_code')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <TextInput
             readOnly={savedColumnIds.includes(selectedColumn.id)}
             value={selectedColumn.code}
@@ -95,7 +96,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
+          requiredLabel={translate('pim_common.required_label')}
+        >
           <TextInput
             readOnly={true}
             value={translate(`pim_table_attribute.properties.data_type.${selectedColumn.data_type}`)}
@@ -110,7 +112,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         {translate('pim_table_attribute.form.attribute.completeness_helper_text')}{' '}
         <Link
           href='https://help.akeneo.com/pim/serenity/articles/manage-multidimensional-data-in-a-table.html#what-about-the-completeness'
-          target='_blank'>
+          target='_blank'
+        >
           {translate('pim_table_attribute.form.attribute.completeness_helper_link')}
         </Link>
       </Helper>
@@ -118,7 +121,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         <Checkbox
           checked={isFirstColumn || !!selectedColumn.is_required_for_completeness}
           onChange={handleRequiredForCompleteness}
-          readOnly={isFirstColumn}>
+          readOnly={isFirstColumn}
+        >
           {translate(`pim_table_attribute.form.attribute.required_for_completeness`)}
         </Checkbox>
       </FieldsList>

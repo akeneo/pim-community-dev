@@ -34,7 +34,8 @@ const SelectCellIndex: React.FC<SelectCellIndexProps> = ({searchText, isInErrorF
         <TableInput.CellContent
           rowTitle={true}
           highlighted={isMatching(value, searchText, firstColumn.code)}
-          inError={isInErrorFromBackend || getOptionLabel(firstColumn.code, value) === null}>
+          inError={isInErrorFromBackend || getOptionLabel(firstColumn.code, value) === null}
+        >
           {typeof getOptionLabel(firstColumn.code, value) === 'undefined' ? (
             <FirstCellLoadingPlaceholderContainer>
               <div>{translate('pim_common.loading')}</div>

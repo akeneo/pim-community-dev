@@ -436,7 +436,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                   {filteredOptions.length === 0 && searchValue !== '' && (
                     <Placeholder
                       illustration={<AddingValueIllustration />}
-                      title={translate('pim_table_attribute.form.attribute.no_options')}>
+                      title={translate('pim_table_attribute.form.attribute.no_options')}
+                    >
                       {translate('pim_table_attribute.form.attribute.please_try_again')}
                     </Placeholder>
                   )}

@@ -116,11 +116,13 @@ const SelectAddRowsButton: React.FC<SelectAddRowsButtonProps> = ({
               {itemsToDisplay.map((item, index) => (
                 <Dropdown.Item
                   key={item.code}
-                  disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}>
+                  disabled={!checkedOptionCodes.includes(item.code) && checkedOptionCodes.length >= maxRowCount}
+                >
                   <Checkbox
                     checked={lowercaseCheckedOptionCodes.includes(item.code.toLowerCase())}
                     onChange={() => toggleChange(item.code)}
-                    data-testid={`checkbox-${index}`}>
+                    data-testid={`checkbox-${index}`}
+                  >
                     {item.label}
                   </Checkbox>
                 </Dropdown.Item>
@@ -128,7 +130,8 @@ const SelectAddRowsButton: React.FC<SelectAddRowsButtonProps> = ({
               {searchValue === '' && itemsToDisplay.length === 0 && (
                 <Placeholder
                   illustration={<AddingValueIllustration />}
-                  title={translate('pim_table_attribute.form.product.no_options')}>
+                  title={translate('pim_table_attribute.form.product.no_options')}
+                >
                   {!hasEditPermission &&
                     translate('pim_table_attribute.form.product.no_add_options_unallowed', {
                       attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
@@ -150,7 +153,8 @@ const SelectAddRowsButton: React.FC<SelectAddRowsButtonProps> = ({
                     openManageOptions();
                   }}
                   ghost
-                  level='secondary'>
+                  level='secondary'
+                >
                   {translate('pim_table_attribute.form.attribute.manage_options')}
                 </Button>
               </EditOptionsContainer>
