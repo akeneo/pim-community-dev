@@ -16,3 +16,4 @@ akeneo_feature_flag:
         - { feature: 'reference_data', service: 'akeneo.feature_flag.service.only_flexibility_on_premise_feature' }
         - { feature: 'proposal', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'published_product', service: 'akeneo.feature_flag.service.only_serenity_feature' }
+        - { feature: 'teamwork_assistant', service: 'akeneo.feature_flag.service.only_serenity_feature' }
