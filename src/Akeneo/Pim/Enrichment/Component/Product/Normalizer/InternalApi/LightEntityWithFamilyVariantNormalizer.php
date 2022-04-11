@@ -81,15 +81,20 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
         }
 
         if ($entity instanceof ProductModelInterface) {
+            $result = [
+                'id' => $entity->getId(),
+            ];
             $image = $this->imageAsLabel->value($entity);
             $completeness = $this->getProductModelCompleteness($entity, $channelCode, $localeCode);
         } else {
+            $result = [
+                'uuid' => $entity->getUuid()->toString(),
+            ];
             $image = $entity->getImage();
             $completeness = $this->getProductCompleteness($entity, $channelCode, $localeCode);
         }
 
-        return [
-            'id' => $entity->getId(),
+        return array_merge($result, [
             'identifier' => $entity->getIdentifier(),
             'labels' => [$localeCode => $entity->getLabel($localeCode, $channelCode)],
             'axes_values_labels' => $this->getAxesLabel($entity, $localeCode),
@@ -97,7 +102,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
             'image' => $this->imageNormalizer->normalize($image),
             'model_type' => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness' => $completeness,
-        ];
+        ]);
     }
 
     public function supportsNormalization($data, $format = null): bool

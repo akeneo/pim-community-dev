@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class GetProductsWithQualityScoresSpec extends ObjectBehavior
 {
@@ -205,7 +206,7 @@ class GetProductsWithQualityScoresSpec extends ObjectBehavior
     private function buildConnectorProduct($identifier, $qualityScore): ConnectorProduct
     {
         return new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             $identifier,
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
