@@ -85,6 +85,15 @@ paths:
                     name: id
                     type: string
                     required: true
+                -   in: body
+                    name: user
+                    schema:
+                        type: object
+                        required:
+                            - name
+                        properties:
+                            name:
+                                type: string
             responses:
                 "201":
                     description: "OK"
