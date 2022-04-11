@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 {
@@ -98,7 +99,7 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
             strval($id), // label
             null, // image
             null, // completeness,
-            $id, //technicalId,
+            Uuid::uuid4()->toString(), //technicalId,
             null, // parentCode,
             new WriteValueCollection() // values,
         );
