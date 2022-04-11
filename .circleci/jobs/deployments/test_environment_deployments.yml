@@ -32,9 +32,8 @@ jobs:
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Setup key for Jenkins
                   command: |
@@ -55,6 +54,11 @@ jobs:
                         echo "Need to upgrade the PIM to the latest release"
                         IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
                       fi
+            - get_datadog_migration_logs:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                  path: /tmp/migration-logs.json
+                  destination: migration-logs.json
             - run:
                   name: Communicate
                   command: |
@@ -89,9 +93,8 @@ jobs:
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Setup key for Jenkins
                   command: |
@@ -112,6 +115,11 @@ jobs:
                         echo "Need to upgrade the PIM to the latest release"
                         IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
                       fi
+            - get_datadog_migration_logs:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                  path: /tmp/migration-logs.json
+                  destination: migration-logs.json
             - run:
                   name: Communicate
                   command: |
@@ -146,9 +154,8 @@ jobs:
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Setup key for Jenkins
                   command: |
@@ -169,6 +176,11 @@ jobs:
                         echo "Need to upgrade the PIM to the latest release"
                         IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
                       fi
+            - get_datadog_migration_logs:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                  path: /tmp/migration-logs.json
+                  destination: migration-logs.json
 
     deploy_bh_environment:
         parameters:
@@ -211,9 +223,8 @@ jobs:
 
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                  pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Setup key for Jenkins
                   command: |
@@ -234,3 +245,8 @@ jobs:
                         echo "Need to upgrade the PIM to the latest release"
                         IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
                       fi
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
