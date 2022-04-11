@@ -1,0 +1,181 @@
+swagger: "2.0"
+info:
+    description: ""
+    version: "1.0.0"
+    title: "PIM Catalogs"
+host: "example.com"
+basePath: "/"
+schemes:
+    - "https"
+paths:
+    /api/rest/v1/catalogs:
+        get:
+            summary: "Get list of catalogs"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: query
+                    name: page
+                    type: integer
+                    required: false
+            responses:
+                "200":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            current_page: "1"
+                            _embedded:
+                                items:
+                                    -   id: "e8da3927-e116-492b-a3fa-2497495b0560"
+                                        name: "Demo App default catalog"
+                "401":
+                    description: "Unauthorized"
+        post:
+            summary: "Create a new catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: body
+                    name: user
+                    schema:
+                        type: object
+                        required:
+                            - name
+                        properties:
+                            name:
+                                type: string
+            responses:
+                "201":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            id: "e8da3927-e116-492b-a3fa-2497495b0560"
+                            name: "Demo App default catalog"
+                "401":
+                    description: "Unauthorized"
+    /api/rest/v1/catalogs/{id}:
+        get:
+            summary: "Get a catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+            responses:
+                "200":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            id: "e8da3927-e116-492b-a3fa-2497495b0560"
+                            name: "Demo App default catalog"
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
+                "404":
+                    description: "Not Found"
+        patch:
+            summary: "Update a catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+            responses:
+                "201":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            id: "e8da3927-e116-492b-a3fa-2497495b0560"
+                            name: "Demo App default catalog"
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
+                "404":
+                    description: "Not Found"
+        delete:
+            summary: "Delete a catalog"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+            responses:
+                "204":
+                    description: "No Content"
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
+                "404":
+                    description: "Not Found"
+    /api/rest/v1/catalogs/{id}/identifiers:
+        get:
+            summary: "List of product identifiers belonging to the catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+            responses:
+                "200":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            current_page: "1"
+                            _embedded:
+                                items:
+                                    - "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                                    - "6731c01b-921f-426f-bae6-441c46b57b93"
+                                    - "ac7f972c-8cba-4f68-8be0-92fdd3b7947e"
+                                    - "2ffa993f-fac0-483d-b65d-6ba04bae5499"
+                                    - "cb7a0739-1014-43c0-91fc-92b40c12dd5c"
+                                    - "457533a8-78e4-41df-872a-ba70b38be404"
+                                    - "42b7808f-c621-45db-abe4-d974132bd294"
+                                    - "a1a2b7de-128b-4d78-a048-85f39c67a60d"
+                                    - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
+                                    - "81627547-a389-4e0f-9788-1c815a8cfe08"
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
+    /api/rest/v1/catalogs/{id}/products:
+        get:
+            summary: "List of products belonging to the catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+            responses:
+                "200":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            current_page: "1"
+                            _embedded:
+                                items:
+                                    -   identifier: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                                        family: "tshirt"
+                                        groups: [ ]
+                                        parent: null
+                                        categories: [ ]
+                                        enabled: true
+                                        values:
+                                            name:
+                                                -   data: Top
+                                                    locale: en_US
+                                                    scope: null
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
