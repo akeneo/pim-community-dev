@@ -1,17 +1,18 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\FileInfo;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\FileInfo;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Internal\DoesImageExistQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
 class DoesImageExistIntegration extends TestCase
 {
-    /** @var DoesImageExistQueryInterface */
-    private $imageExistQuery;
+    private DoesImageExistQueryInterface $imageExistQuery;
 
     public function test_that_an_image_exist()
     {
@@ -30,7 +31,7 @@ class DoesImageExistIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->imageExistQuery = $this->get('akeneo_connectivity.connection.service.file_info.does_image_exist');
+        $this->imageExistQuery = $this->get(DoesImageExistQuery::class);
     }
 
     private function addFileInfo()

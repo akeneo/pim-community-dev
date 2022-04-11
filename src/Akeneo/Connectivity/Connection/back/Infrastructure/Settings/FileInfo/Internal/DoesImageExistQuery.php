@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQueryInterface;
 use Doctrine\DBAL\Connection as DbalConnection;

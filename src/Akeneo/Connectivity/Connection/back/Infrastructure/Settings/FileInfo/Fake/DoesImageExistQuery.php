@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Fake;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Fake;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQueryInterface;
 

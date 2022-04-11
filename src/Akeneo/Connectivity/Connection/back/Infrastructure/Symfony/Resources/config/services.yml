@@ -37,11 +37,6 @@ services:
             - '@pim_user.repository.group'
             - '@pim_user.updater.user'
 
-    akeneo_connectivity.connection.service.file_info.does_image_exist:
-        class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal\DoesImageExistQuery
-        arguments:
-            - '@database_connection'
-
     akeneo_connectivity.connection.service.connection_context:
         class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
         arguments:

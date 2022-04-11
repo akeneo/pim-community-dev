@@ -11,3 +11,7 @@ services:
         arguments:
             - '@fos_oauth_server.client_manager.default'
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Internal\DoesImageExistQuery:
+        arguments:
+            - '@database_connection'
