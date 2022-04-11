@@ -136,7 +136,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
      */
     protected function getCompletenessRatio(ProductInterface $product, array $context): ?int
     {
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
         $channel = current($context['channels']);
         $locale = current($context['locales']);
         $completeness = $completenesses->getCompletenessForChannelAndLocale($channel, $locale);
