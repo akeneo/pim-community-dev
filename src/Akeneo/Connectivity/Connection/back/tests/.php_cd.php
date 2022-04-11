@@ -273,6 +273,7 @@ $rules = [
             'GuzzleHttp\ClientInterface',
             'Psr\Log\LoggerInterface',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            'Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Marketplace'),
 ];

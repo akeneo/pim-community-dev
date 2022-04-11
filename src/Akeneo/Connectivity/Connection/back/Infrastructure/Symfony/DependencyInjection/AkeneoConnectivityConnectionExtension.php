@@ -23,6 +23,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Apps/commands.yml');
         $loader->load('Apps/controllers.yml');
         $loader->load('Apps/event_subscribers.yml');
+        $loader->load('Apps/feature_flag.yml');
         $loader->load('Apps/handlers.yml');
         $loader->load('Apps/install.yml');
         $loader->load('Apps/normalizers.yml');
@@ -53,6 +54,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('ErrorManagement/services.yml');
 
         $loader->load('Marketplace/controllers.yml');
+        $loader->load('Marketplace/feature_flag.yml');
         $loader->load('Marketplace/handlers.yml');
         $loader->load('Marketplace/install.yml');
         $loader->load('Marketplace/queries.yml');
@@ -75,9 +77,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Webhook/services.yml');
         $loader->load('Webhook/validators.yml');
 
-        $loader->load('event_subscribers.yml');
-        $loader->load('feature_flag.yml');
-        $loader->load('serializers.yml');
         $loader->load('services.yml');
     }
 }
