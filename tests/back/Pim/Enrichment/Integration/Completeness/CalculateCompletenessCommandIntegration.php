@@ -9,6 +9,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 class CalculateCompletenessCommandIntegration extends TestCase
@@ -143,16 +144,8 @@ class CalculateCompletenessCommandIntegration extends TestCase
     {
         foreach ($identifiers as $identifier) {
             $uuid = $this->productUuids[$identifier];
-            Assert::assertInstanceOf(UuidInterface::class, $uuid);
-            $id = $this->get('database_connection')->fetchOne(
-                'SELECT id FROM pim_catalog_product WHERE uuid = ?',
-                [$uuid->getBytes()]
-            );
-            Assert::assertNotNull($id);
-            $id = (int) $id;
-
             $completenesses = $this->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($id);
+                ->fromProductUuid($uuid);
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }
