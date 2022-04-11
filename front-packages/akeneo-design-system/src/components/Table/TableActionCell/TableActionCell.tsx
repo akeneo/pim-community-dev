@@ -9,6 +9,9 @@ const TableActionCellContainer = styled.td`
   padding: 0 10px;
   max-width: 15vw;
   min-width: 0;
+`;
+
+const InnerTableActionCellContainer = styled.div`
   opacity: 0;
 `;
 
@@ -36,7 +39,9 @@ const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
 
     return (
       <TableActionCellContainer ref={forwardedRef} {...rest}>
-        {decoratedChildren}
+        <InnerTableActionCellContainer>
+          {decoratedChildren}
+        </InnerTableActionCellContainer>
       </TableActionCellContainer>
     );
   }
