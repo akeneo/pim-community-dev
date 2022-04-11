@@ -121,3 +121,5 @@ akeneo.tailored_import:
       empty_sheet:
         title: This sheet is empty.
         description: Please select another sheet with at least one row.
+    operations:
+      incompatible_operation_type: The operation type {{ operation_type }} is incompatible with your target type.

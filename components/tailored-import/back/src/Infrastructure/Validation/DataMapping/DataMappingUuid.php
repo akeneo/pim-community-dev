@@ -11,14 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 
-class CleanHTMLTagsOperationConstraint extends Constraint
+final class DataMappingUuid extends Constraint
 {
-    public function validatedBy(): string
-    {
-        return CleanHTMLTagsOperationValidator::class;
-    }
 }

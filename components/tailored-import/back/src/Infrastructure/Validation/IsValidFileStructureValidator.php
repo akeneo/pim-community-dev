@@ -20,13 +20,14 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class IsValidFileStructureValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof IsValidFileStructure) {
-            throw new \LogicException('The constraint should be an instance of IsValidFileStructure.');
+            throw new UnexpectedTypeException($constraint, IsValidFileStructure::class);
         }
 
         $validator = $this->context->getValidator()->inContext($this->context);
@@ -71,12 +72,12 @@ class IsValidFileStructureValidator extends ConstraintValidator
                 ]),
                 'first_product_row' => new Range([
                     'min' => $value['header_row'] + 1,
-                    'minMessage' => $constraint->firstProductRowShouldBeAfterHeaderRow,
+                    'minMessage' => IsValidFileStructure::FIRST_PRODUCT_ROW_SHOULD_BE_AFTER_HEADER_ROW,
                     'max' => FileStructure::MAXIMUM_FIRST_PRODUCT_LINE
                 ]),
                 'unique_identifier_column' => new Range([
                     'min' => $value['first_column'],
-                    'minMessage' => $constraint->uniqueIdentifierColumnShouldBeAfterFirstColumnMessage,
+                    'minMessage' => IsValidFileStructure::UNIQUE_IDENTIFIER_COLUMN_SHOULD_BE_AFTER_FIRST_COLUMN,
                     'max' => FileStructure::MAXIMUM_COLUMN_COUNT
                 ]),
             ],

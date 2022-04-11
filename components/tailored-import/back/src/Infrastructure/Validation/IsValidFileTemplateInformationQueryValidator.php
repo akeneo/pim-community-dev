@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactory
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
 {
@@ -31,16 +32,16 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         if (!$value instanceof GetFileTemplateInformationQuery) {
-            throw new \InvalidArgumentException('The value must be a GetFileTemplateInformationQuery');
+            throw new UnexpectedTypeException($value, GetFileTemplateInformationQuery::class);
         }
 
         if (!$constraint instanceof IsValidFileTemplateInformationQuery) {
-            throw new \InvalidArgumentException('The value must be a GetFileTemplateInformationQuery');
+            throw new UnexpectedTypeException($constraint, IsValidFileTemplateInformationQuery::class);
         }
 
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         if (!$fileSystem->fileExists($value->fileKey)) {
-            $this->context->buildViolation($constraint->fileNotFound)
+            $this->context->buildViolation(IsValidFileTemplateInformationQuery::FILE_NOT_FOUND)
                 ->atPath('[file_key]')
                 ->addViolation();
 
@@ -62,7 +63,7 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
         $sheetNames = $fileReader->getSheetNames();
 
         if (!in_array($query->sheetName, $sheetNames)) {
-            $this->context->buildViolation($constraint->sheetNotFoundMessage)
+            $this->context->buildViolation(IsValidFileTemplateInformationQuery::SHEET_NOT_FOUND)
                 ->atPath('[sheet_name]')
                 ->addViolation();
         }

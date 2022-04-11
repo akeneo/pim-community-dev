@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Number;
 
-use Symfony\Component\Validator\Constraint;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\TargetConstraint;
 
-final class IsValidAttribute extends Constraint
+final class Number extends TargetConstraint
 {
 }
