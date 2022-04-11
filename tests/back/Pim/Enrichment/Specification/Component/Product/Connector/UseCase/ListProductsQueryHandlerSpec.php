@@ -27,6 +27,7 @@ use Akeneo\Tool\Component\Api\Pagination\PaginationTypes;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ListProductsQueryHandlerSpec extends ObjectBehavior
@@ -81,7 +82,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -99,7 +100,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -148,7 +149,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -166,7 +167,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -213,7 +214,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct1 = new ConnectorProduct(
-            1,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_1',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -231,7 +232,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
 
         $connectorProduct2 = new ConnectorProduct(
-            2,
+            Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
             'identifier_2',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -373,7 +374,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -424,7 +425,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -479,7 +480,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $pqb->addSorter('identifier', Directions::ASCENDING)->shouldBeCalled();
 
         $connectorProduct = new ConnectorProduct(
-            5,
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
             'identifier_5',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
@@ -497,7 +498,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         );
         $connectorProductWithCompletenesses = $connectorProduct->buildWithCompletenesses(
             new ProductCompletenessCollection(
-                5,
+                Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
                 [
                     new ProductCompleteness('ecommerce', 'en_US', 10, 5),
                     new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),

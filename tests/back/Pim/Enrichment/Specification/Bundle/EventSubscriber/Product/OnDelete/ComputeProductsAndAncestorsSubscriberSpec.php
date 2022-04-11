@@ -9,16 +9,15 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 
 class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductAndAncestorsIndexer $indexer, Connection $connection, Client $esClient)
+    function let(ProductAndAncestorsIndexer $indexer, Client $esClient)
     {
-        $this->beConstructedWith($indexer, $connection, $esClient);
+        $this->beConstructedWith($indexer, $esClient);
     }
 
     function it_is_initializable()
@@ -28,8 +27,6 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_remove_events()
     {
-        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::PRE_REMOVE);
-        $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::PRE_REMOVE_ALL);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE);
         $this::getSubscribedEvents()->shouldHaveKey(StorageEvents::POST_REMOVE_ALL);
     }
@@ -38,13 +35,21 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
     {
         $indexer->removeFromProductUuidsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
 
-        $this->deleteProduct(new RemoveEvent(42, new \stdClass(), ['unitary' => true]));
-        $this->deleteProduct(new RemoveEvent([42, 23],  [new \stdClass(), new ProductModel()], ['unitary' => false]));
+        $this->deleteProduct(new RemoveEvent(
+            Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+            new \stdClass(),
+            ['unitary' => true]
+        ));
+        $this->deleteProduct(new RemoveEvent(
+            [Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26')],
+            [new \stdClass(), new ProductModel()],
+            ['unitary' => false]
+        ));
     }
 
     function it_does_not_delete_single_products_on_non_unitary_events(ProductAndAncestorsIndexer $indexer)
     {
-        $this->deleteProduct(new RemoveEvent(new Product(), 42, ['unitary' => false]));
+        $this->deleteProduct(new RemoveEvent(new Product(), Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), ['unitary' => false]));
 
         $indexer->removeFromProductUuidsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
     }
@@ -53,10 +58,10 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
     {
         $product = new Product();
         $product->setCreated(new \DateTime('1970-01-01'));
-        $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
+        $this->deleteProduct(new RemoveEvent($product, Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), ['unitary' => true]));
         $esClient->refreshIndex()->shouldNotBeCalled();
 
-        $indexer->removeFromProductIdsAndReindexAncestors([42], [], [])->shouldBeCalled();
+        $indexer->removeFromProductUuidsAndReindexAncestors([Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5')], [])->shouldBeCalled();
     }
 
     function it_refreshes_index_before_deleting_a_single_product(
@@ -65,15 +70,14 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setCreated((new \DateTime('now'))->modify("- 1 second"));
-        $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
+        $this->deleteProduct(new RemoveEvent($product, Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), ['unitary' => true]));
         $esClient->refreshIndex()->shouldBeCalledOnce();
 
-        $indexer->removeFromProductUuidsAndReindexAncestors([42], [], [])->shouldBeCalled();
+        $indexer->removeFromProductUuidsAndReindexAncestors([Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5')], [])->shouldBeCalled();
     }
 
     function it_deletes_a_single_variant_product_from_the_index(
-        ProductAndAncestorsIndexer $indexer,
-        Connection $connection
+        ProductAndAncestorsIndexer $indexer
     ) {
         $rootProductModel = new ProductModel();
         $rootProductModel->setCode('root');
@@ -85,22 +89,16 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $variantProduct->setCreated(new \DateTime('1970-01-01'));
 
         $indexer->removeFromProductUuidsAndReindexAncestors(
-            [100],
-            [Uuid::fromString('386f0ec8-4e4c-4028-acd7-e1195a13a3b5')],
+            [$variantProduct->getUuid()],
             ['sub', 'root']
         )->shouldBeCalled();
 
-        $connection->fetchAllAssociative(Argument::any())->willReturn(['The uuid column exists']);
-        $connection->fetchFirstColumn(Argument::any(), ['product_ids' => [100]], Argument::any())->willReturn(['386f0ec8-4e4c-4028-acd7-e1195a13a3b5']);
-
-        $event = new RemoveEvent($variantProduct, 100, ['unitary' => true]);
-        $this->setProductUuidCache($event);
+        $event = new RemoveEvent($variantProduct, $variantProduct->getUuid(), ['unitary' => true]);
         $this->deleteProduct($event);
     }
 
     function it_deletes_multiple_products_from_the_index(
         ProductAndAncestorsIndexer $indexer,
-        Connection $connection,
         Client $esClient
     ) {
         $rootProductModel = new ProductModel();
@@ -110,40 +108,26 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $subProductModel1->setParent($rootProductModel);
         $variantProduct = new Product();
         $variantProduct->setParent($subProductModel1);
-        $variantProduct->setId(44);
         $variantProduct->setCreated(new \DateTime('1970-01-01'));
         $subProductModel2 = new ProductModel();
         $subProductModel2->setCode('sub2');
         $subProductModel2->setParent($rootProductModel);
         $otherVariantProduct = new Product();
         $otherVariantProduct->setParent($subProductModel2);
-        $otherVariantProduct->setId(56);
         $otherVariantProduct->setCreated((new \DateTime('now'))->modify("- 1 second"));
 
         $indexer->removeFromProductUuidsAndReindexAncestors(
-            [44, 56],
-            [
-                Uuid::fromString('386f0ec8-4e4c-4028-acd7-e1195a13a3b5'),
-                Uuid::fromString('57e9847a-6c56-4403-9f1f-abde22ecb0a4'),
-            ],
+            [$variantProduct->getUuid(), $otherVariantProduct->getUuid()],
             ['sub1', 'root', 'sub2']
         )->shouldBeCalled();
 
-        $connection
-            ->fetchFirstColumn(Argument::any(), ['product_ids' => [44, 56]], Argument::any())
-            ->shouldBeCalled()
-            ->willReturn([
-                '386f0ec8-4e4c-4028-acd7-e1195a13a3b5',
-                '57e9847a-6c56-4403-9f1f-abde22ecb0a4',
-            ]);
         $esClient->refreshIndex()->shouldBeCalledOnce();
 
         $event = new RemoveEvent(
             [$variantProduct, $otherVariantProduct],
-            [44, 56]
+            [$variantProduct->getUuid(), $otherVariantProduct->getUuid()]
         );
 
-        $this->setProductUuidsCache($event);
         $this->deleteProducts($event);
     }
 }
