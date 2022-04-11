@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -20,7 +20,11 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    public function __construct(private Client $esClient, private string $documentType)
+    public function __construct(
+        private Client $esClient,
+        private string $documentType,
+        private ProductEntityIdFactoryInterface $idFactory
+    )
     {
     }
 
@@ -73,7 +77,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
                 $searchAfter = $product['sort'] ?? $searchAfter;
             }
 
-            yield ProductIdCollection::fromProductIds($productIds);
+            yield $this->idFactory->createCollection($productIds);
 
             $returnedProducts += count($productIds);
             $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter
@@ -91,7 +95,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         return $this->esClient->search($query);
     }
 
-    private function formatProductId(array $productData): ProductId
+    private function formatProductId(array $productData): string
     {
         if (!isset($productData['_source']['id'])) {
             throw new \Exception('No id not found in source when searching updated products');
@@ -100,9 +104,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         $identifierPrexis = $this->documentType === ProductModelInterface::class
             ? self::PRODUCT_MODEL_IDENTIFIER_PREFIX
             : self::PRODUCT_IDENTIFIER_PREFIX;
-        $productId =  intval(str_replace($identifierPrexis, '', $productData['_source']['id']));
-
-        return new ProductId($productId);
+        return (str_replace($identifierPrexis, '', $productData['_source']['id']));
     }
 
     private function countUpdatedProducts(array $query): int

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
@@ -15,11 +16,9 @@ use Doctrine\DBAL\Connection;
  */
 final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
 {
-    private Connection $db;
 
-    public function __construct(Connection $db)
+    public function __construct(private Connection $db, private ProductEntityIdFactoryInterface $idFactory)
     {
-        $this->db = $db;
     }
 
     /**
@@ -41,13 +40,13 @@ SQL;
             $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield ProductIdCollection::fromStrings($productIds);
+                yield $this->idFactory->createCollection($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield ProductIdCollection::fromStrings($productIds);
+            yield $this->idFactory->createCollection($productIds);
         }
     }
 }

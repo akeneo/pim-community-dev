@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface;
 
 /**
@@ -19,7 +19,8 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
     public function __construct(
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
         private GetProductModelIdsFromProductModelCodesQueryInterface $getProductModelIdsFromProductModelCodesQuery,
-        private ComputeProductsKeyIndicators $getProductsKeyIndicators
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -33,7 +34,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
     {
         $productModelCodesIds = $this->getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes);
 
-        $productIdCollection = ProductIdCollection::fromProductIds(array_values($productModelCodesIds));
+        $productIdCollection = $this->idFactory->createCollection(array_map(fn($id) => (string) $id, array_values($productModelCodesIds)));
         $productModelScores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
         $productModelKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 

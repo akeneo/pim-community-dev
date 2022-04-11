@@ -1,6 +1,10 @@
 <?php
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
+
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 class ProductIdFactory implements ProductEntityIdFactoryInterface
 {

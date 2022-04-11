@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -15,17 +16,17 @@ use Doctrine\DBAL\Connection;
  */
 final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluationQueryInterface
 {
-    public function __construct(private Connection $dbConnection)
+    public function __construct(private Connection $dbConnection, private ProductEntityIdFactoryInterface $factory)
     {
     }
 
     public function forProductId(ProductId $productId): bool
     {
-        $upToDateProducts = $this->forProductIdCollection(ProductIdCollection::fromProductId($productId));
+        $upToDateProducts = $this->forProductIdCollection($this->factory->createCollection([(string) $productId]));
         return !is_null($upToDateProducts);
     }
 
-    public function forProductIdCollection(ProductIdCollection $productIdCollection): ?ProductIdCollection
+    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
     {
         if ($productIdCollection->isEmpty()) {
             return null;
@@ -64,6 +65,6 @@ SQL;
             return null;
         }
 
-        return ProductIdCollection::fromStrings($ids);
+        return $this->factory->createCollection($ids);
     }
 }

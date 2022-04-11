@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
@@ -15,12 +16,10 @@ use Doctrine\DBAL\Connection;
  */
 final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
+    public function __construct(
+        private Connection $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory)
     {
-        $this->dbConnection = $dbConnection;
     }
 
     /**
@@ -49,13 +48,13 @@ SQL;
             $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield ProductIdCollection::fromStrings($productIds);
+                yield $this->idFactory->createCollection($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield ProductIdCollection::fromStrings($productIds);
+            yield $this->idFactory->createCollection($productIds);
         }
     }
 

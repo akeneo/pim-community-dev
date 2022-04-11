@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductModelsEvaluated;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -19,10 +19,11 @@ class EvaluateProductModels
         private EvaluatePendingCriteria       $evaluatePendingProductModelCriteria,
         private ConsolidateProductModelScores $consolidateProductModelScores,
         private EventDispatcherInterface      $eventDispatcher
-    ) {
+    )
+    {
     }
 
-    public function __invoke(ProductIdCollection $productModelIdCollection): void
+    public function __invoke(ProductEntityIdCollection $productModelIdCollection): void
     {
         $this->evaluatePendingProductModelCriteria->evaluateAllCriteria($productModelIdCollection);
         $this->consolidateProductModelScores->consolidate($productModelIdCollection);

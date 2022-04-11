@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -15,5 +15,5 @@ interface HasUpToDateEvaluationQueryInterface
 {
     public function forProductId(ProductId $productId): bool;
 
-    public function forProductIdCollection(ProductIdCollection $productIdCollection): ?ProductIdCollection;
+    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection;
 }

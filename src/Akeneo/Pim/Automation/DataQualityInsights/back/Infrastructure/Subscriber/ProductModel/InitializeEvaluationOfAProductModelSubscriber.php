@@ -65,6 +65,7 @@ class InitializeEvaluationOfAProductModelSubscriber implements EventSubscriberIn
     private function initializeProductModelCriteria(int $productModelId): void
     {
         try {
+            // @todo[PLG-835]
             $this->createProductModelCriteriaEvaluations->createAll(ProductIdCollection::fromInt($productModelId));
         } catch (\Throwable $e) {
             $this->logger->error(

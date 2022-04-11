@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 
@@ -26,7 +26,7 @@ final class GetEvaluationResultsByProductsAndCriterionQuery implements GetEvalua
     /**
      * {@inheritdoc}
      */
-    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $query = <<<SQL
 SELECT product_id, result

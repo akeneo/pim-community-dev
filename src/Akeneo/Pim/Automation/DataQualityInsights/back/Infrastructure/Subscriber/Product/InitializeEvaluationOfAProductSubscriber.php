@@ -63,6 +63,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     private function initializeCriteria(int $productId): void
     {
         try {
+            // @todo[PLG-835]
             $productIdCollection = ProductIdCollection::fromInt($productId);
             $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         } catch (\Throwable $e) {

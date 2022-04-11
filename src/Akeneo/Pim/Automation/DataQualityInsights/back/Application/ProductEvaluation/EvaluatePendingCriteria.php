@@ -9,8 +9,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -29,10 +29,11 @@ class EvaluatePendingCriteria
         private GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
         private SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
         private LoggerInterface                                         $logger
-    ) {
+    )
+    {
     }
 
-    public function evaluateAllCriteria(ProductIdCollection $productIdCollection): void
+    public function evaluateAllCriteria(ProductEntityIdCollection $productIdCollection): void
     {
         $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIdCollection);
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {
@@ -44,7 +45,7 @@ class EvaluatePendingCriteria
         }
     }
 
-    public function evaluateSynchronousCriteria(ProductIdCollection $productIds): void
+    public function evaluateSynchronousCriteria(ProductEntityIdCollection $productIds): void
     {
         $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIds);
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {

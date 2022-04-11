@@ -11,10 +11,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
 use Webmozart\Assert\Assert;
 
-final class ProductIdCollection implements \IteratorAggregate, \Countable
+final class ProductIdCollection implements ProductEntityIdCollection
 {
     /**
-     * @var array<ProductId>
+     * @var array<ProductEntityIdInterface>
      */
     private array $productIds;
 
@@ -90,7 +90,7 @@ final class ProductIdCollection implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return array<ProductId>
+     * @return array<ProductEntityIdInterface>
      */
     public function toArray(): array
     {

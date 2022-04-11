@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
@@ -17,12 +17,11 @@ use Doctrine\DBAL\Result;
  */
 final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
+    public function __construct(
+        private Connection $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
+    )
     {
-        $this->dbConnection = $dbConnection;
     }
 
     /**
@@ -36,7 +35,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         while ($productModelId = $stmtRootProductModels->fetchOne()) {
             $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield ProductIdCollection::fromStrings($productModelIds);
+                yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
         }
@@ -46,14 +45,14 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         while ($productModelId = $stmtSubProductModels->fetchOne()) {
             $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield ProductIdCollection::fromStrings($productModelIds);
+                yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
         }
 
 
         if (!empty($productModelIds)) {
-            yield ProductIdCollection::fromStrings($productModelIds);
+            yield $this->idFactory->createCollection($productModelIds);
         }
     }
 

@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
+
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +21,7 @@ interface ProductEntityIdFactoryInterface
 
     /**
      * @param string[] $ids
-     * @return ProductIdCollection
+     * @return ProductEntityIdCollection
      */
-    public function createCollection(array $ids): ProductIdCollection;
+    public function createCollection(array $ids): ProductEntityIdCollection;
 }

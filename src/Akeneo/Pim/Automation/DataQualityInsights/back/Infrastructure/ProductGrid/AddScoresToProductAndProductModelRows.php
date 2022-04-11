@@ -41,6 +41,7 @@ class AddScoresToProductAndProductModelRows
             $productIds[] = new ProductId($row->technicalId());
         }
 
+        // @todo[PLG-835]
         $scores = ($this->getQualityScoresFactory)(ProductIdCollection::fromProductIds($productIds), $type);
 
         $channel = new ChannelCode($fetchProductAndProductModelRowsParameters->channelCode());

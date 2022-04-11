@@ -62,6 +62,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
                 if (empty($productIds)) {
                     return;
                 }
+                //@todo[PLG-835] use product entity id factory service to create a collection of productIds
                 $this->consolidateProductScores->consolidate(ProductIdCollection::fromInts($productIds));
                 $lastProductId = end($productIds);
             } while ($this->isTimeboxReached($startTime) === false);
