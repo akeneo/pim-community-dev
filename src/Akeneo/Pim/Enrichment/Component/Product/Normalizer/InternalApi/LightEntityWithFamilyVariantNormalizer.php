@@ -209,7 +209,7 @@ final class LightEntityWithFamilyVariantNormalizer implements NormalizerInterfac
                     $localeCode => [
                         'completeness' => [
                             'ratio' => $this->getCompletenessRatio->forChannelCodeAndLocaleCode(
-                                $entity->getId(),
+                                $entity->getUuid(),
                                 $channelCode,
                                 $localeCode
                             ),

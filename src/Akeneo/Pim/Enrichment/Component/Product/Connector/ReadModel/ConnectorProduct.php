@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -21,86 +22,29 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
  */
 final class ConnectorProduct
 {
-    /** @var int */
-    private $id;
-
-    /** @var string */
-    private $identifier;
-
-    /** @var \DateTimeImmutable */
-    private $createdDate;
-
-    /** @var \DateTimeImmutable */
-    private $updatedDate;
-
-    /** @var bool */
-    private $enabled;
-
-    /** @var null|string */
-    private $familyCode;
-
-    /** @var array */
-    private $categoryCodes;
-
-    /** @var array */
-    private $groupCodes;
-
-    /** @var null|string */
-    private $parentProductModelCode;
-
-    /** @var array */
-    private $associations;
-
-    /** @var array */
-    private $quantifiedAssociations;
-
-    /** @var array medata are for the status of the product in enterprise edition */
-    private $metadata;
-
-    /** @var ReadValueCollection */
-    private $values;
-
-    private ?QualityScoreCollection $qualityScores;
-
-    private ?ProductCompletenessCollection $completenesses;
-
     public function __construct(
-        int $id,
-        string $identifier,
-        \DateTimeImmutable $createdDate,
-        \DateTimeImmutable $updatedDate,
-        bool $enabled,
-        ?string $familyCode,
-        array $categoryCodes,
-        array $groups,
-        ?string $parentProductModelCode,
-        array $associations,
-        array $quantifiedAssociations,
-        array $metadata,
-        ReadValueCollection $values,
-        ?QualityScoreCollection $qualityScores,
-        ?ProductCompletenessCollection $completenesses
+        private UuidInterface $uuid,
+        private string $identifier,
+        private \DateTimeImmutable $createdDate,
+        private \DateTimeImmutable $updatedDate,
+        private bool $enabled,
+        private ?string $familyCode,
+        private array $categoryCodes,
+        private array $groupCodes,
+        private ?string $parentProductModelCode,
+        private array $associations,
+        private array $quantifiedAssociations,
+        // medata are for the status of the product in enterprise edition
+        private array $metadata,
+        private ReadValueCollection $values,
+        private ?QualityScoreCollection $qualityScores,
+        private ?ProductCompletenessCollection $completenesses
     ) {
-        $this->id = $id;
-        $this->identifier = $identifier;
-        $this->createdDate = $createdDate;
-        $this->updatedDate = $updatedDate;
-        $this->enabled = $enabled;
-        $this->familyCode = $familyCode;
-        $this->categoryCodes = $categoryCodes;
-        $this->groupCodes = $groups;
-        $this->parentProductModelCode = $parentProductModelCode;
-        $this->values = $values;
-        $this->associations = $associations;
-        $this->quantifiedAssociations = $quantifiedAssociations;
-        $this->metadata = $metadata;
-        $this->qualityScores = $qualityScores;
-        $this->completenesses = $completenesses;
     }
 
-    public function id(): int
+    public function uuid(): UuidInterface
     {
-        return $this->id;
+        return $this->uuid;
     }
 
     public function identifier(): string
@@ -186,7 +130,7 @@ final class ConnectorProduct
     public function addMetadata(string $key, $value): ConnectorProduct
     {
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -246,7 +190,7 @@ final class ConnectorProduct
         });
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -267,7 +211,7 @@ final class ConnectorProduct
     public function buildWithQualityScores(QualityScoreCollection $productQualityScores): self
     {
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -296,7 +240,7 @@ final class ConnectorProduct
         });
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -327,7 +271,7 @@ final class ConnectorProduct
     public function associatedProductModelCodes(): array
     {
         $associatedProductModels = [];
-        foreach ($this->associations as $associationType => $associations) {
+        foreach ($this->associations as $associations) {
             $associatedProductModels[] = $associations['product_models'];
         }
 
@@ -373,7 +317,7 @@ final class ConnectorProduct
         }
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -407,7 +351,7 @@ final class ConnectorProduct
         }
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -441,7 +385,7 @@ final class ConnectorProduct
         }
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -472,7 +416,7 @@ final class ConnectorProduct
         }
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -495,7 +439,7 @@ final class ConnectorProduct
         $categoryCodes =  array_values(array_intersect($this->categoryCodes, $categoryCodesToFilter));
 
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
@@ -516,7 +460,7 @@ final class ConnectorProduct
     public function buildWithCompletenesses(ProductCompletenessCollection $productCompletenessCollection): ConnectorProduct
     {
         return new self(
-            $this->id,
+            $this->uuid,
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,

@@ -36,7 +36,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 
     function it_only_handles_products(ProductAndAncestorsIndexer $indexer)
     {
-        $indexer->removeFromProductIdsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
+        $indexer->removeFromProductUuidsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
 
         $this->deleteProduct(new RemoveEvent(42, new \stdClass(), ['unitary' => true]));
         $this->deleteProduct(new RemoveEvent([42, 23],  [new \stdClass(), new ProductModel()], ['unitary' => false]));
@@ -46,7 +46,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
     {
         $this->deleteProduct(new RemoveEvent(new Product(), 42, ['unitary' => false]));
 
-        $indexer->removeFromProductIdsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
+        $indexer->removeFromProductUuidsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
     }
 
     function it_deletes_a_single_product_from_the_index(ProductAndAncestorsIndexer $indexer, Client $esClient)
@@ -68,7 +68,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
         $esClient->refreshIndex()->shouldBeCalledOnce();
 
-        $indexer->removeFromProductIdsAndReindexAncestors([42], [], [])->shouldBeCalled();
+        $indexer->removeFromProductUuidsAndReindexAncestors([42], [], [])->shouldBeCalled();
     }
 
     function it_deletes_a_single_variant_product_from_the_index(
@@ -84,7 +84,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $variantProduct->setParent($subProductModel);
         $variantProduct->setCreated(new \DateTime('1970-01-01'));
 
-        $indexer->removeFromProductIdsAndReindexAncestors(
+        $indexer->removeFromProductUuidsAndReindexAncestors(
             [100],
             [Uuid::fromString('386f0ec8-4e4c-4028-acd7-e1195a13a3b5')],
             ['sub', 'root']
@@ -120,7 +120,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $otherVariantProduct->setId(56);
         $otherVariantProduct->setCreated((new \DateTime('now'))->modify("- 1 second"));
 
-        $indexer->removeFromProductIdsAndReindexAncestors(
+        $indexer->removeFromProductUuidsAndReindexAncestors(
             [44, 56],
             [
                 Uuid::fromString('386f0ec8-4e4c-4028-acd7-e1195a13a3b5'),

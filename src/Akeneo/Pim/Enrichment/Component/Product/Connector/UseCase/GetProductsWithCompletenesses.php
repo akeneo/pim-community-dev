@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -24,7 +25,7 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
 
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
     {
-        return $product->buildWithCompletenesses($this->getProductCompletenesses->fromProductId($product->id()));
+        return $product->buildWithCompletenesses($this->getProductCompletenesses->fromProductUuid($product->uuid()));
     }
 
     public function fromConnectorProductList(
@@ -32,13 +33,13 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
         ?string $channel = null,
         array $locales = []
     ): ConnectorProductList {
-        $productIdentifiers = array_map(
-            fn (ConnectorProduct $connectorProduct) => $connectorProduct->id(),
+        $productUuids = array_map(
+            fn (ConnectorProduct $connectorProduct): UuidInterface => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 
-        $productCompletenesses = $this->getProductCompletenesses->fromProductIds(
-            $productIdentifiers,
+        $productCompletenesses = $this->getProductCompletenesses->fromProductUuids(
+            $productUuids,
             $channel,
             $locales
         );
@@ -47,7 +48,7 @@ class GetProductsWithCompletenesses implements GetProductsWithCompletenessesInte
             $connectorProductList->totalNumberOfProducts(),
             array_map(
                 fn (ConnectorProduct $product) =>
-                    $product->buildWithCompletenesses($productCompletenesses[$product->id()]),
+                    $product->buildWithCompletenesses($productCompletenesses[$product->uuid()->toString()]),
                 $connectorProductList->connectorProducts()
             )
         );

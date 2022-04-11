@@ -23,7 +23,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
             ['values' => $this->getSandalStandardValues()]
         );
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($sandals->getUuid());
         $this->assertCount(4, $completenesses);
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
@@ -65,7 +65,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
             ['values' => $this->getSneakerStandardValues()]
         );
 
-        $completenesses = $this->getProductCompletenesses()->fromProductId($sandals->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($sandals->getUuid());
         $this->assertCount(4, $completenesses);
 
         $completeness = $completenesses->getCompletenessForChannelAndLocale('mobile', 'en_US');
