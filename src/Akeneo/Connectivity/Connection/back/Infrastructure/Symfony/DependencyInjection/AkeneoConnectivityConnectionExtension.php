@@ -38,6 +38,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Audit/queries.yml');
 
         $loader->load('Connections/command.yml');
+        $loader->load('Connections/controllers.yml');
         $loader->load('Connections/event_subscribers.yml');
         $loader->load('Connections/install.yml');
         $loader->load('Connections/queries.yml');
@@ -72,11 +73,9 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Webhook/services.yml');
         $loader->load('Webhook/validators.yml');
 
-        $loader->load('controllers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('feature_flag.yml');
         $loader->load('serializers.yml');
         $loader->load('services.yml');
-        $loader->load('wrong_credentials_connection.yml');
     }
 }

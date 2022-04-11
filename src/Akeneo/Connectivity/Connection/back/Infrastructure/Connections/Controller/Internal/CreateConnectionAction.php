@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal;
 
-use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionCommand;
-use Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,10 +19,10 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class UpdateConnectionAction
+final class CreateConnectionAction
 {
     public function __construct(
-        private UpdateConnectionHandler $updateConnectionHandler,
+        private CreateConnectionHandler $createConnectionHandler,
         private SecurityFacade $securityFacade,
     ) {
     }
@@ -36,18 +36,10 @@ final class UpdateConnectionAction
         $data = \json_decode($request->getContent(), true);
         // TODO: Valid JSON format
 
-        $command = new UpdateConnectionCommand(
-            $request->get('code', ''),
-            $data['label'],
-            $data['flow_type'],
-            $data['image'],
-            $data['user_role_id'],
-            $data['user_group_id'],
-            $data['auditable'] ?? false // TODO: Remove default value when auditable field will be implemented in the UI
-        );
+        $command = new CreateConnectionCommand($data['code'], $data['label'], $data['flow_type'], false);
 
         try {
-            $this->updateConnectionHandler->handle($command);
+            $connection = $this->createConnectionHandler->handle($command);
         } catch (ConstraintViolationListException $e) {
             $errorList = $this->buildViolationResponse($e->getConstraintViolationList());
 
@@ -59,7 +51,7 @@ final class UpdateConnectionAction
             return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+        return new JsonResponse($connection->normalize(), Response::HTTP_CREATED);
     }
 
     private function buildViolationResponse(ConstraintViolationListInterface $constraintViolationList): array

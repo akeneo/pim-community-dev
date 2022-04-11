@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Connection;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler;
