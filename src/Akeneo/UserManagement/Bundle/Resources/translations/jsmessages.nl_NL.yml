@@ -30,6 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: Vertel ons eerst wat uw belangrijkste missie is, zodat wij u kunnen helpen met de meest relevante inhoud.
   why_is_it_needed: Waarom hebben we deze informatie nodig?
+  save_button: Opslaan en App Store openen
   selector:
     placeholder: Kies een optie
     not_found: Geen resultaten gevonden
