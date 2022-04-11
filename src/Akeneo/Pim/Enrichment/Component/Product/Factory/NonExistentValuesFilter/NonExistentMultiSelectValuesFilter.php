@@ -69,7 +69,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             $existingOptionCodesForAttribute = \array_map('strtolower', $existingOptionCodesForAttribute);
             $optionCodes[$attributeCode] = \array_filter(
                 $optionCodesForThisAttribute,
-                fn($code) => \in_array(\strtolower($code), $existingOptionCodesForAttribute)
+                fn ($code) => \in_array(\strtolower($code), $existingOptionCodesForAttribute)
             );
         }
 
