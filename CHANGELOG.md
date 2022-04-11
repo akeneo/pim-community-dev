@@ -22,6 +22,7 @@
 - PIM-10334: Fix error on the clean-removed-attributes
 - PIM-10362: Fix attribute type "number" gets modified in history when import with same value
 - PIM-10372: Fix letter case issue when importing channels
+- PIM-10398: Fix category validator to prevent break-lines
 
 ## Improvements
 
