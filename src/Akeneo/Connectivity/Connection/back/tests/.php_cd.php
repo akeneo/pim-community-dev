@@ -259,8 +259,7 @@ $rules = [
 
             'Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllConnectedAppsPublicIdsInterface',
             'Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAllPendingAppsPublicIdsQueryInterface',
-            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand',
-            'Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler',
+            'Akeneo\Connectivity\Connection\Application\Apps\Command',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\VersionProviderInterface',

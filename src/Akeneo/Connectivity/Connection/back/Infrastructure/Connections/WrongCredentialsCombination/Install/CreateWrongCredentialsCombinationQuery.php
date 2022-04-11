@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Install\Query;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Install;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

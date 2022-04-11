@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Install;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Install;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
@@ -23,45 +21,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class FixturesLoader
 {
-    private DbalConnection $dbalConnection;
-    private FileStorerInterface $fileStorer;
-    private ValidatorInterface $validator;
-    private SimpleFactoryInterface $userFactory;
-    private ObjectUpdaterInterface $userUpdater;
-    private SaverInterface $userSaver;
-    private SimpleFactoryInterface $userRoleFactory;
-    private ObjectUpdaterInterface $userRoleUpdater;
-    private SaverInterface $userRoleSaver;
-    private SimpleFactoryInterface $userGroupFactory;
-    private ObjectUpdaterInterface $userGroupUpdater;
-    private SaverInterface $userGroupSaver;
-
     public function __construct(
-        DbalConnection $dbalConnection,
-        FileStorerInterface $fileStorer,
-        ValidatorInterface $validator,
-        SimpleFactoryInterface $userFactory,
-        ObjectUpdaterInterface $userUpdater,
-        SaverInterface $userSaver,
-        SimpleFactoryInterface $userRoleFactory,
-        ObjectUpdaterInterface $userRoleUpdater,
-        SaverInterface $userRoleSaver,
-        SimpleFactoryInterface $userGroupFactory,
-        ObjectUpdaterInterface $userGroupUpdater,
-        SaverInterface $userGroupSaver
+        private DbalConnection $dbalConnection,
+        private FileStorerInterface $fileStorer,
+        private ValidatorInterface $validator,
+        private SimpleFactoryInterface $userFactory,
+        private ObjectUpdaterInterface $userUpdater,
+        private SaverInterface $userSaver,
+        private SimpleFactoryInterface $userRoleFactory,
+        private ObjectUpdaterInterface $userRoleUpdater,
+        private SaverInterface $userRoleSaver,
+        private SimpleFactoryInterface $userGroupFactory,
+        private ObjectUpdaterInterface $userGroupUpdater,
+        private SaverInterface $userGroupSaver
     ) {
-        $this->dbalConnection = $dbalConnection;
-        $this->fileStorer = $fileStorer;
-        $this->validator = $validator;
-        $this->userFactory = $userFactory;
-        $this->userUpdater = $userUpdater;
-        $this->userSaver = $userSaver;
-        $this->userRoleFactory = $userRoleFactory;
-        $this->userRoleUpdater = $userRoleUpdater;
-        $this->userRoleSaver = $userRoleSaver;
-        $this->userGroupFactory = $userGroupFactory;
-        $this->userGroupUpdater = $userGroupUpdater;
-        $this->userGroupSaver = $userGroupSaver;
     }
 
     public function loadFixtures(): void
