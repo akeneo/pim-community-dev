@@ -76,7 +76,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
 
         $data = [];
 
-        $data[self::FIELD_ID] = 'product_' .(string) $product->getId();
+        $data[self::FIELD_ID] = 'product_' . (string) $product->getUuId()->toString();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->normalizer->normalize(
             $product->getCreated(),
