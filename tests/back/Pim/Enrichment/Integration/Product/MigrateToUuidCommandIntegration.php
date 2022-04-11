@@ -19,6 +19,7 @@ use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
+// Whole class to delete ?
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
     private UserInterface $adminUser;
