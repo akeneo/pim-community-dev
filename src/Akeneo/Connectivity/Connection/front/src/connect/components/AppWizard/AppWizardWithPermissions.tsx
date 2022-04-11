@@ -11,6 +11,7 @@ import {PermissionsSummary} from './steps/PermissionsSummary';
 import {WizardModal} from './WizardModal';
 import {useConfirmHandler} from '../../hooks/use-confirm-handler';
 import {FullScreenLoader} from './FullScreenLoader';
+import ScopeMessage from '../../../model/Apps/scope-message';
 
 type Step = {
     name: 'authentication' | 'authorizations' | 'permissions' | 'summary';
@@ -38,26 +39,43 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
 
     useEffect(() => {
         fetchWizardData().then(wizardData => {
-            const steps: Step[] = [
-                {
-                    name: 'authorizations',
-                    action: 'allow_and_next',
-                },
-                {
-                    name: 'permissions',
-                    action: 'next',
-                },
-                {
-                    name: 'summary',
-                    action: 'confirm',
-                },
-            ];
+            const steps: Step[] = [];
+
             if (wizardData.authenticationScopes.length > 0) {
-                steps.unshift({
+                steps.push({
                     name: 'authentication',
                     action: 'allow_and_next',
                 });
             }
+
+            const displayPermissionsStep =
+                undefined !==
+                wizardData.scopeMessages.find((scopeMessage: ScopeMessage) => {
+                    return 'products' === scopeMessage.entities;
+                });
+
+            if (!displayPermissionsStep) {
+                steps.push({
+                    name: 'authorizations',
+                    action: 'confirm',
+                });
+            } else {
+                steps.push(
+                    {
+                        name: 'authorizations',
+                        action: 'allow_and_next',
+                    },
+                    {
+                        name: 'permissions',
+                        action: 'next',
+                    },
+                    {
+                        name: 'summary',
+                        action: 'confirm',
+                    }
+                );
+            }
+
             setSteps(steps);
 
             setWizardData(wizardData);
@@ -116,6 +134,7 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
                             providers={providers}
                             setProviderPermissions={handleSetProviderPermissions}
                             permissions={permissions}
+                            scopeMessages={wizardData.scopeMessages}
                         />
                     )}
                     {step.name === 'summary' && (

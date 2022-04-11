@@ -13,10 +13,15 @@ type PermissionsFormProps<T> = {
     onPermissionsChange: (state: T) => void;
     permissions: T | undefined;
     readOnly: boolean | undefined;
+    onlyDisplayViewPermissions: boolean | undefined;
 };
 
 export const PermissionsForm: FC<PermissionsFormProps<PermissionsFormState>> = React.memo(
-    ({provider, onPermissionsChange, permissions, readOnly}) => {
-        return <FormContainer>{provider.renderForm(onPermissionsChange, permissions, readOnly)}</FormContainer>;
+    ({provider, onPermissionsChange, permissions, readOnly, onlyDisplayViewPermissions}) => {
+        return (
+            <FormContainer>
+                {provider.renderForm(onPermissionsChange, permissions, readOnly, onlyDisplayViewPermissions)}
+            </FormContainer>
+        );
     }
 );
