@@ -41,10 +41,5 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
-
-        $isEnabled = (bool)($_ENV['FLAG_TAILORED_IMPORT_ENABLED'] ?? false);
-        if (!$isEnabled) {
-            $container->removeDefinition('akeneo.tailored_import.job.xlsx_product.import');
-        }
     }
 }
