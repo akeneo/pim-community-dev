@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\ContentSecurityPolicy;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\ContentSecurityPolicy;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface;
 
