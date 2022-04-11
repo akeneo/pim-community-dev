@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Query;
 
-use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -12,7 +10,7 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 interface GetDirectChildrenCategoryCodesInterface
 {
     /**
-     * @return array<string>
+     * @return array<string, int>
      */
     public function execute(int $categoryId): array;
 }

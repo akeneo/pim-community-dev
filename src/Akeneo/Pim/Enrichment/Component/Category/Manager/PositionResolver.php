@@ -28,12 +28,10 @@ class PositionResolver implements PositionResolverInterface
     }
 
     /**
-     * @param array<string> $children
+     * @param array<string, int> $children
      */
     private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {
-        $search = array_search($category->getCode(), $children);
-
-        return $search ? $search + 1 : 1;
+        return isset($children[$category->getCode()]) ? (int)$children[$category->getCode()]['row_num'] : 1;
     }
 }

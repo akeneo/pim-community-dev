@@ -20,9 +20,11 @@ class GetDirectChildrenCategoryCodes implements GetDirectChildrenCategoryCodesIn
     public function execute(int $categoryId): array
     {
         $sql = <<<SQL
-          SELECT code FROM pim_catalog_category WHERE parent_id = :category_id ORDER BY lft
+          SELECT code,ROW_NUMBER() over (order by lft) as row_num
+          FROM pim_catalog_category
+          WHERE parent_id = :category_id
         SQL;
 
-        return $this->connection->executeQuery($sql, ['category_id' => $categoryId])->fetchFirstColumn();
+        return $this->connection->executeQuery($sql, ['category_id' => $categoryId])->fetchAllAssociativeIndexed();
     }
 }

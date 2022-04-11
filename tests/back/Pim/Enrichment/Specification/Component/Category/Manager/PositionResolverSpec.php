@@ -40,7 +40,11 @@ class PositionResolverSpec extends ObjectBehavior
     ) {
         $aCategoryCode = 'categoryC';
         $aCategoryParentId = 1;
-        $aListOfParentCategoryChildren = ['categoryA','categoryB','categoryC'];
+        $aListOfParentCategoryChildren = [
+            'categoryA' => ['row_num' => 1],
+            'categoryB' => ['row_num' => 2],
+            'categoryC' => ['row_num' => 3],
+        ];
 
         $category->getCode()->willReturn($aCategoryCode);
         $category->isRoot()->willReturn(false);

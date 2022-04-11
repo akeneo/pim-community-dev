@@ -29,8 +29,16 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         $categoryTreeFixturesLoader->givenTheCategoryTrees([
             'master_catalog' => [
                 'cameras' => [
-                    'digital_cameras' => [],
-                    'camcorders' => [],
+                    'digital_cameras' => [
+                        'digital_camera1' => [],
+                        'digital_camera2' => [],
+                        'digital_camera3' => [],
+                    ],
+                    'camcorders' => [
+                        'camcorder1' => [],
+                        'camcorder2' => [],
+                        'camcorder3' => [],
+                    ],
                     'webcams' => [
                         'webcam1' => [],
                         'webcam2' => [],
@@ -54,14 +62,14 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(3, $children);
-        $this->assertCategoryCodeIsInPosition($children, 'cameras', 0);
-        $this->assertCategoryCodeIsInPosition($children, 'tvs_projectors', 1);
-        $this->assertCategoryCodeIsInPosition($children, 'audio_video', 2);
+        $this->assertCategoryCodeIsInPosition($children, 'cameras', 1);
+        $this->assertCategoryCodeIsInPosition($children, 'tvs_projectors', 2);
+        $this->assertCategoryCodeIsInPosition($children, 'audio_video', 3);
     }
 
     public function testGetDirectChildrenOfALeafCategory()
     {
-        $category = $this->fetchCategory('digital_cameras');
+        $category = $this->fetchCategory('audio_video');
         $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(0, $children);
@@ -73,9 +81,9 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
         $children = $this->getDirectChildrenCategoryCodes->execute($category->getId());
 
         Assert::assertCount(3, $children);
-        $this->assertCategoryCodeIsInPosition($children, 'webcam1', 0);
-        $this->assertCategoryCodeIsInPosition($children, 'webcam2', 1);
-        $this->assertCategoryCodeIsInPosition($children, 'webcam3', 2);
+        $this->assertCategoryCodeIsInPosition($children, 'webcam1', 1);
+        $this->assertCategoryCodeIsInPosition($children, 'webcam2', 2);
+        $this->assertCategoryCodeIsInPosition($children, 'webcam3', 3);
     }
 
     public function testGetDirectChildrenOfIsolatedCategory()
@@ -95,7 +103,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
 
     private function assertCategoryCodeIsInPosition(array $children, string $categoryCode, int $position): void
     {
-        Assert::assertEquals($categoryCode, $children[$position]);
+        Assert::assertEquals($position, $children[$categoryCode]['row_num']);
     }
 
     protected function getConfiguration(): Configuration
