@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\ReadingCriteriaRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
@@ -41,9 +41,9 @@ class GetProductEvaluation
 {
     public function __construct(
         private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
-        private CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
+        private GetLocalesByChannelQueryInterface               $getLocalesByChannelQuery,
+        private ReadingCriteriaRegistry                         $criteriaRegistry,
+        private CompleteEvaluationWithImprovableAttributes      $completeEvaluationWithImprovableAttributes
     ) {
     }
 
@@ -69,7 +69,7 @@ class GetProductEvaluation
     {
         $criteriaRates = [];
 
-        foreach ($this->criteriaEvaluationRegistry->getCriterionCodes() as $criterionCode) {
+        foreach ($this->criteriaRegistry->getCodes() as $criterionCode) {
             $criterionEvaluation = $criteriaEvaluations->get($criterionCode);
             $criteriaRates[] = $this->formatCriterionEvaluation(
                 $criterionCode,
