@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 class AttributeTarget extends Constraint
 {
     public function __construct(
-        private array $additionalConstraints,
+        private array $additionalConstraints = [],
     ) {
         parent::__construct();
     }

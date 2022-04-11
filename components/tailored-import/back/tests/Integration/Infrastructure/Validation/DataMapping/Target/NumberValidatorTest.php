@@ -23,7 +23,7 @@ final class NumberValidatorTest extends AbstractValidationTest
     /**
      * @dataProvider validDataMappings
      */
-    public function test_it_does_not_build_violations_when_target_is_valid(array $value): void
+    public function test_it_does_not_build_violations_when_data_mapping_is_valid(array $value): void
     {
         $violations = $this->getValidator()->validate($value, new Number([
             '7fa661ce-3a6c-4b95-8441-259911b70529',
@@ -36,7 +36,7 @@ final class NumberValidatorTest extends AbstractValidationTest
     /**
      * @dataProvider invalidDataMappings
      */
-    public function test_it_build_violations_when_target_is_invalid(
+    public function test_it_build_violations_when_data_mapping_is_invalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value

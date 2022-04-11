@@ -15,6 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -27,6 +29,12 @@ class SampleDataValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, SampleData::class);
         }
 
-        $this->context->getValidator()->inContext($this->context)->validate($value, new All(new Type('string')));
+        $this->context->getValidator()->inContext($this->context)->validate($value, [
+            new All([
+                new Type('string'),
+                new Length(['max' => 101]),
+            ]),
+            new Count(['max' => 3]),
+        ]);
     }
 }

@@ -61,7 +61,6 @@ class OperationsValidator extends ConstraintValidator
         }
 
         $constraintClass = $this->operationConstraints[$operationType] ?? null;
-
         if (!$this->isOperationConstraint($constraintClass)) {
             return;
         }
@@ -71,7 +70,7 @@ class OperationsValidator extends ConstraintValidator
         $validator->inContext($this->context)->atPath($path)->validate($operation, $operationConstraint);
     }
 
-    private function isOperationConstraint(string $constraintClass): bool
+    private function isOperationConstraint(?string $constraintClass): bool
     {
         return is_subclass_of($constraintClass, OperationConstraint::class, true);
     }
