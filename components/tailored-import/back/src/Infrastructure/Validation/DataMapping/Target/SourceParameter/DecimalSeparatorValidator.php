@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class DecimalSeparatorValidator extends ConstraintValidator
+final class DecimalSeparatorValidator extends ConstraintValidator
 {
     public function __construct(
         private array $availableDecimalSeparators,

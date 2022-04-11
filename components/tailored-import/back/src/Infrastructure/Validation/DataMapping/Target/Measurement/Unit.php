@@ -4,7 +4,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Symfony\Component\Validator\Constraint;
 
-class Unit extends Constraint
+final class Unit extends Constraint
 {
     public const UNIT_SHOULD_EXIST = 'akeneo.tailored_import.validation.target.source_parameter.unit_should_exist';
 

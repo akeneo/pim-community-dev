@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 
-class Operations extends Constraint
+final class Operations extends Constraint
 {
     public const INCOMPATIBLE_OPERATION_TYPE = 'akeneo.tailored_import.validation.operations.incompatible_operation_type';
 

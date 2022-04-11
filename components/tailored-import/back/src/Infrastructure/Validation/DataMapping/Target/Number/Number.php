@@ -15,6 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\TargetConstraint;
 
-class Number extends TargetConstraint
+final class Number extends TargetConstraint
 {
 }

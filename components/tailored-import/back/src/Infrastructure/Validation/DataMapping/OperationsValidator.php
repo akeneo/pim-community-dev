@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class OperationsValidator extends ConstraintValidator
+final class OperationsValidator extends ConstraintValidator
 {
     public function __construct(
         private array $operationConstraints

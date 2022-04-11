@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
-class CleanHTMLTagsOperation extends OperationConstraint
+final class CleanHTMLTagsOperation extends OperationConstraint
 {
 }

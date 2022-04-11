@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class MeasurementValidator extends ConstraintValidator
+final class MeasurementValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {

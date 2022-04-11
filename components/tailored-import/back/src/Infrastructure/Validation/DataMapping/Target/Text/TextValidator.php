@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class TextValidator extends ConstraintValidator
+final class TextValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {

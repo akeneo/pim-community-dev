@@ -9,7 +9,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class UnitValidator extends ConstraintValidator
+final class UnitValidator extends ConstraintValidator
 {
     public function __construct(private FindUnit $findUnit)
     {

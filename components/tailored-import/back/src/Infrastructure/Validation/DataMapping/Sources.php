@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 
-class Sources extends Constraint
+final class Sources extends Constraint
 {
     public const MIN_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached';
     public const MAX_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached';

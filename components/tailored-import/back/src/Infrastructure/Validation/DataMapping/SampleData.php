@@ -15,6 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 
-class SampleData extends Constraint
+final class SampleData extends Constraint
 {
 }

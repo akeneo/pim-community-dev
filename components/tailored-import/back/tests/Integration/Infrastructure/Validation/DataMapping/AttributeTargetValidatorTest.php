@@ -94,7 +94,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'locale' => 'en_US',
                     'type' => 'attribute',
                     'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
+                    'action_if_empty' => 'clear',
                 ],
             ],
         ];

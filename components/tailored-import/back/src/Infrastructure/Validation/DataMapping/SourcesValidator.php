@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class SourcesValidator extends ConstraintValidator
+final class SourcesValidator extends ConstraintValidator
 {
     private const SOURCES_MIN_COUNT = 1;
     private const MONO_SOURCES_MAX_COUNT = 1;

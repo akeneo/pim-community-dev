@@ -4,6 +4,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Symfony\Component\Validator\Constraint;
 
-class NumberSourceParameter extends Constraint
+final class NumberSourceParameter extends Constraint
 {
 }

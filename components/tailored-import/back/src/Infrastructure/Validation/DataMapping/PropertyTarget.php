@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Symfony\Component\Validator\Constraint;
 
-class PropertyTarget extends Constraint
+final class PropertyTarget extends Constraint
 {
     public function __construct(
         private array $additionalConstraints,

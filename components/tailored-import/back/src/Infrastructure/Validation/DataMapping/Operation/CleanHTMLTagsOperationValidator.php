@@ -21,9 +21,9 @@ use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class CleanHTMLTagsOperationValidator extends ConstraintValidator
+final class CleanHTMLTagsOperationValidator extends ConstraintValidator
 {
-    public function validate($operation, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof CleanHTMLTagsOperationConstraint) {
             throw new UnexpectedTypeException($constraint, CleanHTMLTagsOperationConstraint::class);
@@ -31,7 +31,7 @@ class CleanHTMLTagsOperationValidator extends ConstraintValidator
 
         $this->context->getValidator()
             ->inContext($this->context)
-            ->validate($operation, new Collection([
+            ->validate($value, new Collection([
                 'fields' => [
                     'type' => new EqualTo(['value' => CleanHTMLTagsOperation::TYPE]),
                 ],

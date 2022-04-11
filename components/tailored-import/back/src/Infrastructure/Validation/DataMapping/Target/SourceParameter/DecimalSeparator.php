@@ -15,6 +15,6 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Symfony\Component\Validator\Constraint;
 
-class DecimalSeparator extends Constraint
+final class DecimalSeparator extends Constraint
 {
 }

@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class AttributeTargetValidator extends ConstraintValidator
+final class AttributeTargetValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {

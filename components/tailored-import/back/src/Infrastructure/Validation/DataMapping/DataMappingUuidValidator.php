@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class DataMappingUuidValidator extends ConstraintValidator
+final class DataMappingUuidValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
