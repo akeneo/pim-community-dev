@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Audit\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
@@ -11,8 +11,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepositoryInterface;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\EventSubscriber\ReadProductsEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
-use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

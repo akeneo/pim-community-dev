@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\Acl\Event\PrivilegesPostLoadEvent;

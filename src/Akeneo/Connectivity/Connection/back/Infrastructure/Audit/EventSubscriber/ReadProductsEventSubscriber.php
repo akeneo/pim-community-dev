@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Audit\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
@@ -27,18 +27,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
-    private ConnectionContextInterface $connectionContext;
-    private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
-    private ConnectionRepositoryInterface $connectionRepository;
-
     public function __construct(
-        ConnectionContextInterface $connectionContext,
-        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
-        ConnectionRepositoryInterface $connectionRepository
+        private ConnectionContextInterface $connectionContext,
+        private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        private ConnectionRepositoryInterface $connectionRepository,
     ) {
-        $this->connectionContext = $connectionContext;
-        $this->updateDataDestinationProductEventCountHandler = $updateDataDestinationProductEventCountHandler;
-        $this->connectionRepository = $connectionRepository;
     }
 
     public static function getSubscribedEvents(): array

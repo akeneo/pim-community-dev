@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Doctrine\Common\Collections\ArrayCollection;

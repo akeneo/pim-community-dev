@@ -1,15 +1,1 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber:
-        arguments:
-            - '@akeneo_connectivity.connection.service.connection_context'
-            - '@Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\AclPrivilegesEventSubscriber:
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
-        tags:
-            - { name: kernel.event_subscriber }
