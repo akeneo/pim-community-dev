@@ -1,6 +1,5 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Cli\CreateConnectionCommand
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\CreateConnectionCommand:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
         tags:

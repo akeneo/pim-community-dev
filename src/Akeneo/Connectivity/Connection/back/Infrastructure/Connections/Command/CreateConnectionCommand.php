@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Cli;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\Command;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand as CreationCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
@@ -26,12 +26,9 @@ class CreateConnectionCommand extends Command
      */
     protected static $defaultName = 'akeneo:connectivity-connection:create';
 
-    private CreateConnectionHandler $createConnection;
-
-    public function __construct(CreateConnectionHandler $createConnection)
+    public function __construct(private CreateConnectionHandler $createConnection)
     {
         parent::__construct();
-        $this->createConnection = $createConnection;
     }
 
     /**

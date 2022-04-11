@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Connection;
+namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Connection\Command;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\CommandTestCase;
-use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Test\Integration\Configuration;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -18,8 +16,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class CreateConnectionCommandEndToEnd extends CommandTestCase
 {
-    /** @var Command */
-    private $command;
+    private Command $command;
 
     protected function setUp(): void
     {
