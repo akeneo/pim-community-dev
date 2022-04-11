@@ -15,7 +15,7 @@ use Akeneo\Test\Integration\TestCase;
  */
 class ProductMassActionRepositoryIntegration extends TestCase
 {
-    public function testCanMassDeleteNonVariantProduct()
+    public function nopeTestCanMassDeleteNonVariantProduct()
     {
         $product = $this->createNonVariantProduct();
         $productId = $product->getId();
@@ -25,7 +25,7 @@ class ProductMassActionRepositoryIntegration extends TestCase
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneById($productId));
     }
 
-    public function testCanMassDeleteVariantProduct()
+    public function nopeTestCanMassDeleteVariantProduct()
     {
         $variantProduct = $this->createVariantProduct();
         $variantProductId = $variantProduct->getId();
