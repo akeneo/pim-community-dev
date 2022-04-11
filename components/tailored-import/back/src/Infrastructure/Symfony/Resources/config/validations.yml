@@ -19,18 +19,6 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\LocaleShouldBeActiveValidator:
-    arguments:
-      - '@pim_channel.query.cache.channel_exists_with_locale'
-    tags:
-      - { name: validator.constraint_validator }
-
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\ChannelShouldExistValidator:
-    arguments:
-      - '@pim_channel.query.cache.channel_exists_with_locale'
-    tags:
-      - { name: validator.constraint_validator }
-
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator:
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
