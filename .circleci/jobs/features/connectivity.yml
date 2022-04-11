@@ -135,8 +135,10 @@ jobs:
                       echo "export PHPINSIGHTS_SCORE_QUALITY=$(sed -n 's/^\[CODE[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPINSIGHTS_SCORE_COMPLEXITY=$(sed -n 's/^\[COMPLEXITY[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPINSIGHTS_SCORE_ARCHITECTURE=$(sed -n 's/^\[ARCHITECTURE[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
-                      echo "export PHPCD_UNUSED_RULES=$(cat unused-rules.txt | grep -c '<warning>' | [[ '$1' == '0' ]] && echo ':white_check_mark:' || echo ':warning:')" >> $BASH_ENV
+                      echo "export PHPINSIGHTS_SCORE_STYLE=$(sed -n 's/^\[MISC[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPCD_UNUSED_RULES=$(cat unused-rules.txt | grep -c '<warning>' | awk '{if ($1==0) print ":white_check_mark:"; else print ":warning:"}')" >> $BASH_ENV
             -   slack-app/notify:
+                    channel: "C03AZNXQGLB"
                     custom: |
                         {
                             "blocks": [
@@ -158,13 +160,10 @@ jobs:
                                     }
                                 },
                                 {
-                                    "type": "divider"
-                                },
-                                {
                                     "type": "section",
                                     "text": {
                                         "type": "mrkdwn",
-                                        "text": "PHP Coupling detector rules: $PHPCD_UNUSED_RULES%"
+                                        "text": "PHP Coupling detector rules: $PHPCD_UNUSED_RULES"
                                     }
                                 }
                             ]

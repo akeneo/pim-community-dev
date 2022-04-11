@@ -36,10 +36,10 @@ workflows:
                       - test_back_connectivity
 
     octopus_weekly_code_quality:
-        when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
+#        when:
+#            and:
+#                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+#                - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
         jobs:
             - checkout_ce
             - build_dev:
