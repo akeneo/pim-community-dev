@@ -11,6 +11,8 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -134,18 +136,20 @@ final class MigrateToUuidReindexElasticsearch implements MigrateToUuidStep
     /**
      * @param array<int, string> $productIdentifiers
      *
-     * @return array<int, string>
+     * @return array<string, string>
      */
-    private function deleteNonExistingIdentifiers(array $productIdentifiers)
+    private function deleteNonExistingIdentifiers(array $productIdentifiers): array
     {
         $existingIdentifiers = $this->connection->executeQuery(
-            'SELECT id, identifier FROM pim_catalog_product WHERE identifier IN (:identifiers)',
+            'SELECT BIN_TO_UUID(uuid) as uuid, identifier FROM pim_catalog_product WHERE identifier IN (:identifiers)',
             ['identifiers' => $productIdentifiers],
             ['identifiers' => Connection::PARAM_STR_ARRAY]
         )->fetchAllKeyValue();
 
-        $nonExistingIds = \array_keys(\array_diff_key($productIdentifiers, $existingIdentifiers));
-        $this->productIndexer->removeFromProductIds($nonExistingIds);
+        $nonExistingUuids = \array_keys(\array_diff_key($productIdentifiers, $existingIdentifiers));
+        $this->productIndexer->removeFromProductUuids(
+            array_map(fn (string $uuid): UuidInterface => Uuid::fromString($uuid), $nonExistingUuids)
+        );
 
         return $existingIdentifiers;
     }
