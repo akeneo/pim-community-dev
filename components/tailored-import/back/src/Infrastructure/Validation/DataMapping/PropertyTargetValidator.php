@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttribute;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -38,19 +38,12 @@ class PropertyTargetValidator extends ConstraintValidator
                         new Type('string'),
                         new NotBlank(),
                     ],
-                    'locale' => [
-                        new Type('string'),
-                        new NotBlank(),
-                    ],
-                    'channel' => [
-                        new Type('string'),
-                        new NotBlank(),
-                    ],
-                    'type' => new EqualTo('attribute'),
+                    'locale' => new Blank(),
+                    'channel' => new Blank(),
+                    'type' => new EqualTo('property'),
                     'action_if_not_empty' => new EqualTo(TargetInterface::ACTION_SET),
                 ], $constraint->getAdditionalConstraints()),
             ]),
-            new IsValidAttribute(),
         ]);
     }
 }

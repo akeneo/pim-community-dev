@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Operation;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Identifier\Identifier;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
