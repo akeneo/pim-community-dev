@@ -142,7 +142,7 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
      */
     private function getCompletenessByLocaleCode(ProductInterface $product, $localeCode)
     {
-        $completenesses = $this->getProductCompletenesses()->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses()->fromProductUuid($product->getUuid());
         foreach ($completenesses as $completeness) {
             if ($localeCode === $completeness->localeCode()) {
                 return $completeness;

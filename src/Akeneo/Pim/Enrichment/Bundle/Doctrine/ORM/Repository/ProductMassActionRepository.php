@@ -46,6 +46,8 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     }
 
     /**
+     * @todo check if need to fix it or if we can remove it
+     *
      * {@inheritdoc}
      */
     public function deleteFromIds(array $identifiers)
