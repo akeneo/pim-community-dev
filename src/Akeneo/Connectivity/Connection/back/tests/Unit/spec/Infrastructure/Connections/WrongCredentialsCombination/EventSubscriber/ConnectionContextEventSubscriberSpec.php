@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;

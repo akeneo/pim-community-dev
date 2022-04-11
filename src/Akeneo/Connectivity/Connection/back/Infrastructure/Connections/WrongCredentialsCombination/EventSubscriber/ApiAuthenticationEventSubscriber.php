@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection\Model\Write\WrongCredentialsCombination;
@@ -17,16 +17,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ApiAuthenticationEventSubscriber implements EventSubscriberInterface
 {
-    private ConnectionContextInterface $connectionContext;
-
-    private WrongCredentialsCombinationRepositoryInterface $repository;
-
     public function __construct(
-        ConnectionContextInterface $connectionContext,
-        WrongCredentialsCombinationRepositoryInterface $repository
+        private ConnectionContextInterface $connectionContext,
+        private WrongCredentialsCombinationRepositoryInterface $repository,
     ) {
-        $this->connectionContext = $connectionContext;
-        $this->repository = $repository;
     }
 
     /**

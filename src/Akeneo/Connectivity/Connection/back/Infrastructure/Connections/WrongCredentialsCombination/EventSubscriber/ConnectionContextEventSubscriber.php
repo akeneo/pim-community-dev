@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Tool\Component\Api\Event\ApiAuthenticationEvent;
@@ -15,11 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConnectionContextEventSubscriber implements EventSubscriberInterface
 {
-    private ConnectionContext $connectionContext;
-
-    public function __construct(ConnectionContext $connectionContext)
+    public function __construct(private ConnectionContext $connectionContext)
     {
-        $this->connectionContext = $connectionContext;
     }
 
     public static function getSubscribedEvents(): array
