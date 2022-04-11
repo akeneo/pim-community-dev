@@ -103,10 +103,10 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         break;
                     case '=':
                         if ('has_products' === $property) {
-                            $qb->andWhere($qb->expr()->in('r.id', 'family_ids_used_by_products'));
+                            $qb->andWhere($qb->expr()->in('r.id', ':family_ids_used_by_products'));
                             $qb->setParameter(
                                 'family_ids_used_by_products',
-                                implode(',', $this->getFamilyIdsUsedByProductsQuery->execute())
+                                $this->getFamilyIdsUsedByProductsQuery->execute()
                             );
                         }
                         break;

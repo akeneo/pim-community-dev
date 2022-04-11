@@ -14,12 +14,17 @@ final class GetFamilyIdsUsedByProductsQuery implements GetFamilyIdsUsedByProduct
 {
     public function __construct(private Connection $connection)
     {
-
     }
     public function execute(): array
     {
         $query = <<<SQL
-            SELECT distinct(product.family_id) FROM pim_catalog_product product WHERE family_id IS NOT NULL
+        SELECT family.id
+        FROM pim_catalog_family family
+        WHERE EXISTS(
+            SELECT product.family_id 
+            FROM pim_catalog_product product 
+            WHERE product.family_id = family.id
+        );
         SQL;
 
         return $this->connection->executeQuery($query, [])->fetchFirstColumn();
