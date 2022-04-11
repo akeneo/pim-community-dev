@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\FileInfo;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DoesImageExistQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Internal\DoesImageExistQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\DoesImageExistQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

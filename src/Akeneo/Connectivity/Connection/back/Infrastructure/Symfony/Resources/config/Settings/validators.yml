@@ -7,7 +7,7 @@ services:
 
     Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\ImageMustExistValidator:
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\Internal\DoesImageExistQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\DoesImageExistQuery'
         tags:
             - { name: validator.constraint_validator, alias: connection_image_must_exist }
 
