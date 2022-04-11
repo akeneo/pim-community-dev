@@ -125,6 +125,25 @@ class FamilyRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('other', $since2020Families[0]->getCode());
     }
 
+    public function test_to_search_families_with_products(): void
+    {
+        $this->createFamily(['code' => 'accessories']);
+        $this->createFamily(['code' => 'clothing']);
+        $this->createFamily(['code' => 'other']);
+        $this->createProduct('a_product_with_a_family', ['family' => 'accessories']);
+        $this->createProduct('another_product_with_a_family', ['family' => 'clothing',]);
+
+        $families = $this->getRepository()->searchAfterOffset(
+            ['has_products' => [['operator' => '=', 'value' => true]]],
+            ['code' => 'ASC'],
+            5,
+            0
+        );
+        Assert::assertCount(2, $families);
+        Assert::assertEquals('accessories', $families[0]->getCode());
+        Assert::assertEquals('clothing', $families[1]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
@@ -210,5 +229,11 @@ SQL;
         $this->get('pim_catalog.updater.family')->update($family, $data);
 
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+    private function createProduct(string $identifier, array $data): void
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $this->get('pim_catalog.saver.product')->save($product);
     }
 }
