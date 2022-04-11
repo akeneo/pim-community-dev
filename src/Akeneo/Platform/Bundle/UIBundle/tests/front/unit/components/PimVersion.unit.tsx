@@ -22,9 +22,10 @@ test('it displays the last version if the current version is not up to date', as
   });
 
   await act(async () => renderDOMWithProviders(<PimVersion />, container as HTMLElement));
-  expect(
-    getByText(container, 'pim_dashboard.version : EE 6.0.20 Maple | pim_analytics.new_patch_available : v6.0.21')
-  ).toBeInTheDocument();
+  expect(getByText(container, /pim_dashboard\.version/)).toBeInTheDocument();
+  expect(getByText(container, /EE 6\.0\.20 Maple/)).toBeInTheDocument();
+  expect(getByText(container, /pim_analytics\.new_patch_available/)).toBeInTheDocument();
+  expect(getByText(container, /v6\.0\.21/)).toBeInTheDocument();
 });
 
 test('it does not display the last version if the current version is up to date', async () => {
@@ -34,5 +35,6 @@ test('it does not display the last version if the current version is up to date'
   });
 
   await act(async () => renderDOMWithProviders(<PimVersion />, container as HTMLElement));
-  expect(getByText(container, 'pim_dashboard.version : EE 6.0.21 Maple')).toBeInTheDocument();
+  expect(getByText(container, /pim_dashboard\.version/)).toBeInTheDocument();
+  expect(getByText(container, /EE 6\.0\.21 Maple/)).toBeInTheDocument();
 });
