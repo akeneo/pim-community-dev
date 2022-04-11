@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import {Button, ButtonProps, IconButton} from '../../';
-import {getColor} from "../../../theme";
+import {getColor} from '../../../theme';
 
 const TableActionCellContainer = styled.td`
   color: ${getColor('grey', 140)};
@@ -39,9 +39,7 @@ const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
 
     return (
       <TableActionCellContainer ref={forwardedRef} {...rest}>
-        <InnerTableActionCellContainer>
-          {decoratedChildren}
-        </InnerTableActionCellContainer>
+        <InnerTableActionCellContainer>{decoratedChildren}</InnerTableActionCellContainer>
       </TableActionCellContainer>
     );
   }
