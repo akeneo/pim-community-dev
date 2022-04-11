@@ -13,3 +13,4 @@ services:
                 xlsx_tailored_product_import: pim-job-instance-xlsx-tailored-product-import
         tags:
             - { name: pim_enrich.provider.form }
+

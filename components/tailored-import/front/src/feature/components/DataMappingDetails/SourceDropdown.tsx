@@ -1,24 +1,23 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {Column, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
 import {
-  ArrowDownIcon,
-  Button,
+  BlockButton,
   Dropdown,
   Search,
   GroupsIllustration,
   useBooleanState,
   useDebounce,
   useAutoFocus,
+  ArrowDownIcon,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Column, generateColumnName} from '../../models';
 
 type SourceDropdownProps = {
-  disabled: boolean;
   columns: Column[];
   onColumnSelected: (selectedColumn: Column) => void;
 };
 
-const SourceDropdown = ({columns, onColumnSelected, disabled}: SourceDropdownProps) => {
+const SourceDropdown = ({columns, onColumnSelected}: SourceDropdownProps) => {
   const translate = useTranslate();
   const [isOpen, open, close] = useBooleanState(false);
   const [searchValue, setSearchValue] = useState('');
@@ -41,21 +40,14 @@ const SourceDropdown = ({columns, onColumnSelected, disabled}: SourceDropdownPro
 
   return (
     <Dropdown>
-      <Button
+      <BlockButton
         onClick={open}
-        disabled={disabled}
-        title={
-          disabled
-            ? translate('akeneo.tailored_import.validation.data_mappings.sources.max_count_reached', {
-                limit: MAX_SOURCE_COUNT_BY_DATA_MAPPING,
-              })
-            : undefined
-        }
+        icon={<ArrowDownIcon title="akeneo.tailored_import.data_mapping.sources.add.title" />}
       >
-        {translate('akeneo.tailored_import.data_mapping.sources.add')} <ArrowDownIcon />
-      </Button>
+        {translate('akeneo.tailored_import.data_mapping.sources.add.label')}
+      </BlockButton>
       {isOpen && (
-        <Dropdown.Overlay verticalPosition="down" onClose={close}>
+        <Dropdown.Overlay verticalPosition="down" onClose={close} fullWidth={true}>
           <Dropdown.Header>
             <Search
               onSearchChange={setSearchValue}

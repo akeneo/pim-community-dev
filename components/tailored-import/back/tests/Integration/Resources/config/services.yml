@@ -1,0 +1,32 @@
+parameters:
+  akeneo.tailored_import.supported_system_properties:
+    - 'categories'
+    - 'enabled'
+    - 'family'
+    - 'parent'
+    - 'family_variant'
+
+  akeneo.tailored_import.supported_attribute_types:
+    - 'akeneo_reference_entity_collection'
+    - 'akeneo_reference_entity'
+    - 'pim_catalog_asset_collection'
+    - 'pim_catalog_boolean'
+    - 'pim_catalog_date'
+    - 'pim_catalog_file'
+    - 'pim_catalog_image'
+    - 'pim_catalog_metric'
+    - 'pim_catalog_multiselect'
+    - 'pim_catalog_number'
+    - 'pim_catalog_price_collection'
+    - 'pim_catalog_simpleselect'
+    - 'pim_catalog_table'
+    - 'pim_catalog_text'
+    - 'pim_catalog_textarea'
+
+  akeneo.tailored_import.supported_collection_system_properties:
+    - 'categories'
+
+  akeneo.tailored_import.supported_collection_attribute_types:
+    - 'akeneo_reference_entity_collection'
+    - 'pim_catalog_asset_collection'
+    - 'pim_catalog_multiselect'

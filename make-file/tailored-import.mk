@@ -18,7 +18,7 @@ unit-back: #Doc: launch PHPSpec for tailored import
 .PHONY: integration-back
 integration-back: # Disabled dependency becaused failed on custom workflow var/tests/phpunit #Doc: launch PHPUnit integration tests for tailored import
 ifeq ($(CI),true)
-	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php TailoredImport_Integration_Test
+	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh components/tailored-import/back/tests/phpunit-ee.xml vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php TailoredImport_Integration_Test
 else
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c components/tailored-import/back/tests/phpunit-ee.xml --testsuite TailoredImport_Integration_Test $(O)
 endif

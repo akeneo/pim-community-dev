@@ -36,15 +36,14 @@ final class GetFileTemplateInformationAction
         $query = new GetFileTemplateInformationQuery();
         $query->fileKey = $request->get('file_key');
         $query->sheetName = $request->get('sheet_name');
-        $query->headerLine = $request->query->getInt('header_row', 1);
 
         $violations = $this->validator->validate($query, new IsValidFileTemplateInformationQuery());
         if ($violations->count() > 0) {
-            return new JsonResponse($this->violationNormalizer->normalize($violations), 400);
+            return new JsonResponse($this->violationNormalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         $fileTemplateInformation = $this->getFileTemplateHandler->handle($query);
 
-        return new JsonResponse($fileTemplateInformation->normalize(), 200);
+        return new JsonResponse($fileTemplateInformation->normalize());
     }
 }

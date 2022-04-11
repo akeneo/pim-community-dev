@@ -12,6 +12,8 @@ use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactory
  */
 final class GetFileTemplateInformationHandler
 {
+    const ROW_NUMBER_DISPLAYED_IN_PREVIEW = 20;
+
     public function __construct(
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
     ) {
@@ -20,11 +22,11 @@ final class GetFileTemplateInformationHandler
     public function handle(GetFileTemplateInformationQuery $getFileTemplateQuery): FileTemplateInformationResult
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getFileTemplateQuery->fileKey);
-        $headerValues = $fileReader->readLine($getFileTemplateQuery->sheetName, $getFileTemplateQuery->headerLine);
+        $rows = $fileReader->readRows($getFileTemplateQuery->sheetName, 0, self::ROW_NUMBER_DISPLAYED_IN_PREVIEW);
 
         return FileTemplateInformationResult::create(
             $fileReader->getSheetNames(),
-            $headerValues
+            $rows
         );
     }
 }
