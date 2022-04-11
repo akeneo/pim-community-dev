@@ -17,7 +17,7 @@ interface GetProductCompletenesses
     public function fromProductUuid(UuidInterface $productUuid): ProductCompletenessCollection;
 
     /**
-     * @param UuidInterface[] $productIds
+     * @param UuidInterface[] $productUuids
      * @param string|null $channel Filtered by given channel
      * @param array $locales Filtered by given locales
      *
