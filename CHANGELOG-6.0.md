@@ -7,6 +7,7 @@
 ## Bug fixes
 
 - PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
+- PIM-10385: Fix message "New patch available" is present even if the PIM on the last patch
 
 # 6.0.20 (2022-04-01)
 
