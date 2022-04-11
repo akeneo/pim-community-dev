@@ -1,14 +1,4 @@
 services:
-    akeneo_connectivity.connection.service.client.create_client:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-
-    akeneo_connectivity.connection.service.client.delete_client:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\DeleteClient
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-
     akeneo_connectivity.connection.service.user.create_user:
         class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser
         arguments:
@@ -32,12 +22,6 @@ services:
         arguments:
             - '@pim_user.repository.role'
             - '@pim_user.remover.role'
-
-    akeneo_connectivity.connection.service.client.regenerate_client_secret:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\FosRegenerateClientSecret
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-            - '@database_connection'
 
     akeneo_connectivity.connection.service.user.regenerate_user_password:
         class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword

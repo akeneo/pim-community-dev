@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\Client\Fos;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;

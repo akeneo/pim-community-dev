@@ -60,6 +60,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Settings/controllers.yml');
         $loader->load('Settings/handlers.yml');
         $loader->load('Settings/queries.yml');
+        $loader->load('Settings/services.yml');
         $loader->load('Settings/validators.yml');
 
         $loader->load('Webhook/commands.yml');

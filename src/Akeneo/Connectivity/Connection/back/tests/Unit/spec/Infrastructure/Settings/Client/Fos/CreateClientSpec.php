@@ -6,8 +6,6 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Client\Fos;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Client;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
-use Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client as FosClient;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
@@ -22,7 +20,7 @@ class CreateClientSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldBeAnInstanceOf(CreateClient::class);
+        $this->shouldBeAnInstanceOf(\Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient::class);
         $this->shouldImplement(CreateClientInterface::class);
     }
 

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\Client\Fos;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Settings\Client\Fos;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Client;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -21,9 +22,7 @@ class CreateClientIntegration extends TestCase
     {
         Assert::assertCount(0, $this->fetchApiClients());
 
-        $client = $this
-            ->get('akeneo_connectivity.connection.service.client.create_client')
-            ->execute('Magento');
+        $client = $this->get(CreateClient::class)->execute('Magento');
         Assert::assertInstanceOf(Client::class, $client);
 
         $createdClients = $this->fetchApiClients();

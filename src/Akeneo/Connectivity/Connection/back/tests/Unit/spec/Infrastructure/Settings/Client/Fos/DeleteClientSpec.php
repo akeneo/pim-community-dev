@@ -6,7 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Client\Fos;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId;
-use Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\DeleteClient;
+use Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use PhpSpec\ObjectBehavior;

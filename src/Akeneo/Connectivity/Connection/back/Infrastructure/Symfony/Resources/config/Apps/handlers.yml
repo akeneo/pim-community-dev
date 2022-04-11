@@ -44,7 +44,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DeleteConnectedAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@akeneo_connectivity.connection.service.user.delete_user'
-            - '@akeneo_connectivity.connection.service.client.delete_client'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup'
             - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveRevokedAccessTokensOfDisconnectedAppQuery'
