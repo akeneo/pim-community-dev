@@ -80,4 +80,9 @@ class RequiredAttributesMask
 
         return new RequiredAttributesMask($this->familyCode, \array_values($mergedMasks));
     }
+
+    public function getFamilyCode(): string
+    {
+        return $this->familyCode;
+    }
 }
