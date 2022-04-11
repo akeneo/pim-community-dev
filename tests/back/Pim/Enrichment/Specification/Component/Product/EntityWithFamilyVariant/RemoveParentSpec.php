@@ -20,6 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RemoveParentSpec extends ObjectBehavior
@@ -46,7 +47,7 @@ class RemoveParentSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $product->isVariant()->willReturn(true);
-        $product->getId()->willReturn(null);
+        $product->getCreated()->willReturn(null);
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
 
         $this->from($product);
@@ -77,7 +78,7 @@ class RemoveParentSpec extends ObjectBehavior
             ]
         );
         $product->isVariant()->willReturn(true);
-        $product->getId()->willReturn(42);
+        $product->getCreated()->willReturn(new \DateTime());
         $product->getValues()->willReturn($allValues);
         $parentCategory = new Category();
         $childCategory = new Category();
