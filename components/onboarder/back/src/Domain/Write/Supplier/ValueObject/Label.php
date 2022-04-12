@@ -6,7 +6,7 @@ namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
 
 final class Label
 {
-    public const MAX_LENGTH = 200;
+    private const MAX_LENGTH = 200;
 
     private function __construct(private string $label)
     {

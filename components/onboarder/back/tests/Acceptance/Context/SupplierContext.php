@@ -172,7 +172,7 @@ final class SupplierContext implements Context
     /**
      * @When I update the supplier ":code" with an email address longer than 255 for a contributor
      */
-    public function iUpdateTheSupplierWithATooLongEmailAddressLongerThan255ForContributor(string $code): void
+    public function iUpdateTheSupplierWithAnEmailAddressLongerThan255ForContributor(string $code): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         $longEmail = str_repeat('a', 250) . '@' . 'aa.co';
