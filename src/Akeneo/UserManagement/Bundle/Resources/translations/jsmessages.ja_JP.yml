@@ -30,6 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: まず、最も関連性のあるコンテンツであなたの作業をお手伝いするために、あなたの主な目標を教えてください。
   why_is_it_needed: なぜこの情報が必要ですか？
+  save_button: 保存して App Store にアクセス
   selector:
     placeholder: オプションを選択
     not_found: 結果はありません

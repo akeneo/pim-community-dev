@@ -36,18 +36,21 @@ final class GetProductScoresSpec extends ObjectBehavior
 
 
         $getProductScoresQuery->byProductId($productId)->willReturn((new ChannelLocaleRateCollection())
-            ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-            ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
+                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
         );
 
         $this->get($productId)->shouldBeLike([
-            'ecommerce' => [
-                'en_US' => (new Rate(100))->toLetter(),
-                'fr_FR' => null,
-            ],
-            'mobile' => [
-                'en_US' => (new Rate(80))->toLetter()
-            ],
+            "evaluations_available" => true,
+            "scores" => [
+                'ecommerce' => [
+                    'en_US' => (new Rate(100))->toLetter(),
+                    'fr_FR' => null,
+                ],
+                'mobile' => [
+                    'en_US' => (new Rate(80))->toLetter()
+                ],
+            ]
         ]);
     }
 }

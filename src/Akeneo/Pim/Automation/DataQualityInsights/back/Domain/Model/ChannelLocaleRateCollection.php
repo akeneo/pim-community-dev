@@ -72,6 +72,11 @@ final class ChannelLocaleRateCollection implements \IteratorAggregate
         return $rateCollection;
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->rates->isEmpty();
+    }
+
     public function toArrayLetter(): array
     {
         return $this->rates->mapWith(function (Rate $rate) {
