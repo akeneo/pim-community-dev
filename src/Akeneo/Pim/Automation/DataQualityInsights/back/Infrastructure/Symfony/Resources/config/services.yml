@@ -132,7 +132,7 @@ services:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
         arguments:
             - '@akeneo.pim.enrichment.completeness.query.get_product_masks'
-            - '@akeneo.pim.structure.query.sql_get_required_attributes_masks'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredAttributesMasksQuery'
 
     akeneo.pim.automation.completeness_product_non_required_attributes_calculator:
         class: Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator
