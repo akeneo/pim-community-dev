@@ -40,7 +40,7 @@ class GetConnectedAppRoleIdentifierQueryIntegration extends TestCase
 
     public function test_it_returns_role_identifier_for_a_connected_app(): void
     {
-        $this->connectedAppLoader->createConnectedAppWithUserAndTokens('connected_app_id',  'connection_code');
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens('connected_app_id', 'connection_code');
 
         $roleIdentifier = $this->query->execute('connected_app_id');
 
