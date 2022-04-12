@@ -1,0 +1,22 @@
+%% https://mermaid-js.github.io/mermaid-live-editor/edit
+graph TD
+    style CONNECT_DENIED_1 stroke:#e00000,stroke-width:2px
+    style CONNECT_DENIED_2 stroke:#e00000,stroke-width:2px
+    style CONNECT_DENIED_3 stroke:#e00000,stroke-width:2px
+    style CONNECT_REDIRECT stroke:#5bd100,stroke-width:2px
+    CONNECT(<b>Click on Connect</b>) --> CONNECT_CHECK_LIMIT{"Is connections<br/>limit reached?"}
+    CONNECT_CHECK_LIMIT -->|YES| CONNECT_DENIED_1[Denied]
+    CONNECT_CHECK_LIMIT -->|NO| CONNECT_CHECK_DEVMODE{"Is developer<br/>mode enabled?"}
+    CONNECT_CHECK_DEVMODE -->|NO| CONNECT_GET_APP[Get App]
+    CONNECT_CHECK_DEVMODE -->|YES| CONNECT_CHECK_TESTAPP{"Is test app?"}
+    CONNECT_CHECK_TESTAPP -->|YES| CONNECT_GET_TEST_APP[Get Test App]
+    CONNECT_CHECK_TESTAPP -->|NO| CONNECT_GET_APP[Get App]
+    CONNECT_GET_TEST_APP --> CONNECT_CHECK_ACL_MANAGE_TEST{"Is allowed to<br/>manage Test Apps?"}
+    CONNECT_CHECK_ACL_MANAGE_TEST -->|NO| CONNECT_DENIED_2[Denied]
+    CONNECT_CHECK_ACL_MANAGE_TEST -->|YES| CONNECT_CHECK_CLIENT{"OAuth client exists?"}
+    CONNECT_GET_APP --> CONNECT_CHECK_ACL_MANAGE{"Is allowed to<br/>manage Apps?"}
+    CONNECT_CHECK_ACL_MANAGE -->|YES| CONNECT_CHECK_CLIENT{"OAuth client exists?"}
+    CONNECT_CHECK_ACL_MANAGE -->|NO| CONNECT_DENIED_3[Denied]
+    CONNECT_CHECK_CLIENT -->|NO| CONNECT_CREATE_CLIENT[Create OAuth Client]
+    CONNECT_CREATE_CLIENT --> CONNECT_REDIRECT[Redirect to the Activate URL]
+    CONNECT_CHECK_CLIENT -->|YES| CONNECT_REDIRECT[Redirect to the Activate URL]
