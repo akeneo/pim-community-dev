@@ -142,4 +142,14 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->getColumnFromStringId(ColumnIdGenerator::quantity())->shouldReturn($quantityColumn);
         $this->getColumnFromStringId(ColumnIdGenerator::generateAsString('unknown'))->shouldReturn(null);
     }
+
+    function it_returns_required_for_completeness_columns()
+    {
+        $ingredientColumn = SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]);
+        $quantityColumn = NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity', 'is_required_for_completeness' => true]);
+        $descriptionColumn = TextColumn::fromNormalized(['id' => ColumnIdGenerator::description(), 'code' => 'description', 'is_required_for_completeness' => false]);
+        $this->beConstructedThrough('fromColumnDefinitions', [[$ingredientColumn, $quantityColumn, $descriptionColumn]]);
+
+        $this->requiredColumns()->shouldReturn([ColumnIdGenerator::ingredient() => $ingredientColumn, ColumnIdGenerator::quantity()=> $quantityColumn]);
+    }
 }

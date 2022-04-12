@@ -7,6 +7,7 @@ import {
   FetcherContext,
   ImportStructureTab,
   ImportStructureTabProps,
+  MeasurementFamily,
   StructureConfiguration,
 } from '@akeneo-pim-enterprise/tailored-import';
 import {pimTheme} from 'akeneo-design-system';
@@ -70,7 +71,6 @@ class ColumnView extends BaseView {
         ...structureConfiguration,
       },
     });
-    this.render();
   }
 
   /**
@@ -119,6 +119,11 @@ class ColumnView extends BaseView {
                 channel: {
                   fetchAll: (): Promise<Channel[]> =>
                     new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve)),
+                },
+                measurementFamily: {
+                  fetchByCode: (code: string): Promise<MeasurementFamily | undefined> => {
+                    return new Promise(resolve => fetcherRegistry.getFetcher('measure').fetch(code).then(resolve));
+                  },
                 },
               },
             },

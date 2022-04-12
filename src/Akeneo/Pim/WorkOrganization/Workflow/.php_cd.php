@@ -21,6 +21,8 @@ $rules = [
 
         'Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface',
 
+        'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
+
         // TIP-979: Remove ServerErrorResponseException
         'Elasticsearch\Common\Exceptions\ServerErrorResponseException',
 

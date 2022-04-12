@@ -43,14 +43,18 @@ jobs:
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Jenkins Upgrade
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Production tests on upgraded env
                   command: make -C deployments/ test-prod
@@ -155,14 +159,18 @@ jobs:
                       REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
                       REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Jenkins Upgrade
                   command: |
                       NS=${TYPE}-${INSTANCE_NAME} PHASE=upgrade bash deployments/bin/deployments_poll_up.sh 2>&1 >> deployment.log &
                       OPERATIONS_TOOLS_BRANCH=master make -C deployments/ upgrade-instance
+            - get_datadog_migration_logs:
+                pfid: ${TYPE}-${INSTANCE_NAME}
+            - store_artifacts:
+                path: /tmp/migration-logs.json
+                destination: migration-logs.json
             - run:
                   name: Production tests on upgraded env
                   command: make -C deployments/ test-prod

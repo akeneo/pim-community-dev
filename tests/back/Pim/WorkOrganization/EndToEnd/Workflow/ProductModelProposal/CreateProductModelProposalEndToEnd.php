@@ -5,10 +5,17 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductMod
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\ProductModelDraft;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductModelProposalEndToEnd extends ApiTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
+    }
+
     public function testCreateProductModelProposal()
     {
         $productModelDraft = $this->createProductModelDraft('mary', 'jack');
@@ -109,6 +116,26 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);
+    }
+
+    public function testAccessDeniedWhenCreateProductProposalWithoutTheAcl()
+    {
+        $this->createProductModelDraft('mary', 'jack');
+        $this->removeAclFromRole('action:pim_api_product_edit', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'Mary', 'Mary');
+        $client->request('POST', 'api/rest/v1/product-models/jack/proposal', [], [], [], '{}');
+        $response = $client->getResponse();
+
+        $logger = self::getContainer()->get('monolog.logger.pim_api_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "Mary" with roles ROLE_USER is not granted "pim_api_product_edit"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
     }
 
     /**

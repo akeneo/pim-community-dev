@@ -18,14 +18,10 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Filesystem\Storage;
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
 {
-    private const MAX_HEADER_ROWS = 500;
-
     public function __construct(
         private FilesystemProvider $filesystemProvider,
         private XlsxFileReaderFactoryInterface $fileReaderFactory
@@ -41,12 +37,6 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
         if (!$constraint instanceof IsValidFileTemplateInformationQuery) {
             throw new \InvalidArgumentException('The value must be a GetFileTemplateInformationQuery');
         }
-
-        $validator = $this->context->getValidator()->inContext($this->context);
-        $validator->atPath('[header_row]')->validate($value->headerLine, [
-            new Type('int'),
-            new Range(['min' => 1, 'max' => self::MAX_HEADER_ROWS]),
-        ]);
 
         $fileSystem = $this->filesystemProvider->getFilesystem(Storage::FILE_STORAGE_ALIAS);
         if (!$fileSystem->fileExists($value->fileKey)) {

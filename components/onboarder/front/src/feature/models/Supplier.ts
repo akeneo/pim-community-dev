@@ -1,11 +1,10 @@
-export type Contributor = {
-    identifier: string;
-    email: string;
+export type Contributors = {
+    [id: number]: string;
 };
 
 export type Supplier = {
     identifier: string;
     code: string;
     label: string;
-    contributors: Contributor[];
+    contributors: Contributors;
 };

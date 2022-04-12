@@ -1,5 +1,23 @@
 version: 2.1
 
+parameters:
+    client-to-clone-flex:
+        default: "assa-abloy-dev##akecld-assa-abloy"
+        type: string
+    skip_build:
+        default: true
+        type: boolean
+    trigger_ondemand:
+        default: false
+        type: boolean
+    # parameters for instance deletion
+    trigger_delete_instance:
+        default: false
+        type: boolean
+    instance:
+        default: ""
+        type: string
+
 setup: true
 
 orbs:

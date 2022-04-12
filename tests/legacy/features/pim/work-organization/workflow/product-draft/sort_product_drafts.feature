@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Sort product drafts
   In order to easily manage product drafts for a specific product
   As a product manager

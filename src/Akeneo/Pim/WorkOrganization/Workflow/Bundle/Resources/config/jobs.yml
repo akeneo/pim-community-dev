@@ -26,7 +26,7 @@ services:
                 - '@pimee_workflow.step.csv_product_proposal.import'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%', feature: 'proposal' }
 
     pimee_workflow.job.csv_product_model_proposal_import:
         class: '%pim_connector.job.simple_job.class%'
@@ -38,7 +38,7 @@ services:
                 - '@pimee_workflow.step.csv_product_model_proposal.import'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%', feature: 'proposal' }
 
     # CSV Exports -----------------------------------------------------------------------------------------------------
     pimee_workflow.job.csv_published_product_export:
@@ -51,7 +51,7 @@ services:
                 - '@pimee_workflow.step.csv_published_product.export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%', feature: 'published_product' }
 
     # XLSX Imports -----------------------------------------------------------------------------------------------------
     pimee_workflow.job.xlsx_product_proposal_import:
@@ -64,7 +64,7 @@ services:
                 - '@pimee_workflow.step.xlsx_product_proposal.import'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%', feature: 'proposal' }
 
     pimee_workflow.job.xlsx_product_model_proposal_import:
             class: '%pim_connector.job.simple_job.class%'
@@ -76,7 +76,7 @@ services:
                     - '@pimee_workflow.step.xlsx_product_model_proposal.import'
                 - true
             tags:
-                - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+                - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%', feature: 'proposal' }
 
     # XLSX Exports ----------------------------------------------------------------------------------------------------
     pimee_workflow.job.xlsx_published_product_export:
@@ -89,7 +89,7 @@ services:
                 - '@pimee_workflow.step.xlsx_published_product.export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%', feature: 'published_product' }
 
     # Mass Edit -------------------------------------------------------------------------------------------------------
     pimee_workflow.job.approve_product_draft:
@@ -102,7 +102,7 @@ services:
                 - '@pimee_workflow.step.approve_product_draft.perform'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%', feature: 'proposal' }
 
     pimee_workflow.job.refuse_product_draft:
         class: '%pim_connector.job.simple_job.class%'
@@ -114,7 +114,7 @@ services:
                 - '@pimee_workflow.step.refuse_product_draft.perform'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%', feature: 'proposal' }
 
     # CSV Quick Exports -----------------------------------------------------------------------------------------------
     pimee_workflow.writer.file.csv_published_product_quick_export:
@@ -143,7 +143,7 @@ services:
                 - '@pimee_workflow.step.csv_published_product.quick_export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%', feature: 'published_product' }
 
     pimee_workflow.job.csv_published_product_grid_context_quick_export:
         class: '%pim_connector.job.simple_job.class%'
@@ -155,7 +155,7 @@ services:
                 - '@pimee_workflow.step.csv_published_product.quick_export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%', feature: 'published_product' }
 
     # XLSX Quick Exports ----------------------------------------------------------------------------------------------
     pimee_workflow.writer.file.xlsx_published_product_quick_export:
@@ -184,7 +184,7 @@ services:
                 - '@pimee_workflow.step.xlsx_published_product.quick_export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%', feature: 'published_product' }
 
     pimee_workflow.job.xlsx_published_product_grid_context_quick_export:
         class: '%pim_connector.job.simple_job.class%'
@@ -196,7 +196,7 @@ services:
                 - '@pimee_workflow.step.xlsx_published_product.quick_export'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%', feature: 'published_product' }
 
     pimee_enrich.job.publish_product:
         class: '%pim_connector.job.simple_job.class%'
@@ -208,7 +208,7 @@ services:
                 - '@pimee_enrich.step.publish_product.perform'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%', feature: 'published_product' }
 
     pimee_enrich.job.unpublish_product:
         class: '%pim_connector.job.simple_job.class%'
@@ -220,7 +220,7 @@ services:
                 - '@pimee_enrich.step.unpublish_product.perform'
             - true
         tags:
-            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%' }
+            - { name: akeneo_batch.job, connector: '%pim_enrich.connector_name.mass_edit%', type: '%pim_enrich.job.mass_edit_type%', feature: 'published_product' }
 
     # Clean removed attributes
     pim_catalog.job.clean_removed_attribute:

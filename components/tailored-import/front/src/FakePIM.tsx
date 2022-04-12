@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
@@ -19,8 +19,7 @@ import {
   useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {ImportStructureTab, StructureConfiguration} from './feature';
-import {GlobalSettings, GlobalSettingsTab} from './feature/GlobalSettingsTab';
+import {GlobalSettings, GlobalSettingsTab, ImportStructureTab, StructureConfiguration} from './feature';
 
 const JOB_CODE = 'tailoredimport';
 
@@ -119,9 +118,7 @@ const FakePIM = () => {
     fetchJobConfiguration();
   }, [route]);
 
-  if (null === jobConfiguration) return null;
-
-  const handleStructureConfigurationChange = (newStructureConfiguration: StructureConfiguration): void => {
+  const handleStructureConfigurationChange = useCallback((newStructureConfiguration: StructureConfiguration) => {
     setJobConfiguration(jobConfiguration => ({
       ...jobConfiguration,
       configuration: {
@@ -129,7 +126,9 @@ const FakePIM = () => {
         ...newStructureConfiguration,
       },
     }));
-  };
+  }, []);
+
+  if (null === jobConfiguration) return null;
 
   const handleGlobalSettingsChange = (newGlobalSettings: GlobalSettings) => {
     setJobConfiguration({

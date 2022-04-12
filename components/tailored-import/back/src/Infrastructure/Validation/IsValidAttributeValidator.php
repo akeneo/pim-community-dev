@@ -110,7 +110,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 [
                     '{{ attribute_code }}' => $attribute->code(),
                 ],
-            )->addViolation();
+            )->atPath('[code]')->addViolation();
 
             return;
         }
@@ -133,7 +133,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 [
                     '{{ attribute_code }}' => $attribute->code(),
                 ],
-            )->addViolation();
+            )->atPath('[code]')->addViolation();
 
             return;
         }

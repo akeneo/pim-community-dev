@@ -18,6 +18,7 @@ class ExportPublishedVariantProductsEndToEnd extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
 
         $jobInstance = new JobInstance('Akeneo CSV Connector', 'export', 'csv_published_product_export');
         $jobInstance->setCode('csv_published_product_export');

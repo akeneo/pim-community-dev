@@ -102,7 +102,7 @@ final class IsValidAttributeValidatorTest extends AbstractValidationTest
             ],
             'a scopable attribute without channel' => [
                 'akeneo.tailored_import.validation.attribute.channel_should_not_be_blank',
-                '',
+                '[code]',
                 [
                     'code' => 'a_scopable_image',
                     'channel' => null,
@@ -120,7 +120,7 @@ final class IsValidAttributeValidatorTest extends AbstractValidationTest
             ],
             'a localizable attribute without locale' => [
                 'akeneo.tailored_import.validation.attribute.locale_should_not_be_blank',
-                '',
+                '[code]',
                 [
                     'code' => 'a_localizable_image',
                     'channel' => null,

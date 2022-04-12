@@ -24,6 +24,8 @@ import {
   ProductModelEditFormApp,
   DATA_QUALITY_INSIGHTS_EDIT_PRODUCT_ASSETS,
 } from '@akeneo-pim-ee/data-quality-insights';
+import {unsetProductAction} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/reducer/ProductEditForm/productReducer';
+import productEditFormStore from '@akeneo-pim-ee/data-quality-insights/src/infrastructure/store/productEditFormStore';
 
 const UserContext = require('pim/user-context');
 const BaseView = require('pimui/js/view/base');
@@ -211,7 +213,7 @@ class DataQualityInsightsApp extends BaseView {
 
   remove() {
     ReactDOM.unmountComponentAtNode(this.el);
-
+    productEditFormStore.dispatch(unsetProductAction());
     return super.remove();
   }
 }

@@ -53,6 +53,7 @@ class ProductModelWorkflowIntegration extends ApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
 
         $this->loader = $this->get('akeneo_integration_tests.loader.permissions');
     }

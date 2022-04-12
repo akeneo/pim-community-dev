@@ -11,7 +11,12 @@ define([
   'pim/form/common/attributes/copy',
   'pim/fetcher-registry',
   'pim/user-context',
-], function(_, __, Backbone, Copy, FetcherRegistry, UserContext) {
+  'pim/feature-flags',
+], function(_, __, Backbone, Copy, FetcherRegistry, UserContext, FeatureFlags) {
+  if (!FeatureFlags.isEnabled('proposal')) {
+    return Copy;
+  }
+
   /**
    * Internal function that returns an union of current sources without drafts and the given drafts
    *

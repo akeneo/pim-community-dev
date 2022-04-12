@@ -5,10 +5,17 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\EndToEnd\Workflow\ProductMod
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelDraftEndToEnd extends ApiTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->get('feature_flags')->enable('proposal');
+    }
+
     public function testGetRootProductModelDraft()
     {
         $this->createProductModelDraft('mary', 'jack');
@@ -143,6 +150,26 @@ JSON;
         $response = $clientAsMary->getResponse();
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertSame($response->getContent(), $expectedResponseContent);
+    }
+
+    public function testAccessDeniedWhenGetProductModelDraftWithoutTheAcl()
+    {
+        $this->createProductModelDraft('mary', 'jack');
+        $this->removeAclFromRole('action:pim_api_product_list', 'ROLE_USER');
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'Mary', 'Mary');
+        $client->request('GET', 'api/rest/v1/product-models/jack/draft');
+        $response = $client->getResponse();
+
+        $logger = self::getContainer()->get('monolog.logger.pim_api_acl');
+        assert($logger instanceof TestLogger);
+
+        $this->assertTrue(
+            $logger->hasWarning('User "Mary" with roles ROLE_USER is not granted "pim_api_product_list"'),
+            'Expected warning not found in the logs.'
+        );
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     /**

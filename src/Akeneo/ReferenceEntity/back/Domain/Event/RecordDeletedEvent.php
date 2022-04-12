@@ -12,6 +12,11 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Event triggered when a record is deleted from DB
  *
+ * @deprecated please use the bulk event Akeneo\ReferenceEntity\Domain\Event\RecordsDeletedEvent instead, even for unitary deletion.
+ *             Note: due to scalability issues, this event should not be used anymore, cf. SLA PIM-10391 (on JIRA)
+ *
+ * @see RecordsDeletedEvent
+ *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @api
@@ -21,8 +26,7 @@ class RecordDeletedEvent extends Event
     public function __construct(
         private RecordIdentifier $recordIdentifier,
         private RecordCode $recordCode,
-        private ReferenceEntityIdentifier $referenceEntityIdentifier,
-        private bool $isUnitary = true
+        private ReferenceEntityIdentifier $referenceEntityIdentifier
     ) {
     }
 
@@ -39,10 +43,5 @@ class RecordDeletedEvent extends Event
     public function getReferenceEntityIdentifier(): ReferenceEntityIdentifier
     {
         return $this->referenceEntityIdentifier;
-    }
-
-    public function isUnitary(): bool
-    {
-        return $this->isUnitary;
     }
 }
