@@ -241,7 +241,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
             null,
             null,
             false,
-            'simpleselect',
+            'option',
             [],
         );
     }

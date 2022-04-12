@@ -19,12 +19,12 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class SimpleSelectUserIntentFactory implements UserIntentFactoryInterface
+final class SimpleSelectUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
         if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a AttributeTarget');
+            throw new \InvalidArgumentException('The target must be an AttributeTarget');
         }
 
         return new SetSimpleSelectValue(

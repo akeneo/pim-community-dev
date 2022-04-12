@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class NumberUserIntentFactory implements UserIntentFactoryInterface
+final class NumberUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
