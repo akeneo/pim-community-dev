@@ -4,13 +4,13 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
-use Akeneo\Pim\Enrichment\Product\Application\Applier\SetMetricValueApplier;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\SetMeasurementValueApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 
-class SetMetricValueApplierSpec extends ObjectBehavior
+class SetMeasurementValueApplierSpec extends ObjectBehavior
 {
     function let(ObjectUpdaterInterface $updater)
     {
@@ -19,14 +19,14 @@ class SetMetricValueApplierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetMetricValueApplier::class);
+        $this->shouldHaveType(SetMeasurementValueApplier::class);
         $this->shouldImplement(UserIntentApplier::class);
     }
 
-    function it_applies_set_metric_value_user_intent(ObjectUpdaterInterface $updater): void
+    function it_applies_set_measurement_value_user_intent(ObjectUpdaterInterface $updater): void
     {
         $product = new Product();
-        $setMetricValue = new SetMetricValue('code', 'ecommerce', 'en_US', '10', 'g');
+        $setMeasurementValue = new SetMeasurementValue('code', 'ecommerce', 'en_US', '10', 'g');
 
         $updater->update(
             $product,
@@ -46,7 +46,7 @@ class SetMetricValueApplierSpec extends ObjectBehavior
             ]
         )->shouldBeCalledOnce();
 
-        $this->apply($setMetricValue, $product, 1);
+        $this->apply($setMeasurementValue, $product, 1);
     }
 
     function it_throws_an_exception_when_user_intent_is_not_supported(): void
