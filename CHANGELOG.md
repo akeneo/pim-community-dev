@@ -21,8 +21,10 @@
 - PIM-10345: Fix issue when importing product model with an attribute constituted of only digits
 - PIM-10334: Fix error on the clean-removed-attributes
 - PIM-10362: Fix attribute type "number" gets modified in history when import with same value
+- PIM-10372: Fix letter case issue when importing channels
 
 ## Improvements
+
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
 

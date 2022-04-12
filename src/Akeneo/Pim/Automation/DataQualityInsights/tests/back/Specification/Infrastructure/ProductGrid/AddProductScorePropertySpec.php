@@ -4,39 +4,26 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class AddProductScorePropertySpec extends ObjectBehavior
 {
-    public function let(GetProductScoresQueryInterface $getProductScores)
-    {
-        $this->beConstructedWith($getProductScores);
+    public function let(
+        AddScoresToProductAndProductModelRows $addScoresToProductAndProductModelRows
+    ){
+        $this->beConstructedWith($addScoresToProductAndProductModelRows);
     }
 
-    public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
-    {
-        $queryParameters = new FetchProductAndProductModelRowsParameters(
-            $productQueryBuilder->getWrappedObject(),
-            [],
-            'ecommerce',
-            'en_US'
-        );
-        $this->add($queryParameters, [])->shouldReturn([]);
-    }
-
-
-    public function it_returns_row_with_additional_property_DQI_score($getProductScores, ProductQueryBuilderInterface $productQueryBuilder)
+    public function it_returns_row_with_additional_property_DQI_score(
+        $addScoresToProductAndProductModelRows,
+        ProductQueryBuilderInterface $productQueryBuilder
+    )
     {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
@@ -45,15 +32,11 @@ class AddProductScorePropertySpec extends ObjectBehavior
             'en_US'
         );
 
-        $getProductScores->byProductIds(Argument::any())->willReturn(
-            [
-                (new ChannelLocaleRateCollection())
-                    ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(96))
-                    ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(36)),
-            ],
-        );
+        $rows = [$this->makeRow(1), $this->makeRow(4)];
 
-        $this->add($queryParameters, [$this->makeRow(1), $this->makeRow(4)])->shouldHaveScoreProperties();
+        $addScoresToProductAndProductModelRows->__invoke($queryParameters, $rows, 'product')->shouldBeCalled();
+
+        $this->add($queryParameters, $rows)->shouldHaveScoreProperties();
     }
 
     private function makeRow(int $id): Row

@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: Questo tipo di associazione non esiste. Assicurati che non sia stato eliminato nel frattempo.
       association_type_is_not_quantified: '"{{ association_type }}" non può essere utilizzato per le associazioni con quantità. Scegli un tipo di associazione differente con quantità o utilizza la proprietà "associazioni".'
       association_type_should_not_be_quantified: '"{{ association_type }}" può essere utilizzato solo per le associazioni con quantità. Scegli un tipo di associazione differente o utilizza la proprietà "quantified_associations".'
+    boolean:
+      boolean_value_is_required: L'attributo {{ attribute_code }} richiede un valore booleano (vero o falso) come dato; è stato rilevato un {{ given_type }}.
+      boolean_value_is_required_in_import: L'attributo {{ attribute_code }} richiede un valore booleano (1 o 0) come dato; è stato rilevato un {{ given_type }}.
 mass_edit:
   edit_common_attributes:
     invalid_values: Ci sono errori nel modulo attributi

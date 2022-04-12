@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: 此关联类型不存在。请确保在此期间其未被删除。
       association_type_is_not_quantified: '“{{ association_type }}”不能用于关联数量。请选择其他关联类型用于关联数量，或设置“关联”属性。'
       association_type_should_not_be_quantified: '"{{ association_type }}"只能用于关联数量。请选择其他关联类型或使用“quantified_associations”属性。'
+    boolean:
+      boolean_value_is_required: 属性 {{ attribute_code }} 的数据要求为布尔值（true 或 false），而检测到的是 {{ given_type }}。
+      boolean_value_is_required_in_import: 属性 {{ attribute_code }} 的数据要求为布尔值（1 或 0），而检测到的是 {{ given_type }}。
 mass_edit:
   edit_common_attributes:
     invalid_values: 属性表单中存在错误

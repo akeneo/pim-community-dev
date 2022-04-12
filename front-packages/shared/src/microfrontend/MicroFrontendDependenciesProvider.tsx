@@ -4,6 +4,7 @@ import {RouteParams, View} from '../DependenciesProvider.type';
 import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
+import {createQueryParam} from './model/queryParam';
 
 type SecurityContext = {
   [acl: string]: boolean;
@@ -56,12 +57,7 @@ const MicroFrontendDependenciesProvider = ({
         throw new Error(`Route ${route} not found`);
       }
 
-      const queryString = parameters
-        ? '?' +
-          Object.entries(parameters)
-            .map(([key, val]) => `${key}=${val}`)
-            .join('&')
-        : '';
+      const queryString = createQueryParam(parameters);
 
       return (
         routeConf.tokens

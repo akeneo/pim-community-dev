@@ -7,6 +7,7 @@ use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnection
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -60,6 +61,10 @@ abstract class ApiTestCase extends WebTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        /** @var FilePersistedFeatureFlags $featureFlags*/
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->deleteFile();
     }
 
     /**
@@ -368,10 +373,10 @@ abstract class ApiTestCase extends WebTestCase
         return strtr(rawurlencode($string), $toReplace);
     }
 
-    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId, string $role = 'ROLE_ADMINISTRATOR'): void
     {
         $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier($role);
         $privilege = new AclPrivilege();
         $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
         $privilege

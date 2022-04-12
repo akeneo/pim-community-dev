@@ -4,7 +4,7 @@ parameters:
 services:
     feature_flags:
         public: true
-        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags'
+        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\ImmutableFeatureFlags'
         arguments:
             - '@akeneo.feature_flag.service.registry'
 
@@ -12,7 +12,7 @@ services:
         public: true
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Controller'
         arguments:
-            - '@akeneo.feature_flag.service.registry'
+            - '@feature_flags'
 
     akeneo.feature_flag.filter_routes_subscriber:
         public: false
@@ -28,6 +28,12 @@ services:
 
     akeneo.feature_flag.service.only_serenity_feature:
         class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlySerenityFeatureFlag
+        arguments:
+            - '%env(string:PIM_EDITION)%'
+        public: true
+
+    akeneo.feature_flag.service.only_flexibility_on_premise_feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\OnlyFlexibilityOnPremiseFeatureFlag
         arguments:
             - '%env(string:PIM_EDITION)%'
         public: true

@@ -47,8 +47,8 @@ akeneo_connectivity.connection:
       sub_title: Consultez notre App Store pour voir quelles app peuvent être connectées avec Akeneo PIM.
       link: Accéder à l'App Store Akeneo
       helper:
-        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
-        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
+        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
+        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
         description: Ceci n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à l'App Store Akeneo.
         link: Allez sur l'App Store Akeneo
       card:
@@ -57,6 +57,7 @@ akeneo_connectivity.connection:
         more_info: Plus d'info
         connect: Connecter
         connected: Connectée
+        pending: En attente…
       extensions:
         title: Connecteurs
         total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
@@ -120,6 +121,8 @@ akeneo_connectivity.connection:
           empty: Aucune app connectée pour le moment.
           check_marketplace: 'Rendez-vous sur l''{{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
           marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Certaines de vos apps connectées ne sont pas compatibles avec votre version du PIM ou n'existent plus sur l'Akeneo App Store. Contactez-nous pour obtenir plus d'informations.
+          pending_apps: Certaines de vos apps ne sont pas connectées à votre PIM.
         test_apps:
           title: Mes applications de test
           removed_user: Utilisateur supprimé
@@ -130,8 +133,10 @@ akeneo_connectivity.connection:
           link: Consultez notre Help Center pour plus d'informations.
         card:
           developed_by: 'Développée par {{ author }}'
+          not_listed_on_the_appstore: Cette app n'est plus listée sur l'Akeneo App Store. Veuillez contacter le support de l'app.
           manage_app: Gérer l'app
           open_app: Ouvrir l'app
+          pending: App non connectée. L'ouverture de l'app devrait résoudre le problème de la connexion.
         flash:
           error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
       edit:
@@ -148,6 +153,7 @@ akeneo_connectivity.connection:
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
+          pending: Cette app n'est pas connectée à votre PIM. Ouvrir l'app devrait résoudre le problème de connexion. Si le problème persiste, veuillez contacter le support de l'app.
         error_monitoring:
           error: Oups, quelque chose a mal tourné !
           helper:

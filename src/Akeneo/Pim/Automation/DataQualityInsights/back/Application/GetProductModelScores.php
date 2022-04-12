@@ -20,9 +20,17 @@ class GetProductModelScores
     ) {
     }
 
+    /**
+     * Eventually returns all quality scores by channel and locale.
+     * @return array{'evaluations_available':false} | array{'evaluations_available': true, 'scores': array }
+     */
     public function get(ProductId $productId): array
     {
         $productScores = $this->getProductModelScoresQuery->byProductModelId($productId);
+
+        if ($productScores->isEmpty()) {
+            return ["evaluations_available" => false];
+        }
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {
@@ -32,6 +40,6 @@ class GetProductModelScores
             }
         }
 
-        return $formattedProductScores;
+        return ["evaluations_available" => true, "scores" => $formattedProductScores];
     }
 }

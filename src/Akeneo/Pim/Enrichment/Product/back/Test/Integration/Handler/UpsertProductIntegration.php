@@ -29,7 +29,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -148,7 +149,40 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_metric_value(): void
+    public function it_updates_a_product_s_identifier(): void
+    {
+        $this->updateProduct(new SetIdentifierValue('sku', 'new_identifier'));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        $updatedProduct = $this->productRepository->findOneByIdentifier('new_identifier');
+        Assert::assertNotNull($updatedProduct);
+        Assert::assertSame('new_identifier', $updatedProduct->getIdentifier());
+        Assert::assertSame('new_identifier', $updatedProduct->getValue('sku')?->getData());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_deleting_the_identifier_value()
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The identifier attribute cannot be empty.');
+        $this->updateProduct(new SetIdentifierValue('sku', ''));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_for_a_duplicate_identifier_value(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+            $this->getUserId('admin'),
+            'foo',
+            []
+        ));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The foo identifier is already used for another product.');
+        $this->updateProduct(new SetIdentifierValue('sku', 'foo'));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_measurement_value(): void
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
@@ -159,7 +193,7 @@ final class UpsertProductIntegration extends TestCase
 
         // Update product with number value
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '100', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, '100', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
 
@@ -174,23 +208,23 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
+    public function it_throws_an_exception_when_a_measurement_amount_is_not_numeric(): void
     {
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('This value should be of type numeric.');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
+    public function it_throws_an_exception_when_a_measurement_unit_is_unknown(): void
     {
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Please specify a valid metric unit');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
+            new SetMeasurementValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);
     }
@@ -944,6 +978,7 @@ final class UpsertProductIntegration extends TestCase
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+        $this->get('feature_flags')->enable('asset_manager');
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
         /** @phpstan-ignore-next-line */
@@ -1086,6 +1121,8 @@ final class UpsertProductIntegration extends TestCase
 
     private function createReferenceEntity(string $referenceEntityCode): void
     {
+        $this->get('feature_flags')->enable('reference_entity');
+
         /** @phpstan-ignore-next-line */
         $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntityCode, []);
         $validator = $this->get('validator');
