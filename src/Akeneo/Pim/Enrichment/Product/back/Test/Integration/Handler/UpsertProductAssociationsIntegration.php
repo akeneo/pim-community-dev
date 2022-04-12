@@ -209,16 +209,6 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         Assert::assertSame(['other_product_model'], $this->getAssociatedProductModelIdentifiers($updatedProduct));
     }
 
-    /**
-     * @return array<string>
-     */
-    public function getAssociatedProductModelIdentifiers(ProductInterface $product): array
-    {
-        return $product->getAssociatedProductModels('X_SELL')
-            ?->map(fn (ProductModelInterface $productModel): string => $productModel->getIdentifier())
-            ?->toArray() ?? [];
-    }
-
     /** @test */
     public function it_updates_a_product_with_associate_groups(): void
     {

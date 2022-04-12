@@ -47,18 +47,18 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         $normalizedAssociations = [];
 
         foreach ($userIntent->associationUserIntents() as $associationUserIntent) {
-            $values = null;
             $entityType = $this->getAssociationEntityType($associationUserIntent);
             $formerAssociations = $this->getFormerAssociations($associationUserIntent, $normalizedAssociations, $product, $entityType);
             $entityAssociations = $this->userIntentEntityAssociations($associationUserIntent, $entityType);
 
-            $values = match($associationUserIntent::class) {
+            $values = match ($associationUserIntent::class) {
                 AssociateProducts::class, AssociateProductModels::class, AssociateGroups::class =>
                     $this->associateEntities($formerAssociations, $entityAssociations),
                 DissociateProducts::class, DissociateProductModels::class, DissociateGroups::class =>
                     $this->dissociateEntities($formerAssociations, $entityAssociations),
                 ReplaceAssociatedProducts::class, ReplaceAssociatedProductModels::class, ReplaceAssociatedGroups::class =>
-                    $this->replaceAssociatedEntities($formerAssociations, $entityAssociations, $entityType, $userId)
+                    $this->replaceAssociatedEntities($formerAssociations, $entityAssociations, $entityType, $userId),
+                default => throw new \InvalidArgumentException('Unsupported association userIntent')
             };
             if (\is_null($values)) {
                 continue;
@@ -89,7 +89,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
      */
     private function getFormerAssociations(AssociationUserIntent $associationUserIntent, array $normalizedAssociations, ProductInterface $product, string $entityType): array
     {
-        $values = match($entityType) {
+        $values = match ($entityType) {
             self::PRODUCTS => $product
                     ->getAssociatedProducts($associationUserIntent->associationType())
                     ?->map(fn (ProductInterface $product): string => $product->getIdentifier())?->toArray() ?? [],
@@ -107,11 +107,11 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
 
     private function getAssociationEntityType(AssociationUserIntent $userIntent): string
     {
-        return match($userIntent::class) {
+        return match ($userIntent::class) {
             AssociateProducts::class, DissociateProducts::class, ReplaceAssociatedProducts::class => self::PRODUCTS,
             AssociateProductModels::class, DissociateProductModels::class, ReplaceAssociatedProductModels::class => self::PRODUCT_MODELS,
             AssociateGroups::class, DissociateGroups::class, ReplaceAssociatedGroups::class => self::GROUPS,
-            default => throw new \LogicException('Level does not exists')
+            default => throw new \LogicException('User intent cannot be handled')
         };
     }
 
@@ -181,10 +181,6 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
         } elseif (self::PRODUCT_MODELS === $entityType) {
             $viewableProductModels = $this->getViewableProductModels->fromProductModelCodes($formerAssociations, $userId);
             $nonViewableEntities = \array_values(\array_diff($formerAssociations, $viewableProductModels));
-        }
-
-        if (empty($nonViewableEntities)) {
-            return \array_values(\array_unique($entityAssociations));
         }
 
         return \array_values(\array_unique(\array_merge($nonViewableEntities, $entityAssociations)));
