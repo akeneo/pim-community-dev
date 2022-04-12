@@ -1,0 +1,51 @@
+%% https://mermaid-js.github.io/mermaid-live-editor/edit
+graph TB
+    style ERROR_1 stroke:#e00000,stroke-width:2px
+    style DENIED_1 stroke:#e00000,stroke-width:2px
+    style DENIED_2 stroke:#e00000,stroke-width:2px
+    style ERROR_2 stroke:#e00000,stroke-width:2px
+    style WIZARD_AUTHORIZATION stroke:#5bd100,stroke-width:2px
+    style WIZARD_AUTHENTICATION stroke:#5bd100,stroke-width:2px
+    style REDIRECT_CALLBACK_URL stroke:#5bd100,stroke-width:2px
+
+    AUTHORIZE(<b>Open Authorize</b>) --> CHECK_DEVMODE{"Developer<br/>mode enabled?"}
+
+    subgraph "Get App"
+    CHECK_DEVMODE -->|NO| CHECK_APP_EXISTS{"App exists?"}
+    CHECK_DEVMODE -->|YES| CHECK_TESTAPP_EXISTS{"Test App exists?"}
+    CHECK_TESTAPP_EXISTS -->|NO| CHECK_APP_EXISTS
+    CHECK_TESTAPP_EXISTS -->|YES| GET_TESTAPP[Get Test App]
+    CHECK_APP_EXISTS -->|NO| ERROR_1[Not Found]
+    CHECK_APP_EXISTS -->|YES| GET_APP[Get App]
+    GET_APP --> CHECK_ACL_MANAGE_APP{"Allowed to open<br/>or manage Apps?"}
+    GET_TESTAPP --> CHECK_ACL_MANAGE_TESTAPP{"Allowed to open<br/>or manage Test Apps?"}
+    CHECK_ACL_MANAGE_APP -->|NO| DENIED_1[Denied]
+    CHECK_ACL_MANAGE_TESTAPP -->|NO| DENIED_2[Denied]
+    end
+
+    subgraph "Authorization"
+    CHECK_ACL_MANAGE_APP --->|YES| CHECK_AUTH_REQUEST{"Authorization<br/>request valid?"}
+    CHECK_ACL_MANAGE_TESTAPP --->|YES| CHECK_AUTH_REQUEST
+    CHECK_AUTH_REQUEST -->|YES| SESSION_AUTH_INIT[Store Authorization Request in Session]
+    CHECK_AUTH_REQUEST -->|NO| ERROR_2[Validation Error]
+    SESSION_AUTH_INIT --> CHECK_ALREADY_CONNECTED{"App already<br/>connected?"}
+    CHECK_ALREADY_CONNECTED -->|NO| WIZARD_AUTHORIZATION[Redirect to Authorization Wizard]
+    CHECK_ALREADY_CONNECTED -->|YES| CHECK_NEW_SCOPES{"Requested new<br/>scopes?"}
+    CHECK_NEW_SCOPES -->|YES| WIZARD_AUTHORIZATION
+    CHECK_NEW_SCOPES -->|NO| UPDATE_SCOPES[Update Connected App scopes]
+    end
+
+    subgraph "Authentication"
+    UPDATE_SCOPES --> CHECK_OPENID{"Requested<br/>openid scope?"}
+    CHECK_OPENID -->|NO| SAVE_EMPTY_CONSENT[Create empty user consent]
+    CHECK_OPENID -->|YES| CHECK_ALREADY_ACCEPTED_TOO_MUCH_OPENID_SCOPES{"Already consented<br/>to unwanted<br/>openid scopes?"}
+    CHECK_ALREADY_ACCEPTED_TOO_MUCH_OPENID_SCOPES -->|YES| REMOVE_UNWANTED_OPENID_SCOPES[Remove unwanted scopes from user consent]
+    CHECK_ALREADY_ACCEPTED_TOO_MUCH_OPENID_SCOPES -->|NO| CHECK_ONLY_OPENID{"Requested openid<br/>without additionnal<br/>scopes?"}
+    REMOVE_UNWANTED_OPENID_SCOPES --> CHECK_ONLY_OPENID
+    CHECK_ONLY_OPENID -->|YES| SAVE_USER_CONSENT[Create basic user consent]
+    CHECK_ONLY_OPENID -->|NO| WIZARD_AUTHENTICATION[Redirect to Authentication Wizard]
+    end
+
+    SAVE_EMPTY_CONSENT --> GENERATE_AUTH_CODE
+    SAVE_USER_CONSENT --> GENERATE_AUTH_CODE[Generate Authorization Code]
+    GENERATE_AUTH_CODE --> REDIRECT_CALLBACK_URL[Redirect to the App callback url]
