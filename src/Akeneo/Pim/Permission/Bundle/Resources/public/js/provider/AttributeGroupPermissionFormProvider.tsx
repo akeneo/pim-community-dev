@@ -174,8 +174,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
             })}
           </Helper>
         )}
-
-        {!onlyDisplayViewPermissions &&
+        {!onlyDisplayViewPermissions && (
           <>
             <Label>{translate('pim_permissions.widget.level.edit')}</Label>
             <PermissionFormWidget
@@ -196,8 +195,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
               }}
             />
           </>
-        };
-
+        )}
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
           selection={state.view.identifiers}

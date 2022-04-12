@@ -181,7 +181,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
           </Helper>
         )}
 
-        {!onlyDisplayViewPermissions &&
+        {!onlyDisplayViewPermissions && (
           <>
             <Label>{translate('pim_permissions.widget.level.own')}</Label>
             <PermissionFormWidget
@@ -220,7 +220,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
               }}
             />
           </>
-        }
+        )}
 
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget

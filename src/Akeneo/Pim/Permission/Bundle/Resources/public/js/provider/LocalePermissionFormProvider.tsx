@@ -99,7 +99,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
           </Helper>
         )}
 
-        {!onlyDisplayViewPermissions &&
+        {!onlyDisplayViewPermissions && (
           <>
             <Label>{translate('pim_permissions.widget.level.edit')}</Label>
             <PermissionFormWidget
@@ -115,7 +115,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
               options={activatedLocales.map(locale => ({id: locale.code, text: locale.label}))}
             />
           </>
-        }
+        )}
 
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
