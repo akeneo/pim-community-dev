@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-final class TextUserIntentFactory implements UserIntentFactoryInterface
+final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
-            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"');
+            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"');
         }
 
-        if (!is_string($value)) {
-            throw new \InvalidArgumentException(sprintf('The value must be a string "%s" given', gettype($value)));
+        if (!is_array($value)) {
+            throw new \InvalidArgumentException(sprintf('The value must be an array "%s" given', gettype($value)));
         }
 
-        return new SetTextValue(
+        return new SetMultiSelectValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
@@ -41,6 +41,6 @@ final class TextUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_text' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_multiselect' === $target->getType();
     }
 }

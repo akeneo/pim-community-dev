@@ -31,6 +31,24 @@ class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
+    public function it_throws_an_exception_when_target_type_is_invalid(
+        AttributeTarget $attributeTarget
+    ) {
+        $attributeTarget->getType()->willReturn('pim_catalog_text');
+        $value = '';
+
+        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_simpleselect"'))->during('create', [$attributeTarget, $value]);
+    }
+
+    public function it_throws_an_exception_when_value_type_is_invalid(
+        AttributeTarget $attributeTarget
+    ) {
+        $attributeTarget->getType()->willReturn('pim_catalog_simpleselect');
+        $value = [];
+
+        $this->shouldThrow(new \InvalidArgumentException('The value must be a string "array" given'))->during('create', [$attributeTarget, $value]);
+    }
+
     public function it_create_a_set_simple_select_value_object(
         AttributeTarget $attributeTarget
     ) {
