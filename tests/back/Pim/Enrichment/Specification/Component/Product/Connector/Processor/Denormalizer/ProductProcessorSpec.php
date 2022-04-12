@@ -94,7 +94,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -202,7 +201,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -311,7 +309,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -680,7 +677,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Tshirt')->willReturn($product);
-        $product->getId()->willReturn(1);
         $addParent->to($product, '')->willReturn($product);
 
         $convertedData = [
@@ -784,7 +780,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
 
@@ -1136,7 +1131,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('convertVariantToSimple')->willReturn(false);
 
         $productToImport->fromFlatData('tshirt', 'Summer Tshirt')->willReturn($product);
-        $product->getId()->willReturn(42);
 
         $addParent->to($product, '')->willReturn($product);
 

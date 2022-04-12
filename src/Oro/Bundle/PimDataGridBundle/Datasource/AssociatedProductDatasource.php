@@ -278,24 +278,24 @@ class AssociatedProductDatasource extends ProductDatasource
         ];
 
         $data = [];
-        foreach ($products as $product) {
+        foreach ($products as $entity) {
             $normalized = array_merge(
-                $this->normalizer->normalize($product, 'datagrid', $context),
+                $this->normalizer->normalize($entity, 'datagrid', $context),
                 [
-                    'id'         => sprintf(
+                    'id' => sprintf(
                         '%s-%s',
-                        $product instanceof ProductModelInterface ? 'product-model' : 'product',
-                        $product->getId()
+                        $entity instanceof ProductModelInterface ? 'product-model' : 'product',
+                        $entity instanceof ProductModelInterface ? $entity->getId() : $entity->getUuid()->toString()
                     ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
             );
 
-            if ($product instanceof ProductModelInterface) {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $product->getId());
+            if ($entity instanceof ProductModelInterface) {
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $entity->getId());
             } else {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $product->getId());
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $entity->getId());
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);

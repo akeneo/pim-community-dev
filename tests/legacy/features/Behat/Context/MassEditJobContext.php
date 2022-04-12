@@ -42,9 +42,9 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
     public function iMassivelyChangeTheParentOfTheProducts(string $productCodes, string $newParentCode)
     {
         $productCodes = $this->getMainContext()->listToArray($productCodes);
-        $productIds = $this->getProductIdsFromIdentifiers($productCodes);
+        $productUuids = $this->getProductUuidsFromIdentifiers($productCodes);
 
-        $this->launchJob(self::MASS_CHANGE_PARENT_JOB_NAME, $productIds, 'parent', $newParentCode);
+        $this->launchJob(self::MASS_CHANGE_PARENT_JOB_NAME, $productUuids, 'parent', $newParentCode);
     }
 
     /**
@@ -127,12 +127,12 @@ final class MassEditJobContext extends PimContext implements SnippetAcceptingCon
      *
      * @return array
      */
-    private function getProductIdsFromIdentifiers(array $productCodes)
+    private function getProductUuidsFromIdentifiers(array $productCodes)
     {
         $productIds = [];
         foreach ($productCodes as $productCode) {
             $product = $this->productRepository->findOneByIdentifier($productCode);
-            $productIds[] = 'product_' . $product->getId();
+            $productIds[] = 'product_' . $product->getUuid()->toString();
         }
 
         return $productIds;

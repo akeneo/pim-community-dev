@@ -48,7 +48,7 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
 
     public function store(ParentHasBeenRemovedFromVariantProduct $event): void
     {
-        $this->formerParentCodes[$event->getProduct()->getId()] = $event->getFormerParentProductModelCode();
+        $this->formerParentCodes[$event->getProduct()->getUuid()->toString()] = $event->getFormerParentProductModelCode();
     }
 
     public function reIndex(GenericEvent $event): void
@@ -59,9 +59,9 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $formerParentCode = $this->formerParentCodes[$product->getId()] ?? null;
+        $formerParentCode = $this->formerParentCodes[$product->getUuid()->toString()] ?? null;
         if (null !== $formerParentCode) {
-            unset($this->formerParentCodes[$product->getId()]);
+            unset($this->formerParentCodes[$product->getUuid()->toString()]);
             $this->reindexFromProductModelCodes([$formerParentCode]);
         }
     }
@@ -75,9 +75,9 @@ class ReindexFormerAncestorsSubscriber implements EventSubscriberInterface
 
         $formerParentCodes = [];
         foreach ($products as $product) {
-            $formerParentCode = $this->formerParentCodes[$product->getId()] ?? null;
+            $formerParentCode = $this->formerParentCodes[$product->getUuid()->toString()] ?? null;
             if (null !== $formerParentCode) {
-                unset($this->formerParentCodes[$product->getId()]);
+                unset($this->formerParentCodes[$product->getUuid()->toString()]);
                 $formerParentCodes[] = $formerParentCode;
             }
         }
