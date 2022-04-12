@@ -36,7 +36,7 @@ class SqlFindExistingAssetCodes implements FindExistingAssetCodesInterface
         SELECT code
         FROM akeneo_asset_manager_asset
         WHERE asset_family_identifier = :assetFamilyIdentifier
-        AND FIND_IN_SET(code, :codes)
+        AND code IN (:codes)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [

@@ -36,7 +36,7 @@ class SqlFindExistingRecordCodes implements FindExistingRecordCodesInterface
         SELECT code
         FROM akeneo_reference_entity_record
         WHERE reference_entity_identifier = :referenceEntityIdentifier
-        AND FIND_IN_SET(code, :codes)
+        AND code IN (:codes)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
