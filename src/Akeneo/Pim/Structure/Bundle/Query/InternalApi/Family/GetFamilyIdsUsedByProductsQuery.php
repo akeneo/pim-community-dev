@@ -15,6 +15,7 @@ final class GetFamilyIdsUsedByProductsQuery implements GetFamilyIdsUsedByProduct
     public function __construct(private Connection $connection)
     {
     }
+
     public function execute(): array
     {
         $query = <<<SQL
