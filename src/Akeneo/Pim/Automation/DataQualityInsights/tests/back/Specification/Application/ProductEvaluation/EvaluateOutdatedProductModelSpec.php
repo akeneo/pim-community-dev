@@ -31,7 +31,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $idFactory
     ) {
         $productModelId = new ProductId(42);
-        $collection = ProductModelIdCollection::fromString('42');
+        $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
         $idFactory->createCollection(['42'])->willReturn($collection);
@@ -46,7 +46,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $idFactory
     ) {
         $productModelId = new ProductId(42);
-        $collection = ProductModelIdCollection::fromString('42');
+        $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
         $idFactory->createCollection(['42'])->willReturn($collection);

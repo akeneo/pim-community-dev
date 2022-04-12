@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -22,22 +22,22 @@ class EvaluatePendingCriteria
     public const NO_LIMIT = -1;
 
     public function __construct(
-        private CriterionEvaluationRepositoryInterface                  $repository,
-        private CriteriaEvaluationRegistry                              $evaluationRegistry,
-        private CriteriaApplicabilityRegistry                           $applicabilityRegistry,
+        private CriterionEvaluationRepositoryInterface $repository,
+        private CriteriaEvaluationRegistry $evaluationRegistry,
+        private CriteriaApplicabilityRegistry $applicabilityRegistry,
         private GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        private GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
-        private SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
-        private LoggerInterface                                         $logger
-    )
-    {
+        private GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
+        private SynchronousCriterionEvaluationsFilterInterface $synchronousCriterionEvaluationsFilter,
+        private LoggerInterface $logger,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
     public function evaluateAllCriteria(ProductEntityIdCollection $productIdCollection): void
     {
         $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIdCollection);
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {
-            $productValues = $this->getEvaluableProductValuesQuery->byProductId(new ProductId($productId));
+            $productValues = $this->getEvaluableProductValuesQuery->byProductId($this->idFactory->create((string) $productId));
             foreach ($productCriteria as $productCriterion) {
                 $this->evaluateCriterion($productCriterion, $productValues);
             }
@@ -49,7 +49,7 @@ class EvaluatePendingCriteria
     {
         $productsCriteriaEvaluations = $this->getPendingCriteriaEvaluationsQuery->execute($productIds);
         foreach ($productsCriteriaEvaluations as $productId => $productCriteria) {
-            $productValues = $this->getEvaluableProductValuesQuery->byProductId(new ProductId($productId));
+            $productValues = $this->getEvaluableProductValuesQuery->byProductId($this->idFactory->create((string) $productId));
 
             $synchronousCriteria = $this->synchronousCriterionEvaluationsFilter->filter($productCriteria->getIterator());
             foreach ($synchronousCriteria as $synchronousCriterion) {
