@@ -1,5 +1,9 @@
 pim_enrich.product:
   validation:
     upsert:
+      should_keep_one_owned_category: U moet uw product laten staan in minstens één categorie waarvoor u zelf toestemming heeft.
       locale_no_access_to_products: U heeft in geen enkele geactiveerde taal toegang tot productgegevens. Neem contact op met uw beheerder
       attribute_group_no_access_to_attributes: U heeft geen toegang tot het attribuut {{ attributeCode }} van dit product. Neem contact op met uw beheerder.
+      duplicated_user_intents: De waarde voor attribuut {{ attributeCode }} wordt meerdere keren bijgewerkt
+      family_code_empty: Voor de familiecode is een niet lege string vereist
+      category_does_not_exist: '{1}De categorie "{{ categoryCodes }}" categorie bestaat niet.|]1, Inf[De categorieën "{{ categoryCodes }}" bestaan niet'

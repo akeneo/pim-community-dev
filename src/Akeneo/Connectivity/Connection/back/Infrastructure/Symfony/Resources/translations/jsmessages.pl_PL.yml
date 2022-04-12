@@ -16,7 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Dziennik zdarzeń
     data_flows: Przepływy danych
     connect_connection_settings: Ustawienia połączeń
+    marketplace: Sklep z aplikacjami
+    connected_apps: Połączone aplikacje
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Sklep z aplikacjami
+  akeneo_connectivity_connection_connect_marketplace_profile: Sklep z aplikacjami
   akeneo_connectivity_connection_connect_apps_activate: Połącz
   akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_connect_apps_authenticate: Połącz
@@ -31,6 +35,7 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Subskrypcja zdarzeń
   akeneo_connectivity_connection_webhook_event_logs: Dziennik zdarzeń
   akeneo_connectivity_connection_settings_redirect: Połączenia
+  akeneo_connectivity_connection_connect_connected_apps: Połączone aplikacje
   akeneo_connectivity_connection_connect_connected_apps_edit: Ustawienia aplikacji
   akeneo_connectivity_connection_connect_connected_apps_delete: Usuń aplikację
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
@@ -39,15 +44,20 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Chcesz połączyć PIM z inną aplikacją? 🤟
+      sub_title: Zajrzyj do sklepu z aplikacjami, aby sprawdzić, którą aplikację można połączyć z Akeneo PIM.
+      link: Przejdź do sklepu z aplikacjami
       helper:
         title: '{0} Brak aplikacji lub wtyczek kompatybilnych z twoją wersją PIM.|{1} Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}|[2,Inf] Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
         title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
+        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zajrzyj do sklepu z aplikacjami Akeneo.
+        link: Przejdź do sklepu z aplikacjami Akeneo
       card:
         developed_by: 'Autor: {{ author }}'
         read_more: czytaj więcej
         more_info: Więcej informacji
         connect: Połącz
         connected: Połączono
+        pending: Oczekiwanie...
       extensions:
         title: Wtyczki
         total: '{0} Brak wtyczek|{1} Liczba wtyczek: 1|[2,Inf] Liczba wtyczek: {{ total }} '
@@ -56,6 +66,7 @@ akeneo_connectivity.connection:
         title: Aplikacje
         total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
         empty: Brak aplikacji kompatybilnych z twoją wersją
+      unreachable: Nie możemy nawiązać połączenia ze sklepem z aplikacjami. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
       test_apps:
         title: Moje aplikacje testowe
@@ -77,6 +88,7 @@ akeneo_connectivity.connection:
             client_id: Identyfikator klienta
             client_secret: Sekret klienta
         errors:
+          page_not_found: Nie znaleziono strony
           creation:
             name:
               min_length: Nazwa aplikacji testowej jest za krótka. Musi składać się z co najmniej 3 znaków.
@@ -97,6 +109,7 @@ akeneo_connectivity.connection:
           subtitle: Aplikacje
           title: Potwierdź usunięcie
           description: Za chwilę usuniesz aplikację testową z tego PIM.
+          warning: Potwierdzenie spowoduje usunięcie aplikacji testowej ze strony sklepu z aplikacjami i połączonej z nią aplikacji.
           flash:
             success: Aplikacja testowa została usunięta z powodzeniem.
             error: Przepraszamy, w czasie usuwania aplikacji testowej wystąpił błąd.
@@ -107,17 +120,23 @@ akeneo_connectivity.connection:
           total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
           empty: Nie połączono jeszcze żadnych aplikacji.
           check_marketplace: 'Przejdź na stronę {{ marketplaceLink }}, aby przeglądać całą dostępną treść i zainstalować swoją pierwszą aplikację.'
+          marketplace_link_anchor: Sklep z aplikacjami
+          at_least_one_is_not_listed_on_the_appstore: Niektóre z połączonych aplikacji nie są kompatybilne z Twoją wersją PIM lub nie istnieją już w sklepie aplikacji Akeneo. Skontaktuj się z nami, aby uzyskać więcej informacji.
+          pending_apps: Niektóre z Twoich aplikacji nie są połączone z PIM.
         test_apps:
           title: Moje aplikacje testowe
           removed_user: Użytkownik usunięty
         helper:
           title: '[0,1] Twój PIM jest połączony z {{ count }} aplikacją.|[2,Inf] Twój PIM jest połączony z {{ count }} aplikacjami.'
+          description_1: Nowe aplikacje powstają regularnie, więc regularnie zaglądaj na stronę sklepu z aplikacjami, aby przekonać się, jak możesz połączyć Twój PIM z innymi aplikacjami.
           description_2: Chcesz dowiedzieć się więcej o aplikacjach?
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
           developed_by: 'Autor: {{ author }}'
+          not_listed_on_the_appstore: Aplikacja nie jest już dostępna w sklepie z aplikacjami Akeneo. Skontaktuj się z pomocą techniczną aplikacji.
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
+          pending: Aplikacja nie jest połączona. Otwarcie aplikacji powinno rozwiązać problem z połączeniem.
         flash:
           error: Przepraszamy, podczas pobierania listy połączonych aplikacji wystąpił błąd.
       edit:
@@ -134,6 +153,7 @@ akeneo_connectivity.connection:
             information: 'Aby dowiedzieć się więcej o autoryzacjach aplikacji, przejdź na stronę {{ link }}.'
             information_link_anchor: Artykuł w Centrum Pomocy
             no_scope: Nie zażądano żadnych określonych autoryzacji.
+          pending: Ta aplikacja nie jest połączona z Twoim PIM. Otwarcie aplikacji powinno rozwiązać problem z połączeniem. Jeżeli problem nadal występuje, skontaktuj się z pomocą techniczną aplikacji.
         error_monitoring:
           error: Ups, coś poszło nie tak!
           helper:
@@ -184,9 +204,16 @@ akeneo_connectivity.connection:
           title: 'Aplikacja {{ app_name }} musi'
           helper: Aby dowiedzieć się więcej o uwierzytelnieniu aplikacji, zapoznaj się z naszym artykułem
           helper_link: Jak połączyć PIM z aplikacjami?
+          scope_profile: 'Wyświetl swoje {{ firstname }} i {{ lastname }}'
+          scope_email: 'Wyświetl swój {{ email }}'
           consent:
             label: 'Wyrażam zgodę na obowiązywanie Polityki prywatności i Warunków użytkowania Aplikacji, z którymi można zapoznać się na stronie {{ app_marketplace_page }}.'
+            app_marketplace_page: Strona sklepu z aplikacjami
+            subtext: 'Wyrażasz zgodę na przekierowanie do aplikacji osób trzecich. Akeneo nie ponosi odpowiedzialności za zawartość tej aplikacji. Jeżeli podczas korzystania ze sklepu z aplikacjami Akeneo napotkasz trudności, skontaktuj się z {{ contact_us }}.'
             contact_us: skontaktuj się z nami
+          firstname: imię
+          lastname: nazwisko
+          email: adres e-mail
         authorize:
           title: 'Aplikacja {{ app_name }} musi'
           no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
@@ -222,6 +249,7 @@ akeneo_connectivity.connection:
           assets: zasoby
       error:
         sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
+        app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
       constraint:
         client_id:
           not_blank: Atrybut client_id jest wymagany.
