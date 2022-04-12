@@ -1,16 +1,14 @@
 import React from 'react';
 import {FileInfo} from 'akeneo-design-system';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {useUploader} from '@akeneo-pim-community/shared';
-import {renderWithProviders} from 'feature/tests';
-import {useReadColumns, useFileTemplateInformationFetcher} from 'feature/hooks';
-import {Column, FileStructure, FileTemplateInformation} from 'feature/models';
+import {renderWithProviders} from '../tests';
+import {useReadColumns} from '../hooks';
+import {Column, FileStructure} from '../models';
 import {InitializeFileStructure} from './InitializeFileStructure';
 
-const mockedUseUploader = useUploader as jest.Mock;
 const mockedUseReadColumns = useReadColumns as jest.Mock;
-const mockedUseFileTemplateInformationFetcher = useFileTemplateInformationFetcher as jest.Mock;
 
 const mockedColumns: Column[] = [
   {
@@ -20,40 +18,52 @@ const mockedColumns: Column[] = [
   },
 ];
 
-jest.mock('@akeneo-pim-community/shared/lib/hooks/useUploader', () => ({
-  useUploader: jest.fn(),
+jest.mock('./FileTemplateConfigurator/FileTemplateUploader', () => ({
+  FileTemplateUploader: ({onFileTemplateUpload}: {onFileTemplateUpload: (fileInfo: FileInfo) => void}) => (
+    <button onClick={() => onFileTemplateUpload({filePath: 'path/to/foo.xlsx', originalFilename: 'foo.xlsx'})}>
+      Upload file
+    </button>
+  ),
+}));
+
+jest.mock('./FileTemplateConfigurator/FileTemplateConfiguration', () => ({
+  FileTemplateConfiguration: ({
+    fileStructure,
+    onFileStructureChange,
+    validationErrors,
+  }: {
+    fileStructure: FileStructure;
+    onFileStructureChange: (fileStructure: FileStructure) => void;
+    validationErrors: ValidationError[];
+  }) => (
+    <>
+      <>{fileStructure.sheet_name ?? 'first sheet'}</>
+      <button
+        onClick={() =>
+          onFileStructureChange({
+            sheet_name: 'second sheet',
+            header_row: 1,
+            first_product_row: 2,
+            first_column: 0,
+            unique_identifier_column: 0,
+          })
+        }
+      >
+        Change file structure
+      </button>
+      {validationErrors.map((error, index) => (
+        <div key={index}>{error.messageTemplate}</div>
+      ))}
+    </>
+  ),
 }));
 
 jest.mock('../hooks/useReadColumns', () => ({
   useReadColumns: jest.fn(),
 }));
 
-jest.mock('../hooks/useFileTemplateInformationFetcher', () => ({
-  useFileTemplateInformationFetcher: jest.fn(),
-}));
-
-let mockFetchFileTemplate = jest.fn();
-
 beforeEach(() => {
-  mockedUseUploader.mockImplementation(() => [
-    jest.fn().mockResolvedValue({
-      originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx',
-    }),
-  ]);
   mockedUseReadColumns.mockImplementation(() => (): Column[] => mockedColumns);
-  mockFetchFileTemplate = jest.fn((fileInfo: FileInfo, fileStructure: FileStructure | null) => {
-    return Promise.resolve({
-      file_info: {
-        originalFilename: 'foo.xlsx',
-        filePath: 'path/to/foo.xlsx',
-      },
-      current_sheet: 'currentTestSheet',
-      sheet_names: ['currentTestSheet', 'anotherTestSheet'],
-      header_cells: [],
-    } as FileTemplateInformation);
-  });
-  mockedUseFileTemplateInformationFetcher.mockImplementation(() => mockFetchFileTemplate);
 });
 
 test('it displays a placeholder and a button when the file is not yet uploaded', async () => {
@@ -61,9 +71,6 @@ test('it displays a placeholder and a button when the file is not yet uploaded',
 
   expect(screen.getByText('akeneo.tailored_import.file_structure.placeholder.title')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button')).toBeInTheDocument();
-  expect(
-    screen.queryByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder')
-  ).not.toBeInTheDocument();
 });
 
 test('it can upload and send back a list of columns', async () => {
@@ -72,13 +79,8 @@ test('it can upload and send back a list of columns', async () => {
   await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
+  userEvent.click(screen.getByText('Upload file'));
+  userEvent.click(screen.getByText('Change file structure'));
 
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
@@ -88,62 +90,9 @@ test('it can upload and send back a list of columns', async () => {
     header_row: 1,
     first_column: 0,
     first_product_row: 2,
-    sheet_name: 'currentTestSheet',
+    sheet_name: 'second sheet',
     unique_identifier_column: 0,
   });
-});
-
-test('it clears the uploaded file when the user closes the modal', async () => {
-  const handleConfirm = jest.fn();
-
-  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
-
-  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  await act(async () => {
-    userEvent.click(screen.getByTitle('pim_common.close'));
-  });
-
-  expect(screen.queryByText('akeneo.tailored_import.file_structure.modal.title')).not.toBeInTheDocument();
-});
-
-test('it displays validation errors when upload fails', async () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  mockedUseUploader.mockImplementation(() => [
-    () =>
-      Promise.reject(
-        JSON.stringify([
-          {
-            messageTemplate: 'error.key.an_upload_error',
-            invalidValue: '',
-            message: 'this is an upload error',
-            parameters: {},
-            propertyPath: '[file]',
-          },
-        ])
-      ),
-  ]);
-
-  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
-
-  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  expect(screen.getByText('error.key.an_upload_error')).toBeInTheDocument();
-  mockedConsole.mockRestore();
 });
 
 test('it displays validation errors when read columns fails', async () => {
@@ -164,14 +113,7 @@ test('it displays validation errors when read columns fails', async () => {
   await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
+  userEvent.click(screen.getByText('Upload file'));
   await act(async () => {
     userEvent.click(screen.getByText('pim_common.confirm'));
   });
@@ -180,72 +122,16 @@ test('it displays validation errors when read columns fails', async () => {
   mockedConsole.mockRestore();
 });
 
-test('it refresh file information when sheet changed', async () => {
+test('it clears the uploaded file when the user closes the modal', async () => {
   const handleConfirm = jest.fn();
 
   await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+  userEvent.click(screen.getByText('Upload file'));
+  userEvent.click(screen.getByTitle('pim_common.close'));
 
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.sheet'));
-  await act(async () => {
-    await userEvent.click(screen.getByText('anotherTestSheet'));
-  });
-
-  expect(mockFetchFileTemplate).toHaveBeenCalledWith(
-    {
-      originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx',
-    },
-    {
-      header_row: 1,
-      first_column: 0,
-      first_product_row: 2,
-      sheet_name: 'anotherTestSheet',
-      unique_identifier_column: 0,
-    }
-  );
-});
-
-test('it refresh file information when header line changed', async () => {
-  const handleConfirm = jest.fn();
-
-  await renderWithProviders(<InitializeFileStructure onConfirm={handleConfirm} />);
-
-  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  await act(async () => {
-    const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_row') as HTMLInputElement;
-    await userEvent.clear(input);
-    await userEvent.type(input, '2');
-  });
-
-  expect(mockFetchFileTemplate).toHaveBeenCalledWith(
-    {
-      originalFilename: 'foo.xlsx',
-      filePath: 'path/to/foo.xlsx',
-    },
-    {
-      header_row: 2,
-      first_column: 0,
-      first_product_row: 2,
-      sheet_name: 'currentTestSheet',
-      unique_identifier_column: 0,
-    }
-  );
+  expect(screen.queryByText('akeneo.tailored_import.file_structure.modal.title')).not.toBeInTheDocument();
 });
 
 test('it clears the file structure information when user click on previous', async () => {
@@ -253,25 +139,12 @@ test('it clears the file structure information when user click on previous', asy
 
   userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
 
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
-
-  await userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.modal.sheet'));
-  await act(async () => {
-    await userEvent.click(screen.getByText('anotherTestSheet'));
-  });
-
+  userEvent.click(screen.getByText('Upload file'));
+  expect(screen.getByText('first sheet')).toBeInTheDocument();
+  userEvent.click(screen.getByText('Change file structure'));
+  expect(screen.getByText('second sheet')).toBeInTheDocument();
   userEvent.click(screen.getByText('pim_common.previous'));
-  await act(async () => {
-    userEvent.upload(
-      screen.getByPlaceholderText('akeneo.tailored_import.file_structure.modal.upload.placeholder'),
-      new File(['foo'], 'foo.xlsx', {type: 'application/vnd.ms-excel'})
-    );
-  });
+  userEvent.click(screen.getByText('Upload file'));
 
-  expect(screen.getByText('currentTestSheet')).toBeInTheDocument();
+  expect(screen.getByText('first sheet')).toBeInTheDocument();
 });

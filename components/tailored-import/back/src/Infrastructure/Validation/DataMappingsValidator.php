@@ -15,6 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Infrastructure\Query\IsMultiSourceTarget;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
@@ -24,7 +26,6 @@ use Symfony\Component\Validator\Constraints\Unique;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class DataMappingsValidator extends ConstraintValidator
 {
@@ -35,6 +36,7 @@ class DataMappingsValidator extends ConstraintValidator
 
     public function __construct(
         private GetAttributes $getAttributes,
+        private IsMultiSourceTarget $isMultiSourceTarget,
     ) {
     }
 
@@ -53,24 +55,20 @@ class DataMappingsValidator extends ConstraintValidator
             ]),
         ]);
 
-        if (0 < $this->context->getViolations()->count() || empty($dataMappings)) {
+        if ($this->isThereViolations() || empty($dataMappings)) {
             return;
         }
 
+        $columns = $dataMappingsConstraint->getColumns();
         foreach ($dataMappings as $dataMapping) {
-            $this->validateDataMapping($validator, $dataMapping, $dataMappingsConstraint);
+            $this->validateDataMapping($dataMapping, $columns);
         }
 
-        if (0 < $this->context->getViolations()->count()) {
+        if ($this->isThereViolations()) {
             return;
         }
 
         $this->validateDataMappingUuidsAreUnique($dataMappings);
-
-        if (0 < $this->context->getViolations()->count()) {
-            return;
-        }
-
         $this->validateThereIsOneDataMappingTargetingAnIdentifier($dataMappings);
     }
 
@@ -121,32 +119,24 @@ class DataMappingsValidator extends ConstraintValidator
         }
     }
 
-    private function validateDataMapping(ValidatorInterface $validator, array $dataMapping, DataMappings $dataMappingsConstraint): void
+    private function validateDataMapping(array $dataMapping, array $columns): void
     {
+        $validator = $this->context->getValidator();
         $violations = $validator->validate($dataMapping, new Collection([
             'fields' => [
                 'uuid' => [
                     new Uuid(),
                     new NotBlank(),
                 ],
-                'target' => [
-                    new Target(),
-                ],
+                'target' => new Target(),
                 'sources' => [
                     new Type('array'),
-                    new Count([
-                        'min' => self::MIN_SOURCES_COUNT,
-                        'minMessage' => DataMappings::MIN_SOURCES_COUNT_REACHED,
-                        'max' => self::MAX_SOURCES_COUNT,
-                        'maxMessage' => DataMappings::MAX_SOURCES_COUNT_REACHED,
-                    ]),
                     new Unique([
                         'message' => DataMappings::SOURCES_SHOULD_BE_UNIQUE,
                     ]),
                 ],
-                'operations' => [
-                    new Type('array'),
-                ],
+                // RAB-645: TODO we need to validate by target type as we did in Tailored Export
+                'operations' => new Type('array'),
                 'sample_data' => [
                     new Type('array'),
                 ],
@@ -170,12 +160,35 @@ class DataMappingsValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateSourcesExist($dataMapping, $dataMappingsConstraint);
+        $this->validateSourcesCount($dataMapping);
+        $this->validateSourcesExist($dataMapping, $columns);
     }
 
-    private function validateSourcesExist(array $dataMapping, DataMappings $dataMappingsConstraint): void
+    private function validateSourcesCount(array $dataMapping): void
     {
-        $columns = $dataMappingsConstraint->getColumns();
+        $targetType = $dataMapping['target']['type'];
+        $targetCode = $dataMapping['target']['code'];
+
+        $isMultiSourceTarget = AttributeTarget::TYPE === $targetType ?
+            $this->isMultiSourceTarget->isAttributeMultiSourceTarget($targetCode) :
+            $this->isMultiSourceTarget->isSystemPropertyMultiSourceTarget($targetCode);
+
+        $maxSourcesCount = $isMultiSourceTarget ? self::MAX_SOURCES_COUNT : self::MIN_SOURCES_COUNT;
+
+        $this->context->getValidator()
+            ->inContext($this->context)
+            ->atPath(sprintf('[%s][sources]', $dataMapping['uuid'] ?? 'null'))
+            ->validate($dataMapping['sources'], new Count([
+                'min' => self::MIN_SOURCES_COUNT,
+                'minMessage' => DataMappings::MIN_SOURCES_COUNT_REACHED,
+                'max' => $maxSourcesCount,
+                'maxMessage' => DataMappings::MAX_SOURCES_COUNT_REACHED,
+                'exactMessage' => DataMappings::SOURCES_COUNT_MISMATCHED,
+            ]));
+    }
+
+    private function validateSourcesExist(array $dataMapping, array $columns): void
+    {
         $columnsUuid = array_map(static fn (array $column) => $column['uuid'], $columns);
 
         foreach ($dataMapping['sources'] as $source) {
@@ -189,5 +202,10 @@ class DataMappingsValidator extends ConstraintValidator
                 return;
             }
         }
+    }
+
+    private function isThereViolations(): bool
+    {
+        return 0 < $this->context->getViolations()->count();
     }
 }

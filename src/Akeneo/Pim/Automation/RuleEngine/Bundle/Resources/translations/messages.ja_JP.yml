@@ -86,6 +86,7 @@ job_execution:
     read_rules: 読み取りルール
     selected_entities: 選択済の商品 / 商品モデル
     skipped_invalid: スキップ済の商品 / 商品モデル (無効)
+    skipped_no_diff: スキップされた商品 / 商品モデル (差異なし)
     updated_entities: 更新済の商品 / 商品モデル
     executed_rules: ルールを正常に実行しました
     errored_rules: スキップ済のルール (無効)

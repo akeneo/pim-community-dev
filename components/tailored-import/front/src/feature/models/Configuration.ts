@@ -1,6 +1,10 @@
 import {DataMapping} from './DataMapping';
 
 const MAX_COLUMN_COUNT = 500;
+const MINIMUM_HEADER_ROW = 1;
+const MAXIMUM_HEADER_ROW = 19;
+const MINIMUM_FIRST_PRODUCT_ROW = 2;
+const MAXIMUM_FIRST_PRODUCT_ROW = 20;
 
 type ColumnIdentifier = string;
 
@@ -58,5 +62,19 @@ const generateColumnName = (index: number, label: string): string => {
   return `${label} (${columnLetter})`;
 };
 
+const findColumnByUuid = (columns: Array<Column>, uuid: string): Column | null => {
+  return columns.find((column: Column) => column.uuid === uuid) ?? null;
+};
+
 export type {StructureConfiguration, Column, ColumnIdentifier, FileStructure, ErrorAction};
-export {generateColumnName, MAX_COLUMN_COUNT, getDefaultFileStructure, isValidErrorAction};
+export {
+  generateColumnName,
+  MAX_COLUMN_COUNT,
+  MAXIMUM_FIRST_PRODUCT_ROW,
+  MINIMUM_FIRST_PRODUCT_ROW,
+  MAXIMUM_HEADER_ROW,
+  MINIMUM_HEADER_ROW,
+  getDefaultFileStructure,
+  isValidErrorAction,
+  findColumnByUuid,
+};

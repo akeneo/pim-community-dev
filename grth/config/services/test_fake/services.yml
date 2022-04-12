@@ -13,8 +13,10 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
     # AkeneoJobBundle
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/back/tests/Acceptance/Resources/config/services.yml }
-    # Tailored Exports
+    # Tailored Export
     - { resource: ../../../components/tailored-export/back/tests/Acceptance/Resources/config/services.yml }
+    # Tailored Import
+    - { resource: ../../../components/tailored-import/back/tests/Acceptance/Resources/config/services.yml }
     # Table Attribute
     - { resource: ../../../src/Akeneo/Pim/TableAttribute/tests/back/Acceptance/Resources/config/services.yml }
 

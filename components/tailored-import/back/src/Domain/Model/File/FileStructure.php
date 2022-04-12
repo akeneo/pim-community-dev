@@ -17,6 +17,11 @@ use Webmozart\Assert\Assert;
 
 class FileStructure
 {
+    public const MAXIMUM_COLUMN_COUNT = 500;
+    public const MINIMUM_HEADER_LINE = 1;
+    public const MAXIMUM_HEADER_LINE = 19;
+    public const MAXIMUM_FIRST_PRODUCT_LINE = 20;
+
     private function __construct(
         private int $firstColumn,
         private int $headerLine,
@@ -24,8 +29,11 @@ class FileStructure
         private ?string $sheetName,
     ) {
         Assert::greaterThanEq($firstColumn, 0);
-        Assert::greaterThanEq($headerLine, 1);
+        Assert::lessThanEq($firstColumn, self::MAXIMUM_COLUMN_COUNT);
+        Assert::greaterThanEq($headerLine, self::MINIMUM_HEADER_LINE);
+        Assert::lessThanEq($headerLine, self::MAXIMUM_HEADER_LINE);
         Assert::greaterThanEq($productLine, $headerLine);
+        Assert::lessThanEq($productLine, self::MAXIMUM_FIRST_PRODUCT_LINE);
         Assert::nullOrNotEmpty($sheetName);
     }
 

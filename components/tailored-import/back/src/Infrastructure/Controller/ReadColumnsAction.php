@@ -50,7 +50,7 @@ final class ReadColumnsAction
 
         $violations = $this->validator->validate($normalizedFileStructure, new IsValidFileStructure());
         if (count($violations) > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations), 400);
+            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         $fileStructure = FileStructure::createFromNormalized($normalizedFileStructure);
@@ -63,7 +63,7 @@ final class ReadColumnsAction
         //Is there a better way to validate columns count and return the error to the user ?
         $violations = $this->validator->validate($normalizedColumns, new Columns());
         if (count($violations) > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations), 400);
+            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
         return new JsonResponse($normalizedColumns);

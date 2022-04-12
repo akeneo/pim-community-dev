@@ -53,17 +53,32 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function readLine(?string $sheetName, int $line): array
+    public function readRows(?string $sheetName, int $start, ?int $length = null): array
     {
+        $rows = [];
         $sheet = $this->selectSheet($sheetName);
         $rowIterator = $sheet->getRowIterator();
+
         foreach ($rowIterator as $index => $row) {
-            if ($index === $line) {
-                return $this->cellsFormatter->formatCells($row->toArray());
+            if ($index >= $start) {
+                $rows[] = $this->cellsFormatter->formatCells($row->toArray());
+            }
+
+            if (null !== $length && $index + 1 === $start + $length) {
+                break;
             }
         }
 
-        return [];
+        $rows = $this->removeTrailingEmptyRows($rows);
+
+        return $this->padRowsToTheLongestRow($rows);
+    }
+
+    public function readColumnValues(?string $sheetName, int $productLine, int $columnIndex): array
+    {
+        $rows = $this->readRows($sheetName, $productLine);
+
+        return array_map(static fn (array $row) => $row[$columnIndex], $rows);
     }
 
     public function getSheetNames(): array
@@ -97,5 +112,33 @@ class XlsxFileReader implements XlsxFileReaderInterface
         }
 
         throw new SheetNotFoundException($sheetName);
+    }
+
+    private function padRowsToTheLongestRow(array $rows): array
+    {
+        if (empty($rows)) {
+            return [];
+        }
+
+        $maxCellPerRow = count(max($rows));
+
+        return array_map(
+            static fn (array $row) => array_pad($row, $maxCellPerRow, ''),
+            $rows,
+        );
+    }
+
+    private function removeTrailingEmptyRows(array $rows): array
+    {
+        $reversedRows = array_reverse($rows);
+        foreach ($reversedRows as $index => $row) {
+            if (!empty(array_filter($row))) {
+                break;
+            }
+
+            unset($reversedRows[$index]);
+        }
+
+        return array_reverse($reversedRows);
     }
 }

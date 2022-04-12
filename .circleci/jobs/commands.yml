@@ -128,6 +128,54 @@ commands:
                                     ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
                                     echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
                                     sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+
+    show_datadog_logs_links:
+      description: "Show datadog usefulls links for given PFID"
+      parameters:
+        pfid:
+          type: string
+        dd_domain:
+          default: "https://app.datadoghq.eu"
+          type: string
+        display_migration_link:
+          default: true
+          type: boolean
+      steps:
+        - run:
+            name: DATADOG deployment Livetail logs page
+            command: |
+              echo "Instance logs :"
+              echo "<<parameters.dd_domain>>/logs/livetail?query=kube_namespace%3A<<parameters.pfid>>"
+              <<# parameters.display_migration_link >>
+              echo ""
+              FROM_TS=$(date -d '1 hour ago' '+%s%3N')
+              TO_TS=$(date -d '3 hours' '+%s%3N')
+              echo "Migration timings :"
+              echo "<<parameters.dd_domain>>/logs?query=kube_namespace%3A<<parameters.pfid>>%20component%3Ahook-upgrader%20container_name%3Apim-upgrade%20took&from_ts=${FROM_TS}&to_ts=${TO_TS}&live=false"
+              <</ parameters.display_migration_link >>
+
+    get_datadog_migration_logs:
+      description: "Get datadog migration logs as json"
+      parameters:
+        pfid:
+          type: string
+        dd_domain:
+          default: "https://app.datadoghq.eu"
+          type: string
+        storage_file:
+          default: "/tmp/migration-logs.json"
+          type: string
+      steps:
+        - run:
+            name: DATADOG migration logs
+            command: |
+              FROM_TS="$(date -d '1 hour ago' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
+              TO_TS="$(date -d '3 hours' '+%Y-%m-%dT%H:%M:%S%z' | cut -c1-22):00"
+              LOGS=$(curl --location -H "Content-Type: application/json" -H "DD-API-KEY: ${DATADOG_API_KEY}" -H "DD-APPLICATION-KEY: ${DATADOG_APP_KEY}" --request POST "<<parameters.dd_domain>>/api/v2/logs/events/search" --data-raw '{"filter": {"query": "kube_namespace:'"<<parameters.pfid>>"' component:hook-upgrader container_name:pim-upgrade took","indexes": ["main"],"from": "'"${FROM_TS}"'","to": "'"${TO_TS}"'"},"sort": "timestamp","page": {"limit": 100}}')
+              echo ${LOGS} > <<parameters.storage_file>>
+              if [[ "${LOGS}" != "" ]]; then
+                echo ${LOGS} | jq -r .data[].attributes.message
+              fi
                               
     skip_job:
         description: "Skip following steps when turned on"
@@ -140,4 +188,3 @@ commands:
               name: skip if asked
               command:   |
                   [ "<< parameters.skip >>" = "true" ] && circleci step halt || echo "Skipping parameter received:  << parameters.skip >>"
-                
