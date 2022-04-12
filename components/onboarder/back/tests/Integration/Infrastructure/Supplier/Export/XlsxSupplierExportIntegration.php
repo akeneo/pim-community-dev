@@ -38,12 +38,12 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
         $this->createSupplier(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_a',
-            'Supplier A'
+            'Supplier A',
         );
         $this->createSupplier(
             '0d321e66-7858-4db6-89bb-9c99283e5c58',
             'supplier_b',
-            'Supplier B'
+            'Supplier B',
         );
 
         $this->createContributor('foo@foo.foo', '44ce8069-8da1-4986-872f-311737f46f02');
@@ -69,7 +69,7 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
                 ['supplier_a', 'Supplier A', 'foo@foo.foo, bar@bar.bar'],
                 ['supplier_b', 'Supplier B', ''],
             ],
-            $rows
+            $rows,
         );
     }
 
@@ -85,8 +85,8 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
             [
                 'identifier' => $identifier,
                 'code' => $code,
-                'label' => $label
-            ]
+                'label' => $label,
+            ],
         );
     }
 
@@ -102,7 +102,7 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
             [
                 'email' => $email,
                 'supplierIdentifier' => $supplierIdentifier,
-            ]
+            ],
         );
     }
 }

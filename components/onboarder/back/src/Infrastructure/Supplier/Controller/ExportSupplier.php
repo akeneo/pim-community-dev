@@ -23,7 +23,7 @@ final class ExportSupplier
             'Content-Disposition' => sprintf(
                 'attachment; filename="%s.%s"',
                 self::EXPORT_FILENAME,
-                Type::XLSX
+                Type::XLSX,
             ),
         ];
 

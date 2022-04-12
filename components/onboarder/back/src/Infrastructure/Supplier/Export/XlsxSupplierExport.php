@@ -42,9 +42,9 @@ final class XlsxSupplierExport implements SupplierExport
                     [
                         $supplier->code,
                         $supplier->label,
-                        implode(', ', $supplier->contributors)
-                    ]
-                )
+                        implode(', ', $supplier->contributors),
+                    ],
+                ),
             );
         }
 
