@@ -185,7 +185,7 @@ class AssociatedProductDatasource extends ProductDatasource
     {
         $ids = [];
         foreach ($association->getProducts() as $associatedProduct) {
-            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getId());
+            $ids[] = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $associatedProduct->getUuid()->toString());
         }
 
         return $ids;
@@ -285,17 +285,17 @@ class AssociatedProductDatasource extends ProductDatasource
                     'id' => sprintf(
                         '%s-%s',
                         $entity instanceof ProductModelInterface ? 'product-model' : 'product',
-                        $entity instanceof ProductModelInterface ? $entity->getId() : $entity->getUuid()->toString()
+                        $entity instanceof ProductInterface ? $entity->getUuid()->toString(): $entity->getId()
                     ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
                 ]
             );
 
-            if ($entity instanceof ProductModelInterface) {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $entity->getId());
+            if ($entity instanceof ProductInterface) {
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $entity->getUuid()->toString());
             } else {
-                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_TYPE, $entity->getId());
+                $identifier = IdEncoder::encode(IdEncoder::PRODUCT_MODEL_TYPE, $entity->getId());
             }
 
             $normalized['from_inheritance'] = in_array($identifier, $identifiersFromInheritance);
