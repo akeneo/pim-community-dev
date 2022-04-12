@@ -45,7 +45,7 @@ final class UpdateConnectedAppRoleWithScopes implements UpdateConnectedAppRoleWi
     {
         $appRoleIdentifier = $this->getConnectedAppRoleIdentifierQuery->execute($appId);
         if (null === $appRoleIdentifier) {
-            throw new \LogicException("Connected app $appRoleIdentifier should have a role");
+            throw new \LogicException("Connected app $appId should have a role");
         }
 
         $appRole = $this->roleRepository->findOneByIdentifier($appRoleIdentifier);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppRoleIdentifierQuery;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -15,6 +16,7 @@ use Akeneo\Test\Integration\TestCase;
 class GetConnectedAppRoleIdentifierQueryIntegration extends TestCase
 {
     private GetConnectedAppRoleIdentifierQuery $query;
+    private ConnectedAppLoader $connectedAppLoader;
 
     protected function getConfiguration(): Configuration
     {
@@ -26,12 +28,7 @@ class GetConnectedAppRoleIdentifierQueryIntegration extends TestCase
         parent::setUp();
 
         $this->query = $this->get(GetConnectedAppRoleIdentifierQuery::class);
-        $connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
-
-        $connectedAppLoader->createConnectedAppWithUserAndTokens(
-            'connected_app_id',
-            'connection_code',
-        );
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
     }
 
     public function test_it_returns_null_on_unknown_app(): void
@@ -43,6 +40,8 @@ class GetConnectedAppRoleIdentifierQueryIntegration extends TestCase
 
     public function test_it_returns_role_identifier_for_a_connected_app(): void
     {
+        $this->connectedAppLoader->createConnectedAppWithUserAndTokens('connected_app_id',  'connection_code');
+
         $roleIdentifier = $this->query->execute('connected_app_id');
 
         self::assertEquals('ROLE_CONNECTION_CODE', $roleIdentifier, 'Should return connected app role');
