@@ -148,6 +148,7 @@ test('it can remove an operation from data mapping', async () => {
   );
 
   userEvent.click(screen.getByTitle('pim_common.remove'));
+  userEvent.click(screen.getByText('pim_common.delete'));
 
   expect(handleOperationsChange).toHaveBeenCalledWith([]);
 });
