@@ -47,6 +47,7 @@ class ReindexFormerAncestorsSubscriberSpec extends ObjectBehavior
         ProductModelIndexerInterface $productModelIndexer,
         ProductInterface $product
     ) {
+        $product->getUuid()->willReturn(Uuid::uuid4());
         $getAncestorAndDescendantProductModelCodes->fromProductModelCodes(Argument::any())->shouldNotBeCalled();
         $productModelIndexer->indexFromProductModelCodes(Argument::any())->shouldNotBeCalled();
 
@@ -81,7 +82,7 @@ class ReindexFormerAncestorsSubscriberSpec extends ObjectBehavior
     ) {
         $productToReindex->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $ignoredProduct->getUuid()->willReturn(Uuid::fromString('df31ba3f-508d-424c-8bc4-446c6e2966e5'));
-        $otherProductToReindex->getId()->willReturn(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'));
+        $otherProductToReindex->getUuid()->willReturn(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'));
 
         $this->store(
             new ParentHasBeenRemovedFromVariantProduct(
