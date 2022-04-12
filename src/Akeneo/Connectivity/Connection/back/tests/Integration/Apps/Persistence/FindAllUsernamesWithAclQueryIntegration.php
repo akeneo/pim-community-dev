@@ -61,4 +61,21 @@ class FindAllUsernamesWithAclQueryIntegration extends TestCase
 
         self::assertEqualsCanonicalizing($expectedUsernames, $foundUsernames);
     }
+
+    public function test_it_returns_no_usernames_given_the_acl(): void
+    {
+        $this->createAdminUser();
+        $this->userLoader->createUser('userA', ['userGroupA'], ['ROLE_APP_A']);
+        $this->userLoader->createUser('userB', ['userGroupB'], ['ROLE_APP_A']);
+        $this->userLoader->createUser('userC', ['userGroupC'], ['ROLE_APP_B']);
+        $this->userLoader->createUser('userD', ['userGroupC'], ['ROLE_APP_B']);
+
+        $this->aclLoader->addAclToRoles('akeneo_connectivity_connection_manage_apps', [
+            'ROLE_USER',
+        ]);
+
+        $foundUsernames = $this->query->execute('akeneo_connectivity_connection_manage_apps');
+
+        self::assertEqualsCanonicalizing([], $foundUsernames);
+    }
 }

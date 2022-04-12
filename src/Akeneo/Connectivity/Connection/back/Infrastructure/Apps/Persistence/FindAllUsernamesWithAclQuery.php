@@ -51,6 +51,6 @@ class FindAllUsernamesWithAclQuery implements FindAllUsernamesWithAclQueryInterf
 
         $results = $this->connection->executeQuery($selectSQL, ['acl' => $acl])->fetchFirstColumn();
 
-        return $results ?? [];
+        return $results ?: [];
     }
 }
