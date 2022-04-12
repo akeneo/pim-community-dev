@@ -75,6 +75,7 @@ services:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
             - '%akeneo.pim.automation.data_quality_insights.persistence.product_criterion_evaluation_table%'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_model_pending_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQuery
@@ -82,14 +83,17 @@ services:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
             - '%akeneo.pim.automation.data_quality_insights.persistence.product_model_criterion_evaluation_table%'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresByCodesQuery:
         arguments:

@@ -17,24 +17,13 @@ use Webmozart\Assert\Assert;
 
 final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistributionFromProductScoresQueryInterface
 {
-    private Connection $connection;
-
-    private Client $elasticsearchClient;
-
-    private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery;
-
-    private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
-
     public function __construct(
-        Connection                             $connection,
-        Client                                 $elasticsearchClient,
-        GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
-        GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
-    ) {
-        $this->connection = $connection;
-        $this->elasticsearchClient = $elasticsearchClient;
-        $this->getCategoryChildrenIdsQuery = $getCategoryChildrenIdsQuery;
-        $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
+        private Connection                             $connection,
+        private Client                                 $elasticsearchClient,
+        private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
+        private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
+    )
+    {
     }
 
     public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection
@@ -68,20 +57,20 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
      * It would be possible to calculate all consolidation scores from Elasticsearch
      * in one request, by using multi level aggregation:
      * {
-     *	 "aggs": {
-     *	 	"fe_case.cs_CZ": {
-     *	 		"terms": {
-     *	 			"field": "data_quality_insights.scores.fe_case.cs_CZ"
-     *	 		},
-     *	 		"aggs": {
-     *	 			"agg2": {
-     *	 				"terms": {
-     *	 					"field": "family.code"
-     *	 				}
-     *	 			}
-     *	 		}
-     *	 	}
-     *	 }
+     *     "aggs": {
+     *        "fe_case.cs_CZ": {
+     *            "terms": {
+     *                "field": "data_quality_insights.scores.fe_case.cs_CZ"
+     *            },
+     *            "aggs": {
+     *                "agg2": {
+     *                    "terms": {
+     *                        "field": "family.code"
+     *                    }
+     *                }
+     *            }
+     *        }
+     *     }
      * }
      *
      * But actually, there is a limit of the number of buckets that we can return:
@@ -98,7 +87,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
         $query = $this->buildRankDistributionQuery();
         $query['query']['constant_score']['filter']['bool']['filter'][] = [
             'term' => [
-                'family.code' => (string) $familyCode
+                'family.code' => (string)$familyCode
             ]
         ];
         $elasticsearchResult = $this->elasticsearchClient->search($query);

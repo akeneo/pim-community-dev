@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -20,9 +20,10 @@ final class HasUpToDateProductModelEvaluationQuery implements HasUpToDateEvaluat
     {
     }
 
-    public function forProductId(ProductId $productId): bool
+    public function forProductId(ProductEntityIdInterface $productId): bool
     {
-        $upToDateProducts = $this->forProductIdCollection($this->factory->createCollection([(string) $productId]));
+        $productModelIdCollection = $this->factory->createCollection([(string)$productId]);
+        $upToDateProducts = $this->forProductIdCollection($productModelIdCollection);
         return !is_null($upToDateProducts);
     }
 
@@ -47,7 +48,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIdCollection->toArrayInt()],
+            ['product_ids' => $productIdCollection->toArrayString()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 

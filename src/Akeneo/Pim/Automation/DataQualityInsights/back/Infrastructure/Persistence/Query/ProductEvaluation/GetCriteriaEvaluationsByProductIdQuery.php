@@ -9,10 +9,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -29,18 +29,19 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     private string $tableName;
 
     public function __construct(
-        Connection $db,
-        Clock $clock,
+        Connection                            $db,
+        Clock                                 $clock,
         TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
-        string $tableName
-    ) {
+        string                                $tableName
+    )
+    {
         $this->db = $db;
         $this->clock = $clock;
         $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;
         $this->tableName = $tableName;
     }
 
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
         $criterionEvaluationTable = $this->tableName;
 

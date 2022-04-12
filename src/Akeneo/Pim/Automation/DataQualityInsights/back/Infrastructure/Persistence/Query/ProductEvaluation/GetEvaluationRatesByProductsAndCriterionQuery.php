@@ -38,7 +38,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => $productIdCollection->toArrayInt(),
+                'productIds' => $productIdCollection->toArrayString(),
                 'criterionCode' => $criterionCode,
             ],
             [

@@ -37,7 +37,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productModelIds' => $productIdCollection->toArrayInt(),
+                'productModelIds' => array_map(fn(string $productModelId) => (int) $productModelId, $productIdCollection->toArrayString()),
                 'criterionCode' => $criterionCode,
             ],
             [
@@ -47,7 +47,7 @@ SQL;
 
         $evaluationResults = [];
         while ($evaluation = $stmt->fetchAssociative()) {
-            $evaluationResults[\intval($evaluation['product_id'])] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
+            $evaluationResults[$evaluation['product_id']] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
         }
 
         return $evaluationResults;

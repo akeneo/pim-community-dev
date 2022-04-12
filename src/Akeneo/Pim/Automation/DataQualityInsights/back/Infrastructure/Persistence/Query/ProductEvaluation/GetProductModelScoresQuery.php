@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
@@ -19,14 +20,15 @@ use Doctrine\DBAL\Connection;
 final class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
 {
     public function __construct(
-        private Connection $dbConnection
+        private Connection $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
     public function byProductModelId(ProductEntityIdInterface $productId): ChannelLocaleRateCollection
     {
-        // @todo[PLG-835]
-        $productScores = $this->byProductModelIds(ProductIdCollection::fromProductId($productId));
+        $productModelIdCollection = $this->idFactory->createCollection([(string) $productId]);
+        $productScores = $this->byProductModelIds($productModelIdCollection);
 
         return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
     }
@@ -44,7 +46,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['productModelIds' => $productModelIds->toArrayInt()],
+            ['productModelIds' => $productModelIds->toArrayString()],
             ['productModelIds' => Connection::PARAM_INT_ARRAY]
         );
 

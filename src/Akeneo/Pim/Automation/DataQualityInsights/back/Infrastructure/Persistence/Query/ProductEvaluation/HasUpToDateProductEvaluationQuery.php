@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
@@ -21,15 +21,15 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
     {
     }
 
-    public function forProductId(ProductId $productId): bool
+    public function forProductId(ProductEntityIdInterface $productId): bool
     {
-        // @todo[PLG-835]
-        $upToDateProducts = $this->forProductIdCollection($this->idFactory->createCollection(array_map(fn($id) =>(string) $productId, [$productId])));
+        $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
+        $upToDateProducts = $this->forProductIdCollection($productIdCollection);
 
         return !is_null($upToDateProducts);
     }
 
-    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductIdCollection
+    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
     {
         if ($productIdCollection->isEmpty()) {
             return null;
@@ -53,7 +53,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIdCollection->toArrayInt()],
+            ['product_ids' => $productIdCollection->toArrayString()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
@@ -71,7 +71,6 @@ SQL;
             return null;
         }
 
-        // @todo[PLG-835]
-        return ProductIdCollection::fromStrings($ids);
+        return $this->idFactory->createCollection($ids);
     }
 }

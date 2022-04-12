@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluableAttributesByProductModelQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -88,7 +90,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
         $this->assertEqualsCanonicalizing($expectedAttributes, $attributes);
     }
 
-    private function givenAProductModelWithOnlyOneLevelOfVariation(): ProductId
+    private function givenAProductModelWithOnlyOneLevelOfVariation(): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode('one_level_product_model')
@@ -97,10 +99,10 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    private function givenARootProductModelWithTwoLevelsOfVariation(): ProductId
+    private function givenARootProductModelWithTwoLevelsOfVariation(): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode('two_level_root_product_model')
@@ -109,10 +111,10 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    private function givenASubProductModel(): ProductId
+    private function givenASubProductModel(): ProductModelId
     {
         $this->givenARootProductModelWithTwoLevelsOfVariation();
 
@@ -124,7 +126,7 @@ class GetEvaluableAttributesByProductModelQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
     private function addAttributesToFamilyA(array $attributesData): void

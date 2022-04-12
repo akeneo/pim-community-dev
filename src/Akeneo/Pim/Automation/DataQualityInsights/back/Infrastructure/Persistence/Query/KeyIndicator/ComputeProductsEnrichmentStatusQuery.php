@@ -42,7 +42,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
         $productsEvaluationResults = $this->getProductsCompletenessResults($productIdCollection);
         $productsEnrichmentStatus = [];
-        foreach ($productIdCollection->toArrayInt() as $productId) {
+        foreach ($productIdCollection->toArrayString() as $productId) {
             $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluationResults[$productId], $channelsLocales);
         }
 
@@ -106,7 +106,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         );
 
         $productsEvaluations = [];
-        foreach ($productIds->toArrayInt() as $productId) {
+        foreach ($productIds->toArrayString() as $productId) {
             $productsEvaluations[$productId] = [
                 EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => $requiredAttributesEvaluations[$productId] ?? null,
                 EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => $nonRequiredAttributesEvaluations[$productId] ?? null,

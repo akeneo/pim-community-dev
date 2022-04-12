@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Doctrine\DBAL\Connection;
 
@@ -19,20 +21,13 @@ use Doctrine\DBAL\Connection;
  */
 final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPendingCriteriaEvaluationsByProductIdsQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var Clock */
-    private $clock;
-
-    /** @var string */
-    private $tableName;
-
-    public function __construct(Connection $dbConnection, Clock $clock, string $tableName)
+    public function __construct(
+        private Connection                      $dbConnection,
+        private Clock                           $clock,
+        private string                          $tableName,
+        private ProductEntityIdFactoryInterface $idFactory
+    )
     {
-        $this->dbConnection = $dbConnection;
-        $this->clock = $clock;
-        $this->tableName = $tableName;
     }
 
     /**
@@ -55,7 +50,7 @@ GROUP BY product_id
 SQL;
         $params = [
             'status' => CriterionEvaluationStatus::PENDING,
-            'product_ids' => $productIds->toArrayInt(),
+            'product_ids' => $productIds->toArrayString(),
         ];
 
         $types = [
@@ -67,15 +62,15 @@ SQL;
 
         $productsCriteriaEvaluations = [];
         while ($resultRow = $stmt->fetchAssociative()) {
-            $productId = ProductId::fromString($resultRow['product_id']);
+            $productId = $this->idFactory->create($resultRow['product_id']);
             $criteria = json_decode($resultRow['criteria']);
-            $productsCriteriaEvaluations[$productId->toInt()] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);
+            $productsCriteriaEvaluations[(string)$productId] = $this->hydrateProductCriteriaEvaluations($productId, $criteria);
         }
 
         return $productsCriteriaEvaluations;
     }
 
-    private function hydrateProductCriteriaEvaluations(ProductId $productId, array $criteria): Write\CriterionEvaluationCollection
+    private function hydrateProductCriteriaEvaluations(ProductEntityIdInterface $productId, array $criteria): Write\CriterionEvaluationCollection
     {
         $productCriteriaEvaluations = new Write\CriterionEvaluationCollection();
         $pendingStatus = CriterionEvaluationStatus::pending();

@@ -50,12 +50,11 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
 
         $params = [];
         foreach ($productIdCollection->toArray() as $productId) {
-            $productId = $productId->toInt();
-            if (!array_key_exists($productId, $scores)) {
+            if (!array_key_exists((string) $productId, $scores)) {
                 continue;
             }
-            $qualityScores = $scores[$productId];
-            $keyIndicators = $computedKeyIndicators[$productId] ?? [];
+            $qualityScores = $scores[(string) $productId];
+            $keyIndicators = $computedKeyIndicators[(string) $productId] ?? [];
 
             $params[$identifierPrefix . $productId] = [
                 'script' => [
@@ -70,8 +69,8 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
 
         $this->esClient->bulkUpdate(
             array_map(
-                fn ($productId) => $identifierPrefix . (string) $productId,
-                $productIdCollection->toArrayInt()
+                fn ($productId) => $identifierPrefix . $productId,
+                $productIdCollection->toArrayString()
             ),
             $params
         );

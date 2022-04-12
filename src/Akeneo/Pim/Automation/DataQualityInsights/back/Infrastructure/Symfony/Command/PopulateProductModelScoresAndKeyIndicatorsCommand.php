@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +26,8 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
     public function __construct(
         private Connection $dbConnection,
-        private CreateCriteriaEvaluations $createCriteriaEvaluations
+        private CreateCriteriaEvaluations $createCriteriaEvaluations,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
         parent::__construct();
     }
@@ -60,8 +61,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
-                // @todo[PLG-835]
-                $productModelIdsCollection = ProductIdCollection::fromInts($productModelIds);
+                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn($productId) => (string) $productId, $productModelIds));
                 $this->createCriteriaEvaluations->create($completenessCriteria, $productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e) {

@@ -8,7 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\CompletenessProductMask;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetCompletenessProductMasks;
@@ -30,17 +31,22 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
     private $productModelRepository;
 
     public function __construct(
-        GetCompletenessProductMasks $getCompletenessProductMasks,
+        GetCompletenessProductMasks                 $getCompletenessProductMasks,
         GetProductModelAttributesMaskQueryInterface $getProductModelAttributesMaskQuery,
-        ProductModelRepositoryInterface $productModelRepository
-    ) {
+        ProductModelRepositoryInterface             $productModelRepository
+    )
+    {
         $this->getCompletenessProductMasks = $getCompletenessProductMasks;
         $this->getProductModelAttributesMaskQuery = $getProductModelAttributesMaskQuery;
         $this->productModelRepository = $productModelRepository;
     }
 
-    public function calculate(ProductId $productModelId): CompletenessCalculationResult
+    public function calculate(ProductEntityIdInterface $productModelId): CompletenessCalculationResult
     {
+        if (!$productModelId instanceof ProductModelId) {
+            throw new \InvalidArgumentException(sprintf('Invalid product model id: %s', (string)$productModelId));
+        }
+
         $result = new CompletenessCalculationResult();
         $productMask = $this->getProductMask($productModelId);
         $requiredAttributesMask = $this->getProductModelAttributesMaskQuery->execute($productModelId);
@@ -60,7 +66,7 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
         return $result;
     }
 
-    private function getProductMask(ProductId $productModelId): ?CompletenessProductMask
+    private function getProductMask(ProductModelId $productModelId): ?CompletenessProductMask
     {
         $productModel = $this->productModelRepository->find($productModelId->toInt());
 

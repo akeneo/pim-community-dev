@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infra
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
@@ -54,7 +55,8 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
             ]
         ])->getId();
 
-        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($productId));
+        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string)$productId]);
+        ($this->get(EvaluateProducts::class))($productIdCollection);
 
         return $productId;
     }

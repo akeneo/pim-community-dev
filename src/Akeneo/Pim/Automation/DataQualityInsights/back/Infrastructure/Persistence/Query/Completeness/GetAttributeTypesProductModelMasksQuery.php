@@ -3,7 +3,8 @@
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductModelAttributesMaskQueryInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
@@ -19,10 +20,10 @@ class GetAttributeTypesProductModelMasksQuery implements GetProductModelAttribut
     public function __construct(Connection $connection, array $attributeTypes)
     {
         $this->connection = $connection;
-        $this->attributeTypes = array_map(fn ($code) => (string) $code, $attributeTypes);
+        $this->attributeTypes = array_map(fn($code) => (string)$code, $attributeTypes);
     }
 
-    public function execute(ProductId $productModelId): ?RequiredAttributesMask
+    public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
     {
         $sql = <<<SQL
 SELECT
