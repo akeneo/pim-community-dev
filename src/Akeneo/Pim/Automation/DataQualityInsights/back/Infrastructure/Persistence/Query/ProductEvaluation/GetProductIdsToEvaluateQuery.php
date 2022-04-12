@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -21,7 +21,7 @@ final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQuery
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function execute(int $limit, int $bulkSize): \Generator
     {

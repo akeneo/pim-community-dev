@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -21,15 +21,15 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
     public function __construct(
-        private Client $esClient,
-        private string $documentType,
+        private Client                          $esClient,
+        private string                          $documentType,
         private ProductEntityIdFactoryInterface $idFactory
     )
     {
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {

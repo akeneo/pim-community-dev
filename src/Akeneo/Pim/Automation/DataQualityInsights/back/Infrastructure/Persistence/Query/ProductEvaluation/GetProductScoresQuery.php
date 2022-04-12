@@ -29,7 +29,7 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
         $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
         $productScores = $this->byProductIds($productIdCollection);
 
-        return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
+        return $productScores[(string)$productId] ?? new ChannelLocaleRateCollection();
     }
 
     public function byProductIds(ProductEntityIdCollection $productIdCollection): array
@@ -56,7 +56,7 @@ SQL;
 
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productId = intval($row['product_id']);
+            $productId = $row['product_id'];
             $productsScores[$productId] = $this->hydrateScores($row['scores']);
         }
 

@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 
@@ -18,14 +18,14 @@ use Doctrine\DBAL\Result;
 final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
     public function __construct(
-        private Connection $dbConnection,
+        private Connection                      $dbConnection,
         private ProductEntityIdFactoryInterface $idFactory
     )
     {
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {

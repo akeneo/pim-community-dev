@@ -15,11 +15,11 @@ interface ComputeProductsKeyIndicator
     public function getName(): string;
 
     /**
-     * @return array<int, array<string, array<string, bool>>> Enrichment status by product/product-model channel and locale
+     * @return array<string, array<string, array<string, bool>>> Enrichment status by product/product-model channel and locale
      *
      * Example of return:
      * [
-     *      42 => [
+     *      '42' => [
      *          'ecommerce' => [
      *              'en_US' => true,
      *              'fr_FR' => false,

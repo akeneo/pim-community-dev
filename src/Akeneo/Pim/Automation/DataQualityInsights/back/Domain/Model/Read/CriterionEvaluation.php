@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,21 +14,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class CriterionEvaluation
 {
-    /** @var CriterionCode */
-    private $criterionCode;
-
-    /** @var ProductId */
-    private $productId;
-
-    /** @var \DateTimeImmutable */
-    private $evaluatedAt;
-
-    /** @var CriterionEvaluationStatus */
-    private $status;
-
-    /** @var CriterionEvaluationResult|null */
-    private $result;
-
     /** @var \DateTimeImmutable|null */
     private $startedAt;
 
@@ -36,17 +21,13 @@ final class CriterionEvaluation
     private $endedAt;
 
     public function __construct(
-        CriterionCode $criterionCode,
-        ProductId $productId,
-        ?\DateTimeImmutable $evaluatedAt,
-        CriterionEvaluationStatus $status,
-        ?CriterionEvaluationResult $result
-    ) {
-        $this->criterionCode = $criterionCode;
-        $this->productId = $productId;
-        $this->evaluatedAt = $evaluatedAt;
-        $this->status = $status;
-        $this->result = $result;
+        private CriterionCode              $criterionCode,
+        private ProductEntityIdInterface   $productId,
+        private ?\DateTimeImmutable        $evaluatedAt,
+        private CriterionEvaluationStatus  $status,
+        private ?CriterionEvaluationResult $result
+    )
+    {
     }
 
     public function getCriterionCode(): CriterionCode
@@ -54,7 +35,7 @@ final class CriterionEvaluation
         return $this->criterionCode;
     }
 
-    public function getProductId(): ProductId
+    public function getProductId(): ProductEntityIdInterface
     {
         return $this->productId;
     }

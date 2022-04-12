@@ -58,7 +58,7 @@ SQL;
 
         $rows = $this->db->executeQuery(
             $sql,
-            ['product_id' => $productId->toInt()],
+            ['product_id' => (int)(string)$productId],
             ['product_id' => \PDO::PARAM_INT]
         )->fetchAllAssociative();
 
@@ -67,7 +67,7 @@ SQL;
             $criterionCode = new CriterionCode($rawCriterionEvaluation['criterion_code']);
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
                 $criterionCode,
-                ProductId::fromString($rawCriterionEvaluation['product_id']),
+                $productId,
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($criterionCode, $rawCriterionEvaluation['result']),

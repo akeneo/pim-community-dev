@@ -40,11 +40,11 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
 
         $additionalProperties = [];
         foreach ($productModelCodesIds as $productModelCode => $productId) {
-            $productModelId = $productId->toInt();
+            $index = (string)$productId;
             $additionalProperties[$productModelCode] = [
                 'data_quality_insights' => [
-                    'scores' => isset($productModelScores[$productModelId]) ? $productModelScores[$productModelId]->toArrayIntRank() : [],
-                    'key_indicators' => isset($productModelKeyIndicators[$productModelId]) ? $productModelKeyIndicators[$productModelId] : []
+                    'scores' => isset($productModelScores[$index]) ? $productModelScores[$index]->toArrayIntRank() : [],
+                    'key_indicators' => isset($productModelKeyIndicators[$index]) ? $productModelKeyIndicators[$index] : []
                 ],
             ];
         }
