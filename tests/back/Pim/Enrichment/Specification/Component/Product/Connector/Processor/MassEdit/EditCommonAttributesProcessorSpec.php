@@ -68,7 +68,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $product->getId()->willReturn(10);
 
         $productRepository->hasAttributeInFamily(10, 'number')->shouldBeCalled()->willReturn(true);
 
@@ -122,7 +121,6 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $product->getId()->willReturn(10);
         $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
 
         $productUpdater->update($product, [

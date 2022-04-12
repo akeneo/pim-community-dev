@@ -73,8 +73,12 @@ class UniqueValuesSet
      */
     protected function getEntityId(EntityWithValuesInterface $entity): string
     {
-        if ($entity instanceof ProductInterface || $entity instanceof ProductModelInterface) {
-            return $entity->getId() ? $entity->getId() : spl_object_hash($entity);
+        if ($entity instanceof ProductInterface) {
+            return $entity->getUuid()->toString();
+        }
+
+        if ($entity instanceof ProductModelInterface && $entity->getId()) {
+            return $entity->getId();
         }
 
         return spl_object_hash($entity);

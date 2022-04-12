@@ -20,7 +20,6 @@ class VersionBuilderSpec extends ObjectBehavior
 
     function it_builds_versions_for_versionable_entities($normalizer, $versionFactory, ProductInterface $product, Version $version)
     {
-        $product->getId()->willReturn(1);
         $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
         $product->getUuid()->willReturn($uuid);
         $normalizer->normalize($product, 'flat', [])->willReturn(['bar' => 'baz']);
@@ -33,7 +32,6 @@ class VersionBuilderSpec extends ObjectBehavior
 
     function it_creates_pending_version($versionFactory, ProductInterface $product, Version $pending)
     {
-        $product->getId()->willReturn(1);
         $uuid = Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c');
         $product->getUuid()->willReturn($uuid);
         $versionFactory->create(Argument::Any(), null, $uuid, 'baz', null)->willReturn($pending);

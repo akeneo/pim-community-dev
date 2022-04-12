@@ -134,7 +134,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             throw $this->skipItemAndReturnException($item, $e->getMessage(), $e);
         }
 
-        if (false === $itemHasStatus && null !== $product->getId()) {
+        if (false === $itemHasStatus && null !== $product->getCreated()) {
             unset($filteredItem['enabled']);
         }
 
@@ -142,7 +142,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
-            if (empty($filteredItem) && null !== $product->getId()) {
+            if (empty($filteredItem) && null !== $product->getCreated()) {
                 $this->detachProduct($product);
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
