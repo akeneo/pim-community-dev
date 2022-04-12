@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 
 /**
@@ -81,7 +82,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         {
         };
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getIdentifier()->willReturn('product_identifier');
         $product->getFamily()->willReturn(null);
         $product->getLabel()->willReturn('Akeneo T-Shirt black and purple with short sleeve');
@@ -90,7 +91,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
             'type' => 'domain_error',
             'message' => 'Some error message',
             'product' => [
-                'id' => 1,
+                'id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => null,
@@ -119,7 +120,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
         {
         };
 
-        $product->getId()->willReturn(1);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $product->getIdentifier()->willReturn('product_identifier');
         $product->getFamily()->willReturn($family);
         $family->getCode()->willReturn('tshirts');
@@ -129,7 +130,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
             'type' => 'domain_error',
             'message' => 'Some error message',
             'product' => [
-                'id' => 1,
+                'id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => 'tshirts',

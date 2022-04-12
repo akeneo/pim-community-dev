@@ -84,7 +84,6 @@ class VersionManagerSpec extends ObjectBehavior
         $versionRepository
     ) {
         $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
-        $product->getId()->willReturn(1);
 
         $pending1 = new Version('Product', null, Uuid::fromString('114c9108-444d-408a-ab43-195068166d2c'), 'julia');
         $pending1->setChangeset(['foo' => 'bar']);
@@ -105,7 +104,6 @@ class VersionManagerSpec extends ObjectBehavior
     function it_builds_pending_versions_for_a_given_entity(ProductInterface $product, $builder, $versionRepository)
     {
         $product->getUuid()->willReturn(Uuid::fromString('dc9ac794-fdfb-49e6-8a24-f01e0f68907d'));
-        $product->getId()->willReturn(1);
 
         $pending1 = new Version('Product', 1, null, 'julia');
         $pending1->setChangeset(['foo' => 'bar']);
