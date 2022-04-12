@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Catalog updates - Remove a channel used by a project
   In order to remove a channel
   As a user
