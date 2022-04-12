@@ -82,7 +82,7 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $product = new Product();
         $this->save($product);
 
-        $this->find($product->getId())->shouldReturn($product);
+        $this->find($product->getUuid())->shouldReturn($product);
     }
 
     function it_returns_null_when_it_does_not_find_a_product()
