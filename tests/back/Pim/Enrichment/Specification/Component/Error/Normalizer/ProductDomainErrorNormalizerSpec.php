@@ -91,7 +91,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
             'type' => 'domain_error',
             'message' => 'Some error message',
             'product' => [
-                'id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => null,
@@ -130,7 +130,7 @@ class ProductDomainErrorNormalizerSpec extends ObjectBehavior
             'type' => 'domain_error',
             'message' => 'Some error message',
             'product' => [
-                'id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+                'uuid' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'identifier' => 'product_identifier',
                 'label' => 'Akeneo T-Shirt black and purple with short sleeve',
                 'family' => 'tshirts',
