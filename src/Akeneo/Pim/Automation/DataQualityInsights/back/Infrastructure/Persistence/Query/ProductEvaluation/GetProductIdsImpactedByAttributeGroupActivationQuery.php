@@ -19,8 +19,7 @@ final class GetProductIdsImpactedByAttributeGroupActivationQuery implements GetP
     public function __construct(
         private Connection                      $dbConnection,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
     /**

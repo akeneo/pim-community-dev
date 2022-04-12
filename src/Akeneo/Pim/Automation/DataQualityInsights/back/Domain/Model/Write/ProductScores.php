@@ -14,11 +14,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 final class ProductScores
 {
     public function __construct(
-        private ProductEntityIdInterface    $productId,
-        private \DateTimeImmutable          $evaluatedAt,
+        private ProductEntityIdInterface $productId,
+        private \DateTimeImmutable $evaluatedAt,
         private ChannelLocaleRateCollection $scores
-    )
-    {
+    ) {
     }
 
     public function getProductId(): ProductEntityIdInterface
