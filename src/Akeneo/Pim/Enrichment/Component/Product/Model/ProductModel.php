@@ -239,7 +239,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getCreated(): \DateTimeInterface
+    public function getCreated(): ?\DateTimeInterface
     {
         return $this->created;
     }

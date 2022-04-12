@@ -82,7 +82,7 @@ class ProductIndexer implements ProductIndexerInterface
         }
 
         $this->productAndProductModelClient->bulkDelete(array_map(
-            fn (UuidInterface $productUuid): string  => self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString(),
+            fn (UuidInterface $productUuid): string => self::PRODUCT_IDENTIFIER_PREFIX . $productUuid->toString(),
             $productUuids
         ));
     }
