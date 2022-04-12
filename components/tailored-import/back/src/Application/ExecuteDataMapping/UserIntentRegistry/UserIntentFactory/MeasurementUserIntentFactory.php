@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class MeasurementUserIntentFactory implements UserIntentFactoryInterface
+final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {

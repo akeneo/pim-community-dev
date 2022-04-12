@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-final class TextareaUserIntentFactory implements UserIntentFactoryInterface
+final class SimpleSelectUserIntentFactory implements UserIntentFactoryInterface
 {
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
         if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a AttributeTarget');
+            throw new \InvalidArgumentException('The target must be an AttributeTarget');
         }
 
-        return new SetTextareaValue(
+        return new SetSimpleSelectValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
@@ -37,6 +37,6 @@ final class TextareaUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_textarea' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_simpleselect' === $target->getType();
     }
 }

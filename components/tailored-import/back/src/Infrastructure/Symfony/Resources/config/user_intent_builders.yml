@@ -9,6 +9,11 @@ services:
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
 
+  akeneo.tailored_import.user_intent_factory.simpleselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleSelectUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.text:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextUserIntentFactory
     tags:

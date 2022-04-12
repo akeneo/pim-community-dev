@@ -39,14 +39,14 @@ class TextUserIntentFactorySpec extends ObjectBehavior
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
 
-        $expectedSetNumberValue = new SetTextValue(
+        $expected = new SetTextValue(
             'an_attribute_code',
             null,
             null,
             'a_value'
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expectedSetNumberValue);
+        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_text(
