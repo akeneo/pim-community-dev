@@ -111,7 +111,8 @@ class AspellCheckerSpec extends ObjectBehavior
         $speller->checkText($source, ['en_US'])->willReturn($aspellCheckResult);
 
         $dior = new DictionaryWord('Dior');
-        $textCheckerDictionaryRepository->filterExistingWords($localeCode, [$dior])->willReturn([$dior]);
+        $lowercaseDior = new DictionaryWord('dior');
+        $textCheckerDictionaryRepository->filterExistingWords($localeCode, [$dior])->willReturn([$lowercaseDior]);
 
         $globalOffsetCalculator->compute(Argument::cetera())->shouldNotBeCalled();
         $lineNumberCalculator->compute(Argument::cetera())->shouldNotBeCalled();
