@@ -60,7 +60,7 @@ class VersionManagerIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('bar');
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId(), $product->getUuid());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
         $this->assertEmpty($productVersions);
     }
 
@@ -69,7 +69,7 @@ class VersionManagerIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('versioned-product');
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId(), $product->getUuid());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(1, $productVersions);
 
@@ -167,7 +167,7 @@ class VersionManagerIntegration extends TestCase
             '2017-02-01T00:00:00+01:00'
         );
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId(), $product->getUuid());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(2, $productVersions);
 
@@ -219,7 +219,7 @@ class VersionManagerIntegration extends TestCase
         $product->removeValue($productValue);
         $this->productSaver->save($product);
 
-        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), $product->getId(), $product->getUuid());
+        $productVersions = $this->versionRepository->getLogEntries(ClassUtils::getClass($product), null, $product->getUuid());
 
         $this->assertCount(2, $productVersions);
 
