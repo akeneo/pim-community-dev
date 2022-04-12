@@ -22,8 +22,7 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
         private Client                                 $elasticsearchClient,
         private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
         private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
-    )
-    {
+    ) {
     }
 
     public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection

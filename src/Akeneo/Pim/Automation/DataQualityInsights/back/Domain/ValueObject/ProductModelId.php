@@ -32,8 +32,8 @@ final class ProductModelId implements ProductEntityIdInterface
         return strval($this->id);
     }
 
-     public function toInt(): int
-     {
-         return $this->id;
-     }
+    public function toInt(): int
+    {
+        return $this->id;
+    }
 }

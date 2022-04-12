@@ -19,8 +19,7 @@ class EvaluateProducts
         private EvaluatePendingCriteria  $evaluatePendingProductCriteria,
         private ConsolidateProductScores $consolidateProductScores,
         private EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
     }
 
     public function __invoke(ProductEntityIdCollection $productIdCollection): void

@@ -20,8 +20,7 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
     public function __construct(
         private Connection                      $dbConnection,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
     public function byProductId(ProductEntityIdInterface $productId): ChannelLocaleRateCollection

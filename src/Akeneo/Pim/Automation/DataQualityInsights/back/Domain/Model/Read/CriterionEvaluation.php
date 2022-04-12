@@ -26,8 +26,7 @@ final class CriterionEvaluation
         private ?\DateTimeImmutable        $evaluatedAt,
         private CriterionEvaluationStatus  $status,
         private ?CriterionEvaluationResult $result
-    )
-    {
+    ) {
     }
 
     public function getCriterionCode(): CriterionCode

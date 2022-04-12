@@ -26,7 +26,7 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     public static function fromStrings(array $productIds): self
     {
-        return new self(array_map(fn($productId) => ProductModelId::fromString((string) $productId), $productIds));
+        return new self(array_map(fn ($productId) => ProductModelId::fromString((string) $productId), $productIds));
     }
 
     /**
@@ -54,6 +54,6 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     public function toArrayString(): array
     {
-        return array_map(fn(ProductModelId $productId) => (string)$productId, $this->productIds);
+        return array_map(fn (ProductModelId $productId) => (string)$productId, $this->productIds);
     }
 }

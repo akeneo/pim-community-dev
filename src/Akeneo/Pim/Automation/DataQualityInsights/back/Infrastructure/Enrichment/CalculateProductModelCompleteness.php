@@ -34,8 +34,7 @@ class CalculateProductModelCompleteness implements CalculateProductCompletenessI
         GetCompletenessProductMasks                 $getCompletenessProductMasks,
         GetProductModelAttributesMaskQueryInterface $getProductModelAttributesMaskQuery,
         ProductModelRepositoryInterface             $productModelRepository
-    )
-    {
+    ) {
         $this->getCompletenessProductMasks = $getCompletenessProductMasks;
         $this->getProductModelAttributesMaskQuery = $getProductModelAttributesMaskQuery;
         $this->productModelRepository = $productModelRepository;

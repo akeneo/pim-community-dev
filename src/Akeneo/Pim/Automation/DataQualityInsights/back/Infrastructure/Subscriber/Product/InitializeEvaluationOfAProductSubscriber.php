@@ -23,8 +23,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         private CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
         private LoggerInterface                 $logger,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
     public static function getSubscribedEvents()

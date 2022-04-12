@@ -19,8 +19,7 @@ final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
 {
     public function __construct(
         private GetEvaluationRatesByProductsAndCriterionQueryInterface $getEvaluationRatesByProductAndCriterionQuery
-    )
-    {
+    ) {
     }
 
     public function getName(): string

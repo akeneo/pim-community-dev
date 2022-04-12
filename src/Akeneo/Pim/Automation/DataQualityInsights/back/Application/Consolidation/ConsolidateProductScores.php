@@ -18,11 +18,10 @@ class ConsolidateProductScores
 {
     public function __construct(
         private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
-        private ComputeScores                                   $computeScores,
-        private ProductScoreRepositoryInterface                 $productScoreRepository,
-        private Clock                                           $clock
-    )
-    {
+        private ComputeScores $computeScores,
+        private ProductScoreRepositoryInterface $productScoreRepository,
+        private Clock $clock
+    ) {
     }
 
     public function consolidate(ProductEntityIdCollection $productIdCollection): void

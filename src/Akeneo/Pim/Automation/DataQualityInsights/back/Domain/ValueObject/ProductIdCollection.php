@@ -89,6 +89,6 @@ final class ProductIdCollection implements ProductEntityIdCollection
 
     public function toArrayString(): array
     {
-        return array_map(fn(ProductId $productId) => (string)$productId, $this->productIds);
+        return array_map(fn (ProductId $productId) => (string)$productId, $this->productIds);
     }
 }

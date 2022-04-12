@@ -20,8 +20,7 @@ class AddScoresToProductAndProductModelRows
     public function __construct(
         private GetQualityScoresFactory         $getQualityScoresFactory,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
 
@@ -33,8 +32,7 @@ class AddScoresToProductAndProductModelRows
         FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters,
         array                                     $rows,
         string                                    $type
-    ): array
-    {
+    ): array {
         if (empty($rows)) {
             return [];
         }

@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdC
 
 class ProductModelIdFactory implements ProductEntityIdFactoryInterface
 {
-
     public function create(string $id): ProductEntityIdInterface
     {
         return ProductModelId::fromString($id);

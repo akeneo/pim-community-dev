@@ -25,8 +25,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     public function __construct(
         private GetLocalesByChannelQueryInterface                        $getLocalesByChannelQuery,
         private GetEvaluationResultsByProductsAndCriterionQueryInterface $getEvaluationResultsByProductsAndCriterionQuery,
-    )
-    {
+    ) {
     }
 
     public function getName(): string
@@ -71,8 +70,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         ?CriterionEvaluationResult $requiredAttributesEvaluationResult,
         string                     $channel,
         string                     $locale
-    ): ?bool
-    {
+    ): ?bool {
         $nonRequiredAttributesEvaluation = null !== $nonRequiredAttributesEvaluationResult ? $nonRequiredAttributesEvaluationResult->getData() : [];
         $requiredAttributesEvaluationData = null !== $requiredAttributesEvaluationResult ? $requiredAttributesEvaluationResult->getData() : [];
 

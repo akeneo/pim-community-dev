@@ -24,8 +24,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         private Client                          $esClient,
         private string                          $documentType,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
     /**

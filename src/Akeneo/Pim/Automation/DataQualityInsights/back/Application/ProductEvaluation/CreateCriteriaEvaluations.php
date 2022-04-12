@@ -19,8 +19,7 @@ class CreateCriteriaEvaluations
     public function __construct(
         private CriteriaEvaluationRegistry             $criteriaEvaluationRegistry,
         private CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
-    )
-    {
+    ) {
     }
 
     public function createAll(ProductEntityIdCollection $productIdCollection): void

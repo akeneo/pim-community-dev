@@ -26,8 +26,7 @@ final class CalculateProductCompleteness implements \Akeneo\Pim\Automation\DataQ
     public function __construct(
         GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
         CompletenessCalculator                          $completenessCalculator
-    )
-    {
+    ) {
         $this->completenessCalculator = $completenessCalculator;
         $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;
     }

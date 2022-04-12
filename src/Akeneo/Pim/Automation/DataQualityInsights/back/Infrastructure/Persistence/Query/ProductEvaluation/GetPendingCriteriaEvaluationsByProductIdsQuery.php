@@ -26,8 +26,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
         private Clock                           $clock,
         private string                          $tableName,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
     }
 
     /**

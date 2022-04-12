@@ -15,8 +15,7 @@ final class ProductsEvaluated extends Event
 {
     public function __construct(
         private ProductEntityIdCollection $productIdCollection
-    )
-    {
+    ) {
     }
 
     public function getProductIds(): ProductEntityIdCollection

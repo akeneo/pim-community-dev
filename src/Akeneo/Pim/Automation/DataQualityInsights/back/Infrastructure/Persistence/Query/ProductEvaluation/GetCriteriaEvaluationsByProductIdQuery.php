@@ -33,8 +33,7 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
         Clock                                 $clock,
         TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
         string                                $tableName
-    )
-    {
+    ) {
         $this->db = $db;
         $this->clock = $clock;
         $this->transformCriterionEvaluationResultIds = $transformCriterionEvaluationResultIds;

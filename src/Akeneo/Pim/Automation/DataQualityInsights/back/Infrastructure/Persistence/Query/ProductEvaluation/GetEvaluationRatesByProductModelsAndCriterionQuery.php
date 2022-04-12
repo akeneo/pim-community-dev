@@ -20,8 +20,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQuery implements GetEva
     public function __construct(
         private Connection                            $dbConnection,
         private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
-    )
-    {
+    ) {
     }
 
     public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array

@@ -16,7 +16,6 @@ use Doctrine\DBAL\Connection;
  */
 final class GetProductModelIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
 {
-
     public function __construct(private Connection $db, private ProductEntityIdFactoryInterface $idFactory)
     {
     }

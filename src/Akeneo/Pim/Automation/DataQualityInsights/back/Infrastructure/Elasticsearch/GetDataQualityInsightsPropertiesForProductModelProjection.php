@@ -34,7 +34,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
     {
         $productModelCodesIds = $this->getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes);
 
-        $productIdCollection = $this->idFactory->createCollection(array_map(fn($id) => (string) $id, array_values($productModelCodesIds)));
+        $productIdCollection = $this->idFactory->createCollection(array_map(fn ($id) => (string) $id, array_values($productModelCodesIds)));
         $productModelScores = $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
         $productModelKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 
