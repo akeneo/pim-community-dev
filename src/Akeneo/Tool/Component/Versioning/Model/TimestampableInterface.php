@@ -14,7 +14,7 @@ interface TimestampableInterface
     /**
      * Get created datetime
      *
-     * @return \DateTime
+     * @return null|\DateTimeInterface
      */
     public function getCreated();
 
