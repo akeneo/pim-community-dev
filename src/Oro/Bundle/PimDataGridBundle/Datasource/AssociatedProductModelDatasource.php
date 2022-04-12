@@ -285,7 +285,7 @@ class AssociatedProductModelDatasource extends ProductDatasource
                     'id'         => sprintf(
                         '%s-%s',
                         $entity instanceof ProductModelInterface ? 'product-model' : 'product',
-                        $entity instanceof ProductModelInterface ? $entity->getId() : $entity->getUuid()->toString()
+                        $entity instanceof ProductInterface ? $entity->getUuid()->toString(): $entity->getId()
                     ),
                     'dataLocale' => $dataLocale,
                     'is_associated' => true,
