@@ -97,7 +97,7 @@ akeneo.tailored_import:
     target:
       attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
       property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
-      source_parameter:
+      source_configuration:
         unit_should_exist: The unit {{ unit_code }} does not exist for the measurement family {{ measurement_family }}. Please select a valid unit.
     locale:
       should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.

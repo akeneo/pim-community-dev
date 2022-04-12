@@ -36,8 +36,7 @@ final class MeasurementValidator extends ConstraintValidator
             'fields' => [
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
-                    // TODO pluralize source_parameter everywhere in the codebase
-                    'source_parameter' => new MeasurementSourceParameter($constraint->getAttribute()->metricFamily()),
+                    'source_configuration' => new MeasurementSourceConfiguration($constraint->getAttribute()->metricFamily()),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),

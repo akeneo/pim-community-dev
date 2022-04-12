@@ -29,7 +29,7 @@ const dataMapping: DataMapping = {
     action_if_empty: 'skip',
     locale: null,
     type: 'attribute',
-    source_parameter: null,
+    source_configuration: null,
   },
 };
 

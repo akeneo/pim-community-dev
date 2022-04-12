@@ -2,7 +2,7 @@ import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {filterErrors, useTranslate, getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
-import {isMeasurementTarget, MeasurementSourceParameter} from './model';
+import {isMeasurementTarget, MeasurementSourceConfiguration} from './model';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {useMeasurementFamily} from '../../../../hooks';
 import {
@@ -40,8 +40,8 @@ const MeasurementConfigurator = ({
   const unitErrors = filterErrors(validationErrors, '[target][unit]');
   const measurementFamily = useMeasurementFamily(attribute.metric_family);
 
-  const handleSourceParameterChange = (sourceParameter: MeasurementSourceParameter) => {
-    onTargetChange({...dataMapping.target, source_parameter: sourceParameter});
+  const handleSourceConfigurationChange = (sourceConfiguration: MeasurementSourceConfiguration) => {
+    onTargetChange({...dataMapping.target, source_configuration: sourceConfiguration});
   };
 
   return (
@@ -60,8 +60,8 @@ const MeasurementConfigurator = ({
               clearable={false}
               emptyResultLabel={translate('pim_common.no_result')}
               openLabel={translate('pim_common.open')}
-              value={target.source_parameter.unit}
-              onChange={unit => handleSourceParameterChange({...target.source_parameter, unit})}
+              value={target.source_configuration.unit}
+              onChange={unit => handleSourceConfigurationChange({...target.source_configuration, unit})}
             >
               {measurementFamily.units.map(({code, labels}) => (
                 <SelectInput.Option key={code} title={getLabel(labels, catalogLocale, code)} value={code}>
@@ -78,9 +78,9 @@ const MeasurementConfigurator = ({
         </Field>
         {attribute.decimals_allowed && (
           <DecimalSeparatorField
-            value={target.source_parameter.decimal_separator}
+            value={target.source_configuration.decimal_separator}
             onChange={decimalSeparator =>
-              handleSourceParameterChange({...target.source_parameter, decimal_separator: decimalSeparator})
+              handleSourceConfigurationChange({...target.source_configuration, decimal_separator: decimalSeparator})
             }
             validationErrors={decimalSeparatorErrors}
           />

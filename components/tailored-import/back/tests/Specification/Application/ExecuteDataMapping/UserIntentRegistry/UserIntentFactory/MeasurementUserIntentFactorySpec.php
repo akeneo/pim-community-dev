@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementUserIntentFactorySpec extends ObjectBehavior
@@ -35,13 +35,13 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
     public function it_creates_a_set_measurement_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $measurementSourceParameter = new MeasurementSourceParameter('METER', '.');
+        $measurementSourceConfiguration = new MeasurementSourceConfiguration('METER', '.');
 
         $attributeTarget->getType()->willReturn('pim_catalog_metric');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
-        $attributeTarget->getSourceParameter()->willReturn($measurementSourceParameter);
+        $attributeTarget->getSourceConfiguration()->willReturn($measurementSourceConfiguration);
 
         $expected = new SetMeasurementValue(
             'an_attribute_code',

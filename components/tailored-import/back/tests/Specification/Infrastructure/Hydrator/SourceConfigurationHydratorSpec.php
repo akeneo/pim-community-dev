@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\NumberSourceConfiguration;
 use PhpSpec\ObjectBehavior;
 
-class SourceParameterHydratorSpec extends ObjectBehavior
+class SourceConfigurationHydratorSpec extends ObjectBehavior
 {
-    public function it_hydrates_a_number_source_parameter(): void
+    public function it_hydrates_a_number_source_configuration(): void
     {
-        $expected = new NumberSourceParameter(',');
+        $expected = new NumberSourceConfiguration(',');
 
         $this->hydrate(
             ['decimal_separator' => ','],

@@ -37,8 +37,7 @@ final class SimpleSelectValidator extends ConstraintValidator
             'fields' => [
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
-                    // TODO pluralize source_parameter everywhere in the codebase
-                    'source_parameter' => new IsNull(),
+                    'source_configuration' => new IsNull(),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),

@@ -68,7 +68,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'locale' => null,
                             'action_if_not_empty' => 'set',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -83,7 +83,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'type' => 'property',
                             'action_if_not_empty' => 'add',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
@@ -112,7 +112,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     'sources' => [
                         '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -134,7 +134,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'locale' => null,
                             'action_if_not_empty' => 'set',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -149,7 +149,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'type' => 'property',
                             'action_if_not_empty' => 'add',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
@@ -171,7 +171,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'type' => 'property',
                             'action_if_not_empty' => 'add',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
@@ -195,7 +195,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'locale' => null,
                             'action_if_not_empty' => 'set',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69'
@@ -212,7 +212,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                             'locale' => null,
                             'action_if_not_empty' => 'set',
                             'action_if_empty' => 'skip',
-                            'source_parameter' => null,
+                            'source_configuration' => null,
                         ],
                         'sources' => [
                             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',

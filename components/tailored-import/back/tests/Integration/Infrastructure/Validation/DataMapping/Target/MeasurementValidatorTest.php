@@ -62,7 +62,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => [
+                        'source_configuration' => [
                             'decimal_separator' => '.',
                             'unit' => 'MEGAWATT',
                         ]
@@ -82,7 +82,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => [
+                        'source_configuration' => [
                             'decimal_separator' => '.',
                             'unit' => 'MEGAWATT',
                         ]
@@ -102,7 +102,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => [
+                        'source_configuration' => [
                             'decimal_separator' => ',',
                             'unit' => 'MEGAWATT',
                         ]
@@ -130,7 +130,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -149,7 +149,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'add',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -158,7 +158,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
             ],
             'an measurement data mapping with an invalid decimal separator' => [
                 'The value you selected is not a valid choice.',
-                '[target][source_parameter][decimal_separator]',
+                '[target][source_configuration][decimal_separator]',
                 [
                     "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
                     "target" => [
@@ -168,7 +168,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => [
+                        'source_configuration' => [
                             'decimal_separator' => '|',
                             'unit' => 'MEGAWATT',
                         ]
@@ -179,8 +179,8 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                 ]
             ],
             'an measurement data mapping with an invalid unit' => [
-                'akeneo.tailored_import.validation.target.source_parameter.unit_should_exist',
-                '[target][source_parameter][unit]',
+                'akeneo.tailored_import.validation.target.source_configuration.unit_should_exist',
+                '[target][source_configuration][unit]',
                 [
                     "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
                     "target" => [
@@ -190,7 +190,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => [
+                        'source_configuration' => [
                             'decimal_separator' => '|',
                             'unit' => 'MASS_EDITH',
                         ]
@@ -212,7 +212,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [
@@ -235,7 +235,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => [],
                     "operations" => [],
@@ -254,7 +254,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
                     "operations" => [],
@@ -273,7 +273,7 @@ final class MeasurementValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],

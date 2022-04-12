@@ -21,7 +21,7 @@ services:
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
-      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier'
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier'
       - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
 
   akeneo.tailored_import.handler.get_file_template_information_handler:

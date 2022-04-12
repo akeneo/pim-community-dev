@@ -7,7 +7,7 @@ test('it returns true if it is a number target', () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    source_parameter: {decimal_separator: ','},
+    source_configuration: {decimal_separator: ','},
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
   };
@@ -21,7 +21,7 @@ test('it returns false if it is not a number target', () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    source_parameter: null,
+    source_configuration: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
   };

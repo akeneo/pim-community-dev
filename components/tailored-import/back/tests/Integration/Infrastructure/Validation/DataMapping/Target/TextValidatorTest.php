@@ -62,7 +62,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -79,7 +79,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -96,7 +96,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -113,7 +113,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [
@@ -142,7 +142,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -161,7 +161,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'add',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],
@@ -180,7 +180,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [
@@ -203,7 +203,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => [],
                     "operations" => [],
@@ -222,7 +222,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
                     "operations" => [],
@@ -241,7 +241,7 @@ final class TextValidatorTest extends AbstractValidationTest
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     "operations" => [],

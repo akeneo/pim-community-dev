@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -22,7 +22,7 @@ class ExecuteDataMappingHandler
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
         private UserIntentAggregatorInterface $userIntentAggregator,
-        private SourceParameterApplier $sourceParameterApplier,
+        private SourceConfigurationApplier $sourceConfigurationApplier,
         private GetIdentifierAttributeCodeInterface $getIdentifierAttributeCode,
     ) {
     }
@@ -40,8 +40,8 @@ class ExecuteDataMappingHandler
 
             $value = $row->getCellData($sources[0]);
 
-            if ($target instanceof AttributeTarget && $target->getSourceParameter() !== null) {
-                $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
+            if ($target instanceof AttributeTarget && $target->getSourceConfiguration() !== null) {
+                $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
             }
 
             $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);

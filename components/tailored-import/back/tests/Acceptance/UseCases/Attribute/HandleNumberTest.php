@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\NumberSourceConfiguration;
 use PHPUnit\Framework\Assert;
 
 final class HandleNumberTest extends AttributeTestCase
@@ -79,7 +79,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new NumberSourceParameter('.'),
+                            new NumberSourceConfiguration('.'),
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -94,7 +94,7 @@ final class HandleNumberTest extends AttributeTestCase
                             'fr_FR',
                             'set',
                             'skip',
-                            new NumberSourceParameter(',')
+                            new NumberSourceConfiguration(',')
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),

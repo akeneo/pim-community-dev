@@ -54,7 +54,7 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceParameter\DecimalSeparatorValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
     arguments:
       - [',', '.', '٫‎']
     tags:

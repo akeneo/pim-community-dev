@@ -36,7 +36,7 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('ramsey.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
-        $loader->load('source_parameter_appliers.yml');
+        $loader->load('source_configuration_appliers.yml');
         $loader->load('spout.yml');
         $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');

@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter;
+namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\SourceConfigurationInterface;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementSourceParameterSpec extends ObjectBehavior
+class MeasurementSourceConfigurationSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -26,12 +26,12 @@ class MeasurementSourceParameterSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(MeasurementSourceParameter::class);
+        $this->shouldHaveType(MeasurementSourceConfiguration::class);
     }
 
-    public function it_implements_source_parameter_interface()
+    public function it_implements_source_configuration_interface()
     {
-        $this->shouldBeAnInstanceOf(SourceParameterInterface::class);
+        $this->shouldBeAnInstanceOf(SourceConfigurationInterface::class);
     }
 
     public function it_returns_unit()

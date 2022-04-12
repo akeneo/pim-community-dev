@@ -4,7 +4,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\T
 
 use Symfony\Component\Validator\Constraint;
 
-final class MeasurementSourceParameter extends Constraint
+final class MeasurementSourceConfiguration extends Constraint
 {
     public function __construct(
         private string $familyCode

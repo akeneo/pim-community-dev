@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use PHPUnit\Framework\Assert;
 
 final class HandleMeasurementTest extends AttributeTestCase
@@ -79,7 +79,7 @@ final class HandleMeasurementTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new MeasurementSourceParameter('METER', '.'),
+                            new MeasurementSourceConfiguration('METER', '.'),
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -94,7 +94,7 @@ final class HandleMeasurementTest extends AttributeTestCase
                             'fr_FR',
                             'set',
                             'skip',
-                            new MeasurementSourceParameter('GRAM', ',')
+                            new MeasurementSourceConfiguration('GRAM', ',')
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -109,7 +109,7 @@ final class HandleMeasurementTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new MeasurementSourceParameter('HERTZ', '.')
+                            new MeasurementSourceConfiguration('HERTZ', '.')
                         ),
                         ['25621f5a-504f-4893-8f0c-da684dfa84f7'],
                         OperationCollection::create([]),

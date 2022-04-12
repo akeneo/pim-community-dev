@@ -2,9 +2,9 @@ import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
 import {DecimalSeparator} from '../../common/DecimalSeparatorField';
 
-type NumberSourceParameter = {decimal_separator: DecimalSeparator};
+type NumberSourceConfiguration = {decimal_separator: DecimalSeparator};
 
-const getDefaultNumberSourceParameter = (): NumberSourceParameter => ({decimal_separator: '.'});
+const getDefaultNumberSourceConfiguration = (): NumberSourceConfiguration => ({decimal_separator: '.'});
 const getDefaultTargetAction = (): TargetAction => 'set';
 const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
@@ -13,7 +13,7 @@ type NumberTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
-  source_parameter: NumberSourceParameter;
+  source_configuration: NumberSourceConfiguration;
   action_if_not_empty: TargetAction;
   action_if_empty: TargetEmptyAction;
 };
@@ -27,16 +27,18 @@ const getDefaultNumberTarget = (
   type: 'attribute',
   locale,
   channel,
-  source_parameter: getDefaultNumberSourceParameter(),
+  source_configuration: getDefaultNumberSourceConfiguration(),
   action_if_not_empty: getDefaultTargetAction(),
   action_if_empty: getDefaultTargetEmptyAction(),
 });
 
-const isNumberSourceParameter = (sourceParameter: any): sourceParameter is NumberSourceParameter =>
-  'decimal_separator' in sourceParameter;
+const isNumberSourceConfiguration = (sourceConfiguration: any): sourceConfiguration is NumberSourceConfiguration =>
+  'decimal_separator' in sourceConfiguration;
 
 const isNumberTarget = (target: Target): target is NumberTarget =>
-  'attribute' === target.type && null !== target.source_parameter && isNumberSourceParameter(target.source_parameter);
+  'attribute' === target.type &&
+  null !== target.source_configuration &&
+  isNumberSourceConfiguration(target.source_configuration);
 
-export type {NumberTarget, NumberSourceParameter};
+export type {NumberTarget, NumberSourceConfiguration};
 export {getDefaultNumberTarget, isNumberTarget};

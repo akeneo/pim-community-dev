@@ -36,7 +36,7 @@ final class NumberValidator extends ConstraintValidator
             'fields' => [
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
-                    'source_parameter' => new NumberSourceParameter(),
+                    'source_configuration' => new NumberSourceConfiguration(),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),

@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
@@ -28,9 +28,9 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target must be a AttributeTarget');
         }
 
-        $sourceParameter = $target->getSourceParameter();
-        if (!$sourceParameter instanceof MeasurementSourceParameter) {
-            throw new \InvalidArgumentException('The target source parameter must be a MeasurementSourceParameter');
+        $sourceConfiguration = $target->getSourceConfiguration();
+        if (!$sourceConfiguration instanceof MeasurementSourceConfiguration) {
+            throw new \InvalidArgumentException('The target source configuration must be a MeasurementSourceConfiguration');
         }
 
         return new SetMeasurementValue(
@@ -38,7 +38,7 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             $target->getChannel(),
             $target->getLocale(),
             $value,
-            $sourceParameter->getUnit(),
+            $sourceConfiguration->getUnit(),
         );
     }
 
