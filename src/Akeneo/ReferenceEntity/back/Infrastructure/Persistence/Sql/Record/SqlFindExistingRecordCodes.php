@@ -42,7 +42,7 @@ SQL;
         $statement = $this->sqlConnection->executeQuery($query, [
             'referenceEntityIdentifier' => (string) $referenceEntityIdentifier,
             'codes' => $recordCodes
-        ],['codes' => Connection::PARAM_STR_ARRAY]);
+        ], ['codes' => Connection::PARAM_STR_ARRAY]);
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
