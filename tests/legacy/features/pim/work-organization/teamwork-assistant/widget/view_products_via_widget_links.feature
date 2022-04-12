@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: List products in a project according to their status, from the teamwork assistant widget
   In order to know which products to enrich in a project
   As a contributor or a project owner

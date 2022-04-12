@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Filter by project completeness in the product datagrid
   In order to display relevant products in a project
   As a contributor or project owner

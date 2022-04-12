@@ -89,6 +89,27 @@ class ViewSelectorContext extends BaseViewSelectorContext
     }
 
     /**
+     * @Given /^I should see the "([^"]*)" view type$/
+     *
+     * @param string $viewType
+     */
+    public function iShouldSeeTheViewType($viewType)
+    {
+        $this->getCurrentPage()->existViewType($viewType);
+    }
+
+    /**
+     * @Given /^I should not see the "([^"]*)" view type$/
+     *
+     * @param string $viewType
+     */
+    public function iShouldNotSeeTheViewType($viewType)
+    {
+        $this->getCurrentPage()->notExistViewType($viewType);
+    }
+
+
+    /**
      * @Then /^view selector type switcher should be on "([^"]*)"$/
      *
      * @param string $expectedType
