@@ -55,7 +55,7 @@ class ProductDomainErrorNormalizer implements NormalizerInterface, CacheableSupp
             }
 
             $data['product'] = [
-                'uuid' => $product->getUuid(),
+                'uuid' => $product->getUuid()->toString(),
                 'identifier' => $product->getIdentifier(),
                 'label' => $product->getLabel(),
                 'family' => null !== $product->getFamily() ? $product->getFamily()->getCode() : null,
