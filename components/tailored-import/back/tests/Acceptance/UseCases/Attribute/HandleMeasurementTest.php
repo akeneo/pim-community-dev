@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
@@ -120,9 +120,9 @@ final class HandleMeasurementTest extends AttributeTestCase
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
                     valueUserIntents: [
-                        new SetMetricValue('size', null, null, '10', 'METER'),
-                        new SetMetricValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
-                        new SetMetricValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
+                        new SetMeasurementValue('size', null, null, '10', 'METER'),
+                        new SetMeasurementValue('weight', 'ecommerce', 'fr_FR', '60.5', 'GRAM'),
+                        new SetMeasurementValue('frequency', 'ecommerce', null, '6', 'HERTZ'),
                     ],
                 ),
             ],

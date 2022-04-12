@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -33,7 +33,7 @@ class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target source parameter must be a MeasurementSourceParameter');
         }
 
-        return new SetMetricValue(
+        return new SetMeasurementValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
