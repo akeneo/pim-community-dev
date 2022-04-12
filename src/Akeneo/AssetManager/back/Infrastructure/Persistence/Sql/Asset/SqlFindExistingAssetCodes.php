@@ -41,8 +41,8 @@ SQL;
 
         $statement = $this->sqlConnection->executeQuery($query, [
             'assetFamilyIdentifier' => (string) $assetFamilyIdentifier,
-            'codes' => implode(',', $assetCodes)
-        ]);
+            'codes' => $assetCodes
+        ], ['codes' => Connection::PARAM_STR_ARRAY]);
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
