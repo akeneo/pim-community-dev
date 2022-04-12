@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 interface GetProductScoresQueryInterface
 {
-    public function byProductId(ProductId $productId): ChannelLocaleRateCollection;
+    public function byProductId(ProductEntityIdInterface $productId): ChannelLocaleRateCollection;
 
     /**
      * @return ChannelLocaleRateCollection[]

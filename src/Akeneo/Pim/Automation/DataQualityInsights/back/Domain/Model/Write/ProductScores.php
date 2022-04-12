@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,20 +13,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class ProductScores
 {
-    private ProductId $productId;
 
-    private \DateTimeImmutable $evaluatedAt;
-
-    private ChannelLocaleRateCollection $scores;
-
-    public function __construct(ProductId $productId, \DateTimeImmutable $evaluatedAt, ChannelLocaleRateCollection $scores)
+    public function __construct(
+        private ProductEntityIdInterface    $productId,
+        private \DateTimeImmutable          $evaluatedAt,
+        private ChannelLocaleRateCollection $scores)
     {
-        $this->productId = $productId;
-        $this->evaluatedAt = $evaluatedAt;
-        $this->scores = $scores;
     }
 
-    public function getProductId(): ProductId
+    public function getProductId(): ProductEntityIdInterface
     {
         return $this->productId;
     }
