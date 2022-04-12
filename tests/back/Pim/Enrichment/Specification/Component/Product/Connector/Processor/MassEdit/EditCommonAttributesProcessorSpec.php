@@ -11,6 +11,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -68,8 +69,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
+        $product->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
 
-        $productRepository->hasAttributeInFamily(10, 'number')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInFamily(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), 'number')
+            ->shouldBeCalled()->willReturn(true);
 
         $productUpdater->update($product, [
             'values' => [
@@ -120,8 +123,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
+        $product->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
 
-        $productRepository->hasAttributeInFamily(10, 'categories')->shouldBeCalled()->willReturn(true);
+        $productRepository->hasAttributeInFamily(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'), 'categories')
+            ->shouldBeCalled()->willReturn(true);
 
         $productUpdater->update($product, [
             'values' => [

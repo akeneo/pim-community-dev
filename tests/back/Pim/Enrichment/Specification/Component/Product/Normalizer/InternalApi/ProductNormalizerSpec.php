@@ -31,6 +31,7 @@ use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionManager;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -163,7 +164,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
         $mug->isVariant()->willReturn(false);
-        $mug->getId()->willReturn(12);
+        $mug->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
         $mug->getIdentifier()->willReturn('mug');
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
@@ -188,7 +189,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
+            []
+        );
         $missingRequiredAttributesCalculator->fromEntityWithFamily($mug)->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)
                                          ->willReturn(['normalized_completenesses']);
@@ -221,7 +225,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
-                    'id'                => 12,
+                    'uuid' => '57700274-9b48-4857-b17d-a7da106cd150',
                     'created'           => 'normalized_create_version',
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
@@ -340,7 +344,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
-        $mug->getId()->willReturn(12);
+        $mug->getUuid()->willReturn(Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'));
         $mug->getIdentifier()->willReturn('mug');
         $versionManager->getOldestLogEntry($mug)->willReturn('create_version');
         $versionNormalizer->normalize('create_version', 'internal_api', ['timezone' => 'Pacific/Kiritimati'])
@@ -365,7 +369,10 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
-        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(12, []);
+        $productCompletenessWithMissingAttributeCodesCollection = new ProductCompletenessWithMissingAttributeCodesCollection(
+            Uuid::fromString('57700274-9b48-4857-b17d-a7da106cd150'),
+            []
+        );
         $missingRequiredAttributesCalculator->fromEntityWithFamily($mug)->willReturn($productCompletenessWithMissingAttributeCodesCollection);
         $completenessCollectionNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
         $missingRequiredAttributesNormalizer->normalize($productCompletenessWithMissingAttributeCodesCollection)->willReturn([]);
@@ -418,7 +425,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
-                    'id'                => 12,
+                    'uuid' => '57700274-9b48-4857-b17d-a7da106cd150',
                     'created'           => 'normalized_create_version',
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
