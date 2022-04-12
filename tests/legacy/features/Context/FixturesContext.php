@@ -274,7 +274,7 @@ class FixturesContext extends BaseFixturesContext
         $this->getContainer()->get('doctrine')->getConnection()->update(
             'pim_catalog_product',
             ['created' => $createdAt],
-            ['id' => $product->getId()]
+            ['uuid' => $product->getUuid()->getBytes()]
         );
 
         $this->refresh($product);

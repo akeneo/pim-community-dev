@@ -37,8 +37,8 @@ final class UpdateProductsWhenElasticsearchIsDesynchronisedIntegration extends A
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_0');
         self::assertNotNull($product);
         $this->get('database_connection')->executeQuery(
-            'DELETE FROM pim_catalog_product WHERE id = :product_id',
-            ['product_id' => $product->getId()]
+            'DELETE FROM pim_catalog_product WHERE uuid = :product_uuid',
+            ['product_uuid' => $product->getUuid()->getBytes()]
         );
 
         $batchSize = $this->getParameter('pim_job_product_batch_size');

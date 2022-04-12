@@ -823,7 +823,7 @@ class ProductController
      */
     protected function needUpdateFromVariantToSimple(ProductInterface $product, array $data): bool
     {
-        return null !== $product->getId() && $product->isVariant() &&
+        return null !== $product->getCreated() && $product->isVariant() &&
             array_key_exists('parent', $data) && null === $data['parent'];
     }
 
