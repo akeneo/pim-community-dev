@@ -13,6 +13,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCom
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 class GetProductsWithCompletenessesSpec extends ObjectBehavior
 {
@@ -34,9 +36,9 @@ class GetProductsWithCompletenessesSpec extends ObjectBehavior
             new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
             new ProductCompleteness('print', 'en_US', 4, 0),
         ];
-        $completenessCollection = new ProductCompletenessCollection(42, $completenesses);
-        $connectorProduct = $this->getConnectorProduct(42);
-        $getProductCompletenesses->fromProductId(42)->willReturn($completenessCollection);
+        $completenessCollection = new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), $completenesses);
+        $connectorProduct = $this->getConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $getProductCompletenesses->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))->willReturn($completenessCollection);
         $productWithCompleteness = $this->fromConnectorProduct($connectorProduct);
 
         $productWithCompleteness->completenesses()->shouldReturn($completenessCollection);
@@ -49,21 +51,25 @@ class GetProductsWithCompletenessesSpec extends ObjectBehavior
             new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
         ];
         $completenessesList = [
-            42 => new ProductCompletenessCollection(42, $completenesses),
-            13 => new ProductCompletenessCollection(13, $completenesses),
-            5 => new ProductCompletenessCollection(5, []),
+            '54162e35-ff81-48f1-96d5-5febd3f00fd5' => new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), $completenesses),
+            'd9f573cc-8905-4949-8151-baf9d5328f26' => new ProductCompletenessCollection(Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'), $completenesses),
+            'fdf6f091-3f75-418f-98af-8c19db8b0000' => new ProductCompletenessCollection(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'), []),
         ];
         $connectorProductList = new ConnectorProductList(
             2,
             [
-                $this->getConnectorProduct(42),
-                $this->getConnectorProduct(13),
-                $this->getConnectorProduct(5, false),
+                $this->getConnectorProduct(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5')),
+                $this->getConnectorProduct(Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26')),
+                $this->getConnectorProduct(Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000'), false),
             ]
         );
 
         $getProductCompletenesses
-            ->fromProductIds([42, 13, 5], 'ecommerce', ['fr_FR', 'en_US'])
+            ->fromProductUuids([
+                Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'),
+                Uuid::fromString('d9f573cc-8905-4949-8151-baf9d5328f26'),
+                Uuid::fromString('fdf6f091-3f75-418f-98af-8c19db8b0000')
+            ], 'ecommerce', ['fr_FR', 'en_US'])
             ->willReturn($completenessesList);
 
         $productListWithCompleteness = $this->fromConnectorProductList($connectorProductList, 'ecommerce', ['fr_FR', 'en_US']);
@@ -72,10 +78,10 @@ class GetProductsWithCompletenessesSpec extends ObjectBehavior
         }
     }
 
-    private function getConnectorProduct(int $id, bool $withFamily = true): ConnectorProduct
+    private function getConnectorProduct(UuidInterface $uuid, bool $withFamily = true): ConnectorProduct
     {
         return new ConnectorProduct(
-            $id,
+            $uuid,
             'identifier',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),

@@ -121,15 +121,15 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInFamily($productId, $attributeCode)
+    public function hasAttributeInFamily($productUuid, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.family', 'f')
             ->leftJoin('f.attributes', 'a')
-            ->where('p.id = :id')
+            ->where('p.uuid = :uuid')
             ->andWhere('a.code = :code')
             ->setParameters([
-                'id'   => $productId,
+                'uuid' => $productUuid->getBytes(),
                 'code' => $attributeCode,
             ])
             ->setMaxResults(1);
@@ -143,13 +143,13 @@ class ProductRepository extends EntityRepository implements
     public function searchAfter(?ProductInterface $product, int $limit): array
     {
         $qb = $this->createQueryBuilder('p')
-            ->orderBy('p.id', 'ASC')
+            ->orderBy('p.uuid', 'ASC')
             ->setMaxResults($limit);
         ;
 
         if (null !== $product) {
-            $qb->where('p.id > :productId')
-                ->setParameter(':productId', $product->getId());
+            $qb->where('p.uuid > :productUuid')
+                ->setParameter(':productUuid', $product->getUuid());
         }
 
         return $qb->getQuery()->execute();

@@ -20,6 +20,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyTranslationInterface;
 use Oro\Bundle\PimDataGridBundle\Normalizer\ProductNormalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -60,7 +61,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,
@@ -78,7 +79,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
 
         $product->isVariant()->willReturn(false);
-        $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
@@ -114,9 +115,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
 
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
@@ -147,8 +151,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'search_id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,
@@ -161,7 +165,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $imageNormalizer,
-        $getProductCompletenesses,
+        GetProductCompletenesses $getProductCompletenesses,
         ProductInterface $product,
         GroupInterface $promotion,
         GroupTranslationInterface $promotionEN,
@@ -181,7 +185,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
 
         $product->isVariant()->willReturn(false);
-        $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -217,9 +221,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
@@ -249,8 +256,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'search_id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,
@@ -285,7 +292,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getParent()->willReturn($productModel);
 
         $product->isVariant()->willReturn(true);
-        $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -321,9 +328,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, 'en_US', 'ecommerce')->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
@@ -353,8 +363,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'search_id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => 'parent_code',
@@ -383,7 +393,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ];
 
         $product->isVariant()->willReturn(false);
-        $product->getId()->willReturn(78);
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -419,9 +429,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
-        $getProductCompletenesses->fromProductId(78)->willReturn(new ProductCompletenessCollection(78, [
-            new ProductCompleteness('ecommerce', 'en_US', 10, 1)
-        ]));
+        $getProductCompletenesses
+            ->fromProductUuid(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'))
+            ->willReturn(new ProductCompletenessCollection(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'), [
+                new ProductCompleteness('ecommerce', 'en_US', 10, 1)
+            ]
+        ));
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, null, null)->willReturn([
             'filePath' => '/p/i/m/4/all.png',
@@ -451,8 +464,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             ],
             'completeness' => 90,
             'document_type' => 'product',
-            'technical_id' => 78,
-            'search_id' => 'product_78',
+            'technical_id' => '54162e35-ff81-48f1-96d5-5febd3f00fd5',
+            'search_id' => 'product_54162e35-ff81-48f1-96d5-5febd3f00fd5',
             'is_checked' => false,
             'complete_variant_product' => null,
             'parent' => null,

@@ -7,6 +7,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Ramsey\Uuid\Uuid;
 
 class UniqueValuesSetSpec extends ObjectBehavior
 {
@@ -19,7 +20,8 @@ class UniqueValuesSetSpec extends ObjectBehavior
         ValueInterface $value,
         ProductInterface $product
     ) {
-        $product->getId()->willReturn('jean');
+        $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
+        $product->getCreated()->willReturn(new \DateTime('2017-01-01T01:03:34+01:00'));
         $value->__toString()->willReturn('jean');
 
         $value->getAttributeCode()->willReturn('identifier');
@@ -34,8 +36,8 @@ class UniqueValuesSetSpec extends ObjectBehavior
         ValueInterface $value2,
         ProductInterface $product2
     ) {
-        $product1->getId()->willReturn(null);
-        $product2->getId()->willReturn(null);
+        $product1->getCreated()->willReturn(null);
+        $product2->getCreated()->willReturn(null);
         $value1->__toString()->willReturn('jean');
         $value2->__toString()->willReturn('jean');
         $value1->getAttributeCode()->willReturn('identifier');
@@ -51,8 +53,8 @@ class UniqueValuesSetSpec extends ObjectBehavior
         ValueInterface $value2,
         ProductInterface $product2
     ) {
-        $product1->getId()->willReturn(null);
-        $product2->getId()->willReturn(null);
+        $product1->getCreated()->willReturn(null);
+        $product2->getCreated()->willReturn(null);
         $value1->__toString()->willReturn('Jean');
         $value2->__toString()->willReturn('jean');
         $value1->getAttributeCode()->willReturn('identifier');

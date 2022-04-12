@@ -44,7 +44,7 @@ LEFT JOIN pim_catalog_product_model AS grand_parent ON grand_parent.id = parent.
 WHERE product.id IN (:product_ids)
     AND EXISTS(
         SELECT 1 FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
-        WHERE evaluation.product_id = product.id
+        WHERE evaluation.product_uuid = product.uuid
         AND evaluation.evaluated_at >=
             IF(grand_parent.updated > parent.updated AND grand_parent.updated > product.updated, grand_parent.updated,
                 IF(parent.updated > product.updated, parent.updated, product.updated)

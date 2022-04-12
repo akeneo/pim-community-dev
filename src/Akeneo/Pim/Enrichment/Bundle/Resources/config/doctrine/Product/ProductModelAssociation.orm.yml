@@ -53,8 +53,8 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation:
                         onDelete: CASCADE
                         referencedColumnName: id
                 inverseJoinColumns:
-                    product_id:
-                        referencedColumnName: id
+                    product_uuid:
+                        referencedColumnName: uuid
                         onDelete: CASCADE
 
         productModels:

@@ -50,7 +50,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         $options['unitary'] = true;
-        $options['is_new'] = null === $product->getId();
+        $options['is_new'] = null === $product->getCreated();
 
         $this->eventDispatcher->dispatch(new GenericEvent($product, $options), StorageEvents::PRE_SAVE);
 
@@ -94,7 +94,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         $this->eventDispatcher->dispatch(new GenericEvent($products, $options), StorageEvents::PRE_SAVE_ALL);
 
         $areProductsNew = array_map(function ($product) {
-            return null === $product->getId();
+            return null === $product->getCreated();
         }, $products);
 
         foreach ($products as $i => $product) {

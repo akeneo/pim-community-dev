@@ -366,7 +366,7 @@ JSON;
 
             $completenesses = $this
                 ->get('akeneo.pim.enrichment.product.query.get_product_completenesses')
-                ->fromProductId($product->getId());
+                ->fromProductUuid($product->getUuid());
             Assert::assertCount(6, $completenesses); // 3 channels * 2 locales
         }
     }

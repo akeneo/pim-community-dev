@@ -62,8 +62,9 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             $scores = sprintf('scores_%d', $index);
 
             $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores)
+SELECT uuid, :$evaluatedAt, :$scores
+FROM pim_catalog_product WHERE id = :$productId
 ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
 SQL;
             $queriesParameters[$productId] = $productScore->getProductId()->toInt();
@@ -81,7 +82,7 @@ SQL;
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
+    ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
 WHERE old_scores.evaluated_at < :purge_date;
 SQL;

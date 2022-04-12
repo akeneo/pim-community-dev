@@ -130,24 +130,23 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenProductWithoutEvaluationResults(): array
     {
-        $productId = $this->createProduct('product_without_results', [
+        $product = $this->createProduct('product_without_results', [
             'family' => 'family_with_3_attributes',
             'values' => [
                 'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
             ]
-        ])->getId();
+        ]);
 
         $this->get('database_connection')->executeQuery(<<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET result = null, evaluated_at = null, status = 'pending' 
-WHERE product_id = :productId;
+WHERE product_uuid = :productUuid;
 SQL,
-            ['productId' => $productId],
-            ['productId' => \PDO::PARAM_INT]
+            ['productUuid' => $product->getUuid()->getBytes()]
         );
 
-        return [$productId => [
+        return [$product->getId() => [
             'ecommerce' => [
                 'en_US' => null,
                 'fr_FR' => null,

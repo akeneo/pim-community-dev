@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -28,6 +29,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
+        private Connection $connection
     ) {
         $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
         $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
@@ -57,7 +59,16 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        $this->initializeCriteria(intval($subject->getId()));
+        // @TODO CPM-576 remove to use the uuid
+        $id = $this->connection->executeQuery(
+            'SELECT id FROM pim_catalog_product WHERE uuid = ?',
+            [$subject->getUuid()->getBytes()]
+        )->fetchOne();
+        if (null === $id) {
+            return;
+        }
+
+        $this->initializeCriteria(intval($id));
     }
 
     private function initializeCriteria(int $productId): void

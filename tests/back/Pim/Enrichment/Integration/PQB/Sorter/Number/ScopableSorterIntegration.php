@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Number;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**

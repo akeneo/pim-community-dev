@@ -74,7 +74,11 @@ class UniqueValuesSet
     protected function getEntityId(EntityWithValuesInterface $entity): string
     {
         if ($entity instanceof ProductInterface || $entity instanceof ProductModelInterface) {
-            return $entity->getId() ? $entity->getId() : spl_object_hash($entity);
+            if (null !== $entity->getCreated()) {
+                return $entity instanceof ProductInterface && get_class($entity) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
+                    ? $entity->getUuid()->toString()
+                    : $entity->getId();
+            }
         }
 
         return spl_object_hash($entity);

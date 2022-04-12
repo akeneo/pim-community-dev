@@ -46,13 +46,25 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
 
         $criterionEvaluationTable = $this->tableName;
 
-        $sql = <<<SQL
+        if ('pim_data_quality_insights_product_criteria_evaluation' === $criterionEvaluationTable) {
+            $sql = <<<SQL
+SELECT p.id as product_id, JSON_ARRAYAGG(criterion_code) as criteria
+FROM $criterionEvaluationTable e
+    JOIN pim_catalog_product p ON p.uuid = e.product_uuid
+WHERE status = :status
+AND p.id IN(:product_ids)
+GROUP BY p.id
+SQL;
+        } else {
+            $sql = <<<SQL
 SELECT product_id, JSON_ARRAYAGG(criterion_code) as criteria
 FROM $criterionEvaluationTable
 WHERE status = :status
 AND product_id IN(:product_ids)
 GROUP BY product_id
 SQL;
+        }
+
         $params = [
             'status' => CriterionEvaluationStatus::PENDING,
             'product_ids' => $productIds->toArrayInt(),

@@ -41,14 +41,14 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     public function it_returns_the_completeness_ratio_of_a_product_for_a_given_channel_and_locale()
     {
         $product = $this->createProduct();
-        $completenesses = $this->getProductCompletenesses->fromProductId($product->getId());
+        $completenesses = $this->getProductCompletenesses->fromProductUuid($product->getUuid());
 
         Assert::assertNotEmpty($completenesses);
 
         /** @var ProductCompleteness $completeness */
         foreach ($completenesses as $completeness) {
             $ratio = $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode(
-                $product->getId(),
+                $product->getUuid(),
                 $completeness->channelCode(),
                 $completeness->localeCode()
             );
@@ -64,14 +64,14 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
     {
         $product = $this->createProduct();
         $this->get('database_connection')->executeUpdate(
-            'DELETE FROM pim_catalog_completeness WHERE product_id = :productId',
+            'DELETE FROM pim_catalog_completeness WHERE product_uuid = :productUuid',
             [
-                'productId' => $product->getId(),
+                'productUuid' => $product->getUuid()->getBytes(),
             ]
         );
 
         Assert::assertNull(
-            $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getId(), 'ecommerce', 'en_US')
+            $this->getProductCompletenessRatio->forChannelCodeAndLocaleCode($product->getUuid(), 'ecommerce', 'en_US')
         );
     }
 

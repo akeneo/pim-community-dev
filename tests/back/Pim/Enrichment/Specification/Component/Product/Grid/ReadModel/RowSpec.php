@@ -34,7 +34,7 @@ class RowSpec extends ObjectBehavior
                 'data',
                 MediaValue::value('media_attribute', new FileInfo()),
                 90,
-                1,
+                '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'parent_code',
                 new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]
@@ -50,8 +50,8 @@ class RowSpec extends ObjectBehavior
         $this->image()->shouldBeLike(MediaValue::value('media_attribute', new FileInfo()));
         $this->completeness()->shouldReturn(90);
         $this->documentType()->shouldReturn('product');
-        $this->technicalId()->shouldReturn(1);
-        $this->searchId()->shouldReturn('product_1');
+        $this->technicalId()->shouldReturn('54162e35-ff81-48f1-96d5-5febd3f00fd5');
+        $this->searchId()->shouldReturn('product_54162e35-ff81-48f1-96d5-5febd3f00fd5');
         $this->checked()->shouldReturn(true);
         $this->childrenCompleteness()->shouldReturn([]);
         $this->parentCode()->shouldReturn('parent_code');
@@ -110,7 +110,7 @@ class RowSpec extends ObjectBehavior
                 'data',
                 MediaValue::value('media_attribute', new FileInfo()),
                 90,
-                1,
+                '54162e35-ff81-48f1-96d5-5febd3f00fd5',
                 'parent_code',
                 new WriteValueCollection([ScalarValue::value('scalar_attribute', 'data')])
             ]

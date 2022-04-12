@@ -10,6 +10,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@logger'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
 

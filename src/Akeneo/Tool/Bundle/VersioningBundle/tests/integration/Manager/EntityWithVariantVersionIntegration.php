@@ -100,15 +100,24 @@ class EntityWithVariantVersionIntegration extends TestCase
         string $oldData,
         string $newData
     ): void {
+        if (method_exists($entity, 'getUuid')) {
+            $resourceId = null;
+            $resourceUuid = $entity->getUuid();
+        } else {
+            $resourceId = $entity->getId();
+            $resourceUuid = null;
+        }
         $versions = $this->get('pim_versioning.repository.version')->getLogEntries(
             ClassUtils::getClass($entity),
-            $entity->getId()
+            $resourceId,
+            $resourceUuid
         );
         $this->assertSame(2, count($versions));
 
         $lastVersion = $this->get('pim_versioning.repository.version')->getNewestLogEntry(
             ClassUtils::getClass($entity),
-            $entity->getId()
+            $resourceId,
+            $resourceUuid
         );
         $changeSet = $lastVersion->getChangeset();
         $this->assertSame(1, count($changeSet));
