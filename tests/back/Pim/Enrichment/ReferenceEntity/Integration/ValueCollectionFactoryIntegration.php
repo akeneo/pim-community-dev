@@ -36,6 +36,8 @@ final class ValueCollectionFactoryIntegration extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('reference_entity');
+
         $this->withReferenceEntity('color_test');
         $this->withRecords('color_test', 'Blue', 'Black');
         $this->withAttributes([

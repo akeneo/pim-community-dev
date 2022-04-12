@@ -114,9 +114,6 @@ workflows:
             - test_back_integration_bounded_contexts:
                   requires:
                       - build_srnt_dev
-            - test_back_integration_reference_entities:
-                  requires:
-                      - build_srnt_dev
             - test_back_static_and_acceptance:
                   requires:
                       - build_srnt_dev
@@ -142,7 +139,6 @@ workflows:
                       - test_front_code_style
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
-                      - test_back_integration_reference_entities
             - test_database:
                   requires:
                       - build_srnt_dev
@@ -158,7 +154,7 @@ workflows:
             - pull_request_success:
                   requires:
                       - test_back_behat_legacy
-                      - test_onboarder_bundle
+#                      - test_onboarder_bundle
                       - test_database
                       - test_back_data_migrations
                       - test_grth

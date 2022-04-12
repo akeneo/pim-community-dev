@@ -1,0 +1,8 @@
+services:
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier:
+    arguments:
+      - !tagged_iterator akeneo.tailored_import.operation_applier
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CleanHTMLTagsOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }

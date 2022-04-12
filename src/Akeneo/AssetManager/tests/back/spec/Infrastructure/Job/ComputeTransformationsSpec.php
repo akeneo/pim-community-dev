@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInte
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Transformation\GetTransformations;
 use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
 use Akeneo\AssetManager\Infrastructure\Job\ComputeTransformations;
+use Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface;
 use Akeneo\AssetManager\Infrastructure\Transformation\GetOutdatedVariationSource;
 use Akeneo\AssetManager\Infrastructure\Transformation\TransformationExecutor;
 use Akeneo\Tool\Component\Batch\Item\ExecutionContext;
@@ -46,7 +47,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         JobExecution $jobExecution,
         ValidatorInterface $validator,
         CountAssetsInterface $countAssets,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        EventAggregatorInterface $eventAggregator
     ) {
         $this->beConstructedWith(
             $findIdentifiersByAssetFamily,
@@ -58,6 +60,7 @@ class ComputeTransformationsSpec extends ObjectBehavior
             $validator,
             $countAssets,
             $jobRepository,
+            $eventAggregator,
             3
         );
         $executionContext = new ExecutionContext();
@@ -93,7 +96,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         Asset $asset1,
         Asset $asset2,
         FileData $sourceFileData,
-        EditMediaFileTargetValueCommand $command
+        EditMediaFileTargetValueCommand $command,
+        EventAggregatorInterface $eventAggregator
     ) {
         $jobParameters->has('asset_family_identifier')->willReturn(false);
         $jobParameters->has('asset_identifiers')->willReturn(true);
@@ -145,6 +149,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
             )
         )->shouldNotBeCalled();
 
+        $eventAggregator->flushEvents()->shouldBeCalledOnce();
+
         $this->execute();
     }
 
@@ -164,7 +170,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         FileData $sourceFileData,
         EditMediaFileTargetValueCommand $command,
         \Iterator $assetIdentifiers,
-        CountAssetsInterface $countAssets
+        CountAssetsInterface $countAssets,
+        EventAggregatorInterface $eventAggregator
     ) {
         $jobParameters->has('asset_family_identifier')->willReturn(true);
         $jobParameters->get('asset_family_identifier')->willReturn('packshot');
@@ -229,6 +236,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
             )
         )->shouldNotBeCalled();
 
+        $eventAggregator->flushEvents()->shouldBeCalledOnce();
+
         $this->execute();
     }
 
@@ -248,7 +257,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
         Asset $asset4,
         FileData $sourceFileData,
         EditMediaFileTargetValueCommand $command,
-        JobRepositoryInterface $jobRepository
+        JobRepositoryInterface $jobRepository,
+        EventAggregatorInterface $eventAggregator
     ) {
         $jobParameters->has('asset_family_identifier')->willReturn(false);
         $jobParameters->has('asset_identifiers')->willReturn(true);
@@ -311,6 +321,8 @@ class ComputeTransformationsSpec extends ObjectBehavior
                 [Argument::any()]
             )
         )->shouldNotBeCalled();
+
+        $eventAggregator->flushEvents()->shouldBeCalledOnce();
 
         $this->execute();
     }

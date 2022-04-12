@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Localize numbers in the published product grid
   In order to have localized UI
   As a product manager

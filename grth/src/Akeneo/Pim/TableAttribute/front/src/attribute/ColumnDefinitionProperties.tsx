@@ -66,7 +66,10 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       })
     );
   }
-  const isFirstColumn = attribute.table_configuration && attribute.table_configuration[0].code === selectedColumn.code;
+  const isFirstColumn =
+    attribute.table_configuration &&
+    attribute.table_configuration[0] &&
+    attribute.table_configuration[0].code === selectedColumn.code;
 
   return (
     <div>

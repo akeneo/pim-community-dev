@@ -38,7 +38,7 @@ Feature: Quick export products with user permissions applied
     greenhoodie;;;;1;hoodies;;;"Green hoodie";;;;;;
     """
 
-  @critical
+  @critical @published-product-feature-enabled
   Scenario: Restrict published product data in quick export according to locales and attribute groups permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Mary"

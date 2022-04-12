@@ -1,4 +1,4 @@
-@javascript
+@javascript @published-product-feature-enabled
 Feature: Display localizable and scopable attributes
   In order to be able to use localizable and scopable attributes of the published products
   As a product manager
@@ -18,12 +18,3 @@ Feature: Display localizable and scopable attributes
     Then the field Name should contain "A black jacket"
     When I switch the locale to "de_DE"
     Then the field Name should contain "Eine schwarze Jacke"
-
-  @skip @info https://akeneo.atlassian.net/browse/PIM-5949
-  Scenario: Successfully change scope
-    Given I show the "black_jacket" Published Product
-    And I visit the "Sales" group
-    When I switch the scope to "ecommerce"
-    Then the field Customer rating should contain "1 star"
-    When I switch the scope to "print"
-    Then the field Customer rating should contain "2 stars"

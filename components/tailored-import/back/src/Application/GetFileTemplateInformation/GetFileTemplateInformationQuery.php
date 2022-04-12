@@ -13,6 +13,4 @@ final class GetFileTemplateInformationQuery
     public string $fileKey;
 
     public ?string $sheetName;
-
-    public int $headerLine;
 }

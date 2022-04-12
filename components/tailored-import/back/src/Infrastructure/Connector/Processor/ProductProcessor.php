@@ -8,7 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
 use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -63,7 +63,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         $attributeCodes = [];
         foreach ($dataMappings as $dataMapping) {
-            if (TargetAttribute::TYPE === $dataMapping['target']['type']) {
+            if (AttributeTarget::TYPE === $dataMapping['target']['type']) {
                 $attributeCodes[] = $dataMapping['target']['code'];
             }
         }

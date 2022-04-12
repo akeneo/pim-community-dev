@@ -323,10 +323,6 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
-    populate-product-models-scores-and-ki:
-      enabled: true
-      pimCommand: "pim:data-quality-insights:populate-product-models-scores-and-ki --no-interaction"
-      schedule: "30 2 * * *"
     clean-case-sensitive-attribute-option-spellcheck:
       enabled: true
       pimCommand: "pimee:data-quality-insights:clean-case-sensitive-attribute-option-spellcheck --no-interaction"
@@ -335,6 +331,14 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+    clean-completeness-evaluation-results:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-completeness-evaluation-results --no-interaction"
+      schedule: "30 0 * * *"
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "256Mi"
 
 # Onboarder
 onboarder:

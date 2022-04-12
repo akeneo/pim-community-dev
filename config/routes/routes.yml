@@ -89,8 +89,15 @@ hslavich_saml_sp:
 pimee_teamwork_assistant:
     resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
 
-pimee_workflow:
-    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing.yml"
+pimee_proposal_and_draft:
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing_proposal_and_draft.yml"
+    defaults:
+        _feature: proposal
+
+pimee_published_product:
+    resource: "@AkeneoPimWorkflowBundle/Resources/config/routing_published_product.yml"
+    defaults:
+        _feature: published_product
 
 pim_versioning:
     resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
@@ -109,9 +116,13 @@ pim_tailored_export_reference_entity:
 
 pimee_reference_entity:
     resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'reference_entity'
 
 pimee_asset_manager:
     resource: "@AkeneoAssetManagerBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: 'asset_manager'
 
 pim_security:
     resource: "@AkeneoPimPermissionBundle/Resources/config/routing.yml"

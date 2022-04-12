@@ -1,5 +1,24 @@
 # 6.0.x
 
+# 6.0.23 (2022-04-11)
+
+# 6.0.22 (2022-04-08)
+
+# 6.0.21 (2022-04-06)
+
+## Bug fixes
+
+- PIM-10311: [Backport PIM-10285] Fix concurrent bulk publish issue
+- PIM-10388: Fix error after creating the first column in an empty table attribute
+
+# 6.0.20 (2022-04-01)
+
+# 6.0.19 (2022-03-28)
+
+## Bug fixes
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
 # 6.0.18 (2022-03-24)
 
 # 6.0.17 (2022-03-24)

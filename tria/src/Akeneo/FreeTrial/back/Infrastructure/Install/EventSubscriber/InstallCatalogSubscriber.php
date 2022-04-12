@@ -121,6 +121,7 @@ final class InstallCatalogSubscriber implements EventSubscriberInterface
                 break;
             case 'fixtures_product_model_csv':
                 $this->installFixture('product_model_association');
+                $this->installFixture('product_model_evaluation');
                 break;
         }
     }

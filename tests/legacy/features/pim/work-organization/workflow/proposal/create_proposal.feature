@@ -1,9 +1,9 @@
+@javascript @proposal-feature-enabled
 Feature: Create a proposal
   In order create proposals
   As a redactor
   I need to be able to create proposals
 
-  @javascript
   Scenario: Create a new proposals and be notified
     Given the "clothing" catalog configuration
     And the following product:

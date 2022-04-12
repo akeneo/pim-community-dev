@@ -22,8 +22,8 @@ final class CodeTest extends TestCase
     {
         static::expectExceptionObject(
             new \InvalidArgumentException(
-                sprintf('The supplier code is too long. It should have %d characters or less.', 200)
-            )
+                sprintf('The supplier code is too long. It should have %d characters or less.', 200),
+            ),
         );
 
         Supplier\ValueObject\Code::fromString(str_repeat('a', 201));
@@ -34,8 +34,8 @@ final class CodeTest extends TestCase
     {
         static::expectExceptionObject(
             new \InvalidArgumentException(
-                'The supplier code can only contain lowercase letters, numbers and underscores.'
-            )
+                'The supplier code can only contain lowercase letters, numbers and underscores.',
+            ),
         );
 
         Supplier\ValueObject\Code::fromString('$uppli€rCØde');

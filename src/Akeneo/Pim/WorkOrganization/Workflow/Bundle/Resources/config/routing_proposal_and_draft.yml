@@ -1,0 +1,49 @@
+product_draft_rest:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/product_draft_rest.yml'
+    prefix: /product_draft
+
+product_model_draft_rest:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/product_model_draft_rest.yml'
+    prefix: /product_model_draft
+
+product_draft:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/product_draft.yml'
+    prefix: /product_draft
+
+product_model_draft:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/product_model_draft.yml'
+    prefix: /product_model_draft
+
+proposal:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/proposal.yml'
+    prefix: /proposal
+
+pimee_workflow_product_draft_ready:
+    path: /product/{productId}/send-draft
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:readyAction }
+    methods: [POST]
+
+pimee_workflow_rest_product:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/product.yml'
+    prefix: /workflow
+
+pimee_workflow_rest_product_model:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/product_model.yml'
+    prefix: /workflow
+
+pimee_workflow_rest_author_draft:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/rest/author_draft.yml'
+    prefix: /draft
+
+# External API
+external_api_product_draft:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/product_draft.yml'
+    prefix: /api/rest/v1
+
+external_api_product_proposal:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/product_proposal.yml'
+    prefix: /api/rest/v1
+
+external_api_product_model:
+    resource: '@AkeneoPimWorkflowBundle/Resources/config/routing/external_api/product_model.yml'
+    prefix: /api/rest/v1

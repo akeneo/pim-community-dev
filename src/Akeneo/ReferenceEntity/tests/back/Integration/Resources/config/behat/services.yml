@@ -148,3 +148,8 @@ services:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
             - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
             - '@oro_security.security_facade'
+
+    akeneo_referenceentity.tests.back.integration.connector.activate_reference_entity_before_scenario:
+        class: Akeneo\ReferenceEntity\Integration\Connector\Api\Context\ActivateReferenceEntityBeforeScenario
+        arguments:
+            - '@feature_flags'

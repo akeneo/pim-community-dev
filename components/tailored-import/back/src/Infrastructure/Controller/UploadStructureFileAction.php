@@ -48,10 +48,13 @@ class UploadStructureFileAction
         $violations = $this->validator->validate($uploadedFile, new UploadedFileConstraint());
 
         if (count($violations) > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations), 400);
+            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
 
-        $uploadFlatFileCommand = new UploadStructureFileCommand($uploadedFile->getPathname(), $uploadedFile->getClientOriginalName());
+        $uploadFlatFileCommand = new UploadStructureFileCommand(
+            $uploadedFile->getPathname(),
+            $uploadedFile->getClientOriginalName()
+        );
 
         $fileInfo = $this->uploadFlatFileHandler->handle($uploadFlatFileCommand);
 

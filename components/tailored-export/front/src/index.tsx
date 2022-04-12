@@ -12,9 +12,7 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute, AssetFamily, AssociationType, MeasurementFamily} from './feature/models';
-import {FetcherContext} from './feature/contexts';
-
+import {AssetFamily, AssociationType, Attribute, FetcherContext, MeasurementFamily} from './feature';
 const baseFetcher = async (route: string) => {
   const response = await fetch(route);
 

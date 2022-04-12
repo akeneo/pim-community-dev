@@ -1,3 +1,4 @@
+@published-product-feature-enabled
 Feature: Publish product with a family
   In order to publish products
   As an internal process or any user

@@ -14,8 +14,8 @@ final class Identifier
             throw new \InvalidArgumentException(
                 sprintf(
                     'The supplier identifier must be a UUID, "%s" given.',
-                    $identifier
-                )
+                    $identifier,
+                ),
             );
         }
     }

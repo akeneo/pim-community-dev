@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Copy value from a draft to an other
   In order to reuse enrich values from another draft
   As a redactor

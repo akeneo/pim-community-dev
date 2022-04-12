@@ -45,9 +45,8 @@ jobs:
                       echo "Instance name: ${INSTANCE_NAME}"
                       echo "Image tag: ${IMAGE_TAG}"
                       echo "Long ttl tag: << parameters.LONG_TTL_INSTANCE >>"
-            - run:
-                  name: DATADOG deployment Livetail logs page
-                  command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+            - show_datadog_logs_links:
+                pfid: ${TYPE}-${INSTANCE_NAME}
             - run:
                   name: Duplicate PROD environment
                   command: |

@@ -2,28 +2,40 @@ import {uuid} from 'akeneo-design-system';
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier} from './Configuration';
 import {Attribute} from './Attribute';
-import {AttributeTarget, createAttributeTarget, createPropertyTarget, PropertyTarget} from './Target';
+import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
+import {Operation} from './Operation';
+import {SampleData} from './SampleData';
 
-type DataMapping = {
+type DataMapping = AttributeDataMapping | PropertyDataMapping;
+
+type AttributeDataMapping = {
   uuid: string;
-  target: AttributeTarget | PropertyTarget;
+  target: AttributeTarget;
   sources: ColumnIdentifier[];
-  operations: [];
-  sample_data: [];
+  operations: Operation[];
+  sample_data: SampleData[];
+};
+
+type PropertyDataMapping = {
+  uuid: string;
+  target: PropertyTarget;
+  sources: ColumnIdentifier[];
+  operations: Operation[];
+  sample_data: SampleData[];
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
-const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 4;
+const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 1;
 
 type DataMappingType = 'attribute' | 'property';
 
-const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null) => {
+const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null, sampleData: SampleData[]) => {
   const defaultDataMapping: DataMapping = {
     uuid: uuid(),
-    target: createAttributeTarget(attribute.code, null, null),
+    target: createAttributeTarget(attribute, null, null),
     sources: [],
     operations: [],
-    sample_data: [],
+    sample_data: sampleData,
   };
 
   return identifierColumn ? addSourceToDataMapping(defaultDataMapping, identifierColumn) : defaultDataMapping;
@@ -39,7 +51,7 @@ const createPropertyDataMapping = (code: string): DataMapping => {
   };
 };
 
-const createAttributeDataMapping = (code: string, attribute: Attribute, channels: Channel[]): DataMapping => {
+const createAttributeDataMapping = (attribute: Attribute, channels: Channel[]): AttributeDataMapping => {
   const channel = attribute.scopable ? channels[0].code : null;
   const locales = getLocalesFromChannel(channels, channel);
   const filteredLocaleSpecificLocales = attribute.is_locale_specific
@@ -49,7 +61,7 @@ const createAttributeDataMapping = (code: string, attribute: Attribute, channels
 
   return {
     uuid: uuid(),
-    target: createAttributeTarget(code, channel, locale),
+    target: createAttributeTarget(attribute, channel, locale),
     sources: [],
     operations: [],
     sample_data: [],
@@ -59,11 +71,12 @@ const createAttributeDataMapping = (code: string, attribute: Attribute, channels
 const updateDataMapping = (dataMappings: DataMapping[], updatedDataMapping: DataMapping): DataMapping[] =>
   dataMappings.map(dataMapping => (dataMapping.uuid === updatedDataMapping.uuid ? updatedDataMapping : dataMapping));
 
-const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataMapping => {
-  return {...dataMapping, sources: [...dataMapping.sources, column.uuid]};
-};
+const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataMapping => ({
+  ...dataMapping,
+  sources: [...dataMapping.sources, column.uuid],
+});
 
-export type {DataMapping, DataMappingType};
+export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
   MAX_DATA_MAPPING_COUNT,
   MAX_SOURCE_COUNT_BY_DATA_MAPPING,

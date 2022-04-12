@@ -40,6 +40,7 @@ $rules = [
             'Psr\Container\ContainerInterface',
             'Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity',
             'Webmozart\Assert\Assert',
+            'Psr\Log\LoggerInterface',
         ]
     )->in('Pim\Upgrade\Schema'),
 ];

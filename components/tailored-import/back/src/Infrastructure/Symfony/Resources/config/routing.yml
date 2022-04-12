@@ -17,3 +17,13 @@ pimee_tailored_import_get_file_template_information_action:
     path: /rest/tailored-import/file-template
     defaults: { _controller: akeneo.tailored_import.controller.get_file_template_information_action }
     methods: [GET]
+
+pimee_tailored_import_get_sample_data_action:
+    path: /rest/tailored-import/sample-data
+    defaults: { _controller: akeneo.tailored_import.controller.get_sample_data_action }
+    methods: [GET]
+
+pimee_tailored_import_get_refreshed_sample_data_action:
+    path: /rest/tailored-import/refresh-sample-data
+    defaults: { _controller: akeneo.tailored_import.controller.get_refreshed_sample_data_action }
+    methods: [GET]

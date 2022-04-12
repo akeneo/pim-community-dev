@@ -9,7 +9,8 @@ final class CreateSupplier
     public function __construct(
         public string $identifier,
         public string $code,
-        public string $label
+        public string $label,
+        public array $contributorEmails,
     ) {
     }
 }

@@ -63,7 +63,7 @@ echo "Flex duplicate disk has been created : ${FLEX_DISK}"
 
 echo "- Create ES disk (delete it before if existing)"
 ES_DISK_NAME=${PFID}-es
-ES_DISK_SIZE=20
+ES_DISK_SIZE=${FLEX_SIZE}
 if [[ $( gcloud compute disks describe ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
       gcloud compute disks delete ${ES_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
       sleep 10
@@ -77,7 +77,7 @@ echo "ES duplicate disk has been created : ${ES_DISK}"
 
 echo "- Create MySQL disk (delete it before if existing)"
 MYSQL_DISK_NAME=${PFID}-mysql
-MYSQL_DISK_SIZE=50
+MYSQL_DISK_SIZE=${FLEX_SIZE}
 if [[ $( gcloud compute disks describe ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet >/dev/null 2>&1 && echo "diskExists" ) == "diskExists" ]]; then
       gcloud compute disks delete ${MYSQL_DISK_NAME} --zone=${DESTINATION_GOOGLE_CLUSTER_ZONE} --project=${DESTINATION_GOOGLE_PROJECT_ID} --quiet
       sleep 10

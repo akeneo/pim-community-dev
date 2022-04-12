@@ -86,6 +86,7 @@ job_execution:
     read_rules: 읽기 규칙
     selected_entities: 선택한 제품/제품 모델
     skipped_invalid: 건너뛴 제품/제품 모델(유효하지 않음)
+    skipped_no_diff: 건너뛴 제품/제품 모델(차이 없음)
     updated_entities: 업데이트된 제품/제품 모델
     executed_rules: 실행 완료된 규칙
     errored_rules: 건너뛴 규칙(유효하지 않음)

@@ -79,7 +79,7 @@ class AspellChecker implements TextChecker
         $ignoredWords = !empty($issues) ? $this->getUserIgnoredWords($localeCode, $issues) : [];
 
         foreach ($issues as $issue) {
-            if (in_array($issue->word, $ignoredWords)) {
+            if (in_array(\mb_strtolower($issue->word), $ignoredWords)) {
                 continue;
             }
 

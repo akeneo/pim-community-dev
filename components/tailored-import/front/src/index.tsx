@@ -12,7 +12,7 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute, FetcherContext} from './feature';
+import {Attribute, FetcherContext, MeasurementFamily} from './feature';
 
 const baseFetcher = async (route: string) => {
   const response = await fetch(route);
@@ -57,6 +57,15 @@ const FetcherProvider: FC = ({children}) => {
           const route = router.generate('pim_enrich_channel_rest_index');
 
           return cachedFetcher(route);
+        },
+      },
+      measurementFamily: {
+        fetchByCode: async (measurementFamilyCode: string): Promise<MeasurementFamily | undefined> => {
+          const route = router.generate('pim_enrich_measures_rest_index');
+
+          const measurementFamilies = await cachedFetcher(route);
+
+          return measurementFamilies.find(({code}) => code === measurementFamilyCode);
         },
       },
     }),

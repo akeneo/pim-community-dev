@@ -40,6 +40,8 @@ akeneo_data_quality_insights:
       aria_label: "拼写建议：{{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes: '{1}1 个属性|]1, 200[{{ count }} 个属性|[200, Inf[超过 {{ count }} 个属性'
+      attributes_to_work_on: '您有 <improvable_attributes_count_link/> 个属性待处理。'
       list:
         has_image:
           no_data: 您的资产集合和图像属性似乎是空的，您应该为这个关键指标上传图像以突出显示您产品的质量。

@@ -145,7 +145,3 @@ services:
             - '%pim_notification.entity.notification.class%'
         tags:
             - { name: pim_notification.factory.notification }
-
-    # Feature flag service
-    akeneo_referenceentity.feature_flag:
-        class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\ReferenceEntityFeature'

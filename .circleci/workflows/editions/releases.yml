@@ -75,10 +75,6 @@ workflows:
                   <<: *slack-fail-post-step
                   requires:
                       - build_srnt_dev
-            - test_back_integration_reference_entities:
-                  <<: *slack-fail-post-step
-                  requires:
-                      - build_srnt_dev
             - test_back_performance:
                   <<: *slack-fail-post-step
                   requires:
@@ -113,8 +109,7 @@ workflows:
                       - test_front_static_acceptance_and_integration
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
-                      - test_back_integration_reference_entities
-                      - test_onboarder_bundle
+#                      - test_onboarder_bundle
                       - test_front_onboarder
                       - test_back_onboarder
                       - test_back_performance
@@ -257,9 +252,6 @@ workflows:
             - test_back_integration_bounded_contexts:
                   requires:
                       - "[srnt] Build dev"
-            - test_back_integration_reference_entities:
-                  requires:
-                      - "[srnt] Build dev"
             - test_back_performance:
                   requires:
                       - "[srnt] Build dev"
@@ -318,8 +310,7 @@ workflows:
                       - test_front_static_acceptance_and_integration
                       - test_back_phpunit
                       - test_back_integration_bounded_contexts
-                      - test_back_integration_reference_entities
-                      - test_onboarder_bundle
+#                      - test_onboarder_bundle
                       - test_back_onboarder
                       - test_front_onboarder
                       - test_back_performance

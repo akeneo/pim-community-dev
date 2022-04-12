@@ -2,8 +2,8 @@
 
 namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier;
 
-use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Domain\Read;
+use Akeneo\OnboarderSerenity\Domain\Write;
 
 interface GetSupplier
 {

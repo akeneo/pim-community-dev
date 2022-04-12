@@ -8,12 +8,13 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
+use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Contributor;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit\Framework\Assert;
@@ -32,8 +33,8 @@ final class SupplierContext implements Context
         private CreateSupplierHandler $createSupplierHandler,
         private InMemoryGetSupplierList $getSupplierList,
         private DeleteSupplierHandler $deleteSuppliersHandler,
-        private Contributor\Repository\InMemory\InMemoryRepository $contributorRepository,
         private GetSupplier $getSupplier,
+        private UpdateSupplierHandler $updateSupplierHandler,
     ) {
         $this->suppliers = [];
         $this->supplier = null;
@@ -55,19 +56,18 @@ final class SupplierContext implements Context
     public function thereIsASupplier(string $code, ?string $label = null, ?int $contributorsCount = null): void
     {
         $supplierIdentifier = Uuid::uuid4()->toString();
+
+        $contributorEmails = [];
+        for ($i = 1; $i <= $contributorsCount; $i++) {
+            $contributorEmails[] = 'email'.$i.'@example.com';
+        }
+
         $this->supplierRepository->save(Write\Supplier\Model\Supplier::create(
             $supplierIdentifier,
             $code,
             $label ?: $code,
+            $contributorEmails,
         ));
-
-        for ($i = 1; $i <= $contributorsCount; $i++) {
-            $this->contributorRepository->save(Write\Supplier\Contributor\Model\Contributor::create(
-                Uuid::uuid4()->toString(),
-                'email'.$i.'@akeneo.com',
-                $supplierIdentifier,
-            ));
-        }
     }
 
     /**
@@ -77,7 +77,7 @@ final class SupplierContext implements Context
     public function iCreateASupplierWithACodeAndALabel(string $code, ?string $label = null): void
     {
         try {
-            ($this->createSupplierHandler)(new CreateSupplier(Uuid::uuid4()->toString(), $code, $label ?: $code));
+            ($this->createSupplierHandler)(new CreateSupplier(Uuid::uuid4()->toString(), $code, $label ?: $code, []));
         } catch (Write\Supplier\Exception\SupplierAlreadyExistsException $e) {
             $this->lastException = $e;
         }
@@ -102,7 +102,7 @@ final class SupplierContext implements Context
     /**
      * @When I delete the supplier ":code"
      */
-    public function iDeleteTheSupplier(string $code)
+    public function iDeleteTheSupplier(string $code): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         ($this->deleteSuppliersHandler)(new DeleteSupplier($supplier->identifier()));
@@ -111,10 +111,33 @@ final class SupplierContext implements Context
     /**
      * @When I retrieve the supplier ":code"
      */
-    public function iRetrieveTheSupplier(string $code)
+    public function iRetrieveTheSupplier(string $code): void
+    {
+        $this->loadSupplier($code);
+    }
+
+    /**
+     * @When I update the supplier ":code" label with ":label"
+     */
+    public function iUpdateTheSupplierLabelWith(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
-        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\identifier::fromString($supplier->identifier()));
+        ($this->updateSupplierHandler)(new UpdateSupplier($supplier->identifier(), $label, $supplier->contributors()));
+    }
+
+    /**
+     * @When I update the supplier ":code" contributors with ":contributors"
+     */
+    public function iUpdateTheSupplierContributorsWith(string $code, string $contributors): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        ($this->updateSupplierHandler)(
+            new UpdateSupplier(
+                $supplier->identifier(),
+                $supplier->label(),
+                '' !== $contributors ? explode(';', $contributors) : [],
+            )
+        );
     }
 
     /**
@@ -123,7 +146,7 @@ final class SupplierContext implements Context
     public function iShouldHaveASupplierWithCodeAndLabel(string $code, string $label): void
     {
         $supplier = $this->supplierRepository->findByCode(
-            Write\Supplier\ValueObject\Code::fromString($code)
+            Write\Supplier\ValueObject\Code::fromString($code),
         );
 
         Assert::assertSame($code, $supplier->code());
@@ -151,27 +174,36 @@ final class SupplierContext implements Context
         $actualSuppliers = array_map(fn (Read\Supplier\Model\SupplierListItem $supplier) => [
             'code' => $supplier->code,
             'label' => $supplier->label,
-            'contributor_count' => $supplier->contributorsCount
+            'contributor_count' => $supplier->contributorsCount,
         ], $this->suppliers);
 
         Assert::assertEquals($expectedSuppliers, array_values($actualSuppliers));
     }
 
     /**
-     * @Then I should have the following supplier:
+     * @Then I should have a supplier with code ":code" and contributors ":contributors"
      */
-    public function iShouldHaveTheSupplier(TableNode $properties)
+    public function iShouldHaveASupplierWithCodeAndContributors(string $code, ?string $contributors): void
     {
-        $expectedSupplier = $properties->getHash()[0];
-        $contributors = array_map(fn (Read\Supplier\Model\Contributor $contributor) => $contributor->email, $this->supplier->contributors);
+        $supplier = $this->supplierRepository->findByCode(
+            Write\Supplier\ValueObject\Code::fromString($code),
+        );
 
-        Assert::assertSame($expectedSupplier['code'], $this->supplier->code);
-        Assert::assertSame($expectedSupplier['label'], $this->supplier->label);
-        Assert::assertSame($expectedSupplier['contributors'], join(';', $contributors));
+        $contributors = '' !== $contributors ? explode(';', $contributors) : [];
+        $contributors = array_map(fn ($contributor) => ['email' => $contributor], $contributors);
+
+        Assert::assertSame($code, $supplier->code());
+        Assert::assertSame($contributors, $supplier->contributors());
     }
 
-    private function loadSuppliers($search = ''): void
+    private function loadSuppliers(string $search = ''): void
     {
         $this->suppliers = ($this->getSupplierList)(1, $search);
+    }
+
+    private function loadSupplier(string $code): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\Identifier::fromString($supplier->identifier()));
     }
 }

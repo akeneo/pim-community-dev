@@ -116,21 +116,35 @@ const query = async (_router: Router, _params: AttributeFetcherIndexParams): Pro
   );
 };
 
-const findAttributeWithOptions = async (_router: Router, _localeCode: LocaleCode): Promise<AttributeWithOptions[]> => {
-  return new Promise(resolve =>
-    resolve([
-      {
-        code: 'simple_select_1',
-        label: 'Simple Select 1',
-        options_count: 42,
-      },
-      {
-        code: 'simple_select_2',
-        label: 'Simple Select 2',
-        options_count: 69,
-      },
-    ])
-  );
+const findAttributeWithOptions = async (
+  _router: Router,
+  _localeCode: LocaleCode,
+  offset: number,
+  limit: number
+): Promise<AttributeWithOptions[]> => {
+  const attributes: AttributeWithOptions[] = [
+    {
+      code: 'simple_select_1',
+      label: 'Simple Select 1',
+      options_count: 42,
+    },
+    {
+      code: 'simple_select_2',
+      label: 'Simple Select 2',
+      options_count: 69,
+    },
+    {
+      code: 'simple_select_3',
+      label: 'Simple Select 3',
+      options_count: 51,
+    },
+  ];
+
+  const attributeWithOptions = attributes.slice(offset, offset + limit);
+
+  return new Promise<AttributeWithOptions[]>(resolve => {
+    return resolve(attributeWithOptions);
+  });
 };
 
 const AttributeFetcher = {

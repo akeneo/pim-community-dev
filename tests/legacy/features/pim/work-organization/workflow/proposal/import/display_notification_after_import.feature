@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Display notification after import
   In order to summarize proposals
   As a product manager

@@ -1,4 +1,4 @@
-@javascript
+@javascript @proposal-feature-enabled
 Feature: Handle import of invalid CSV data
   In order to ease the correction of an invalid CSV file import
   As a product manager

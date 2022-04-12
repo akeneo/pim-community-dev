@@ -68,6 +68,8 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->get('feature_flags')->enable('reference_entity');
         $this->loadFixtures();
 
         $jobInstance = $this->get('pim_enrich.repository.job_instance')

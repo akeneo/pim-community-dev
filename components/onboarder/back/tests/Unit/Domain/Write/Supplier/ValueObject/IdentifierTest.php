@@ -14,8 +14,8 @@ final class IdentifierTest extends TestCase
     {
         static::expectExceptionObject(
             new \InvalidArgumentException(
-                sprintf('The supplier identifier must be a UUID, "%s" given', 'foo')
-            )
+                sprintf('The supplier identifier must be a UUID, "%s" given', 'foo'),
+            ),
         );
 
         Supplier\ValueObject\Identifier::fromString('foo');

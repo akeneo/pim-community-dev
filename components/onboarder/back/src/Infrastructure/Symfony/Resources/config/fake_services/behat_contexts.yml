@@ -4,5 +4,5 @@ services:
         - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
         - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
         - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'
-        - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Contributor\Repository'
         - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'
+        - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'

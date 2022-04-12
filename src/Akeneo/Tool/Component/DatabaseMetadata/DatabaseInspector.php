@@ -100,4 +100,77 @@ SQL;
 
         return $result->fetchAllAssociative();
     }
+
+    public function getIndexes(string $db_name): array
+    {
+        $sql = <<<SQL
+SELECT
+    TABLE_NAME,
+    INDEX_NAME,
+    GROUP_CONCAT(COLUMN_NAME ORDER BY SEQ_IN_INDEX SEPARATOR ', ') COLUMNS
+FROM
+    INFORMATION_SCHEMA.STATISTICS
+WHERE    TABLE_SCHEMA = :table_schema
+AND TABLE_NAME NOT IN (:excluded_tables)
+GROUP BY TABLE_NAME, INDEX_NAME
+ORDER BY TABLE_NAME, INDEX_NAME
+SQL;
+
+        $result = $this->db->executeQuery(
+            $sql,
+            ["table_schema" => $db_name, "excluded_tables" => self::EXCLUDED_TABLES],
+            ["excluded_tables" => Connection::PARAM_STR_ARRAY]
+        );
+
+        return $result->fetchAllAssociative();
+    }
+
+    public function getForeignKeyConstraints(string $db_name): array
+    {
+        $sql = <<<SQL
+SELECT TABLE_SCHEMA, CONSTRAINT_NAME, TABLE_NAME, FOR_COL_NAME, REF_COL_NAME, FOR_NAME, REF_NAME
+FROM information_schema.TABLE_CONSTRAINTS tc
+JOIN information_schema.INNODB_FOREIGN_COLS fc ON fc.ID = CONCAT(tc.CONSTRAINT_SCHEMA, '/', tc.CONSTRAINT_NAME)
+JOIN information_schema.INNODB_FOREIGN fo ON fo.ID = CONCAT(tc.CONSTRAINT_SCHEMA, '/', tc.CONSTRAINT_NAME)
+WHERE CONSTRAINT_TYPE = 'FOREIGN KEY'
+AND    TABLE_SCHEMA = :table_schema
+AND TABLE_NAME NOT IN (:excluded_tables)
+ORDER BY TABLE_NAME, REF_NAME
+SQL;
+
+        $result = $this->db->executeQuery(
+            $sql,
+            ["table_schema" => $db_name, "excluded_tables" => self::EXCLUDED_TABLES],
+            ["excluded_tables" => Connection::PARAM_STR_ARRAY]
+        );
+
+        return $result->fetchAllAssociative();
+    }
+
+    public function getUniqueConstraints(string $db_name): array
+    {
+        $sql = <<<SQL
+SELECT
+       tc.CONSTRAINT_NAME,
+       tc.TABLE_NAME,
+       GROUP_CONCAT(kcu.COLUMN_NAME SEPARATOR ', ') COLUMNS
+FROM information_schema.TABLE_CONSTRAINTS tc
+LEFT JOIN information_schema.KEY_COLUMN_USAGE kcu
+    ON tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME
+    AND tc.TABLE_NAME = kcu.TABLE_NAME
+    AND kcu.CONSTRAINT_SCHEMA = tc.TABLE_SCHEMA
+WHERE CONSTRAINT_TYPE = 'UNIQUE'
+AND    tc.TABLE_SCHEMA = :table_schema
+AND tc.TABLE_NAME NOT IN (:excluded_tables)
+GROUP BY tc.TABLE_NAME, tc.CONSTRAINT_NAME
+ORDER BY tc.TABLE_NAME, tc.CONSTRAINT_NAME
+SQL;
+        $result = $this->db->executeQuery(
+            $sql,
+            ["table_schema" => $db_name, "excluded_tables" => self::EXCLUDED_TABLES],
+            ["excluded_tables" => Connection::PARAM_STR_ARRAY]
+        );
+
+        return $result->fetchAllAssociative();
+    }
 }

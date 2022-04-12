@@ -18,21 +18,21 @@ Feature: Throw an error if an asset doesn't exist or if it doesn't belong to an 
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
 
-  @acceptance-back
+  @acceptance-back @asset-manager-feature-enabled
   Scenario: Providing an asset that belongs to the asset family should not raise an error
     When a product is created with values:
       | attribute       | data        | scope | locale |
       | assetCollection | starck,coco |       |        |
     Then no error is raised
 
-  @acceptance-back
+  @acceptance-back @asset-manager-feature-enabled
   Scenario: Providing a non existing asset should raise an error
     When a product is created with values:
       | attribute       | data                 | scope | locale |
       | assetCollection | starck,inventedAsset |       |        |
     Then the error 'Please make sure the "inventedAsset" asset exists and belongs to the "designer" asset family for the "assetCollection" attribute.' is raised
 
-  @acceptance-back
+  @acceptance-back @asset-manager-feature-enabled
   Scenario: Providing an asset that doesn't belong to the asset family should raise an error
     When a product is created with values:
       | attribute       | data                     | scope | locale |
