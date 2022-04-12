@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -43,7 +43,7 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
         $attributeTarget->getLocale()->willReturn(null);
         $attributeTarget->getSourceParameter()->willReturn($measurementSourceParameter);
 
-        $expected = new SetMetricValue(
+        $expected = new SetMeasurementValue(
             'an_attribute_code',
             null,
             null,
