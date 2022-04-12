@@ -30,6 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: 귀하에게 가장 적절한 콘텐츠를 제공할 수 있도록 먼저 담당하고 계신 주요 업무를 알려주십시오.
   why_is_it_needed: 이 정보를 요청하는 이유
+  save_button: 저장 및 App Store 액세스
   selector:
     placeholder: 옵션 선택
     not_found: 결과가 없습니다.

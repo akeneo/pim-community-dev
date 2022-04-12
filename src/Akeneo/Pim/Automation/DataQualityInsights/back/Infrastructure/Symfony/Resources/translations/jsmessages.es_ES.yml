@@ -43,6 +43,10 @@ akeneo_data_quality_insights:
       day: día
     key_indicators:
       title: Indicadores clave
+      products: '{1}1 producto|]1, 200[{{ count }} productos|[200, Inf[más de {{ count }} productos'
+      product_models: '{1}1 modelo de producto|]1, 200[{{ count }} modelos de producto|[200, Inf[más de {{ count }} modelos de producto'
+      entities_to_work_on: 'Tienes <improvable_products_count_link/> para trabajar.'
+      entities_to_work_on_2_kinds: 'Tienes <improvable_products_count_link/> y <improvable_product_models_count_link/> para trabajar.'
       list:
         has_image:
           title: Productos con una imagen

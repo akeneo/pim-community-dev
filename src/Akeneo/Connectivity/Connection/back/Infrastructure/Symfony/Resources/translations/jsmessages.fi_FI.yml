@@ -39,7 +39,7 @@ akeneo_connectivity.connection:
       sub_title: Tarkista Marketplace-sivustolta, mitkä sovellukset voidaan yhdistää Akeneo PIMiin.
       link: Yhteys kauppapaikkaan
       helper:
-        title: '{0} PIM-versiosi kanssa yhteensopivia sovelluksia tai konnektoreita ei ole.{1} PIM-versiosi kanssa on yhteensopiva {{ count }} sovellus tai konnektori. [2,Inf] PIM-versiosi kanssa yhteensopivia sovelluksia ja konnektoreita on {{ count }}.'
+        title: '{0} PIM-versiosi kanssa yhteensopivia sovelluksia tai konnektoreita ei ole.|{1} PIM-versiosi kanssa on yhteensopiva {{ count }} sovellus tai konnektori. |[2,Inf] PIM-versiosi kanssa yhteensopivia sovelluksia ja konnektoreita on {{ count }}.'
         title_without_apps: '{0} PIM-versiosi kanssa yhteensopivia konnektoreita ei ole.{1} {{ count }} PIM-versiosi kanssa yhteensopiva konnektori. [2,Inf] {{ count }} PIM-versiosi kanssa yhteensopivia konnektoria.'
         description: Tämä on vain yleiskatsaus. Katso lisätietoja kauppapaikaltamme.
         link: Siirry kauppapaikkaan
