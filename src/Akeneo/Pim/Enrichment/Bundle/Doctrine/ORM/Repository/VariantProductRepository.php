@@ -40,8 +40,8 @@ class VariantProductRepository implements VariantProductRepositoryInterface
             ->where('vp.parent = :parent')
             ->setParameter('parent', $product->getParent());
 
-        if (null !== $id = $product->getId()) {
-            $qb->andWhere('vp.id != :id')->setParameter('id', $id);
+        if (null !== $uuid = $product->getUuid()) {
+            $qb->andWhere('vp.uuid != :uuid')->setParameter('uuid', $uuid);
         }
 
         return $qb->getQuery()->execute();

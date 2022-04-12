@@ -51,7 +51,7 @@ class AddParent
     public function to(ProductInterface $product, string $parentProductModelCode): ProductInterface
     {
         // we don't add a parent if it is a creation
-        if (null === $product->getId()) {
+        if (null === $product->getCreated()) {
             return $product;
         }
 
