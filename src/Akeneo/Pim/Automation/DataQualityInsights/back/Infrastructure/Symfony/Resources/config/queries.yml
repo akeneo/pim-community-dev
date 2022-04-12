@@ -169,10 +169,12 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQuery:
         arguments:
             - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeGroupActivationQuery:
         arguments:

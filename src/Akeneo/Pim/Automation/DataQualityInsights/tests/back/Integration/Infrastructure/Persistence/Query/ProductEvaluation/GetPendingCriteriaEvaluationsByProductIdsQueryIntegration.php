@@ -46,8 +46,8 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
             ->execute($productIdCollection);
 
         $this->assertCount(2, $evaluations);
-        $this->assertArrayHasKey($productIdA, $evaluations);
-        $this->assertArrayHasKey($productIdB, $evaluations);
+        $this->assertArrayHasKey((string)$productIdA, $evaluations);
+        $this->assertArrayHasKey((string)$productIdB, $evaluations);
         $this->assertCount(2, $evaluations[(string)$productIdA]);
         $this->assertCount(1, $evaluations[(string)$productIdB]);
     }
@@ -67,11 +67,11 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
         ]);
 
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_pending_criteria_evaluations')
-            ->execute(ProductIdCollection::fromInts([$productModelIdA, $productModelIdB, $productModelIdC]));
+            ->execute($productModelIdCollection);
 
         $this->assertCount(2, $evaluations);
-        $this->assertArrayHasKey($productModelIdA, $evaluations);
-        $this->assertArrayHasKey($productModelIdB, $evaluations);
+        $this->assertArrayHasKey((string)$productModelIdA, $evaluations);
+        $this->assertArrayHasKey((string)$productModelIdB, $evaluations);
         $this->assertCount(2, $evaluations[(string)$productModelIdA]);
         $this->assertCount(1, $evaluations[(string)$productModelIdB]);
     }
