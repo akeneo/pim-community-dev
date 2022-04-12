@@ -47,7 +47,7 @@ final class GetAllAppsAction
         } catch (\Exception $e) {
             $this->logger->error(\sprintf('unable to retrieve the list of apps, got error "%s"', $e->getMessage()));
 
-            return new Response(null, Response::HTTP_NO_CONTENT);
+            return new JsonResponse(GetAllAppsResult::create(0, [])->normalize());
         }
 
         $username = $this->userContext->getUser()->getUsername();

@@ -10,7 +10,7 @@ export const useFetchApps = (): (() => Promise<Apps>) => {
             method: 'GET',
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
-        if (false === response.ok || 204 === response.status) {
+        if (false === response.ok) {
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
