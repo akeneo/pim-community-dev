@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -41,6 +42,9 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
 
         $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product2'));
         Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product1'));
+
+        $this->messageBus->dispatch(new UpsertProductCommand(userId: $this->getUserId('peter'), productIdentifier: 'associated_product3'));
+        Assert::assertNotNull($this->productRepository->findOneByIdentifier('associated_product3'));
 
         $this->clearDoctrineUoW();
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
@@ -108,5 +112,33 @@ class UpsertQuantifiedAssociationsIntegration extends EnrichmentProductTestCase
             new DissociateQuantifiedProducts('bundle', ['associated_product2', 'unknown']),
         ]));
         Assert::assertEmpty($this->getAssociatedQuantifiedProducts('identifier'));
+    }
+
+    /** @test */
+    public function it_replaces_associated_quantified_products(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new ReplaceAssociatedQuantifiedProducts('bundle', [
+                new QuantifiedProduct('associated_product1', 5),
+                new QuantifiedProduct('associated_product2', 4),
+            ]),
+        ]));
+        Assert::assertEquals(
+            [new QuantifiedProduct('associated_product1', 5), new QuantifiedProduct('associated_product2', 4)],
+            $this->getAssociatedQuantifiedProducts('identifier')
+        );
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
+
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'identifier', [
+            new ReplaceAssociatedQuantifiedProducts('bundle', [
+                new QuantifiedProduct('associated_product1', 50),
+                new QuantifiedProduct('associated_product3', 2),
+            ]),
+        ]));
+        Assert::assertEquals(
+            [new QuantifiedProduct('associated_product1', 50), new QuantifiedProduct('associated_product3', 2)],
+            $this->getAssociatedQuantifiedProducts('identifier')
+        );
     }
 }

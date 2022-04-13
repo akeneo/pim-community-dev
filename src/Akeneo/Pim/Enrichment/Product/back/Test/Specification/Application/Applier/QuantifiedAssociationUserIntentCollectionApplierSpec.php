@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\A
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\QuantifiedAssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -171,6 +172,41 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
                 new DissociateQuantifiedProducts('bundle', ['foo', 'bar']),
+            ]),
+            $product,
+            10
+        );
+    }
+
+    function it_replaces_quantified_products(ObjectUpdaterInterface $productUpdater, GetViewableProducts $getViewableProducts)
+    {
+        $product = new Product();
+        $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
+            'bundle' => [
+                'products' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                    ['identifier' => 'baz', 'quantity' => 5],
+                ],
+            ],
+        ]));
+
+        $getViewableProducts->fromProductIdentifiers(['bar', 'baz', 'foo'], 10)->willReturn(['bar', 'foo']);
+
+        $productUpdater->update($product, ['quantified_associations' => [
+            'bundle' => [
+                'products' => [
+                    ['identifier' => 'foo', 'quantity' => 8],
+                    ['identifier' => 'baz', 'quantity' => 5],
+                ],
+            ],
+        ]])->shouldBeCalledOnce();
+
+        $this->apply(
+            new QuantifiedAssociationUserIntentCollection([
+                new ReplaceAssociatedQuantifiedProducts('bundle', [
+                    new QuantifiedProduct('foo', 8),
+                ]),
             ]),
             $product,
             10

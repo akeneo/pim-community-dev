@@ -240,6 +240,7 @@ abstract class EnrichmentProductTestCase extends TestCase
     ): array {
         $this->clearDoctrineUoW();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        Assert::assertNotNull($product);
         $quantifiedAssociationCollection = $product->getQuantifiedAssociations();
 
         $quantifiedProducts = [];
