@@ -7,6 +7,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
@@ -33,6 +36,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedWith(
             1,
             'identifier1',
+            null,
             null,
             null,
             null,
@@ -70,6 +74,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
+            null,
             $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
@@ -82,6 +87,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedWith(
             1,
             '',
+            null,
             null,
             null,
             null,
@@ -106,6 +112,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
+            null,
             []
         );
         $this->userId()->shouldReturn(1);
@@ -125,11 +132,22 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
         $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
         $setGroupsIntent = new SetGroups(['groupA', 'groupB']);
+        $associateQuantifiedProducts = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)]);
 
         $this->beConstructedThrough('createFromCollection', [
             10,
             'identifier1',
-            [$familyUserIntent, $setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue, $categoryUserIntent, $setGroupsIntent]
+            [
+                $familyUserIntent,
+                $setTextValue,
+                $setNumberValue,
+                $setDateValue,
+                $addMultiSelectValue,
+                $setAssetValue,
+                $categoryUserIntent,
+                $setGroupsIntent,
+                $associateQuantifiedProducts,
+            ]
         ]);
 
         $this->userId()->shouldReturn(10);
@@ -138,6 +156,9 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->categoryUserIntent()->shouldReturn($categoryUserIntent);
         $this->groupUserIntent()->shouldReturn($setGroupsIntent);
         $this->valueUserIntents()->shouldReturn([$setTextValue, $setNumberValue, $setDateValue, $addMultiSelectValue, $setAssetValue]);
+        $quantifiedAssociations = $this->quantifiedAssociationUserIntents();
+        $quantifiedAssociations->shouldHaveType(QuantifiedAssociationUserIntentCollection::class);
+        $quantifiedAssociations->quantifiedAssociationUserIntents()->shouldBe([$associateQuantifiedProducts]);
     }
 
     function it_cannot_be_constructed_with_multiple_set_enabled_intents()

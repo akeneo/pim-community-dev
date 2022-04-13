@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
+namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use PhpSpec\ObjectBehavior;
@@ -14,24 +17,24 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationUserIntentCollectionSpec extends ObjectBehavior
+class QuantifiedAssociationUserIntentCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([new AssociateProducts('X_SELL', ['identifier'])]);
+        $this->beConstructedWith([new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)])]);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(AssociationUserIntentCollection::class);
+        $this->shouldHaveType(QuantifiedAssociationUserIntentCollection::class);
         $this->shouldImplement(UserIntent::class);
     }
 
     function it_returns_the_association_user_intents()
     {
-        $userIntent = new AssociateProducts('X_SELL', ['identifier']);
+        $userIntent = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)]);
         $this->beConstructedWith([$userIntent]);
-        $this->associationUserIntents()->shouldReturn([$userIntent]);
+        $this->quantifiedAssociationUserIntents()->shouldReturn([$userIntent]);
     }
 
     function it_cannot_be_instantiated_with_other_intent_than_association_intent()
