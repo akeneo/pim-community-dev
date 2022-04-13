@@ -15,7 +15,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -54,7 +54,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $valueUserIntents = [
             new SetTextValue('name', null, null, 'foo'),
             new SetNumberValue('name', null, null, '10'),
-            new SetMetricValue('power', null, null, '100', 'KILOWATT'),
+            new SetMeasurementValue('power', null, null, '100', 'KILOWATT'),
             new SetTextareaValue('name', null, null, "<p><span style=\"font-weight: bold;\">title</span></p><p>text</p>"),
             new ClearValue('name', null, null),
             new SetBooleanValue('name', null, null, true),
