@@ -4,7 +4,7 @@ namespace Akeneo\Channel\API\Query;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class Channel
 {
@@ -12,7 +12,7 @@ final class Channel
         private string $code,
         private array $localeCodes,
         private LabelCollection $labels,
-        private array $activatedCurrencies
+        private array $activeCurrencies
     ) {
     }
 
@@ -31,9 +31,9 @@ final class Channel
         return $this->labels;
     }
 
-    public function getActivatedCurrencies(): array
+    public function getActiveCurrencies(): array
     {
-        return $this->activatedCurrencies;
+        return $this->activeCurrencies;
     }
 
     public function isLocaleActive(string $localeCode): bool
@@ -41,8 +41,8 @@ final class Channel
         return in_array($localeCode, $this->localeCodes);
     }
 
-    public function isActivatedCurrency(string $currencyCode): bool
+    public function isCurrencyActive(string $currencyCode): bool
     {
-        return in_array($currencyCode, $this->activatedCurrencies);
+        return in_array($currencyCode, $this->activeCurrencies);
     }
 }

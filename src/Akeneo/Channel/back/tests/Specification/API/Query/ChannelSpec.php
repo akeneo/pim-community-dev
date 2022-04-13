@@ -24,7 +24,7 @@ class ChannelSpec extends ObjectBehavior
         $this->getCode()->shouldReturn('mobile');
         $this->getLocaleCodes()->shouldReturn(['fr_FR', 'uk_UA']);
         $this->getLabels()->shouldBeLike(LabelCollection::fromArray(['fr_FR' => 'Mobile', 'uk_UA' => 'смартфон']));
-        $this->getActivatedCurrencies()->shouldReturn(['EUR', 'USD']);
+        $this->getActiveCurrencies()->shouldReturn(['EUR', 'USD']);
     }
 
     public function it_tells_if_a_given_locale_is_active()
@@ -36,8 +36,8 @@ class ChannelSpec extends ObjectBehavior
 
     public function it_tells_if_a_given_currency_is_active()
     {
-        $this->isActivatedCurrency('EUR')->shouldReturn(true);
-        $this->isActivatedCurrency('USD')->shouldReturn(true);
-        $this->isActivatedCurrency('GBP')->shouldReturn(false);
+        $this->isCurrencyActive('EUR')->shouldReturn(true);
+        $this->isCurrencyActive('USD')->shouldReturn(true);
+        $this->isCurrencyActive('GBP')->shouldReturn(false);
     }
 }

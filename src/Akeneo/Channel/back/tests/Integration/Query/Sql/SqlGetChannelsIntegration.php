@@ -1,8 +1,6 @@
 <?php
 
-
-namespace AkeneoTest\Channel\Integration\Channel\Query\Sql;
-
+namespace Akeneo\Test\Channel\Integration\Query\Sql;
 
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\GetChannels;
@@ -36,8 +34,8 @@ final class SqlGetChannelsIntegration extends TestCase
         $this->assertContains('en_US', $printChannel->getLocaleCodes());
         $this->assertContains('fr_FR', $printChannel->getLocaleCodes());
 
-        $this->assertContains('USD', $printChannel->getActivatedCurrencies());
-        $this->assertContains('EUR', $printChannel->getActivatedCurrencies());
+        $this->assertContains('USD', $printChannel->getActiveCurrencies());
+        $this->assertContains('EUR', $printChannel->getActiveCurrencies());
     }
 
     protected function getConfiguration(): Configuration
