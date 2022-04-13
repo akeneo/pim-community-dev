@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
@@ -59,7 +60,11 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
             $values = match ($quantifiedAssociationUserIntent::class) {
                 AssociateQuantifiedProducts::class => $this->associateQuantifiedEntities(
                     $formerAssociations,
-                    $quantifiedAssociationUserIntent->quantifiedProducts()
+                    $quantifiedAssociationUserIntent
+                ),
+                DissociateQuantifiedProducts::class => $this->dissociateQuantifiedEntities(
+                    $formerAssociations,
+                    $quantifiedAssociationUserIntent
                 ),
                 default => throw new \InvalidArgumentException('Unsupported association userIntent')
             };
@@ -92,25 +97,27 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     private function getAssociationEntityType(QuantifiedAssociationUserIntent $userIntent): string
     {
         return match ($userIntent::class) {
-            AssociateQuantifiedProducts::class => self::PRODUCTS,
+            AssociateQuantifiedProducts::class, DissociateQuantifiedProducts::class => self::PRODUCTS,
             default => throw new \LogicException('User intent cannot be handled')
         };
     }
 
     /**
      * @param array<array{identifier: string, quantity: int}> $formerAssociations
-     * @param QuantifiedProduct[] $newQuantifiedProducts
      * @return array<array{identifier: string, quantity: int}>|null
      */
-    private function associateQuantifiedEntities(array $formerAssociations, array $newQuantifiedProducts): ?array
-    {
+    private function associateQuantifiedEntities(
+        array $formerAssociations,
+        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
+    ): ?array {
+        Assert::methodExists($quantifiedAssociationUserIntent, 'quantifiedProducts');
         $indexedFormerAssociations = [];
         foreach ($formerAssociations as $formerAssociation) {
             $indexedFormerAssociations[$formerAssociation['identifier']] = $formerAssociation;
         }
 
         $isUpdated = false;
-        foreach ($newQuantifiedProducts as $quantifiedProduct) {
+        foreach ($quantifiedAssociationUserIntent->quantifiedProducts() as $quantifiedProduct) {
             $identifier = $quantifiedProduct->productIdentifier();
             if (\array_key_exists($identifier, $indexedFormerAssociations)
                 && $indexedFormerAssociations[$identifier]['quantity'] === $quantifiedProduct->quantity()
@@ -130,5 +137,29 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         }
 
         return \array_values($indexedFormerAssociations);
+    }
+
+    /**
+     * @param array<array{identifier: string, quantity: int}> $formerAssociations
+     * @return array<array{identifier: string, quantity: int}>|null
+     */
+    private function dissociateQuantifiedEntities(
+        array $formerAssociations,
+        QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent
+    ): ?array {
+        Assert::methodExists($quantifiedAssociationUserIntent, 'productIdentifiers');
+        $newAssociations = \array_filter(
+            $formerAssociations,
+            static fn (array $association): bool => !\in_array(
+                $association['identifier'],
+                $quantifiedAssociationUserIntent->productIdentifiers()
+            )
+        );
+
+        if (\count($newAssociations) === \count($formerAssociations)) {
+            return null;
+        }
+
+        return \array_values($newAssociations);
     }
 }

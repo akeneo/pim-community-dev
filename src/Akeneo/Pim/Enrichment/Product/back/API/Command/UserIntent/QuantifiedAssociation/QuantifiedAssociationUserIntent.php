@@ -13,9 +13,4 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 interface QuantifiedAssociationUserIntent extends UserIntent
 {
     public function associationType(): string;
-
-    /**
-     * @return QuantifiedProduct[]
-     */
-    public function quantifiedProducts(): array;
 }

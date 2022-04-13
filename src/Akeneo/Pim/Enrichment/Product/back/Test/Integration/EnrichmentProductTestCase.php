@@ -235,9 +235,11 @@ abstract class EnrichmentProductTestCase extends TestCase
      * @return array<QuantifiedProduct>
      */
     protected function getAssociatedQuantifiedProducts(
-        ProductInterface $product,
+        string $productIdentifier,
         string $associationType = 'bundle'
     ): array {
+        $this->clearDoctrineUoW();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
         $quantifiedAssociationCollection = $product->getQuantifiedAssociations();
 
         $quantifiedProducts = [];

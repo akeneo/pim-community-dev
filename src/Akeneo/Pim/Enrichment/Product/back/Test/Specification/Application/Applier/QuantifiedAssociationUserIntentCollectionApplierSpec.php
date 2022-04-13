@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\QuantifiedAssociationUserIntentCollectionApplier;
@@ -114,6 +115,62 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
                 new AssociateQuantifiedProducts('bundle', [new QuantifiedProduct('bar', 4)]),
+            ]),
+            $product,
+            10
+        );
+    }
+
+    function it_dissociates_quantified_products(ObjectUpdaterInterface $productUpdater)
+    {
+        $product = new Product();
+        $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
+            'bundle' => [
+                'products' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]));
+
+        $productUpdater->update($product, ['quantified_associations' => [
+            'bundle' => [
+                'products' => [
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]])->shouldBeCalledOnce();
+
+        $this->apply(
+            new QuantifiedAssociationUserIntentCollection([
+                new DissociateQuantifiedProducts('bundle', ['foo', 'baz']),
+            ]),
+            $product,
+            10
+        );
+    }
+
+    function it_dissociates_all_quantified_products(ObjectUpdaterInterface $productUpdater)
+    {
+        $product = new Product();
+        $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
+            'bundle' => [
+                'products' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]));
+
+        $productUpdater->update($product, ['quantified_associations' => [
+            'bundle' => [
+                'products' => [],
+            ],
+        ]])->shouldBeCalledOnce();
+
+        $this->apply(
+            new QuantifiedAssociationUserIntentCollection([
+                new DissociateQuantifiedProducts('bundle', ['foo', 'bar']),
             ]),
             $product,
             10
