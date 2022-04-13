@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\D
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels;
@@ -71,11 +72,12 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
                         $formerAssociations,
                         $quantifiedAssociationUserIntent
                     ),
-                ReplaceAssociatedQuantifiedProducts::class => $this->replaceQuantifiedEntities(
-                    $formerAssociations,
-                    $quantifiedAssociationUserIntent,
-                    $userId
-                ),
+                ReplaceAssociatedQuantifiedProducts::class, ReplaceAssociatedQuantifiedProductModels::class =>
+                    $this->replaceQuantifiedEntities(
+                        $formerAssociations,
+                        $quantifiedAssociationUserIntent,
+                        $userId
+                    ),
                 default => throw new \InvalidArgumentException('Unsupported association userIntent')
             };
             if (\is_null($values)) {
@@ -107,9 +109,10 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
     private function getAssociationEntityType(QuantifiedAssociationUserIntent $userIntent): string
     {
         return match ($userIntent::class) {
-            AssociateQuantifiedProducts::class, DissociateQuantifiedProducts::class, ReplaceAssociatedQuantifiedProducts::class =>
-                self::PRODUCTS,
-            AssociateQuantifiedProductModels::class, DissociateQuantifiedProductModels::class => self::PRODUCT_MODELS,
+            AssociateQuantifiedProducts::class, DissociateQuantifiedProducts::class, ReplaceAssociatedQuantifiedProducts::class
+                => self::PRODUCTS,
+            AssociateQuantifiedProductModels::class, DissociateQuantifiedProductModels::class, ReplaceAssociatedQuantifiedProductModels::class
+                => self::PRODUCT_MODELS,
             default => throw new \LogicException('User intent cannot be handled')
         };
     }
@@ -185,14 +188,20 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         QuantifiedAssociationUserIntent $quantifiedAssociationUserIntent,
         int $userId
     ): ?array {
-        Assert::methodExists($quantifiedAssociationUserIntent, 'quantifiedProducts');
+        if ($quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProducts) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProducts();
+        } elseif ($quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProductModels) {
+            $quantifiedEntities = $quantifiedAssociationUserIntent->quantifiedProductModels();
+        } else {
+            throw new \InvalidArgumentException('Unexpected user intent');
+        }
 
         $newAssociations = [];
-        /** @var QuantifiedEntity $quantifiedProduct */
-        foreach ($quantifiedAssociationUserIntent->quantifiedProducts() as $quantifiedProduct) {
+        /** @var QuantifiedEntity $quantifiedEntity */
+        foreach ($quantifiedEntities as $quantifiedEntity) {
             $newAssociations[] = [
-                'identifier' => $quantifiedProduct->entityIdentifier(),
-                'quantity' => $quantifiedProduct->quantity(),
+                'identifier' => $quantifiedEntity->entityIdentifier(),
+                'quantity' => $quantifiedEntity->quantity(),
             ];
         }
 
@@ -204,7 +213,9 @@ final class QuantifiedAssociationUserIntentCollectionApplier implements UserInte
         }
 
         $formerAssociatedIdentifiers = \array_column($formerAssociations, 'identifier');
-        $viewableIdentifiers = $this->getViewableProducts->fromProductIdentifiers($formerAssociatedIdentifiers, $userId);
+        $viewableIdentifiers = $quantifiedAssociationUserIntent instanceof ReplaceAssociatedQuantifiedProducts
+            ? $this->getViewableProducts->fromProductIdentifiers($formerAssociatedIdentifiers, $userId)
+            : $this->getViewableProductModels->fromProductModelCodes($formerAssociatedIdentifiers, $userId);
         $nonViewableFormerAssociations = \array_values(\array_filter(
             $formerAssociations,
             static fn (array $association): bool => !\in_array($association['identifier'], $viewableIdentifiers)

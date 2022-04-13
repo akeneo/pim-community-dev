@@ -12,8 +12,10 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociatePr
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -322,6 +324,42 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
                 new QuantifiedEntity('product_non_viewable_by_manager', 8),
             ],
             $this->getAssociatedQuantifiedProducts('my_product')
+        );
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_product_models_on_replace_quantified_product_models_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProductModel('product_model_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['print', 'sales'],
+        ]);
+        $this->createProduct('my_product', [
+            new SetCategories(['print', 'sales']),
+            new AssociateQuantifiedProductModels('bundle', [
+                new QuantifiedEntity('product_model_non_viewable_by_manager', 10),
+            ]),
+        ]);
+
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedQuantifiedProductModels('bundle', [
+                    new QuantifiedEntity('product_model_viewable_by_manager', 10),
+                ]),
+            ]
+        );
+        $this->messageBus->dispatch($command);
+
+        Assert::assertEqualsCanonicalizing(
+            [
+                new QuantifiedEntity('product_model_non_viewable_by_manager', 10),
+                new QuantifiedEntity('product_model_viewable_by_manager', 10),
+            ],
+            $this->getAssociatedQuantifiedProductModels('my_product')
         );
     }
 }
