@@ -20,7 +20,7 @@ final class SqlFindChannelsIntegration extends TestCase
         );
     }
 
-    public function test_it_finds_all_channels()
+    public function test_it_finds_all_channels(): void
     {
         $results = $this->sqlGetChannels->findAll();
 
