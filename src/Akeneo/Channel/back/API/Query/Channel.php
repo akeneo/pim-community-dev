@@ -9,10 +9,8 @@ namespace Akeneo\Channel\API\Query;
 final class Channel
 {
     /**
-     * @param string          $code
-     * @param array<string>   $localeCodes
-     * @param LabelCollection $labels
-     * @param array<string>   $activeCurrencies
+     * @param array<string> $localeCodes
+     * @param array<string> $activeCurrencies
      */
     public function __construct(
         private string $code,

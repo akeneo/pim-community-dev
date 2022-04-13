@@ -28,7 +28,8 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->getLabel('ru_RU')->shouldReturn(null);
     }
 
-    public function it_tells_if_it_has_label() {
+    public function it_tells_if_it_has_label()
+    {
         $this->hasLabel('en_US')->shouldReturn(true);
         $this->hasLabel('ru_RU')->shouldReturn(false);
     }
