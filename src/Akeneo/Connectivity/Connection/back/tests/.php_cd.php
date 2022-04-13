@@ -168,6 +168,7 @@ $rules = [
 
             'Akeneo\Connectivity\Connection\Domain\ClockInterface',
 
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
