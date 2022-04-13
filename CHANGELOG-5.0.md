@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.91 (2022-04-13)
+
 ## Bug fixes
 - PIM-10397: Performance issues when patching products with many records via API
 
