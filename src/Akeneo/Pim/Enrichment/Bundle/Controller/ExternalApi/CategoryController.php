@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Category\Domain\Query\CategoryQuery;
+use Akeneo\Pim\Enrichment\Category\Domain\Query\ConnectorCategory;
+use Akeneo\Pim\Enrichment\Category\Domain\Query\FindConnectorCategories;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
@@ -35,63 +38,20 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CategoryController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $repository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var  ValidatorInterface */
-    protected $validator;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
     public function __construct(
-        ApiResourceRepositoryInterface $repository,
-        NormalizerInterface $normalizer,
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        RouterInterface $router,
-        PaginatorInterface $paginator,
-        ParameterValidatorInterface $parameterValidator,
-        StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        protected ApiResourceRepositoryInterface $repository,
+        protected NormalizerInterface $normalizer,
+        protected SimpleFactoryInterface $factory,
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected SaverInterface $saver,
+        protected RouterInterface $router,
+        protected PaginatorInterface $paginator,
+        protected ParameterValidatorInterface $parameterValidator,
+        protected StreamResourceResponse $partialUpdateStreamResource,
+        protected FindConnectorCategories $getConnectorCategories,
+        protected array $apiConfiguration
     ) {
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->router = $router;
-        $this->parameterValidator = $parameterValidator;
-        $this->paginator = $paginator;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->apiConfiguration = $apiConfiguration;
     }
 
     /**
@@ -106,14 +66,12 @@ class CategoryController
      */
     public function getAction(Request $request, $code)
     {
-        $category = $this->repository->findOneByIdentifier($code);
+        $category = $this->getConnectorCategories->fromCode($code);
         if (null === $category) {
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $categoryApi = $this->normalizer->normalize($category, 'external_api');
-
-        return new JsonResponse($categoryApi);
+        return new JsonResponse($category->toArray());
     }
 
     /**
@@ -139,32 +97,42 @@ class CategoryController
 
         $queryParameters = array_merge($defaultParameters, $request->query->all());
         $searchFilters = json_decode($queryParameters['search'] ?? '[]', true);
+        // validate search filter in a class here (moved code from repository)
         if (null === $searchFilters) {
             throw new BadRequestHttpException('The search query parameter must be a valid JSON.');
         }
 
-        $offset = $queryParameters['limit'] * ($queryParameters['page'] - 1);
-        $order = ['root' => 'ASC', 'left' => 'ASC'];
         try {
-            $categories = $this->repository->searchAfterOffset(
-                $searchFilters,
-                $order,
-                $queryParameters['limit'],
-                $offset
-            );
+            // ....
         } catch (\InvalidArgumentException $exception) {
             throw new BadRequestHttpException($exception->getMessage(), $exception);
         }
+
+
+        $updatedAt = isset($searchFilters['updated']) ?
+            \DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, $searchFilters['updated']['value']) : null;
+        $categories = $this->getConnectorCategories->fromQuery(new CategoryQuery(
+                updatedAt: $updatedAt,
+                categoryCodes: $searchFilters['code']['value'] ?? [],
+                page: $queryParameters['page'],
+                limit: $queryParameters['limit'],
+                onlyRoot: $searchFilters['is_root']['value'] ?? null,
+                parentCategoryCode: $searchFilters['parent']['value'] ?? null,
+                orderBy: ['root' => 'ASC', 'lft' => 'ASC']
+            )
+        );
 
         $parameters = [
             'query_parameters'    => $queryParameters,
             'list_route_name'     => 'pim_api_category_list',
             'item_route_name'     => 'pim_api_category_get',
         ];
+        $normalizedCategories = array_map(fn(ConnectorCategory $category) => $category->toArray(), $categories);
 
+        // should be a dedicated count query in getConnectorCategories
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedCategories = $this->paginator->paginate(
-            $this->normalizer->normalize($categories, 'external_api'),
+            $normalizedCategories,
             $parameters,
             $count
         );

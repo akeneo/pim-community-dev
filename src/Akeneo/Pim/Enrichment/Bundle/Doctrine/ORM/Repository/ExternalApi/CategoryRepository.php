@@ -111,6 +111,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                                 ->getQuery()
                                 ->getOneOrNullResult();
 
+                            // should be done at filter validation level, not inside the query
                             if (!$parentCategory) {
                                 throw new \InvalidArgumentException(sprintf('Parent code %s does not exist.', $criterion['value']));
                             }
@@ -146,6 +147,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
         return $qb;
     }
 
+    // should be moved into dedicated class called by the controller, as it's a specific API format
     protected function validateSearchFilters(array $searchFilters): void
     {
         if (empty($searchFilters)) {

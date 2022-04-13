@@ -6,3 +6,14 @@ services:
         class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\SqlGetExistingCategories
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Category\Domain\Query\FindCategoryCodes:
+        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\Sql\SqlFindCategoryCodes
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Category\Domain\Query\FindConnectorCategories:
+        class: Akeneo\Pim\Enrichment\Category\Infrastructure\Query\Sql\SqlFindConnectorCategories
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Pim\Enrichment\Category\Domain\Query\FindCategoryCodes'
