@@ -3,7 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import MeasurementInput from '../../../../src/product/CellInputs/MeasurementInput';
 import {getComplexTableAttribute} from '../../../factories';
 import {ColumnDefinition} from '../../../../src/models';
-import {screen} from '@testing-library/react';
+import {screen, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 jest.mock('../../../../src/fetchers/MeasurementFamilyFetcher');
@@ -36,17 +36,20 @@ describe('MeasurementInput', () => {
       />
     );
 
-    expect(await screen.findByTitle('20')).toBeInTheDocument();
+    const amountInput = await screen.findByTitle('20');
+    expect(amountInput).toBeInTheDocument();
     expect(screen.getByText('mAh')).toBeInTheDocument();
 
     userEvent.click(screen.getByTitle('pim_common.open'));
 
     expect(await screen.findByText('Ah')).toBeInTheDocument();
     userEvent.click(screen.getByText('Ah'));
-
     expect(onChange).toBeCalledWith({
       amount: '20',
       unit: 'AMPEREHOUR',
     });
+
+    fireEvent.change(amountInput, {target: {value: ''}});
+    expect(onChange).toHaveBeenCalledWith(undefined);
   });
 });
