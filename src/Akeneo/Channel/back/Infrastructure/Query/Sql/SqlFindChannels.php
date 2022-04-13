@@ -32,7 +32,7 @@ final class SqlFindChannels implements FindChannels, CachedQueryInterface
                 SELECT 
                     c.code AS channelCode, 
                     JSON_OBJECTAGG(l.id, l.code) AS localeCodes,
-                    JSON_OBJECTAGG(ct.locale, ct.label) AS labels,
+                    JSON_REMOVE(JSON_OBJECTAGG(IFNULL(ct.locale, 'NO_LABEL'), ct.label), '$.NO_LABEL') AS labels,
                     JSON_OBJECTAGG(cur.id, cur.code) AS activatedCurrencies
                 FROM pim_catalog_channel c
                 LEFT JOIN pim_catalog_channel_locale cl 
