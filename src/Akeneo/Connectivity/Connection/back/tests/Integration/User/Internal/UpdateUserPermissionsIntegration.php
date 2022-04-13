@@ -78,7 +78,7 @@ SQL;
 
     private function getUpdateUserPermissionsService(): UpdateUserPermissions
     {
-        return $this->get('akeneo_connectivity.connection.service.user.update_user_permissions');
+        return $this->get(UpdateUserPermissions::class);
     }
 
     private function createConnection(string $code): ConnectionWithCredentials

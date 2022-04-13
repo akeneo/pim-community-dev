@@ -36,13 +36,13 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery:
         arguments:
             - '@akeneo_connectivity.client.events_api_debug'
-            - '@akeneo_connectivity.connection.clock'
-            - '@akeneo_connectivity.connection.encrypter'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery:
         arguments:
             - '@akeneo_connectivity.client.events_api_debug'
-            - '@akeneo_connectivity.connection.clock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
 
     Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery:
         arguments:

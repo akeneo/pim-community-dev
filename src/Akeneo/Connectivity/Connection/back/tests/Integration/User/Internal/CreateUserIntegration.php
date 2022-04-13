@@ -66,7 +66,7 @@ SQL;
 
     private function getCreateUserService(): CreateUser
     {
-        return $this->get('akeneo_connectivity.connection.service.user.create_user');
+        return $this->get(CreateUser::class);
     }
 
     private function getDatabaseConnection(): Connection

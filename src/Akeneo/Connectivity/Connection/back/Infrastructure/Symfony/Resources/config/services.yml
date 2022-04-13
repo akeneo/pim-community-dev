@@ -1,14 +1,12 @@
 services:
-    akeneo_connectivity.connection.service.user.create_user:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser:
         arguments:
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
 
-    akeneo_connectivity.connection.service.user.delete_user:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser:
         arguments:
             - '@pim_user.repository.user'
             - '@pim_user.remover.user'
@@ -23,41 +21,34 @@ services:
             - '@pim_user.repository.role'
             - '@pim_user.remover.role'
 
-    akeneo_connectivity.connection.service.user.regenerate_user_password:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword:
         arguments:
             - '@pim_user.manager'
             - '@database_connection'
 
-    akeneo_connectivity.connection.service.user.update_user_permissions:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions
+    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions:
         arguments:
             - '@pim_user.manager'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@pim_user.updater.user'
 
-    akeneo_connectivity.connection.service.connection_context:
-        class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
+    Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
 
-    akeneo_connectivity.connection.clock:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock: ~
 
-    akeneo_connectivity.connection.encrypter:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter:
         arguments:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
 
-    akeneo_connectivity.connection.dns_lookup:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup
+    Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup: ~
 
-    akeneo_connectivity.connection.ip_matcher:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher
+    Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher: ~
 
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~

@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebu
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -27,7 +28,7 @@ class GetAllEventSubscriptionDebugLogsQueryIntegration extends TestCase
 
         $this->getEventSubscriptionLogsQuery = $this->get(GetAllEventSubscriptionDebugLogsQuery::class);
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }

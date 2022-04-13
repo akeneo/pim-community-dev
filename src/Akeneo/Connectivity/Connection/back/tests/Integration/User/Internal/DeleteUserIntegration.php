@@ -36,12 +36,12 @@ class DeleteUserIntegration extends TestCase
 
     private function getCreateUserService(): CreateUser
     {
-        return $this->get('akeneo_connectivity.connection.service.user.create_user');
+        return $this->get(CreateUser::class);
     }
 
     private function getDeleteUserService(): DeleteUser
     {
-        return $this->get('akeneo_connectivity.connection.service.user.delete_user');
+        return $this->get(DeleteUser::class);
     }
 
     private function getDatabaseConnection(): Connection

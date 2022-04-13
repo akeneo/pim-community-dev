@@ -5,7 +5,7 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient'
-            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
 
     Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler:
@@ -20,13 +20,13 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.user.update_user_permissions'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient'
-            - '@akeneo_connectivity.connection.service.user.delete_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler:
         arguments:
@@ -36,4 +36,4 @@ services:
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.user.regenerate_user_password'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword'

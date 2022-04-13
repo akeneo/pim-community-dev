@@ -37,7 +37,7 @@ services:
     Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiDebugLogger:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
-            - '@akeneo_connectivity.connection.clock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
             - !tagged akeneo_connectivity.connection.webhook.event_normalizer
 
     Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger:
