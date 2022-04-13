@@ -9,7 +9,7 @@ export const useFetchExtensions = () => {
             method: 'GET',
             headers: [['X-Requested-With', 'XMLHttpRequest']],
         });
-        if (false === response.ok) {
+        if (false === response.ok || 204 === response.status) {
             return Promise.reject(`${response.status} ${response.statusText}`);
         }
 
