@@ -11,8 +11,14 @@ import {
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
-import {CleanHTMLTagsOperationBlock, OperationBlockProps, OperationPreviewData, OperationSampleData, CLEAN_HTML_TAGS_TYPE} from './Operation';
-import {usePreviewData} from "../../hooks/usePreviewData";
+import {
+  CleanHTMLTagsOperationBlock,
+  OperationBlockProps,
+  OperationPreviewData,
+  OperationSampleData,
+  CLEAN_HTML_TAGS_TYPE,
+} from './Operation';
+import {usePreviewData} from '../../hooks/usePreviewData';
 
 const OperationsContainer = styled.div`
   display: flex;
@@ -43,7 +49,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
   const translate = useTranslate();
   const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-  const [previewDataIsLoading, previewData, previewDataValidationErrors] = usePreviewData(dataMapping);
+  const [previewDataIsLoading, previewData, previewDataHasError] = usePreviewData(dataMapping);
 
   const handleRefreshSampleData = async (indexToRefresh: number) => {
     setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
@@ -88,7 +94,11 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             return <OperationBlock key={operation.type} operation={operation} onRemove={handleOperationRemove} />;
           })}
           {dataMapping.operations.length > 0 && (
-            <OperationPreviewData isLoading={previewDataIsLoading} previewData={previewData} validationErrors={previewDataValidationErrors} />
+            <OperationPreviewData
+              isLoading={previewDataIsLoading}
+              previewData={previewData}
+              hasErrors={previewDataHasError}
+            />
           )}
           <Dropdown>
             <BlockButton onClick={openDropdown} icon={<ArrowDownIcon />}>

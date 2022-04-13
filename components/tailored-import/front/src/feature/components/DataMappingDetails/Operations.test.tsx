@@ -13,6 +13,10 @@ const dataMapping: DataMapping = {
   sample_data: ['product_1', 'product_2', 'product_3'],
 };
 
+jest.mock('../../hooks/usePreviewData', () => ({
+  usePreviewData: () => [false, ['product_1', 'product_2', 'product_3'], false],
+}));
+
 test('it displays preview if sample data is provided', async () => {
   await renderWithProviders(
     <Operations
@@ -47,26 +51,7 @@ test('it does not display preview if no source is set', async () => {
   expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.title')).not.toBeInTheDocument();
 });
 
-test('it calls refresh sample data handler when user refreshes a non empty data', async () => {
-  const handleRefreshSampleData = jest.fn();
-
-  await renderWithProviders(
-    <Operations
-      dataMapping={dataMapping}
-      compatibleOperations={[]}
-      onOperationsChange={jest.fn()}
-      onRefreshSampleData={handleRefreshSampleData}
-    />
-  );
-
-  await act(async () => {
-    userEvent.click(screen.getAllByTitle('akeneo.tailored_import.data_mapping.preview.refresh')[0]);
-  });
-
-  expect(handleRefreshSampleData).toBeCalledWith(0);
-});
-
-test('it calls refresh sample data handler when user refreshes an empty data', async () => {
+test('it calls refresh sample data handler when user refreshes a data', async () => {
   const handleRefreshSampleData = jest.fn();
 
   await renderWithProviders(

@@ -1,4 +1,4 @@
-import {Translate} from "@akeneo-pim-community/shared";
+import {Translate} from '@akeneo-pim-community/shared';
 
 const SAMPLE_DATA_MAX_LENGTH = 100;
 const ELLIPSIS_CHARACTER = '…';
@@ -8,11 +8,14 @@ type PreviewData = string | null;
 
 const formatSampleData = (translate: Translate, sampleData: SampleData): string => {
   if (sampleData === null) {
-    return translate('akeneo.tailored_import.data_mapping.preview.placeholder')
+    return translate('akeneo.tailored_import.data_mapping.preview.placeholder');
   }
 
-  return sampleData.substring(0, SAMPLE_DATA_MAX_LENGTH) + (sampleData.length > SAMPLE_DATA_MAX_LENGTH ? ELLIPSIS_CHARACTER : '');
-}
+  return (
+    sampleData.substring(0, SAMPLE_DATA_MAX_LENGTH) +
+    (sampleData.length > SAMPLE_DATA_MAX_LENGTH ? ELLIPSIS_CHARACTER : '')
+  );
+};
 
 const replaceSampleData = (sampleData: SampleData[], index: number, value: SampleData) => [
   ...sampleData.slice(0, index),

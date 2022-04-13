@@ -1,13 +1,15 @@
-import React from "react";
-import styled, {css} from "styled-components";
-import {AkeneoThemedProps, getColor, IconButton, placeholderStyle, Preview, RefreshIcon} from "akeneo-design-system";
-import {useTranslate} from "@akeneo-pim-community/shared";
-import {formatSampleData, SampleData} from "../../../models";
+import React from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor, IconButton, placeholderStyle, Preview, RefreshIcon} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
+import {formatSampleData, SampleData} from '../../../models';
 
-const PreviewContent = styled.div<{isLoading: boolean, isEmpty: boolean} & AkeneoThemedProps>`
-  ${({isEmpty}) => isEmpty && css`
-    color: ${getColor('grey', 100)};
-  `}
+const PreviewContent = styled.div<{isLoading: boolean; isEmpty: boolean} & AkeneoThemedProps>`
+  ${({isEmpty}) =>
+    isEmpty &&
+    css`
+      color: ${getColor('grey', 100)};
+    `}
 
   ${({isLoading}) => isLoading && placeholderStyle}
 `;
@@ -42,6 +44,6 @@ const OperationSampleData = ({loadingSampleData, sampleData, onRefreshSampleData
       ))}
     </Preview>
   );
-}
+};
 
 export {OperationSampleData};

@@ -37,6 +37,7 @@ akeneo.tailored_import:
       title: Preview
       placeholder: N/A
       refresh: Refresh
+      unable_to_generate_preview_data: Unable to generate preview
     operations:
       title: Operations
       identifier: No operation available for identifier attribute

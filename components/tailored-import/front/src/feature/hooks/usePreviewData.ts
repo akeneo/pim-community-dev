@@ -1,17 +1,15 @@
-import {useEffect, useState} from "react";
-import {useRoute, ValidationError} from "@akeneo-pim-community/shared";
-import {DataMapping, PreviewData} from "../models";
-import {formatParameters} from "@akeneo-pim-community/shared/lib/models/validation-error";
+import {useEffect, useState} from 'react';
+import {useRoute} from '@akeneo-pim-community/shared';
+import {DataMapping, PreviewData} from '../models';
 
 const usePreviewData = (dataMapping: DataMapping) => {
   const route = useRoute('pimee_tailored_import_generate_preview_data_action');
   const [isLoading, setIsLoading] = useState(false);
   const [previewData, setPreviewData] = useState<PreviewData[]>([]);
-  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchPreviewData = async () => {
-      setIsLoading(true);
       const response = await fetch(route, {
         method: 'POST',
         headers: {
@@ -20,28 +18,29 @@ const usePreviewData = (dataMapping: DataMapping) => {
         },
         body: JSON.stringify({
           sample_data: dataMapping.sample_data,
-          operations: dataMapping.operations
-        })
+          operations: dataMapping.operations,
+        }),
       });
 
       const data = await response.json();
 
       setIsLoading(false);
       setPreviewData(response.ok ? data.preview_data : []);
-      setValidationErrors(response.ok ? [] : formatParameters(data));
+      setHasError(!response.ok);
     };
 
-    setValidationErrors([]);
+    setHasError(false);
     if (dataMapping.sample_data.length === 0 || dataMapping.operations.length === 0) {
       setPreviewData([]);
 
       return;
     }
 
+    setIsLoading(true);
     void fetchPreviewData();
   }, [route, dataMapping.sample_data, dataMapping.operations]);
 
-  return [isLoading, previewData, validationErrors] as const;
-}
+  return [isLoading, previewData, hasError] as const;
+};
 
-export { usePreviewData };
+export {usePreviewData};
