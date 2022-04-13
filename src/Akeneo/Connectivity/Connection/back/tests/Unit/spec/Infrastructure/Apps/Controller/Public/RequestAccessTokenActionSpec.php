@@ -50,8 +50,7 @@ class RequestAccessTokenActionSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         ConstraintViolationInterface $constraintViolation,
-    ): void
-    {
+    ): void {
         $featureFlag->isEnabled()->willReturn(true);
 
         $request->request = new InputBag([
@@ -78,8 +77,7 @@ class RequestAccessTokenActionSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ConstraintViolationListInterface $constraintViolationList,
         ConstraintViolation $constraintViolation,
-    ): void
-    {
+    ): void {
         $featureFlag->isEnabled()->willReturn(true);
 
         $request->request = new InputBag([
