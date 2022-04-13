@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
+namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use PhpSpec\ObjectBehavior;
