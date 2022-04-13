@@ -4,4 +4,5 @@ parameters:
     - %rootDir%/../../../src/Akeneo/Channel
   excludes_analyse:
     - %rootDir%/../../../src/Akeneo/Channel/back/tests/Specification
+    - %rootDir%/../../../src/Akeneo/Channel/back/tests/Integration
     - %rootDir%/../../../src/Akeneo/Channel/back/Infrastructure
