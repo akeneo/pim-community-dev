@@ -37,3 +37,8 @@ services:
         class: Akeneo\Channel\Infrastructure\Query\DummyIsLocaleEditable
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Sql\SqlGetChannels:
+        class: Akeneo\Channel\Infrastructure\Query\Sql\SqlGetChannels
+        arguments:
+            - '@database_connection'
