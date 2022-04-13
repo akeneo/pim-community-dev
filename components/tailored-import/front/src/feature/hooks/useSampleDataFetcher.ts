@@ -1,24 +1,24 @@
 import {useRouter} from '@akeneo-pim-community/shared';
 
 const useSampleDataFetcher = (): ((
-  file_key: string,
-  column_index: number,
-  sheet_name: string | null,
-  product_line: number
+  fileKey: string,
+  columnIndices: number[],
+  sheetName: string | null,
+  productLine: number
 ) => Promise<string[]>) => {
   const router = useRouter();
 
   return (
-    file_key: string,
-    column_index: number,
-    sheet_name: string | null,
-    product_line: number
+    fileKey: string,
+    columnIndices: number[],
+    sheetName: string | null,
+    productLine: number
   ): Promise<Array<string>> => {
     const route = router.generate('pimee_tailored_import_get_sample_data_action', {
-      file_key,
-      column_index,
-      sheet_name,
-      product_line,
+      file_key: fileKey,
+      column_indices: columnIndices,
+      sheet_name: sheetName,
+      product_line: productLine,
     });
 
     return new Promise<Array<string>>(async (resolve, reject) => {

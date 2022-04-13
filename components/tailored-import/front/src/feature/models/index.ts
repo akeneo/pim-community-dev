@@ -1,5 +1,6 @@
 export * from './Attribute';
 export * from './AvailableTarget';
+export * from './Column';
 export * from './Configuration';
 export * from './Configurator';
 export * from './DataMapping';

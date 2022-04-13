@@ -26,13 +26,13 @@ class SampleDataQueryValidator extends ConstraintValidator
         }
 
         $requiredParams = [
-          "file_key",
-          "column_index",
-          "sheet_name",
-          "product_line"
+            'file_key',
+            'column_indices',
+            'sheet_name',
+            'product_line'
         ];
 
-        $missingParams = array_filter($requiredParams, fn ($param) => null === $value->get($param));
+        $missingParams = array_filter($requiredParams, static fn ($param) => null === $value->get($param));
 
         if (count($missingParams) > 0) {
             $this->context->buildViolation(

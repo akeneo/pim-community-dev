@@ -22,13 +22,13 @@ final class GetSampleDataHandler
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getSampleDataQuery->fileKey);
 
-        $extractedColumn = $fileReader->readColumnValues(
+        $extractedColumns = $fileReader->readColumnValues(
             $getSampleDataQuery->sheetName,
             $getSampleDataQuery->productLine,
-            $getSampleDataQuery->columnIndex,
+            $getSampleDataQuery->columnIndices,
         );
 
-        $sampleData = SelectSampleData::fromExtractedColumn($extractedColumn);
+        $sampleData = SelectSampleData::fromExtractedColumns($extractedColumns);
 
         return GetSampleDataResult::create($sampleData);
     }

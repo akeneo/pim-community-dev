@@ -12,15 +12,21 @@ final class FormatSampleData
 {
     public const SAMPLE_DATA_MAX_LENGTH = 101;
 
-    public static function format(array $values): array
+    public static function format(array $valuesIndexedByColumnIndex): array
     {
-        return \array_map(
-            static fn (?string $value): ?string => null === $value ? null : \mb_substr(
-                $value,
-                0,
-                self::SAMPLE_DATA_MAX_LENGTH,
-            ),
-            $values,
-        );
+        $formattedValues = [];
+
+        foreach ($valuesIndexedByColumnIndex as $values) {
+            $formattedValues = \array_merge($formattedValues, \array_map(
+                static fn (?string $value): ?string => null === $value ? null : \mb_substr(
+                    $value,
+                    0,
+                    self::SAMPLE_DATA_MAX_LENGTH,
+                ),
+                $values,
+            ));
+        }
+
+        return $formattedValues;
     }
 }

@@ -35,7 +35,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
         $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
-    public function test_it_return_a_refreshed_sample_data(): void
+    public function test_it_returns_a_refreshed_sample_data(): void
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../../Common/simple_import.xlsx');
         $this->webClientHelper->callApiRoute(
@@ -44,12 +44,12 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
             [],
             'GET',
             [
-                'current_sample' => ['Produit 1', 'Produit 4', 'Produit 3'],
+                'current_sample' => ['Produit 1', 'Produit 2', 'Produit 3', 'ref1', 'ref2'],
                 'file_key' => $fileKey,
-                'column_index' => 1,
+                'column_indices' => [0, 1],
                 'sheet_name' => 'Products',
                 'product_line' => 2,
-            ]
+            ],
         );
 
         $response = $this->client->getResponse();
@@ -57,7 +57,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
 
         $response = \json_decode($response->getContent(), true);
 
-        $this->assertSame(['refreshed_data' => 'Produit 2'], $response);
+        $this->assertSame(['refreshed_data' => 'ref3'], $response);
     }
 
     private function storeFile(string $filePath): string

@@ -14,10 +14,13 @@ use PHPUnit\Framework\TestCase;
  */
 class SelectSampleDataTest extends TestCase
 {
-    public function test_it_selects_3_different_values_from_a_column(): void
+    public function test_it_selects_3_different_values_from_provided_columns(): void
     {
-        $column = ['value1', 'value1', 'value2', 'value2', 'value3', 'value3'];
-        $result = SelectSampleData::fromExtractedColumn($column);
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value1', 'value2', 'value2', 'value3', 'value3'],
+            3 => ['another1', 'another1', 'another2', 'another2', 'another3', 'another3'],
+        ];
+        $result = SelectSampleData::fromExtractedColumns($valuesIndexedByColumn);
 
         $this->assertCount(SelectSampleData::NUMBER_OF_VALUES, $result);
         $this->assertSameSize($result, array_unique($result));
@@ -25,16 +28,22 @@ class SelectSampleDataTest extends TestCase
 
     public function test_it_completes_selection_with_null(): void
     {
-        $column = ['value1', 'value2'];
-        $result = SelectSampleData::fromExtractedColumn($column);
+        $valuesIndexedByColumn = [
+            1 => ['value1'],
+            3 => ['value2'],
+        ];
+        $result = SelectSampleData::fromExtractedColumns($valuesIndexedByColumn);
 
         $this->assertEqualsCanonicalizing(['value1', 'value2', null], $result);
     }
 
     public function test_it_selects_number_of_asked_values(): void
     {
-        $column = ['value1', 'value1', 'value2'];
-        $result = SelectSampleData::fromExtractedColumn($column, 2);
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value1'],
+            3 => ['value2'],
+        ];
+        $result = SelectSampleData::fromExtractedColumns($valuesIndexedByColumn, 2);
 
         $this->assertCount(2, $result);
         $this->assertEqualsCanonicalizing(['value1', 'value2'], $result);
@@ -43,12 +52,14 @@ class SelectSampleDataTest extends TestCase
     public function test_it_truncates_every_long_values(): void
     {
         $column = [
-            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH),
-            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1),
-            \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 10),
-            'value2',
+            1 => [
+                \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH),
+                \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1),
+                \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 10),
+                'value2',
+            ],
         ];
-        $result = SelectSampleData::fromExtractedColumn($column);
+        $result = SelectSampleData::fromExtractedColumns($column);
 
         $this->assertEqualsCanonicalizing([
             \str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH),
