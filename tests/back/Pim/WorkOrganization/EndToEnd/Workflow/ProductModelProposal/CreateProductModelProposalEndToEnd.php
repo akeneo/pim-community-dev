@@ -127,15 +127,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/product-models/jack/proposal', [], [], [], '{}');
         $response = $client->getResponse();
 
-        $logger = self::getContainer()->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "Mary" with roles ROLE_USER is not granted "pim_api_product_edit"'),
-            'Expected warning not found in the logs.'
-        );
-
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }
 
     /**
