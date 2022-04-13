@@ -7,7 +7,13 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-$finder->notPath('tests');
+$finder->notPath([
+    'tests/CatalogBuilder',
+    'tests/EndToEnd',
+    'tests/Integration',
+    'tests/PhpStan',
+]);
+
 $builder = new RuleBuilder();
 
 $rules = [
@@ -33,6 +39,14 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated',
 
             'Webmozart\Assert\Assert',
+
+            // Unit tests
+            'Akeneo\Platform\Component\EventQueue\Event',
+            'PhpSpec\ObjectBehavior',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Prophecy\Argument',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
+            'Symfony\Component\Validator\ConstraintViolation',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain'),
 
@@ -44,6 +58,10 @@ $rules = [
             // Exceptions
             'Symfony\Component\Validator\ConstraintViolationInterface',
             'Symfony\Component\Validator\ConstraintViolationListInterface',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Symfony\Component\Validator\ConstraintViolation',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Apps'),
 
@@ -54,6 +72,9 @@ $rules = [
             // Exceptions
             'Akeneo\Connectivity\Connection\Domain\ValueObject',
             'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Audit'),
 
@@ -64,6 +85,9 @@ $rules = [
             // Exceptions
             'Akeneo\Connectivity\Connection\Domain\ValueObject',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\ErrorManagement'),
 
@@ -75,12 +99,20 @@ $rules = [
             'Symfony\Component\Validator\ConstraintViolationInterface',
             'Symfony\Component\Validator\ConstraintViolationListInterface',
             'Symfony\Component\Validator\Context\ExecutionContextInterface',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Prophecy\Argument',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Settings'),
 
     $builder->only(
         [
             'Akeneo\Connectivity\Connection\Domain\ValueObject',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\ValueObject'),
 
@@ -104,12 +136,20 @@ $rules = [
 
             'Webmozart\Assert\Assert',
 
+            // Unit tests
+            'Akeneo\Platform\Component\EventQueue\Event',
+            'PhpSpec\ObjectBehavior',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
+
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\Webhook'),
 
     $builder->only(
         [
             'Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
         ]
     )->in('Akeneo\Connectivity\Connection\Domain\WrongCredentialsConnection'),
 
@@ -154,6 +194,24 @@ $rules = [
 
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
+
+            // Unit tests
+            'Akeneo\Platform\Component\EventQueue\Author',
+            'Akeneo\Platform\Component\EventQueue\Event',
+            'Akeneo\UserManagement\Component\Model\User',
+            'PhpSpec\ObjectBehavior',
+            'PHPUnit\Framework\Assert',
+            'Prophecy\Argument',
+            'Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker',
+            'GuzzleHttp\Psr7\Response',
+            'Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock',
+            'Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+            'Akeneo\Tool\Bundle\ApiBundle\Entity\Client',
+            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -186,6 +244,18 @@ $rules = [
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
 
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User',
+            'Akeneo\Tool\Bundle\ApiBundle\Entity\Client',
+            'Akeneo\UserManagement\Component\Model\GroupInterface',
+            'Prophecy\Argument',
+            'Symfony\Component\Validator\ConstraintViolation',
+            'Symfony\Component\Validator\ConstraintViolationList',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ClientId',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
@@ -199,6 +269,10 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval',
 
             'Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\ValueObject\ErrorType',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Akeneo\Connectivity\Connection\Domain\ErrorManagement\ErrorTypes',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Audit'),
 
@@ -218,6 +292,17 @@ $rules = [
 
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection',
+            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
+            'PHPUnit\Framework\Assert',
+            'Prophecy\Argument',
+            'Symfony\Component\Validator\ConstraintViolationList',
+
         ]
     )->in('Akeneo\Connectivity\Connection\Application\ErrorManagement'),
 
@@ -231,6 +316,9 @@ $rules = [
 
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
             'Akeneo\Platform\VersionProviderInterface',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
 
@@ -244,12 +332,17 @@ $rules = [
             'Symfony\Component\Validator\Constraint',
             'Symfony\Component\Validator\ConstraintValidator',
             'Symfony\Component\Validator\Exception\UnexpectedTypeException',
+
+            // Unit tests
+            'PhpSpec\ObjectBehavior',
+            'Prophecy\Argument',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Settings'),
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain\User',
             'Akeneo\Connectivity\Connection\Application\User',
 
             // Exceptions
@@ -289,6 +382,24 @@ $rules = [
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
+
+            // Unit tests
+            'Akeneo\Platform\Component\EventQueue\Author',
+            'Akeneo\Platform\Component\EventQueue\Event',
+            'Akeneo\UserManagement\Component\Model\User',
+            'PhpSpec\ObjectBehavior',
+            'PHPUnit\Framework\Assert',
+            'Prophecy\Argument',
+            'Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\WebhookReachabilityChecker',
+            'Akeneo\Connectivity\Connection\Domain\ValueObject\Url',
+            'GuzzleHttp\Psr7\Response',
+            'Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock',
+            'Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\EventSubscriptionLog',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
+            'Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection',
+            'Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUnique'
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 
