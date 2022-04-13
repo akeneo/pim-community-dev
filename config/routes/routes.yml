@@ -88,6 +88,8 @@ hslavich_saml_sp:
 # PIM
 pimee_teamwork_assistant:
     resource: "@AkeneoPimTeamworkAssistantBundle/Resources/config/routing/routing.yml"
+    defaults:
+        _feature: teamwork_assistant
 
 pimee_proposal_and_draft:
     resource: "@AkeneoPimWorkflowBundle/Resources/config/routing_proposal_and_draft.yml"

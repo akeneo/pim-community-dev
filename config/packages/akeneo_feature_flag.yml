@@ -1,6 +1,5 @@
 akeneo_feature_flag:
     feature_flags:
-        - { feature: 'quantified_associations', service: 'pim_structure.feature.quantified_association' }
         - { feature: 'data_quality_insights', service: 'akeneo.pim.automation.data_quality_insights.feature' }
         - { feature: 'free_trial', service: 'akeneo.free_trial.feature' }
         - { feature: 'marketplace_activate', service: 'akeneo_connectivity.connection.marketplace_activate.feature' }
@@ -17,3 +16,4 @@ akeneo_feature_flag:
         - { feature: 'proposal', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'published_product', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'tailored_import', service: 'akeneo.tailored_import.feature' }
+        - { feature: 'teamwork_assistant', service: 'akeneo.feature_flag.service.only_serenity_feature' }

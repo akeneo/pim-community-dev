@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Remove project
   In order to keep a clean teamwork assistant
   As a project creator

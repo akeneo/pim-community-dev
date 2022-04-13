@@ -1,4 +1,4 @@
-@javascript
+ @javascript @teamwork-assistant-feature-enabled
 Feature: Catalog updates - Remove a product used by a project
   In order manage my product catalog
   As a user

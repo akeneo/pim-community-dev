@@ -1,20 +1,43 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
-import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
+import {PageContent, PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
 import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
 import {ContributorList} from './components/SupplierEdit/ContributorList';
+import {ContributorEmail} from './models';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
-    const {supplier} = useSupplier(supplierIdentifier);
+    const [supplier, handleSupplierChanges, supplierHasChanges, saveSupplier] = useSupplier(supplierIdentifier);
     const history = useHistory();
 
-    if (!supplier) {
+    const handleSupplierLabelChange = useCallback(
+        (newLabel: string) => {
+            handleSupplierChanges(supplier => {
+                if (supplier === null) return null;
+
+                return {...supplier, label: newLabel};
+            });
+        },
+        [handleSupplierChanges]
+    );
+
+    const handleSupplierContributorsChange = useCallback(
+        (newContributors: ContributorEmail[]) => {
+            handleSupplierChanges(supplier => {
+                if (supplier === null) return null;
+
+                return {...supplier, contributors: newContributors};
+            });
+        },
+        [handleSupplierChanges]
+    );
+
+    if (supplier === null) {
         return null;
     }
 
@@ -37,11 +60,12 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
-                    <Button level={'primary'} onClick={() => {}}>
+                    <Button level={'primary'} onClick={saveSupplier}>
                         {translate('pim_common.save')}
                     </Button>
                 </PageHeader.Actions>
                 <PageHeader.Title>{supplier.label}</PageHeader.Title>
+                <PageHeader.State>{supplierHasChanges && <UnsavedChanges />}</PageHeader.State>
             </PageHeader>
             <StyledPageContent>
                 <TabBar moreButtonTitle="More">
@@ -55,8 +79,15 @@ const SupplierEdit = () => {
                         {translate('onboarder.supplier.supplier_edit.tabs.product_files')}
                     </TabBar.Tab>
                 </TabBar>
-                {isCurrent('configuration') && <Configuration supplier={supplier} />}
-                {isCurrent('contributors') && <ContributorList contributors={supplier.contributors} />}
+                {isCurrent('configuration') && (
+                    <Configuration supplier={supplier} setLabel={handleSupplierLabelChange} />
+                )}
+                {isCurrent('contributors') && (
+                    <ContributorList
+                        contributors={supplier.contributors}
+                        setContributors={handleSupplierContributorsChange}
+                    />
+                )}
             </StyledPageContent>
         </Container>
     );

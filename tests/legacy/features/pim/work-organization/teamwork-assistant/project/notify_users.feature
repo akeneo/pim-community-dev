@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Notify users after a project creation
   In order to start an enrichment project
   As a project creator

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button, Field, Modal, NoResultsIllustration, TextInput, useBooleanState} from 'akeneo-design-system';
 import {NotificationLevel, useNotify, useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {LABEL_AND_CODE_MAX_LENGTH} from '../models';
 
 type CreateSupplierProps = {
     onSupplierCreated: () => void;
@@ -11,8 +12,6 @@ type CreateSupplierProps = {
 const StyledField = styled(Field)`
     margin-bottom: 20px;
 `;
-
-const LABEL_AND_CODE_MAX_LENGTH = 200;
 
 const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierProps) => {
     const [isOpen, openModal, closeModal] = useBooleanState(false);

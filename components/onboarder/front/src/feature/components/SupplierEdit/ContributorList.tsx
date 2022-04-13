@@ -1,41 +1,71 @@
 import React, {useState} from 'react';
-import {useTranslate, useDebounceCallback} from '@akeneo-pim-community/shared';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
-import {DeleteIcon, Helper, Search, Table} from 'akeneo-design-system';
-import {Contributors} from '../../models';
+import {DeleteIcon, Field, Helper, Search, Table, TagInput, Button} from 'akeneo-design-system';
+import {ContributorEmail, isValidEmail} from '../../models';
 import {useFilteredContributors} from '../../hooks';
 import {EmptyContributorList} from '../EmptyContributorList';
 
 type Props = {
-    contributors: Contributors;
+    contributors: ContributorEmail[];
+    setContributors: (value: ContributorEmail[]) => void;
 };
 
-const ContributorList = ({contributors}: Props) => {
+const ContributorList = ({contributors, setContributors}: Props) => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
-    const {filteredContributors, search} = useFilteredContributors(contributors);
+    const [newContributors, setNewContributors] = useState<string[]>([]);
+    const filteredContributors = useFilteredContributors(contributors, searchValue);
 
-    const debouncedSearch = useDebounceCallback(search, 300);
+    const onChangeNewContributors = (newContributors: string[]) => {
+        setNewContributors(newContributors);
+    };
 
-    const onSearch = (searchValue: string) => {
-        setSearchValue(searchValue);
-        debouncedSearch(searchValue);
+    const handleNewContributorsAdd = () => {
+        setContributors([
+            ...contributors,
+            ...newContributors.filter(contributorEmail => isValidEmail(contributorEmail)),
+        ]);
+        setNewContributors([]);
+    };
+
+    const removeContributor = (emailToRemove: ContributorEmail) => {
+        setContributors(contributors.filter(email => email !== emailToRemove));
     };
 
     return (
         <TabContainer>
             <Helper level="info">{translate('onboarder.supplier.supplier_edit.contributors_form.info')}</Helper>
 
-            {0 === Object.keys(filteredContributors).length && '' === searchValue && <EmptyContributorList />}
-            {(0 < Object.keys(filteredContributors).length || '' !== searchValue) && (
+            <Field label={translate('onboarder.supplier.supplier_edit.contributors_form.add_contributors')}>
+                <FieldContent>
+                    <TagInputContainer>
+                        <TagInput onChange={onChangeNewContributors} value={newContributors} />
+                    </TagInputContainer>
+                    <Button level="tertiary" onClick={handleNewContributorsAdd}>
+                        {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
+                    </Button>
+                </FieldContent>
+            </Field>
+
+            {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
+            {(0 < filteredContributors.length || '' !== searchValue) && (
                 <>
                     <Search
-                        onSearchChange={onSearch}
+                        onSearchChange={setSearchValue}
                         searchValue={searchValue}
                         placeholder={translate(
                             'onboarder.supplier.supplier_edit.contributors_form.search_by_email_address'
                         )}
-                    />
+                    >
+                        <Search.ResultCount>
+                            {translate(
+                                'onboarder.supplier.supplier_edit.contributors_form.result_counter',
+                                {count: filteredContributors.length},
+                                filteredContributors.length
+                            )}
+                        </Search.ResultCount>
+                    </Search>
 
                     <Table>
                         <Table.Header>
@@ -45,11 +75,11 @@ const ContributorList = ({contributors}: Props) => {
                             <Table.HeaderCell />
                         </Table.Header>
                         <Table.Body>
-                            {Object.entries(filteredContributors).map(([id, email]) => (
-                                <Table.Row key={`contributor-${id}`} data-testid={email}>
+                            {filteredContributors.map(email => (
+                                <Table.Row key={email} data-testid={email}>
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
-                                        <DeleteIcon />
+                                        <DeleteIcon onClick={() => removeContributor(email)} />
                                     </DeleteCell>
                                 </Table.Row>
                             ))}
@@ -63,12 +93,23 @@ const ContributorList = ({contributors}: Props) => {
 
 const TabContainer = styled.div`
     & > * {
-        margin: 0 10px 20px 0;
+        margin: 0 0 20px 0;
+        max-width: none;
     }
 `;
 
 const DeleteCell = styled(Table.ActionCell)`
     width: 50px;
+`;
+
+const FieldContent = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const TagInputContainer = styled.div`
+    margin-right: 10px;
+    width: 460px;
 `;
 
 export {ContributorList};
