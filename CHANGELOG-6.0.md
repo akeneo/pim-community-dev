@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10332: [Backport PIM-10331] Fix error when using an association with quantities having an numeric code
+
 # 6.0.23 (2022-04-11)
 
 # 6.0.22 (2022-04-08)
