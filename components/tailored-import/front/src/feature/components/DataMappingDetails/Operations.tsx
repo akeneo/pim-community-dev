@@ -18,7 +18,7 @@ import {
   OperationSampleData,
   CLEAN_HTML_TAGS_TYPE,
 } from './Operation';
-import {usePreviewData} from '../../hooks/usePreviewData';
+import {usePreviewData} from '../../hooks';
 
 const OperationsContainer = styled.div`
   display: flex;
