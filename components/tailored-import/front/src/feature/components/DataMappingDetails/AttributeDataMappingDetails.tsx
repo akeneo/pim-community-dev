@@ -10,7 +10,13 @@ import {
   Operation,
 } from '../../models';
 import {useAttribute} from '../../hooks';
-import {IdentifierConfigurator, MeasurementConfigurator, NumberConfigurator, TextConfigurator} from './Attribute';
+import {
+  IdentifierConfigurator,
+  MeasurementConfigurator,
+  NumberConfigurator,
+  SimpleSelectConfigurator,
+  TextConfigurator,
+} from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
 
 const attributeDataMappingConfigurators: {
@@ -21,6 +27,7 @@ const attributeDataMappingConfigurators: {
   pim_catalog_number: NumberConfigurator,
   pim_catalog_text: TextConfigurator,
   pim_catalog_textarea: TextConfigurator,
+  pim_catalog_simpleselect: SimpleSelectConfigurator,
 };
 
 type AttributeDataMappingDetailsProps = {

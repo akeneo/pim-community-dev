@@ -3,9 +3,11 @@ import {
   getDefaultTextTarget,
   getDefaultNumberTarget,
   getDefaultMeasurementTarget,
+  getDefaultSimpleSelectTarget,
   NumberTarget,
   MeasurementTarget,
   TextTarget,
+  SimpleSelectTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, DataMapping} from './DataMapping';
@@ -13,7 +15,7 @@ import {AttributeDataMapping, DataMapping} from './DataMapping';
 type TargetAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
-type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget;
+type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget | SimpleSelectTarget;
 
 type PropertyTarget = {
   code: string;
@@ -38,6 +40,8 @@ const createAttributeTarget = (
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
       return getDefaultTextTarget(attribute, channel, locale);
+    case 'pim_catalog_simpleselect':
+      return getDefaultSimpleSelectTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }

@@ -5,3 +5,5 @@ export * from './Number/model';
 export * from './Number/NumberConfigurator';
 export * from './Text/model';
 export * from './Text/TextConfigurator';
+export * from './SimpleSelect/model';
+export * from './SimpleSelect/SimpleSelectConfigurator';
