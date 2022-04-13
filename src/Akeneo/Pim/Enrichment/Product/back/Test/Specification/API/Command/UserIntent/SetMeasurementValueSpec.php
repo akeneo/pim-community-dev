@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use PhpSpec\ObjectBehavior;
 
@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetMetricValueSpec extends ObjectBehavior
+class SetMeasurementValueSpec extends ObjectBehavior
 {
     function let()
     {
@@ -21,7 +21,7 @@ class SetMetricValueSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetMetricValue::class);
+        $this->shouldHaveType(SetMeasurementValue::class);
         $this->shouldImplement(ValueUserIntent::class);
     }
 
