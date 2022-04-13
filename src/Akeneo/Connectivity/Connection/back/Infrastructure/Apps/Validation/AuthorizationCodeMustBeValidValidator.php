@@ -38,7 +38,10 @@ class AuthorizationCodeMustBeValidValidator extends ConstraintValidator
         if (null === $authCode) {
             $this->context->buildViolation($constraint->message)->addViolation();
         } elseif ($authCode->hasExpired()) {
-            $this->context->buildViolation($constraint->codeExpiredMessage)->addViolation();
+            $this->context
+                ->buildViolation($constraint->message)
+                ->setCause($constraint->codeExpiredMessage)
+                ->addViolation();
         }
     }
 }
