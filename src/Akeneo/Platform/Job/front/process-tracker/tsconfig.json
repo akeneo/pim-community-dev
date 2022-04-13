@@ -27,7 +27,7 @@
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
     "removeComments": true,
-    "target": "es5",
+    "target": "es6",
     "baseUrl": "./src",
     "types": [
       "node",

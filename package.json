@@ -87,6 +87,8 @@
     "cucumber-junit": "^1.7.1",
     "cypress": "^6.6.0",
     "deepmerge": "^4.2.2",
+    "esbuild": "^0.14.36",
+    "esbuild-loader": "^2.18.0",
     "eslint": "^6.5.1",
     "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-cypress": "^2.11.2",
