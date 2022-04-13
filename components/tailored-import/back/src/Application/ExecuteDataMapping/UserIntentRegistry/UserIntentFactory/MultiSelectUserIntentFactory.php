@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
+use _PHPStan_76800bfb5\Symfony\Component\Console\Exception\LogicException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
@@ -21,22 +23,30 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    /**
+     * @param AttributeTarget $target
+     */
+    public function create(TargetInterface $target, string $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"');
         }
 
-        if (!is_array($value)) {
-            throw new \InvalidArgumentException(sprintf('The value must be an array "%s" given', gettype($value)));
-        }
-
-        return new SetMultiSelectValue(
-            $target->getCode(),
-            $target->getChannel(),
-            $target->getLocale(),
-            $value,
-        );
+        return match ($target->getActionIfNotEmpty()) {
+            TargetInterface::ACTION_ADD => new AddMultiSelectValue(
+                $target->getCode(),
+                $target->getChannel(),
+                $target->getLocale(),
+                [$value],
+            ),
+            TargetInterface::ACTION_SET => new SetMultiSelectValue(
+                $target->getCode(),
+                $target->getChannel(),
+                $target->getLocale(),
+                [$value],
+            ),
+            default => throw new LogicException(),
+        };
     }
 
     public function supports(TargetInterface $target): bool

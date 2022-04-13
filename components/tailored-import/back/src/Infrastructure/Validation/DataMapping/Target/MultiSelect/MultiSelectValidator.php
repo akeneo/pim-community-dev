@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Sources;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\IsNull;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -37,8 +39,15 @@ final class MultiSelectValidator extends ConstraintValidator
             'fields' => [
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
-                    // TODO pluralize source_parameter everywhere in the codebase
-                    'source_parameter' => new IsNull(),
+                    'source_configuration' => new IsNull(),
+                    'action_if_not_empty' => new Choice([
+                        TargetInterface::ACTION_ADD,
+                        TargetInterface::ACTION_SET,
+                    ]),
+                    'action_if_empty' => new Choice([
+                        TargetInterface::IF_EMPTY_CLEAR,
+                        TargetInterface::IF_EMPTY_SKIP,
+                    ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),

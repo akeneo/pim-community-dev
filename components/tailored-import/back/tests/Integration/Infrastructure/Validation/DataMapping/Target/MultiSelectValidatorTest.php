@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Target;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SimpleSelect\SimpleSelect;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect\MultiSelect;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
@@ -25,7 +25,7 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
      */
     public function test_it_does_not_build_violations_when_data_mapping_is_valid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new SimpleSelect([
+        $violations = $this->getValidator()->validate($value, new MultiSelect([
             '7fa661ce-3a6c-4b95-8441-259911b70529',
             '71480f22-f811-4261-b0fe-d93ad11666a9',
         ], $this->getAttribute()));
@@ -41,7 +41,7 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new SimpleSelect([
+        $violations = $this->getValidator()->validate($value, new MultiSelect([
             '7fa661ce-3a6c-4b95-8441-259911b70529',
             '71480f22-f811-4261-b0fe-d93ad11666a9',
         ], $this->getAttribute()));
@@ -52,51 +52,68 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
     public function validDataMappings(): array
     {
         return [
-            'a valid simple select data mapping' => [
+            'a valid multi select data mapping' => [
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
                     'sample_data' => [],
                 ]
             ],
-            'a valid simple select data mapping with clear value' => [
+            'a valid multi select data mapping with clear value' => [
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
                     'sample_data' => [],
                 ]
             ],
-            'a valid simple select data mapping with sample data' => [
+            'a valid multi select data mapping with add action if not empty' => [
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
+                        'type' => 'attribute',
+                        'channel' => null,
+                        'locale' => null,
+                        'action_if_not_empty' => 'add',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => null
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
+                ]
+            ],
+            'a valid multi select data mapping with sample data' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null,
+                        'source_configuration' => null,
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
@@ -109,57 +126,38 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
     public function invalidDataMappings(): array
     {
         return [
-            'a simple select data mapping with an invalid uuid' => [
+            'a multi select data mapping with an invalid uuid' => [
                 'This is not a valid UUID.',
                 '[uuid]',
                 [
                     'uuid' => 'an_invalid_uuid',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a simple select data mapping does not handle add action if not empty' => [
-                'This value should be equal to "set".',
-                '[target][action_if_not_empty]',
-                [
-                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
-                    'target' => [
-                        'code' => 'a_simple_select',
-                        'type' => 'attribute',
-                        'channel' => null,
-                        'locale' => null,
-                        'action_if_not_empty' => 'add',
-                        'action_if_empty' => 'skip',
-                        'source_parameter' => null
-                    ],
-                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    'operations' => [],
-                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
-                ]
-            ],
-            'a simple select data mapping with an unsupported operation' => [
+            'a multi select data mapping with an unsupported operation' => [
                 'akeneo.tailored_import.validation.operations.incompatible_operation_type',
                 '[operations][0][type]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [
@@ -170,57 +168,57 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a simple select data mapping should have a source' => [
+            'a multi select data mapping should have a source' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     'sources' => [],
                     'operations' => [],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a simple select data mapping cannot have multiple sources' => [
+            'a multi select data mapping cannot have multiple sources' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
                     'operations' => [],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a simple select data mapping with an invalid sample data' => [
+            'a multi select data mapping with an invalid sample data' => [
                 'This value should be of type string.',
                 '[sample_data][0]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
                     'target' => [
-                        'code' => 'a_simple_select',
+                        'code' => 'a_multi_select',
                         'type' => 'attribute',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
-                        'source_parameter' => null
+                        'source_configuration' => null
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
@@ -233,15 +231,15 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
     private function getAttribute(): Attribute
     {
         return new Attribute(
-            'a_simple_select',
-            'pim_catalog_simpleselect',
+            'a_multi_select',
+            'pim_catalog_multiselect',
             [],
             false,
             false,
             null,
             null,
             false,
-            'option',
+            'options',
             [],
         );
     }

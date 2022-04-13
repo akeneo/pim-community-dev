@@ -26,7 +26,7 @@ parameters:
     akeneo.tailored_import.supported_collection_system_properties: []
 #        - 'categories'
 
-    akeneo.tailored_import.supported_collection_attribute_types: []
+    akeneo.tailored_import.supported_collection_attribute_types:
 #        - 'akeneo_reference_entity_collection'
 #        - 'pim_catalog_asset_collection'
         - 'pim_catalog_multiselect'

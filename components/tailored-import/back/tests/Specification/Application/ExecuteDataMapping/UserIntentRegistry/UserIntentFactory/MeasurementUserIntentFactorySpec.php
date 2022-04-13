@@ -38,16 +38,8 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
         $attributeTarget->getType()->willReturn('pim_catalog_text');
         $value = '';
 
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"'))->during('create', [$attributeTarget, $value]);
-    }
-
-    public function it_throws_an_exception_when_value_type_is_invalid(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_metric');
-        $value = [];
-
-        $this->shouldThrow(new \InvalidArgumentException('The value must be a string "array" given'))->during('create', [$attributeTarget, $value]);
+        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"'))
+            ->during('create', [$attributeTarget, $value]);
     }
 
     public function it_creates_a_set_measurement_value_object(

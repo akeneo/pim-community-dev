@@ -103,8 +103,8 @@ final class HandleMultiSelectTest extends AttributeTestCase
                     userId: 1,
                     productIdentifier: 'this-is-a-sku',
                     valueUserIntents: [
-                        new SetMultiSelectValue('tshirt_style', null, null, 'vneck,long_sleeve,sportwear'),
-                        new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', 'autumn_2021,summer_2022,winter_2022'),
+                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
+                        new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
                     ],
                 ),
             ],

@@ -40,6 +40,7 @@ final class IdentifierValidator extends ConstraintValidator
                 'uuid' => new DataMappingUuid(),
                 'target' => new AttributeTarget([
                     'source_configuration' => new IsNull(),
+                    'action_if_not_empty' => new EqualTo(TargetInterface::ACTION_SET),
                     'action_if_empty' => new EqualTo(TargetInterface::IF_EMPTY_SKIP),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),

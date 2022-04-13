@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
-class TextUserIntentFactorySpec extends ObjectBehavior
+class MultiSelectUserIntentFactorySpec extends ObjectBehavior
 {
     public function it_is_initializable()
     {
-        $this->shouldHaveType(TextUserIntentFactory::class);
+        $this->shouldHaveType(MultiSelectUserIntentFactory::class);
     }
 
     public function it_implements_user_intent_factory_interface()
@@ -37,32 +38,52 @@ class TextUserIntentFactorySpec extends ObjectBehavior
         $attributeTarget->getType()->willReturn('pim_catalog_textarea');
         $value = '';
 
-        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"'))
+        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"'))
             ->during('create', [$attributeTarget, $value]);
     }
 
-    public function it_create_a_set_text_value_object(
+    public function it_create_a_set_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getActionIfNotEmpty()->willReturn('set');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
 
-        $expected = new SetTextValue(
+        $expected = new SetMultiSelectValue(
             'an_attribute_code',
             null,
             null,
-            'a_value'
+            ['a_value']
         );
 
         $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
     }
 
-    public function it_supports_target_attribute_type_catalog_text(
+    public function it_create_an_add_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
+        $attributeTarget->getCode()->willReturn('an_attribute_code');
+        $attributeTarget->getActionIfNotEmpty()->willReturn('add');
+        $attributeTarget->getChannel()->willReturn(null);
+        $attributeTarget->getLocale()->willReturn(null);
+
+        $expected = new AddMultiSelectValue(
+            'an_attribute_code',
+            null,
+            null,
+            ['a_value']
+        );
+
+        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+    }
+
+    public function it_supports_target_attribute_type_catalog_multiselect(
+        AttributeTarget $attributeTarget
+    ) {
+        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
 
         $this->supports($attributeTarget)->shouldReturn(true);
     }
