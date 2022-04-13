@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -85,6 +86,8 @@ abstract class EnrichmentProductTestCase extends TestCase
                 ],
             ],
         ]);
+
+        $this->createQuantifiedAssociationType('bundle');
     }
 
     protected function createProduct(string $identifier, array $userIntents): void
@@ -228,6 +231,23 @@ abstract class EnrichmentProductTestCase extends TestCase
                 ?->toArray() ?? [];
     }
 
+    /**
+     * @return array<QuantifiedProduct>
+     */
+    protected function getAssociatedQuantifiedProducts(
+        ProductInterface $product,
+        string $associationType = 'bundle'
+    ): array {
+        $quantifiedAssociationCollection = $product->getQuantifiedAssociations();
+
+        $quantifiedProducts = [];
+        foreach ($quantifiedAssociationCollection->normalize()[$associationType]['products'] ?? [] as $product) {
+            $quantifiedProducts[] = new QuantifiedProduct($product['identifier'], $product['quantity']);
+        }
+
+        return $quantifiedProducts;
+    }
+
     protected function getAssociatedProductModelIdentifiers(ProductInterface $product, string $associationType = 'X_SELL'): array
     {
         return $product->getAssociatedProductModels($associationType)
@@ -243,6 +263,17 @@ abstract class EnrichmentProductTestCase extends TestCase
 
         $associationType = $factory->create();
         $updater->update($associationType, ['code' => $code, 'is_two_way' => true]);
+        $saver->save($associationType);
+    }
+
+    private function createQuantifiedAssociationType(string $code): void
+    {
+        $factory = $this->get('pim_catalog.factory.association_type');
+        $updater = $this->get('pim_catalog.updater.association_type');
+        $saver = $this->get('pim_catalog.saver.association_type');
+
+        $associationType = $factory->create();
+        $updater->update($associationType, ['code' => $code, 'is_quantified' => true]);
         $saver->save($associationType);
     }
 }
