@@ -150,7 +150,7 @@ class ActionExtension extends AbstractExtension
 
     /**
      * Creates and configure action object
-     * Service are marked as scope: prototype
+     * Services are marked as scope: prototype
      *
      * @param ActionConfiguration $config
      *
