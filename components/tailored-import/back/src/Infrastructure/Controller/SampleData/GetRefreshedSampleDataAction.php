@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataQuery;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

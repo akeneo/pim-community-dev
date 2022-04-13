@@ -40,11 +40,11 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQueryValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQueryValidator:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQueryValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQueryValidator:
     tags:
       - { name: validator.constraint_validator }
 
@@ -57,6 +57,12 @@ services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
     arguments:
       - [',', '.', '٫‎']
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\GeneratePreviewDataValidator:
+    arguments:
+      - '%akeneo.tailored_import.validation.operation_constraints%'
     tags:
       - { name: validator.constraint_validator }
 

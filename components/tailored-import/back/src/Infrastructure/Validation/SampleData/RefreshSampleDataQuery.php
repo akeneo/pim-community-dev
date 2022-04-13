@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData;
 
 use Symfony\Component\Validator\Constraint;
 
