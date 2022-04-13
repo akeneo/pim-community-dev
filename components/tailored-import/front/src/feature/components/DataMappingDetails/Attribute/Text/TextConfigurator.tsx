@@ -34,6 +34,7 @@ const TextConfigurator = ({
         <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
+        isMultiSource={false}
         sources={dataMapping.sources}
         columns={columns}
         validationErrors={filterErrors(validationErrors, '[sources]')}

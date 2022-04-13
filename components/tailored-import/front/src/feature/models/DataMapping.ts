@@ -25,7 +25,7 @@ type PropertyDataMapping = {
 };
 
 const MAX_DATA_MAPPING_COUNT = 500;
-const MAX_SOURCE_COUNT_BY_DATA_MAPPING = 1;
+const MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS = 4;
 
 type DataMappingType = 'attribute' | 'property';
 
@@ -79,7 +79,7 @@ const addSourceToDataMapping = (dataMapping: DataMapping, column: Column): DataM
 export type {AttributeDataMapping, DataMapping, DataMappingType, PropertyDataMapping};
 export {
   MAX_DATA_MAPPING_COUNT,
-  MAX_SOURCE_COUNT_BY_DATA_MAPPING,
+  MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS,
   createAttributeDataMapping,
   createPropertyDataMapping,
   updateDataMapping,
