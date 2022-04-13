@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Apps\Service\DeleteUserGroupInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;

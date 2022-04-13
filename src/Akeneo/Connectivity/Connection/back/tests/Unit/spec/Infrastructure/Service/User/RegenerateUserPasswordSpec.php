@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\RegenerateUserPasswordInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Connection as DbalConnection;

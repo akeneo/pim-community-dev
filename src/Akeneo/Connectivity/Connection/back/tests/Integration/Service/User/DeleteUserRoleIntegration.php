@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\User\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Service\User;
 
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

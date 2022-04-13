@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User as ReadUser;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;

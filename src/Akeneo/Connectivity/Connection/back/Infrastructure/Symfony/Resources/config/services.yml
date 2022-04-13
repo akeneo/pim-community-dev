@@ -1,32 +1,32 @@
 services:
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser:
         arguments:
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser:
         arguments:
             - '@pim_user.repository.user'
             - '@pim_user.remover.user'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserGroup:
         arguments:
             - '@pim_user.repository.group'
             - '@pim_user.remover.user_group'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole:
         arguments:
             - '@pim_user.repository.role'
             - '@pim_user.remover.role'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword:
         arguments:
             - '@pim_user.manager'
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions:
         arguments:
             - '@pim_user.manager'
             - '@pim_user.repository.role'

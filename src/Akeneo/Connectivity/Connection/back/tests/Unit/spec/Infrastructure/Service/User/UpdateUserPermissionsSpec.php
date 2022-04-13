@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\UpdateUserPermissionsInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;

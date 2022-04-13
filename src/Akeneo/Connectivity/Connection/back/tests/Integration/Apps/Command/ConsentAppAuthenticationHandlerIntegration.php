@@ -19,7 +19,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnect
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use FOS\OAuthServerBundle\Model\ClientInterface;

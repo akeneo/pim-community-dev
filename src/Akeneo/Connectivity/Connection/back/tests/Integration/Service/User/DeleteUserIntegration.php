@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\User\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Service\User;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\User\Internal;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;

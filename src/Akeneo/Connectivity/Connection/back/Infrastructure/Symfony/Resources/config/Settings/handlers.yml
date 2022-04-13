@@ -5,7 +5,7 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
 
     Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler:
@@ -20,13 +20,13 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler:
         arguments:
@@ -36,4 +36,4 @@ services:
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword'

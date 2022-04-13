@@ -113,7 +113,7 @@ services:
             - '@fos_oauth_server.storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@pim_user.repository.user'

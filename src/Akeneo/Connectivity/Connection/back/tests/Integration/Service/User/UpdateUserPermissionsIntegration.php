@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\back\tests\Integration\User\Internal;
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Service\User;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
