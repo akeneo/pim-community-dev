@@ -25,7 +25,7 @@ akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
     methods: [GET]
 
 akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes:
-    path: '/connected-apps/{connectionCode}/authentication-scopes'
+    path: '/rest/apps/connected-apps/{connectionCode}/authentication-scopes'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAuthenticationScopesAction
     methods: [GET]
 
