@@ -8,13 +8,19 @@ namespace Akeneo\Channel\API\Query;
  */
 final class LabelCollection
 {
-    private array $translatedLabels;
-
-    private function __construct(array $translatedLabels)
-    {
-        $this->translatedLabels = $translatedLabels;
+    /**
+     * @param array<string, string> $translatedLabels
+     */
+    private function __construct(
+        private array $translatedLabels
+    ) {
     }
 
+    /**
+     * @param array<string, string> $translatedLabels
+     *
+     * @return LabelCollection
+     */
     public static function fromArray(array $translatedLabels): self
     {
         return new self($translatedLabels);

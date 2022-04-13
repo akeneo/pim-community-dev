@@ -8,5 +8,8 @@ namespace Akeneo\Channel\API\Query;
  */
 interface GetChannels
 {
+    /**
+     * @return Channel[]
+     */
     public function findAll(): array;
 }

@@ -8,6 +8,12 @@ namespace Akeneo\Channel\API\Query;
  */
 final class Channel
 {
+    /**
+     * @param string          $code
+     * @param array<string>   $localeCodes
+     * @param LabelCollection $labels
+     * @param array<string>   $activeCurrencies
+     */
     public function __construct(
         private string $code,
         private array $localeCodes,
@@ -21,6 +27,9 @@ final class Channel
         return $this->code;
     }
 
+    /**
+     * @return string[]
+     */
     public function getLocaleCodes(): array
     {
         return $this->localeCodes;
@@ -31,6 +40,9 @@ final class Channel
         return $this->labels;
     }
 
+    /**
+     * @return string[]
+     */
     public function getActiveCurrencies(): array
     {
         return $this->activeCurrencies;

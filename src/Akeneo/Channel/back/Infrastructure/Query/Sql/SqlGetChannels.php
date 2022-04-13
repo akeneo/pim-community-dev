@@ -14,14 +14,16 @@ use Doctrine\DBAL\Connection;
  */
 final class SqlGetChannels implements GetChannels
 {
-    private Connection $connection;
     private ?array $cache = null;
 
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    public function __construct(
+        private Connection $connection
+    ) {
     }
 
+    /**
+     * @inerhitDoc
+     */
     public function findAll(): array
     {
         if (null === $this->cache) {
