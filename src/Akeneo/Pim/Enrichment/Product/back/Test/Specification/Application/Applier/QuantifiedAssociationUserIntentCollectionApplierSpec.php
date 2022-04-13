@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
@@ -239,6 +240,35 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
                 new AssociateQuantifiedProductModels('bundle', [new QuantifiedEntity('foo', 8)]),
+            ]),
+            $product,
+            10
+        );
+    }
+
+    function it_dissociates_quantified_product_models(ObjectUpdaterInterface $productUpdater)
+    {
+        $product = new Product();
+        $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
+            'bundle' => [
+                'product_models' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]));
+
+        $productUpdater->update($product, ['quantified_associations' => [
+            'bundle' => [
+                'product_models' => [
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]])->shouldBeCalledOnce();
+
+        $this->apply(
+            new QuantifiedAssociationUserIntentCollection([
+                new DissociateQuantifiedProductModels('bundle', ['foo', 'baz']),
             ]),
             $product,
             10
