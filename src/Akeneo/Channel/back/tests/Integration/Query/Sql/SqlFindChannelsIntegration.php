@@ -3,20 +3,20 @@
 namespace Akeneo\Test\Channel\Integration\Query\Sql;
 
 use Akeneo\Channel\API\Query\Channel;
-use Akeneo\Channel\API\Query\GetChannels;
+use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-final class SqlGetChannelsIntegration extends TestCase
+final class SqlFindChannelsIntegration extends TestCase
 {
-    private GetChannels $sqlGetChannels;
+    private FindChannels $sqlGetChannels;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->sqlGetChannels = $this->get(
-            'Akeneo\Channel\Infrastructure\Query\Sql\SqlGetChannels'
+            'SqlFindChannels'
         );
     }
 

@@ -4,15 +4,16 @@
 namespace Akeneo\Channel\Infrastructure\Query\Sql;
 
 use Akeneo\Channel\API\Query\Channel;
-use Akeneo\Channel\API\Query\GetChannels;
+use Akeneo\Channel\API\Query\FindChannels;
 use Akeneo\Channel\API\Query\LabelCollection;
+use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Doctrine\DBAL\Connection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SqlGetChannels implements GetChannels
+final class SqlFindChannels implements FindChannels, CachedQueryInterface
 {
     private ?array $cache = null;
 
@@ -43,7 +44,7 @@ final class SqlGetChannels implements GetChannels
                 LEFT JOIN pim_catalog_channel_currency cc 
                     ON c.id = cc.channel_id
                 LEFT JOIN pim_catalog_currency cur 
-                    ON cc.currency_id = cur.id AND cur.is_activated = 1
+                    ON cc.currency_id = cur.id
                 GROUP BY c.code;
             SQL;
 
@@ -63,5 +64,10 @@ final class SqlGetChannels implements GetChannels
         }
 
         return $this->cache;
+    }
+
+    public function clearCache(): void
+    {
+        $this->cache = null;
     }
 }

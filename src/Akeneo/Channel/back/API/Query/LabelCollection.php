@@ -18,8 +18,6 @@ final class LabelCollection
 
     /**
      * @param array<string, string> $translatedLabels
-     *
-     * @return LabelCollection
      */
     public static function fromArray(array $translatedLabels): self
     {
