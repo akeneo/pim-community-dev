@@ -28,7 +28,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Apps/install.yml');
         $loader->load('Apps/normalizers.yml');
         $loader->load('Apps/oauth.yml');
-        $loader->load('Apps/queries.yml');
+        $loader->load('Apps/persistence.yml');
         $loader->load('Apps/services.yml');
         $loader->load('Apps/validators.yml');
 
@@ -37,32 +37,32 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Audit/event_subscribers.yml');
         $loader->load('Audit/handlers.yml');
         $loader->load('Audit/install.yml');
-        $loader->load('Audit/queries.yml');
+        $loader->load('Audit/persistence.yml');
 
         $loader->load('Connections/command.yml');
         $loader->load('Connections/controllers.yml');
         $loader->load('Connections/event_subscribers.yml');
         $loader->load('Connections/install.yml');
-        $loader->load('Connections/queries.yml');
+        $loader->load('Connections/persistence.yml');
         $loader->load('Connections/services.yml');
 
         $loader->load('ErrorManagement/commands.yml');
         $loader->load('ErrorManagement/controllers.yml');
         $loader->load('ErrorManagement/event_subscribers.yml');
         $loader->load('ErrorManagement/handlers.yml');
-        $loader->load('ErrorManagement/queries.yml');
+        $loader->load('ErrorManagement/persistence.yml');
         $loader->load('ErrorManagement/services.yml');
 
         $loader->load('Marketplace/controllers.yml');
         $loader->load('Marketplace/feature_flag.yml');
         $loader->load('Marketplace/handlers.yml');
         $loader->load('Marketplace/install.yml');
-        $loader->load('Marketplace/queries.yml');
+        $loader->load('Marketplace/persistence.yml');
         $loader->load('Marketplace/services.yml');
 
         $loader->load('Settings/controllers.yml');
         $loader->load('Settings/handlers.yml');
-        $loader->load('Settings/queries.yml');
+        $loader->load('Settings/persistence.yml');
         $loader->load('Settings/services.yml');
         $loader->load('Settings/validators.yml');
 
@@ -73,7 +73,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('Webhook/handlers.yml');
         $loader->load('Webhook/install.yml');
         $loader->load('Webhook/message_handlers.yml');
-        $loader->load('Webhook/queries.yml');
+        $loader->load('Webhook/persistence.yml');
         $loader->load('Webhook/services.yml');
         $loader->load('Webhook/validators.yml');
 
