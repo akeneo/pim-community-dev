@@ -9,20 +9,20 @@ use Akeneo\Test\Integration\TestCase;
 
 final class SqlFindChannelsIntegration extends TestCase
 {
-    private FindChannels $sqlGetChannels;
+    private FindChannels $sqlFindChannels;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->sqlGetChannels = $this->get(
-            'SqlFindChannels'
+        $this->sqlFindChannels = $this->get(
+            'Akeneo\Channel\Infrastructure\Query\Sql\SqlFindChannels'
         );
     }
 
     public function test_it_finds_all_channels(): void
     {
-        $results = $this->sqlGetChannels->findAll();
+        $results = $this->sqlFindChannels->findAll();
 
         $this->assertIsArray($results);
         $this->assertCount(3, $results);
@@ -36,6 +36,11 @@ final class SqlFindChannelsIntegration extends TestCase
 
         $this->assertContains('USD', $printChannel->getActiveCurrencies());
         $this->assertContains('EUR', $printChannel->getActiveCurrencies());
+
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('en_US'));
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('fr_FR'));
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('de_DE'));
+        $this->assertEquals(null, $printChannel->getLabels()->getLabel('jp_JP'));
     }
 
     protected function getConfiguration(): Configuration
