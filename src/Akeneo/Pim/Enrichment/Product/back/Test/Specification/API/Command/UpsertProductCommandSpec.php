@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
@@ -132,7 +132,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $addMultiSelectValue = new AddMultiSelectValue('name', null, null, ['optionA']);
         $setAssetValue = new SetAssetValue('name', null, null, ['packshot1']);
         $setGroupsIntent = new SetGroups(['groupA', 'groupB']);
-        $associateQuantifiedProducts = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)]);
+        $associateQuantifiedProducts = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)]);
 
         $this->beConstructedThrough('createFromCollection', [
             10,

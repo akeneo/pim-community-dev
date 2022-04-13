@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Qua
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +19,7 @@ class QuantifiedAssociationUserIntentCollectionSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith([new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)])]);
+        $this->beConstructedWith([new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)])]);
     }
 
     function it_is_initializable()
@@ -30,7 +30,7 @@ class QuantifiedAssociationUserIntentCollectionSpec extends ObjectBehavior
 
     function it_returns_the_association_user_intents()
     {
-        $userIntent = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedProduct('foo', 5)]);
+        $userIntent = new AssociateQuantifiedProducts('X_SELL', [new QuantifiedEntity('foo', 5)]);
         $this->beConstructedWith([$userIntent]);
         $this->quantifiedAssociationUserIntents()->shouldReturn([$userIntent]);
     }

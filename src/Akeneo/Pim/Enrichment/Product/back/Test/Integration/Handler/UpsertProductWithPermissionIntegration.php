@@ -13,7 +13,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAsso
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
@@ -303,8 +303,8 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->createProduct(
             'my_product',
             [new AssociateQuantifiedProducts('bundle', [
-                new QuantifiedProduct('product_viewable_by_manager', 10),
-                new QuantifiedProduct('product_non_viewable_by_manager', 8),
+                new QuantifiedEntity('product_viewable_by_manager', 10),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
             ])]
         );
 
@@ -312,14 +312,14 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             $this->getUserId('betty'),
             'my_product',
             [new ReplaceAssociatedQuantifiedProducts('bundle', [
-                new QuantifiedProduct('product_viewable_by_manager', 7),
+                new QuantifiedEntity('product_viewable_by_manager', 7),
             ])]
         ));
 
         Assert::assertEqualsCanonicalizing(
             [
-                new QuantifiedProduct('product_viewable_by_manager', 7),
-                new QuantifiedProduct('product_non_viewable_by_manager', 8),
+                new QuantifiedEntity('product_viewable_by_manager', 7),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
             ],
             $this->getAssociatedQuantifiedProducts('my_product')
         );

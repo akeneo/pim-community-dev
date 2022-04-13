@@ -6,10 +6,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\QuantifiedAssociation\QuantifiedAssociationCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\DissociateQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\QuantifiedAssociationUserIntentCollectionApplier;
 use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
@@ -59,7 +60,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
 
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
-                new AssociateQuantifiedProducts('bundle', [new QuantifiedProduct('foo', 8)]),
+                new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('foo', 8)]),
             ]),
             $product,
             10
@@ -91,7 +92,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
 
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
-                new AssociateQuantifiedProducts('bundle', [new QuantifiedProduct('foo', 8), new QuantifiedProduct('baz', 3)]),
+                new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('foo', 8), new QuantifiedEntity('baz', 3)]),
             ]),
             $product,
             10
@@ -115,7 +116,7 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
 
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
-                new AssociateQuantifiedProducts('bundle', [new QuantifiedProduct('bar', 4)]),
+                new AssociateQuantifiedProducts('bundle', [new QuantifiedEntity('bar', 4)]),
             ]),
             $product,
             10
@@ -205,8 +206,39 @@ class QuantifiedAssociationUserIntentCollectionApplierSpec extends ObjectBehavio
         $this->apply(
             new QuantifiedAssociationUserIntentCollection([
                 new ReplaceAssociatedQuantifiedProducts('bundle', [
-                    new QuantifiedProduct('foo', 8),
+                    new QuantifiedEntity('foo', 8),
                 ]),
+            ]),
+            $product,
+            10
+        );
+    }
+
+    function it_associates_quantified_product_models_by_updating_a_quantity(
+        ObjectUpdaterInterface $productUpdater,
+    ) {
+        $product = new Product();
+        $product->mergeQuantifiedAssociations(QuantifiedAssociationCollection::createFromNormalized([
+            'bundle' => [
+                'product_models' => [
+                    ['identifier' => 'foo', 'quantity' => 2],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]));
+
+        $productUpdater->update($product, ['quantified_associations' => [
+            'bundle' => [
+                'product_models' => [
+                    ['identifier' => 'foo', 'quantity' => 8],
+                    ['identifier' => 'bar', 'quantity' => 4],
+                ],
+            ],
+        ]])->shouldBeCalledOnce();
+
+        $this->apply(
+            new QuantifiedAssociationUserIntentCollection([
+                new AssociateQuantifiedProductModels('bundle', [new QuantifiedEntity('foo', 8)]),
             ]),
             $product,
             10

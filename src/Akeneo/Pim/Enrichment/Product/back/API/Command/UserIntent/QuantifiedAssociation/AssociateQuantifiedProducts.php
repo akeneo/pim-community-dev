@@ -13,13 +13,13 @@ use Webmozart\Assert\Assert;
 final class AssociateQuantifiedProducts implements QuantifiedAssociationUserIntent
 {
     /**
-     * @param QuantifiedProduct[] $quantifiedProducts
+     * @param QuantifiedEntity[] $quantifiedProducts
      */
     public function __construct(private string $associationType, private array $quantifiedProducts)
     {
         Assert::stringNotEmpty($associationType);
         Assert::notEmpty($quantifiedProducts);
-        Assert::allIsInstanceOf($quantifiedProducts, QuantifiedProduct::class);
+        Assert::allIsInstanceOf($quantifiedProducts, QuantifiedEntity::class);
     }
 
     public function associationType(): string
@@ -28,7 +28,7 @@ final class AssociateQuantifiedProducts implements QuantifiedAssociationUserInte
     }
 
     /**
-     * @return QuantifiedProduct[]
+     * @return QuantifiedEntity[]
      */
     public function quantifiedProducts(): array
     {

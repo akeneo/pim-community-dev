@@ -7,7 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -232,7 +232,7 @@ abstract class EnrichmentProductTestCase extends TestCase
     }
 
     /**
-     * @return array<QuantifiedProduct>
+     * @return array<QuantifiedEntity>
      */
     protected function getAssociatedQuantifiedProducts(
         string $productIdentifier,
@@ -245,10 +245,30 @@ abstract class EnrichmentProductTestCase extends TestCase
 
         $quantifiedProducts = [];
         foreach ($quantifiedAssociationCollection->normalize()[$associationType]['products'] ?? [] as $product) {
-            $quantifiedProducts[] = new QuantifiedProduct($product['identifier'], $product['quantity']);
+            $quantifiedProducts[] = new QuantifiedEntity($product['identifier'], $product['quantity']);
         }
 
         return $quantifiedProducts;
+    }
+
+    /**
+     * @return array<QuantifiedEntity>
+     */
+    protected function getAssociatedQuantifiedProductModels(
+        string $productIdentifier,
+        string $associationType = 'bundle'
+    ): array {
+        $this->clearDoctrineUoW();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        Assert::assertNotNull($product);
+        $quantifiedAssociationCollection = $product->getQuantifiedAssociations();
+
+        $quantifiedProductModels = [];
+        foreach ($quantifiedAssociationCollection->normalize()[$associationType]['product_models'] ?? [] as $product) {
+            $quantifiedProductModels[] = new QuantifiedEntity($product['identifier'], $product['quantity']);
+        }
+
+        return $quantifiedProductModels;
     }
 
     protected function getAssociatedProductModelIdentifiers(ProductInterface $product, string $associationType = 'X_SELL'): array

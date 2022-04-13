@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedProduct;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use PhpSpec\ObjectBehavior;
 
-class QuantifiedProductSpec extends ObjectBehavior
+class QuantifiedEntitySpec extends ObjectBehavior
 {
     function let()
     {
@@ -16,7 +16,7 @@ class QuantifiedProductSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(QuantifiedProduct::class);
+        $this->shouldHaveType(QuantifiedEntity::class);
     }
 
     function it_cannot_be_constructed_with_empty_product_identifier()
@@ -37,9 +37,9 @@ class QuantifiedProductSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_the_product_identifier()
+    function it_returns_the_entity_identifier()
     {
-        $this->productIdentifier()->shouldReturn('foo');
+        $this->entityIdentifier()->shouldReturn('foo');
     }
 
     function it_returns_the_quantity()

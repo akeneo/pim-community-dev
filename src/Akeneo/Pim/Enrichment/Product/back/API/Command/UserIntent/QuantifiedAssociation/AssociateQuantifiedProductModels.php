@@ -10,15 +10,16 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ReplaceAssociatedQuantifiedProducts implements QuantifiedAssociationUserIntent
+final class AssociateQuantifiedProductModels implements QuantifiedAssociationUserIntent
 {
     /**
-     * @param QuantifiedEntity[] $quantifiedProducts
+     * @param QuantifiedEntity[] $quantifiedProductModels
      */
-    public function __construct(private string $associationType, private array $quantifiedProducts)
+    public function __construct(private string $associationType, private array $quantifiedProductModels)
     {
         Assert::stringNotEmpty($associationType);
-        Assert::allIsInstanceOf($quantifiedProducts, QuantifiedEntity::class);
+        Assert::notEmpty($quantifiedProductModels);
+        Assert::allIsInstanceOf($quantifiedProductModels, QuantifiedEntity::class);
     }
 
     public function associationType(): string
@@ -29,8 +30,8 @@ final class ReplaceAssociatedQuantifiedProducts implements QuantifiedAssociation
     /**
      * @return QuantifiedEntity[]
      */
-    public function quantifiedProducts(): array
+    public function quantifiedProductModels(): array
     {
-        return $this->quantifiedProducts;
+        return $this->quantifiedProductModels;
     }
 }
