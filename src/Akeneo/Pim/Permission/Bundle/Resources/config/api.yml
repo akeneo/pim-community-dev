@@ -91,7 +91,6 @@ services:
             - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
             - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
-            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
             - '@validator'
 
@@ -122,7 +121,6 @@ services:
             - '@pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user'
             - '@logger'
             - '%pim_api.configuration%'
-            - '@monolog.logger.pim_api_acl'
             - '@oro_security.security_facade'
             - '@Akeneo\Pim\Enrichment\Component\Product\Command\ProductModel\RemoveProductModelHandler'
             - '@validator'
