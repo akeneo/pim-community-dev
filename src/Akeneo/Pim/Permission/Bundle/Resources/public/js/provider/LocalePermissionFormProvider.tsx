@@ -89,18 +89,18 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
         <SectionTitle>
           <PermissionTitle>{translate('pim_permissions.widget.entity.locale.label')}</PermissionTitle>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_locale_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.locale.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.locale.edit_permissions'),
-            })}
-          </Helper>
-        )}
-
         {!onlyDisplayViewPermissions && (
           <>
+            {securityContext.isGranted('pimee_enrich_locale_edit_permissions') ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.locale.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.locale.edit_permissions'),
+                })}
+              </Helper>
+            )}
+
             <Label>{translate('pim_permissions.widget.level.edit')}</Label>
             <PermissionFormWidget
               selection={state.edit.identifiers}

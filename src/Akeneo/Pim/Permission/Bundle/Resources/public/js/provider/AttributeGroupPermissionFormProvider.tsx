@@ -165,17 +165,17 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.attribute_group.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.attribute_group.edit_permissions'),
-            })}
-          </Helper>
-        )}
         {!onlyDisplayViewPermissions && (
           <>
+            {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.attribute_group.edit_permissions'),
+                })}
+              </Helper>
+            )}
             <Label>{translate('pim_permissions.widget.level.edit')}</Label>
             <PermissionFormWidget
               selection={state.edit.identifiers}

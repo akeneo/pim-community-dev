@@ -171,18 +171,18 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.category.edit_permissions'),
-            })}
-          </Helper>
-        )}
-
         {!onlyDisplayViewPermissions && (
           <>
+            {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.category.edit_permissions'),
+                })}
+              </Helper>
+            )}
+
             <Label>{translate('pim_permissions.widget.level.own')}</Label>
             <PermissionFormWidget
               selection={state.own.identifiers}
