@@ -20,7 +20,7 @@ final class DatabaseGetSupplier implements GetSupplier
         $supplier = $this->connection->executeQuery(
             <<<SQL
                 WITH contributor AS (
-                    SELECT contributor.supplier_identifier, JSON_OBJECTAGG(id, email) as contributors
+                    SELECT contributor.supplier_identifier, JSON_ARRAYAGG(email) as contributors
                     FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
                     GROUP BY contributor.supplier_identifier
                 )
@@ -39,7 +39,7 @@ final class DatabaseGetSupplier implements GetSupplier
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],
-            null !== $supplier['contributors'] ? json_decode($supplier['contributors'], true) : [],
+            null !== $supplier['contributors'] ? json_decode($supplier['contributors']) : [],
         ) : null;
     }
 }
