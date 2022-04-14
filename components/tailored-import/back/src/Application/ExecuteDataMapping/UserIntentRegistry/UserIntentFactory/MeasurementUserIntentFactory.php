@@ -25,10 +25,14 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string $value): ValueUserIntent
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"');
+        }
+
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException('MeasurementUserIntentFactory only supports string value');
         }
 
         $sourceConfiguration = $target->getSourceConfiguration();

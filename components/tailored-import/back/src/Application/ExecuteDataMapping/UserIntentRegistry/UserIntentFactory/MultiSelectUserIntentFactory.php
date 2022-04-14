@@ -25,10 +25,14 @@ final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string $value): ValueUserIntent
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"');
+        }
+
+        if (\is_string($value)) {
+            $value = [$value];
         }
 
         return match ($target->getActionIfNotEmpty()) {
@@ -36,13 +40,13 @@ final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
                 $target->getCode(),
                 $target->getChannel(),
                 $target->getLocale(),
-                [$value],
+                $value,
             ),
             TargetInterface::ACTION_SET => new SetMultiSelectValue(
                 $target->getCode(),
                 $target->getChannel(),
                 $target->getLocale(),
-                [$value],
+                $value,
             ),
             default => throw new \LogicException('Unknown action if not empty'),
         };

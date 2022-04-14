@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -35,7 +36,10 @@ final class HandleMultiSelectTest extends AttributeTestCase
     ): void {
         $executeDataMappingQuery = new ExecuteDataMappingQuery(
             new Row($row),
-            DataMappingCollection::create($dataMappings),
+            DataMappingCollection::create([
+                $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
+                ...$dataMappings,
+            ]),
         );
 
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
@@ -53,21 +57,6 @@ final class HandleMultiSelectTest extends AttributeTestCase
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'autumn_2021,summer_2022,winter_2022',
                 ],
                 'data_mappings' => [
-                    DataMapping::create(
-                        'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        AttributeTarget::create(
-                            'sku',
-                            'pim_catalog_identifier',
-                            null,
-                            null,
-                            'set',
-                            'skip',
-                            null,
-                        ),
-                        ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
-                        OperationCollection::create([]),
-                        [],
-                    ),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
                         AttributeTarget::create(
@@ -105,6 +94,71 @@ final class HandleMultiSelectTest extends AttributeTestCase
                     valueUserIntents: [
                         new SetMultiSelectValue('tshirt_style', null, null, ['vneck,long_sleeve,sportwear']),
                         new SetMultiSelectValue('collection', 'ecommerce', 'fr_FR', ['autumn_2021,summer_2022,winter_2022']),
+                    ],
+                ),
+            ],
+            'it handles a multi select attribute target with multiple sources' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'vneck',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'long_sleeve',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'tshirt_style',
+                            'pim_catalog_multiselect',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c', '2d9e967a-4efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([]),
+                        [],
+                    ),
+                ],
+                'expected' => new UpsertProductCommand(
+                    userId: 1,
+                    productIdentifier: 'this-is-a-sku',
+                    valueUserIntents: [
+                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve']),
+                    ],
+                ),
+            ],
+            'it handles a multi select attribute target with multiple sources and operation' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => '<b>vneck</b>',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => '<p>long_sleeve&nbsp;neck</p>',
+                ],
+                'data_mappings' => [
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'tshirt_style',
+                            'pim_catalog_multiselect',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c', '2d9e967a-4efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            //TODO use an Operation compatible with multiselect target
+                            new CleanHTMLTagsOperation(),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new UpsertProductCommand(
+                    userId: 1,
+                    productIdentifier: 'this-is-a-sku',
+                    valueUserIntents: [
+                        new SetMultiSelectValue('tshirt_style', null, null, ['vneck', 'long_sleeve neck']),
                     ],
                 ),
             ],

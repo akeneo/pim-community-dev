@@ -24,10 +24,14 @@ final class TextareaUserIntentFactory implements UserIntentFactoryInterface
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string $value): ValueUserIntent
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_textarea"');
+        }
+
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException('TextareaUserIntentFactory only supports string value');
         }
 
         return new SetTextareaValue(

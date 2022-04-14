@@ -38,20 +38,32 @@ class ExecuteDataMappingHandler
             $target = $dataMapping->getTarget();
             $sources = $dataMapping->getSources();
 
-            $value = $row->getCellData($sources[0]);
-
-            if ($target instanceof AttributeTarget && $target->getSourceConfiguration() !== null) {
-                $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
-            }
-
-            $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
-
             if ($target instanceof AttributeTarget && $target->getCode() === $identifierAttributeCode) {
-                $productIdentifier = $value;
-            } else {
-                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
-                $userIntents[] = $userIntentFactory->create($target, $value);
+                $productIdentifier = $row->getCellData($sources[0]);
+
+                continue;
             }
+
+            $processedValues = [];
+            foreach ($sources as $source) {
+                $value = $row->getCellData($source);
+
+                if ($target instanceof AttributeTarget && $target->getSourceConfiguration() !== null) {
+                    $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
+                }
+
+                $processedValues[] = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
+            }
+
+            $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
+            $userIntents[] = $userIntentFactory->create(
+                $target,
+                1 === \count($sources) ? $processedValues[0] : $processedValues,
+            );
+        }
+
+        if (null === $productIdentifier) {
+            throw new \LogicException('Missing data mapping targeting the identifier attribute');
         }
 
         $userIntents = $this->userIntentAggregator->aggregateByTarget($userIntents);

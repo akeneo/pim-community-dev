@@ -53,21 +53,7 @@ final class HandleSimpleSelectTest extends AttributeTestCase
                     '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'this is a color',
                 ],
                 'data_mappings' => [
-                    DataMapping::create(
-                        'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        AttributeTarget::create(
-                            'sku',
-                            'pim_catalog_identifier',
-                            null,
-                            null,
-                            'set',
-                            'skip',
-                            null,
-                        ),
-                        ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
-                        OperationCollection::create([]),
-                        [],
-                    ),
+                    $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
                     DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
                         AttributeTarget::create(
