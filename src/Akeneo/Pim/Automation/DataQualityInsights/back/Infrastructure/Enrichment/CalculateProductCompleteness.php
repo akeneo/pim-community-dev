@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -17,7 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class CalculateProductCompleteness implements \Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface
+final class CalculateProductCompleteness implements CalculateProductCompletenessInterface
 {
     private GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery;
 
@@ -25,7 +26,7 @@ final class CalculateProductCompleteness implements \Akeneo\Pim\Automation\DataQ
 
     public function __construct(
         GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator                          $completenessCalculator
+        CompletenessCalculator $completenessCalculator
     ) {
         $this->completenessCalculator = $completenessCalculator;
         $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;
@@ -34,12 +35,12 @@ final class CalculateProductCompleteness implements \Akeneo\Pim\Automation\DataQ
     public function calculate(ProductEntityIdInterface $productId): CompletenessCalculationResult
     {
         if (!$productId instanceof ProductId) {
-            throw new \InvalidArgumentException(sprintf('Invalid product model id: %s', (string)$productId));
+            throw new \InvalidArgumentException(sprintf('Invalid product id: %s', (string) $productId));
         }
 
         $result = new CompletenessCalculationResult();
         $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productId);
-        $completenessCollection = $this->completenessCalculator->fromProductIdentifier(strval($productIdentifier));
+        $completenessCollection = $this->completenessCalculator->fromProductIdentifier((string) $productIdentifier);
 
         foreach ($completenessCollection as $completeness) {
             $channelCode = new ChannelCode($completeness->channelCode());

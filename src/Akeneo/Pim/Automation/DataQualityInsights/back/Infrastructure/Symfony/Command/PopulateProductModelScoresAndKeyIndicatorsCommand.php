@@ -25,14 +25,15 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
     protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores-and-ki';
 
     public function __construct(
-        private Connection $dbConnection,
-        private CreateCriteriaEvaluations $createCriteriaEvaluations,
+        private Connection                      $dbConnection,
+        private CreateCriteriaEvaluations       $createCriteriaEvaluations,
         private ProductEntityIdFactoryInterface $idFactory
-    ) {
+    )
+    {
         parent::__construct();
     }
 
-    protected function configure() :void
+    protected function configure(): void
     {
         $this->setDescription('Populate scores and key indicators for existing product models');
     }
@@ -61,7 +62,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
-                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, $productModelIds));
+                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn($productModelId) => (string)$productModelId, $productModelIds));
                 $this->createCriteriaEvaluations->create($completenessCriteria, $productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e) {
