@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierExport;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributors;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierExport implements GetSupplierExport
+final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWithContributors
 {
     public function __construct(private Connection $connection)
     {
@@ -29,7 +29,7 @@ final class DatabaseGetSupplierExport implements GetSupplierExport
         SQL;
 
         return array_map(
-            fn (array $supplier) => new SupplierExport(
+            fn (array $supplier) => new SupplierWithContributors(
                 $supplier['code'],
                 $supplier['label'],
                 null !== $supplier['contributors']

@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
-use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierExport;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
-final class InMemoryGetSupplierExportTest extends TestCase
+final class InMemoryGetAllSuppliersWithContributorsTest extends TestCase
 {
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoSupplierToExport(): void
     {
-        $sut = new InMemoryGetSupplierExport(new InMemoryRepository());
+        $sut = new InMemoryGetAllSuppliersWithContributors(new InMemoryRepository());
 
         static::assertCount(0, $sut());
     }
@@ -23,7 +23,7 @@ final class InMemoryGetSupplierExportTest extends TestCase
     public function itGetsSupplierExport(): void
     {
         $supplierRepository = new InMemoryRepository();
-        $sut = new InMemoryGetSupplierExport($supplierRepository);
+        $sut = new InMemoryGetAllSuppliersWithContributors($supplierRepository);
 
         $supplierRepository->save(
             Supplier::create(

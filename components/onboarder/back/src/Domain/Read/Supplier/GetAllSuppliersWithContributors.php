@@ -2,7 +2,7 @@
 
 namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier;
 
-interface GetSupplierExport
+interface GetAllSuppliersWithContributors
 {
     public function __invoke(): array;
 }

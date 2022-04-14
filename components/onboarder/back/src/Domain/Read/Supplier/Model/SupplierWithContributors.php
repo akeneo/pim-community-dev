@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model;
 
-final class SupplierExport
+final class SupplierWithContributors
 {
     public function __construct(
         public string $code,

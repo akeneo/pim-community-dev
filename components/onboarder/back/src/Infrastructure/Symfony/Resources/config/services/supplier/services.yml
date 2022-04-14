@@ -47,8 +47,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierExport
+    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetAllSuppliersWithContributors
         arguments:
             - '@database_connection'
 
