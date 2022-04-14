@@ -15,12 +15,12 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 class CriteriaByFeatureRegistry
 {
     /**
-     * @phpstan-type array<CriterionCode>
+     * @params array<CriterionCode>
      */
     private array $allCriteriaCodes = [];
 
     /**
-     * @phpstan-type array<CriterionCode>
+     * @params array<CriterionCode>
      */
     private array $partialCriteriaCodes = [];
 
