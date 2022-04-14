@@ -106,6 +106,8 @@ pim_versioning:
 
 pim_catalog_rule:
     resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: product_rules
 
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"

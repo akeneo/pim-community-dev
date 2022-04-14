@@ -28,6 +28,7 @@ extensions:
         parent: pim-product-edit-form-attributes
         targetZone: self
         position: 110
+        feature: product_rules
 
     pim-product-edit-form-history-published:
         module: pimee/product-edit-form/tab/history/published
