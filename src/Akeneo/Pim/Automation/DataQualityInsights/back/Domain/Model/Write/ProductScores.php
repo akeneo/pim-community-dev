@@ -16,7 +16,8 @@ final class ProductScores
     public function __construct(
         private ProductEntityIdInterface $productId,
         private \DateTimeImmutable $evaluatedAt,
-        private ChannelLocaleRateCollection $scores
+        private ChannelLocaleRateCollection $scores,
+        private ChannelLocaleRateCollection $scoresPartialCriteria,
     ) {
     }
 
@@ -33,5 +34,10 @@ final class ProductScores
     public function getScores(): ChannelLocaleRateCollection
     {
         return $this->scores;
+    }
+
+    public function getScoresPartialCriteria(): ChannelLocaleRateCollection
+    {
+        return $this->scoresPartialCriteria;
     }
 }
