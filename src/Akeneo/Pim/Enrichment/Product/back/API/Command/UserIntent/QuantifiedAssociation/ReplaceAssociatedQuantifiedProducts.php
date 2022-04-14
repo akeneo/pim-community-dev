@@ -7,6 +7,9 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssocia
 use Webmozart\Assert\Assert;
 
 /**
+ * For the given association type, the former associated products that are not defined in this object
+ * will be dissociated.
+ *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
