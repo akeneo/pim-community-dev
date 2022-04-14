@@ -22,7 +22,6 @@ class AddScoresToProductAndProductModelRows
     {
     }
 
-
     /**
      * @param Row[] $rows
      * @param 'product_model'|'product' $type
@@ -38,7 +37,9 @@ class AddScoresToProductAndProductModelRows
 
         $productIds = [];
         foreach ($rows as $row) {
-            $productIds[] = new ProductId($row->technicalId());
+            // TODO Get this back once CPM-576 is merged
+//            $productIds[] = new ProductId($row->technicalId());
+            $productIds[] = new ProductId(1);
         }
 
         $scores = ($this->getQualityScoresFactory)(ProductIdCollection::fromProductIds($productIds), $type);
@@ -48,7 +49,8 @@ class AddScoresToProductAndProductModelRows
 
         $enrichedRows = [];
         foreach ($rows as $row) {
-            $scoreValue = $this->retrieveScore($row->technicalId(), $scores, $channel, $locale);
+//            $scoreValue = $this->retrieveScore($row->technicalId(), $scores, $channel, $locale);
+            $scoreValue = 0;
             $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
             $enrichedRows[] = $row->addAdditionalProperty($property);
         }

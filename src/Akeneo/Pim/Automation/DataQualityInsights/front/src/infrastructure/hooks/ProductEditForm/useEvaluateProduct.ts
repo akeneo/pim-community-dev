@@ -2,24 +2,30 @@ import {useCallback, useMemo} from 'react';
 import {Product} from '../../../domain';
 import {useRouter} from '@akeneo-pim-community/shared';
 
-const useEvaluateProduct = (product: Product) => {
+const useEvaluateProduct = (productOrProductModel: Product) => {
   const router = useRouter();
 
   const url = useMemo(() => {
-    if (null === product.meta.id) {
-      throw Error('Product id is not defined');
+    if (null === productOrProductModel.meta.uuid && null === productOrProductModel.meta.id) {
+      throw Error('Product uuid or product model id is not defined');
     }
-    if ('product_model' !== product.meta.model_type && 'product' !== product.meta.model_type) {
+
+    if ('product_model' !== productOrProductModel.meta.model_type && 'product' !== productOrProductModel.meta.model_type) {
       throw Error('Invalid product type');
     }
 
     const routeName =
-      'product_model' === product.meta.model_type
+      'product_model' === productOrProductModel.meta.model_type
         ? 'akeneo_data_quality_insights_evaluate_product_model'
         : 'akeneo_data_quality_insights_evaluate_product';
 
-    return router.generate(routeName, {productId: product.meta.id.toString()});
-  }, [router, product]);
+    const productId =
+      'product_model' === productOrProductModel.meta.model_type
+        ? productOrProductModel.meta?.id?.toString()
+        : productOrProductModel.meta.uuid;
+
+    return router.generate(routeName, {productId});
+  }, [router, productOrProductModel]);
 
   return useCallback(async () => {
     await fetch(url, {
