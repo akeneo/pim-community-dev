@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory;
 
-use _PHPStan_76800bfb5\Symfony\Component\Console\Exception\LogicException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
@@ -45,7 +44,7 @@ final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
                 $target->getLocale(),
                 [$value],
             ),
-            default => throw new LogicException(),
+            default => throw new \LogicException('Unknown action if not empty'),
         };
     }
 
