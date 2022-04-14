@@ -367,6 +367,7 @@ class FixturesLoader implements FixturesLoaderInterface
                 '--skip-add-locks',
                 '--skip-disable-keys',
                 '--complete-insert',
+                '--skip-triggers',
                 $this->databaseName,
                 '--result-file=' . $filepath,
             ]
