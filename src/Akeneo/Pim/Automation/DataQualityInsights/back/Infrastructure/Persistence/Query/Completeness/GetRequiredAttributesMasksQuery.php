@@ -55,8 +55,8 @@ SELECT
                             (
                                 SELECT GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-')
                                 FROM pim_catalog_table_column table_column
-                                WHERE table_column.is_required_for_completeness = '1' OR table_column.column_order = 0
-                                AND table_column.attribute_id = pcar.id
+                                WHERE (table_column.is_required_for_completeness = '1' OR table_column.column_order = 0)
+                                AND table_column.attribute_id = attribute.id
                             )
                         )
                 ELSE attribute.code
