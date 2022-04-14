@@ -19,6 +19,7 @@ final class InMemoryGetAllSuppliersWithContributors implements GetAllSuppliersWi
     {
         return array_map(
             fn (Supplier $supplier) => new SupplierWithContributors(
+                $supplier->identifier(),
                 $supplier->code(),
                 $supplier->label(),
                 $supplier->contributors(),

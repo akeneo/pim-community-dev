@@ -7,6 +7,7 @@ namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model;
 final class SupplierWithContributors
 {
     public function __construct(
+        public string $identifier,
         public string $code,
         public string $label,
         public array $contributors,
@@ -16,6 +17,7 @@ final class SupplierWithContributors
     public function toArray(): array
     {
         return [
+            'identifier' => $this->identifier,
             'code' => $this->code,
             'label' => $this->label,
             'contributors' => $this->contributors,

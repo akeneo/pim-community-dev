@@ -22,7 +22,7 @@ final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWi
                 FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
                 GROUP BY contributor.supplier_identifier
             )
-            SELECT code, label, contributor.contributors
+            SELECT identifier, code, label, contributor.contributors
             FROM `akeneo_onboarder_serenity_supplier` supplier
             LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
             ORDER BY code;
@@ -30,6 +30,7 @@ final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWi
 
         return array_map(
             fn (array $supplier) => new SupplierWithContributors(
+                $supplier['identifier'],
                 $supplier['code'],
                 $supplier['label'],
                 null !== $supplier['contributors']
