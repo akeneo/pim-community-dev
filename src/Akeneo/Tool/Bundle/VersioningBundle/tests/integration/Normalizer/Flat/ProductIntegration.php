@@ -86,6 +86,9 @@ class ProductIntegration extends TestCase
 
         $expected = $this->sanitizeMediaAttributeData($expected, $mediaAttributes);
 
+        $this->assertEqualsCanonicalizing(['bar', 'baz'], \explode(',', $flatProduct['PACK-products']));
+        unset($expected['PACK-products']);
+        unset($flatProduct['PACK-products']);
         $this->assertEquals($expected, $flatProduct);
 
         $this->assertEquals(
