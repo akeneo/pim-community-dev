@@ -167,12 +167,11 @@ const webpackConfig = {
         use: [
           'thread-loader',
           {
-            loader: 'babel-loader',
+            loader: 'esbuild-loader',
             options: {
-              presets: ['@babel/preset-env'],
-              cacheDirectory: 'public/cache',
+              loader: 'js',
             },
-          }
+          },
         ],
       },
 
@@ -189,12 +188,12 @@ const webpackConfig = {
         test: /\.tsx?$/,
         use: [
           {
-            loader: 'ts-loader',
+            loader: 'esbuild-loader',
             options: {
-              transpileOnly: !isStrict,
-              configFile: path.resolve(rootDir, 'tsconfig.json'),
-              context: path.resolve(rootDir),
-              getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
+              loader: 'tsx',
+              sourcemap: true,
+              //transpileOnly: !isStrict,
+              //getCustomTransformers: () => ({ before: [styledComponentsTransformer] })
             },
           },
           {
@@ -213,9 +212,6 @@ const webpackConfig = {
           path.resolve(rootDir, 'tests'),
           path.resolve(__dirname, 'tests'),
           path.resolve(rootDir, 'src'),
-          /node_modules\/@testing-library/,
-          /node_modules\/immutable/,
-          /node_modules\/react-test-renderer/
         ],
       },
 
