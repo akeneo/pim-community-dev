@@ -178,7 +178,10 @@ test('The Open App and Manage App buttons are enabled for test app when the user
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
     );
-    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.toHaveAttribute(
+        'href',
+        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=connectionCodeA'
+    );
     openAppButton.not.toHaveAttribute('disabled');
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 
@@ -318,7 +321,10 @@ test('The pending App card renders', async () => {
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
     );
-    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.toHaveAttribute(
+        'href',
+        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=connectionCodeA'
+    );
     openAppButton.not.toHaveAttribute('disabled');
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 
