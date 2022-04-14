@@ -7,6 +7,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.compute_product_scores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@akeneo.pim.automation.data_quality_insights.filter_partial_criteria_evaluations_for_products'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores:
         arguments:
@@ -14,6 +15,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.compute_product_model_scores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
+            - '@akeneo.pim.automation.data_quality_insights.filter_partial_criteria_evaluations_for_product_models'
 
     akeneo.pim.automation.data_quality_insights.compute_product_scores:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores
@@ -264,3 +266,13 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+
+    akeneo.pim.automation.data_quality_insights.filter_partial_criteria_evaluations_for_products:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\FilterPartialCriteriaEvaluations
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
+
+    akeneo.pim.automation.data_quality_insights.filter_partial_criteria_evaluations_for_product_models:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\FilterPartialCriteriaEvaluations
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
