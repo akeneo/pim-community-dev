@@ -34,22 +34,33 @@ SELECT
     locale_code,
     JSON_ARRAYAGG(
         CONCAT(
-            IF(
-                attribute.attribute_type = 'pim_catalog_price_collection',
-                CONCAT(
-                    attribute.code,
-                    '-',
-                    (
-                        SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
-                        FROM pim_catalog_channel channel
-                        JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
-                        JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-                        WHERE channel.code  = channel_code
-                        GROUP BY channel.id
-                    )
-                ),
-                attribute.code
-            ),
+            CASE
+                WHEN attribute.attribute_type = 'pim_catalog_price_collection' 
+                    THEN CONCAT(
+                            attribute.code,
+                            '-',
+                            (
+                                SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
+                                FROM pim_catalog_channel channel
+                                JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
+                                JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
+                                WHERE channel.code  = channel_code
+                                GROUP BY channel.id
+                            )
+                        )
+                WHEN attribute.attribute_type = 'pim_catalog_table' 
+                    THEN CONCAT(
+                            attribute.code,
+                            '-',
+                            (
+                                SELECT GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-')
+                                FROM pim_catalog_table_column table_column
+                                WHERE (table_column.is_required_for_completeness = '1' OR table_column.column_order = 0)
+                                AND table_column.attribute_id = attribute.id
+                            )
+                        )
+                ELSE attribute.code
+            END,
             '-',
             IF(attribute.is_scopable, channel_locale.channel_code, '<all_channels>'),
             '-',
