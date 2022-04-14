@@ -73,7 +73,10 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
     const translate = useTranslate();
     const security = useSecurity();
     const generateUrl = useRouter();
-    const connectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
+    const manageConnectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
+        connectionCode: item.connection_code,
+    })}`;
+    const openConnectedAppUrl = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_open', {
         connectionCode: item.connection_code,
     })}`;
     const logo = item.logo ? <Logo src={item.logo} alt={item.name} /> : <AppIllustration width={100} height={100} />;
@@ -94,12 +97,12 @@ const ConnectedAppCard: FC<Props> = ({item}) => {
                 <ConnectedAppCardDescription connectedApp={item} />
             </TextInformation>
             <Actions>
-                <Button ghost level='tertiary' href={connectedAppUrl} disabled={!canManageApp}>
+                <Button ghost level='tertiary' href={manageConnectedAppUrl} disabled={!canManageApp}>
                     {translate('akeneo_connectivity.connection.connect.connected_apps.list.card.manage_app')}
                 </Button>
                 <Button
                     level={item.is_pending || item.has_outdated_scopes ? 'warning' : 'secondary'}
-                    href={item.activate_url}
+                    href={openConnectedAppUrl}
                     disabled={!item.activate_url || !canOpenApp}
                     target='_blank'
                 >
