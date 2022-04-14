@@ -15,7 +15,7 @@ final class DatabaseGetSupplier implements GetSupplier
     {
     }
 
-    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
+    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\SupplierWithContributors
     {
         $supplier = $this->connection->executeQuery(
             <<<SQL
@@ -35,7 +35,7 @@ final class DatabaseGetSupplier implements GetSupplier
             ],
         )->fetchAssociative();
 
-        return false !== $supplier ? new Read\Supplier\Model\Supplier(
+        return false !== $supplier ? new Read\Supplier\Model\SupplierWithContributors(
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],

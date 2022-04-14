@@ -15,7 +15,7 @@ final class InMemoryGetSupplier implements GetSupplier
     {
     }
 
-    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
+    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\SupplierWithContributors
     {
         $supplier = $this->supplierRepository->find($identifier);
 
@@ -23,7 +23,7 @@ final class InMemoryGetSupplier implements GetSupplier
             return null;
         }
 
-        return new Read\Supplier\Model\Supplier(
+        return new Read\Supplier\Model\SupplierWithContributors(
             $supplier->identifier(),
             $supplier->code(),
             $supplier->label(),
