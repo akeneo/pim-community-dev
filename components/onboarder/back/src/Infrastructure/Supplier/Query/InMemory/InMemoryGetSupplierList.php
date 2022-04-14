@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
 use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
 

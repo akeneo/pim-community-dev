@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Doctrine\DBAL\Connection;
 

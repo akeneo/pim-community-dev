@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject;
 
 final class Contributors implements \Countable
 {

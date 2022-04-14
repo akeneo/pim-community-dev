@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 
 final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
@@ -13,9 +12,9 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itTellsIfASupplierExistsGivenItsCode(): void
     {
-        $supplierRepository = $this->get(Supplier\Repository::class);
+        $supplierRepository = $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class);
 
-        $supplierRepository->save(Supplier\Model\Supplier::create(
+        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier code',
@@ -24,11 +23,11 @@ final class DatabaseSupplierExistsIntegration extends SqlIntegrationTestCase
 
         static::assertTrue(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('supplier_code')),
+                ->fromCode(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('supplier_code')),
         );
         static::assertFalse(
             $this->get(SupplierExists::class)
-                ->fromCode(Supplier\ValueObject\Code::fromString('unknown_supplier_code')),
+                ->fromCode(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('unknown_supplier_code')),
         );
     }
 }

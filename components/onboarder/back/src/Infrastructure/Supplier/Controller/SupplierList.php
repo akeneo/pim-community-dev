@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributorCount;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierCount;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributorCount;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

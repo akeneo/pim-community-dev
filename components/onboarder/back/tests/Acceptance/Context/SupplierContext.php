@@ -12,7 +12,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;

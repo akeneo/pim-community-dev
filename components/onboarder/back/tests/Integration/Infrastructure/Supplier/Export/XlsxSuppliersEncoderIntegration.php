@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Export;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;

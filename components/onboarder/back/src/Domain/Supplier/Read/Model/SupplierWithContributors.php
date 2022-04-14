@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model;
 
-final class SupplierWithContributorCount
+final class SupplierWithContributors
 {
     public function __construct(
         public string $identifier,
         public string $code,
         public string $label,
-        public int $contributorsCount,
+        public array $contributors,
     ) {
     }
 
@@ -20,7 +20,7 @@ final class SupplierWithContributorCount
             'identifier' => $this->identifier,
             'code' => $this->code,
             'label' => $this->label,
-            'contributorsCount' => $this->contributorsCount,
+            'contributors' => $this->contributors,
         ];
     }
 }

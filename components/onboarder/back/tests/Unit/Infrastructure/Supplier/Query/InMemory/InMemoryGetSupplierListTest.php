@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +24,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         $sut = new InMemoryGetSupplierList($repository);
 
         for ($i = 1; $i <= 60; $i++) {
-            $repository->save(Write\Supplier\Model\Supplier::create(
+            $repository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
@@ -42,7 +41,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new InMemoryGetSupplierList($repository);
 
-        $repository->save(Write\Supplier\Model\Supplier::create(
+        $repository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
             Uuid::uuid4()->toString(),
             'walter_white',
             'Walter White',
@@ -50,7 +49,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         ));
 
         $supplierIdentifier = Uuid::uuid4()->toString();
-        $repository->save(Write\Supplier\Model\Supplier::create(
+        $repository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
             $supplierIdentifier,
             'jessie_pinkman',
             'Jessie Pinkman',
@@ -67,7 +66,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         $sut = new InMemoryGetSupplierList($repository);
 
         for ($i = 1; $i <= 110; $i++) {
-            $repository->save(Write\Supplier\Model\Supplier::create(
+            $repository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributorCount;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributorCount;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;

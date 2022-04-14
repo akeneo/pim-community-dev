@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Contributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Label;
 
 final class Supplier
 {
-    private ValueObject\Identifier $identifier;
-    private ValueObject\Code $code;
-    private ValueObject\Label $label;
-    private ValueObject\Contributors $contributors;
+    private Identifier $identifier;
+    private Code $code;
+    private Label $label;
+    private Contributors $contributors;
 
     private function __construct(
         string $identifier,
@@ -19,10 +22,10 @@ final class Supplier
         string $label,
         array $contributorEmails = [],
     ) {
-        $this->identifier = ValueObject\Identifier::fromString($identifier);
-        $this->code = ValueObject\Code::fromString($code);
-        $this->label = ValueObject\Label::fromString($label);
-        $this->contributors = ValueObject\Contributors::fromEmails($contributorEmails);
+        $this->identifier = Identifier::fromString($identifier);
+        $this->code = Code::fromString($code);
+        $this->label = Label::fromString($label);
+        $this->contributors = Contributors::fromEmails($contributorEmails);
     }
 
     public static function create(string $identifier, string $code, string $label, array $contributorEmails): self
