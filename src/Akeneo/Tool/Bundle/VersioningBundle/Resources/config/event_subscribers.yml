@@ -55,3 +55,9 @@ services:
             - '@doctrine.orm.default_entity_manager'
         tags:
             - { name: doctrine.event_subscriber }
+
+    Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber\AddTableCheckSubscriber:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
