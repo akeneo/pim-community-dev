@@ -22,7 +22,7 @@ final class GetRefreshedSampleDataHandler
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getRefreshedSampleDataQuery->fileKey);
 
-        $extractedColumns = $fileReader->readColumnValues(
+        $extractedColumns = $fileReader->readColumnsValues(
             $getRefreshedSampleDataQuery->sheetName,
             $getRefreshedSampleDataQuery->productLine,
             $getRefreshedSampleDataQuery->columnIndices,

@@ -26,7 +26,7 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
         $query->productLine = 2;
 
         $xlsxFileReaderFactory->create($query->fileKey)->willReturn($fileReader)->shouldBeCalled();
-        $fileReader->readColumnValues(
+        $fileReader->readColumnsValues(
             $query->sheetName,
             $query->productLine,
             $query->columnIndices,

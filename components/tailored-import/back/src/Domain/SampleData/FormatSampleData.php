@@ -17,16 +17,24 @@ final class FormatSampleData
         $formattedValues = [];
 
         foreach ($valuesIndexedByColumnIndex as $values) {
-            $formattedValues = \array_merge($formattedValues, \array_map(
-                static fn (?string $value): ?string => null === $value ? null : \mb_substr(
-                    $value,
-                    0,
-                    self::SAMPLE_DATA_MAX_LENGTH,
-                ),
-                $values,
-            ));
+            $formattedValues = [...$formattedValues, ...self::truncateValues($values)];
         }
 
         return $formattedValues;
+    }
+
+    /**
+     * @param array<string|null> $values
+     */
+    private static function truncateValues(array $values): array
+    {
+        return \array_map(
+            static fn (?string $value): ?string => null === $value ? null : \mb_substr(
+                $value,
+                0,
+                self::SAMPLE_DATA_MAX_LENGTH,
+            ),
+            $values,
+        );
     }
 }
