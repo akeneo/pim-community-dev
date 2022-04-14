@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Catalog updates - Remove a currency used as project filter
   In order to manage product catalog
   As a user

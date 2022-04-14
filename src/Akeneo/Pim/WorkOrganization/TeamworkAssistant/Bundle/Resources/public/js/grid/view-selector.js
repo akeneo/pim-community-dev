@@ -18,7 +18,20 @@ define([
   'pim/date-context',
   'pim/formatter/date',
   'oro/mediator',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
+  'pim/feature-flags',
+], function(
+  $,
+  _,
+  __,
+  ViewSelector,
+  DatagridState,
+  FetcherRegistry,
+  Backbone,
+  DateContext,
+  DateFormatter,
+  mediator,
+  FeatureFlags
+) {
   return ViewSelector.extend({
     hasNoProject: false,
 
@@ -28,7 +41,7 @@ define([
     configure: function(gridAlias) {
       this.gridAlias = gridAlias;
 
-      if ('product-grid' !== this.gridAlias) {
+      if ('product-grid' !== this.gridAlias || !FeatureFlags.isEnabled('teamwork_assistant')) {
         this.config.viewTypes = ['views'];
       }
 

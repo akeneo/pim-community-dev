@@ -1,5 +1,12 @@
 Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier:
   properties:
+    label:
+      - NotBlank:
+          allowNull: true
+      - Length:
+          max: 200
     contributorEmails:
       - All:
           - Email: ~
+          - Length:
+              max: 255

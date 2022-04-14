@@ -73,3 +73,8 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'

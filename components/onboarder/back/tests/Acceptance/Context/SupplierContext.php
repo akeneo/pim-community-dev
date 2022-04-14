@@ -8,6 +8,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
+use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Read;
@@ -28,6 +29,8 @@ final class SupplierContext implements Context
 
     private ?Read\Supplier\Model\Supplier $supplier;
 
+    private array $errors;
+
     public function __construct(
         private InMemoryRepository $supplierRepository,
         private CreateSupplierHandler $createSupplierHandler,
@@ -38,6 +41,7 @@ final class SupplierContext implements Context
     ) {
         $this->suppliers = [];
         $this->supplier = null;
+        $this->errors = [];
     }
 
     /**
@@ -126,18 +130,83 @@ final class SupplierContext implements Context
     }
 
     /**
+     * @When I update the supplier ":code" with a label longer than 200 characters
+     */
+    public function iUpdateTheSupplierWithALabelLongerThan200Characters(string $code): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+
+        try {
+            ($this->updateSupplierHandler)(
+                new UpdateSupplier(
+                    $supplier->identifier(),
+                    str_repeat('a', 201),
+                    $supplier->contributors(),
+                )
+            );
+        } catch (InvalidData $e) {
+            $this->normalizeValidationErrors($e);
+        }
+    }
+
+    /**
+     * @When I update the supplier ":code" with a blank label
+     */
+    public function iUpdateTheSupplierWithABlankLabel(string $code): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+
+        try {
+            ($this->updateSupplierHandler)(
+                new UpdateSupplier(
+                    $supplier->identifier(),
+                    '',
+                    $supplier->contributors(),
+                )
+            );
+        } catch (InvalidData $e) {
+            $this->normalizeValidationErrors($e);
+        }
+    }
+
+    /**
+     * @When I update the supplier ":code" with an email address longer than 255 for a contributor
+     */
+    public function iUpdateTheSupplierWithAnEmailAddressLongerThan255ForContributor(string $code): void
+    {
+        $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
+        $longEmail = str_repeat('a', 250) . '@' . 'aa.co';
+
+        try {
+            ($this->updateSupplierHandler)(
+                new UpdateSupplier(
+                    $supplier->identifier(),
+                    $supplier->label(),
+                    [$longEmail],
+                )
+            );
+        } catch (InvalidData $e) {
+            $this->normalizeValidationErrors($e);
+        }
+    }
+
+    /**
      * @When I update the supplier ":code" contributors with ":contributors"
      */
     public function iUpdateTheSupplierContributorsWith(string $code, string $contributors): void
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
-        ($this->updateSupplierHandler)(
-            new UpdateSupplier(
-                $supplier->identifier(),
-                $supplier->label(),
-                '' !== $contributors ? explode(';', $contributors) : [],
-            )
-        );
+        try {
+            ($this->updateSupplierHandler)(
+                new UpdateSupplier(
+                    $supplier->identifier(),
+                    $supplier->label(),
+                    '' !== $contributors ? explode(';', $contributors) : [],
+                )
+            );
+        } catch (InvalidData $e) {
+            $this->normalizeValidationErrors($e);
+        }
     }
 
     /**
@@ -196,6 +265,14 @@ final class SupplierContext implements Context
         Assert::assertSame($contributors, $supplier->contributors());
     }
 
+    /**
+     * @Then I should have the following validation errors:
+     */
+    public function iShouldHaveTheFollowingValidationErrors(TableNode $table): void
+    {
+        Assert::assertEquals($table->getHash(), $this->errors);
+    }
+
     private function loadSuppliers(string $search = ''): void
     {
         $this->suppliers = ($this->getSupplierList)(1, $search);
@@ -205,5 +282,17 @@ final class SupplierContext implements Context
     {
         $supplier = $this->supplierRepository->findByCode(Write\Supplier\ValueObject\Code::fromString($code));
         $this->supplier = ($this->getSupplier)(Write\Supplier\ValueObject\Identifier::fromString($supplier->identifier()));
+    }
+
+    private function normalizeValidationErrors(InvalidData $e): void
+    {
+        $errors = [];
+        foreach ($e->violations() as $violation) {
+            $errors[] = [
+                'path' => $violation->getPropertyPath(),
+                'message' => $violation->getMessage(),
+            ];
+        }
+        $this->errors = $errors;
     }
 }

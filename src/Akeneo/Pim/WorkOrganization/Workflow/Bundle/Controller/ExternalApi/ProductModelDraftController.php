@@ -20,14 +20,12 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Applier\DraftApplierInterface
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Webmozart\Assert\Assert;
 
 class ProductModelDraftController
 {
@@ -57,7 +55,6 @@ class ProductModelDraftController
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
         private SecurityFacadeInterface $security,
-        private LoggerInterface $apiAclLogger,
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->productModelDraftRepository = $productModelDraftRepository;
@@ -126,15 +123,7 @@ class ProductModelDraftController
     private function denyAccessUnlessAclIsGranted(): void
     {
         if (!$this->security->isGranted('pim_api_product_list')) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            Assert::isInstanceOf($user, UserInterface::class);
-
-            $this->apiAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUserIdentifier(),
-                implode(',', $user->getRoles()),
-                'pim_api_product_list'
-            ));
+            throw new AccessDeniedHttpException('Access forbidden. You are not allowed to list products.');
         }
     }
 }
