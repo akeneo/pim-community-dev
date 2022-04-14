@@ -1,5 +1,46 @@
 # 6.0.x
 
+# 6.0.24 (2022-04-13)
+
+## Bug fixes
+
+- PIM-10332: [Backport PIM-10331] Fix error when using an association with quantities having an numeric code
+
+# 6.0.23 (2022-04-11)
+
+# 6.0.22 (2022-04-08)
+
+# 6.0.21 (2022-04-06)
+
+## Bug fixes
+
+- PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
+- PIM-10385: Fix message "New patch available" is present even if the PIM on the last patch
+
+# 6.0.20 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10323: [Backport PIM-10233] Fix the saved value by an empty wysiwyg
+
+# 6.0.19 (2022-03-28)
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
+# 6.0.18 (2022-03-24)
+
+# 6.0.17 (2022-03-24)
+
+# 6.0.16 (2022-03-24)
+
+## Bug fixes
+- PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
+- PIM-10321: [Backport PIM-10241] Fix user account disabled can connect regression
+
+# 6.0.15 (2022-03-23)
+
+# 6.0.14 (2022-03-22)
+
 # 6.0.13 (2022-03-18)
 
 # 6.0.12 (2022-03-17)

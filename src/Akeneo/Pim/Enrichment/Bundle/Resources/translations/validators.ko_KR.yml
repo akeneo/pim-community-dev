@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: 이 연결 유형이 없습니다. 그동안 해당 유형이 삭제되지 않았는지 확인하십시오.
       association_type_is_not_quantified: '''{{ association_type }}''은(는) 수량 연결에 사용할 수 없습니다. 다른 수량 연결 유형을 선택하거나 ''associations'' 속성을 사용하십시오.'
       association_type_should_not_be_quantified: '''{{ association_type }}''은(는) 수량 연결에만 사용할 수 있습니다. 다른 수량 연결 유형을 선택하거나 ''quantified_associations'' 속성을 사용하십시오.'
+    boolean:
+      boolean_value_is_required: '{{ attribute_code }} 특성에 입력되어야 하는 데이터는 부울 값(true 또는 false)이지만, {{ given_type }}이(가) 탐지되었습니다.'
+      boolean_value_is_required_in_import: '{{ attribute_code }} 특성에 입력되어야 하는 데이터는 부울 값(1 또는 0)이지만, {{ given_type }}이(가) 탐지되었습니다.'
 mass_edit:
   edit_common_attributes:
     invalid_values: 특성 양식에 오류가 있습니다.

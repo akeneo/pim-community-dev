@@ -20,8 +20,13 @@
 - PIM-10336: Fix product Export edition in error if no locale selected
 - PIM-10345: Fix issue when importing product model with an attribute constituted of only digits
 - PIM-10334: Fix error on the clean-removed-attributes
+- PIM-10362: Fix attribute type "number" gets modified in history when import with same value
+- PIM-10372: Fix letter case issue when importing channels
+- PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
+- PIM-10398: Fix category validator to prevent break-lines
 
 ## Improvements
+
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
 

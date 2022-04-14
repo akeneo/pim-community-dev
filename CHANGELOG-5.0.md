@@ -1,8 +1,21 @@
 # 5.0.x
 
+# 5.0.90 (2022-04-06)
+
+# 5.0.89 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10374: Revert PIM-10333 + Fix category translations are not displayed in the category tree when locale is not xx_XX
+
+# 5.0.88 (2022-03-23)
+
+# 5.0.87 (2022-03-23)
+
 ## Bug fixes
 
 - CPM-562 Fix product grid loading when attribute as image has a numeric code
+- PIM-10364: Fix broken permissions on Associations with Quantity
 
 # 5.0.86 (2022-03-17)
 

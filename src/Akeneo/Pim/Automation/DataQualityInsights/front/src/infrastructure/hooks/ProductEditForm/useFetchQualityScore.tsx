@@ -1,13 +1,38 @@
-import {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
-import {fetchProductQualityScore} from '../../fetcher/ProductEditForm/fetchProductQualityScore';
-import {fetchProductModelQualityScore} from '../../fetcher/ProductEditForm/fetchProductModelQualityScore';
-import {ProductEditFormState} from '../../store';
+import {useEffect, useRef, useState} from 'react';
+import {fetchQualityScore, Payload as FetchQualityscorePlayload} from '../../fetcher/ProductEditForm/fetchQualityScore';
 import {QualityScoreModel} from '../../../domain';
 import {ProductType} from '../../../domain/Product.interface';
 
-const MAXIMUM_RETRIES = 10;
+const MAX_NB_ATTEMPTS = 10;
 const RETRY_MILLISECONDS_DELAY = 500;
+
+type InnerFetcherOutcome =
+  | {
+      status: 'loading';
+    }
+  | {
+      status: 'loaded';
+      scores: QualityScoreModel;
+    }
+  | {
+      status: 'failed';
+      error: string;
+    };
+
+export type QualityScoresFetchingOutcome =
+  | {
+      status: 'init';
+    }
+  | InnerFetcherOutcome
+  | {
+      status: 'attempts exhausted';
+    };
+
+const initialOutcome: QualityScoresFetchingOutcome = {
+  status: 'init',
+};
+
+export type RetryDelayCalculator = (retry: number) => number;
 
 /**
  * @example
@@ -23,89 +48,88 @@ const RETRY_MILLISECONDS_DELAY = 500;
  *    8   | 32000
  *    9   | 40500
  */
-const getRetryDelay = (retry: number) => {
-  return Math.pow(retry, 2) * RETRY_MILLISECONDS_DELAY;
+const defaultGetRetryDelay: RetryDelayCalculator = retry => retry * retry * RETRY_MILLISECONDS_DELAY;
+
+export const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
+
+async function loadQualityScore(type: ProductType, id: number): Promise<InnerFetcherOutcome> {
+  let fetchedPayload: FetchQualityscorePlayload = {evaluations_available: false};
+  try {
+    fetchedPayload = await fetchQualityScore(type, id);
+  } catch (e) {
+    return {status: 'failed', error: e.message};
+  }
+
+  if (fetchedPayload.evaluations_available) {
+    return {status: 'loaded', scores: fetchedPayload.scores};
+  }
+
+  return {status: 'loading'};
+}
+
+type HooksReturn = {
+  outcome: QualityScoresFetchingOutcome;
+  fetcher: () => Promise<void>;
 };
 
-const useFetchQualityScore = (channel: string | undefined, locale: string | undefined) => {
-  const [retries, setRetries] = useState<number>(0);
-  const [qualityScore, setQualityScore] = useState<QualityScoreModel | null>(null);
-  const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const useFetchQualityScore = (
+  type: ProductType,
+  id: number | null,
+  getRetryDelay: RetryDelayCalculator = defaultGetRetryDelay
+): HooksReturn => {
+  const [scoresFetchingOutcome, setScoresFetchingOutcome] = useState<QualityScoresFetchingOutcome>(initialOutcome);
 
-  const {productId, productUpdatedDate, isEvaluating, productType} = useSelector((state: ProductEditFormState) => {
-    return {
-      productId: state.product.meta.id,
-      productType: state.product.meta.model_type as ProductType,
-      productUpdatedDate: state.product.updated,
-      isEvaluating: state.pageContext.isProductEvaluating,
-    };
-  });
+  const abort = useRef(false);
 
   useEffect(() => {
+    // cleanup if the component is unmounted while loading : we must cancel the retry loop
     return () => {
-      setNeedsUpdate(false);
-      setRetries(0);
-      setQualityScore(null);
+      abort.current = true;
     };
   }, []);
 
   useEffect(() => {
-    if (isEvaluating && null !== productUpdatedDate) {
-      setIsLoading(true);
-    } else {
-      setIsLoading(false);
-    }
-  }, [isEvaluating]);
+    setScoresFetchingOutcome({status: 'init'});
+    abort.current = false;
+  }, [id, type]);
 
-  useEffect(() => {
-    setNeedsUpdate(true);
-    setRetries(0);
-  }, [productUpdatedDate]);
-
-  useEffect(() => {
-    if (productId && needsUpdate) {
-      loadQualityScore(productId, retries);
-    }
-    if (false === needsUpdate) {
-      setIsLoading(false);
-    }
-  }, [productId, retries, needsUpdate]);
-
-  useEffect(() => {
-    if (productId && qualityScore !== null) {
-      if (qualityScore[channel as string][locale as string] !== null) {
-        setRetries(0);
-        setNeedsUpdate(false);
-      } else {
-        if (retries < MAXIMUM_RETRIES) {
-          setNeedsUpdate(true);
-          setRetries(retries + 1);
-        } else {
-          setNeedsUpdate(false);
-        }
-      }
-    }
-  }, [qualityScore, productId]);
-
-  const loadQualityScore = (productId: number, retries: number) => {
-    setTimeout(() => {
-      (async () => {
-        const fetcher = productType === 'product' ? fetchProductQualityScore : fetchProductModelQualityScore;
-        const score = await fetcher(productId);
-        if (productId) {
-          setQualityScore(score);
-        }
-      })();
-    }, getRetryDelay(retries));
-  };
-
-  const score = qualityScore !== null && channel && locale ? qualityScore[channel][locale] : null;
+  if (id === null) {
+    // dev error
+    return {
+      outcome: {
+        status: 'failed',
+        error: 'entity has null id',
+      },
+      fetcher: () => Promise.resolve(),
+    };
+  }
 
   return {
-    score,
-    isLoading,
-    productType,
+    outcome: scoresFetchingOutcome,
+    fetcher: async () => {
+      setScoresFetchingOutcome({status: 'loading'});
+      let remaingAttempts = MAX_NB_ATTEMPTS;
+      while (remaingAttempts--) {
+        await sleep(getRetryDelay(MAX_NB_ATTEMPTS - remaingAttempts));
+        if (abort.current) {
+          // component unmounted
+          return;
+        }
+        const outcome = await loadQualityScore(type, id);
+        if (abort.current) {
+          // component unmounted
+          return;
+        }
+        switch (outcome.status) {
+          case 'failed': // no break
+          case 'loaded': {
+            setScoresFetchingOutcome(outcome);
+            return;
+          }
+        }
+      }
+      setScoresFetchingOutcome({status: 'attempts exhausted'});
+    },
   };
 };
 

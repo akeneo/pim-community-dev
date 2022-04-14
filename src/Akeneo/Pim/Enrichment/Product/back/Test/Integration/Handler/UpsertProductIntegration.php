@@ -13,18 +13,25 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
@@ -142,7 +149,40 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_metric_value(): void
+    public function it_updates_a_product_s_identifier(): void
+    {
+        $this->updateProduct(new SetIdentifierValue('sku', 'new_identifier'));
+        Assert::assertNull($this->productRepository->findOneByIdentifier('identifier'));
+        $updatedProduct = $this->productRepository->findOneByIdentifier('new_identifier');
+        Assert::assertNotNull($updatedProduct);
+        Assert::assertSame('new_identifier', $updatedProduct->getIdentifier());
+        Assert::assertSame('new_identifier', $updatedProduct->getValue('sku')?->getData());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_deleting_the_identifier_value()
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The identifier attribute cannot be empty.');
+        $this->updateProduct(new SetIdentifierValue('sku', ''));
+    }
+
+    /** @test */
+    public function it_throws_an_exception_for_a_duplicate_identifier_value(): void
+    {
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+            $this->getUserId('admin'),
+            'foo',
+            []
+        ));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The foo identifier is already used for another product.');
+        $this->updateProduct(new SetIdentifierValue('sku', 'foo'));
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_measurement_value(): void
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
@@ -153,7 +193,7 @@ final class UpsertProductIntegration extends TestCase
 
         // Update product with number value
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '100', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, '100', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
 
@@ -168,23 +208,23 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
+    public function it_throws_an_exception_when_a_measurement_amount_is_not_numeric(): void
     {
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('This value should be of type numeric.');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
+    public function it_throws_an_exception_when_a_measurement_unit_is_unknown(): void
     {
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Please specify a valid metric unit');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
+            new SetMeasurementValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);
     }
@@ -608,6 +648,7 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
     }
 
+    /** @test */
     public function it_updates_a_product_categories(): void
     {
         $this->updateProduct(new SetCategories(['categoryA', 'categoryB']));
@@ -692,6 +733,175 @@ final class UpsertProductIntegration extends TestCase
         $this->updateProduct(new RemoveCategories(['categoryA', 'unknown']));
     }
 
+    /** @test */
+    public function it_successfully_creates_and_updates_a_product_with_a_set_multiple_records_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo'])]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo']
+        );
+        $this->updateProduct(
+            new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['AnotherZiggy', 'Ziggy'])
+        );
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['AnotherZiggy', 'Ziggy']
+        );
+    }
+
+    /** @test */
+    public function it_successfully_creates_and_updates_a_product_with_an_add_multiple_records_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy'])]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo', 'Ziggy']
+        );
+        $this->updateProduct(
+            new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Ziggy', 'AnotherZiggy'])
+        );
+        $this->assertProductHasCorrectValueByAttributeCode(
+            'a_multi_reference_entity_attribute',
+            ['Akeneo', 'Ziggy', 'AnotherZiggy']
+        );
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_remove_multiple_records_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'Ziggy', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo', 'Ziggy', 'AnotherZiggy']);
+        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo', 'AnotherZiggy']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Ziggy']);
+    }
+
+    /** @test */
+    public function it_removes_last_record_code_with_a_remove_multiple_records_value()
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+        $this->createRecords('brand', ['Akeneo']);
+
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo']));
+        $this->assertProductHasCorrectValueByAttributeCode('a_multi_reference_entity_attribute', ['Akeneo']);
+        $this->updateProduct(new RemoveMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['Akeneo']));
+
+        $this->assertProductHasNoValueByAttributeCode('a_multi_reference_entity_attribute');
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_multi_reference_entity_record_does_not_exist(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->createReferenceEntity('brand');
+        $this->createAttribute(
+            [
+                'code' => 'a_multi_reference_entity_attribute',
+                'type' => 'akeneo_reference_entity_collection',
+                'group' => 'other',
+                'reference_data_name' => 'brand',
+            ]
+        );
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Property "a_multi_reference_entity_attribute" expects valid record codes. The following records do not exist: "toto"');
+        $this->updateProduct(new SetMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Property "a_multi_reference_entity_attribute" expects valid record codes. The following records do not exist: "toto"');
+        $this->updateProduct(new AddMultiReferenceEntityValue('a_multi_reference_entity_attribute', null, null, ['toto']));
+    }
+
+    /** @test */
+    public function it_can_modify_a_products_groups(): void
+    {
+        $this->updateProduct(new SetGroups(['groupA', 'groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+
+        $this->updateProduct(new RemoveFromGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA'], $product->getGroupCodes());
+
+        $this->updateProduct(new AddToGroups(['groupB']));
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEqualsCanonicalizing(['groupA', 'groupB'], $product->getGroupCodes());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_setting_an_unknown_group(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Property "groups" expects a valid group code. The group does not exist, "unknown" given.');
+
+        $this->updateProduct(new SetGroups(['unknown', 'groupB']));
+    }
+
     private function getUserId(string $username): int
     {
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
@@ -768,6 +978,7 @@ final class UpsertProductIntegration extends TestCase
     private function loadAssetFixtures(): void
     {
         FeatureHelper::skipIntegrationTestWhenAssetFeatureIsNotActivated();
+        $this->get('feature_flags')->enable('asset_manager');
 
         ($this->get('akeneo_assetmanager.application.asset_family.create_asset_family_handler'))(
         /** @phpstan-ignore-next-line */
@@ -797,13 +1008,23 @@ final class UpsertProductIntegration extends TestCase
         );
     }
 
-    private function assertProductHasCorrectValueByAttributeCode(string $attributeCode, mixed $expectedValue): void
-    {
+    private function assertProductHasCorrectValueByAttributeCode(
+        string $attributeCode,
+        mixed $expectedValue
+    ): void {
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         $value = $product->getValue($attributeCode, null, null);
         Assert::assertNotNull($value);
         Assert::assertEquals($expectedValue, $value->getData());
+    }
+
+    private function assertProductHasNoValueByAttributeCode(string $attributeCode): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $value = $product->getValue($attributeCode, null, null);
+        Assert::assertNull($value);
     }
 
     private function createAttribute(array $data): void
@@ -898,10 +1119,12 @@ final class UpsertProductIntegration extends TestCase
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
     }
 
-    private function createReferenceEntity(string $referenceEntitycCode): void
+    private function createReferenceEntity(string $referenceEntityCode): void
     {
+        $this->get('feature_flags')->enable('reference_entity');
+
         /** @phpstan-ignore-next-line */
-        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntitycCode, []);
+        $createReferenceEntityCommand = new CreateReferenceEntityCommand($referenceEntityCode, []);
         $validator = $this->get('validator');
         $violations = $validator->validate($createReferenceEntityCommand);
         Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
@@ -910,12 +1133,12 @@ final class UpsertProductIntegration extends TestCase
         );
     }
 
-    private function createRecords(string $referenceEntitycCode, array $recordCodes): void
+    private function createRecords(string $referenceEntityCode, array $recordCodes): void
     {
         $validator = $this->get('validator');
         foreach ($recordCodes as $recordCode) {
             /** @phpstan-ignore-next-line */
-            $createRecord = new CreateRecordCommand($referenceEntitycCode, $recordCode, []);
+            $createRecord = new CreateRecordCommand($referenceEntityCode, $recordCode, []);
             $violations = $validator->validate($createRecord);
             Assert::assertCount(0, $violations, \sprintf('The command is not valid: %s', $violations));
             ($this->get('akeneo_referenceentity.application.record.create_record_handler'))($createRecord);

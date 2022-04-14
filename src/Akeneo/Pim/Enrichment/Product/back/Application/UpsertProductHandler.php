@@ -81,11 +81,16 @@ final class UpsertProductHandler
         );
         $userIntents = \array_filter(
             array_merge(
+                [
+                    'parentUserIntent' => $command->parentUserIntent(),
+                ],
                 $indexedValueUserIntents,
                 [
                     'enabledUserIntent' => $command->enabledUserIntent(),
                     'familyUserIntent' => $command->familyUserIntent(),
                     'categoryUserIntent' => $command->categoryUserIntent(),
+                    'groupUserIntent' => $command->groupUserIntent(),
+                    'associationUserIntent' => $command->associationUserIntent(),
                 ]
             ),
             fn ($userIntent): bool => null !== $userIntent

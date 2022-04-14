@@ -7,16 +7,20 @@ type Props = {
     id: string;
     isConnected: boolean;
     isDisabled: boolean;
+    isPending: boolean;
 };
 
-export const ActivateAppButton: FC<Props> = ({id, isConnected, isDisabled}) => {
+export const ActivateAppButton: FC<Props> = ({id, isConnected, isPending, isDisabled}) => {
     const translate = useTranslate();
     const generateUrl = useRouter();
 
-    const url = `#${generateUrl('akeneo_connectivity_connection_connect_apps_activate', {
-        id: id,
-    })}`;
-
+    if (isPending) {
+        return (
+            <Button level='primary' disabled ghost>
+                {translate('akeneo_connectivity.connection.connect.marketplace.card.pending')}
+            </Button>
+        );
+    }
     if (isConnected) {
         return (
             <Button level='primary' disabled>
@@ -24,6 +28,10 @@ export const ActivateAppButton: FC<Props> = ({id, isConnected, isDisabled}) => {
             </Button>
         );
     }
+
+    const url = `#${generateUrl('akeneo_connectivity_connection_connect_apps_activate', {
+        id: id,
+    })}`;
 
     return (
         <Button href={url} target='_blank' level='primary' disabled={isDisabled}>

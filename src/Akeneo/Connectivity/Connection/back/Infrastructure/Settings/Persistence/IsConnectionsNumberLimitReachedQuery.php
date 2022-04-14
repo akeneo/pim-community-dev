@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Query\IsConnectionsNumberLimitReachedQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit;
+use Akeneo\Connectivity\Connection\Infrastructure\Connections\Service\GetConnectionsNumberLimit;
 use Doctrine\DBAL\Connection;
 
 /**

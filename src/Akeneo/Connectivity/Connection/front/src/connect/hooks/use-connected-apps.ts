@@ -6,6 +6,23 @@ import {useFetchConnectedApps} from './use-fetch-connected-apps';
 import {useFetchApps} from './use-fetch-apps';
 import {useTranslate} from '../../shared/translate';
 import {useFetchTestApps} from './use-fetch-test-apps';
+import {App} from '../../model/app';
+import {useTriggerConnectedAppRefresh} from './use-trigger-connected-app-refresh';
+
+const hashAppSubset = ({name, logo, author, categories, certified, partner}: ConnectedApp | App): string => {
+    return JSON.stringify({
+        name,
+        logo,
+        author,
+        categories,
+        certified,
+        partner,
+    });
+};
+
+const isAppSubsetIdentical = (app: App, connectedApp: ConnectedApp): boolean => {
+    return hashAppSubset(app) === hashAppSubset(connectedApp);
+};
 
 export const useConnectedApps = (): ConnectedApp[] | null | false => {
     const featureFlag = useFeatureFlags();
@@ -14,6 +31,7 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
     const fetchConnectedApps = useFetchConnectedApps();
     const fetchApps = useFetchApps();
     const fetchTestApps = useFetchTestApps();
+    const triggerConnectedAppRefresh = useTriggerConnectedAppRefresh();
     const [connectedApps, setConnectedApps] = useState<ConnectedApp[] | null | false>(null);
 
     useEffect(() => {
@@ -60,8 +78,20 @@ export const useConnectedApps = (): ConnectedApp[] | null | false => {
                         return {
                             ...connectedApp,
                             activate_url: app?.activate_url || undefined,
+                            is_loaded: true,
+                            is_listed_on_the_appstore: false === connectedApp.is_test_app && undefined !== app,
                         };
                     });
+                });
+
+                // trigger a refresh when there is an inconsistency between the data in a connected app and the data
+                // in the app store
+                connectedApps.forEach(connectedApp => {
+                    const app = apps.apps.find(app => app.id === connectedApp.id);
+
+                    if (undefined !== app && !isAppSubsetIdentical(app, connectedApp)) {
+                        triggerConnectedAppRefresh(connectedApp.connection_code);
+                    }
                 });
             } catch (e) {
                 return;

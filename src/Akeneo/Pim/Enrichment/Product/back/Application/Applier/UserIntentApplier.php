@@ -18,7 +18,7 @@ interface UserIntentApplier
     public function apply(UserIntent $userIntent, ProductInterface $product, int $userId): void;
 
     /**
-     * @return array<string>
+     * @return array<class-string>
      */
     public function getSupportedUserIntents(): array;
 }

@@ -23,6 +23,11 @@ akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetAllConnectedAppScopeMessagesAction
     methods: [GET]
 
+akeneo_connectivity_connection_apps_rest_get_connected_app_authentication_scopes:
+    path: '/connected-apps/{connectionCode}/authentication-scopes'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAuthenticationScopesAction
+    methods: [GET]
+
 akeneo_connectivity_connection_apps_rest_get_connected_app:
     path: '/connected-apps/{connectionCode}'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAction
@@ -46,4 +51,9 @@ akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings:
 akeneo_connectivity_connection_apps_rest_update_connected_app_monitoring_settings:
     path: '/connected-apps/{connectionCode}/monitoring-settings'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\UpdateConnectedAppMonitoringSettingsAction
+    methods: [POST]
+
+akeneo_connectivity_connection_apps_rest_refresh:
+    path: '/connected-apps/{connectionCode}/refresh'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction
     methods: [POST]

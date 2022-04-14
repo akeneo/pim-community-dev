@@ -72,6 +72,12 @@ services:
         tags:
             - { name: 'console.command' }
 
+    Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\CleanCompletenessEvaluationResultsCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
     Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\EvaluateProductCriterionCommand:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_criteria'

@@ -13,6 +13,7 @@ Feature: Datagrid views
       | black-boots     | boots    | Black boots     |              |
     And I am logged in as "Mary"
 
+  @data-quality-insights-feature-enabled
   Scenario: Successfully display the default view
     Given I am on the products grid
     Then I should see the text "Default view"
@@ -56,7 +57,7 @@ Feature: Datagrid views
     And I should see the flash message "Datagrid view successfully created"
     And I should see the text "Some shoes"
     When I display the columns SKU, Name, Family and Manufacturer
-    Then I should see the columns Family, Sku, Manufacturer and Name
+    Then I should see the columns Family, Name, Manufacturer and Sku
     Then I should see the text "Nike"
     When I update the view
     And I apply the "Some shoes" view

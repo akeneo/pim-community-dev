@@ -85,12 +85,25 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetConnectedAppAuthenticationScopesAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetUserConsentedAuthenticationScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ConnectedPimUserProvider'
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetWizardDataAction:
         public: true
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByConnectionCodeQuery'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RefreshConnectedAppHandler'
 
     ## PUBLIC
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction:
