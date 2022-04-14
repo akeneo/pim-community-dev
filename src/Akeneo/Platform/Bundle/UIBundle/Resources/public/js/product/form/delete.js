@@ -15,7 +15,7 @@ define(['pim/form/common/delete', 'pim/remover/product'], function (DeleteForm, 
      * {@inheritdoc}
      */
     getIdentifier: function () {
-      return this.getFormData().meta.id;
+      return this.getFormData().meta.uuid;
     },
   });
 });

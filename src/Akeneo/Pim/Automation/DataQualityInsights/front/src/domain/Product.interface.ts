@@ -1,5 +1,6 @@
 export type ProductType = 'product' | 'product_model';
 
+// This is a Product or a ProductModel
 export default interface Product {
   code?: string; // Product model code
   parent?: string; // Product model parent code
@@ -14,7 +15,8 @@ export default interface Product {
 }
 
 interface Meta {
-  id: number | null;
+  uuid?: string;
+  id?: string;
   label: {
     [locale: string]: string;
   };

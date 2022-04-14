@@ -2,9 +2,9 @@ pim_enrich_product_index:
     path: /
 
 pim_enrich_product_edit:
-    path: /{id}
+    path: /{uuid}
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET, POST]
 
 pim_enrich_product_edit_categories:

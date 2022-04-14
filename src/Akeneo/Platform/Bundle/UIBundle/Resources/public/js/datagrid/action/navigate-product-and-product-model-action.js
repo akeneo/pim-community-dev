@@ -25,7 +25,15 @@ define(['underscore', 'oro/translator', 'oro/datagrid/navigate-action', 'pim/rou
       const id = this.model.get('technical_id');
 
       if (typeof this.links[productType] !== 'undefined') {
-        return Router.generate(this.links[productType], {id});
+        if (Number.isInteger(id)) {
+          return Router.generate(this.links[productType], {id});
+        } else {
+          return Router.generate(this.links[productType], {uuid: id});
+        }
+      }
+
+      if (productType === 'product') {
+        return Router.generate('pim_enrich_product_edit', {uuid: id});
       }
 
       return Router.generate('pim_enrich_' + productType + '_edit', {id});
