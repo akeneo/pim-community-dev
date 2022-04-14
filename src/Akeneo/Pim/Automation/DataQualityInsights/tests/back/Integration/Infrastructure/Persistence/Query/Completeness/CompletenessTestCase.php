@@ -71,15 +71,6 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
                 ]
             );
 
-            if ($attributeData['type'] === AttributeTypes::TABLE && $attributeData['table_configuration']) {
-                $this->get('pim_catalog.updater.attribute')->update(
-                    $attribute,
-                    [
-                        'table_configuration' => $attributeData['table_configuration'],
-                    ]
-                );
-            }
-
             $errors = $this->get('validator')->validate($attribute);
             Assert::count($errors, 0);
 
