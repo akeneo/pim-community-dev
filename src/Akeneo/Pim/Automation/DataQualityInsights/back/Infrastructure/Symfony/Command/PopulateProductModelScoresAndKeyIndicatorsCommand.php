@@ -25,11 +25,10 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
     protected static $defaultName = 'pim:data-quality-insights:populate-product-models-scores-and-ki';
 
     public function __construct(
-        private Connection                      $dbConnection,
-        private CreateCriteriaEvaluations       $createCriteriaEvaluations,
+        private Connection $dbConnection,
+        private CreateCriteriaEvaluations $createCriteriaEvaluations,
         private ProductEntityIdFactoryInterface $idFactory
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -42,6 +41,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
     {
         if (!$this->commandCanBeStarted()) {
             $output->writeln('This process has already been performed or is in progress.', OutputInterface::VERBOSITY_VERBOSE);
+
             return Command::SUCCESS;
         }
 
@@ -62,7 +62,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
         while ($productModelIds = $this->getNextProductModelIds($lastProductModelId)) {
             try {
-                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn($productModelId) => (string)$productModelId, $productModelIds));
+                $productModelIdsCollection = $this->idFactory->createCollection(array_map(fn ($productModelId) => (string) $productModelId, $productModelIds));
                 $this->createCriteriaEvaluations->create($completenessCriteria, $productModelIdsCollection);
                 $lastProductModelId = end($productModelIds);
             } catch (\Throwable $e) {
@@ -74,6 +74,7 @@ class PopulateProductModelScoresAndKeyIndicatorsCommand extends Command
 
         $this->persistCommandDone();
         $output->writeln('process complete.');
+
         return Command::SUCCESS;
     }
 
@@ -117,7 +118,7 @@ SQL;
 SELECT 1 FROM pim_one_time_task WHERE code = :code
 SQL;
 
-        return !(bool)$this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
+        return !(bool) $this->dbConnection->executeQuery($query, ['code' => self::$defaultName])->fetchOne();
     }
 
     /**
@@ -146,7 +147,7 @@ SQL;
         );
 
         return array_map(static function ($resultRow) {
-            return (int)$resultRow['id'];
+            return (int) $resultRow['id'];
         }, $bulkResult->fetchAllAssociative());
     }
 }
