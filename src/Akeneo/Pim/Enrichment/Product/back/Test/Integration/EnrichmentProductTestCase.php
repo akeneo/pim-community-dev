@@ -221,17 +221,28 @@ abstract class EnrichmentProductTestCase extends TestCase
     /**
      * @return array<string>
      */
-    protected function getAssociatedProductIdentifiers(ProductInterface $product): array
+    protected function getAssociatedProductIdentifiers(ProductInterface $product, string $associationType = 'X_SELL'): array
     {
-        return $product->getAssociatedProducts('X_SELL')
+        return $product->getAssociatedProducts($associationType)
                 ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
                 ?->toArray() ?? [];
     }
 
-    protected function getAssociatedProductModelIdentifiers(ProductInterface $product): array
+    protected function getAssociatedProductModelIdentifiers(ProductInterface $product, string $associationType = 'X_SELL'): array
     {
-        return $product->getAssociatedProductModels('X_SELL')
+        return $product->getAssociatedProductModels($associationType)
                 ?->map(fn (ProductModelInterface $productModel) => $productModel->getIdentifier())
                 ?->toArray() ?? [];
+    }
+
+    protected function createTwoWayAssociationType(string $code): void
+    {
+        $factory = $this->get('pim_catalog.factory.association_type');
+        $updater = $this->get('pim_catalog.updater.association_type');
+        $saver = $this->get('pim_catalog.saver.association_type');
+
+        $associationType = $factory->create();
+        $updater->update($associationType, ['code' => $code, 'is_two_way' => true]);
+        $saver->save($associationType);
     }
 }
