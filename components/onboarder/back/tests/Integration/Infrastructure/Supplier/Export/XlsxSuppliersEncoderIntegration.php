@@ -11,7 +11,7 @@ use Box\Spout\Common\Type;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Doctrine\DBAL\Connection;
 
-final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
+final class XlsxSuppliersEncoderIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itExportsAXlsxFileContainingHeadersOnlyWhenThereIsNoSuppliers(): void

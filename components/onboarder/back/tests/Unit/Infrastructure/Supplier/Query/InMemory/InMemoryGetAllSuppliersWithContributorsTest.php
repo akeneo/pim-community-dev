@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class InMemoryGetAllSuppliersWithContributorsTest extends TestCase
 {
     /** @test */
-    public function itReturnsAnEmptyArrayIfThereIsNoSupplierToExport(): void
+    public function itReturnsAnEmptyArrayIfThereIsNoSuppliers(): void
     {
         $sut = new InMemoryGetAllSuppliersWithContributors(new InMemoryRepository());
 
@@ -20,7 +20,7 @@ final class InMemoryGetAllSuppliersWithContributorsTest extends TestCase
     }
 
     /** @test */
-    public function itGetsSupplierExport(): void
+    public function itGetAllSuppliersWithContributors(): void
     {
         $supplierRepository = new InMemoryRepository();
         $sut = new InMemoryGetAllSuppliersWithContributors($supplierRepository);

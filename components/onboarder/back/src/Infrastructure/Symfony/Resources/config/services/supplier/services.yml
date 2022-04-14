@@ -85,6 +85,6 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
 
-    # Export
+    # Encoders
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
