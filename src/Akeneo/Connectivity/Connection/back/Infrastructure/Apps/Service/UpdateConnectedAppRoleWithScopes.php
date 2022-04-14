@@ -32,7 +32,7 @@ final class UpdateConnectedAppRoleWithScopes implements UpdateConnectedAppRoleWi
 
         $permissions = ['action:pim_api_overall_access' => true];
 
-        $allAcls = $this->scopeMapperRegistry->getAcls( $this->scopeMapperRegistry->getAllScopes());
+        $allAcls = $this->scopeMapperRegistry->getAcls($this->scopeMapperRegistry->getAllScopes());
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
         foreach ($allAcls as $acl) {
             $permissions[\sprintf('action:%s', $acl)] = \in_array($acl, $acls);
