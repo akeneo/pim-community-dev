@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes;
@@ -35,20 +35,20 @@ class GetProductEvaluationSpec extends ObjectBehavior
     public function let(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
+        CriteriaByFeatureRegistry $criteriaRegistry,
         CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
     ) {
         $this->beConstructedWith(
             $getCriteriaEvaluationsByProductIdQuery,
             $getLocalesByChannelQuery,
-            $criteriaEvaluationRegistry,
+            $criteriaRegistry,
             $completeEvaluationWithImprovableAttributes
         );
     }
 
     public function it_gives_the_evaluation_of_a_product(
         $getCriteriaEvaluationsByProductIdQuery,
-        $criteriaEvaluationRegistry,
+        $criteriaRegistry,
         $getLocalesByChannelQuery,
         $completeEvaluationWithImprovableAttributes
     ) {
@@ -59,7 +59,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
             'mobile' => ['en_US']
         ]));
 
-        $criteriaEvaluationRegistry->getCriterionCodes()->willReturn([
+        $criteriaRegistry->getEnabledCriterionCodes()->willReturn([
             new CriterionCode('completeness_of_required_attributes'),
             new CriterionCode('completeness_of_non_required_attributes'),
             new CriterionCode('consistency_spelling'),
@@ -75,7 +75,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
     public function it_handle_deprecated_improvable_attribute_structure(
         $getCriteriaEvaluationsByProductIdQuery,
-        $criteriaEvaluationRegistry,
+        $criteriaRegistry,
         $getLocalesByChannelQuery,
         $completeEvaluationWithImprovableAttributes
     ) {
@@ -83,7 +83,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
             'ecommerce' => ['en_US'],
         ]));
 
-        $criteriaEvaluationRegistry->getCriterionCodes()->willReturn([
+        $criteriaRegistry->getEnabledCriterionCodes()->willReturn([
             new CriterionCode('consistency_spelling'),
             new CriterionCode('consistency_textarea_lowercase_words'),
         ]);
