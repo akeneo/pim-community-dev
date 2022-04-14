@@ -6,6 +6,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -39,6 +41,17 @@ class ProductModelController extends AbstractListCategoryController
         parent::__construct($categoryRepository, $securityFacade, $categoryClass, $acl, $template);
 
         $this->productModelRepository = $productModelRepository;
+    }
+
+    /**
+     * List categories associated with the provided product model and descending from the category
+     * defined by the parent parameter.
+     *
+     * httpparam include_category if true, will include the parentCategory in the response
+     */
+    public function listCategoriesAction(Request $request, string $id, string $categoryId): Response
+    {
+        return $this->doListCategoriesAction($request, $id, $categoryId);
     }
 
     /**

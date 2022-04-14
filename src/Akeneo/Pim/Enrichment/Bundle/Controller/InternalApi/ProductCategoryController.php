@@ -46,15 +46,15 @@ class ProductCategoryController
     /**
      * List categories and trees for a product
      *
-     * @param string $id
+     * @param string $uuid
      *
      * @AclAncestor("pim_enrich_product_categories_view")
      *
      * @return JsonResponse
      */
-    public function listAction($id)
+    public function listAction($uuid)
     {
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $trees = $this->productCategoryRepository->getItemCountByTree($product);
 
         $result['trees'] = $this->buildTrees($trees);
@@ -66,20 +66,18 @@ class ProductCategoryController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param string $id the product id
-     *
-     * @throws NotFoundHttpException
+     * @param string $uuid the product uuid
      *
      * @return ProductInterface
+     * @throws NotFoundHttpException
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(string $uuid)
     {
-        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
-        $product = $this->productRepository->findBy(['id' => $id]);
+        $product = $this->productRepository->find($uuid);
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $id)
+                sprintf('Product with id %s could not be found.', (string) $uuid)
             );
         }
 

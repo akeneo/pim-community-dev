@@ -1,8 +1,8 @@
 pim_enrich_product_category_rest_list:
-    path: /rest/{id}/categories
+    path: /rest/{uuid}/categories
     defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
 
 pim_enrich_product_rest_index:
