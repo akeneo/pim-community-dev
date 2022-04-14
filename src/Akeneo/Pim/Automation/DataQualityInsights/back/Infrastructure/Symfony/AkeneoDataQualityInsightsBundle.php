@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony;
 
+use Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\DependencyInjection\Compiler\CriteriaByFeatureRegistryPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -12,4 +14,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 final class AkeneoDataQualityInsightsBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new CriteriaByFeatureRegistryPass());
+    }
 }
