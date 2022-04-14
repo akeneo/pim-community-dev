@@ -13,17 +13,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class ProductScores
 {
-    private ProductId $productId;
-
-    private \DateTimeImmutable $evaluatedAt;
-
-    private ChannelLocaleRateCollection $scores;
-
-    public function __construct(ProductId $productId, \DateTimeImmutable $evaluatedAt, ChannelLocaleRateCollection $scores)
-    {
-        $this->productId = $productId;
-        $this->evaluatedAt = $evaluatedAt;
-        $this->scores = $scores;
+    public function __construct(
+        private ProductId $productId,
+        private \DateTimeImmutable $evaluatedAt,
+        private ChannelLocaleRateCollection $scores,
+        private ChannelLocaleRateCollection $scoresPartialCriteria,
+    ) {
     }
 
     public function getProductId(): ProductId
@@ -39,5 +34,10 @@ final class ProductScores
     public function getScores(): ChannelLocaleRateCollection
     {
         return $this->scores;
+    }
+
+    public function getScoresPartialCriteria(): ChannelLocaleRateCollection
+    {
+        return $this->scoresPartialCriteria;
     }
 }
