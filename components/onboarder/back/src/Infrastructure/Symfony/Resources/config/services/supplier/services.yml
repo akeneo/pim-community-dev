@@ -6,7 +6,7 @@ services:
         public: true
 
     # Repositories
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
@@ -14,17 +14,17 @@ services:
     # Command/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
 
     Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@validator'
 
     Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:

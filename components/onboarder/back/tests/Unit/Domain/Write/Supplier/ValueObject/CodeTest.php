@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject;
 
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
 use PHPUnit\Framework\TestCase;
 
 final class CodeTest extends TestCase
@@ -13,7 +14,7 @@ final class CodeTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The supplier code cannot be empty.'));
 
-        \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('');
+        Code::fromString('');
     }
 
     /** @test */
@@ -25,7 +26,7 @@ final class CodeTest extends TestCase
             ),
         );
 
-        \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString(str_repeat('a', 201));
+        Code::fromString(str_repeat('a', 201));
     }
 
     /** @test */
@@ -37,33 +38,33 @@ final class CodeTest extends TestCase
             ),
         );
 
-        \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('$uppli€rCØde');
+        Code::fromString('$uppli€rCØde');
     }
 
     /** @test */
     public function itCreatesAndGetsASupplierCodeIfItsValid(): void
     {
-        $code = \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('valid_supplier_code');
+        $code = Code::fromString('valid_supplier_code');
 
-        static::assertInstanceOf(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::class, $code);
+        static::assertInstanceOf(Code::class, $code);
         static::assertSame('valid_supplier_code', (string) $code);
     }
 
     /** @test */
     public function itTrimsExtraWhitespaces(): void
     {
-        $code = \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('valid_supplier_code_with_extra_whitespace ');
+        $code = Code::fromString('valid_supplier_code_with_extra_whitespace ');
 
-        static::assertInstanceOf(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::class, $code);
+        static::assertInstanceOf(Code::class, $code);
         static::assertSame('valid_supplier_code_with_extra_whitespace', (string) $code);
     }
 
     /** @test */
     public function itLowersUpperCases(): void
     {
-        $code = \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::fromString('SUPPLIER_CODE');
+        $code = Code::fromString('SUPPLIER_CODE');
 
-        static::assertInstanceOf(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code::class, $code);
+        static::assertInstanceOf(Code::class, $code);
         static::assertSame('supplier_code', (string) $code);
     }
 }

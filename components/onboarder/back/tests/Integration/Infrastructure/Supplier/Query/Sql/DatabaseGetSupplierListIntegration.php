@@ -6,7 +6,8 @@ namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Quer
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributorCount;
-use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -22,10 +23,10 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itGetsNoMoreThanFiftySuppliersAtATime(): void
     {
-        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
         for ($i = 1; $i <= 60; $i++) {
-            $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            $supplierRepository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
@@ -39,16 +40,16 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itSearchesOnSupplierLabel(): void
     {
-        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             Uuid::uuid4()->toString(),
             'walter_white',
             'Walter White',
             [],
         ));
 
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             Uuid::uuid4()->toString(),
             'jessie_pinkman',
             'Jessie Pinkman',
@@ -61,10 +62,10 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itPaginatesTheSupplierList(): void
     {
-        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
         for ($i = 1; $i <= 110; $i++) {
-            $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+            $supplierRepository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
                 sprintf('Supplier %d label', $i),
@@ -80,16 +81,16 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itSortsTheSupplierListInAnAscendingDirection(): void
     {
-        $supplierRepository = $this->get(Write\Supplier\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             Uuid::uuid4()->toString(),
             'supplier_code_b',
             'Supplier B label',
             [],
         ));
 
-        $supplierRepository->save(Write\Supplier\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             Uuid::uuid4()->toString(),
             'supplier_code_a',
             'Supplier A label',
@@ -152,9 +153,10 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     private function createContributor(string $email): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
-VALUES (:email, :supplierIdentifier)
-SQL;
+            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+            VALUES (:email, :supplierIdentifier)
+        SQL;
+
         $this->get(Connection::class)->executeQuery(
             $sql,
             [

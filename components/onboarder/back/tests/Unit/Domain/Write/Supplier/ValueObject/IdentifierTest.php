@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject;
 
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use PHPUnit\Framework\TestCase;
 
 final class IdentifierTest extends TestCase
@@ -17,15 +18,15 @@ final class IdentifierTest extends TestCase
             ),
         );
 
-        \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::fromString('foo');
+        Identifier::fromString('foo');
     }
 
     /** @test */
     public function itCreatesASupplierIdentifierIfItsValid(): void
     {
-        $uuid = \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
+        $uuid = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
 
-        static::assertInstanceOf(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::class, $uuid);
+        static::assertInstanceOf(Identifier::class, $uuid);
         static::assertSame('44ce8069-8da1-4986-872f-311737f46f02', (string) $uuid);
     }
 }

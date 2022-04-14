@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Repository\Sql;
 
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -12,16 +15,16 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itCreatesAndFindsASupplier(): void
     {
-        $supplierRepository = $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
             'other_supplier_code',
             'Other supplier label',
@@ -42,9 +45,9 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itUpdatesAnExistingSupplier(): void
     {
-        $supplierRepository = $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
@@ -54,7 +57,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $updatedAtBeforeUpdate = $supplierBeforeUpdate['updated_at'];
         sleep(1);
 
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'new_supplier_code',
             'New supplier label',
@@ -79,15 +82,15 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itFindsASupplier(): void
     {
-        $supplierRepository = $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class);
+        $supplierRepository = $this->get(Repository::class);
 
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f03',
             'other_supplier_code',
             'Other supplier label',
@@ -95,12 +98,12 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         ));
 
         $supplier = $supplierRepository->find(
-            \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::fromString(
+            Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02',
             ),
         );
 
-        static::assertInstanceOf(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::class, $supplier);
+        static::assertInstanceOf(Supplier::class, $supplier);
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier label', $supplier->label());
         static::assertSame([
@@ -109,7 +112,7 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         ], $supplier->contributors());
 
         $supplier2 = $supplierRepository->find(
-            \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::fromString(
+            Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f03',
             ),
         );
@@ -119,22 +122,22 @@ final class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itDeletesASupplierAndItsContributors(): void
     {
-        $supplierRepository = $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class);
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository = $this->get(Repository::class);
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
             ['contributor1@example.com', 'contributor2@example.com'],
         ));
-        $supplierRepository->save(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier::create(
+        $supplierRepository->save(Supplier::create(
             '44ce8069-8da1-4986-872f-311737f46f01',
             'other_supplier_code',
             'Other supplier label',
             [],
         ));
 
-        $this->get(\Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository::class)->delete(
-            \Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier::fromString(
+        $this->get(Repository::class)->delete(
+            Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02',
             ),
         );
