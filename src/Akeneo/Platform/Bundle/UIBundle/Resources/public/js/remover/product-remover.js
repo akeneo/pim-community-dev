@@ -5,8 +5,8 @@ define(['underscore', 'pim/remover/base', 'routing'], function (_, BaseRemover, 
     /**
      * {@inheritdoc}
      */
-    getUrl: function (id) {
-      return Routing.generate(__moduleConfig.url, {id: id});
+    getUrl: function (uuid) {
+      return Routing.generate(__moduleConfig.url, {uuid});
     },
   });
 });

@@ -16,7 +16,7 @@ define([
      */
     renderForm: function (route) {
       return FetcherRegistry.getFetcher(this.options.config.entity)
-        .fetch(route.params.id, {cached: false})
+        .fetch(route.params.uuid || route.params.id, {cached: false})
         .then(product => {
           if (!this.active) {
             return;

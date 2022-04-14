@@ -170,16 +170,9 @@ class ProductController
         return new JsonResponse($normalizedProducts);
     }
 
-    /**
-     * @param string $id Product id
-     *
-     * @throws NotFoundHttpException If product is not found or the user cannot see it
-     *
-     * @return JsonResponse
-     */
-    public function getAction(Request $request, string $id)
+    public function getAction(Request $request, string $uuid): JsonResponse
     {
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
 
         $context = $this->getNormalizationContext();
         $context['catalogLocale'] = $request->get('catalogLocale');
@@ -244,20 +237,20 @@ class ProductController
 
     /**
      * @param Request $request
-     * @param string  $id
-     *
-     * @throws NotFoundHttpException     If product is not found or the user cannot see it
-     * @throws AccessDeniedHttpException If the user does not have right to edit the product
+     * @param string  $uuid
      *
      * @return Response
+     * @throws AccessDeniedHttpException If the user does not have right to edit the product
+     *
+     * @throws NotFoundHttpException     If product is not found or the user cannot see it
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, $uuid)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
@@ -302,19 +295,19 @@ class ProductController
      * Remove product
      *
      * @param Request $request
-     * @param int     $id
+     * @param int     $uuid
      *
      * @AclAncestor("pim_enrich_product_remove")
      *
      * @return Response
      */
-    public function removeAction(Request $request, $id)
+    public function removeAction(Request $request, $uuid)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $this->productRemover->remove($product);
 
         $this->productAndProductModelClient->refreshIndex();
@@ -326,25 +319,24 @@ class ProductController
      * Remove an optional attribute from a product
      *
      * @param Request $request
-     * @param string  $id
+     * @param string  $uuid
      * @param string  $attributeId
      * @return JsonResponse|RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
      *
-     * @throws NotFoundHttpException     If product is not found or the user cannot see it
+     * @return Response
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      * @throws BadRequestHttpException   If the attribute is not removable
-     *
-     * @return Response
+     * @throws NotFoundHttpException     If product is not found or the user cannot see it
      */
-    public function removeAttributeAction(Request $request, $id, $attributeId)
+    public function removeAttributeAction(Request $request, $uuid, $attributeId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
@@ -370,13 +362,13 @@ class ProductController
      *
      * @AclAncestor("pim_enrich_product_convert_variant_to_simple")
      */
-    public function convertToSimpleProductAction(Request $request, int $id): Response
+    public function convertToSimpleProductAction(Request $request, string $uuid): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
@@ -412,20 +404,18 @@ class ProductController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param string $id the product id
-     *
-     * @throws NotFoundHttpException
+     * @param string $uuid the product uuid
      *
      * @return ProductInterface
+     * @throws NotFoundHttpException
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404(string $uuid)
     {
-        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
-        $product = $this->productRepository->findOneBy(['id' => $id]);
+        $product = $this->productRepository->find($uuid);
 
         if (null === $product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', $id)
+                sprintf('Product with id %s could not be found.', $uuid)
             );
         }
 
