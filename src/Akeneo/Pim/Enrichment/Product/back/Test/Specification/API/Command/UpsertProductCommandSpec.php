@@ -39,7 +39,6 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            null,
             []
         );
     }
@@ -71,7 +70,6 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            null,
             $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
@@ -90,7 +88,6 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
-            null,
             [new \stdClass]
         );
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
@@ -103,7 +100,6 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedWith(
             1,
             'identifier1',
-            null,
             $familyUserIntent,
             $categoryUserIntent,
             null,
