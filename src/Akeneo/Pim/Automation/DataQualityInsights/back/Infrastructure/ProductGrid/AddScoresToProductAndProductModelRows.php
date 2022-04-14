@@ -7,9 +7,12 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -38,8 +41,11 @@ class AddScoresToProductAndProductModelRows
 
         $productIds = [];
         foreach ($rows as $row) {
-            $productIds[] = (string)$row->technicalId();
+            $technicalId = $row->technicalId();
+            $entityId = $this->idFactory->create($technicalId);
+            $productIds[] = (string) $entityId;
         }
+
         $productIdCollection = $this->idFactory->createCollection($productIds);
 
         $scores = ($this->getQualityScoresFactory)($productIdCollection, $type);
@@ -49,7 +55,7 @@ class AddScoresToProductAndProductModelRows
 
         $enrichedRows = [];
         foreach ($rows as $row) {
-            $scoreValue = $this->retrieveScore((string) $row->technicalId(), $scores, $channel, $locale);
+            $scoreValue = $this->retrieveScore($row->technicalId(), $scores, $channel, $locale);
             $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
             $enrichedRows[] = $row->addAdditionalProperty($property);
         }
