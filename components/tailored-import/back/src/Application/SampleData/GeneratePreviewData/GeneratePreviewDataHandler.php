@@ -25,7 +25,7 @@ final class GeneratePreviewDataHandler
         $previewData = [];
         $operations = $this->operationCollectionHydrator->hydrate($getRefreshedSampleDataQuery->operations);
         foreach ($getRefreshedSampleDataQuery->sampleData as $sampleData) {
-            $previewData[] = null === $sampleData ?  null : $this->operationApplier->applyOperations($operations, $sampleData);
+            $previewData[] = null === $sampleData ? null : $this->operationApplier->applyOperations($operations, $sampleData);
         }
 
         return GeneratePreviewDataResult::create($previewData);
