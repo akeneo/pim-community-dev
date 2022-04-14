@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
             information_link_anchor: 도움말 문서
             no_scope: 특정 권한 부여 요청이 없습니다.
+          authentication:
+            information_link_anchor: 도움말 문서
           pending: 이 앱은 PIM에 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다. 그래도 문제가 지속되면 App 지원 팀에 문의해주십시오.
         error_monitoring:
           error: 이런, 문제가 발생했습니다!
