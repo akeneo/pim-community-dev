@@ -83,8 +83,11 @@ jobs:
                   name: Require proper dev CE branch
                   command: |
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
-                      sed -i "s#akeneo/pim-onboarder\": \"dev-master#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json
                       sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
+            - run:
+                  name: Require proper dev onboarder bundle branch
+                  command: |
+                      sed -i "s#akeneo/pim-onboarder\": \"^5.0.9#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
             - install_yq
             - run:
                   name: Remove MySQL port translation (see BH-664)
