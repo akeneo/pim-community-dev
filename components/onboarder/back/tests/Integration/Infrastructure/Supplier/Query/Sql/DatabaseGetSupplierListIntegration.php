@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
 use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierListItem;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributorCount;
 use Akeneo\OnboarderSerenity\Domain\Write;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
@@ -113,7 +113,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
         $suppliers = $this->get(GetSupplierList::class)();
 
         static::assertEquals(
-            new SupplierListItem(
+            new SupplierWithContributorCount(
                 '44ce8069-8da1-4986-872f-311737f46f00',
                 'supplier_1',
                 'Supplier 1',
@@ -122,7 +122,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
             $suppliers[0],
         );
         static::assertEquals(
-            new SupplierListItem(
+            new SupplierWithContributorCount(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_2',
                 'Supplier 2',

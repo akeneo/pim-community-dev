@@ -12,6 +12,13 @@ onboarder_serenity_supplier_create:
         _feature: onboarder_serenity_supplier
     methods: [POST]
 
+onboarder_serenity_supplier_export:
+    path: /export
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier
+        _feature: onboarder_serenity_supplier
+    methods: [GET]
+
 onboarder_serenity_supplier_edit:
     path: /{identifier}
     defaults:

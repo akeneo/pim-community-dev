@@ -27,7 +27,7 @@ final class SupplierContext implements Context
 
     private array $suppliers;
 
-    private ?Read\Supplier\Model\Supplier $supplier;
+    private ?Read\Supplier\Model\SupplierWithContributors $supplier;
 
     private array $errors;
 
@@ -240,7 +240,7 @@ final class SupplierContext implements Context
         }
 
         $expectedSuppliers = $properties->getHash();
-        $actualSuppliers = array_map(fn (Read\Supplier\Model\SupplierListItem $supplier) => [
+        $actualSuppliers = array_map(fn (Read\Supplier\Model\SupplierWithContributorCount $supplier) => [
             'code' => $supplier->code,
             'label' => $supplier->label,
             'contributor_count' => $supplier->contributorsCount,

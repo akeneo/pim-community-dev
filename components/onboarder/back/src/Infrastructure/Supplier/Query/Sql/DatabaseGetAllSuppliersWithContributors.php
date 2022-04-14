@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierExport;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\Model\SupplierWithContributors;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierExport implements GetSupplierExport
+final class DatabaseGetAllSuppliersWithContributors implements GetAllSuppliersWithContributors
 {
     public function __construct(private Connection $connection)
     {
@@ -22,13 +22,15 @@ final class DatabaseGetSupplierExport implements GetSupplierExport
                 FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
                 GROUP BY contributor.supplier_identifier
             )
-            SELECT code, label, contributor.contributors
+            SELECT identifier, code, label, contributor.contributors
             FROM `akeneo_onboarder_serenity_supplier` supplier
-            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier;
+            LEFT JOIN contributor ON contributor.supplier_identifier = supplier.identifier
+            ORDER BY code;
         SQL;
 
         return array_map(
-            fn (array $supplier) => new SupplierExport(
+            fn (array $supplier) => new SupplierWithContributors(
+                $supplier['identifier'],
                 $supplier['code'],
                 $supplier['label'],
                 null !== $supplier['contributors']

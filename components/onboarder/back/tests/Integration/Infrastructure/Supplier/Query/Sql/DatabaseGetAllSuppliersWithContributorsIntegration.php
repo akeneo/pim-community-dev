@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseGetSupplierExportIntegration extends SqlIntegrationTestCase
+final class DatabaseGetAllSuppliersWithContributorsIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturnsAnEmptyArrayIfThereIsNoSupplierToExport(): void
     {
-        static::assertCount(0, $this->get(GetSupplierExport::class)());
+        static::assertCount(0, $this->get(GetAllSuppliersWithContributors::class)());
     }
 
     /** @test */
@@ -23,7 +23,7 @@ final class DatabaseGetSupplierExportIntegration extends SqlIntegrationTestCase
         $this->createContributor('foo1@foo.bar');
         $this->createContributor('foo2@foo.bar');
 
-        $suppliers = $this->get(GetSupplierExport::class)();
+        $suppliers = $this->get(GetAllSuppliersWithContributors::class)();
 
         static::assertCount(1, $suppliers);
         static::assertSame('supplier_code', $suppliers[0]->code);

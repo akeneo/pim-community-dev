@@ -7,5 +7,5 @@ use Akeneo\OnboarderSerenity\Domain\Write;
 
 interface GetSupplier
 {
-    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier;
+    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\SupplierWithContributors;
 }

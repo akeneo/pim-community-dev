@@ -59,7 +59,7 @@ class InMemoryGetSupplierList implements GetSupplierList
     private function buildReadModels(array $suppliers): array
     {
         return array_map(function (Write\Supplier\Model\Supplier $supplier) {
-            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
+            return new Read\Supplier\Model\SupplierWithContributorCount($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
         }, $suppliers);
     }
 }
