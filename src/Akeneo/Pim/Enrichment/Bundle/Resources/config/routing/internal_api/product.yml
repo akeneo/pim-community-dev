@@ -11,10 +11,10 @@ pim_enrich_product_rest_index:
     methods: [GET]
 
 pim_enrich_product_rest_get:
-    path: /rest/{id}
+    path: /rest/{uuid}
     defaults: { _controller: pim_enrich.controller.rest.product:getAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
 
 pim_enrich_product_rest_create:
@@ -23,32 +23,32 @@ pim_enrich_product_rest_create:
     methods: [POST]
 
 pim_enrich_product_rest_post:
-    path: /rest/{id}
+    path: /rest/{uuid}
     defaults: { _controller: pim_enrich.controller.rest.product:postAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [POST]
 
 pim_enrich_product_rest_remove:
-    path: /rest/{id}
+    path: /rest/{uuid}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAction, _format: json }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [DELETE]
 
 pim_enrich_product_remove_attribute_rest:
-    path: /rest/{id}/{attributeId}
+    path: /rest/{uuid}/{attributeId}
     defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
         attributeId: '\d+'
     methods: [DELETE]
 
 pim_enrich_product_rest_convert_to_simple:
-    path: /rest/{id}/convert-to-simple
+    path: /rest/{uuid}/convert-to-simple
     defaults: { _controller: pim_enrich.controller.rest.product:convertToSimpleProductAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [POST]
 
 pim_enrich_product_comments_rest_get:
