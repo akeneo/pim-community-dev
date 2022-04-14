@@ -176,3 +176,6 @@ connectivity-connection-insight:
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
+
+connectivity-connection-unused-coupling-rules:
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back

@@ -16,7 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Gebeurtenislogboeken
     data_flows: Gegevensstromen
     connect_connection_settings: Verbindingen instellingen
+    marketplace: App Store
+    connected_apps: Verbonden apps
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: Verbinden
   akeneo_connectivity_connection_connect_apps_authorize: Verbinden
   akeneo_connectivity_connection_connect_apps_authenticate: Verbinden
@@ -31,6 +35,7 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
   akeneo_connectivity_connection_webhook_event_logs: Gebeurtenislogboeken
   akeneo_connectivity_connection_settings_redirect: Verbindingen
+  akeneo_connectivity_connection_connect_connected_apps: Verbonden apps
   akeneo_connectivity_connection_connect_connected_apps_edit: App-instellingen
   akeneo_connectivity_connection_connect_connected_apps_delete: App verwijderen
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Een testapp maken
@@ -39,15 +44,20 @@ akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Wilt u uw PIM verbinden met een andere applicatie? 🤟
+      sub_title: Bekijk onze App Store om te zien welke applicatie kan worden verbonden met Akeneo PIM.
+      link: Open de App Store
       helper:
         title: '{0} Er zijn geen apps of connectoren compatibel met uw PIM-versie.|{1} Er is {{ count }} app of connector compatibel met uw PIM-versie.|[2,Inf] Er zijn {{ count }} apps of connectoren compatibel met uw PIM-versie.'
         title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.|{1} Er is {{ count }} connector compatibel met uw PIM-versie.## |[2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
+        description: Dit is slechts een overzicht. Neem voor meer details een kijkje in de Akeneo App Store.
+        link: Ga naar de Akeneo App Store
       card:
         developed_by: 'Ontwikkeld door {{ author }}'
         read_more: meer lezen
         more_info: Meer informatie
         connect: Verbinden
         connected: Verbonden
+        pending: In afwachting…
       extensions:
         title: Connectoren
         total: '{0} Geen connectoren|{1} 1 connector|[2,Inf] {{ total }} connectoren'
@@ -56,6 +66,7 @@ akeneo_connectivity.connection:
         title: Apps
         total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
         empty: Er zijn geen apps die compatibel zijn met uw versie
+      unreachable: We kunnen de App Store niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
       test_apps:
         title: Mijn testapps
@@ -77,6 +88,7 @@ akeneo_connectivity.connection:
             client_id: Cliënt-id
             client_secret: Geheim van cliënt
         errors:
+          page_not_found: Pagina niet gevonden
           creation:
             name:
               min_length: De naam van de testapp is te kort. Hij moet minimaal 3 tekens bevatten.
@@ -97,6 +109,7 @@ akeneo_connectivity.connection:
           subtitle: Apps
           title: Bevestig verwijderen
           description: U staat op het punt uw testapp uit deze PIM te verwijderen.
+          warning: Als u de verwijdering bevestigt, worden de testapp op de App Store-pagina en de bijbehorende verbonden app verwijderd.
           flash:
             success: De testapp is verwijderd.
             error: Er is een fout opgetreden tijdens het verwijderen van de testapp.
@@ -107,17 +120,23 @@ akeneo_connectivity.connection:
           total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
           empty: Nog geen apps verbonden.
           check_marketplace: 'Kijk op {{ marketplaceLink }} om alle beschikbare content te bekijken en uw eerste app te installeren.'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Sommige verbonden apps zijn niet compatibel met uw PIM-versie of bestaan niet meer in de Akeneo App Store. Neem contact met ons op voor meer informatie.
+          pending_apps: Sommige apps zijn niet verbonden met uw PIM.
         test_apps:
           title: Mijn testapps
           removed_user: Verwijderde gebruiker
         helper:
           title: '[0,1] Uw PIM is verbonden met {{ count }} app.|[2,Inf] Uw PIM is verbonden met {{ count }} apps.'
+          description_1: Er worden regelmatig nieuwe apps ontwikkeld, dus blijf het in de gaten houden en controleer regelmatig onze App Store-pagina om te ontdekken hoe u uw PIM kunt verbinden.
           description_2: Wilt u graag meer weten over apps?
           link: Ga naar Hulp voor meer informatie.
         card:
           developed_by: 'Ontwikkeld door {{ author }}'
+          not_listed_on_the_appstore: De app staat niet meer in de Akeneo App Store. Neem contact op met het ondersteuningsteam voor apps.
           manage_app: App beheren
           open_app: App openen
+          pending: De app is niet verbonden. Door de app te openen, zou het probleem opgelost moeten zijn.
         flash:
           error: Er is een fout opgetreden tijdens het ophalen van de lijst met verbonden apps.
       edit:
@@ -134,6 +153,7 @@ akeneo_connectivity.connection:
             information: 'Bekijk onze {{ link }} voor meer informatie over app-autorisaties.'
             information_link_anchor: Artikel in Hulp
             no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          pending: Deze app is niet verbonden met uw PIM. Door de app te openen, zou het probleem opgelost moeten zijn. Als dit niet zo is, neem dan contact op met het ondersteuningsteam voor apps.
         error_monitoring:
           error: Er is iets fout gegaan.
           helper:
@@ -184,9 +204,16 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} moet'
           helper: Bekijk ons artikel voor meer informatie over app-authenticatie
           helper_link: Hoe verbind ik mijn PIM met apps?
+          scope_profile: 'Uw {{ firstname }} en uw {{ lastname }} weergeven'
+          scope_email: 'Uw {{ email }} weergeven'
           consent:
             label: 'Ik ga akkoord met het privacybeleid en de gebruiksvoorwaarden van deze app, die kunnen worden bekeken op de {{ app_marketplace_page }}.'
+            app_marketplace_page: App Store-pagina
+            subtext: 'U erkent en accepteert dat u wordt doorgeleid naar een app van derden. Akeneo is niet verantwoordelijk en kan niet verantwoordelijk worden gehouden voor de inhoud van deze app. Als u problemen ondervindt tijdens uw bezoek aan de Akeneo App Store, {{ contact_us }}.'
             contact_us: contact
+          firstname: voornaam
+          lastname: achternaam
+          email: e-mailadres
         authorize:
           title: '{{ app_name }} moet'
           no_scope_title: ' {{ app_name }} wil toegang tot uw PIM.'
@@ -222,6 +249,7 @@ akeneo_connectivity.connection:
           assets: assets
       error:
         sub_text: Neem contact op met de ontwikkelaar of met de helpdesk van Akeneo
+        app_not_found: De klant_id komt niet overeen met een bestaande app.
       constraint:
         client_id:
           not_blank: De klant_id is vereist
