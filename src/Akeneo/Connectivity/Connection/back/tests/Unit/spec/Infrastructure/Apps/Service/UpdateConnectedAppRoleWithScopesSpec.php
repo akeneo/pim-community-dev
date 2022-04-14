@@ -33,6 +33,12 @@ class UpdateConnectedAppRoleWithScopesSpec extends ObjectBehavior
             'some_acl_2',
             'some_acl_3',
         ]);
+        $scopeMapperRegistry->getAcls(['scopeA', 'scopeB', 'scopeC', 'scopeD'])->willReturn([
+            'some_acl_1',
+            'some_acl_2',
+            'some_acl_3',
+            'some_acl_4',
+        ]);
 
         $this->beConstructedWith(
             $getConnectedAppRoleIdentifierQuery,
@@ -44,8 +50,10 @@ class UpdateConnectedAppRoleWithScopesSpec extends ObjectBehavior
 
     public function it_updates_connected_app_role_with_new_acl_given_scopes(
         BulkSaverInterface $roleWithPermissionsSaver,
-        RoleInterface $role
+        RoleInterface $role,
+        ScopeMapperRegistryInterface $scopeMapperRegistry,
     ): void {
+        $scopeMapperRegistry->getAllScopes()->willReturn(['scopeA', 'scopeB', 'scopeC', 'scopeD']);
         $this->execute('connected_app_id', ['scopeA', 'scopeB', 'scopeC']);
 
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role->getWrappedObject(), [
@@ -53,6 +61,7 @@ class UpdateConnectedAppRoleWithScopesSpec extends ObjectBehavior
             'action:some_acl_1' => true,
             'action:some_acl_2' => true,
             'action:some_acl_3' => true,
+            'action:some_acl_4' => false,
         ]);
         $roleWithPermissionsSaver->saveAll([$roleWithPermissions])->shouldHaveBeenCalled();
     }
