@@ -8,7 +8,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,8 +44,6 @@ class CreateUser implements CreateUserInterface
         $user->defineAsApiUser();
         $this->userUpdater->update($user, $userPayload);
 
-        $this->removeDefaultGroupImposedByTheFactory($user, $groups);
-
         $errors = $this->validator->validate($user);
         if (0 < \count($errors)) {
             $errorMessages = [];
@@ -60,16 +57,6 @@ class CreateUser implements CreateUserInterface
         $this->userSaver->save($user);
 
         return $user->getId();
-    }
-
-    private function removeDefaultGroupImposedByTheFactory(UserInterface $user, array $groups): void
-    {
-        /** @var GroupInterface $group */
-        foreach ($user->getGroups() as $group) {
-            if (!\in_array($group->getName(), $groups)) {
-                $user->getGroups()->removeElement($group);
-            }
-        }
     }
 
     private function generatePassword(): string

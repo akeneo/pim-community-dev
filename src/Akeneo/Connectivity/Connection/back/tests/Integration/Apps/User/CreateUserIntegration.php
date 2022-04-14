@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\User;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\Assert;
 class CreateUserIntegration extends TestCase
 {
     private ?CreateUser $createUser;
+    private ?CreateUserGroup $createUserGroup;
     private ?UserRepositoryInterface $userRepository;
 
     public function setUp(): void
@@ -25,6 +27,7 @@ class CreateUserIntegration extends TestCase
         parent::setUp();
 
         $this->createUser = $this->get(CreateUser::class);
+        $this->createUserGroup = $this->get(CreateUserGroup::class);
         $this->userRepository = $this->get('pim_user.repository.user');
     }
 
@@ -35,7 +38,8 @@ class CreateUserIntegration extends TestCase
 
     public function test_it_creates_a_user(): void
     {
-        $userId = $this->createUser->execute('x57L54a93CXq', 'magento', ['Manager'], ['ROLE_USER']);
+        $this->createUserGroup->execute('magento_ug');
+        $userId = $this->createUser->execute('x57L54a93CXq', 'magento', ['magento_ug'], ['ROLE_USER']);
 
         /** @var UserInterface|null $user */
         $user = $this->userRepository->find($userId);
@@ -44,7 +48,7 @@ class CreateUserIntegration extends TestCase
         Assert::assertSame('x57L54a93CXq', $user->getUserIdentifier());
         Assert::assertSame('magento', $user->getFullName());
         Assert::assertTrue($user->isApiUser());
-        Assert::assertSame(['Manager'], $user->getGroupNames());
+        Assert::assertSame(['magento_ug'], $user->getGroupNames());
         Assert::assertSame(['ROLE_USER'], $user->getRoles());
     }
 }
