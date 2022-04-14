@@ -82,6 +82,16 @@ services:
         arguments:
             - !tagged akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion
 
+    akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+
+    akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+
     akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria
         arguments:
