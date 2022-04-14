@@ -6,6 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredAttributesMasksQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use PHPUnit\Framework\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -37,13 +38,52 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
             ['code' => 'a_localizable_scopable_locale_specific', 'type' => AttributeTypes::TEXT, 'localizable' => true, 'scopable' => true, 'available_locales' => ['fr_FR']],
             // Attribute required but deactivated from its attribute group
             ['code' => 'a_required_deactivated_text', 'type' => AttributeTypes::TEXT, 'group' => 'erp'],
+            [
+                'code' => 'a_localizable_scopable_nutrition',
+                'type' => AttributeTypes::TABLE,
+                'group' => 'other',
+                'localizable' => true,
+                'scopable' => true,
+                'table_configuration' => [
+                    [
+                        'code' => 'ingredient',
+                        'data_type' => 'select',
+                        'labels' => [],
+                        'options' => [
+                            ['code' => 'salt'],
+                            ['code' => 'egg'],
+                            ['code' => 'butter'],
+                        ],
+                    ],
+                    [
+                        'code' => 'quantity',
+                        'data_type' => 'number',
+                        'labels' => [],
+                    ],
+                ],
+            ]
         ]);
 
         $this->givenFamilies([
             [
                 // PIM-9542: The code is numeric in order to ensure that using the array_key_fill do not affect the final result
                 'code' => '1234',
-                'attribute_codes' => ['sku', 'a_price', 'a_localizable_non_scopable_price', 'a_non_required_text', 'a_non_localizable_non_scopable_text', 'a_localizable_non_scopable_text', 'a_non_localizable_scopable_text', 'a_localizable_scopable_text', 'a_non_localizable_non_scopable_locale_specific', 'a_localizable_non_scopable_locale_specific', 'a_non_localizable_scopable_locale_specific', 'a_localizable_scopable_locale_specific', 'a_required_deactivated_text'],
+                'attribute_codes' => [
+                    'sku',
+                    'a_price',
+                    'a_localizable_non_scopable_price',
+                    'a_non_required_text',
+                    'a_non_localizable_non_scopable_text',
+                    'a_localizable_non_scopable_text',
+                    'a_non_localizable_scopable_text',
+                    'a_localizable_scopable_text',
+                    'a_non_localizable_non_scopable_locale_specific',
+                    'a_localizable_non_scopable_locale_specific',
+                    'a_non_localizable_scopable_locale_specific',
+                    'a_localizable_scopable_locale_specific',
+                    'a_required_deactivated_text',
+                    'a_localizable_scopable_nutrition'
+                ],
                 'attribute_requirements' => [
                     'ecommerce' => [
                         'sku',
@@ -52,6 +92,7 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
                         'a_non_localizable_scopable_text',
                         'a_localizable_non_scopable_locale_specific',
                         'a_required_deactivated_text',
+                        'a_localizable_scopable_nutrition'
                     ],
                     'tablet' => [
                         'sku',
