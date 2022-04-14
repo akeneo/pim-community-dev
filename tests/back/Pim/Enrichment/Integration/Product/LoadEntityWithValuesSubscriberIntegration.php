@@ -135,7 +135,7 @@ SQL;
             'product_with_duplicate_options'
         );
         $productWithDuplicateOptions->addValue(
-            OptionsValue::value('a_multi_select', ['optionA', 'OPTIONA', 'optionb', 'OptionB'])
+            OptionsValue::value('a_multi_select', ['optionA', 'OPTIONA', 'optionb', 'OptionB', 'optionA'])
         );
         $this->get('pim_catalog.saver.product')->save($productWithDuplicateOptions);
         $rawValuesInDb = $this->get('database_connection')->executeQuery(
@@ -143,14 +143,17 @@ SQL;
             ['identifier' => 'product_with_duplicate_options'],
         )->fetchOne();
         Assert::assertEquals(
-            ['optionA', 'OPTIONA', 'optionb', 'OptionB'],
+            ['optionA', 'OPTIONA', 'optionb', 'OptionB', 'optionA'],
             \json_decode($rawValuesInDb, true)['<all_channels>']['<all_locales>'] ?? null
         );
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_duplicate_options');
 
-        Assert::assertSame(['optionA', 'optionB'], $product->getValue('a_multi_select')->getData());
+        Assert::assertSame(
+            ['OPTIONA', 'OptionB', 'optionA', 'optionb'],
+            $product->getValue('a_multi_select')->getData()
+        );
     }
 
     /**
