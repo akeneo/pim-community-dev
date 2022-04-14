@@ -42,35 +42,40 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
-                    ->addRate($channelMobile, $localeFr, new Rate(36))
+                    ->addRate($channelMobile, $localeFr, new Rate(36)),
+                new ChannelLocaleRateCollection()
             ),
             'product_A_previous_scores' => new ProductScores(
                 $productIdA,
                 new \DateTimeImmutable('2020-01-07'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(76))
-                    ->addRate($channelMobile, $localeFr, new Rate(67))
+                    ->addRate($channelMobile, $localeFr, new Rate(67)),
+                new ChannelLocaleRateCollection()
             ),
             'product_B_latest_scores' => new ProductScores(
                 $productIdB,
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                new ChannelLocaleRateCollection()
             ),
             'product_B_previous_scores' => new ProductScores(
                 $productIdB,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(81))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                new ChannelLocaleRateCollection()
             ),
             'other_product_scores' => new ProductScores(
                 $productIdC,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                new ChannelLocaleRateCollection()
             ),
         ];
 
