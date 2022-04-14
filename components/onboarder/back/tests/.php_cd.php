@@ -67,6 +67,7 @@ $rules = [
         [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Domain',
+            'Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder',
             // PIM coupling
             // External dependencies coupling
             'Box\Spout\Common\Type',

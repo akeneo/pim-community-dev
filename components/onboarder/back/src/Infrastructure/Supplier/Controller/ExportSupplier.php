@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Box\Spout\Common\Type;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +14,10 @@ final class ExportSupplier
 {
     private const EXPORT_FILENAME = 'suppliers_export';
 
-    public function __construct(private SupplierExport $supplierExport)
-    {
+    public function __construct(
+        private GetAllSuppliersWithContributors $getAllSuppliersWithContributors,
+        private SuppliersEncoder $suppliersEncoder,
+    ) {
     }
 
     public function __invoke(): BinaryFileResponse
@@ -27,6 +30,9 @@ final class ExportSupplier
             ),
         ];
 
-        return new BinaryFileResponse(($this->supplierExport)(), Response::HTTP_OK, $headers);
+        $suppliersWithContributors = ($this->getAllSuppliersWithContributors)();
+        $filepath = ($this->suppliersEncoder)($suppliersWithContributors);
+
+        return new BinaryFileResponse($filepath, Response::HTTP_OK, $headers);
     }
 }

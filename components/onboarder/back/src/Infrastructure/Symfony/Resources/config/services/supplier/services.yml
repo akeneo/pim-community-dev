@@ -77,7 +77,8 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport'
+            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors'
+            - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate:
         public: true
@@ -85,8 +86,5 @@ services:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
 
     # Export
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Export\XlsxSupplierExport
-        arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport'
-            - ['supplier_code', 'supplier_label', 'contributor_emails']
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Export;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Export\SupplierExport;
+use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Box\Spout\Common\Type;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
@@ -15,7 +16,7 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
     /** @test */
     public function itExportsAXlsxFileContainingHeadersOnlyWhenThereIsNoSuppliers(): void
     {
-        $filepath = $this->get(SupplierExport::class)();
+        $filepath = $this->get(SuppliersEncoder::class)([]);
 
         $xlsxReader = ReaderFactory::createFromType(Type::XLSX);
         $xlsxReader->open($filepath);
@@ -49,7 +50,8 @@ final class XlsxSupplierExportIntegration extends SqlIntegrationTestCase
         $this->createContributor('foo@foo.foo', '44ce8069-8da1-4986-872f-311737f46f02');
         $this->createContributor('bar@bar.bar', '44ce8069-8da1-4986-872f-311737f46f02');
 
-        $filepath = $this->get(SupplierExport::class)();
+        $suppliers = $this->get(GetAllSuppliersWithContributors::class)();
+        $filepath = $this->get(SuppliersEncoder::class)($suppliers);
 
         $xlsxReader = ReaderFactory::createFromType(Type::XLSX);
         $xlsxReader->open($filepath);
