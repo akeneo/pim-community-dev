@@ -54,6 +54,7 @@ CREATE TABLE pim_data_quality_insights_product_score (
     product_id INT NOT NULL,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
+    scores_partial_criteria JSON DEFAULT NULL,
     PRIMARY KEY (product_id, evaluated_at),
     INDEX evaluated_at_index (evaluated_at),
     CONSTRAINT FK_dqi_product_score FOREIGN KEY (product_id) REFERENCES pim_catalog_product (id) ON DELETE CASCADE
@@ -63,6 +64,7 @@ CREATE TABLE pim_data_quality_insights_product_model_score (
     product_model_id INT NOT NULL PRIMARY KEY,
     evaluated_at DATE NOT NULL,
     scores JSON NOT NULL,
+    scores_partial_criteria JSON DEFAULT NULL,
     CONSTRAINT FK_dqi_product_model_score FOREIGN KEY (product_model_id) REFERENCES pim_catalog_product_model (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
