@@ -9,6 +9,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -45,12 +46,24 @@ class ProductController extends AbstractListCategoryController
     }
 
     /**
+     * List categories associated with the provided product and descending from the category
+     * defined by the parent parameter.
+     *
+     * httpparam include_category if true, will include the parentCategory in the response
+     */
+    public function listCategoriesAction(Request $request, string $uuid, string $categoryId): Response
+    {
+        return $this->doListCategoriesAction($request, $uuid, $categoryId);
+    }
+
+    /**
      * Toggle product status (enabled/disabled)
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
      */
     public function toggleStatusAction(string $id): JsonResponse
     {
+        // CPM-577 TODO
         $product = $this->findEntityWithCategoriesOr404($id);
 
         $toggledStatus = !$product->isEnabled();
@@ -65,17 +78,16 @@ class ProductController extends AbstractListCategoryController
     }
 
     /**
-     * Find a product by its id or return a 404 response
+     * Find a product by its uuid or return a 404 response
      *
      * @throws NotFoundHttpException
      */
-    protected function findEntityWithCategoriesOr404(string $id): ProductInterface
+    protected function findEntityWithCategoriesOr404(string $uuid): ProductInterface
     {
-        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
-        $product = $this->productRepository->findBy(['id' => $id]);
+        $product = $this->productRepository->find($uuid);
         if (null === $product) {
             throw new NotFoundHttpException(
-                sprintf('Product with with ID "%s" could not be found.', $id)
+                sprintf('Product with uuid "%s" could not be found.', $uuid)
             );
         }
 

@@ -4,7 +4,7 @@
     </div>
     <div class="tab-content">
         <div class="tab-pane active" id="product-categories">
-            <div id="trees" data-id="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees.find(function (tree) { return tree.id === parseInt(state.currentTreeId); }).id %>">
+            <div id="trees" data-id="<%- product.meta.id %>" data-uuid="<%- product.meta.uuid %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees.find(function (tree) { return tree.id === parseInt(state.currentTreeId); }).id %>">
                 <% _.each(trees, function (tree) { %>
                     <div id="root-unselectable" class="tree root-unselectable" data-tree-id="<%- tree.id %>">
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
