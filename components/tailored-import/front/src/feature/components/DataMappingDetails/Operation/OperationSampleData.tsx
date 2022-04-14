@@ -1,18 +1,8 @@
 import React from 'react';
-import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, IconButton, placeholderStyle, Preview, RefreshIcon} from 'akeneo-design-system';
+import {IconButton, Preview, RefreshIcon} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {formatSampleData, SampleData} from '../../../models';
-
-const PreviewContent = styled.div<{isLoading: boolean; isEmpty: boolean} & AkeneoThemedProps>`
-  ${({isEmpty}) =>
-    isEmpty &&
-    css`
-      color: ${getColor('grey', 100)};
-    `}
-
-  ${({isLoading}) => isLoading && placeholderStyle}
-`;
+import {PreviewRowData} from './PreviewRowData';
 
 type SampleDataProps = {
   loadingSampleData: number[];
@@ -24,10 +14,13 @@ const OperationSampleData = ({loadingSampleData, sampleData, onRefreshSampleData
   const translate = useTranslate();
 
   return (
-    <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
+    <Preview title={translate('akeneo.tailored_import.data_mapping.preview.input_title')}>
       {sampleData.map((sampleData, key) => (
-        <Preview.Row
+        <PreviewRowData
           key={key}
+          isLoading={loadingSampleData.includes(key)}
+          isEmpty={sampleData === null}
+          hasError={false}
           action={
             <IconButton
               disabled={loadingSampleData.includes(key)}
@@ -37,10 +30,8 @@ const OperationSampleData = ({loadingSampleData, sampleData, onRefreshSampleData
             />
           }
         >
-          <PreviewContent isLoading={loadingSampleData.includes(key)} isEmpty={sampleData === null}>
-            {formatSampleData(translate, sampleData)}
-          </PreviewContent>
-        </Preview.Row>
+          {formatSampleData(translate, sampleData)}
+        </PreviewRowData>
       ))}
     </Preview>
   );

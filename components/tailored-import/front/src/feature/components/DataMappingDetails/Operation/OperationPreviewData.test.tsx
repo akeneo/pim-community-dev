@@ -1,14 +1,14 @@
-import {renderWithProviders} from '../../../tests';
-import {screen} from '@testing-library/react';
 import React from 'react';
+import {screen} from '@testing-library/react';
 import {OperationPreviewData} from './OperationPreviewData';
+import {renderWithProviders} from '../../../tests';
 
 test('it display the preview data', async () => {
   await renderWithProviders(
     <OperationPreviewData isLoading={false} previewData={['product_1', 'product_2', null]} hasErrors={false} />
   );
 
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.output_title')).toBeInTheDocument();
   expect(screen.getByText('product_1')).toBeInTheDocument();
   expect(screen.getByText('product_2')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.placeholder')).toBeInTheDocument();

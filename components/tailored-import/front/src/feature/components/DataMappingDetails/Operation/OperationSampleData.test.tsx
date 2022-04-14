@@ -15,7 +15,7 @@ test('it display the sample data', async () => {
     />
   );
 
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.title')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.input_title')).toBeInTheDocument();
   expect(screen.getByText('product_1')).toBeInTheDocument();
   expect(screen.getByText('product_2')).toBeInTheDocument();
   expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.placeholder')).toBeInTheDocument();

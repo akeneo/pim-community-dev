@@ -1,22 +1,8 @@
 import React from 'react';
-import styled, {css} from 'styled-components';
-import {AkeneoThemedProps, getColor, placeholderStyle, Preview} from 'akeneo-design-system';
+import {Preview} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {formatSampleData, PreviewData} from '../../../models';
-
-const UnableToGeneratePreviewRow = styled.div`
-  color: ${getColor('red', 100)};
-`;
-
-const PreviewContent = styled.div<{isLoading: boolean; isEmpty: boolean} & AkeneoThemedProps>`
-  ${({isEmpty}) =>
-    isEmpty &&
-    css`
-      color: ${getColor('grey', 100)};
-    `}
-
-  ${({isLoading}) => isLoading && placeholderStyle}
-`;
+import {PreviewRowData} from './PreviewRowData';
 
 type PreviewDataProps = {
   isLoading: boolean;
@@ -28,20 +14,16 @@ const OperationPreviewData = ({isLoading, previewData, hasErrors}: PreviewDataPr
   const translate = useTranslate();
 
   return (
-    <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
+    <Preview title={translate('akeneo.tailored_import.data_mapping.preview.output_title')}>
       {hasErrors ? (
-        <Preview.Row>
-          <UnableToGeneratePreviewRow>
-            {translate('akeneo.tailored_import.data_mapping.preview.unable_to_generate_preview_data')}
-          </UnableToGeneratePreviewRow>
-        </Preview.Row>
+        <PreviewRowData hasError={true}>
+          {translate('akeneo.tailored_import.data_mapping.preview.unable_to_generate_preview_data')}
+        </PreviewRowData>
       ) : (
         previewData.map((previewData, key) => (
-          <Preview.Row key={key}>
-            <PreviewContent isLoading={isLoading} isEmpty={null === previewData}>
-              {formatSampleData(translate, previewData)}
-            </PreviewContent>
-          </Preview.Row>
+          <PreviewRowData key={key} hasError={false} isLoading={isLoading} isEmpty={null === previewData}>
+            {formatSampleData(translate, previewData)}
+          </PreviewRowData>
         ))
       )}
     </Preview>

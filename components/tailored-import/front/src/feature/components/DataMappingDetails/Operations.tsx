@@ -93,13 +93,6 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
 
             return <OperationBlock key={operation.type} operation={operation} onRemove={handleOperationRemove} />;
           })}
-          {dataMapping.operations.length > 0 && (
-            <OperationPreviewData
-              isLoading={previewDataIsLoading}
-              previewData={previewData}
-              hasErrors={previewDataHasError}
-            />
-          )}
           <Dropdown>
             <BlockButton onClick={openDropdown} icon={<ArrowDownIcon />}>
               {translate('akeneo.tailored_import.data_mapping.operations.add')}
@@ -124,6 +117,13 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Dropdown.Overlay>
             )}
           </Dropdown>
+          {dataMapping.operations.length > 0 && (
+            <OperationPreviewData
+              isLoading={previewDataIsLoading}
+              previewData={previewData}
+              hasErrors={previewDataHasError}
+            />
+          )}
         </OperationBlocksContainer>
       )}
     </OperationsContainer>

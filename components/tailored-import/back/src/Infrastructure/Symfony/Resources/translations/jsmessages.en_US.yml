@@ -34,7 +34,8 @@ akeneo.tailored_import:
     no_data_mapping_selected: No data mapping selected
     attribute_not_found: This attribute has been deleted, you can no longer use it in a data mapping.
     preview:
-      title: Preview
+      input_title: Input preview
+      ouput_title: Output preview
       placeholder: N/A
       refresh: Refresh
       unable_to_generate_preview_data: Unable to generate preview

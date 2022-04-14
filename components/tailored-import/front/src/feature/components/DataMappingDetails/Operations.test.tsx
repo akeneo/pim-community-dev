@@ -28,7 +28,7 @@ test('it displays preview if sample data is provided', async () => {
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.title')).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.title')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.input_title')).toBeInTheDocument();
   expect(screen.queryByText('product_1')).toBeInTheDocument();
   expect(screen.queryByText('product_2')).toBeInTheDocument();
   expect(screen.queryByText('product_3')).toBeInTheDocument();
@@ -48,7 +48,8 @@ test('it does not display preview if no source is set', async () => {
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.no_source')).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.title')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.input_title')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.output_title')).not.toBeInTheDocument();
 });
 
 test('it calls refresh sample data handler when user refreshes a data', async () => {
