@@ -52,8 +52,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => null,
                     'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
                 ],
             ],
             'a scopable attribute target' => [
@@ -62,8 +60,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => null,
                     'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
                 ],
             ],
             'a localizable attribute target' => [
@@ -73,8 +69,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => 'en_US',
                     'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
                 ],
             ],
             'a localizable and scopable attribute target' => [
@@ -83,18 +77,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
-                ],
-            ],
-            'clear attribute target' => [
-                [
-                    'code' => 'a_localized_and_scopable_text_area',
-                    'channel' => 'ecommerce',
-                    'locale' => 'en_US',
-                    'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'clear',
                 ],
             ],
         ];
@@ -111,8 +93,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => null,
                     'type' => 'property',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
                 ],
             ],
             'an attribute target localizable without locale' => [
@@ -123,8 +103,6 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => null,
                     'type' => 'attribute',
-                    'action_if_not_empty' => 'set',
-                    'action_if_empty' => 'skip',
                 ],
             ],
         ];

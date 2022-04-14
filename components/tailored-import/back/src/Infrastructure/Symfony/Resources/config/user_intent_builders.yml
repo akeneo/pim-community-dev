@@ -4,6 +4,11 @@ services:
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
 
+  akeneo.tailored_import.user_intent_factory.multiselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.number:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\NumberUserIntentFactory
     tags:

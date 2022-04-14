@@ -21,10 +21,13 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 final class TextareaUserIntentFactory implements UserIntentFactoryInterface
 {
+    /**
+     * @param AttributeTarget $target
+     */
     public function create(TargetInterface $target, string $value): ValueUserIntent
     {
-        if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a AttributeTarget');
+        if (!$this->supports($target)) {
+            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_textarea"');
         }
 
         return new SetTextareaValue(
