@@ -42,7 +42,7 @@
             "Akeneo\\Test\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
-            "Akeneo\\Test\\Channel\\Locale\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/Locale/back/Test",
+            "Akeneo\\Test\\Locale\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
             "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests"
         }

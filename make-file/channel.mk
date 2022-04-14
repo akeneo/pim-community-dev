@@ -17,19 +17,11 @@ channel-unit-back: #Doc: launch PHPSpec for channel bounded context
 
 .PHONY: channel-integration-back
 channel-integration-back: #Doc: launch PHPUnit integration tests for channel bounded context
-ifeq ($(CI),true)
-	.circleci/run_phpunit.sh src/Akeneo/Channel/back/tests .circleci/find_phpunit.php Channel_Integration_Test
-else
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Channel/back/tests --testsuite Channel_Integration_Test $(O)
-endif
 
 .PHONY: channel-acceptance-back
 channel-acceptance-back: #Doc: launch PHPUnit acceptance tests for channel bounded context
-ifeq ($(CI),true)
-	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Channel/back/tests --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite Channel_Acceptance_Test
-else
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Channel/back/tests --testsuite Channel_Acceptance_Test $(O)
-endif
 
 .PHONY: channel-ci-back
 channel-ci-back: channel-lint-back channel-coupling-back channel-unit-back channel-acceptance-back channel-integration-back
