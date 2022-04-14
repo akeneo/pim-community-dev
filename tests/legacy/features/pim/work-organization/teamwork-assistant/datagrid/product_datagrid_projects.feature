@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Products datagrid projects
   In order to easily see on which project I have to work on
   As a contributor

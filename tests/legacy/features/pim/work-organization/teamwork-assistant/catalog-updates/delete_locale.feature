@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Catalog updates - Remove a locale used as project
   In order to manage product catalog
   As a user
