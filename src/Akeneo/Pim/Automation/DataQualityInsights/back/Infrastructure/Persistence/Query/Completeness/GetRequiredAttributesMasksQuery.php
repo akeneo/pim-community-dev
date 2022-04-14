@@ -28,6 +28,13 @@ final class GetRequiredAttributesMasksQuery implements GetRequiredAttributesMask
     public function fromFamilyCodes(array $familyCodes): array
     {
         $sql = <<<SQL
+WITH
+table_column_exists AS (
+    SELECT EXISTS (
+       SELECT * FROM information_schema.tables
+       WHERE table_name = 'pim_catalog_table_column'
+    )
+)
 SELECT
     family.code AS family_code,
     channel_code,
@@ -48,7 +55,7 @@ SELECT
                                 GROUP BY channel.id
                             )
                         )
-                WHEN attribute.attribute_type = 'pim_catalog_table' 
+                WHEN table_column_exists = '1' AND attribute.attribute_type = 'pim_catalog_table'
                     THEN CONCAT(
                             attribute.code,
                             '-',

@@ -28,6 +28,13 @@ class GetNonRequiredProductModelAttributesMaskQuery implements GetProductModelAt
     public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
     {
         $sql = <<<SQL
+WITH
+table_column_exists AS (
+    SELECT EXISTS (
+       SELECT * FROM information_schema.tables
+       WHERE table_name = 'pim_catalog_table_column'
+    )
+)
 SELECT
     family.code AS family_code,
     channel_code,
