@@ -7,3 +7,7 @@ services:
         arguments:
             - '%env(bool:FLAG_DATA_QUALITY_INSIGHTS_ENABLED)%'
         public: true
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature:
+        arguments:
+            - '@feature_flags'
