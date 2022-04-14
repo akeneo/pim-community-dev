@@ -1,0 +1,6 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Command\CreateConnectionCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+        tags:
+            - { name: 'console.command' }
