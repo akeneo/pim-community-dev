@@ -35,7 +35,7 @@ define([
      */
     save: function (options) {
       var product = $.extend(true, {}, this.getFormData());
-      var productId = product.meta.id;
+      var productUuid = product.meta.uuid;
 
       delete product.meta;
 
@@ -63,7 +63,7 @@ define([
         name: product.identifier,
       });
 
-      return ProductSaver.save(productId, product)
+      return ProductSaver.save(productUuid, product)
         .fail(this.fail.bind(this))
         .then(
           function (data) {
