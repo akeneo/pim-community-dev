@@ -97,21 +97,24 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
-                    ->addRate($channelMobile, $localeFr, new Rate(36))
+                    ->addRate($channelMobile, $localeFr, new Rate(36)),
+                new ChannelLocaleRateCollection()
             ),
             'product_model_B_scores' => new ProductScores(
                 new ProductId($productModelIds['idB']),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                new ChannelLocaleRateCollection()
             ),
             'other_product_model_scores' => new ProductScores(
                 new ProductId($productModelIds['idC']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
-                    ->addRate($channelMobile, $localeFr, new Rate(95))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                new ChannelLocaleRateCollection()
             )
         ];
 
