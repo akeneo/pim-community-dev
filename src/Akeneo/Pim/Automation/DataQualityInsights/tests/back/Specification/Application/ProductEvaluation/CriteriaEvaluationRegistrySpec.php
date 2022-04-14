@@ -15,12 +15,6 @@ use PhpSpec\ObjectBehavior;
  */
 class CriteriaEvaluationRegistrySpec extends ObjectBehavior
 {
-    public function it_returns_no_criterion_codes_if_no_services_are_injected()
-    {
-        $this->beConstructedWith([]);
-        $this->getCriterionCodes()->shouldReturn([]);
-    }
-
     public function it_throws_an_exception_if_an_evaluation_service_does_not_exist()
     {
         $this->beConstructedWith([]);
@@ -31,7 +25,6 @@ class CriteriaEvaluationRegistrySpec extends ObjectBehavior
     {
         $this->beConstructedWith([$evaluateCriterion->getWrappedObject(), new \stdClass()]);
         $evaluateCriterion->getCode()->willReturn(new CriterionCode('my_code'));
-        $this->getCriterionCodes()->shouldBeLike([new CriterionCode('my_code')]);
         $this->get(new CriterionCode('my_code'))->shouldReturn($evaluateCriterion->getWrappedObject());
     }
 

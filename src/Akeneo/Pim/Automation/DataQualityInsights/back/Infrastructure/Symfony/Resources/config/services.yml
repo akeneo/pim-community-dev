@@ -4,21 +4,28 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_scores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores'
+            - '@akeneo.pim.automation.data_quality_insights.compute_product_model_scores'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores:
+    akeneo.pim.automation.data_quality_insights.compute_product_scores:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
+
+    akeneo.pim.automation.data_quality_insights.compute_product_model_scores:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores:
         arguments:
@@ -35,7 +42,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
             - '@akeneo.pim.automation.data_quality_insights.product.complete_evaluation_with_improvable_attributes'
 
     akeneo.pim.automation.data_quality_insights.get_product_model_evaluation:
@@ -43,7 +50,7 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_model_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
             - '@akeneo.pim.automation.data_quality_insights.product_model.complete_evaluation_with_improvable_attributes'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates:
@@ -62,14 +69,14 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations
         public: true
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation'
 
     akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations
         public: true
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_evaluation_registry'
+            - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
             - '@akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation'
 
     akeneo.pim.automation.data_quality_insights.product_criteria_evaluation_registry:

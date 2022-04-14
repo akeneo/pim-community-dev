@@ -17,14 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 class CreateCriteriaEvaluations
 {
     public function __construct(
-        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
+        private CriteriaByFeatureRegistry $criteriaRegistry,
         private CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
     }
 
     public function createAll(ProductIdCollection $productIdCollection): void
     {
-        $this->create($this->criteriaEvaluationRegistry->getCriterionCodes(), $productIdCollection);
+        $this->create($this->criteriaRegistry->getAllCriterionCodes(), $productIdCollection);
     }
 
     /**
