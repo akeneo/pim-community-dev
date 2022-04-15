@@ -3,7 +3,6 @@
 
 namespace Akeneo\Channel\Infrastructure\Query\Sql;
 
-
 use Akeneo\Channel\API\Query\FindLocales;
 use Akeneo\Channel\API\Query\Locale;
 use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
