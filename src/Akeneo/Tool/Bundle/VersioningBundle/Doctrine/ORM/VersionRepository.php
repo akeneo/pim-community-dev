@@ -26,7 +26,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function getLogEntries($resourceName, $resourceId, ?UuidInterface $resourceUuid)
+    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid)
     {
         $params = [
             'resourceName' => $resourceName,

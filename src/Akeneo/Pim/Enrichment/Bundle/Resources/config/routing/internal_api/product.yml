@@ -52,24 +52,24 @@ pim_enrich_product_rest_convert_to_simple:
     methods: [POST]
 
 pim_enrich_product_comments_rest_get:
-    path: /{id}/comments
+    path: /{uuid}/comments
     defaults: { _controller: pim_enrich.controller.rest.product_comment:getAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
 
 pim_enrich_product_comments_rest_post:
-    path: /{id}/comments
+    path: /{uuid}/comments
     defaults: { _controller: pim_enrich.controller.rest.product_comment:postAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [POST]
 
 pim_enrich_product_comment_reply_rest_post:
-    path: /{id}/comments/{commentId}
+    path: /{uuid}/comments/{commentId}
     defaults: { _controller: pim_enrich.controller.rest.product_comment:postReplyAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
         commentId: '[0-9a-f]+'
     methods: [POST]
 
@@ -77,7 +77,7 @@ pim_enrich_product_history_rest_get:
     path: /rest/product/{entityId}/history
     defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product }
     requirements:
-        entityId: '[0-9a-f]+'
+        entityId: '[0-9a-f]+|([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})'
     methods: [GET]
 
 pim_pdf_generator_download_product_pdf:
