@@ -30,7 +30,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMetricValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
@@ -182,7 +182,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_updates_a_product_with_a_metric_value(): void
+    public function it_updates_a_product_with_a_measurement_value(): void
     {
         // Creates empty product
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier');
@@ -193,7 +193,7 @@ final class UpsertProductIntegration extends TestCase
 
         // Update product with number value
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '100', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, '100', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
 
@@ -208,23 +208,23 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_amount_is_not_numeric(): void
+    public function it_throws_an_exception_when_a_measurement_amount_is_not_numeric(): void
     {
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('This value should be of type numeric.');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, 'michel', 'KILOWATT'),
+            new SetMeasurementValue('a_metric', null, null, 'michel', 'KILOWATT'),
         ]);
         $this->messageBus->dispatch($command);
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_metric_unit_is_unknown(): void
+    public function it_throws_an_exception_when_a_measurement_unit_is_unknown(): void
     {
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('Please specify a valid metric unit');
         $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMetricValue('a_metric', null, null, '1275', 'unknown'),
+            new SetMeasurementValue('a_metric', null, null, '1275', 'unknown'),
         ]);
         $this->messageBus->dispatch($command);
     }

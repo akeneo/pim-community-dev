@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: 'アプリの承認についての詳細は、{{ link }} をご覧ください。'
             information_link_anchor: ヘルプセンターの記事
             no_scope: 特定の承認は要求されていません。
+          authentication:
+            information_link_anchor: ヘルプセンターの記事
           pending: このアプリは PIM に接続されていません。アプリを開くと接続問題は解決されるはずです。解決しない場合は、アプリのサポートにお問い合わせください。
         error_monitoring:
           error: エラーが発生しました！

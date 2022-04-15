@@ -1,3 +1,4 @@
+# Internal API
 akeneo_connectivity_connection_audit_rest_weekly:
     path: '/rest/connections/audit/weekly'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyAuditAction
@@ -16,3 +17,15 @@ akeneo_connectivity_connection_audit_rest_error_count_per_connection:
     methods: [GET]
     requirements:
         error_type: '[a-zA-Z_]+'
+
+# Front API
+akeneo_connectivity_connection_audit_index:
+    path: '/connect/data-flows'
+
+akeneo_connectivity_connection_audit_any:
+    path: '/connect/data-flows/{any}'
+    requirements:
+        any: .*
+
+akeneo_connectivity_connection_redirect_audit:
+    path: '/connection/dashboard'

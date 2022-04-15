@@ -4,8 +4,8 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.client.create_client'
-            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler'
 
     Akeneo\Connectivity\Connection\Application\Settings\Query\FetchConnectionsHandler:
@@ -20,20 +20,20 @@ services:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.user.update_user_permissions'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\DeleteConnectionHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.client.delete_client'
-            - '@akeneo_connectivity.connection.service.user.delete_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionSecretHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.client.regenerate_client_secret'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\FosRegenerateClientSecret'
 
     Akeneo\Connectivity\Connection\Application\Settings\Command\RegenerateConnectionPasswordHandler:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
-            - '@akeneo_connectivity.connection.service.user.regenerate_user_password'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword'
