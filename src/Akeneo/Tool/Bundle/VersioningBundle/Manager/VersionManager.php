@@ -187,7 +187,7 @@ class VersionManager
      */
     public function getLogEntries($versionable)
     {
-        if (method_exists($versionable, 'getUuid')) {
+        if ($this->hasUuid($versionable)) {
             $resourceId = null;
             $resourceUuid = $versionable->getUuid();
         } else {
@@ -209,7 +209,7 @@ class VersionManager
      */
     public function getOldestLogEntry($versionable, $pending = false)
     {
-        if (method_exists($versionable, 'getUuid')) {
+        if ($this->hasUuid($versionable)) {
             $resourceId = null;
             $resourceUuid = $versionable->getUuid();
         } else {
@@ -236,7 +236,7 @@ class VersionManager
      */
     public function getNewestLogEntry($versionable, $pending = false)
     {
-        if (method_exists($versionable, 'getUuid')) {
+        if ($this->hasUuid($versionable)) {
             $resourceId = null;
             $resourceUuid = $versionable->getUuid();
         } else {
@@ -285,7 +285,7 @@ class VersionManager
             'resourceName' => ClassUtils::getClass($versionable),
             'pending' => true
         ];
-        if (method_exists($versionable, 'getUuid')) {
+        if ($this->hasUuid($versionable)) {
             $params['resourceUuid'] = $versionable->getUuid();
         } else {
             $params['resourceId'] = $versionable->getId();
@@ -306,5 +306,11 @@ class VersionManager
         }
 
         return $createdVersions;
+    }
+
+    private function hasUuid($versionable): bool
+    {
+        return method_exists($versionable, 'getUuid') &&
+            get_class($versionable) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
     }
 }
