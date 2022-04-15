@@ -6,14 +6,14 @@ namespace Akeneo\OnboarderSerenity\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\Exception\SupplierDoesNotExist;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UpdateSupplierHandler
 {
     public function __construct(
-        private Supplier\Repository $repository,
+        private Repository $repository,
         private ValidatorInterface $validator,
     ) {
     }

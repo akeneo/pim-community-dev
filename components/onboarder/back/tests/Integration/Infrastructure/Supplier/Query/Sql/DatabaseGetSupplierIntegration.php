@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
@@ -77,9 +77,10 @@ final class DatabaseGetSupplierIntegration extends SqlIntegrationTestCase
     private function createContributor(string $email): void
     {
         $sql = <<<SQL
-INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
-VALUES (:email, :supplierIdentifier)
-SQL;
+            INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)
+            VALUES (:email, :supplierIdentifier)
+        SQL;
+
         $this->get(Connection::class)->executeQuery(
             $sql,
             [

@@ -27,7 +27,11 @@ const MeasurementInput: CellInput = ({columnDefinition, highlighted, inError, ro
 
   const handleChange = React.useCallback(
     (amount: string | undefined, unit: string) => {
-      onChange({amount: amount || '', unit});
+      if (typeof amount === 'undefined' || '' === amount) {
+        onChange(undefined);
+      } else {
+        onChange({amount, unit});
+      }
     },
     [onChange]
   );

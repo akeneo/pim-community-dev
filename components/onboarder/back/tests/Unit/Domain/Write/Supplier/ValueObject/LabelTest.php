@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Label;
 use PHPUnit\Framework\TestCase;
 
 final class LabelTest extends TestCase
@@ -14,7 +14,7 @@ final class LabelTest extends TestCase
     {
         static::expectExceptionObject(new \InvalidArgumentException('The supplier label cannot be empty.'));
 
-        Supplier\ValueObject\Label::fromString('');
+        Label::fromString('');
     }
 
     /** @test */
@@ -26,15 +26,15 @@ final class LabelTest extends TestCase
             ),
         );
 
-        Supplier\ValueObject\Label::fromString(str_repeat('a', 201));
+        Label::fromString(str_repeat('a', 201));
     }
 
     /** @test */
     public function itCreatesAndGetsASupplierLabelIfItsValid(): void
     {
-        $label = Supplier\ValueObject\Label::fromString('A valid supplier label');
+        $label = Label::fromString('A valid supplier label');
 
-        static::assertInstanceOf(Supplier\ValueObject\Label::class, $label);
+        static::assertInstanceOf(Label::class, $label);
         static::assertSame('A valid supplier label', (string) $label);
     }
 }

@@ -6,7 +6,9 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +30,7 @@ final class CreateSupplierHandlerTest extends TestCase
         ));
 
         $supplier = $supplierRepository->find(
-            Supplier\ValueObject\Identifier::fromString(
+            Identifier::fromString(
                 '01319d4c-81c4-4f60-a992-41ea3546824c',
             ),
         );
@@ -45,9 +47,9 @@ final class CreateSupplierHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $supplierExists = new InMemorySupplierExists($repository);
 
-        $repository->save(Supplier\Model\Supplier::create($identifier, 'code', 'label', []));
+        $repository->save(Supplier::create($identifier, 'code', 'label', []));
 
-        $this->expectExceptionObject(new Supplier\Exception\SupplierAlreadyExistsException('code'));
+        $this->expectExceptionObject(new SupplierAlreadyExistsException('code'));
 
         $sut = new CreateSupplierHandler($repository, $supplierExists);
         ($sut)(new CreateSupplier(

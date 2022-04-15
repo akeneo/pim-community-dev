@@ -35,6 +35,7 @@
 - PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
 - PIM-10394: Fix dictionary lookup to properly match uppercase
 - PIM-10399: Fix media link internal value on initialValue change
+- PIM-10402: Allow clearing a table measurement cell from the PEF
 
 ## Improvements
 

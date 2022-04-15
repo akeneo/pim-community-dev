@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList;
-use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributorCount;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository as SupplierRepository;
 
 class InMemoryGetSupplierList implements GetSupplierList
@@ -41,7 +41,7 @@ class InMemoryGetSupplierList implements GetSupplierList
     {
         return array_filter(
             $suppliers,
-            fn (Write\Supplier\Model\Supplier $supplier) =>
+            fn (Supplier $supplier) =>
                 1 <= strpos(strtolower($supplier->label()), strtolower($search)),
         );
     }
@@ -50,7 +50,7 @@ class InMemoryGetSupplierList implements GetSupplierList
     {
         uasort(
             $suppliers,
-            function (Write\Supplier\Model\Supplier $supplier1, Write\Supplier\Model\Supplier $supplier2) {
+            function (Supplier $supplier1, Supplier $supplier2) {
                 return strcmp($supplier1->label(), $supplier2->label());
             },
         );
@@ -58,8 +58,8 @@ class InMemoryGetSupplierList implements GetSupplierList
 
     private function buildReadModels(array $suppliers): array
     {
-        return array_map(function (Write\Supplier\Model\Supplier $supplier) {
-            return new Read\Supplier\Model\SupplierListItem($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
+        return array_map(function (Supplier $supplier) {
+            return new SupplierWithContributorCount($supplier->identifier(), $supplier->code(), $supplier->label(), count($supplier->contributors()));
         }, $suppliers);
     }
 }
