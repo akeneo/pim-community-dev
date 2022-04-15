@@ -18,12 +18,9 @@ interface VersionRepositoryInterface
     /**
      * Returns all versions for a resource
      *
-     * @param string $resourceName
-     * @param string|null $resourceId
-     *
      * @return Version[]|null
      */
-    public function getLogEntries($resourceName, $resourceId, ?UuidInterface $resourceUuid);
+    public function getLogEntries(string $resourceName, ?string $resourceId, ?UuidInterface $resourceUuid);
 
     /**
      * Returns oldest (first) version for a resource
