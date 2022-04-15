@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewData;
 
-
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 

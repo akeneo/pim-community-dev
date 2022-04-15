@@ -74,11 +74,16 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $this->padRowsToTheLongestRow($rows);
     }
 
-    public function readColumnValues(?string $sheetName, int $productLine, int $columnIndex): array
+    public function readColumnsValues(?string $sheetName, int $productLine, array $columnIndices): array
     {
         $rows = $this->readRows($sheetName, $productLine);
 
-        return array_map(static fn (array $row) => $row[$columnIndex], $rows);
+        $rowsByColumnIndex = [];
+        foreach ($columnIndices as $columnIndex) {
+            $rowsByColumnIndex[$columnIndex] = \array_map(static fn (array $row) => $row[$columnIndex], $rows);
+        }
+
+        return $rowsByColumnIndex;
     }
 
     public function getSheetNames(): array

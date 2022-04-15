@@ -87,7 +87,7 @@ const MeasurementConfigurator = ({
         )}
       </AttributeTargetParameters>
       <Sources
-        isMultiSource={true}
+        isMultiSource={false}
         sources={dataMapping.sources}
         columns={columns}
         validationErrors={filterErrors(validationErrors, '[sources]')}

@@ -12,7 +12,21 @@ final class FormatSampleData
 {
     public const SAMPLE_DATA_MAX_LENGTH = 101;
 
-    public static function format(array $values): array
+    public static function format(array $valuesIndexedByColumnIndex): array
+    {
+        $formattedValues = [];
+
+        foreach ($valuesIndexedByColumnIndex as $values) {
+            $formattedValues = [...$formattedValues, ...self::truncateValues($values)];
+        }
+
+        return $formattedValues;
+    }
+
+    /**
+     * @param array<string|null> $values
+     */
+    private static function truncateValues(array $values): array
     {
         return \array_map(
             static fn (?string $value): ?string => null === $value ? null : \mb_substr(

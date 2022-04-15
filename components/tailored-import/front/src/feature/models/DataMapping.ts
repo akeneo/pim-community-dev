@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
-import {Column, ColumnIdentifier} from './Configuration';
+import {Column, ColumnIdentifier} from './Column';
 import {Attribute} from './Attribute';
 import {AttributeTarget, createPropertyTarget, createAttributeTarget, PropertyTarget} from './Target';
 import {Operation} from './Operation';
