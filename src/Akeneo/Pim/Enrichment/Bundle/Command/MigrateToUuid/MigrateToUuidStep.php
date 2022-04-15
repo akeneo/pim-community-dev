@@ -144,6 +144,15 @@ interface MigrateToUuidStep
             self::UNIQUE_CONSTRAINTS_INDEX => [],
             self::INDEXES_INDEX => ['resource_name_resource_uuid_version_idx' => ['resource_name','resource_uuid','version']],
         ],
+        'pim_comment_comment' => [
+            self::ID_COLUMN_INDEX => 'resource_id',
+            self::UUID_COLUMN_INDEX => 'resource_uuid',
+            self::UUID_COLUMN_INDEX_NAME_INDEX => null,
+            self::PRIMARY_KEY_UUID_INDEX => null,
+            self::FOREIGN_KEY_INDEX => null,
+            self::UNIQUE_CONSTRAINTS_INDEX => [],
+            self::INDEXES_INDEX => ['resource_name_resource_uuid_idx' => ['resource_name','resource_uuid']],
+        ],
     ];
     public const ID_COLUMN_INDEX = 0;
     public const UUID_COLUMN_INDEX = 1;
