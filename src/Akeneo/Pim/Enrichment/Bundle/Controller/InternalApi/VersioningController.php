@@ -52,17 +52,17 @@ class VersioningController
      * Get the history of the given entity type with the given entityId
      *
      * @param string $entityType
-     * @param string $entityId
+     * @param string $entityIdOrUuid
      *
      * @return JSONResponse
      */
     public function getAction($entityType, $entityId)
     {
-        // @todo CPM-577: if a product, change the call to send uuid instead of id.
-        $entityUuid = null;
         if (Uuid::isValid($entityId)) {
             $entityUuid = Uuid::fromString($entityId);
             $entityId = null;
+        } else {
+            $entityUuid = null;
         }
 
         return new JsonResponse(
