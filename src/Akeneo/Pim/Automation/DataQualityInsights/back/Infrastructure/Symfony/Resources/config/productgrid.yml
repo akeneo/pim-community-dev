@@ -27,6 +27,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy'
 
     akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_rows:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows

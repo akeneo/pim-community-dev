@@ -14,14 +14,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class GetProductScores
 {
-    private GetProductScoresQueryInterface $getProductScoresQuery;
-
-    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
-
-    public function __construct(GetProductScoresQueryInterface $getProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
-    {
-        $this->getProductScoresQuery = $getProductScoresQuery;
-        $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
+    public function __construct(
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        private GetEnabledScoresStrategy $getEnabledScores,
+    ) {
     }
 
     /**
@@ -30,7 +27,7 @@ final class GetProductScores
      */
     public function get(ProductId $productId): array
     {
-        $productScores = $this->getProductScoresQuery->byProductId($productId);
+        $productScores = ($this->getEnabledScores)($this->getProductScoresQuery->byProductId($productId));
 
         if ($productScores->isEmpty()) {
             return ["evaluations_available" => false];
