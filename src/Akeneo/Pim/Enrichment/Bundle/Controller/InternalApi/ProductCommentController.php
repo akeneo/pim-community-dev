@@ -101,15 +101,15 @@ class ProductCommentController
     /**
      * List comments made on a product
      *
-     * @param int|string $id
+     * @param string $uuid
      *
      * @AclAncestor("pim_enrich_product_comment")
      *
      * @return JsonResponse
      */
-    public function getAction($id)
+    public function getAction($uuid)
     {
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $comments = $this->commentRepository->getComments(
             ClassUtils::getClass($product),
             $product->getId()
@@ -134,17 +134,17 @@ class ProductCommentController
      * Create a comment on a product
      *
      * @param Request $request
-     * @param string  $id
+     * @param string  $uuid
      *
      * @return Response
      */
-    public function postAction(Request $request, $id)
+    public function postAction(Request $request, $uuid)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
         $data = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
         $form = $this->formFactory->create(CommentType::class, $comment, ['csrf_protection' => false]);
@@ -173,18 +173,18 @@ class ProductCommentController
      * Reply to a product comment
      *
      * @param Request $request
-     * @param string  $id
+     * @param string  $uuid
      * @param string  $commentId
      *
      * @return Response
      */
-    public function postReplyAction(Request $request, $id, $commentId)
+    public function postReplyAction(Request $request, string $uuid, $commentId)
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
+        $product = $this->findProductOr404($uuid);
 
         $data = json_decode($request->getContent(), true);
         $data['parent'] = $commentId;
@@ -225,20 +225,19 @@ class ProductCommentController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param int $id the product id
-     *
-     * @throws NotFoundHttpException
+     * @param string $uuid the product uuid
      *
      * @return ProductInterface
+     *@throws NotFoundHttpException
+     *
      */
-    protected function findProductOr404($id)
+    protected function findProductOr404($uuid)
     {
-        // @TODO CPM-577: Change endpoint call to provide uuid instead of id
-        $product = $this->productRepository->findBy(['id' => $id]);
+        $product = $this->productRepository->find($uuid);
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $id)
+                sprintf('Product with id %s could not be found.', (string) $uuid)
             );
         }
 
