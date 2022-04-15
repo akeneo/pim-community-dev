@@ -12,6 +12,13 @@ use Psr\Log\LoggerInterface;
  */
 class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
 {
+    /** @var string[] */
+    private array $ignoredTables = [
+        'pim_versioning_version',
+        'pimee_workflow_published_product',
+        'pim_comment_comment',
+    ];
+
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
@@ -45,8 +52,10 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             }
         }
 
-        if (!$this->isColumnNullable('pim_versioning_version', 'resource_id')) {
-            $count++;
+        foreach (['pim_comment_comment', 'pim_versioning_version'] as $tableName) {
+            if (!$this->isColumnNullable($tableName, 'resource_id')) {
+                $count++;
+            }
         }
 
         return $count;
@@ -91,19 +100,22 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
             }
         }
 
-        if (!$this->isColumnNullable('pim_versioning_version', 'resource_id')) {
-            $this->connection->executeQuery(
-                <<<SQL
-                ALTER TABLE pim_versioning_version
-                MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                ALGORITHM=INPLACE,
-                LOCK=NONE;
-                SQL
-            );
-            $this->logger->notice('Substep done', $logContext->toArray([
-                'updated_items_count' => $updatedItems+=1,
-                'substep' => 'pim_versioning_version'
-            ]));
+        foreach (['pim_comment_comment', 'pim_versioning_version'] as $tableName) {
+            if (!$this->isColumnNullable($tableName, 'resource_id')) {
+                $this->connection->executeQuery(\strtr(
+                    <<<SQL
+                    ALTER TABLE {table_name}
+                    MODIFY resource_id varchar(24) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+                    ALGORITHM=INPLACE,
+                    LOCK=NONE;
+                    SQL,
+                    ['{table_name}' => $tableName]
+                ));
+                $this->logger->notice('Substep done', $logContext->toArray([
+                    'updated_items_count' => $updatedItems+=1,
+                    'substep' => $tableName,
+                ]));
+            }
         }
 
         return true;
@@ -133,7 +145,7 @@ class MigrateToUuidSetNotNullableUuidColumns implements MigrateToUuidStep
     {
         return \array_filter(
             self::TABLES,
-            fn (string $tableName): bool => !\in_array($tableName, ['pim_versioning_version', 'pimee_workflow_published_product']) && $this->tableExists($tableName),
+            fn (string $tableName): bool => !\in_array($tableName, $this->ignoredTables) && $this->tableExists($tableName),
             ARRAY_FILTER_USE_KEY
         );
     }
