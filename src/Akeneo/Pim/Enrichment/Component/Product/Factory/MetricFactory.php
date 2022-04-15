@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasureException;
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
 
 /**
@@ -59,18 +60,17 @@ class MetricFactory
     public function createMetric($family, $unit, $data)
     {
         try {
+            $unit = $this->getUnit($unit, $family);
             $baseData = null !== $data ?
                 $this->measureConverter->setFamily($family)->convertBaseToStandard($unit, $data) :
                 null;
-        } catch (MeasureException $e) {
+        } catch (MeasureException) {
             return new $this->metricClass($family, $unit, $data, null, null);
         }
 
         $baseUnit = $this->getBaseUnit($family);
 
-        $metric = new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
-
-        return $metric;
+        return new $this->metricClass($family, $unit, $data, $baseUnit, $baseData);
     }
 
     /**
@@ -80,8 +80,19 @@ class MetricFactory
      *
      * @return string
      */
-    protected function getBaseUnit($family)
+    protected function getBaseUnit($family): string
     {
         return $this->measureManager->getStandardUnitForFamily($family);
+    }
+
+    private function getUnit(string $unit, string $family): string
+    {
+        $unitCodesForFamily = $this->measureManager->getUnitCodesForFamily($family);
+        $unitCodesForFamily = \array_combine(
+            \array_map('strtolower', $unitCodesForFamily),
+            $unitCodesForFamily
+        );
+
+        return $unitCodesForFamily[\strtolower($unit)] ?? throw new UnitNotFoundException();
     }
 }
