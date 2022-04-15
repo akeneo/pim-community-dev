@@ -8,7 +8,8 @@ use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\Exception\SupplierDoesNotExist;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -19,14 +20,14 @@ final class UpdateSupplierHandlerTest extends TestCase
     /** @test */
     public function itUpdatesASupplierWithoutAnyError(): void
     {
-        $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+        $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
         $command = new UpdateSupplier((string) $identifier, 'Updated label', ['contributor1@example.com', 'contributor2@example.com']);
 
         $validatorSpy = $this->getValidatorSpyWithNoError($command);
 
         $repository = new InMemoryRepository();
-        $repository->save(Supplier\Model\Supplier::create((string) $identifier, 'code', 'label', []));
+        $repository->save(Supplier::create((string) $identifier, 'code', 'label', []));
 
         $handler = new UpdateSupplierHandler($repository, $validatorSpy);
         ($handler)($command);
@@ -43,7 +44,7 @@ final class UpdateSupplierHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnExceptionIfTheCommandIsInvalid(): void
     {
-        $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+        $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
         $command = new UpdateSupplier(
             (string) $identifier,
             str_repeat('a', 201),
@@ -65,7 +66,7 @@ final class UpdateSupplierHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnExceptionIfTheSupplierDoesNotExist(): void
     {
-        $identifier = Supplier\ValueObject\Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+        $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
 
         $command = new UpdateSupplier(
             (string) $identifier,

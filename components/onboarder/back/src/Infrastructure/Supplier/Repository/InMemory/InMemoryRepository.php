@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 
-class InMemoryRepository implements Supplier\Repository
+class InMemoryRepository implements Repository
 {
     private array $suppliers = [];
 
     public int $saveCallCounter = 0;
 
-    public function save(Supplier\Model\Supplier $supplier): void
+    public function save(Supplier $supplier): void
     {
         $this->suppliers[$supplier->identifier()] = $supplier;
         $this->saveCallCounter++;
     }
 
-    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
+    public function find(Identifier $identifier): ?Supplier
     {
         return \array_key_exists((string) $identifier, $this->suppliers) ? $this->suppliers[(string) $identifier] : null;
     }
@@ -31,7 +33,7 @@ class InMemoryRepository implements Supplier\Repository
         }
     }
 
-    public function findByCode(Supplier\ValueObject\Code $code): ?Supplier\Model\Supplier
+    public function findByCode(Code $code): ?Supplier
     {
         foreach ($this->suppliers as $supplier) {
             if ((string) $code === $supplier->code()) {
