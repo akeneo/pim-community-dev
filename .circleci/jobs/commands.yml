@@ -127,7 +127,7 @@ commands:
                                     -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
                                     ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
                                     echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
-                                    sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+                                    sed -i "s#akeneo/pim-onboarder\": \"^5.0.9#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
 
     show_datadog_logs_links:
       description: "Show datadog usefulls links for given PFID"
@@ -176,7 +176,7 @@ commands:
               if [[ "${LOGS}" != "" ]]; then
                 echo ${LOGS} | jq -r .data[].attributes.message
               fi
-                              
+
     skip_job:
         description: "Skip following steps when turned on"
         parameters:

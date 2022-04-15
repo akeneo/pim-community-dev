@@ -10,10 +10,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace AkeneoEnterprise\Channel\Locale\Infrastructure\Symfony;
+
+namespace AkeneoEnterprise\Channel\Infrastructure\Symfony;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class AkeneoEnterpriseLocaleBundle extends Bundle
+final class AkeneoEnterpriseChannelBundle extends Bundle
 {
 }

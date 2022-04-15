@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoEnterprise\Test\Channel\Locale\Integration;
+namespace AkeneoEnterprise\Test\Channel\Integration;
 
-use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
-use Akeneo\Test\Channel\Locale\Integration\ChannelTestCase;
+use Akeneo\Channel\API\Query\IsLocaleEditable;
+use Akeneo\Test\Channel\Integration\ChannelTestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 
-final class LRUCachedIsLocaleEditableIntegration extends ChannelTestCase
+final class LRUCachedIsLocaleEditableTest extends ChannelTestCase
 {
     private IsLocaleEditable $isLocaleEditable;
     private UserInterface $userWithPermission;
@@ -38,7 +38,7 @@ final class LRUCachedIsLocaleEditableIntegration extends ChannelTestCase
     }
 
     /** @test */
-    public function it_returns_all_activated_locale_codes_editable_by_user(): void
+    public function itReturnsAllActivatedLocaleCodesEditableByUser(): void
     {
         Assert::assertTrue($this->isLocaleEditable->forUserId('en_US', $this->userWithPermission->getId()));
         Assert::assertTrue($this->isLocaleEditable->forUserId('fr_FR', $this->userWithPermission->getId()));

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Context;
 
-use Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository;
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Behat\Gherkin\Node\TableNode;

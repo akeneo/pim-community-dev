@@ -39,9 +39,8 @@ return [
     // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
-    Akeneo\Channel\Bundle\AkeneoLegacyChannelBundle::class => ['all' => true],
-    Akeneo\Channel\Locale\Infrastructure\Symfony\AkeneoLocaleBundle::class => ['all' => true],
-    AkeneoEnterprise\Channel\Locale\Infrastructure\Symfony\AkeneoEnterpriseLocaleBundle::class => ['all' => true],
+    Akeneo\Channel\Infrastructure\Symfony\AkeneoChannelBundle::class => ['all' => true],
+    AkeneoEnterprise\Channel\Infrastructure\Symfony\AkeneoEnterpriseChannelBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
@@ -65,8 +64,6 @@ return [
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
-    Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
-    Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
 
     // PIM Growth bundle
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
