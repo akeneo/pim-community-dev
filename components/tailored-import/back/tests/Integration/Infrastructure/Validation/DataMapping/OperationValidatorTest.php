@@ -60,14 +60,6 @@ class OperationValidatorTest extends AbstractValidationTest
                 ['clean_html_tags'],
                 [],
             ],
-            'an non existent operation' => [
-                ['non_existent_operation'],
-                [
-                    [
-                        'type' => 'non_existent_operation'
-                    ],
-                ]
-            ],
         ];
     }
 
@@ -81,6 +73,16 @@ class OperationValidatorTest extends AbstractValidationTest
                 [
                     [
                         'type' => 'clean_html_tags'
+                    ],
+                ]
+            ],
+            'an non existent operation' => [
+                'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
+                '[0][type]',
+                ['non_existent_operation'],
+                [
+                    [
+                        'type' => 'non_existent_operation'
                     ],
                 ]
             ],

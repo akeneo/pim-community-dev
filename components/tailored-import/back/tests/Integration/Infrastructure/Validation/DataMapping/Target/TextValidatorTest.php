@@ -169,7 +169,7 @@ final class TextValidatorTest extends AbstractValidationTest
                 ]
             ],
             'an text data mapping with an unsupported operation' => [
-                'akeneo.tailored_import.validation.operations.incompatible_operation_type',
+                'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
                 '[operations][0][type]',
                 [
                     "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",

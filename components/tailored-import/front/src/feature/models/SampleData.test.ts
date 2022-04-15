@@ -23,8 +23,15 @@ test('it replaces a sample data', () => {
 });
 
 test('it truncates a too long sample data and add an ellipsis character', () => {
-  expect(formatSampleData('sample data')).toHaveLength(11);
-  expect(formatSampleData('X'.repeat(100))).toEqual('X'.repeat(100));
-  expect(formatSampleData('X'.repeat(101))).toEqual('X'.repeat(100) + '…');
-  expect(formatSampleData('X'.repeat(110))).toEqual('X'.repeat(100) + '…');
+  const translate = jest.fn();
+  expect(formatSampleData(translate, 'sample data')).toEqual('sample data');
+  expect(formatSampleData(translate, 'X'.repeat(100))).toEqual('X'.repeat(100));
+  expect(formatSampleData(translate, 'X'.repeat(101))).toEqual('X'.repeat(100) + '…');
+  expect(formatSampleData(translate, 'X'.repeat(110))).toEqual('X'.repeat(100) + '…');
+});
+
+test('it returns a message when sample data is empty', () => {
+  const translate = jest.fn().mockImplementation(key => key);
+
+  expect(formatSampleData(translate, null)).toEqual('akeneo.tailored_import.data_mapping.preview.placeholder');
 });

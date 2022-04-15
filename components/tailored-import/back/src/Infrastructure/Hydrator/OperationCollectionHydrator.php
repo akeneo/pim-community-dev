@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
+use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 
-class OperationCollectionHydrator
+class OperationCollectionHydrator implements OperationCollectionHydratorInterface
 {
     public function hydrate(array $normalizedOperations): OperationCollection
     {

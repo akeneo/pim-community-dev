@@ -4,19 +4,21 @@ import {
   ArrowDownIcon,
   BlockButton,
   Dropdown,
-  getColor,
   Helper,
-  IconButton,
-  placeholderStyle,
-  Preview,
-  RefreshIcon,
   SectionTitle,
   SettingsIllustration,
   useBooleanState,
 } from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {DataMapping, formatSampleData, getDefaultOperation, Operation, OperationType} from '../../models';
-import {CleanHTMLTagsOperationBlock, OperationBlockProps, CLEAN_HTML_TAGS_TYPE} from './Operation';
+import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
+import {
+  CleanHTMLTagsOperationBlock,
+  OperationBlockProps,
+  OperationPreviewData,
+  OperationSampleData,
+  CLEAN_HTML_TAGS_TYPE,
+} from './Operation';
+import {usePreviewData} from '../../hooks';
 
 const OperationsContainer = styled.div`
   display: flex;
@@ -28,16 +30,6 @@ const OperationBlocksContainer = styled.div`
   flex-direction: column;
   margin-top: 10px;
   gap: 10px;
-`;
-
-const PreviewContent = styled.div<{isLoading: boolean}>`
-  ${({isLoading}) => isLoading && placeholderStyle}
-`;
-
-const EmptyPreviewContent = styled(PreviewContent)`
-  color: ${getColor('grey', 100)};
-
-  ${({isLoading}) => isLoading && placeholderStyle}
 `;
 
 const operationBlocks: {
@@ -57,6 +49,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
   const translate = useTranslate();
   const [loadingSampleData, setLoadingSampleData] = useState<number[]>([]);
   const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+  const [previewDataIsLoading, previewData, previewDataHasError] = usePreviewData(dataMapping);
 
   const handleRefreshSampleData = async (indexToRefresh: number) => {
     setLoadingSampleData(loadingSampleData => [...loadingSampleData, indexToRefresh]);
@@ -84,31 +77,11 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
         <Helper>{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
       ) : (
         <OperationBlocksContainer>
-          <Preview title={translate('akeneo.tailored_import.data_mapping.preview.title')}>
-            {dataMapping.sample_data.map((sampleData, key) => (
-              <Preview.Row
-                key={key}
-                action={
-                  <IconButton
-                    disabled={loadingSampleData.includes(key)}
-                    icon={<RefreshIcon />}
-                    onClick={() => handleRefreshSampleData(key)}
-                    title={translate('akeneo.tailored_import.data_mapping.preview.refresh')}
-                  />
-                }
-              >
-                {null !== sampleData ? (
-                  <PreviewContent isLoading={loadingSampleData.includes(key)}>
-                    {formatSampleData(sampleData)}
-                  </PreviewContent>
-                ) : (
-                  <EmptyPreviewContent isLoading={loadingSampleData.includes(key)}>
-                    {translate('akeneo.tailored_import.data_mapping.preview.placeholder')}
-                  </EmptyPreviewContent>
-                )}
-              </Preview.Row>
-            ))}
-          </Preview>
+          <OperationSampleData
+            sampleData={dataMapping.sample_data}
+            onRefreshSampleData={handleRefreshSampleData}
+            loadingSampleData={loadingSampleData}
+          />
           {dataMapping.operations.map(operation => {
             const OperationBlock = operationBlocks[operation.type] ?? null;
 
@@ -144,6 +117,13 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Dropdown.Overlay>
             )}
           </Dropdown>
+          {dataMapping.operations.length > 0 && (
+            <OperationPreviewData
+              isLoading={previewDataIsLoading}
+              previewData={previewData}
+              hasErrors={previewDataHasError}
+            />
+          )}
         </OperationBlocksContainer>
       )}
     </OperationsContainer>

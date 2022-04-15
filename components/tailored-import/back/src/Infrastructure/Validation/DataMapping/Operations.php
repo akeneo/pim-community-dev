@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraint;
 final class Operations extends Constraint
 {
     public const INCOMPATIBLE_OPERATION_TYPE = 'akeneo.tailored_import.validation.operations.incompatible_operation_type';
+    public const OPERATION_TYPE_DOES_NOT_EXIST = 'akeneo.tailored_import.validation.operations.operation_type_does_not_exist';
 
     public function __construct(
         private array $compatibleOperations,
