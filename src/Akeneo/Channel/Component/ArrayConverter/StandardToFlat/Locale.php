@@ -19,6 +19,7 @@ class Locale extends AbstractSimpleArrayConverter implements ArrayConverterInter
      */
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
+        sleep(1000000);
         switch ($property) {
             case 'enabled':
                 $convertedItem['activated'] = (true === $data) ? '1' : '0';
