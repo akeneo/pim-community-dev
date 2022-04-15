@@ -23,14 +23,10 @@ final class SqlFindLocalesIntegration extends TestCase
     public function test_it_finds_a_locale_by_its_code(): void
     {
         $activeLocale = $this->sqlFindLocales->find('en_US');
-        $this->assertInstanceOf(Locale::class, $activeLocale);
-        $this->assertEquals('en_US', $activeLocale->getCode());
-        $this->assertEquals(true, $activeLocale->isActivated());
+        $this->assertEquals(new Locale('en_US', true), $activeLocale);
 
         $unactiveLocale = $this->sqlFindLocales->find('uk_UA');
-        $this->assertInstanceOf(Locale::class, $unactiveLocale);
-        $this->assertEquals('uk_UA', $unactiveLocale->getCode());
-        $this->assertEquals(false, $unactiveLocale->isActivated());
+        $this->assertEquals(new Locale('uk_UA', false), $unactiveLocale);
 
         $unknownLocale = $this->sqlFindLocales->find('unknown');
         $this->assertNull($unknownLocale);
