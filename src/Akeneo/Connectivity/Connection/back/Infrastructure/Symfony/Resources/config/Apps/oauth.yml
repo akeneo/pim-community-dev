@@ -5,7 +5,7 @@ services:
             - '@pim_user.repository.user'
             - '@fos_oauth_server.storage.default'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator'
-            - '@akeneo_connectivity.connection.clock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\RedirectUriWithAuthorizationCodeGenerator:
         arguments:
@@ -27,7 +27,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken:
         arguments:
-            - '@akeneo_connectivity.connection.clock'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock'
             - '@pim_framework.service.pim_url'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAsymmetricKeysQuery'
 
