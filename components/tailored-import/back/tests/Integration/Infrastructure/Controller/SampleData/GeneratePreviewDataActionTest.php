@@ -31,7 +31,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
         $this->webClientHelper = $this->get('akeneo_integration_tests.helper.web_client');
     }
 
-    public function test_it_return_a_refreshed_sample_data(): void
+    public function test_it_returns_a_generated_preview_data(): void
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
@@ -75,7 +75,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
 
         $decodedResponse = \json_decode($response->getContent(), true);
         $this->assertContains(
-            'akeneo.tailored_import.validation.operations.incompatible_operation_type',
+            'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
             array_column($decodedResponse, 'messageTemplate')
         );
     }

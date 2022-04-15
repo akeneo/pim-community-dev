@@ -34,9 +34,9 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
     {
         $query = new GeneratePreviewDataQuery();
         $query->operations = [];
-        $query->sampleData = ['product1', 'product2', 'product3'];
+        $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
-        $expected = GeneratePreviewDataResult::create(['product1', 'product2', 'product3']);
+        $expected = GeneratePreviewDataResult::create(['<b>product1</b>', '<i>product2</i>', 'product3']);
         $this->assertEquals($expected, $this->getHandler()->handle($query));
     }
 

@@ -50,6 +50,15 @@ final class OperationsValidator extends ConstraintValidator
     {
         $operationType = $operation['type'];
         $compatibleOperationTypes = $operationsConstraint->getCompatibleOperations();
+        $constraintClass = $this->operationConstraints[$operationType] ?? null;
+        if (!$this->isOperationConstraint($constraintClass)) {
+            $this->context->buildViolation(Operations::OPERATION_TYPE_DOES_NOT_EXIST)
+                ->setParameter('{{ operation_type }}', $operationType)
+                ->atPath(sprintf('%s[type]', $path))
+                ->addViolation();
+
+            return;
+        }
 
         if (!in_array($operationType, $compatibleOperationTypes)) {
             $this->context->buildViolation(Operations::INCOMPATIBLE_OPERATION_TYPE)

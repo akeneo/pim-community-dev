@@ -29,6 +29,6 @@ pimee_tailored_import_get_refreshed_sample_data_action:
     methods: [GET]
 
 pimee_tailored_import_generate_preview_data_action:
-    path: /rest/tailored-import/generate-sample-data
+    path: /rest/tailored-import/generate-preview-data
     defaults: { _controller: akeneo.tailored_import.controller.generate_preview_data_action }
     methods: [POST]
