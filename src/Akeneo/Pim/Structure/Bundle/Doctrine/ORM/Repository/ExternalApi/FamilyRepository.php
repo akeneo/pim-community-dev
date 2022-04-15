@@ -102,14 +102,15 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         $qb->setParameter($parameter, $criterion['value']);
                         break;
                     case '=':
-                        if ('has_products' === $property) {
-                            $qb->andWhere($qb->expr()->in('r.id', ':family_ids_used_by_products'));
-                            $qb->setParameter(
-                                'family_ids_used_by_products',
-                                $this->getFamilyIdsUsedByProductsQuery->execute()
-                            );
-                             break;
+                        if ('has_products' !== $property) {
+                            throw new \InvalidArgumentException('Invalid operator for search query.');
                         }
+                        $qb->andWhere($qb->expr()->in('r.id', ':family_ids_used_by_products'));
+                        $qb->setParameter(
+                            'family_ids_used_by_products',
+                            $this->getFamilyIdsUsedByProductsQuery->execute()
+                        );
+                        break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }

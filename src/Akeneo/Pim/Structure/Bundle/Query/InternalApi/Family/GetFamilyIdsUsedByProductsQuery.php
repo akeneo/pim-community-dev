@@ -28,6 +28,8 @@ final class GetFamilyIdsUsedByProductsQuery implements GetFamilyIdsUsedByProduct
         );
         SQL;
 
-        return $this->connection->executeQuery($query, [])->fetchFirstColumn();
+        return array_map(function (string $code) {
+            return intval($code);
+        }, $this->connection->executeQuery($query, [])->fetchFirstColumn());
     }
 }
