@@ -108,8 +108,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                                 'family_ids_used_by_products',
                                 $this->getFamilyIdsUsedByProductsQuery->execute()
                             );
+                             break;
                         }
-                        break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
