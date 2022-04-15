@@ -35,7 +35,7 @@ const SupplierList = ({
 
     return (
         <>
-            <Search
+            <StyledSearch
                 onSearchChange={onSearchChange}
                 searchValue={searchValue}
                 placeholder={translate('onboarder.supplier.supplier_list.search_by_supplier')}
@@ -67,9 +67,7 @@ const SupplierList = ({
                             <Table.HeaderCell>
                                 {translate('onboarder.supplier.supplier_list.columns.number_of_contributors')}
                             </Table.HeaderCell>
-                            <Table.HeaderCell>
-                                {translate('onboarder.supplier.supplier_list.columns.actions')}
-                            </Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                         </Table.Header>
                         <Table.Body>
                             {suppliers.map((supplier: SupplierRow) => (
@@ -96,6 +94,10 @@ const SupplierList = ({
         </>
     );
 };
+
+const StyledSearch = styled(Search)`
+    margin-bottom: 10px;
+`;
 
 const StyledEditIcon = styled(EditIcon)`
     cursor: pointer;

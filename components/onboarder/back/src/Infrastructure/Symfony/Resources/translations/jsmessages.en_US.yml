@@ -2,7 +2,7 @@ onboarder:
     menu_block_title: Onboarder
     supplier:
         breadcrumb:
-            root: Onboarder settings
+            root: Onboarder
             suppliers: Suppliers
         supplier_create:
             modal:
