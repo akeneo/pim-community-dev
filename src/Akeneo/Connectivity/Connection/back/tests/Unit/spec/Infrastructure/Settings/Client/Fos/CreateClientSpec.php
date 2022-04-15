@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Client\Fos;
+namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Service\CreateClientInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\Client;
