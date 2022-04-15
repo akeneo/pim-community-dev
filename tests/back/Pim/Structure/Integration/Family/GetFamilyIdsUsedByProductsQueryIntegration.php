@@ -35,8 +35,7 @@ class GetFamilyIdsUsedByProductsQueryIntegration extends TestCase
         $familyIdsUsedByProducts = $getFamilyIdsUsedByProductsQuery->execute();
 
         Assert::assertCount(2, $familyIdsUsedByProducts);
-        Assert::assertEquals($aFamilyWithAProduct->getId(), $familyIdsUsedByProducts[0]);
-        Assert::assertEquals($anotherFamilyWithAProduct->getId(), $familyIdsUsedByProducts[1]);
+        Assert::assertEqualsCanonilizing([$aFamilyWithAProduct->getId(), $anotherFamilyWithAProduct->getId()], $familyIdsUsedByProducts);
     }
 
     private function createFamily($data): Family
