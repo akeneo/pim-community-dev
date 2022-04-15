@@ -81,8 +81,8 @@ pim_enrich_product_history_rest_get:
     methods: [GET]
 
 pim_pdf_generator_download_product_pdf:
-    path: /{id}/download-pdf
+    path: /{uuid}/download-pdf
     defaults: { _controller: pim_pdf_generator.controller.product:downloadPdfAction }
     requirements:
-        id: '[0-9a-f]+'
+        uuid: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
