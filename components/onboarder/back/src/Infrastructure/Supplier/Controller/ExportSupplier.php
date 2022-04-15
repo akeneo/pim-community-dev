@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetAllSuppliersWithContributors;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder;
 use Box\Spout\Common\Type;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;

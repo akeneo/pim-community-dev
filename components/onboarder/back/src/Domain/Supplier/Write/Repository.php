@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\Model\Supplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 
 interface Repository
 {

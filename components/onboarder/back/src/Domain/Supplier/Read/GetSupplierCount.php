@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Domain\Read\Supplier;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Read;
 
 interface GetSupplierCount
 {

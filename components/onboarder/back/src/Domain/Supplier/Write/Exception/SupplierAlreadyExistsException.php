@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Domain\Write\Supplier\Exception;
+namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write\Exception;
 
 final class SupplierAlreadyExistsException extends \DomainException
 {

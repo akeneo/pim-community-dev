@@ -1,25 +1,25 @@
 services:
     # Repositories
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
 
     # Queries
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetAllSuppliersWithContributors:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetAllSuppliersWithContributors:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'

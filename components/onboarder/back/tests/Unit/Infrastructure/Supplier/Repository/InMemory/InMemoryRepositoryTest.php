@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Infrastructure\Supplier\Repository\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 
@@ -16,7 +18,7 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier\Model\Supplier::create(
+            Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
                 'Supplier code',
@@ -25,7 +27,7 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         $supplier = $supplierRepository->find(
-            Supplier\ValueObject\Identifier::fromString(
+            Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02',
             ),
         );
@@ -40,7 +42,7 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier\Model\Supplier::create(
+            Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'supplier_code',
                 'Supplier code',
@@ -48,7 +50,7 @@ final class InMemoryRepositoryTest extends TestCase
             ),
         );
 
-        $supplier = $supplierRepository->findByCode(Supplier\ValueObject\Code::fromString('supplier_code'));
+        $supplier = $supplierRepository->findByCode(Code::fromString('supplier_code'));
 
         static::assertSame('supplier_code', $supplier->code());
         static::assertSame('Supplier code', $supplier->label());
@@ -60,7 +62,7 @@ final class InMemoryRepositoryTest extends TestCase
         $supplierRepository = new InMemoryRepository();
 
         $supplierRepository->save(
-            Supplier\Model\Supplier::create(
+            Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f02',
                 'new_supplier_code',
                 'New supplier code',
@@ -69,7 +71,7 @@ final class InMemoryRepositoryTest extends TestCase
         );
 
         $supplier = $supplierRepository->find(
-            Supplier\ValueObject\Identifier::fromString(
+            Identifier::fromString(
                 '44ce8069-8da1-4986-872f-311737f46f02',
             ),
         );
@@ -83,7 +85,7 @@ final class InMemoryRepositoryTest extends TestCase
     {
         static::assertNull(
             (new InMemoryRepository())
-                ->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')),
+                ->find(Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02')),
         );
     }
 
@@ -91,9 +93,9 @@ final class InMemoryRepositoryTest extends TestCase
     public function itDeletesASupplier(): void
     {
         $supplierRepository = new InMemoryRepository();
-        $identifier = Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
+        $identifier = Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f02');
         $supplierRepository->save(
-            Supplier\Model\Supplier::create(
+            Supplier::create(
                 (string) $identifier,
                 'supplier_code',
                 'Supplier code',
@@ -101,7 +103,7 @@ final class InMemoryRepositoryTest extends TestCase
             ),
         );
         $supplierRepository->save(
-            Supplier\Model\Supplier::create(
+            Supplier::create(
                 '44ce8069-8da1-4986-872f-311737f46f01',
                 'supplier_code2',
                 'Supplier code2',
@@ -112,8 +114,8 @@ final class InMemoryRepositoryTest extends TestCase
 
         $this->assertNull($supplierRepository->find($identifier));
         $this->assertInstanceOf(
-            Supplier\Model\Supplier::class,
-            $supplierRepository->find(Supplier\ValueObject\Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01')),
+            Supplier::class,
+            $supplierRepository->find(Identifier::fromString('44ce8069-8da1-4986-872f-311737f46f01')),
         );
     }
 }
