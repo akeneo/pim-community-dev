@@ -8,7 +8,7 @@ class EntityCategoriesWithFamilyVariant extends BaseController {
     sessionStorage.setItem('redirectTab', '#' + this.options.config.redirectTabName);
     sessionStorage.setItem('current_column_tab', this.options.config.redirectTabName);
 
-    Router.redirectToRoute(this.options.config.redirectRouteName, {id: route.params.id});
+    Router.redirectToRoute(this.options.config.redirectRouteName, route.params);
 
     return $.Deferred().resolve();
   }
