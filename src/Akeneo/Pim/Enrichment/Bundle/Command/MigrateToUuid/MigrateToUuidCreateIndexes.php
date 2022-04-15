@@ -45,10 +45,6 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
             $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
             if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
                 $count++;
-            } elseif (\in_array($tableName, ['pim_versioning_version', 'pim_comment_comment']) &&
-                !$this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')
-            ) {
-                $count++;
             }
         }
 
