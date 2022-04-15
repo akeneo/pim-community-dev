@@ -16,7 +16,8 @@ class GetProductModelScores
 {
     public function __construct(
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
-        private GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery
+        private GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery,
+        private GetEnabledScoresStrategy $getEnabledScores,
     ) {
     }
 
@@ -26,7 +27,7 @@ class GetProductModelScores
      */
     public function get(ProductEntityIdInterface $productId): array
     {
-        $productScores = $this->getProductModelScoresQuery->byProductModelId($productId);
+        $productScores = ($this->getEnabledScores)($this->getProductModelScoresQuery->byProductModelId($productId));
 
         if ($productScores->isEmpty()) {
             return ["evaluations_available" => false];

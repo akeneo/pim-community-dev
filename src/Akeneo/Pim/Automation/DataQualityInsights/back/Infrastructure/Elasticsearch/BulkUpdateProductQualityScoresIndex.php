@@ -60,7 +60,8 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
-                        'scores' => $qualityScores->toArrayIntRank(),
+                        'scores' => $qualityScores->allCriteria()->toArrayIntRank(),
+                        'scores_partial_criteria' => $qualityScores->partialCriteria()->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
                 ]

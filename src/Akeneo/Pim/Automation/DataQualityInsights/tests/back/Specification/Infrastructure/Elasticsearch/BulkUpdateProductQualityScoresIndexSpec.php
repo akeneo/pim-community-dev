@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
@@ -69,6 +70,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                         'inline' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 5]],
+                            'scores_partial_criteria' => ['ecommerce' => ['en_US' => 4]],
                             'key_indicators' => $productsKeyIndicators[123]
                         ],
                     ]
@@ -78,6 +80,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                         'inline' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 1]],
+                            'scores_partial_criteria' => ['ecommerce' => ['en_US' => 3]],
                             'key_indicators' => $productsKeyIndicators[456]
                         ],
                     ]
@@ -119,6 +122,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                         'inline' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 5]],
+                            'scores_partial_criteria' => ['ecommerce' => ['en_US' => 4]],
                             'key_indicators' => $productModelsKeyIndicators[123]
                         ],
                     ]
@@ -128,6 +132,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                         'inline' => "ctx._source.data_quality_insights = params;",
                         'params' => [
                             'scores' => ['ecommerce' => ['en_US' => 1]],
+                            'scores_partial_criteria' => ['ecommerce' => ['en_US' => 3]],
                             'key_indicators' => $productModelsKeyIndicators[456]
                         ],
                     ]
@@ -146,10 +151,18 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 
         $productIdCollection = ProductIdCollection::fromProductIds([new ProductId(123), new ProductId(456), new ProductId(42)]);
         $scores = [
-            123 => (new ChannelLocaleRateCollection)
-                ->addRate($channel, $locale, new Rate(10)),
-            456 => (new ChannelLocaleRateCollection)
-                ->addRate($channel, $locale, new Rate(96)),
+            123 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(10)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(65)),
+            ),
+            456 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(96)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(78)),
+            ),
         ];
         $keyIndicators = [
             123 => [
