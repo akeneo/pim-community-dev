@@ -78,6 +78,10 @@ connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 
 connectivity-connection-unit-back:
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	.circleci/find_non_executed_phpspec.sh
+endif
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 	# Scope Mapper unit tests
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
