@@ -45,7 +45,7 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
         );
 
         $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
-            'id' => $product->getId(),
+            'uuid' => $product->getUuid()->toString(),
             'dataLocale' => 'en_US',
             'dataScope' => 'ecommerce',
         ]);
@@ -60,7 +60,7 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
         $product = $this->createProduct('simple', null, []);
 
         $url = $this->getRouter()->generate('pim_pdf_generator_download_product_pdf', [
-            'id' => $product->getId(),
+            'uuid' => $product->getUuid()->toString(),
             'dataLocale' => 'en_US',
             'dataScope' => 'ecommerce',
         ]);
