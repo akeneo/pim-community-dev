@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use PHPUnit\Framework\Assert;
@@ -27,7 +28,7 @@ class SearchEventSubscriptionLogsEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
         $this->eventSubscriptionLogLoader = $this->get(
             'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
         );

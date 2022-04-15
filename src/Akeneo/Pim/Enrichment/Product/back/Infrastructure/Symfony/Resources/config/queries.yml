@@ -12,3 +12,6 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProducts:
         class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProducts
+
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels:
+        class: Akeneo\Pim\Enrichment\Product\Infrastructure\Query\GetViewableProductModels

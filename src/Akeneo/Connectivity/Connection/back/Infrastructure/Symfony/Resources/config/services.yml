@@ -1,96 +1,54 @@
-parameters:
-    akeneo_connectivity.connection.max_limit: 50
-
 services:
-    akeneo_connectivity.connection.service.client.create_client:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-
-    akeneo_connectivity.connection.service.client.delete_client:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\DeleteClient
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-
-    akeneo_connectivity.connection.service.user.create_user:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser:
         arguments:
             - '@pim_user.factory.user'
             - '@pim_user.updater.user'
             - '@validator'
             - '@pim_user.saver.user'
 
-    akeneo_connectivity.connection.service.user.delete_user:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUser
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUser:
         arguments:
             - '@pim_user.repository.user'
             - '@pim_user.remover.user'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserGroup:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserGroup:
         arguments:
             - '@pim_user.repository.group'
             - '@pim_user.remover.user_group'
 
-    Akeneo\Connectivity\Connection\Infrastructure\User\Internal\DeleteUserRole:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\DeleteUserRole:
         arguments:
             - '@pim_user.repository.role'
             - '@pim_user.remover.role'
 
-    akeneo_connectivity.connection.service.client.regenerate_client_secret:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\FosRegenerateClientSecret
-        arguments:
-            - '@fos_oauth_server.client_manager.default'
-            - '@database_connection'
-
-    akeneo_connectivity.connection.service.user.regenerate_user_password:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\RegenerateUserPassword
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\RegenerateUserPassword:
         arguments:
             - '@pim_user.manager'
             - '@database_connection'
 
-    akeneo_connectivity.connection.service.user.update_user_permissions:
-        class: Akeneo\Connectivity\Connection\Infrastructure\User\Internal\UpdateUserPermissions
+    Akeneo\Connectivity\Connection\Infrastructure\Service\User\UpdateUserPermissions:
         arguments:
             - '@pim_user.manager'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@pim_user.updater.user'
 
-    akeneo_connectivity.connection.service.file_info.does_image_exist:
-        class: Akeneo\Connectivity\Connection\Infrastructure\FileInfo\Internal\DoesImageExistQuery
+    Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext:
         arguments:
-            - '@database_connection'
-
-    akeneo_connectivity.connection.service.connection_context:
-        class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
-        arguments:
-            - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
-            - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
 
-    akeneo_connectivity.connection.clock:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock: ~
 
-    akeneo_connectivity.connection.encrypter:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter:
         arguments:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
 
-    akeneo_connectivity.connection.dns_lookup:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup
+    Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup: ~
 
-    akeneo_connectivity.connection.ip_matcher:
-        class: Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher
-
-    akeneo_connectivity.marketplace.content_security_policy:
-        class: Akeneo\Connectivity\Connection\Infrastructure\ContentSecurityPolicy\MarketplaceContentSecurityPolicy
-        tags:
-            - { name: akeneo.pim.security.content_security_policy_provider }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit:
-        arguments:
-            - '%akeneo_connectivity.connection.max_limit%'
+    Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher: ~
 
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~

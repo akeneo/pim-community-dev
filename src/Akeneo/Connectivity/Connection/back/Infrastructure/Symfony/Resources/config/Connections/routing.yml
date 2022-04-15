@@ -1,0 +1,50 @@
+# Internal API
+akeneo_connectivity_connection_rest_list:
+    path: '/rest/connections'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\ListConnectionsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_rest_create:
+    path: '/rest/connections'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\CreateConnectionAction
+    methods: [POST]
+
+akeneo_connectivity_connection_rest_get:
+    path: '/rest/connections/{code}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\GetConnectionAction
+    methods: [GET]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_rest_update:
+    path: '/rest/connections/{code}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\UpdateConnectionAction
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_rest_delete:
+    path: '/rest/connections/{code}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\DeleteConnectionAction
+    methods: [DELETE]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_rest_regenerate_secret:
+    path: '/rest/connections/{code}/regenerate-secret'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\RegenerateSecretAction
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_rest_regenerate_password:
+    path: '/rest/connections/{code}/regenerate-password'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\RegeneratePasswordAction
+    methods: [POST]
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_rest_wrong_credentials_combination_list:
+    path: '/rest/connections/wrong-credentials-combination'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Controller\Internal\ListWrongCredentialsCombinationsAction
+    methods: [GET]
