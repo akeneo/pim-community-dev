@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -37,8 +38,14 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
         $scores = $this->provideScores($productModelIds);
 
         $expectedProductModelsScores = [
-            $productModelIds['idA'] => $scores['product_model_A_scores']->getScores(),
-            $productModelIds['idB'] => $scores['product_model_B_scores']->getScores(),
+            $productModelIds['idA'] => new Read\Scores(
+                $scores['product_model_A_scores']->getScores(),
+                $scores['product_model_A_scores']->getScoresPartialCriteria(),
+            ),
+            $productModelIds['idB'] => new Read\Scores(
+                $scores['product_model_B_scores']->getScores(),
+                $scores['product_model_B_scores']->getScoresPartialCriteria(),
+            ),
         ];
 
         $productAxesRates = $this->get(GetProductModelScoresQuery::class)
@@ -50,20 +57,28 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
     }
 
     /**
-     * @param ProductScores[] $scores
+     * @param Write\ProductScores[] $scores
      */
     private function assertEqualsScore(array $scores, int $productModelId)
     {
         $searchProductId = new ProductId($productModelId);
         $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($searchProductId);
-        $this->assertEquals($result, $scores['product_model_A_scores']->getScores());
+        $expectedScores = new Read\Scores(
+            $scores['product_model_A_scores']->getScores(),
+            $scores['product_model_A_scores']->getScoresPartialCriteria()
+        );
+
+        $this->assertEquals($expectedScores, $result);
     }
 
     private function assertEqualsNoScore()
     {
         $missingProductId = new ProductId(1590);
         $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($missingProductId);
-        $this->assertEquals($result, new ChannelLocaleRateCollection());
+        $this->assertEquals($result, new Read\Scores(
+            new ChannelLocaleRateCollection(),
+            new ChannelLocaleRateCollection()
+        ));
     }
 
     /**
@@ -81,7 +96,7 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
 
     /**
      * @param int[]
-     * @return ProductScores[]
+     * @return Write\ProductScores[]
      */
     private function provideScores(array $productModelIds): array
     {
@@ -92,29 +107,35 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
         $this->resetProductModelsScores();
 
         $productModelsScores = [
-            'product_model_A_scores' => new ProductScores(
+            'product_model_A_scores' => new Write\ProductScores(
                 new ProductId($productModelIds['idA']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36)),
-                new ChannelLocaleRateCollection()
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(86))
+                    ->addRate($channelMobile, $localeFr, new Rate(46)),
             ),
-            'product_model_B_scores' => new ProductScores(
+            'product_model_B_scores' => new Write\ProductScores(
                 new ProductId($productModelIds['idB']),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95)),
-                new ChannelLocaleRateCollection()
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(97))
+                    ->addRate($channelMobile, $localeFr, new Rate(98)),
             ),
-            'other_product_model_scores' => new ProductScores(
+            'other_product_model_scores' => new Write\ProductScores(
                 new ProductId($productModelIds['idC']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
                     ->addRate($channelMobile, $localeFr, new Rate(95)),
-                new ChannelLocaleRateCollection()
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(78))
+                    ->addRate($channelMobile, $localeFr, new Rate(46)),
             )
         ];
 

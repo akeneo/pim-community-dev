@@ -16,20 +16,11 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
  */
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
-    private GetProductScoresQueryInterface $getProductScoresQuery;
-
-    private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery;
-
-    private ComputeProductsKeyIndicators $getProductsKeyIndicators;
-
     public function __construct(
-        GetProductScoresQueryInterface                    $getProductScoresQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators                      $getProductsKeyIndicators
+        private GetProductScoresQueryInterface $getProductScoresQuery,
+        private GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators,
     ) {
-        $this->getProductScoresQuery = $getProductScoresQuery;
-        $this->getProductIdsFromProductIdentifiersQuery = $getProductIdsFromProductIdentifiersQuery;
-        $this->getProductsKeyIndicators = $getProductsKeyIndicators;
     }
 
     /**
@@ -51,7 +42,8 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
             $productId = $productId->toInt();
             $additionalProperties[$productIdentifier] = [
                 'data_quality_insights' => [
-                    'scores' => isset($productScores[$productId]) ? $productScores[$productId]->toArrayIntRank() : [],
+                    'scores' => isset($productScores[$productId]) ? $productScores[$productId]->allCriteria()->toArrayIntRank() : [],
+                    'scores_partial_criteria' => isset($productScores[$productId]) ? $productScores[$productId]->partialCriteria()->toArrayIntRank() : [],
                     'key_indicators' => isset($productKeyIndicators[$productId]) ? $productKeyIndicators[$productId] : []
                 ],
             ];

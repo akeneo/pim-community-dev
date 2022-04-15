@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
@@ -21,13 +22,19 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
     ) {
     }
 
-    public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection
+    public function byProductModelId(ProductId $productId): Read\Scores
     {
         $productScores = $this->byProductModelIds(ProductIdCollection::fromProductId($productId));
 
-        return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
+        return $productScores[$productId->toInt()] ?? new Read\Scores(
+            new ChannelLocaleRateCollection(),
+            new ChannelLocaleRateCollection()
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function byProductModelIds(ProductIdCollection $productModelIds): array
     {
         if ($productModelIds->isEmpty()) {
@@ -35,7 +42,7 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
         }
 
         $query = <<<SQL
-SELECT product_model_id, scores FROM pim_data_quality_insights_product_model_score 
+SELECT product_model_id, scores, scores_partial_criteria FROM pim_data_quality_insights_product_model_score 
 WHERE product_model_id IN (:productModelIds);
 SQL;
 
@@ -48,7 +55,10 @@ SQL;
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
             $productModelId = \intval($row['product_model_id']);
-            $productsScores[$productModelId] = $this->hydrateScores($row['scores']);
+            $productsScores[$productModelId] = new Read\Scores(
+                $this->hydrateScores($row['scores']),
+                $this->hydrateScores($row['scores_partial_criteria'] ?? '{}')
+            );
         }
 
         return $productsScores;

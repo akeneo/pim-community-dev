@@ -42,7 +42,8 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
             $productModelId = $productId->toInt();
             $additionalProperties[$productModelCode] = [
                 'data_quality_insights' => [
-                    'scores' => isset($productModelScores[$productModelId]) ? $productModelScores[$productModelId]->toArrayIntRank() : [],
+                    'scores' => isset($productModelScores[$productModelId]) ? $productModelScores[$productModelId]->allCriteria()->toArrayIntRank() : [],
+                    'scores_partial_criteria' => isset($productModelScores[$productModelId]) ? $productModelScores[$productModelId]->partialCriteria()->toArrayIntRank() : [],
                     'key_indicators' => isset($productModelKeyIndicators[$productModelId]) ? $productModelKeyIndicators[$productModelId] : []
                 ],
             ];

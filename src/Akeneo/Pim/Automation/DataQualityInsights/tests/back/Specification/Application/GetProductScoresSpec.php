@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -20,12 +22,15 @@ use PhpSpec\ObjectBehavior;
  */
 final class GetProductScoresSpec extends ObjectBehavior
 {
-    public function let(GetProductScoresQueryInterface $getProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
-    {
-        $this->beConstructedWith($getProductScoresQuery, $getLocalesByChannelQuery);
+    public function let(
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        GetEnabledScoresStrategy $getEnabledScores
+    ) {
+        $this->beConstructedWith($getProductScoresQuery, $getLocalesByChannelQuery, $getEnabledScores);
     }
 
-    public function it_gives_the_scores_by_channel_and_locale_for_a_given_product($getProductScoresQuery, $getLocalesByChannelQuery)
+    public function it_gives_the_scores_by_channel_and_locale_for_a_given_product($getProductScoresQuery, $getLocalesByChannelQuery, $getEnabledScores)
     {
         $productId = new ProductId(42);
 
@@ -34,11 +39,17 @@ final class GetProductScoresSpec extends ObjectBehavior
             'mobile' => ['en_US']
         ]));
 
-
-        $getProductScoresQuery->byProductId($productId)->willReturn((new ChannelLocaleRateCollection())
+        $scores = new Read\Scores(
+            (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
+                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80)),
+            (new ChannelLocaleRateCollection())
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(90))
+                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(70))
         );
+
+        $getProductScoresQuery->byProductId($productId)->willReturn($scores);
+        $getEnabledScores->__invoke($scores)->willReturn($scores->allCriteria());
 
         $this->get($productId)->shouldBeLike([
             "evaluations_available" => true,

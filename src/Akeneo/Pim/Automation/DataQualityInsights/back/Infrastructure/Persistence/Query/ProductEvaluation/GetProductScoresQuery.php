@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
@@ -23,13 +24,19 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
         $this->dbConnection = $dbConnection;
     }
 
-    public function byProductId(ProductId $productId): ChannelLocaleRateCollection
+    public function byProductId(ProductId $productId): Read\Scores
     {
         $productScores = $this->byProductIds(ProductIdCollection::fromProductId($productId));
 
-        return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
+        return $productScores[$productId->toInt()] ?? new Read\Scores(
+            new ChannelLocaleRateCollection(),
+            new ChannelLocaleRateCollection()
+        );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function byProductIds(ProductIdCollection $productIdCollection): array
     {
         if ($productIdCollection->isEmpty()) {
@@ -37,7 +44,7 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
         }
 
         $query = <<<SQL
-SELECT latest_score.product_id, latest_score.scores
+SELECT latest_score.product_id, latest_score.scores, latest_score.scores_partial_criteria
 FROM pim_data_quality_insights_product_score AS latest_score
     LEFT JOIN pim_data_quality_insights_product_score AS younger_score
         ON younger_score.product_id = latest_score.product_id
@@ -55,7 +62,10 @@ SQL;
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
             $productId = intval($row['product_id']);
-            $productsScores[$productId] = $this->hydrateScores($row['scores']);
+            $productsScores[$productId] = new Read\Scores(
+                $this->hydrateScores($row['scores']),
+                $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
+            );
         }
 
         return $productsScores;
