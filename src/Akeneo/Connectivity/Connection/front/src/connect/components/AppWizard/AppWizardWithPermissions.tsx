@@ -102,6 +102,7 @@ export const AppWizardWithPermissions: FC<Props> = ({clientId}) => {
                         <Authentication
                             appName={wizardData.appName}
                             scopes={wizardData.authenticationScopes}
+                            oldScopes={wizardData.oldAuthenticationScopes}
                             appUrl={wizardData.appUrl}
                             scopesConsentGiven={authenticationScopesConsentGiven}
                             setScopesConsent={setAuthenticationScopesConsent}

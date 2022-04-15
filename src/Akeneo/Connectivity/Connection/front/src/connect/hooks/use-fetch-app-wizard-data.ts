@@ -16,6 +16,7 @@ type Result = {
         entities: string;
     }> | null;
     authenticationScopes: Array<'email' | 'profile'>;
+    oldAuthenticationScopes: Array<'email' | 'profile'> | null;
 };
 
 export const useFetchAppWizardData = (clientId: string): (() => Promise<Result>) => {

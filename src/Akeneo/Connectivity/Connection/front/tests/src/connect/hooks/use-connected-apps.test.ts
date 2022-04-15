@@ -208,7 +208,9 @@ test('it fetches connected test apps', async () => {
     const testApp: TestApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'Extension 1',
+        logo: null,
         author: 'Partner 1',
+        url: null,
         activate_url: 'https://example.com/activate',
         callback_url: 'https://example.com/oauth2',
         connected: true,

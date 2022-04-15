@@ -91,7 +91,9 @@ test('The step wizard renders without error', async () => {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
     };
@@ -116,7 +118,9 @@ test('The wizard redirect to the marketplace when closed', async () => {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
     };
@@ -142,7 +146,9 @@ test('The wizard renders steps and is able to navigate between steps', async () 
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
     };
@@ -190,7 +196,9 @@ test('The wizard notifies an unspecified error occurred on app confirm ', async 
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
@@ -229,7 +237,9 @@ test('The wizard saves app and permissions on confirm', async () => {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
@@ -298,7 +308,9 @@ test('The wizard saves app but have some failing permissions on confirm', async 
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: [],
+                oldAuthenticationScopes: null,
             },
         },
         [`akeneo_connectivity_connection_apps_rest_confirm_authorization?clientId=${clientId}`]: {
@@ -407,7 +419,9 @@ test('The wizard display the authentication step', async () => {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: ['profile'],
+                oldAuthenticationScopes: null,
             },
         },
     };
@@ -507,7 +521,9 @@ test('The wizard prevents going past the authentication step without consent', a
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
                 scopeMessages: [],
+                oldScopeMessages: null,
                 authenticationScopes: ['profile'],
+                oldAuthenticationScopes: null,
             },
         },
     };
