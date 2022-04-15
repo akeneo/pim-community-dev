@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -22,14 +24,16 @@ final class GetProductModelScoresSpec extends ObjectBehavior
 {
     public function let(
         GetUpToDateProductModelScoresQuery $getUpToDateProductModelScoresQuery,
-        GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery
+        GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery,
+        GetEnabledScoresStrategy $getEnabledScores,
     ) {
-        $this->beConstructedWith($getUpToDateProductModelScoresQuery, $getLocalesByChannelQuery);
+        $this->beConstructedWith($getUpToDateProductModelScoresQuery, $getLocalesByChannelQuery, $getEnabledScores);
     }
 
     public function it_gives_the_scores_by_channel_and_locale_for_a_given_product_model(
         $getUpToDateProductModelScoresQuery,
-        $getLocalesByChannelQuery
+        $getLocalesByChannelQuery,
+        $getEnabledScores
     ) {
         $productModelId = new ProductId(42);
 
@@ -38,11 +42,17 @@ final class GetProductModelScoresSpec extends ObjectBehavior
             'mobile' => ['en_US']
         ]));
 
-
-        $getUpToDateProductModelScoresQuery->byProductModelId($productModelId)->willReturn((new ChannelLocaleRateCollection())
+        $scores = new Read\Scores(
+            (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
-                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
+                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80)),
+            (new ChannelLocaleRateCollection())
+                ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(90))
+                ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(70))
         );
+
+        $getUpToDateProductModelScoresQuery->byProductModelId($productModelId)->willReturn($scores);
+        $getEnabledScores->__invoke($scores)->willReturn($scores->allCriteria());
 
         $this->get($productModelId)->shouldBeLike(
             [
