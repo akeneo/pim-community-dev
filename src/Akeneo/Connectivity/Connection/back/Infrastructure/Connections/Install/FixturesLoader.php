@@ -240,7 +240,7 @@ class FixturesLoader
 
     private function uploadImage(string $file): FileInfoInterface
     {
-        $rawFile = new \SplFileInfo(__DIR__ . '/../Symfony/Resources/fixtures/images/' . $file);
+        $rawFile = new \SplFileInfo(__DIR__ . '/../../Symfony/Resources/fixtures/images/' . $file);
 
         return $this->fileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
     }

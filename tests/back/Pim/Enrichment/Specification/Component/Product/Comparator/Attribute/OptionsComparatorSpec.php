@@ -55,4 +55,12 @@ class OptionsComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_compares_in_a_case_insensitive_way(): void
+    {
+        $changes = ['data' => ['UPPER_CASE', 'lower_CASE'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => ['LOWER_case', 'upper_case'], 'locale' => 'en_US', 'scope' => 'ecommerce'];
+
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
 }
