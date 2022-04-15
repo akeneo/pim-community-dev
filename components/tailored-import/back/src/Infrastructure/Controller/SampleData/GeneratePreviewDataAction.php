@@ -51,5 +51,4 @@ class GeneratePreviewDataAction
 
         return new JsonResponse($generatePreviewDataResult->normalize(), Response::HTTP_OK);
     }
-
 }
