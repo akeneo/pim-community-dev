@@ -15,7 +15,7 @@ $rules = [
         'Symfony\Bundle',
         'Symfony\Contracts',
         'Akeneo\Tool',
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
@@ -37,7 +37,7 @@ $rules = [
         'Akeneo\Platform\Component\EventQueue',
         'Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent',
 
-        'Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated',
+        'Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated',
 
         // TIP-1008: Clean Provider system of Platform
         'Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface',
@@ -59,12 +59,12 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
 
         // TIP-920: PIM/Enrichment should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-921: PIM/Enrichment should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
 
         // TIP-923: PIM/Enrichment should not be linked to AttributeRequirement
         'Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface',
@@ -138,7 +138,7 @@ $rules = [
         'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
 
         // Required for NonExistentValuesFilter on channels and locales
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
@@ -150,15 +150,15 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Repository\GroupTypeRepositoryInterface',
 
         // TIP-920: PIM/Enrichment should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-921: PIM/Enrichment should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale',
 
-        'Akeneo\Channel\Component\Model\CurrencyInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface',
 
         // TIP-926: Each context should have its own "User"
         // TIP-924: PIM/Enrichment should not be linked to User
