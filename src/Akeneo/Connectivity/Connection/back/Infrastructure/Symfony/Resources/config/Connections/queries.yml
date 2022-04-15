@@ -1,0 +1,13 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery:
+        arguments:
+            - '@database_connection'
+
+    # WRONG CREDENTIALS COMBINATION
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalWrongCredentialsCombinationRepository:
+        arguments:
+            - '@database_connection'

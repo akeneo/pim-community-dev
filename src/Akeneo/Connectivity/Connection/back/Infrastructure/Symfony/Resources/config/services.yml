@@ -1,6 +1,3 @@
-parameters:
-    akeneo_connectivity.connection.max_limit: 50
-
 services:
     akeneo_connectivity.connection.service.client.create_client:
         class: Akeneo\Connectivity\Connection\Infrastructure\Client\Fos\CreateClient
@@ -64,8 +61,8 @@ services:
     akeneo_connectivity.connection.service.connection_context:
         class: Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext
         arguments:
-            - '@akeneo_connectivity.connection.persistence.query.are_credentials_valid_combination'
-            - '@akeneo_connectivity.connection.persistence.query.select_connection_code_by_client_id'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\WrongCredentialsCombination\Persistence\DbalAreCredentialsValidCombinationQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Connections\Persistence\DbalSelectConnectionCodeByClientIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
 
     akeneo_connectivity.connection.clock:
@@ -88,9 +85,5 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\ContentSecurityPolicy\MarketplaceContentSecurityPolicy
         tags:
             - { name: akeneo.pim.security.content_security_policy_provider }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Connections\GetConnectionsNumberLimit:
-        arguments:
-            - '%akeneo_connectivity.connection.max_limit%'
 
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~
