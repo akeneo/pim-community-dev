@@ -5,6 +5,7 @@ namespace Oro\Bundle\PimDataGridBundle\EventListener;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\PimDataGridBundle\Datasource\ParameterizableInterface;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Get parameters from request and bind them to query builder
@@ -72,7 +73,17 @@ class AddParametersToGridListener
     {
         $queryParameters = [];
         foreach ($this->paramNames as $paramName) {
-            $queryParameters[($this->isQueryParam ? ':' : '') . $paramName] = $this->requestParams->get($paramName, null);
+            /**
+             * When you specifically add a parameter to a query (with setParameter for example), it will be back
+             * as a string no matter the type you set.
+             * So, as each time we have a uuid we use its value as Bytes, we have to put the right type back too.
+             * #proudOfThis
+             */
+            $value = $this->requestParams->get($paramName, null);
+            if (Uuid::isValid($value)) {
+                $value = Uuid::fromString($value)->getBytes();
+            }
+            $queryParameters[($this->isQueryParam ? ':' : '') . $paramName] = $value;
         }
 
         if ($this->isEditMode) {
