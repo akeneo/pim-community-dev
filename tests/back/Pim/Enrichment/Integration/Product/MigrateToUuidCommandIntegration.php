@@ -8,16 +8,21 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration\AbstractMigrateToUuidTestCase;
+use Doctrine\Common\Util\ClassUtils;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
+    private UserInterface $adminUser;
+
     /** @test */
     public function it_migrates_the_database_to_use_uuid(): void
     {
@@ -296,6 +301,16 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                 'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_association_product_model_to_product'
             )->fetchFirstColumn()
         );
+
+        // pim_comment_comment
+        $comment = $this->createComment($product);
+        Assert::assertSame(
+            $this->getProductUuid('new_product'),
+            $this->connection->executeQuery(
+                'SELECT BIN_TO_UUID(resource_uuid) FROM pim_comment_comment WHERE id = ?',
+                [$comment->getId()]
+            )->fetchOne()
+        );
     }
 
     private function assertProductsAreReindexed(): void
@@ -375,14 +390,14 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function loadFixtures(): void
     {
-        $adminUser = $this->createAdminUser();
+        $this->adminUser = $this->createAdminUser();
 
         $this->createQuantifiedAssociationType('SOIREEFOOD10');
 
         foreach (range(1, 10) as $i) {
             $this->get('pim_enrich.product.message_bus')->dispatch(
                 new UpsertProductCommand(
-                    userId: $adminUser->getId(),
+                    userId: $this->adminUser->getId(),
                     productIdentifier: 'identifier' . $i
                 )
             );
@@ -405,7 +420,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         // test product only in ES index
         $this->get('pim_enrich.product.message_bus')->dispatch(
             new UpsertProductCommand(
-                userId: $adminUser->getId(),
+                userId: $this->adminUser->getId(),
                 productIdentifier: 'identifier_removed',
             )
         );
@@ -453,5 +468,19 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         );
         $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');
         Assert::assertContains('identifier_removed', $this->getIndexedProducts());
+    }
+
+    private function createComment(ProductInterface $product): Comment
+    {
+        $comment = new Comment();
+        $comment->setAuthor($this->adminUser);
+        $comment->setCreatedAt(new \DateTime());
+        $comment->setRepliedAt(new \DateTime());
+        $comment->setBody('pouet');
+        $comment->setResourceName(ClassUtils::getClass($product));
+        $comment->setResourceId($product->getId());
+        $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
+
+        return $comment;
     }
 }
