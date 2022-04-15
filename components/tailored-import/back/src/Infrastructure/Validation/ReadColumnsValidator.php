@@ -38,7 +38,7 @@ class ReadColumnsValidator extends ConstraintValidator
 
         if (count($missingParams) > 0) {
             $this->context->buildViolation(
-                RefreshSampleDataQuery::MISSING_QUERY_PARAMS,
+                ReadColumns::MISSING_QUERY_PARAMS,
                 [
                     '{{ missing_params }}' => implode(', ', $missingParams),
                 ]
