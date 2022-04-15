@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -80,7 +81,7 @@ EOF;
 
         $this->webhookLoader = $this->get('akeneo_connectivity.connection.fixtures.webhook_loader');
         $this->elasticsearchClient = $this->get('akeneo_connectivity.client.events_api_debug');
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }

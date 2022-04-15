@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Webhook\EventsApiDebu
 
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\EventsApiDebugLogLevels;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader;
 use Akeneo\Test\Integration\TestCase;
@@ -29,7 +30,7 @@ class SearchEventSubscriptionDebugLogsQueryIntegration extends TestCase
         $this->eventSubscriptionLogLoader = $this->get(
             'akeneo_connectivity.connection.fixtures.event_subscription_log_loader'
         );
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
 
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
