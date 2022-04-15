@@ -36,6 +36,10 @@ const View = ({id, value: initialValue, locale, onChange, onSubmit, canEditData}
   const [isFullscreenModalOpen, openFullscreenModal, closeFullScreenModal] = useBooleanState();
   const [value, setValue] = useState(initialValue);
 
+  useEffect(() => {
+    if (value !== initialValue) setValue(initialValue);
+  }, [initialValue, value]);
+
   const handleChange = (newValue: string) => {
     const editionValue = setValueData(value, mediaLinkDataFromString(newValue));
 

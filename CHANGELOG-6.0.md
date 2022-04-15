@@ -1,5 +1,13 @@
 # 6.0.x
 
+# 6.0.25 (2022-04-14)
+
+# 6.0.24 (2022-04-13)
+
+## Bug fixes
+
+- PIM-10393: Fix translations for job on table options removal
+
 # 6.0.23 (2022-04-11)
 
 # 6.0.22 (2022-04-08)

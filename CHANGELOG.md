@@ -32,7 +32,10 @@
 - PIM-10367: Fix table attribute condition line handleChange values
 - PIM-10381: allow words with dot in the dictionary
 - PIM-10391: Fix mass records deletion launching n+1 "remove_non_existing_product_values" jobs
+- PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
 - PIM-10394: Fix dictionary lookup to properly match uppercase
+- PIM-10399: Fix media link internal value on initialValue change
+- PIM-10402: Allow clearing a table measurement cell from the PEF
 
 ## Improvements
 

@@ -55,7 +55,6 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
             return ($this->generateHeadersWithoutPermission)($attributeCodes, $channelCode, $localeCodes);
         }
 
-        $activatedCurrencyCodes = $this->fetchActivatedCurrencyCodes();
         $channelCurrencyCodes = $this->fetchChannelCurrencyCodes($channelCode);
         $grantedLocaleCodes = $this->fetchGrantedLocaleCodes($localeCodes, $userId);
 
@@ -70,22 +69,11 @@ final class GenerateHeadersFromAttributeCodes implements GenerateFlatHeadersFrom
                 ("1" === $attributeData["is_localizable"]),
                 $grantedLocaleCodes,
                 $channelCurrencyCodes,
-                $activatedCurrencyCodes,
                 null !== $attributeData['specific_to_locales'] ? json_decode($attributeData['specific_to_locales'], true) : []
             );
         }
 
         return $headers;
-    }
-
-    /**
-     * Fetch all activated currencies from the DB
-     */
-    private function fetchActivatedCurrencyCodes(): array
-    {
-        return $this->connection->executeQuery(
-            "SELECT code FROM pim_catalog_currency WHERE is_activated = 1"
-        )->fetchFirstColumn();
     }
 
     /**
