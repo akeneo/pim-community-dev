@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CachedFindLocales implements FindLocales, CachedQueryInterface
+final class CachedFindLocales implements FindLocales, CachedQueryInterface
 {
     private ?array $indexedCache = null;
     private ?array $cache = null;
