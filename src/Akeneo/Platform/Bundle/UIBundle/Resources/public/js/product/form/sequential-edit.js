@@ -36,14 +36,14 @@ define([
   sequentialEditProvider
 ) {
   const findObjectIndex = (objects, id, type) => {
-    return objects.findIndex(item => item.id === id && item.type === type);
+    return objects.findIndex(item => item.id + '' === id + '' && item.type === type);
   };
 
   const getObjectViewParams = object => {
     const label = object.meta.label[UserContext.get('catalogLocale')];
 
     return {
-      id: object.meta.id,
+      id: object.meta.uuid || object.meta.id,
       type: object.meta.model_type,
       label: label,
       shortLabel: label.length > 25 ? label.slice(0, 22) + '...' : label,
@@ -107,13 +107,14 @@ define([
     getTemplateParameters: function () {
       const objectSet = this.model.get('objectSet');
       const currentMeta = this.getFormData().meta;
-      const index = findObjectIndex(objectSet, currentMeta.id, currentMeta.model_type);
+      const index = findObjectIndex(objectSet, currentMeta.uuid || currentMeta.id, currentMeta.model_type);
       const previous = objectSet[index - 1];
       const next = objectSet[index + 1];
 
       var previousObject = null;
       var nextObject = null;
 
+      var promises = [];
       var promises = [];
       if (previous) {
         promises.push(
@@ -142,7 +143,7 @@ define([
     },
     preloadNext: function () {
       var objectSet = this.model.get('objectSet');
-      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.id, this.getFormData().meta.model_type);
+      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.uuid || this.getFormData().meta.id, this.getFormData().meta.model_type);
       var pending = objectSet[currentIndex + 2];
       if (pending) {
         setTimeout(() => {
@@ -169,7 +170,11 @@ define([
       });
     },
     goToProduct: function (type, id) {
-      router.redirectToRoute('pim_enrich_' + type + '_edit', {id: id});
+      if (type === 'product') {
+        router.redirectToRoute('pim_enrich_product_edit', {uuid: id});
+      } else {
+        router.redirectToRoute('pim_enrich_product_model_edit', {id});
+      }
     },
     finish: function () {
       router.redirectToRoute('pim_enrich_product_index');
@@ -179,7 +184,7 @@ define([
     },
     getNextObject: function () {
       var objectSet = this.model.get('objectSet');
-      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.id, this.getFormData().meta.model_type);
+      var currentIndex = findObjectIndex(objectSet, this.getFormData().meta.uuid || this.getFormData().meta.id, this.getFormData().meta.model_type);
 
       return objectSet[currentIndex + 1];
     },
