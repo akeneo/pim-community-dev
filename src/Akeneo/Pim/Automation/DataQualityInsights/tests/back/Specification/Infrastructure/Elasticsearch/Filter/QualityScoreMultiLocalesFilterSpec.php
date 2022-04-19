@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -16,8 +17,11 @@ use PhpSpec\ObjectBehavior;
  */
 final class QualityScoreMultiLocalesFilterSpec extends ObjectBehavior
 {
-    public function let(SearchQueryBuilder $queryBuilder)
+    public function let(SearchQueryBuilder $queryBuilder, GetScoresPropertyStrategy $getScoresPropertyStrategy)
     {
+        $getScoresPropertyStrategy->__invoke()->willReturn('scores');
+
+        $this->beConstructedWith($getScoresPropertyStrategy);
         $this->setQueryBuilder($queryBuilder);
     }
 
