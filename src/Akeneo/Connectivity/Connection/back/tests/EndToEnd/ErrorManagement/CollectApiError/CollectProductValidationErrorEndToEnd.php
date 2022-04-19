@@ -90,6 +90,9 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
 
+        $uuid = $doc['content']['product']['uuid'];
+        Assert::assertTrue(Uuid::isValid($uuid));
+
         $expectedContent = [
             'property' => 'values',
             'message' => 'The unknown_color value is not in the color attribute option list.',
@@ -133,7 +136,7 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
                 'uuid' => Uuid::uuid4(),
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
-                'family' => 'shoes'
+                'family' => 'shoes',
             ]
         ];
 
