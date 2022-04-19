@@ -7,8 +7,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -55,7 +53,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
             return sprintf(
                 "(%d, '%s', '%s')",
-                (int)(string)$productScore->getProductId(),
+                (int) (string) $productScore->getProductId(),
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates())
             );
