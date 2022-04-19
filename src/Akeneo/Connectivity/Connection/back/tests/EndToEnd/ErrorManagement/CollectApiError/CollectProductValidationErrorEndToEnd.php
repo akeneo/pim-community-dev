@@ -12,6 +12,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Elasticsearch\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -94,6 +95,9 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
 
+        $uuid = $doc['content']['product']['uuid'];
+        Assert::assertTrue(Uuid::isValid($uuid));
+
         $expectedContent = [
             'property' => 'values',
             'message' => 'The unknown_color value is not in the color attribute option list.',
@@ -134,10 +138,10 @@ class CollectProductValidationErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' => [
-                'id' => null,
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
-                'family' => 'shoes'
+                'family' => 'shoes',
+                'uuid' => $uuid,
             ]
         ];
         Assert::assertEquals($expectedContent, $doc['content']);
