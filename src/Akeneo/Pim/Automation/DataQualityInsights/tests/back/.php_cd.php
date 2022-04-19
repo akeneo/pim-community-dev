@@ -36,6 +36,16 @@ $rules = [
 
             //Akeneo external bounded contexts :
 
+            //AssetManager
+            'Akeneo\AssetManager\Infrastructure\PublicApi\Platform\SqlGetAssetAttributesWithMediaInfoInterface',
+            'Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType',
+            'Akeneo\AssetManager\Domain\Model\Attribute\MediaFileAttribute',
+            'Akeneo\AssetManager\Domain\Model\Attribute\MediaLinkAttribute',
+
+            //Completeness
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale',
+            'Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetRequiredAttributesMasks',
             //Bundle installation
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
 
