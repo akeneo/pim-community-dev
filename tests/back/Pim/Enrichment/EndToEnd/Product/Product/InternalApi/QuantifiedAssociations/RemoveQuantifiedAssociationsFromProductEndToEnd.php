@@ -26,7 +26,7 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
                 ],
             ]
         );
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
@@ -52,7 +52,7 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
             ]
         );
 
-        $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $normalizedProductWithoutQuantifiedAssociations = $this->updateNormalizedProduct(
             $normalizedProduct,
@@ -67,7 +67,7 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
         );
 
         $response = $this->updateProductWithInternalApi(
-            $product->getId(),
+            $product->getUuid(),
             $normalizedProductWithoutQuantifiedAssociations
         );
 
