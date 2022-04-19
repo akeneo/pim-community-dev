@@ -249,7 +249,6 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain\User',
             'Akeneo\Connectivity\Connection\Application\User',
 
             // Exceptions
@@ -289,7 +288,6 @@ $rules = [
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
-            'Akeneo\Platform\Bundle\UIBundle\Provider\ContentSecurityPolicy\ContentSecurityPolicyProviderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Webhook'),
 
