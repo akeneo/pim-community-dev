@@ -23,7 +23,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneBy(['id' => 12])->willReturn($blender);
+        $productRepository->find('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -34,7 +34,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
 
         $blender->getIdentifier()->shouldBeCalled();
 
-        $this->downloadPdfAction($request, 12);
+        $this->downloadPdfAction($request, 'df470d52-7723-4890-85a0-e79be625e2ed');
     }
 
     function it_throws_an_exception_if_there_is_no_compatible_renderer(
@@ -43,7 +43,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneBy(['id' => 12])->willReturn($blender);
+        $productRepository->find('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn($blender);
 
         $request->get('dataLocale', null)->willReturn('fr_FR');
         $request->get('dataScope', null)->willReturn('mobile');
@@ -56,7 +56,7 @@ class ProductPdfControllerSpec extends ObjectBehavior
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\HttpException')
-            ->during('downloadPdfAction', [$request, 12]);
+            ->during('downloadPdfAction', [$request, 'df470d52-7723-4890-85a0-e79be625e2ed']);
     }
 
     function it_throws_an_exception_if_the_product_doesnt_exist(
@@ -65,10 +65,10 @@ class ProductPdfControllerSpec extends ObjectBehavior
         $rendererRegistry,
         $productRepository
     ) {
-        $productRepository->findOneBy(['id' => 12])->willReturn(null);
+        $productRepository->find('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn(null);
 
         $this
             ->shouldThrow('Symfony\Component\HttpKernel\Exception\NotFoundHttpException')
-            ->during('downloadPdfAction', [$request, 12]);
+            ->during('downloadPdfAction', [$request, 'df470d52-7723-4890-85a0-e79be625e2ed']);
     }
 }
