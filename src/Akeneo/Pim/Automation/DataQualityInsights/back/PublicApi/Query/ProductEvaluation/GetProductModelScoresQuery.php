@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresByCodesQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
@@ -16,23 +18,27 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
  */
 class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
 {
-    public function __construct(private GetProductModelScoresByCodesQuery $getProductModelScoresByCodesQuery)
-    {
+    public function __construct(
+        private GetProductModelScoresByCodesQuery $getProductModelScoresByCodesQuery,
+        private GetEnabledScoresStrategy $getEnabledScores,
+    ) {
     }
 
     public function byProductModelCodes(array $productModelCodes): array
     {
-        $channelLocaleRateCollections = $this->getProductModelScoresByCodesQuery->byProductModelCodes($productModelCodes);
+        $scoresByIdentifiers = $this->getProductModelScoresByCodesQuery->byProductModelCodes($productModelCodes);
+
         return array_map(
-            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->qualityScoreCollection($channelLocaleRateCollection),
-            $channelLocaleRateCollections
+            fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getEnabledScores)($scores)),
+            $scoresByIdentifiers
         );
     }
 
     public function byProductModelCode(string $productModelCode): QualityScoreCollection
     {
-        $channelLocaleRateCollection = $this->getProductModelScoresByCodesQuery->byProductModelCode($productModelCode);
-        return $this->qualityScoreCollection($channelLocaleRateCollection);
+        $scores = $this->getProductModelScoresByCodesQuery->byProductModelCode($productModelCode);
+
+        return $this->qualityScoreCollection(($this->getEnabledScores)($scores));
     }
 
     private function qualityScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): QualityScoreCollection

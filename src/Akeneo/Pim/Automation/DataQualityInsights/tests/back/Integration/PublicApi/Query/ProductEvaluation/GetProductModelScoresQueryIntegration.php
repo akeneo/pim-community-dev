@@ -84,26 +84,32 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
                 new ProductId($productModelA->getId()),
                 new \DateTimeImmutable('2020-01-07'),
                 (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(86))
+                    ->addRate($channelMobile, $localeFr, new Rate(57)),
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(76))
                     ->addRate($channelMobile, $localeFr, new Rate(67)),
-                new ChannelLocaleRateCollection()
             ),
             'product_model_B_scores' => new ProductScores(
                 new ProductId($productModelB->getId()),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
+                    ->addRate($channelMobile, $localeFr, new Rate(87)),
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95)),
-                new ChannelLocaleRateCollection()
             ),
 
             'other_product_model_scores' => new ProductScores(
                 new ProductId($productModelC->getId()),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(77))
+                    ->addRate($channelMobile, $localeFr, new Rate(95)),
+                (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
                     ->addRate($channelMobile, $localeFr, new Rate(95)),
-                new ChannelLocaleRateCollection()
             ),
         ];
 

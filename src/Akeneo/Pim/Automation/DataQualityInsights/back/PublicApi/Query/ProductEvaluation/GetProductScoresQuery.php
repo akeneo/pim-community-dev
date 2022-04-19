@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresByIdentifiersQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScore;
@@ -16,8 +18,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollec
  */
 class GetProductScoresQuery implements GetProductScoresQueryInterface
 {
-    public function __construct(private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery)
-    {
+    public function __construct(
+        private GetProductScoresByIdentifiersQuery $getProductScoresByIdentifiersQuery,
+        private GetEnabledScoresStrategy $getEnabledScores,
+    ) {
     }
 
     /**
@@ -25,17 +29,19 @@ class GetProductScoresQuery implements GetProductScoresQueryInterface
      */
     public function byProductIdentifiers(array $productIdentifiers): array
     {
-        $channelLocaleRateCollections = $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+        $scoresByIdentifiers = $this->getProductScoresByIdentifiersQuery->byProductIdentifiers($productIdentifiers);
+
         return array_map(
-            fn (ChannelLocaleRateCollection $channelLocaleRateCollection) => $this->qualityScoreCollection($channelLocaleRateCollection),
-            $channelLocaleRateCollections
+            fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getEnabledScores)($scores)),
+            $scoresByIdentifiers
         );
     }
 
     public function byProductIdentifier(string $productIdentifier): QualityScoreCollection
     {
-        $channelLocaleRateCollection = $this->getProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
-        return $this->qualityScoreCollection($channelLocaleRateCollection);
+        $scores = $this->getProductScoresByIdentifiersQuery->byProductIdentifier($productIdentifier);
+
+        return $this->qualityScoreCollection(($this->getEnabledScores)($scores));
     }
 
     private function qualityScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): QualityScoreCollection
