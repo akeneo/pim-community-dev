@@ -82,7 +82,6 @@ class ProductModelController
     private ApiAggregatorForProductModelPostSaveEventSubscriber $apiAggregatorForProductModelPostSave;
     private WarmupQueryCache $warmupQueryCache;
     private LoggerInterface $logger;
-    private LoggerInterface $apiProductAclLogger;
     private SecurityFacade $security;
     private RemoveProductModelHandler $removeProductModelHandler;
     private ValidatorInterface $validator;
@@ -112,7 +111,6 @@ class ProductModelController
         WarmupQueryCache $warmupQueryCache,
         LoggerInterface $logger,
         array $apiConfiguration,
-        LoggerInterface $apiProductAclLogger,
         SecurityFacade $security,
         RemoveProductModelHandler $removeProductModelHandler,
         ValidatorInterface $validator,
@@ -141,7 +139,6 @@ class ProductModelController
         $this->warmupQueryCache = $warmupQueryCache;
         $this->logger = $logger;
         $this->apiConfiguration = $apiConfiguration;
-        $this->apiProductAclLogger = $apiProductAclLogger;
         $this->security = $security;
         $this->removeProductModelHandler = $removeProductModelHandler;
         $this->validator = $validator;
@@ -571,16 +568,6 @@ class ProductModelController
     private function denyAccessUnlessAclIsGranted(string $acl): void
     {
         if (!$this->security->isGranted($acl)) {
-            $user = $this->tokenStorage->getToken()->getUser();
-            Assert::isInstanceOf($user, UserInterface::class);
-
-            $this->apiProductAclLogger->warning(sprintf(
-                'User "%s" with roles %s is not granted "%s"',
-                $user->getUsername(),
-                implode(',', $user->getRoles()),
-                $acl
-            ));
-
             throw new AccessDeniedHttpException($this->deniedAccessMessage($acl));
         }
     }

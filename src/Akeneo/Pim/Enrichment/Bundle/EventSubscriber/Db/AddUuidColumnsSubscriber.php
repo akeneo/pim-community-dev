@@ -27,6 +27,7 @@ class AddUuidColumnsSubscriber implements EventSubscriberInterface
         'pimee_workflow_product_draft' => 'product_uuid',
         'pimee_workflow_published_product' => 'original_product_uuid',
         'pim_versioning_version' => 'resource_uuid',
+        'pim_comment_comment' => 'resource_uuid',
     ];
 
     public function __construct(private Connection $connection)

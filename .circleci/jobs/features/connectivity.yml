@@ -114,6 +114,9 @@ jobs:
             - run:
                   name: PSALM results
                   command: make connectivity-connection-psalm || true
+            -   run:
+                    name: Coupling detector unused rules check
+                    command: make connectivity-connection-unused-coupling-rules | tee unused-rules.txt || true
             - run:
                   name: Start containers
                   command: |
@@ -133,6 +136,7 @@ jobs:
                       echo "export PHPINSIGHTS_SCORE_COMPLEXITY=$(sed -n 's/^\[COMPLEXITY[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPINSIGHTS_SCORE_ARCHITECTURE=$(sed -n 's/^\[ARCHITECTURE[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
                       echo "export PHPINSIGHTS_SCORE_STYLE=$(sed -n 's/^\[MISC[^m]*m\([0-9.]*\).*/\1/p' insights.txt)" >> $BASH_ENV
+                      echo "export PHPCD_UNUSED_RULES=$(cat unused-rules.txt | grep -c '<warning>' | awk '{if ($1==0) print ":white_check_mark:"; else print ":warning:"}')" >> $BASH_ENV
             -   slack-app/notify:
                     custom: |
                         {
@@ -152,6 +156,13 @@ jobs:
                                     "text": {
                                         "type": "mrkdwn",
                                         "text": "PHP Insights Code Quality: *$PHPINSIGHTS_SCORE_QUALITY%*\nPHP Insights Code Complexity: *$PHPINSIGHTS_SCORE_COMPLEXITY%*\nPHP Insights Code Architecture: *$PHPINSIGHTS_SCORE_ARCHITECTURE%*\nPHP Insights Code Style: *$PHPINSIGHTS_SCORE_STYLE%*"
+                                    }
+                                },
+                                {
+                                    "type": "section",
+                                    "text": {
+                                        "type": "mrkdwn",
+                                        "text": "PHP Coupling detector rules: $PHPCD_UNUSED_RULES"
                                     }
                                 }
                             ]

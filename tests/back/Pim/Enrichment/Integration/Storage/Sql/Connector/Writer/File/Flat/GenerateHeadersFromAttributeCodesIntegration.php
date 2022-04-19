@@ -44,7 +44,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends TestCase
                 false,
                 true,
                 ['USD', 'EUR'],
-                ['USD', 'EUR']
             ),
             new FlatFileHeader(
                 'a_regexp',
@@ -56,7 +55,6 @@ class GenerateHeadersFromAttributeCodesIntegration extends TestCase
                 false,
                 false,
                 ['USD', 'EUR'],
-                ['USD', 'EUR', 'CNY'],
                 true,
                 ['en_US']
             ),

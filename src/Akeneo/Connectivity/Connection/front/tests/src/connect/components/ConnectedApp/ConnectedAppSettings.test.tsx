@@ -6,6 +6,10 @@ import {renderWithProviders} from '../../../../test-utils';
 import {ConnectedAppSettings} from '@src/connect/components/ConnectedApp/ConnectedAppSettings';
 import {FlowType} from '@src/model/flow-type.enum';
 
+jest.mock('@src/connect/components/ConnectedApp/Settings/Authentication', () => ({
+    Authentication: () => <div>ConnectedAppAuthentication</div>,
+}));
+
 test('Connected App Settings renders monitoring settings and authorizations', () => {
     const connectedApp = {
         id: '12345',
@@ -50,4 +54,6 @@ test('Connected App Settings renders monitoring settings and authorizations', ()
             exact: false,
         })
     ).toBeInTheDocument();
+
+    expect(screen.queryByText('ConnectedAppAuthentication')).toBeInTheDocument();
 });

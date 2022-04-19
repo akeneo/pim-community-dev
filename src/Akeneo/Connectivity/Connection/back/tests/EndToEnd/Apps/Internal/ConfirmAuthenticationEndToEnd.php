@@ -16,7 +16,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnect
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -59,7 +59,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
+        $this->createUser = $this->get(CreateUser::class);
 
         $this->loadAppsFixtures();
     }

@@ -227,4 +227,11 @@ abstract class EnrichmentProductTestCase extends TestCase
                 ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
                 ?->toArray() ?? [];
     }
+
+    protected function getAssociatedProductModelIdentifiers(ProductInterface $product): array
+    {
+        return $product->getAssociatedProductModels('X_SELL')
+                ?->map(fn (ProductModelInterface $productModel) => $productModel->getIdentifier())
+                ?->toArray() ?? [];
+    }
 }
