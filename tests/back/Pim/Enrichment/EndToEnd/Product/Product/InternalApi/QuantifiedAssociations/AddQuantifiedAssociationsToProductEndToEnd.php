@@ -18,7 +18,7 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
             [
                 new SetIdentifierValue('sku', 'yellow_chair')
             ]);
-        $normalizedProduct = $this->getProductFromInternalApi($product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
 
         $quantifiedAssociations = [
             'PRODUCTSET' => [
@@ -44,7 +44,7 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
             ]
         );
 
-        $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
+        $response = $this->updateProductWithInternalApi($product->getUuid(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $body = json_decode($response->getContent(), true);
