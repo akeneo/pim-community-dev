@@ -2,6 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 
 /**
@@ -107,14 +108,14 @@ class MeasureManager
      *
      * @param string $family
      *
-     * @throws \InvalidArgumentException
+     * @throws MeasurementFamilyNotFoundException
      * @return array
      */
     protected function getFamilyConfig($family)
     {
         $families = $this->legacyMeasurementProvider->getMeasurementFamilies();
         if (!isset($families[$family])) {
-            throw new \InvalidArgumentException(
+            throw new MeasurementFamilyNotFoundException(
                 sprintf('Undefined measure family "%s"', $family)
             );
         }

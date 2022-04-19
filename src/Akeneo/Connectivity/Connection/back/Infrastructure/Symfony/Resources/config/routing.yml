@@ -1,125 +1,20 @@
-# Public Urls
-
-akeneo_connectivity_connection_connect_apps_v1_authorize:
-    path: '/connect/apps/v1/authorize'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\AuthorizeAction
-    methods: [ GET ]
-
-akeneo_connectivity_connection_connect_apps_v1_token:
-    path: '/connect/apps/v1/oauth2/token'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\RequestAccessTokenAction
-    methods: [ POST ]
-
-akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
-    path: '/connect/apps/v1/openid/public-key'
-    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
-    methods: [ GET ]
-
-# Internal API
-akeneo_connectivity_connection_error_management_rest:
-    resource: ./ErrorManagement/routing.yml
-
-akeneo_connectivity_connection_audit_rest:
-    resource: ./Audit/routing.yml
-
-akeneo_connectivity_connection_rest:
-    resource: ./Connections/routing.yml
-
-akeneo_connectivity_connection_settings_rest:
-    resource: ./Settings/routing.yml
-
-akeneo_connectivity_connection_webhook_rest:
-    resource: ./Webhook/routing.yml
-
-akeneo_connectivity_connection_marketplace_rest:
-    resource: ./Marketplace/routing.yml
-
 akeneo_connectivity_connection_apps:
     resource: ./Apps/routing.yml
-    prefix: /rest/apps
 
-# Frontend
+akeneo_connectivity_connection_audit:
+    resource: ./Audit/routing.yml
 
-## Marketplace
-akeneo_connectivity_connection_connect_marketplace:
-    path: '/connect/app-store'
+akeneo_connectivity_connection:
+    resource: ./Connections/routing.yml
 
-akeneo_connectivity_connection_connect_marketplace_profile:
-    path: '/connect/app-store/profile'
+akeneo_connectivity_connection_error_management:
+    resource: ./ErrorManagement/routing.yml
 
-akeneo_connectivity_connection_connect_marketplace_test_app_create:
-    path: '/connect/app-store/test-apps/create'
+akeneo_connectivity_connection_marketplace:
+    resource: ./Marketplace/routing.yml
 
-akeneo_connectivity_connection_connect_marketplace_test_app_delete:
-    path: '/connect/app-store/test-apps/{testAppId}/delete'
-    requirements:
-        testAppId: '[a-zA-Z0-9_-]+'
+akeneo_connectivity_connection_settings:
+    resource: ./Settings/routing.yml
 
-## Apps
-akeneo_connectivity_connection_connect_apps_activate:
-    path: '/connect/apps/activate'
-
-akeneo_connectivity_connection_connect_apps_authorize:
-    path: '/connect/apps/authorize'
-
-akeneo_connectivity_connection_connect_apps_authenticate:
-    path: '/connect/apps/authenticate'
-
-## Audit
-akeneo_connectivity_connection_audit_index:
-    path: '/connect/data-flows'
-
-akeneo_connectivity_connection_audit_any:
-    path: '/connect/data-flows/{any}'
-    requirements:
-        any: .*
-
-akeneo_connectivity_connection_redirect_audit:
-    path: '/connection/dashboard'
-
-## Webhook
-akeneo_connectivity_connection_webhook_regenerate_secret:
-    path: '/connect/connection-settings/{code}/event-subscription/regenerate-secret'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-akeneo_connectivity_connection_webhook_edit:
-    path: '/connect/connection-settings/{code}/event-subscription'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-akeneo_connectivity_connection_webhook_event_logs:
-    path: '/connect/connection-settings/{code}/event-logs'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-## Settings
-akeneo_connectivity_connection_settings_redirect:
-    path: '/connections'
-
-akeneo_connectivity_connection_settings_index:
-    path: '/connect/connection-settings'
-
-akeneo_connectivity_connection_settings_edit:
-    path: '/connect/connection-settings/{code}/edit'
-    requirements:
-        code: '[a-zA-Z0-9_]+'
-
-akeneo_connectivity_connection_settings_any:
-    path: '/connect/connection-settings/{any}'
-    requirements:
-        any: .*
-
-## Connected Apps
-akeneo_connectivity_connection_connect_connected_apps:
-    path: '/connect/connected-apps'
-
-akeneo_connectivity_connection_connect_connected_apps_edit:
-    path: '/connect/connected-apps/{connectionCode}'
-    requirements:
-        connectionCode: '[a-zA-Z0-9_-]+'
-
-akeneo_connectivity_connection_connect_connected_apps_delete:
-    path: '/connect/connected-apps/{connectionCode}/delete'
-    requirements:
-        connectionCode: '[a-zA-Z0-9_-]+'
+akeneo_connectivity_connection_webhook:
+    resource: ./Webhook/routing.yml
