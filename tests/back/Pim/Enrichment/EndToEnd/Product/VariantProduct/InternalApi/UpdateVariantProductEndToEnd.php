@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountInTransportTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -31,7 +32,7 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
                 new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
-        $normalizedProduct = $this->getProductFromInternalApi((string) $product->getId());
+        $normalizedProduct = $this->getProductFromInternalApi($product->getUuid());
         $this->clearMessengerTransport();
         $normalizedProduct['categories'] = ['master'];
         unset($normalizedProduct['meta']);
@@ -53,11 +54,11 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
         $this->assertEventCount(1, ProductUpdated::class);
     }
 
-    protected function getProductFromInternalApi(string $productId): array
+    protected function getProductFromInternalApi(UuidInterface $productUuid): array
     {
         $this->client->request(
             'GET',
-            sprintf('/enrich/product/rest/%s', $productId),
+            sprintf('/enrich/product/rest/%s', $productUuid->toString()),
             [],
             [],
             [

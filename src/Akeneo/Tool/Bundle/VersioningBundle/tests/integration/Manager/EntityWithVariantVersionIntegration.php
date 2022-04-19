@@ -104,7 +104,7 @@ class EntityWithVariantVersionIntegration extends TestCase
             $resourceId = null;
             $resourceUuid = $entity->getUuid();
         } else {
-            $resourceId = $entity->getId();
+            $resourceId = (string) $entity->getId();
             $resourceUuid = null;
         }
         $versions = $this->get('pim_versioning.repository.version')->getLogEntries(
