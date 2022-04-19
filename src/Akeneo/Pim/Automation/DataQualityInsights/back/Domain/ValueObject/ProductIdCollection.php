@@ -20,13 +20,13 @@ final class ProductIdCollection implements ProductEntityIdCollection
 
     private function __construct(array $productIds)
     {
-        Assert::allIsInstanceOf($productIds, ProductId::class);
         $this->productIds = array_values(array_unique($productIds));
     }
 
     public static function fromStrings(array $productIds): self
     {
         Assert::allString($productIds);
+
         return new self(array_map(fn (string $productId) => ProductId::fromString($productId), $productIds));
     }
 
@@ -61,6 +61,7 @@ final class ProductIdCollection implements ProductEntityIdCollection
         foreach ($productIds as $id) {
             Assert::isInstanceOf($id, ProductId::class);
         }
+
         return new self($productIds);
     }
 
@@ -89,6 +90,6 @@ final class ProductIdCollection implements ProductEntityIdCollection
 
     public function toArrayString(): array
     {
-        return array_map(fn (ProductId $productId) => (string)$productId, $this->productIds);
+        return array_map(fn (ProductId $productId) => (string) $productId, $this->productIds);
     }
 }

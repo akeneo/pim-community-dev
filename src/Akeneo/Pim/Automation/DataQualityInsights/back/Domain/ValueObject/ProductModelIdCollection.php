@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
-use Webmozart\Assert\Assert;
-
 final class ProductModelIdCollection implements ProductEntityIdCollection
 {
     /**
@@ -20,7 +18,6 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
 
     private function __construct(array $productIds)
     {
-        Assert::allIsInstanceOf($productIds, ProductModelId::class);
         $this->productIds = array_values(array_unique($productIds));
     }
 
