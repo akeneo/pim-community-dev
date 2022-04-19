@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Breadcrumb, useDebounce} from 'akeneo-design-system';
-import {useTranslate, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
+import {Breadcrumb, Dropdown, IconButton, Link, MoreIcon, useBooleanState, useDebounce} from 'akeneo-design-system';
+import {useTranslate, useRoute, PageContent, PageHeader, PimView} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {useSuppliers} from './hooks';
 import {SupplierList} from './components/SupplierList';
@@ -8,6 +8,40 @@ import {EmptySupplierList} from './components/EmptySupplierList';
 import {CreateSupplier} from './components/CreateSupplier';
 
 const Container = styled.div``;
+
+const SecondaryActions = () => {
+    const translate = useTranslate();
+    const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+    const exportRoute = useRoute('onboarder_serenity_supplier_export');
+
+    return (
+        <Dropdown>
+            <IconButton
+                title={translate('pim_common.other_actions')}
+                icon={<MoreIcon />}
+                level="tertiary"
+                ghost="borderless"
+                onClick={openDropdown}
+            />
+            {isDropdownOpen && (
+                <Dropdown.Overlay onClose={closeDropdown}>
+                    <Dropdown.Header>
+                        <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                    </Dropdown.Header>
+                    <Dropdown.ItemCollection>
+                        <Dropdown.Item onClick={() => {}}>
+                            <Link
+                                href={exportRoute}
+                            >
+                                {translate('onboarder.supplier.supplier_list.dropdown.export_suppliers')}
+                            </Link>
+                        </Dropdown.Item>
+                    </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+            )}
+        </Dropdown>
+    );
+};
 
 const SupplierIndex = () => {
     const translate = useTranslate();
@@ -36,6 +70,7 @@ const SupplierIndex = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
+                    <SecondaryActions />
                     <CreateSupplier
                         onSupplierCreated={refreshSuppliers}
                         createButtonlabel={translate('pim_common.create')}
