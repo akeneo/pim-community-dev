@@ -49,7 +49,7 @@ final class MultiSelectValidator extends ConstraintValidator
                         TargetInterface::IF_EMPTY_SKIP,
                     ]),
                 ]),
-                'sources' => new Sources(false, $constraint->getColumnUuids()),
+                'sources' => new Sources(true, $constraint->getColumnUuids()),
                 'operations' => new Operations([]),
                 'sample_data' => new SampleData(),
             ],

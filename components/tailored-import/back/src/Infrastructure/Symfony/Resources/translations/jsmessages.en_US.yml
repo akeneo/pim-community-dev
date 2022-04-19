@@ -90,7 +90,7 @@ akeneo.tailored_import:
         should_be_unique: This data mapping UUID already exists, please enter a new one.
       sources:
         count_mismatched: You need to set only one source for this data mapping.
-        min_count_reached: You need to add at least one source to your data mapping.
+        at_least_one_required: You need to add at least one source to your data mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
         should_exist: One of the source does not exist anymore, please delete all sources of this data mapping and retry

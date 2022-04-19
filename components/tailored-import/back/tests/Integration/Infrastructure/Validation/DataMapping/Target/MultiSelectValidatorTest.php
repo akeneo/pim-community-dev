@@ -44,6 +44,9 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
         $violations = $this->getValidator()->validate($value, new MultiSelect([
             '7fa661ce-3a6c-4b95-8441-259911b70529',
             '71480f22-f811-4261-b0fe-d93ad11666a9',
+            '71480f22-f811-4261-b0fe-d93ad11666a8',
+            '71480f22-f811-4261-b0fe-d93ad11666a7',
+            '71480f22-f811-4261-b0fe-d93ad11666a6',
         ], $this->getAttribute()));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
@@ -169,7 +172,7 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
                 ]
             ],
             'a multi select data mapping should have a source' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -187,8 +190,8 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
-            'a multi select data mapping cannot have multiple sources' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
+            'a multi select data mapping cannot have more than 4 sources' => [
+                'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached',
                 '[sources]',
                 [
                     'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
@@ -201,7 +204,13 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
+                    'sources' => [
+                        '7fa661ce-3a6c-4b95-8441-259911b70529',
+                        '71480f22-f811-4261-b0fe-d93ad11666a9',
+                        '71480f22-f811-4261-b0fe-d93ad11666a8',
+                        '71480f22-f811-4261-b0fe-d93ad11666a7',
+                        '71480f22-f811-4261-b0fe-d93ad11666a6',
+                    ],
                     'operations' => [],
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]

@@ -90,7 +90,7 @@ class SourcesValidatorTest extends AbstractValidationTest
                 [],
             ],
             'empty source on a multi source target' => [
-                'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached',
+                'akeneo.tailored_import.validation.data_mappings.sources.at_least_one_required',
                 '',
                 true,
                 [],

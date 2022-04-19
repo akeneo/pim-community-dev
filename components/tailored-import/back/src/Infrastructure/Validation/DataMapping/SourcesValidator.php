@@ -51,7 +51,7 @@ final class SourcesValidator extends ConstraintValidator
             ->inContext($this->context)
             ->validate($sources, new Count([
                 'min' => self::SOURCES_MIN_COUNT,
-                'minMessage' => Sources::MIN_SOURCES_COUNT_REACHED,
+                'minMessage' => Sources::AT_LEAST_ONE_REQUIRED,
                 'max' => $maxSourcesCount,
                 'maxMessage' => Sources::MAX_SOURCES_COUNT_REACHED,
                 'exactMessage' => Sources::SOURCES_COUNT_MISMATCHED,
