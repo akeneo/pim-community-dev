@@ -54,7 +54,7 @@ final class GetOpenAppUrlAction
             throw new \LogicException("App not found with connected app id \"{$connectedApp->getId()}\"");
         }
 
-        $this->denyAccessUnlessGrantedToManage($app);
+        $this->denyAccessUnlessGrantedToManageOrOpen($app);
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
@@ -65,13 +65,33 @@ final class GetOpenAppUrlAction
         return new JsonResponse(['url' => $app->getActivateUrl()]);
     }
 
-    private function denyAccessUnlessGrantedToManage(App $app): void
+    private function isGrantedToManage(App $app): bool
     {
-        if (!$app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
+        return
+            (
+                $app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
+            ) || (
+                !$app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_apps')
+            );
+    }
 
-        if ($app->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+    private function isGrantedToOpen(App $app): bool
+    {
+        return
+            (
+                $app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')
+            ) || (
+                !$app->isTestApp() &&
+                $this->security->isGranted('akeneo_connectivity_connection_open_apps')
+            );
+    }
+
+    private function denyAccessUnlessGrantedToManageOrOpen(App $app): void
+    {
+        if (!$this->isGrantedToManage($app) && !$this->isGrantedToOpen($app)) {
             throw new AccessDeniedHttpException();
         }
     }
