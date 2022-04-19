@@ -249,7 +249,6 @@ $rules = [
 
     $builder->only(
         [
-            'Akeneo\Connectivity\Connection\Domain\User',
             'Akeneo\Connectivity\Connection\Application\User',
 
             // Exceptions

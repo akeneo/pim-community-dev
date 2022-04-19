@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\MeasureBundle\Manager;
 
+use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
 use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Yaml\Yaml;
@@ -51,13 +52,13 @@ YAML;
     {
         $this
             ->shouldThrow(
-                new \InvalidArgumentException('Undefined measure family "foo"')
+                new MeasurementFamilyNotFoundException('Undefined measure family "foo"')
             )
             ->during('getUnitSymbolsForFamily', ['foo']);
 
         $this
             ->shouldThrow(
-                new \InvalidArgumentException('Undefined measure family "foo"')
+                new MeasurementFamilyNotFoundException('Undefined measure family "foo"')
             )
             ->during('getUnitCodesForFamily', ['foo']);
     }

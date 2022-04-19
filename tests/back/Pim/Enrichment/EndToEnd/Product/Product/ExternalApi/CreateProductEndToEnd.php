@@ -279,7 +279,7 @@ JSON;
                 "scope": null,
                 "data": {
                     "amount": "987654321987.1234",
-                    "unit": "KILOWATT"
+                    "unit": "Kilowatt"
                 }
             }],
             "a_metric_without_decimal": [{
@@ -287,7 +287,7 @@ JSON;
                 "scope": null,
                 "data": {
                     "amount": 98,
-                    "unit": "CENTIMETER"
+                    "unit": "CentiMeter"
                 }
             }],
             "a_metric_without_decimal_negative": [{

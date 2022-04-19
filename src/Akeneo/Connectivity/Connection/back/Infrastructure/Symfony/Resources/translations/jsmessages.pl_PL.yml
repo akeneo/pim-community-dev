@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: 'Aby dowiedzieć się więcej o autoryzacjach aplikacji, przejdź na stronę {{ link }}.'
             information_link_anchor: Artykuł w Centrum Pomocy
             no_scope: Nie zażądano żadnych określonych autoryzacji.
+          authentication:
+            information_link_anchor: Artykuł w Centrum Pomocy
           pending: Ta aplikacja nie jest połączona z Twoim PIM. Otwarcie aplikacji powinno rozwiązać problem z połączeniem. Jeżeli problem nadal występuje, skontaktuj się z pomocą techniczną aplikacji.
         error_monitoring:
           error: Ups, coś poszło nie tak!
