@@ -7,3 +7,5 @@ export * from './Text/model';
 export * from './Text/TextConfigurator';
 export * from './SimpleSelect/model';
 export * from './SimpleSelect/SimpleSelectConfigurator';
+export * from './MultiSelect/model';
+export * from './MultiSelect/MultiSelectConfigurator';

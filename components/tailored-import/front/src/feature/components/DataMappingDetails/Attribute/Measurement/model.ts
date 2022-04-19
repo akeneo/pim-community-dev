@@ -1,5 +1,5 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
+import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction} from '../../../../models';
 import {DecimalSeparator} from '../../common/DecimalSeparatorField';
 
 type MeasurementSourceConfiguration = {
@@ -11,8 +11,6 @@ const getDefaultMeasurementSourceConfiguration = (attribute: Attribute): Measure
   decimal_separator: '.',
   unit: attribute.default_metric_unit ?? '',
 });
-const getDefaultTargetAction = (): TargetAction => 'set';
-const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
 
 type MeasurementTarget = {
   code: string;
@@ -20,7 +18,7 @@ type MeasurementTarget = {
   locale: LocaleReference;
   type: 'attribute';
   source_configuration: MeasurementSourceConfiguration;
-  action_if_not_empty: TargetAction;
+  action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
 };
 
@@ -34,8 +32,8 @@ const getDefaultMeasurementTarget = (
   locale,
   channel,
   source_configuration: getDefaultMeasurementSourceConfiguration(attribute),
-  action_if_not_empty: getDefaultTargetAction(),
-  action_if_empty: getDefaultTargetEmptyAction(),
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 });
 
 const isMeasurementSourceConfiguration = (

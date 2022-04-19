@@ -20,7 +20,7 @@ jest.mock('../../Operations');
 jest.mock('../../Sources');
 jest.mock('../../AttributeTargetParameters');
 
-test('It display a simple select configurator', async () => {
+test('it displays a simple select configurator', async () => {
   const attribute = getSimpleSelectAttribute();
   const dataMapping = createAttributeDataMapping(attribute, []);
 

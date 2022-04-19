@@ -1,9 +1,5 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Target, TargetAction, TargetEmptyAction} from '../../../../models';
-
-const getDefaultSimpleSelectSourceConfiguration = () => null;
-const getDefaultTargetAction = (): TargetAction => 'set';
-const getDefaultTargetEmptyAction = (): TargetEmptyAction => 'skip';
+import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction} from '../../../../models';
 
 type SimpleSelectTarget = {
   code: string;
@@ -11,7 +7,7 @@ type SimpleSelectTarget = {
   locale: LocaleReference;
   type: 'attribute';
   source_configuration: null;
-  action_if_not_empty: TargetAction;
+  action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
 };
 
@@ -24,9 +20,9 @@ const getDefaultSimpleSelectTarget = (
   type: 'attribute',
   locale,
   channel,
-  source_configuration: getDefaultSimpleSelectSourceConfiguration(),
-  action_if_not_empty: getDefaultTargetAction(),
-  action_if_empty: getDefaultTargetEmptyAction(),
+  source_configuration: null,
+  action_if_not_empty: 'set',
+  action_if_empty: 'skip',
 });
 
 const isSimpleSelectTarget = (target: Target): target is SimpleSelectTarget =>

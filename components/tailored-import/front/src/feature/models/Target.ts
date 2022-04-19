@@ -4,23 +4,25 @@ import {
   getDefaultNumberTarget,
   getDefaultMeasurementTarget,
   getDefaultSimpleSelectTarget,
+  getDefaultMultiSelectTarget,
   NumberTarget,
   MeasurementTarget,
   TextTarget,
   SimpleSelectTarget,
+  MultiSelectTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, DataMapping} from './DataMapping';
 
-type TargetAction = 'set' | 'add';
+type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
-type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget | SimpleSelectTarget;
+type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget | SimpleSelectTarget | MultiSelectTarget;
 
 type PropertyTarget = {
   code: string;
   type: 'property';
-  action_if_not_empty: TargetAction;
+  action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
 };
 
@@ -42,6 +44,8 @@ const createAttributeTarget = (
       return getDefaultTextTarget(attribute, channel, locale);
     case 'pim_catalog_simpleselect':
       return getDefaultSimpleSelectTarget(attribute, channel, locale);
+    case 'pim_catalog_multiselect':
+      return getDefaultMultiSelectTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }
@@ -62,5 +66,14 @@ const isAttributeDataMapping = (dataMapping: DataMapping): dataMapping is Attrib
 
 const isPropertyTarget = (target: Target): target is PropertyTarget => 'property' === target.type;
 
-export type {AttributeTarget, PropertyTarget, Target, TargetAction, TargetEmptyAction};
-export {createAttributeTarget, createPropertyTarget, isAttributeDataMapping, isAttributeTarget, isPropertyTarget};
+const isTargetNotEmptyAction = (action: string): action is TargetNotEmptyAction => 'set' === action || 'add' === action;
+
+export type {AttributeTarget, PropertyTarget, Target, TargetNotEmptyAction, TargetEmptyAction};
+export {
+  createAttributeTarget,
+  createPropertyTarget,
+  isAttributeDataMapping,
+  isAttributeTarget,
+  isPropertyTarget,
+  isTargetNotEmptyAction,
+};

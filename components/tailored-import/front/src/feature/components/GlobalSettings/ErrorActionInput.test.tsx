@@ -26,7 +26,7 @@ test('it can set the error action', () => {
   expect(handleChange).toBeCalledWith('skip_value');
 });
 
-test('it display the validation errors', async () => {
+test('it displays the validation errors', async () => {
   const handleChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {

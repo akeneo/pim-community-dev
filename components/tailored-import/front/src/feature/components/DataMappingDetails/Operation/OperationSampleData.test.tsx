@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {OperationSampleData} from './OperationSampleData';
 
-test('it display the sample data', async () => {
+test('it displays the sample data', async () => {
   const handleRefreshSampleData = jest.fn();
 
   await renderWithProviders(

@@ -57,6 +57,10 @@ akeneo.tailored_import:
       title: Target parameters
       identifier: No settings available for the identifier attribute used as a target.
       locale_specific: This attribute is locale specific
+      action_if_not_empty:
+        title: Assign
+        add: Add to existing values
+        set: Replace existing values
       clear_if_empty: Clear if empty in file
       parameters:
         decimal_separator:

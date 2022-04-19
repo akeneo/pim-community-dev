@@ -1,7 +1,7 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction} from '../../../../models';
+import {Attribute, Target, TargetNotEmptyAction, TargetEmptyAction, isTargetNotEmptyAction} from '../../../../models';
 
-type TextTarget = {
+type MultiSelectTarget = {
   code: string;
   channel: ChannelReference;
   locale: LocaleReference;
@@ -11,11 +11,11 @@ type TextTarget = {
   action_if_empty: TargetEmptyAction;
 };
 
-const getDefaultTextTarget = (
+const getDefaultMultiSelectTarget = (
   attribute: Attribute,
   channel: ChannelReference,
   locale: LocaleReference
-): TextTarget => ({
+): MultiSelectTarget => ({
   code: attribute.code,
   type: 'attribute',
   locale,
@@ -25,8 +25,10 @@ const getDefaultTextTarget = (
   action_if_empty: 'skip',
 });
 
-const isTextTarget = (target: Target): target is TextTarget =>
-  'attribute' === target.type && null === target.source_configuration;
+const isMultiSelectTarget = (target: Target): target is MultiSelectTarget =>
+  'attribute' === target.type &&
+  null === target.source_configuration &&
+  isTargetNotEmptyAction(target.action_if_not_empty);
 
-export type {TextTarget};
-export {getDefaultTextTarget, isTextTarget};
+export type {MultiSelectTarget};
+export {getDefaultMultiSelectTarget, isMultiSelectTarget};
