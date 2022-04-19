@@ -77,3 +77,9 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\CleanProductScoresCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }

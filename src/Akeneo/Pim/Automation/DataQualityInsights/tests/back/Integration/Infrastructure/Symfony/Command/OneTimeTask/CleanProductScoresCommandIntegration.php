@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Repository;
+namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Symfony\Command\OneTimeTask;
 
+use Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\OneTimeTaskCommandTrait;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -11,63 +12,29 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
- * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCase
+final class CleanProductScoresCommandIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_save_multiple_products_scores(): void
+    use OneTimeTaskCommandTrait;
+
+    private const COMMAND_NAME = 'pim:data-quality-insights:clean-product-scores';
+
+    public function setUp(): void
     {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
+        parent::setUp();
 
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
-        $localeFr = new LocaleCode('fr_FR');
-
-        $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-17'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
-        );
-        $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
-        );
-        $productScoreB = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
-        );
-        // To ensure that it doesn't crash when saving a unknown product
-        $unknownProductScore = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
-        );
-
-        $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $unknownProductScore, $productScoreB]);
-
-        $this->assertCountProductsScores(2);
-        $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreB);
+        $this->dbConnection = $this->get('database_connection');
+        $this->deleteTask(self::COMMAND_NAME);
     }
 
-    public function test_it_purges_scores_older_than_a_given_date(): void
+    public function test_it_cleans_product_scores(): void
     {
         $productIdA = $this->createProduct('product_A')->getId();
         $productIdB = $this->createProduct('product_B')->getId();
@@ -110,11 +77,25 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $this->insertProductScore($productScoreA2);
         $this->insertProductScore($productScoreA3);
         $this->insertProductScore($productScoreB);
-        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-18'));
+
+        $this->launchCleaning();
 
         $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
         $this->assertProductScoreExists($productScoreB);
+    }
+
+    private function launchCleaning(): void
+    {
+        $kernel = self::bootKernel();
+        $application = new Application($kernel);
+
+        $command = $application->find(self::COMMAND_NAME);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['command' => $command->getName()], ['capture_stderr_separately' => true]);
+
+        self::assertEquals(0, $commandTester->getStatusCode(), $commandTester->getErrorOutput());
     }
 
     private function assertCountProductsScores(int $expectedCount): void
