@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -17,8 +17,9 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInterface
 {
-    public function __construct()
-    {
+    public function __construct(
+        private GetScoresPropertyStrategy $getScoresProperty
+    ) {
         $this->supportedFields = ['data_quality_insights_score', 'quality_score'];
         $this->supportedOperators = ['IN'];
     }
@@ -56,7 +57,7 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
         $this->searchQueryBuilder->addFilter(
             [
                 'terms' => [
-                    sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values
+                    sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values
                 ]
             ]
         );
