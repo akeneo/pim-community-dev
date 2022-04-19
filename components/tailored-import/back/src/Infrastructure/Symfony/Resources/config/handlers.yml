@@ -18,17 +18,26 @@ services:
   akeneo.tailored_import.handler.execute_data_mapping:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler
     arguments:
-      - '@akeneo.tailored_import.operation_applier'
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier'
+      - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
 
   akeneo.tailored_import.handler.get_file_template_information_handler:
     class: Akeneo\Platform\TailoredImport\Application\GetFileTemplateInformation\GetFileTemplateInformationHandler
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
 
-  akeneo.tailored_import.operation_applier:
-    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier
+  akeneo.tailored_import.handler.sample_data.get_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
+  akeneo.tailored_import.handler.sample_data.get_refreshed_sample_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
 
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry

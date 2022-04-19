@@ -2,7 +2,13 @@ services:
   akeneo.tailored_import.hydrator.data_mapping_collection:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\DataMappingCollectionHydrator
     arguments:
-      - "@akeneo.tailored_import.hydrator.target"
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator'
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator'
 
-  akeneo.tailored_import.hydrator.target:
-    class: Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator
+  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator: ~
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator: ~
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator:
+    arguments:
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceParameterHydrator'

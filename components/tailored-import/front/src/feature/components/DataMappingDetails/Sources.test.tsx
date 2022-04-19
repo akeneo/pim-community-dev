@@ -33,7 +33,7 @@ test('it can add a source using the add source dropdown', () => {
     <Sources sources={[]} columns={columns} validationErrors={[]} onSourcesChange={handleSourcesChange} />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.label'));
   userEvent.click(screen.getByText('Product identifier (A)'));
 
   expect(handleSourcesChange).toHaveBeenCalledWith([columns[0].uuid]);
@@ -63,25 +63,31 @@ test('it displays validation errors', () => {
 });
 
 test('it cannot add source when limit is reached', () => {
+  renderWithProviders(
+    <Sources
+      sources={['288d85cb-3ffb-432d-a422-d2c6810113ab']}
+      columns={columns}
+      validationErrors={[]}
+      onSourcesChange={jest.fn()}
+    />
+  );
+
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.sources.add.label')).not.toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.helper')).toBeInTheDocument();
+});
+
+test('it can remove a source', () => {
   const handleSourcesChange = jest.fn();
 
   renderWithProviders(
     <Sources
-      sources={[
-        '288d85cb-3ffb-432d-a422-d2c6810113ab',
-        'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
-        '288d85cb-3ffb-432d-a422-d2c6810113ab',
-        'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
-      ]}
+      sources={['288d85cb-3ffb-432d-a422-d2c6810113ab']}
       columns={columns}
       validationErrors={[]}
       onSourcesChange={handleSourcesChange}
     />
   );
 
-  const addSourceButton = screen.getByText('akeneo.tailored_import.data_mapping.sources.add');
-  expect(addSourceButton).toBeDisabled();
-
-  userEvent.click(addSourceButton);
-  expect(handleSourcesChange).not.toHaveBeenCalled();
+  userEvent.click(screen.getByTitle('pim_common.remove'));
+  expect(handleSourcesChange).toHaveBeenCalledWith([]);
 });

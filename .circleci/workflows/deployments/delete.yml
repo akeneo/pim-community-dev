@@ -1,0 +1,16 @@
+workflows:
+  # Description :
+  #    Delete a given instance when workflow is triggered from circleci
+  on_demand_delete_instance:
+    when:
+      and:
+        - equal: [ true, << pipeline.parameters.trigger_delete_instance >> ]
+        - not:
+            equal: [ "", << pipeline.parameters.instance >> ]
+    jobs:
+      - checkout
+      - delete_environment:
+          name: "Delete instance << pipeline.parameters.instance >>"
+          INSTANCE_NAME: << pipeline.parameters.instance >>
+          requires:
+            - checkout

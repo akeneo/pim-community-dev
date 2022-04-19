@@ -1,4 +1,4 @@
-@javascript
+@javascript @teamwork-assistant-feature-enabled
 Feature: Display teamwork assistant projects in the datagrid view selector
   In order to display and select the projects I can work on
   As a contributor

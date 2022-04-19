@@ -1,0 +1,9 @@
+# More info here: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+## Onboarder code base
+components/onboarder/ @akeneo/squad-suricates
+## Onboarder CI
+.circleci/workflows/squads/suricates.yml @cha-ser @akeneo/squad-suricates
+.circleci/jobs/features/onboarder/ @cha-ser @akeneo/squad-suricates
+## Onboarder makefile
+make-file/onboarder-serenity.mk @akeneo/squad-suricates

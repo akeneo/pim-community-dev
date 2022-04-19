@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets;
-use Akeneo\Platform\TailoredImport\Test\Integration\ControllerIntegrationTestCase;
+use Akeneo\Platform\TailoredImport\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
 
-class InMemoryFindSystemTargetsIntegrationTest extends ControllerIntegrationTestCase
+class InMemoryFindSystemTargetsIntegrationTest extends IntegrationTestCase
 {
     public function test_it_returns_association_types_depending_on_search(): void
     {
@@ -62,8 +62,6 @@ class InMemoryFindSystemTargetsIntegrationTest extends ControllerIntegrationTest
         $results = $this->getQuery()->execute('fr_FR', 100);
         $this->assertNotEmpty($results);
         $systemTarget = $this->findSystemTargetInResults('family_variant', $results);
-        $this->assertNotNull($systemTarget);
-        $systemTarget = $this->findSystemTargetInResults('groups', $results);
         $this->assertNotNull($systemTarget);
 
         $results = $this->getQuery()->execute('unknown', 100);

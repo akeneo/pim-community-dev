@@ -30,19 +30,17 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
+        $loader->load('operation_appliers.yml');
         $loader->load('processors.yml');
         $loader->load('queries.yml');
         $loader->load('ramsey.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
+        $loader->load('source_parameter_appliers.yml');
         $loader->load('spout.yml');
         $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
-
-        if ('test' === $container->getParameter('kernel.environment')) {
-            $loader->load('test/services.yml');
-        }
 
         $isEnabled = (bool)($_ENV['FLAG_TAILORED_IMPORT_ENABLED'] ?? false);
         if (!$isEnabled) {

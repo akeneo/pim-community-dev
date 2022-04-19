@@ -18,7 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOper
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
-use InvalidArgumentException;
 use PhpSpec\ObjectBehavior;
 
 class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
@@ -62,7 +61,7 @@ class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
         $this->applyOperation($cleanHTMLTagsOperation, $complexStringValueContainingHtml)->shouldBeLike(new StringValue('My descriptionLorem picsouuuuuuuuuuuuuuuuuuuuItem 1Item 2Link item'));
     }
 
-    public function it_does_nothing_when_string_value_does_not_cointain_html_tag()
+    public function it_does_nothing_when_string_value_does_not_contain_html_tags()
     {
         $cleanHTMLTagsOperation = new CleanHTMLTagsOperation();
         $stringValue = new StringValue('test');
@@ -75,7 +74,7 @@ class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
         $notSupportedDefaultValueOperation = new DefaultValueOperation('n/a');
         $stringValue = new StringValue('test');
 
-        $this->shouldThrow(InvalidArgumentException::class)->during('applyOperation', [$notSupportedDefaultValueOperation, $stringValue]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('applyOperation', [$notSupportedDefaultValueOperation, $stringValue]);
     }
 
     public function it_throws_exception_when_value_is_invalid()

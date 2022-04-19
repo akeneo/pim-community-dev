@@ -12,6 +12,13 @@ onboarder_serenity_supplier_create:
         _feature: onboarder_serenity_supplier
     methods: [POST]
 
+onboarder_serenity_supplier_export:
+    path: /export
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier
+        _feature: onboarder_serenity_supplier
+    methods: [GET]
+
 onboarder_serenity_supplier_edit:
     path: /{identifier}
     defaults:
@@ -29,3 +36,12 @@ onboarder_serenity_supplier_delete:
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [DELETE]
+
+onboarder_serenity_supplier_update:
+    path: /{identifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate
+        _feature: onboarder_serenity_supplier
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [PUT]

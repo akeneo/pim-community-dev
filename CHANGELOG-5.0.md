@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.91 (2022-04-13)
+
+## Bug fixes
+- PIM-10397: Performance issues when patching products with many records via API
+
+# 5.0.90 (2022-04-06)
+
+## Bug fixes
+
+- PIM-10390: Assets are now correctly re-indexed in Elasticsearch after running the transformations on an Asset Family
+- PIM-10387: [Backport PIM-9805] Fix the import of ref entity records with empty multiselect attributes
+
 # 5.0.89 (2022-04-01)
 
 # 5.0.88 (2022-03-23)

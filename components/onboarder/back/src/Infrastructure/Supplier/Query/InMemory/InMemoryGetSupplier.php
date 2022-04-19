@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory;
 
-use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
-use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 
 final class InMemoryGetSupplier implements GetSupplier
@@ -15,7 +15,7 @@ final class InMemoryGetSupplier implements GetSupplier
     {
     }
 
-    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
+    public function __invoke(Identifier $identifier): ?SupplierWithContributors
     {
         $supplier = $this->supplierRepository->find($identifier);
 
@@ -23,7 +23,7 @@ final class InMemoryGetSupplier implements GetSupplier
             return null;
         }
 
-        return new Read\Supplier\Model\Supplier(
+        return new SupplierWithContributors(
             $supplier->identifier(),
             $supplier->code(),
             $supplier->label(),

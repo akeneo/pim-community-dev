@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Read;
-use Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier;
-use Akeneo\OnboarderSerenity\Domain\Write;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
 final class DatabaseGetSupplier implements GetSupplier
@@ -15,12 +15,12 @@ final class DatabaseGetSupplier implements GetSupplier
     {
     }
 
-    public function __invoke(Write\Supplier\ValueObject\Identifier $identifier): ?Read\Supplier\Model\Supplier
+    public function __invoke(Identifier $identifier): ?SupplierWithContributors
     {
         $supplier = $this->connection->executeQuery(
             <<<SQL
                 WITH contributor AS (
-                    SELECT contributor.supplier_identifier, JSON_OBJECTAGG(id, email) as contributors
+                    SELECT contributor.supplier_identifier, JSON_ARRAYAGG(email) as contributors
                     FROM `akeneo_onboarder_serenity_supplier_contributor` contributor
                     GROUP BY contributor.supplier_identifier
                 )
@@ -35,11 +35,11 @@ final class DatabaseGetSupplier implements GetSupplier
             ],
         )->fetchAssociative();
 
-        return false !== $supplier ? new Read\Supplier\Model\Supplier(
+        return false !== $supplier ? new SupplierWithContributors(
             $supplier['identifier'],
             $supplier['code'],
             $supplier['label'],
-            null !== $supplier['contributors'] ? json_decode($supplier['contributors'], true) : [],
+            null !== $supplier['contributors'] ? json_decode($supplier['contributors']) : [],
         ) : null;
     }
 }

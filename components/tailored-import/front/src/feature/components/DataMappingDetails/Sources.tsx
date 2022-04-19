@@ -1,8 +1,21 @@
 import React from 'react';
-import {Helper, SectionTitle} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Block, Helper, SectionTitle, IconButton, CloseIcon} from 'akeneo-design-system';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Column, ColumnIdentifier, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
 import {SourceDropdown} from './SourceDropdown';
+
+const SourcesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const BlocksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+`;
 
 type SourcesProps = {
   sources: ColumnIdentifier[];
@@ -18,10 +31,15 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
     onSourcesChange([...sources, selectedColumn.uuid]);
   };
 
+  const handleRemoveSource = (sourceToRemove: ColumnIdentifier) => {
+    onSourcesChange(sources.filter(source => source !== sourceToRemove));
+  };
+
   const canAddSource = MAX_SOURCE_COUNT_BY_DATA_MAPPING > sources.length;
+  const columnsAvailableToAddSource = columns.filter(({uuid}) => !sources.includes(uuid));
 
   return (
-    <>
+    <SourcesContainer>
       <SectionTitle sticky={0}>
         <SectionTitle.Title level="secondary">
           {translate('akeneo.tailored_import.data_mapping.sources.title')}
@@ -32,16 +50,42 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-      <ul>
+      <BlocksContainer>
         {sources.map((uuid, index) => {
           const column = columns.find(column => uuid === column.uuid);
 
-          return <li key={`${uuid}${index}`}>{column ? generateColumnName(column.index, column.label) : ''}</li>;
+          return (
+            <Block
+              key={`${uuid}${index}`}
+              action={
+                <IconButton
+                  icon={<CloseIcon />}
+                  onClick={() => handleRemoveSource(uuid)}
+                  title={translate('pim_common.remove')}
+                />
+              }
+            >
+              {column ? generateColumnName(column.index, column.label) : ''}
+            </Block>
+          );
         })}
-      </ul>
-      <SourceDropdown columns={columns} onColumnSelected={handleAddSource} disabled={!canAddSource} />
-    </>
+        {canAddSource ? (
+          <SourceDropdown columns={columnsAvailableToAddSource} onColumnSelected={handleAddSource} />
+        ) : (
+          <Helper inline level="info">
+            {translate(
+              'akeneo.tailored_import.data_mapping.sources.add.helper',
+              {
+                limit: MAX_SOURCE_COUNT_BY_DATA_MAPPING,
+              },
+              MAX_SOURCE_COUNT_BY_DATA_MAPPING
+            )}
+          </Helper>
+        )}
+      </BlocksContainer>
+    </SourcesContainer>
   );
 };
 
+export type {SourcesProps};
 export {Sources};

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetAttribute;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,16 +18,17 @@ class DataMappingSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-            TargetAttribute::create(
+            AttributeTarget::create(
                 'code',
                 'pim_catalog_text',
                 'web',
                 'fr_FR',
                 'set',
-                'skip'
+                'skip',
+                null,
             ),
             [],
-            [],
+            OperationCollection::create([]),
             [],
         ]);
 
@@ -37,16 +39,17 @@ class DataMappingSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('create', [
             'invalid-uuid',
-            TargetAttribute::create(
+            AttributeTarget::create(
                 'code',
                 'pim_catalog_text',
                 'web',
                 'fr_FR',
                 'set',
-                'skip'
+                'skip',
+                null,
             ),
             [],
-            [],
+            OperationCollection::create([]),
             [],
         ]);
 

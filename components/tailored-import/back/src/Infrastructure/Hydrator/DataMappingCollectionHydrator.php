@@ -18,8 +18,10 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 
 class DataMappingCollectionHydrator
 {
-    public function __construct(private TargetHydrator $targetHydrator)
-    {
+    public function __construct(
+        private TargetHydrator $targetHydrator,
+        private OperationCollectionHydrator $operationCollectionHydrator,
+    ) {
     }
 
     public function hydrate(array $normalizedDataMappingCollection, array $indexedAttributes): DataMappingCollection
@@ -29,7 +31,7 @@ class DataMappingCollectionHydrator
                 $dataMapping['uuid'],
                 $this->targetHydrator->hydrate($dataMapping['target'], $indexedAttributes),
                 $dataMapping['sources'],
-                $dataMapping['operations'],
+                $this->operationCollectionHydrator->hydrate($dataMapping['operations']),
                 $dataMapping['sample_data'],
             ),
             $normalizedDataMappingCollection,

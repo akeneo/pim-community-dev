@@ -2,7 +2,7 @@ onboarder:
     menu_block_title: Onboarder
     supplier:
         breadcrumb:
-            root: Onboarder settings
+            root: Onboarder
             suppliers: Suppliers
         supplier_create:
             modal:
@@ -53,7 +53,10 @@ onboarder:
                 columns:
                     email: Email address
                 no_contributor: There are no contributors yet.
+                result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
             error: An error occured while loading the supplier.
+            success_message: The supplier was successfully updated.
+            unknown_error: An error occured while updating the supplier.
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers

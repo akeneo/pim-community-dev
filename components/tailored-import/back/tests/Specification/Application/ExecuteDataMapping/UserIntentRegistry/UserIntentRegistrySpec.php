@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use PhpSpec\ObjectBehavior;
 
 class UserIntentRegistrySpec extends ObjectBehavior

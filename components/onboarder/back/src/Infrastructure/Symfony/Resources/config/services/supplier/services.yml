@@ -6,7 +6,7 @@ services:
         public: true
 
     # Repositories
-    Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql\DatabaseRepository
         arguments:
             - '@database_connection'
@@ -14,41 +14,41 @@ services:
     # Command/Handlers
     Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
 
     Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@validator'
 
     Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Write\Supplier\Repository'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
 
     # Queries
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierList
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplier
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierCount:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierCount
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\SupplierExists:
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierExists
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierExport:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetSupplierExport
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetAllSuppliersWithContributors:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetAllSuppliersWithContributors
         arguments:
             - '@database_connection'
 
@@ -56,8 +56,8 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierList'
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplierCount'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierCount'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierCreate:
         public: true
@@ -72,4 +72,19 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplier:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Read\Supplier\GetSupplier'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\ExportSupplier:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetAllSuppliersWithContributors'
+            - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierUpdate:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
+
+    # Encoders
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder

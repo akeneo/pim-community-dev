@@ -28,6 +28,7 @@ services:
     class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.tailored_import.query.is_multi_source_target'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.data_mappings' }
     public: true
@@ -36,6 +37,7 @@ services:
     class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\TargetValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo_measurement.public_api.find_unit'
       - '%akeneo.tailored_import.supported_system_properties%'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.target' }
@@ -56,4 +58,16 @@ services:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.is_valid_file_template_information_query' }
+    public: true
+
+  akeneo.tailored_import.validation.sample_data_query:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQueryValidator'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.sample_data_query' }
+    public: true
+
+  akeneo.tailored_import.validation.refresh_sample_data_query:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQueryValidator'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.refresh_sample_data_query' }
     public: true

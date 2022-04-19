@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier;
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Identifier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseRepository implements Supplier\Repository
+final class DatabaseRepository implements Repository
 {
     public function __construct(private Connection $connection)
     {
     }
 
-    public function save(Supplier\Model\Supplier $supplier): void
+    public function save(Supplier $supplier): void
     {
         $sql = <<<SQL
             REPLACE INTO `akeneo_onboarder_serenity_supplier` (identifier, code, label, updated_at)
@@ -35,7 +36,7 @@ final class DatabaseRepository implements Supplier\Repository
         $this->persistContributors($supplier);
     }
 
-    public function find(Supplier\ValueObject\Identifier $identifier): ?Supplier\Model\Supplier
+    public function find(Identifier $identifier): ?Supplier
     {
         $sql = <<<SQL
             WITH contributor AS (
@@ -56,7 +57,7 @@ final class DatabaseRepository implements Supplier\Repository
             ],
         )->fetchAssociative();
 
-        return false !== $row ? Supplier\Model\Supplier::create(
+        return false !== $row ? Supplier::create(
             $row['identifier'],
             $row['code'],
             $row['label'],
@@ -80,7 +81,7 @@ final class DatabaseRepository implements Supplier\Repository
         );
     }
 
-    private function persistContributors(Supplier\Model\Supplier $supplier): void
+    private function persistContributors(Supplier $supplier): void
     {
         $sql = <<<SQL
             INSERT INTO `akeneo_onboarder_serenity_supplier_contributor` (email, supplier_identifier)

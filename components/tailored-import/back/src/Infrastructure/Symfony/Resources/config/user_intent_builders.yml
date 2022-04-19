@@ -1,4 +1,14 @@
 services:
+  akeneo.tailored_import.user_intent_factory.measurement:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.number:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\NumberUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.text:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextUserIntentFactory
     tags:

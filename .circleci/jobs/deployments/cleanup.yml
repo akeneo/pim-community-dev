@@ -3,6 +3,31 @@ dockerCloudDeployerNext: &dockerCloudDeployerNext
 executor-machine: &executor-machine
 
 jobs:
+    delete_environment:
+        parameters:
+            INSTANCE_NAME:
+                type: string
+                default: ""
+        environment:
+            <<: *envVarsDeployDev
+        <<: *dockerCloudDeployerNext
+        resource_class: small
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - set_gcloud_config_dev
+            - run:
+                  name: Delete environments
+                  no_output_timeout: 30m
+                  command: |
+                      ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      NS=<<parameters.INSTANCE_NAME>> make -C deployments/ delete_environment_manually
+
     delete_pr_environment:
         parameters:
             PRODUCT_TYPE:

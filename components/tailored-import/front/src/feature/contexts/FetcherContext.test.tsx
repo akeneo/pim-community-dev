@@ -24,3 +24,11 @@ test('Fetch all channels needs to be implemented', () => {
     result.current.channel.fetchAll();
   }).toThrowError('Fetch all channels needs to be implemented');
 });
+
+test('Fetch measurement family needs to be implemented', () => {
+  const {result} = renderHookWithProviders(() => useFetchers());
+
+  expect(() => {
+    result.current.measurementFamily.fetchByCode('Weight');
+  }).toThrowError('Fetch measurement family by code needs to be implemented');
+});

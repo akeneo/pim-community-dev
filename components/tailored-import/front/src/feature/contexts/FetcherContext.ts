@@ -1,6 +1,6 @@
 import {createContext, useContext} from 'react';
 import {Channel} from '@akeneo-pim-community/shared';
-import {Attribute} from '../models';
+import {Attribute, MeasurementFamily} from '../models';
 
 type FetcherValue = {
   attribute: {
@@ -9,6 +9,9 @@ type FetcherValue = {
   };
   channel: {
     fetchAll: () => Promise<Channel[]>;
+  };
+  measurementFamily: {
+    fetchByCode: (code: string) => Promise<MeasurementFamily | undefined>;
   };
 };
 
@@ -24,6 +27,11 @@ const FetcherContext = createContext<FetcherValue>({
   channel: {
     fetchAll: () => {
       throw new Error('Fetch all channels needs to be implemented');
+    },
+  },
+  measurementFamily: {
+    fetchByCode: () => {
+      throw new Error('Fetch measurement family by code needs to be implemented');
     },
   },
 });

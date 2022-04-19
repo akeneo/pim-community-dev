@@ -66,6 +66,8 @@ SQL;
             return [];
         }
 
+        $words = \array_map(fn ($word) => new DictionaryWord(\mb_strtolower(strval($word))), $words);
+
         $query = <<<SQL
 SELECT word
 FROM pimee_data_quality_insights_text_checker_dictionary

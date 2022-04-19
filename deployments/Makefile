@@ -353,7 +353,8 @@ commit-instance: pull-cloud-customer-dev
 .PHONY: uncommit-instance
 uncommit-instance: pull-cloud-customer-dev
 	# Check if files were previously commited
-ifeq ("$(wildcard $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json)","")
+ifeq (,$(wildcard ${INSTANCE_CLOUD_CUSTOMERS_DEV_DIR}/main.tf.json))
+	@echo "$(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)/main.tf.json doesn't exist and need to be created"
 	make create-ci-release-files
 	cp -r $(INSTANCE_DIR) $(INSTANCE_CLOUD_CUSTOMERS_DEV_DIR)
 else
@@ -439,10 +440,7 @@ ifeq ($(NS),)
 	@echo "ERR : You must choose a namespace to delete"
 	exit 1
 endif
-	mkdir -p /tmp/cloud-customers-dev
-	DEPLOYMENTS_INSTANCES_DIR=/tmp/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_NAME}/releases \
-	CLOUD_CUSTOMERS_DEV_DIR=/tmp/cloud-customers-dev NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) \
-	bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
+	NS=$(NS) ENV_NAME=$(ENV_NAME) TYPE=$(shell echo "$(NS)" | cut -d "-" -f1) bash $(DEPLOYMENT_DIR)/bin/remove_instances.sh
 
 .PHONY: delete_expired_uptime_check
 delete_expired_uptime_check:

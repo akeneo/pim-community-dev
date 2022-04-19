@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Contributors;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Contributors;
 use PHPUnit\Framework\TestCase;
 
 class ContributorsTest extends TestCase
