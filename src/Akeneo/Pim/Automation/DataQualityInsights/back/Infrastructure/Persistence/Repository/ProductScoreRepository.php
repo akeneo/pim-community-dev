@@ -72,12 +72,7 @@ SQL
 
         // We need to delete younger product scores after inserting the new ones,
         // so we insure to have 1 product score per product
-        $deleteValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
-            return sprintf(
-                "%d",
-                $productScore->getProductId()->toInt(),
-            );
-        }, $productsScores));
+        $deleteValues = implode(', ', array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getProductId()->toInt(), $productsScores));
 
         $this->dbConnection->executeQuery(
             <<<SQL
