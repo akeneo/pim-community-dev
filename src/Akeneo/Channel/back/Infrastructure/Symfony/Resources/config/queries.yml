@@ -48,4 +48,9 @@ services:
         class: Akeneo\Channel\Infrastructure\Query\Sql\SqlFindLocales
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales:
+        class: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindLocales'
         tags: ['akeneo.pim.cached_query']
