@@ -52,10 +52,10 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery:
         arguments:
-            - '@database_connection'
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetCategoryChildrenCodesQuery'
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetCategoryChildrenCodesQuery:
         arguments:
