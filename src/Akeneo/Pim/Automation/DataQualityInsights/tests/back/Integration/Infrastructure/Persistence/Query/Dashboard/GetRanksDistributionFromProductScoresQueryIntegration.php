@@ -178,7 +178,8 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
                     $consolidationDate,
                     (new ChannelLocaleRateCollection())
                         ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank)),
-                    new ChannelLocaleRateCollection()
+                    (new ChannelLocaleRateCollection())
+                        ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank)),
                 ),
             ]);
         }
