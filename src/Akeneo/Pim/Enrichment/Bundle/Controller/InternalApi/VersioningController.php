@@ -52,7 +52,7 @@ class VersioningController
      * Get the history of the given entity type with the given entityId
      *
      * @param string $entityType
-     * @param string $entityIdOrUuid
+     * @param string $entityId This is an id OR a uuid
      *
      * @return JSONResponse
      */
