@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -55,12 +56,22 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         $localeFr = new LocaleCode('fr_FR');
 
         $getProductScoresQuery->byProductIds($collection)->willReturn([
-            42 => (new ChannelLocaleRateCollection)
-                ->addRate($channelMobile, $localeEn, new Rate(81))
-                ->addRate($channelMobile, $localeFr, new Rate(30))
-                ->addRate($channelEcommerce, $localeEn, new Rate(73)),
-            123 => (new ChannelLocaleRateCollection)
-                ->addRate($channelMobile, $localeEn, new Rate(66)),
+            42 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channelMobile, $localeEn, new Rate(81))
+                    ->addRate($channelMobile, $localeFr, new Rate(30))
+                    ->addRate($channelEcommerce, $localeEn, new Rate(73)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channelMobile, $localeEn, new Rate(78))
+                    ->addRate($channelMobile, $localeFr, new Rate(46))
+                    ->addRate($channelEcommerce, $localeEn, new Rate(81))
+            ),
+            123 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channelMobile, $localeEn, new Rate(66)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channelMobile, $localeEn, new Rate(74)),
+            )
         ]);
 
         $productsKeyIndicators = [
@@ -116,6 +127,15 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 3,
                         ],
                     ],
+                    'scores_partial_criteria' => [
+                        'mobile' => [
+                            'en_US' => 3,
+                            'fr_FR' => 5,
+                        ],
+                        'ecommerce' => [
+                            'en_US' => 2,
+                        ],
+                    ],
                     'key_indicators' => $productsKeyIndicators[42]
                 ],
             ],
@@ -126,11 +146,16 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 4,
                         ],
                     ],
+                    'scores_partial_criteria' => [
+                        'mobile' => [
+                            'en_US' => 3,
+                        ],
+                    ],
                     'key_indicators' => $productsKeyIndicators[123]
                 ],
             ],
             'product_without_rates' => [
-                'data_quality_insights' => ['scores' => [], 'key_indicators' => []],
+                'data_quality_insights' => ['scores' => [], 'scores_partial_criteria' => [], 'key_indicators' => []],
             ],
         ]);
     }
