@@ -9,7 +9,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Eval
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -30,7 +29,11 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
         $productWithoutAnyEvaluation = $this->givenAProductWithoutAnyEvaluation();
 
         $results = $this->get(GetEvaluationResultsByProductsAndCriterionQuery::class)->execute(
-            ProductIdCollection::fromInts([$productWithEvaluation, $productWithPendingEvaluation, $productWithoutAnyEvaluation]),
+            $this->get(ProductIdFactory::class)->createCollection([
+                (string) $productWithEvaluation,
+                (string) $productWithPendingEvaluation,
+                (string) $productWithoutAnyEvaluation,
+            ]),
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         );
 
