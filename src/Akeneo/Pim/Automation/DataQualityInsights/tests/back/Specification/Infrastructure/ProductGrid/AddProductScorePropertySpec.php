@@ -32,14 +32,14 @@ class AddProductScorePropertySpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeRow(1), $this->makeRow(4)];
+        $rows = [$this->makeRow('1'), $this->makeRow('4')];
 
         $addScoresToProductAndProductModelRows->__invoke($queryParameters, $rows, 'product')->shouldBeCalled();
 
         $this->add($queryParameters, $rows)->shouldHaveScoreProperties();
     }
 
-    private function makeRow(int $id): Row
+    private function makeRow(string $id): Row
     {
         return Row::fromProduct(
             strval($id), // identifier
