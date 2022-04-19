@@ -25,6 +25,21 @@ akeneo_connectivity_connection_webhook_rest_update:
     requirements:
         code: '[a-zA-Z0-9_]+'
 
+akeneo_connectivity_connection_webhook_regenerate_secret:
+    path: '/connect/connection-settings/{code}/event-subscription/regenerate-secret'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_webhook_edit:
+    path: '/connect/connection-settings/{code}/event-subscription'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
+akeneo_connectivity_connection_webhook_event_logs:
+    path: '/connect/connection-settings/{code}/event-logs'
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+
 ## EVENTS API DEBUG
 akeneo_connectivity_connection_events_api_debug_rest_search_event_subscription_logs:
     path: '/rest/events-api-debug/search-event-subscription-logs'
@@ -39,3 +54,4 @@ akeneo_connectivity_connection_events_api_debug_rest_download_event_subscription
     methods: [GET]
     requirements:
         connection_code: '[a-zA-Z0-9_]+'
+
