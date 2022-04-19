@@ -42,10 +42,20 @@ services:
         class: Akeneo\Channel\Infrastructure\Query\Sql\SqlFindChannels
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels:
+        class: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindChannels'
         tags: ['akeneo.pim.cached_query']
 
     Akeneo\Channel\Infrastructure\Query\Sql\SqlFindLocales:
         class: Akeneo\Channel\Infrastructure\Query\Sql\SqlFindLocales
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales:
+        class: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindLocales'
         tags: ['akeneo.pim.cached_query']
