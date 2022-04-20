@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Elasticsearch\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -56,7 +57,7 @@ final class GetUpdatedProductIdsQueryIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $productIds = iterator_to_array($getUpdatedProductIdsQuery->since($today->modify('+1 HOUR'), 3));
-        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productIds);
+        $productIds = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(3, $productIds[0]);
@@ -156,20 +157,20 @@ SQL;
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexFromProductModelCode($productModelCode);
     }
 
-    private function givenAnUpdatedProduct(\DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedProduct(\DateTimeImmutable $updatedAt): ProductUuid
     {
         $product = $this->createProduct();
         $this->updateProductAt($product, $updatedAt);
 
-        return new ProductId($product->getId());
+        return new ProductUuid($product->getUuid());
     }
 
-    private function givenAnUpdatedProductVariant(string $parentCode, \DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedProductVariant(string $parentCode, \DateTimeImmutable $updatedAt): ProductUuid
     {
         $productVariant = $this->createProductVariant($parentCode);
         $this->updateProductAt($productVariant, $updatedAt);
 
-        return new ProductId($productVariant->getId());
+        return new ProductUuid($productVariant->getUuid());
     }
 
     private function givenAProductModel(string $productModelCode, string $familyVariant, \DateTimeImmutable $updatedAt)
@@ -183,7 +184,7 @@ SQL;
         $this->updateProductModelAt($productModelCode, $updatedAt);
     }
 
-    private function givenAnUpdatedParentProductModel(string $productModelCode, \DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedParentProductModel(string $productModelCode, \DateTimeImmutable $updatedAt): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($productModelCode)
@@ -193,10 +194,10 @@ SQL;
         $this->get('pim_catalog.saver.product_model')->save($productModel);
         $this->updateProductModelAt($productModelCode, $updatedAt);
 
-        return new ProductId($productModel->getId());
+        return new ProductModelId($productModel->getId());
     }
 
-    private function givenAnUpdatedSubProductModel(string $parentCode, \DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedSubProductModel(string $parentCode, \DateTimeImmutable $updatedAt): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode(strval(Uuid::uuid4()))
@@ -208,10 +209,10 @@ SQL;
 
         $this->updateProductModelAt($productModel->getCode(), $updatedAt);
 
-        return new ProductId($productModel->getId());
+        return new ProductModelId($productModel->getId());
     }
 
-    private function assertExpectedProductId(ProductId $expectedProductId, array $productIds): void
+    private function assertExpectedProductId(ProductUuid $expectedProductId, array $productIds): void
     {
         foreach ($productIds as $productId) {
             if ($productId->toInt() === $expectedProductId->toInt()) {

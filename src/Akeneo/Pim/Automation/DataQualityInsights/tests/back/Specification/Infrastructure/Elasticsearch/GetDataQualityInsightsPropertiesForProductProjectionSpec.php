@@ -12,10 +12,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
@@ -34,21 +35,21 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         $computeProductsKeyIndicators,
         $idFactory
     ) {
-        $productId42 = new ProductId(42);
-        $productId123 = new ProductId(123);
-        $productId456 = new ProductId(456);
+        $productUuid42 = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid123 = new ProductUuid(Uuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2'));
+        $productUuid456 = new ProductUuid(Uuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee'));
         $productIds = [
-            'product_1' => $productId42,
-            'product_2' => $productId123,
-            'product_without_rates' => $productId456,
+            'product_1' => $productUuid42,
+            'product_2' => $productUuid123,
+            'product_without_rates' => $productUuid456,
         ];
         $productIdentifiers = [
             'product_1', 'product_2', 'product_without_rates'
         ];
-        $collection = ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]);
+        $collection = ProductUuidCollection::fromProductUuids([$productUuid42, $productUuid123, $productUuid456]);
 
         $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
-        $idFactory->createCollection(['42', '123', '456'])->willReturn($collection);
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2', '6d125b99-d971-41d9-a264-b020cd486aee'])->willReturn($collection);
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
@@ -56,7 +57,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         $localeFr = new LocaleCode('fr_FR');
 
         $getProductScoresQuery->byProductIds($collection)->willReturn([
-            42 => new Read\Scores(
+            'df470d52-7723-4890-85a0-e79be625e2ed' => new Read\Scores(
                 (new ChannelLocaleRateCollection)
                     ->addRate($channelMobile, $localeEn, new Rate(81))
                     ->addRate($channelMobile, $localeFr, new Rate(30))
@@ -66,7 +67,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                     ->addRate($channelMobile, $localeFr, new Rate(46))
                     ->addRate($channelEcommerce, $localeEn, new Rate(81))
             ),
-            123 => new Read\Scores(
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => new Read\Scores(
                 (new ChannelLocaleRateCollection)
                     ->addRate($channelMobile, $localeEn, new Rate(66)),
                 (new ChannelLocaleRateCollection)
@@ -75,7 +76,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         ]);
 
         $productsKeyIndicators = [
-            42 => [
+            'df470d52-7723-4890-85a0-e79be625e2ed' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -93,7 +94,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                     ],
                 ],
             ],
-            123 => [
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -136,7 +137,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 2,
                         ],
                     ],
-                    'key_indicators' => $productsKeyIndicators[42]
+                    'key_indicators' => $productsKeyIndicators['df470d52-7723-4890-85a0-e79be625e2ed']
                 ],
             ],
             'product_2' => [
@@ -151,7 +152,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 3,
                         ],
                     ],
-                    'key_indicators' => $productsKeyIndicators[123]
+                    'key_indicators' => $productsKeyIndicators['fef37e64-a963-47a9-b087-2cc67968f0a2']
                 ],
             ],
             'product_without_rates' => [

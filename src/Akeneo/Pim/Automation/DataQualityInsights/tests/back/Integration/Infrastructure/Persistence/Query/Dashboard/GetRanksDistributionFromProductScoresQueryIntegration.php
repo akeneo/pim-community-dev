@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard\GetRanksDistributionFromProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -143,7 +143,8 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     {
         $this->createProductAxesRatesWithDifferentDates($countProducts, $rank, function () {
             $this->createProductWithFamily('mugs');
-            return new ProductId($this->lastProductId);
+            // TODO To fix
+            return new ProductUuid($this->lastProductId);
         });
     }
 
@@ -218,7 +219,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
         ]);
     }
 
-    private function createProductWithFamily(string $family): ProductId
+    private function createProductWithFamily(string $family): ProductUuid
     {
         $this->lastProductId++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
@@ -228,10 +229,10 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId(intval($product->getId()));
+        return new ProductUuid($product->getUuid());
     }
 
-    private function createProductWithCategories(array $categories): ProductId
+    private function createProductWithCategories(array $categories): ProductUuid
     {
         $this->lastProductId++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
@@ -241,7 +242,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId(intval($product->getId()));
+        return new ProductUuid($product->getUuid());
     }
 
     private function getDifferentRank(int $rank): int

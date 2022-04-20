@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 interface GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
     /**
-     * @return \Iterator<int, ProductIdCollection>
+     * @return \Iterator<int, ProductUuidCollection>
      */
     public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator;
 }
