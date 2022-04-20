@@ -29,10 +29,8 @@ const SecondaryActions = () => {
                         <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
-                        <Dropdown.Item onClick={() => {}}>
-                            <Link
-                                href={exportRoute}
-                            >
+                        <Dropdown.Item>
+                            <Link href={exportRoute}>
                                 {translate('onboarder.supplier.supplier_list.dropdown.export_suppliers')}
                             </Link>
                         </Dropdown.Item>
