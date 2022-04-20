@@ -3,9 +3,7 @@ import {filterErrors} from '@akeneo-pim-community/shared';
 import {isMultiSelectTarget} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
-import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {ClearIfEmpty} from '../../common/ClearIfEmpty';
-import {ActionIfNotEmpty} from '../..';
+import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty, ActionIfNotEmpty} from '../../../../components';
 
 const MultiSelectConfigurator = ({
   dataMapping,

@@ -3,8 +3,7 @@ import {filterErrors} from '@akeneo-pim-community/shared';
 import {isSimpleSelectTarget} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
-import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
-import {ClearIfEmpty} from '../../common/ClearIfEmpty';
+import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
 
 const SimpleSelectConfigurator = ({
   dataMapping,

@@ -46,6 +46,9 @@ akeneo.tailored_import:
       clean_html_tags: Clean HTML tags
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
+      no_available:
+        text: No more available operations.
+        link: Click here to check our Help Center.
       remove: Are you sure you want to remove this operation?
     sources:
       title: Sources

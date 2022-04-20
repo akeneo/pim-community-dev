@@ -5,6 +5,7 @@ import {
   BlockButton,
   Dropdown,
   Helper,
+  Link,
   SectionTitle,
   SettingsIllustration,
   useBooleanState,
@@ -66,6 +67,10 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
     onOperationsChange(dataMapping.operations.filter(({type}) => type !== operationType));
   };
 
+  const availableOperations = compatibleOperations.filter(
+    operationType => !dataMapping.operations.find(({type}) => type === operationType)
+  );
+
   return (
     <OperationsContainer>
       <SectionTitle sticky={0}>
@@ -94,25 +99,32 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             return <OperationBlock key={operation.type} operation={operation} onRemove={handleOperationRemove} />;
           })}
           <Dropdown>
-            <BlockButton onClick={openDropdown} icon={<ArrowDownIcon />}>
-              {translate('akeneo.tailored_import.data_mapping.operations.add')}
-            </BlockButton>
+            {0 < availableOperations.length ? (
+              <BlockButton onClick={openDropdown} icon={<ArrowDownIcon />}>
+                {translate('akeneo.tailored_import.data_mapping.operations.add')}
+              </BlockButton>
+            ) : (
+              <Helper inline={true}>
+                {translate('akeneo.tailored_import.data_mapping.operations.no_available.text')}{' '}
+                <Link href="#TODO Add missing link" target="_blank">
+                  {translate('akeneo.tailored_import.data_mapping.operations.no_available.link')}
+                </Link>
+              </Helper>
+            )}
             {isDropdownOpen && (
               <Dropdown.Overlay onClose={closeDropdown} fullWidth={true}>
                 <Dropdown.ItemCollection
                   noResultTitle={translate('akeneo.tailored_import.data_mapping.operations.no_result')}
                   noResultIllustration={<SettingsIllustration />}
                 >
-                  {compatibleOperations
-                    .filter(operationType => !dataMapping.operations.find(({type}) => type === operationType))
-                    .map(operationType => (
-                      <Dropdown.Item
-                        key={operationType}
-                        onClick={() => handleOperationAdd(getDefaultOperation(operationType))}
-                      >
-                        {translate(`akeneo.tailored_import.data_mapping.operations.${operationType}`)}
-                      </Dropdown.Item>
-                    ))}
+                  {availableOperations.map(operationType => (
+                    <Dropdown.Item
+                      key={operationType}
+                      onClick={() => handleOperationAdd(getDefaultOperation(operationType))}
+                    >
+                      {translate(`akeneo.tailored_import.data_mapping.operations.${operationType}`)}
+                    </Dropdown.Item>
+                  ))}
                 </Dropdown.ItemCollection>
               </Dropdown.Overlay>
             )}

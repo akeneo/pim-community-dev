@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen, act, within} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Operations} from './Operations';
 import {AttributeTarget, DataMapping} from '../../models';
@@ -139,7 +139,7 @@ test('it can remove an operation from data mapping', async () => {
   expect(handleOperationsChange).toHaveBeenCalledWith([]);
 });
 
-test('it cannot add an operation already present in data mapping', async () => {
+test('it tells when there are no more available operations and hides the add button', async () => {
   await renderWithProviders(
     <Operations
       dataMapping={{
@@ -152,14 +152,8 @@ test('it cannot add an operation already present in data mapping', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-
-  const dropdown = screen.getByRole('listbox');
-
-  expect(within(dropdown).getByText('akeneo.tailored_import.data_mapping.operations.no_result')).toBeInTheDocument();
-  expect(
-    within(dropdown).queryByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags')
-  ).not.toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.no_available.text')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.operations.add')).not.toBeInTheDocument();
 });
 
 test('it tells when the operation block is not found', async () => {

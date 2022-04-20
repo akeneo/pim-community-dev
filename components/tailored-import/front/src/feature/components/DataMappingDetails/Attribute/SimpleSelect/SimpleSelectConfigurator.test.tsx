@@ -1,10 +1,10 @@
 import React from 'react';
+import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {SimpleSelectConfigurator} from './SimpleSelectConfigurator';
 import {createAttributeDataMapping, createPropertyDataMapping} from '../../../../models';
-import {screen} from '@testing-library/react';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {renderWithProviders} from 'feature/tests';
-import userEvent from '@testing-library/user-event';
 
 const getSimpleSelectAttribute = () => ({
   code: 'name',
@@ -79,7 +79,6 @@ test('it throws an error if we setup this component with a wrong target', async 
     await renderWithProviders(
       <SimpleSelectConfigurator
         columns={[]}
-        // @ts-expect-error invalid data mapping type
         dataMapping={dataMapping}
         onOperationsChange={jest.fn()}
         onRefreshSampleData={jest.fn()}
