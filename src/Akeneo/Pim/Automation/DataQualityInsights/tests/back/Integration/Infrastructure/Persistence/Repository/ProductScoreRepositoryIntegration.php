@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -22,15 +22,15 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 {
     public function test_it_save_multiple_products_scores(): void
     {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
+        $productUuidA = $this->createProduct('product_A')->getUuid();
+        $productUuidB = $this->createProduct('product_B')->getUuid();
 
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
+            new ProductUuid($productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
@@ -39,7 +39,7 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
                 ->addRate($channelMobile, $localeEn, new Rate(96))
         );
         $productScoreB = new ProductScores(
-            new ProductId($productIdB),
+            new ProductUuid($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
@@ -49,7 +49,7 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         );
         // To ensure that it doesn't crash when saving a unknown product
         $unknownProductScore = new ProductScores(
-            new ProductId($productIdB),
+            new ProductUuid($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))

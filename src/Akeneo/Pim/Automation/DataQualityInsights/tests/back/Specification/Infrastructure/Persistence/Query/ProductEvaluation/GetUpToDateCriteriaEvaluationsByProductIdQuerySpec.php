@@ -9,8 +9,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -29,32 +30,32 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBeh
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $productId = new ProductId(42);
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(true);
+        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(true);
 
         $criteriaEvaluations = (new Read\CriterionEvaluationCollection())
             ->add(new Read\CriterionEvaluation(
                 new CriterionCode('spelling'),
-                new ProductId(42),
+                new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending(),
                 null
         ));
 
-        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->willReturn($criteriaEvaluations);
 
-        $this->execute($productId)->shouldReturn($criteriaEvaluations);
+        $this->execute($productUuid)->shouldReturn($criteriaEvaluations);
     }
 
     public function it_returns_empty_criteria_evaluations_if_the_evaluation_of_the_product_is_outdated(
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $productId = new ProductId(42);
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
+        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(false);
 
-        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->shouldNotBeCalled();
+        $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->shouldNotBeCalled();
 
-        $this->execute($productId)->shouldBeLike(new Read\CriterionEvaluationCollection());
+        $this->execute($productUuid)->shouldBeLike(new Read\CriterionEvaluationCollection());
     }
 }
