@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Test\Acceptance\Category;
 
-use Akeneo\Category\back\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\Category;
 use Akeneo\Test\Acceptance\Category\InMemoryCategoryRepository;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;

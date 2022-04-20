@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Infrastructure\Component\Updater;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelTranslationInterface;
 use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;

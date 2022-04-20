@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
 use PHPUnit\Framework\Assert;
 

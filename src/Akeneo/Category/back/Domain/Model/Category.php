@@ -2,6 +2,9 @@
 
 namespace Akeneo\Category\Domain\Model;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,11 +19,11 @@ use Doctrine\Common\Collections\Collection;
  */
 class Category extends BaseCategory implements CategoryInterface
 {
-    /** @var Collection of ProductInterface */
-    protected $products;
+    /** @var Collection<int, ProductInterface> */
+    protected Collection $products;
 
-    /** @var Collection of ProductModelInterface */
-    protected $productModels;
+    /** @var Collection<int, ProductModelInterface> */
+    protected Collection $productModels;
 
     /**
      * Used locale to override Translation listener's locale
@@ -30,11 +33,11 @@ class Category extends BaseCategory implements CategoryInterface
      */
     protected $locale;
 
-    /** @var ArrayCollection of CategoryTranslation */
-    protected $translations;
+    /** @var Collection<int, TranslationInterface> */
+    protected Collection $translations;
 
-    /** @var ArrayCollection of Channel */
-    protected $channels;
+    /** @var Collection<int, Channel> */
+    protected Collection $channels;
 
     /** @var \DateTime */
     protected $created;
@@ -63,7 +66,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getProducts()
+    public function getProducts(): Collection
     {
         return $this->products;
     }
@@ -126,13 +129,10 @@ class Category extends BaseCategory implements CategoryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTranslation(?string $locale = null): ?CategoryTranslationInterface
+    public function getTranslation(?string $locale = null): ?TranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
-        if (null === $locale) {
+        if (null == $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
@@ -153,7 +153,7 @@ class Category extends BaseCategory implements CategoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
@@ -190,7 +190,12 @@ class Category extends BaseCategory implements CategoryInterface
 
     public function getLabel(): string
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+        $translation = $this->getTranslation();
+
+        $translated = null;
+        if ($translation instanceof CategoryTranslationInterface) {
+            $translated = $translation->getLabel();
+        }
 
         return ($translated !== '' && $translated !== null) ? $translated : '[' . $this->getCode() . ']';
     }
@@ -204,7 +209,11 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function setLabel($label)
     {
-        $this->getTranslation()->setLabel($label);
+        $translation = $this->getTranslation();
+
+        if ($translation instanceof CategoryTranslationInterface) {
+            $translation->setLabel($label);
+        }
 
         return $this;
     }
