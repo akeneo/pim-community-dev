@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\SampleData;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
+
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -16,9 +18,15 @@ final class SelectSampleData
     {
         $formattedValues = FormatSampleData::format($extractedColumns);
         $uniqueValues = self::filterUniqueValues($formattedValues);
-        $pickedValues = self::pickRandomValues($uniqueValues, $length);
+        $cleanedStringValue = self::replaceEmptyString($uniqueValues);
+        $pickedValues = self::pickRandomValues($cleanedStringValue, $length);
 
         return self::fillBlankValues($pickedValues, $length);
+    }
+
+    private static function replaceEmptyString(array $sampleData): array
+    {
+        return \array_map(static fn ($value): ?string => strlen($value) === 0 ? null : $value, $sampleData);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array
