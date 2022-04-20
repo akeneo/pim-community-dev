@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 interface GetProductIdsWithOutdatedAttributeSpellcheckQueryInterface
 {
     /**
-     * @return \Iterator<int, ProductIdCollection>
+     * @return \Iterator<int, ProductEntityIdCollection>
      */
     public function evaluatedSince(\DateTimeImmutable $evaluatedSince, int $bulkSize): \Iterator;
 }

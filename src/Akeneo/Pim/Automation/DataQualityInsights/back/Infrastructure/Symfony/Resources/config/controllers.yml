@@ -10,11 +10,13 @@ services:
         public: true
         arguments:
             $ignoreWordForProduct: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProduct'
+            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddProductModelWordInDictionaryController:
         public: true
         arguments:
             $ignoreWordForProductModel: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel'
+            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\AddAttributeWordInDictionaryController:
         public: true

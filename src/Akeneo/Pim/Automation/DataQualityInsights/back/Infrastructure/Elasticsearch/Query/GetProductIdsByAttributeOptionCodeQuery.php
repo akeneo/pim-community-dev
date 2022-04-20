@@ -13,24 +13,23 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsByAttributeOptionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAttributeOptionCodeQueryInterface
 {
-    /** @var Client */
-    private $esClient;
-
-    public function __construct(Client $esClient)
-    {
-        $this->esClient = $esClient;
+    public function __construct(
+        private Client                          $esClient,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Generator
     {
@@ -70,7 +69,7 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
                 $searchAfter = $product['sort'];
             }
 
-            yield ProductIdCollection::fromStrings($productIds);
+            yield $this->idFactory->createCollection($productIds);
 
             $returnedProducts += count($productIds);
             $result = $returnedProducts < $totalProducts ? $this->searchAfter($searchQuery, $searchAfter) : [];

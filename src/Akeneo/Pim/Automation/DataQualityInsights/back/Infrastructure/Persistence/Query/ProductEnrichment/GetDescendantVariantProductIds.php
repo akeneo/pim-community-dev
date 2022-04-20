@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetDescendantVariantProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 class GetDescendantVariantProductIds implements GetDescendantVariantProductIdsQueryInterface
 {
-    /** @var Connection  */
+    /** @var Connection */
     private $connection;
 
     public function __construct(Connection $connection)
@@ -18,9 +18,9 @@ class GetDescendantVariantProductIds implements GetDescendantVariantProductIdsQu
         $this->connection = $connection;
     }
 
-    public function fromProductModelIds(ProductIdCollection $productModelIdCollection): array
+    public function fromProductModelIds(ProductEntityIdCollection $productModelIdCollection): array
     {
-        if (empty($productModelIdCollection->toArray())) {
+        if ($productModelIdCollection->isEmpty()) {
             return [];
         }
 
@@ -43,7 +43,7 @@ SQL;
 
         return $this->connection->executeQuery(
             $sql,
-            ['ids' => $productModelIdCollection->toArrayInt()],
+            ['ids' => array_map(fn ($productId) => (int)$productId, $productModelIdCollection->toArrayString())],
             ['ids' => Connection::PARAM_INT_ARRAY]
         )->fetchFirstColumn();
     }

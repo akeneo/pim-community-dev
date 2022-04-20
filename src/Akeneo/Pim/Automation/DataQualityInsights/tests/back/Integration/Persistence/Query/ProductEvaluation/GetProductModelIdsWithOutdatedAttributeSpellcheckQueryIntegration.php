@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Integration\Persistence\Quer
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -23,7 +24,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Structure\SpellCheckResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithOutdatedAttributeSpellcheckQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeSpellcheckRepository;
@@ -66,17 +67,17 @@ final class GetProductModelIdsWithOutdatedAttributeSpellcheckQueryIntegration ex
         $productModelA3 = $this->createProductModel('pm_without_evaluations', 'familyVariantA1');
         $this->deleteProductModelEvaluations($productModelA3);
 
-        $expectedProductModelsIds = [
-            new ProductId($productModelA1),
-            new ProductId($subProductModelA2),
-            new ProductId($productModelA2),
-            new ProductId($productModelA3),
-        ];
+        $expectedProductModelsIds = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$productModelA1,
+            (string)$subProductModelA2,
+            (string)$productModelA2,
+            (string)$productModelA3,
+        ])->toArray();
 
         $productsModelIds = $this->get(GetProductModelIdsWithOutdatedAttributeSpellcheckQuery::class)
             ->evaluatedSince($spellcheckEvaluatedSince, 3);
         $productsModelIds = iterator_to_array($productsModelIds);
-        $productsModelIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productsModelIds);
+        $productsModelIds = array_map(fn(ProductModelIdCollection $collection) => $collection->toArray(), $productsModelIds);
 
         $this->assertCount(2, $productsModelIds);
         $this->assertEqualsCanonicalizing($expectedProductModelsIds, array_merge(...$productsModelIds));
@@ -106,8 +107,12 @@ final class GetProductModelIdsWithOutdatedAttributeSpellcheckQueryIntegration ex
             ->evaluatedSince($spellcheckEvaluatedSince, 2);
         $productsModelIds = iterator_to_array($productsModelIds);
 
+        $expectedProductModelsIds = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$subProductModelA2
+        ])->toArray();
+
         $this->assertCount(1, $productsModelIds);
-        $this->assertEqualsCanonicalizing([new ProductId($subProductModelA2)], $productsModelIds[0]->toArray());
+        $this->assertEqualsCanonicalizing($expectedProductModelsIds, $productsModelIds[0]->toArray());
     }
 
     private function createProductModel(string $identifier, string $familyVariant): int

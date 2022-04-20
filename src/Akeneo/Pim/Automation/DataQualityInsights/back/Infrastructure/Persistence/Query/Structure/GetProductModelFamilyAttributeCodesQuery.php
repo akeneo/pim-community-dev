@@ -15,8 +15,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetProductFamilyAttributeCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 class GetProductModelFamilyAttributeCodesQuery implements GetProductFamilyAttributeCodesQueryInterface
 {
@@ -28,8 +31,10 @@ class GetProductModelFamilyAttributeCodesQuery implements GetProductFamilyAttrib
         $this->connection = $connection;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductEntityIdInterface $productId): array
     {
+        Assert::isInstanceOf($productId, ProductModelId::class);
+        
         $query = <<<SQL
 SELECT attribute.code
 FROM pim_catalog_product_model AS product_model

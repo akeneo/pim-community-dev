@@ -29,6 +29,8 @@ onboarder:
                 error:
                     title: We are not able to display the supplier list.
                     content: Sorry about this inconvenience, please try again in a few moments.
+            dropdown:
+                export_suppliers: Export suppliers
             columns:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
