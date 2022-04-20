@@ -1,0 +1,8 @@
+parameters:
+  level: 6
+  paths:
+    - %rootDir%/../../../components/job-automation/back
+  excludes_analyse:
+    - %rootDir%/../../../components/job-automation/back/tests/Specification
+  checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false

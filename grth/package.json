@@ -30,7 +30,8 @@
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "tailored-export:build": "yarn workspace @akeneo-pim-enterprise/tailored-export lib:build",
     "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn tailored-export:build && yarn tailored-import:build",
+    "job-automation:build": "yarn workspace @akeneo-pim-enterprise/job-automation lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn tailored-export:build && yarn tailored-import:build && yarn job-automation:build",
     "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
   },
   "devDependencies": {
@@ -68,6 +69,7 @@
   "workspaces": [
     "components/tailored-export/front",
     "components/tailored-import/front",
+    "components/job-automation/front",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/front-packages/shared",

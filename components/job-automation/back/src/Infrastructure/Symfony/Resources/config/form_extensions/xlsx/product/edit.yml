@@ -1,0 +1,28 @@
+extensions:
+    pim-job-instance-xlsx-product-import-edit-properties-storage:
+        module: akeneojobautomation/js/job/product/edit/storage-form
+        parent: pim-job-instance-xlsx-product-import-edit-properties
+        position: 120
+        targetZone: properties
+        feature: job_automation_remote_storage
+
+    pim-job-instance-xlsx-product-export-edit-properties-storage:
+        module: akeneojobautomation/js/job/product/edit/storage-form
+        parent: pim-job-instance-xlsx-product-export-edit-properties
+        position: 120
+        targetZone: properties
+        feature: job_automation_remote_storage
+
+    pim-job-instance-xlsx-tailored-product-import-edit-properties-storage:
+        module: akeneojobautomation/js/job/product/edit/storage-form
+        parent: pim-job-instance-xlsx-tailored-product-import-edit-properties
+        position: 120
+        targetZone: properties
+        feature: job_automation_remote_storage
+
+    pim-job-instance-xlsx-tailored-product-export-edit-properties-storage:
+        module: akeneojobautomation/js/job/product/edit/storage-form
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-properties
+        position: 120
+        targetZone: properties
+        feature: job_automation_remote_storage

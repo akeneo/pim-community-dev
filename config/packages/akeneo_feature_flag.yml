@@ -17,3 +17,4 @@ akeneo_feature_flag:
         - { feature: 'published_product', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'tailored_import', service: 'akeneo.tailored_import.feature' }
         - { feature: 'teamwork_assistant', service: 'akeneo.feature_flag.service.only_serenity_feature' }
+        - { feature: 'job_automation_remote_storage', service: 'akeneo.job_automation.feature_flag.is_remote_storage_enabled'}

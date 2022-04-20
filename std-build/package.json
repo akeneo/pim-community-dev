@@ -37,6 +37,7 @@
     "vendor/akeneo/pim-enterprise-dev",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-export/front",
     "vendor/akeneo/pim-enterprise-dev/components/tailored-import/front",
+    "vendor/akeneo/pim-enterprise-dev/components/job-automation/front",
     "vendor/akeneo/pim-enterprise-dev/grth/src/Akeneo/Pim/TableAttribute/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
     "vendor/akeneo/pim-enterprise-dev/src/Akeneo/Pim/Automation/RuleEngine/front",
