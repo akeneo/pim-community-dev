@@ -33,13 +33,13 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductModelScores:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductModelScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy'
 
     akeneo.pim.automation.data_quality_insights.get_product_evaluation:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation
@@ -279,6 +279,6 @@ services:
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy:
+    Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'

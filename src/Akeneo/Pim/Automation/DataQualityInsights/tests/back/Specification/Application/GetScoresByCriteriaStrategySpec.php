@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 
-final class GetEnabledScoresStrategySpec extends ObjectBehavior
+final class GetScoresByCriteriaStrategySpec extends ObjectBehavior
 {
     public function let(FeatureFlag $allCriteriaFeature)
     {

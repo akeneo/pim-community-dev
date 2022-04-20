@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
@@ -15,14 +15,14 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
 {
     public function __construct(
         private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        private GetProductScoresQueryInterface $getProductScoresQuery,
-        private GetEnabledScoresStrategy $getEnabledScores,
+        private GetProductScoresQueryInterface                  $getProductScoresQuery,
+        private GetScoresByCriteriaStrategy                     $getScoresByCriteria,
     ) {
     }
 
     public function execute(ProductId $productId): ProductEvaluation
     {
-        $productScores = ($this->getEnabledScores)($this->getProductScoresQuery->byProductId($productId));
+        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductId($productId));
         $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
 
         return new ProductEvaluation($productId, $productScores, $productCriteriaEvaluations);
