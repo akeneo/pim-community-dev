@@ -27,6 +27,6 @@ class AkeneoCategoryExtension extends Extension
 
         $loader->load('controllers.yml');
         $loader->load('repositories.yml');
+        $loader->load('product_grid_category_tree.yml');
     }
-
 }

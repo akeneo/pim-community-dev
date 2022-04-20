@@ -31,8 +31,6 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping(): array
     {
         return [
-            CategoryInterface::class => 'pim_catalog.entity.category.class',
-            CategoryTranslationInterface::class => 'pim_catalog.entity.category_translation.class',
             GroupInterface::class => 'pim_catalog.entity.group.class',
             GroupTranslationInterface::class => 'pim_catalog.entity.group_translation.class',
             ProductInterface::class => 'pim_catalog.entity.product.class',
