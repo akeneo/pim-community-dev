@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
@@ -196,7 +197,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         $product = $this->createProduct('product', [new SetFamily('familyA')]);
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
-            ProductIdCollection::fromInt($product->getId())
+            ProductUuidCollection::fromInt($product->getId())
         );
 
         $client = $this->createAuthenticatedClient();

@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -22,22 +22,22 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_scores_by_product_ids()
+    public function test_it_returns_the_scores_by_product_uuids()
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
-        $productIdC = $this->createProduct('product_C')->getId();
-        $productIdD = $this->createProduct('product_D')->getId();
+        $productUuidA = $this->createProduct('product_A')->getUuid();
+        $productUuidB = $this->createProduct('product_B')->getUuid();
+        $productUuidC = $this->createProduct('product_C')->getUuid();
+        $productUuidD = $this->createProduct('product_D')->getUuid();
 
         $this->resetProductsScores();
 
         $productsScores = [
             'product_A_scores' => new Write\ProductScores(
-                new ProductId($productIdA),
+                new ProductUuid($productUuidA),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
@@ -47,7 +47,7 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
                     ->addRate($channelMobile, $localeFr, new Rate(23))
             ),
             'product_B_scores' => new Write\ProductScores(
-                new ProductId($productIdB),
+                new ProductUuid($productUuidB),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
@@ -57,7 +57,7 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
                     ->addRate($channelMobile, $localeFr, new Rate(98)),
             ),
             'other_product_scores' => new Write\ProductScores(
-                new ProductId($productIdC),
+                new ProductUuid($productUuidC),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
@@ -71,17 +71,17 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
         $expectedProductsScores = [
-            $productIdA => new Read\Scores(
+            $productUuidA->toString() => new Read\Scores(
                 $productsScores['product_A_scores']->getScores(),
                 $productsScores['product_A_scores']->getScoresPartialCriteria()
             ),
-            $productIdB => new Read\Scores(
+            $productUuidB->toString() => new Read\Scores(
                 $productsScores['product_B_scores']->getScores(),
                 $productsScores['product_B_scores']->getScoresPartialCriteria()
             ),
         ];
 
-        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productIdA, (string)$productIdB, (string)$productIdD]);
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
         $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductIds($productModelIdCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
