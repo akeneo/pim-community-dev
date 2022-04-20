@@ -75,7 +75,7 @@
     "app:start": "yarn translation:build && yarn route:build && yarn packages:build && react-scripts start",
     "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage --maxWorkers=3",
     "test:unit:watch": "react-scripts test --maxWorkers=3",
-    "lib:build": "rm -rf lib/ && esbuild `find src/feature -regex '.*\\.tsx?' -not -name '*.test.ts' -not -name '*.test.tsx'` --loader:.js=jsx --outdir=lib --sourcemap",
+    "lib:build": "rm -rf lib/ && esbuild `find src/feature -regex '.*\\.tsx?' -not -name '*.test.ts' -not -name '*.test.tsx'` --loader:.js=jsx --outdir=lib --sourcemap --log-level=warning",
     "translation:build": "cp ../../../../../../public/js/translation/en_US.js ./src/translations.json",
     "route:build": "cp ../../../../../../public/js/fos_js_routes.json ./src/routes.json",
     "packages:build": "yarn --cwd=$npm_package_config_front_packages_path/akeneo-design-system run lib:build && yarn --cwd=$npm_package_config_front_packages_path/shared run lib:build",
