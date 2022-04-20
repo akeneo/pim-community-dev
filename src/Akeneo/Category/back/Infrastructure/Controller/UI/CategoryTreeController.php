@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\back\Infrastructure\Controller\UI;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Category\back\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
