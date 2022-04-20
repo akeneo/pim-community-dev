@@ -29,6 +29,13 @@ akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\DeleteTestAppAction
     methods: [DELETE]
 
+# External API
+
+akeneo_connectivity_connection_marketplace_api_test_apps_create:
+    path: '/api/rest/v1/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\External\CreateTestAppAction
+    methods: [POST]
+
 # Front API
 akeneo_connectivity_connection_connect_marketplace:
     path: '/connect/app-store'
