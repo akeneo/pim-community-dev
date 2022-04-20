@@ -212,19 +212,19 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\SynchronousCriterionEvaluationsFilter
 
     akeneo.pim.automation.data_quality_insights.compute_products_key_indicators:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - !tagged akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query
 
     akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - !tagged akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query
 
     akeneo.pim.automation.data_quality_insights.get_key_indicators:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicators
+        class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicators
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query'
             - '@akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_model_key_indicators_query'
