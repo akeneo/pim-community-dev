@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
@@ -25,15 +25,15 @@ final class GetProductModelScoresSpec extends ObjectBehavior
     public function let(
         GetUpToDateProductModelScoresQuery $getUpToDateProductModelScoresQuery,
         GetLocalesByChannelQueryInterface  $getLocalesByChannelQuery,
-        GetEnabledScoresStrategy $getEnabledScores,
+        GetScoresByCriteriaStrategy        $getScoresByCriteria,
     ) {
-        $this->beConstructedWith($getUpToDateProductModelScoresQuery, $getLocalesByChannelQuery, $getEnabledScores);
+        $this->beConstructedWith($getUpToDateProductModelScoresQuery, $getLocalesByChannelQuery, $getScoresByCriteria);
     }
 
     public function it_gives_the_scores_by_channel_and_locale_for_a_given_product_model(
         $getUpToDateProductModelScoresQuery,
         $getLocalesByChannelQuery,
-        $getEnabledScores
+        $getScoresByCriteria
     ) {
         $productModelId = new ProductId(42);
 
@@ -52,7 +52,7 @@ final class GetProductModelScoresSpec extends ObjectBehavior
         );
 
         $getUpToDateProductModelScoresQuery->byProductModelId($productModelId)->willReturn($scores);
-        $getEnabledScores->__invoke($scores)->willReturn($scores->allCriteria());
+        $getScoresByCriteria->__invoke($scores)->willReturn($scores->allCriteria());
 
         $this->get($productModelId)->shouldBeLike(
             [
