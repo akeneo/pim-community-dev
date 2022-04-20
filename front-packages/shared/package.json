@@ -4,7 +4,7 @@
   "license": "OSL-3.0",
   "main": "lib/index.js",
   "scripts": {
-    "lib:build": "tsc -p ./tsconfig.json",
+    "lib:build": "esbuild `find src -regex '.*\\.tsx?' -not -name '*.test.ts' -not -name '*.test.tsx'` --loader:.js=jsx --outdir=lib --sourcemap",
     "test:unit:run": "jest --no-cache --config ./jest.config.js --maxWorkers=3",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
     "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
