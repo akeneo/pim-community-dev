@@ -34,7 +34,7 @@ class CriteriaByFeatureRegistrySpec extends ObjectBehavior
 
         $this->register($evaluateCriterionWithoutFeature, null);
         $this->register($evaluateCriterionWhateverFeature, 'whatever_feature');
-        $this->register($evaluateCriterionAllFeatureOnly, AllCriteriaFeature::NAME);
+        $this->register($evaluateCriterionAllFeatureOnly, 'data_quality_insights_all_criteria');
     }
 
     public function it_gets_criteria_codes_with_all_criteria_feature_enabled($allCriteriaFeature)

@@ -13,8 +13,6 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
  */
 final class AllCriteriaFeature implements FeatureFlag
 {
-    public const NAME = 'data_quality_insights_all_criteria';
-
     public function __construct(
         private FeatureFlags $featureFlags
     ) {
@@ -22,6 +20,6 @@ final class AllCriteriaFeature implements FeatureFlag
 
     public function isEnabled(): bool
     {
-        return $this->featureFlags->isEnabled(self::NAME);
+        return $this->featureFlags->isEnabled('data_quality_insights_all_criteria');
     }
 }
