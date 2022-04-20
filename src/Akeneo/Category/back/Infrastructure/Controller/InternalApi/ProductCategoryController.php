@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\back\Infrastructure\Controller\InternalApi;
+namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

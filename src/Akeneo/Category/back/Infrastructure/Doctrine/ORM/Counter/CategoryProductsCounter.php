@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\Infrastructure\Doctrine\ORM\Counter;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Counter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;

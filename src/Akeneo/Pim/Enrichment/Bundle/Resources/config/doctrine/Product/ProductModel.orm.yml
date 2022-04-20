@@ -27,7 +27,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
             nullable: true
     manyToMany:
         categories:
-            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
             joinTable:
                 name: pim_catalog_category_product_model
                 joinColumns:

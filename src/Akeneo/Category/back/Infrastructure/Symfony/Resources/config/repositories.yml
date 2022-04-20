@@ -1,7 +1,7 @@
 services:
   pim_catalog.repository.category:
-    class: 'Akeneo\Category\back\Infrastructure\Doctrine\ORM\Repository\CategoryRepository'
+    class: 'Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\CategoryRepository'
     factory: ['@doctrine.orm.entity_manager', 'getRepository']
     arguments: ['%pim_catalog.entity.category.class%']
     tags:
-      - { name: 'pim_repository' }
+      - { name: 'category_repository' }

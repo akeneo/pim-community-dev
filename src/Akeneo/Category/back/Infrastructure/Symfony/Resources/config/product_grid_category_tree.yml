@@ -1,6 +1,6 @@
 services:
     akeneo.pim.enrichment.controller.product_grid_category_tree:
-        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\ProductGridCategoryTreeController'
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\ProductGridCategoryTreeController'
         public: true
         arguments:
             - '@akeneo.pim.enrichment.category.category_tree.list_root_categories_with_count_handler'

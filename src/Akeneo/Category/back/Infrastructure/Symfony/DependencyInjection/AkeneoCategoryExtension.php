@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\back\Infrastructure\Symfony\DependencyInjection;
+namespace Akeneo\Category\Infrastructure\Symfony\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,9 +24,11 @@ class AkeneoCategoryExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-
+        $loader->load('entities.yml');
+        $loader->load('models.yml');
         $loader->load('controllers.yml');
-        $loader->load('repositories.yml');
         $loader->load('product_grid_category_tree.yml');
+        $loader->load('category_counters.yml');
+        $loader->load('repositories.yml');
     }
 }

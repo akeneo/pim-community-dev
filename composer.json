@@ -21,7 +21,8 @@
             "Akeneo\\Platform\\Job\\": "src/Akeneo/Platform/Job/back",
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
-            "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back"
+            "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
+            "Akeneo\\Category\\": "src/Akeneo/Category/back"
         }
     },
     "autoload-dev": {
@@ -42,7 +43,8 @@
             "Akeneo\\Platform\\Job\\Test\\": "src/Akeneo/Platform/Job/back/tests",
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
-            "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test"
+            "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Akeneo\\Test\\Category\\": "src/Akeneo/Category/back/tests"
         }
     },
     "require": {
