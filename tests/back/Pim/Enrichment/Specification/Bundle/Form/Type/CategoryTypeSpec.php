@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
-use Akeneo\Category\back\Domain\Model\Category;
-use Akeneo\Category\back\Domain\Model\CategoryTranslation;
+use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Domain\Model\CategoryTranslation;
 use Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;

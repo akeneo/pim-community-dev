@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
