@@ -24,9 +24,9 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
 
         if (!response.ok) {
             notify(
-              NotificationLevel.ERROR,
-              translate('onboarder.supplier.supplier_list.notification.error.title'),
-              translate('onboarder.supplier.supplier_list.notification.error.content')
+                NotificationLevel.ERROR,
+                translate('onboarder.supplier.supplier_list.notification.error.title'),
+                translate('onboarder.supplier.supplier_list.notification.error.content')
             );
 
             return;

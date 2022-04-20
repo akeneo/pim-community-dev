@@ -22,10 +22,11 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     };
 
     const handleNewContributorsAdd = () => {
-        setContributors([
-            ...contributors,
-            ...newContributors.filter(contributorEmail => isValidEmail(contributorEmail)),
-        ]);
+        const validContributorEmails = newContributors
+            .filter(contributorEmail => isValidEmail(contributorEmail))
+            .filter(contributorEmail => contributorEmail.length <= 255);
+
+        setContributors([...contributors, ...validContributorEmails]);
         setNewContributors([]);
     };
 

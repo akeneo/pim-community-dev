@@ -24,9 +24,9 @@ const Configuration = ({supplier, setLabel, validationErrors}: Props) => {
             <Field label={translate('onboarder.supplier.supplier_edit.configuration_form.label')}>
                 <TextInput onChange={setLabel} value={supplier.label} maxLength={LABEL_AND_CODE_MAX_LENGTH} />
                 {getErrorsForPath(validationErrors, 'label').map((error, index) => (
-                  <Helper key={index} level="error">
-                    {translate(error.message)}
-                  </Helper>
+                    <Helper key={index} level="error">
+                        {translate(error.message)}
+                    </Helper>
                 ))}
             </Field>
         </TabContainer>
