@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Classification\Updater;
 
+use Akeneo\Category\back\Domain\Model\CategoryTranslation;
 use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Updater\CategoryUpdater;
@@ -11,9 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
 use Akeneo\UserManagement\Component\Query\PublicApi\IsCategoryTreeLinkedToUser;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class CategoryUpdaterSpec extends ObjectBehavior

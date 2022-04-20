@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
+use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
-use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
-use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Category\back\Infrastructure\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
+use function Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\count;
 
 /**
  * Category repository

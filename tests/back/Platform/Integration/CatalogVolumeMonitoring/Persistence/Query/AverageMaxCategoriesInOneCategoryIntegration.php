@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\Query;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use PHPUnit\Framework\Assert;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence\QueryTestCase;
+use PHPUnit\Framework\Assert;
 
 class AverageMaxCategoriesInOneCategoryIntegration extends QueryTestCase
 {

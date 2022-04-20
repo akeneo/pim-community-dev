@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryTranslation;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;

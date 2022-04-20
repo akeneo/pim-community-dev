@@ -2,14 +2,14 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\SecurityBundle\Security\FirewallConfig;
 use Symfony\Bundle\SecurityBundle\Security\FirewallMap;

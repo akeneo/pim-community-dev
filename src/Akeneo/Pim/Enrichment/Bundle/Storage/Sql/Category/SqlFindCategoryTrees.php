@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
 
+use Akeneo\Category\back\Domain\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;

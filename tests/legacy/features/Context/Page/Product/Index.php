@@ -2,7 +2,7 @@
 
 namespace Context\Page\Product;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\back\Domain\Model\Category;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;

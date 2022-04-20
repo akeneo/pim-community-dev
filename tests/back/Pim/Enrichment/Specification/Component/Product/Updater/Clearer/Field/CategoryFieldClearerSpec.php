@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\back\Domain\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
