@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -46,7 +46,7 @@ final class GetProductIdsFromProductIdentifiersQueryIntegration extends TestCase
         $this->assertEquals($expectedProductIds, $productIds);
     }
 
-    private function createProduct(string $identifier): ProductId
+    private function createProduct(string $identifier): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier($identifier)

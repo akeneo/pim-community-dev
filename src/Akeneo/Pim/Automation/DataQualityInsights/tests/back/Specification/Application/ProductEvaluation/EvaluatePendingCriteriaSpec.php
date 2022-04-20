@@ -27,8 +27,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvalua
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -69,60 +69,60 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     )
     {
         $productIdCollection->isEmpty()->willReturn(false);
-        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+        $productIdCollection->toArrayString()->willReturn(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2']);
 
         $criterionNonRequiredAttributesCompleteness = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
         $criterionRequiredAttributesCompleteness = new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
 
         $criteria = [
-            'product_42_non_required_att_completeness' => new Write\CriterionEvaluation(
+            'product_df470d52_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributesCompleteness,
-                new ProductId(42),
+                new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             ),
-            'product_42_completeness' => new Write\CriterionEvaluation(
+            'product_df470d52_completeness' => new Write\CriterionEvaluation(
                 $criterionRequiredAttributesCompleteness,
-                new ProductId(42),
+                new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             ),
             'product_123_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributesCompleteness,
-                new ProductId(42),
+                new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
                 CriterionEvaluationStatus::pending()
             )
         ];
 
-        $criteriaProduct42 = (new Write\CriterionEvaluationCollection())
-            ->add($criteria['product_42_non_required_att_completeness'])
-            ->add($criteria['product_42_completeness']);
+        $criteriaProduct_df470d52 = (new Write\CriterionEvaluationCollection())
+            ->add($criteria['product_df470d52_non_required_att_completeness'])
+            ->add($criteria['product_df470d52_completeness']);
         $criteriaProduct123 = (new Write\CriterionEvaluationCollection())
             ->add($criteria['product_123_non_required_att_completeness']);
 
         $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
-            42 => $criteriaProduct42,
+            'df470d52-7723-4890-85a0-e79be625e2ed' => $criteriaProduct_df470d52,
             123 => $criteriaProduct123
         ]);
 
-        $product42Values = $this->givenRandomProductValues();
+        $product_df470d52Values = $this->givenRandomProductValues();
         $product123Values = $this->givenRandomProductValues();
 
-        $productIdA->__toString()->willReturn('42');
-        $productIdB->__toString()->willReturn('123');
+        $productIdA->__toString()->willReturn('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productIdB->__toString()->willReturn('fef37e64-a963-47a9-b087-2cc67968f0a2');
 
-        $idFactory->create('42')->willReturn($productIdA);
-        $idFactory->create('123')->willReturn($productIdB);
+        $idFactory->create('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn($productIdA);
+        $idFactory->create('fef37e64-a963-47a9-b087-2cc67968f0a2')->willReturn($productIdB);
 
-        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product_df470d52Values);
         $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
 
         $evaluationRegistry->get($criterionNonRequiredAttributesCompleteness)->willReturn($evaluateNonRequiredAttributeCompleteness);
         $evaluationRegistry->get($criterionRequiredAttributesCompleteness)->willReturn($evaluateCompleteness);
 
-        $evaluateNonRequiredAttributeCompleteness->evaluate($criteria['product_42_non_required_att_completeness'], $product42Values)
+        $evaluateNonRequiredAttributeCompleteness->evaluate($criteria['product_df470d52_non_required_att_completeness'], $product_df470d52Values)
             ->willReturn(new Write\CriterionEvaluationResult());
         $evaluateNonRequiredAttributeCompleteness->evaluate($criteria['product_123_non_required_att_completeness'], $product123Values)
             ->willReturn(new Write\CriterionEvaluationResult());
-        $evaluateCompleteness->evaluate($criteria['product_42_completeness'], $product42Values)
+        $evaluateCompleteness->evaluate($criteria['product_df470d52_completeness'], $product_df470d52Values)
             ->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
@@ -147,13 +147,13 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     )
     {
         $productIdCollection->isEmpty()->willReturn(false);
-        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+        $productIdCollection->toArrayString()->willReturn(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2']);
 
-        $idFactory->create('42')->willReturn($productIdA);
-        $idFactory->create('123')->willReturn($productIdB);
+        $idFactory->create('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn($productIdA);
+        $idFactory->create('fef37e64-a963-47a9-b087-2cc67968f0a2')->willReturn($productIdB);
 
-        $productIdA->__toString()->willReturn('42');
-        $productIdB->__toString()->willReturn('123');
+        $productIdA->__toString()->willReturn('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productIdB->__toString()->willReturn('fef37e64-a963-47a9-b087-2cc67968f0a2');
 
         $criterionCode = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
 
@@ -170,18 +170,18 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         );
 
         $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
-            42 => (new Write\CriterionEvaluationCollection())->add($criterionA),
+            'df470d52-7723-4890-85a0-e79be625e2ed' => (new Write\CriterionEvaluationCollection())->add($criterionA),
             123 => (new Write\CriterionEvaluationCollection())->add($criterionB),
         ]);
 
-        $product42Values = $this->givenRandomProductValues();
+        $product_df470d52Values = $this->givenRandomProductValues();
         $product123Values = $this->givenRandomProductValues();
 
-        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product_df470d52Values);
         $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
 
         $evaluationRegistry->get($criterionCode)->willReturn($evaluateCriterion);
-        $evaluateCriterion->evaluate($criterionA, $product42Values)->willThrow(new \Exception('Evaluation failed'));
+        $evaluateCriterion->evaluate($criterionA, $product_df470d52Values)->willThrow(new \Exception('Evaluation failed'));
         $evaluateCriterion->evaluate($criterionB, $product123Values)->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
@@ -206,61 +206,61 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     )
     {
         $productIdCollection->isEmpty()->willReturn(false);
-        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+        $productIdCollection->toArrayString()->willReturn(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2']);
 
-        $idFactory->create('42')->willReturn($productIdA);
-        $idFactory->create('123')->willReturn($productIdB);
+        $idFactory->create('df470d52-7723-4890-85a0-e79be625e2ed')->willReturn($productIdA);
+        $idFactory->create('fef37e64-a963-47a9-b087-2cc67968f0a2')->willReturn($productIdB);
 
-        $productIdA->__toString()->willReturn('42');
-        $productIdB->__toString()->willReturn('123');
+        $productIdA->__toString()->willReturn('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productIdB->__toString()->willReturn('fef37e64-a963-47a9-b087-2cc67968f0a2');
 
         $criterionNonRequiredAttributeCompleteness = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
 
         $criteria = [
-            'product_42_non_required_att_completeness' => new Write\CriterionEvaluation(
+            'product_df470d52_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributeCompleteness,
                 $productIdA->getWrappedObject(),
                 CriterionEvaluationStatus::pending()
             ),
-            'product_123_non_required_att_completeness' => new Write\CriterionEvaluation(
+            'product_fef37e64_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributeCompleteness,
                 $productIdB->getWrappedObject(),
                 CriterionEvaluationStatus::pending()
             )
         ];
 
-        $product42CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_42_non_required_att_completeness']);
-        $product123CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_123_non_required_att_completeness']);
+        $product_df470d52CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_df470d52_non_required_att_completeness']);
+        $product_fef37e64CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_fef37e64_non_required_att_completeness']);
         $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
-            42 => $product42CriteriaCollection,
-            123 => $product123CriteriaCollection
+            'df470d52-7723-4890-85a0-e79be625e2ed' => $product_df470d52CriteriaCollection,
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => $product_fef37e64CriteriaCollection
         ]);
 
-        $product42Values = $this->givenRandomProductValues();
-        $product123Values = $this->givenRandomProductValues();
+        $product_df470d52Values = $this->givenRandomProductValues();
+        $product_fef37e64Values = $this->givenRandomProductValues();
 
-        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
-        $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product_df470d52Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product_fef37e64Values);
 
         $evaluationRegistry->get($criterionNonRequiredAttributeCompleteness)->willReturn($evaluateSpelling);
-        $evaluateSpelling->evaluate($criteria['product_42_non_required_att_completeness'], $product42Values)
+        $evaluateSpelling->evaluate($criteria['product_df470d52_non_required_att_completeness'], $product_df470d52Values)
             ->willReturn(new Write\CriterionEvaluationResult());
-        $evaluateSpelling->evaluate($criteria['product_123_non_required_att_completeness'], $product123Values)
+        $evaluateSpelling->evaluate($criteria['product_fef37e64_non_required_att_completeness'], $product_fef37e64Values)
             ->willReturn(new Write\CriterionEvaluationResult());
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
-        $synchronousCriterionEvaluationsFilter->filter($product42CriteriaCollection->getIterator())->willReturn([
-            $criteria['product_42_non_required_att_completeness'],
+        $synchronousCriterionEvaluationsFilter->filter($product_df470d52CriteriaCollection->getIterator())->willReturn([
+            $criteria['product_df470d52_non_required_att_completeness'],
         ]);
-        $synchronousCriterionEvaluationsFilter->filter($product123CriteriaCollection->getIterator())->willReturn([
-            $criteria['product_123_non_required_att_completeness'],
+        $synchronousCriterionEvaluationsFilter->filter($product_fef37e64CriteriaCollection->getIterator())->willReturn([
+            $criteria['product_fef37e64_non_required_att_completeness'],
         ]);
 
         $this->evaluateSynchronousCriteria($productIdCollection);
 
-        Assert::eq($criteria['product_42_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
-        Assert::eq($criteria['product_123_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
+        Assert::eq($criteria['product_df470d52_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
+        Assert::eq($criteria['product_fef37e64_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
     }
 
     private function givenRandomProductValues(): ProductValuesCollection
