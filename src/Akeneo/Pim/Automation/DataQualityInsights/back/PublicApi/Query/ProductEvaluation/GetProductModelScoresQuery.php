@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetEnabledScoresStrategy;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
@@ -20,7 +20,7 @@ class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
 {
     public function __construct(
         private GetProductModelScoresByCodesQuery $getProductModelScoresByCodesQuery,
-        private GetEnabledScoresStrategy $getEnabledScores,
+        private GetScoresByCriteriaStrategy $getScoresByCriteria,
     ) {
     }
 
@@ -29,7 +29,7 @@ class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
         $scoresByIdentifiers = $this->getProductModelScoresByCodesQuery->byProductModelCodes($productModelCodes);
 
         return array_map(
-            fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getEnabledScores)($scores)),
+            fn (Read\Scores $scores) => $this->qualityScoreCollection(($this->getScoresByCriteria)($scores)),
             $scoresByIdentifiers
         );
     }
@@ -38,7 +38,7 @@ class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
     {
         $scores = $this->getProductModelScoresByCodesQuery->byProductModelCode($productModelCode);
 
-        return $this->qualityScoreCollection(($this->getEnabledScores)($scores));
+        return $this->qualityScoreCollection(($this->getScoresByCriteria)($scores));
     }
 
     private function qualityScoreCollection(ChannelLocaleRateCollection $channelLocaleRateCollection): QualityScoreCollection
