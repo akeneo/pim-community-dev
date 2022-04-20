@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 interface GetProductFamilyAttributeCodesQueryInterface
 {
     /**
-     * @param ProductId $productId
+     * @param ProductEntityIdInterface $productId
      *
      * @return AttributeCode[]
      */
-    public function execute(ProductId $productId): array;
+    public function execute(ProductEntityIdInterface $productId): array;
 }

@@ -13,45 +13,43 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsByAttributeOptionCodeQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductIdsByAttributeOptionCodeQueryInterface
 {
-    /** @var Client */
-    private $esClient;
-
-    public function __construct(Client $esClient)
-    {
-        $this->esClient = $esClient;
+    public function __construct(
+        private Client                          $esClient,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function execute(AttributeOptionCode $attributeOptionCode, int $bulkSize): \Generator
     {
         $query = [
 
-                'bool' => [
-                    'must' => [
-                        [
-                            'term' => [
-                                'document_type' => ProductModelInterface::class
-                            ],
-                        ],
-                        [
-                            'query_string' => [
-                                'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
-                                'query' => strval($attributeOptionCode)
-                            ]
+            'bool' => [
+                'must' => [
+                    [
+                        'term' => [
+                            'document_type' => ProductModelInterface::class
                         ],
                     ],
+                    [
+                        'query_string' => [
+                            'default_field' => sprintf('values.%s-option*', $attributeOptionCode->getAttributeCode()),
+                            'query' => strval($attributeOptionCode)
+                        ]
+                    ],
                 ],
+            ],
         ];
         $searchQuery = [
             '_source' => ['id'],
@@ -73,7 +71,7 @@ final class GetProductModelIdsByAttributeOptionCodeQuery implements GetProductId
                 $searchAfter = $product['sort'];
             }
 
-            yield ProductIdCollection::fromStrings($productModelIds);
+            yield $this->idFactory->createCollection($productModelIds);
 
             $returnedProductModels += count($productModelIds);
             $result = $returnedProductModels < $totalProductModels ? $this->searchAfter($searchQuery, $searchAfter) : [];
