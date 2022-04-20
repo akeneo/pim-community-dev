@@ -166,36 +166,23 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {
     setOptions([...newOptions]);
 
-    const duplicates: {[code: string]: boolean} = {};
-    const codes: {[code: string]: boolean} = {};
-    newOptions
-      .map(option => option.code)
-      .forEach(optionCode => {
-        if (optionCode in codes) {
-          duplicates[optionCode] = true;
-        } else {
-          codes[optionCode] = true;
-        }
-      });
+    const duplicates = newOptions
+      .map(({code}) => code.toLowerCase())
+      .filter((code, i, codes) => codes.indexOf(code.toLowerCase()) !== i);
 
-    const newViolations: {[optionId: string]: string[]} = {};
-    newOptions
-      .filter(option => option.isNew)
-      .forEach(option => {
-        const violationsForOption = [];
-        if (option.code === '') {
-          violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
-        }
-        if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
-          violationsForOption.push(translate('pim_table_attribute.validations.invalid_column_code'));
-        }
-        if (option.code !== '' && duplicates[option.code]) {
-          violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
-        }
-        if (violationsForOption.length > 0) {
-          newViolations[option.id] = violationsForOption;
-        }
-      });
+    const newViolations = newOptions
+      .filter(({isNew}) => isNew)
+      .reduce((previousValue, {code, id}) => {
+        let error = null;
+        if (code === '') error = translate('pim_table_attribute.validations.column_code_must_be_filled');
+        if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code))
+          error = translate('pim_table_attribute.validations.invalid_column_code');
+        if (code !== '' && duplicates.includes(code.toLowerCase()))
+          error = translate('pim_table_attribute.validations.duplicated_select_code');
+
+        return error ? {...previousValue, [id]: [error]} : previousValue;
+      }, {});
+
     setViolations(newViolations);
   };
 
