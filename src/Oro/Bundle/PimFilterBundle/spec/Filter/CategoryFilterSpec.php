@@ -2,12 +2,12 @@
 
 namespace spec\Oro\Bundle\PimFilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use PhpSpec\ObjectBehavior;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior

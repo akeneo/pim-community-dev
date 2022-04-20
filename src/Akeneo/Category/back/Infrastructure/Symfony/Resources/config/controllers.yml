@@ -1,0 +1,68 @@
+parameters:
+    pim_enrich.controller.category_tree.class: Akeneo\Category\back\Infrastructure\Controller\UI\CategoryTreeController
+
+services:
+    pim_api.controller.category:
+        public: true
+        class: 'Akeneo\Category\back\Infrastructure\Controller\ExternalApi\CategoryController'
+        arguments:
+            - '@pim_api.repository.category'
+            - '@pim_external_api_serializer'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_catalog.saver.category'
+            - '@router'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.stream.category_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_enrich.controller.rest.category:
+        public: true
+        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\CategoryController'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_enrich.twig.category_extension'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.product_category:
+        public: true
+        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\ProductCategoryController'
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.product_model_category:
+        public: true
+        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\ProductModelCategoryController'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product_model_category'
+            - '@pim_catalog.filter.chained'
+
+
+    pim_enrich.controller.category_tree.product:
+        public: true
+        class: 'Akeneo\Category\back\Infrastructure\Controller\UI\CategoryTreeController'
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '@translator'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_enrich.doctrine.counter.category_product'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
+            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
+            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
+        calls:
+            - [ setContainer, [ '@service_container' ] ]

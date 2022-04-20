@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
@@ -10,7 +10,6 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 

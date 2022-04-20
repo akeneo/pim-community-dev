@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Test\Integration\TestCase;
-use AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\CategoryTree\CategoryTreeFixturesLoader;
 use PHPUnit\Framework\Assert;
 
 /**

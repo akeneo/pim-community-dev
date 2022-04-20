@@ -2,15 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 
 class CategoryFieldAdderSpec extends ObjectBehavior
 {

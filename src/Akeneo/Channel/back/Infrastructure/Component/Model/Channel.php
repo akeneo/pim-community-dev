@@ -2,8 +2,8 @@
 
 namespace Akeneo\Channel\Infrastructure\Component\Model;
 
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Infrastructure\Component\Event\ChannelCategoryHasBeenUpdated;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

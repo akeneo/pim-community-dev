@@ -2,11 +2,11 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
-use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior

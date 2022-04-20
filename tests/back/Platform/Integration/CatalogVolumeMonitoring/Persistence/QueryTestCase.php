@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Platform\Integration\CatalogVolumeMonitoring\Persistence;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

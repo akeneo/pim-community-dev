@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
+use Akeneo\Category\back\Domain\Model\Category;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;

@@ -2,17 +2,17 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\back\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductEntityValidator;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
-use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

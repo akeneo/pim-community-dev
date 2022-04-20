@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.controller.category_tree.class: Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController
     pim_api.controller.media_file.class: Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\MediaFileController
 
 services:
@@ -107,39 +106,6 @@ services:
             - '@validator'
             - '@akeneo.pim.enrichment.use_cases.get_product_models_with_quality_scores'
 
-    pim_api.controller.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\CategoryController'
-        arguments:
-            - '@pim_api.repository.category'
-            - '@pim_external_api_serializer'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.updater.category'
-            - '@validator'
-            - '@pim_catalog.saver.category'
-            - '@router'
-            - '@pim_api.pagination.offset_hal_paginator'
-            - '@pim_api.pagination.parameter_validator'
-            - '@pim_api.stream.category_partial_update_stream'
-            - '%pim_api.configuration%'
-
-    pim_enrich.controller.rest.category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_enrich.twig.category_extension'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.filter.chained'
-
-    pim_enrich.controller.rest.product_category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductCategoryController'
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.product_category'
-            - '@pim_catalog.filter.chained'
-
     pim_enrich.controller.rest.product:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'
@@ -179,14 +145,6 @@ services:
             - '@validator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
-
-    pim_enrich.controller.rest.product_model_category:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelCategoryController'
-        arguments:
-            - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.repository.product_model_category'
-            - '@pim_catalog.filter.chained'
 
 
     pim_enrich.controller.rest.product_model:
@@ -297,29 +255,6 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
             - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
-
-    pim_enrich.controller.category_tree.product:
-        public: true
-        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
-        arguments:
-            - '@event_dispatcher'
-            - '@pim_user.context.user'
-            - '@pim_catalog.saver.category'
-            - '@pim_catalog.remover.category'
-            - '@pim_catalog.factory.category'
-            - '@pim_catalog.repository.category'
-            - '@oro_security.security_facade'
-            - '@translator'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.updater.category'
-            - '@validator'
-            - '@pim_enrich.normalizer.violation'
-            - '@pim_enrich.doctrine.counter.category_product'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
-            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
-            - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
 
     pim_enrich.controller.file:
         public: true
