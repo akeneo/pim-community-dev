@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Component\Validator\Constraint;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 

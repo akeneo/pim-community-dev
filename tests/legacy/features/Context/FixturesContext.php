@@ -4,7 +4,7 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;

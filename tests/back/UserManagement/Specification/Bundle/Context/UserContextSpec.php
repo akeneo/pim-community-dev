@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\UserManagement\Bundle\Context;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;

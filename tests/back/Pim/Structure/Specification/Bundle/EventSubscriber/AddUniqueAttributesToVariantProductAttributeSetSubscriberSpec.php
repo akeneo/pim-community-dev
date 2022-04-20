@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
 use Akeneo\Pim\Structure\Component\FamilyVariant\AddUniqueAttributes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;

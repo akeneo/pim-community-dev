@@ -2,10 +2,11 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Channel entity
@@ -108,7 +109,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?TranslationInterface
     {
         $locale = $locale ? $locale : $this->locale;
         if (null === $locale) {
@@ -132,7 +133,7 @@ class Channel implements ChannelInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }

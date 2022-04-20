@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Translatable interface, must be implemented by translatable business objects
@@ -16,18 +16,18 @@ interface TranslatableInterface
     /**
      * Get translations
      *
-     * @return ArrayCollection
+     * @return Collection<int, TranslationInterface>
      */
-    public function getTranslations();
+    public function getTranslations(): Collection;
 
     /**
      * Get translation for current locale
      *
      * @param string|null $locale
      *
-     * @return AbstractTranslation
+     * @return TranslationInterface|null
      */
-    public function getTranslation(?string $locale = null);
+    public function getTranslation(?string $locale = null): ?TranslationInterface;
 
     /**
      * Add translation

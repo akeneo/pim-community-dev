@@ -2,7 +2,9 @@
 
 namespace Akeneo\Category\Domain\Model;
 
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
@@ -32,9 +34,9 @@ interface CategoryInterface extends
     /**
      * Get products for this category node
      *
-     * @return ProductInterface[]
+     * @return Collection<int, ProductInterface>
      */
-    public function getProducts();
+    public function getProducts(): Collection;
 
     /**
      * Predicate to know if this category has product model(s) linked
@@ -46,12 +48,14 @@ interface CategoryInterface extends
     /**
      * Get product models for this category node
      *
-     * @return Collection of ProductModelInterface
+     * @return Collection<int, ProductModelInterface>
      */
     public function getProductModels(): Collection;
 
     /**
      * Returns the channels linked to the category
+     *
+     * @return Collection<int, Channel>
      */
     public function getChannels(): Collection;
 
