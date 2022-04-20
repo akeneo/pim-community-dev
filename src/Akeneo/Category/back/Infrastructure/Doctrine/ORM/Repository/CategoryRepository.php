@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\back\Infrastructure\Doctrine\ORM\Repository;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;

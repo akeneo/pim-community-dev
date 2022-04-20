@@ -1,10 +1,10 @@
 parameters:
-    pim_enrich.controller.category_tree.class: Akeneo\Category\back\Infrastructure\Controller\UI\CategoryTreeController
+    pim_enrich.controller.category_tree.class: Akeneo\Category\Infrastructure\Controller\UI\CategoryTreeController
 
 services:
     pim_api.controller.category:
         public: true
-        class: 'Akeneo\Category\back\Infrastructure\Controller\ExternalApi\CategoryController'
+        class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
         arguments:
             - '@pim_api.repository.category'
             - '@pim_external_api_serializer'
@@ -20,7 +20,7 @@ services:
 
     pim_enrich.controller.rest.category:
         public: true
-        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\CategoryController'
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\CategoryController'
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_enrich.twig.category_extension'
@@ -29,7 +29,7 @@ services:
 
     pim_enrich.controller.rest.product_category:
         public: true
-        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\ProductCategoryController'
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\ProductCategoryController'
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_category'
@@ -37,7 +37,7 @@ services:
 
     pim_enrich.controller.rest.product_model_category:
         public: true
-        class: 'Akeneo\Category\back\Infrastructure\Controller\InternalApi\ProductModelCategoryController'
+        class: 'Akeneo\Category\Infrastructure\Controller\InternalApi\ProductModelCategoryController'
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.product_model_category'
@@ -46,7 +46,7 @@ services:
 
     pim_enrich.controller.category_tree.product:
         public: true
-        class: 'Akeneo\Category\back\Infrastructure\Controller\UI\CategoryTreeController'
+        class: 'Akeneo\Category\Infrastructure\Controller\UI\CategoryTreeController'
         arguments:
             - '@event_dispatcher'
             - '@pim_user.context.user'

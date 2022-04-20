@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
-use Akeneo\Category\back\Domain\Model\CategoryTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\back\Domain\Model;
+namespace Akeneo\Category\Domain\Model;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
