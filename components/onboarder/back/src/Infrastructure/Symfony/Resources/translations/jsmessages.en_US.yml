@@ -59,6 +59,10 @@ onboarder:
                     email: Email address
                 no_contributor: There are no contributors yet.
                 result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+                notification:
+                    email_error:
+                        title: We were not able to add this contributor.
+                        content: "The mail {{ emailAdress }} is invalid : {{ message }}"
             error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
             unknown_error: An error occured while updating the supplier.

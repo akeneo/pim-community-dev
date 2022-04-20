@@ -1,5 +1,12 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+    NotificationLevel,
+    useNotify,
+    useRoute,
+    useTranslate,
+    ValidationError,
+    filterErrors,
+} from '@akeneo-pim-community/shared';
 import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
@@ -35,8 +42,23 @@ const useSupplier = (identifier: string) => {
         });
 
         if (!response.ok) {
-            setValidationErrors(await response.json());
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.unknown_error'));
+            const errors: ValidationError[] = await response.json();
+            setValidationErrors(errors);
+            const emailErrors = filterErrors(errors, 'contributorEmails');
+            if (emailErrors.length > 0) {
+                emailErrors.forEach(error =>
+                    notify(
+                        NotificationLevel.ERROR,
+                        translate('onboarder.supplier.supplier_edit.contributors_form.notification.email_error.title'),
+                        translate(
+                            'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.content',
+                            {emailAdress: error.invalidValue, message: error.message}
+                        )
+                    )
+                );
+            } else {
+                notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.unknown_error'));
+            }
             return;
         }
 

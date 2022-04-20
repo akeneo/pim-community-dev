@@ -36,6 +36,7 @@ final class SupplierUpdate
                 $errors[] = [
                     'propertyPath' => $violation->getPropertyPath(),
                     'message' => $violation->getMessage(),
+                    'invalidValue' => $violation->getInvalidValue(),
                 ];
             }
 
