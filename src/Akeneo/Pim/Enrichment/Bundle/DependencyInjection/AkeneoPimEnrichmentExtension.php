@@ -66,7 +66,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('localization/validators.yml');
         $loader->load('managers.yml');
         $loader->load('models.yml');
-        $loader->load('product_grid_category_tree.yml');
         $loader->load('product_model_handlers.yml');
         $loader->load('product_models.yml');
         $loader->load('product_values.yml');
@@ -106,7 +105,6 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('mass_actions.yml');
         $loader->load('datagrid_actions.yml');
         $loader->load('files.yml');
-        $loader->load('category_counters.yml');
         $loader->load('structure_version.yml');
         $loader->load('command.yml');
         $loader->load('cli_command.yml');

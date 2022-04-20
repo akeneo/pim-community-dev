@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Category\back\Infrastructure\Controller\UI;
+namespace Akeneo\Category\Infrastructure\Controller\UI;
 
-use Akeneo\Category\back\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;

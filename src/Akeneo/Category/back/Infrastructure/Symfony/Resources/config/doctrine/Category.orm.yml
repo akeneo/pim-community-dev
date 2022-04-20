@@ -1,8 +1,8 @@
-Akeneo\Category\back\Domain\Model\Category:
+Akeneo\Category\Domain\Model\Category:
     type: entity
     table: pim_catalog_category
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Akeneo\Category\back\Infrastructure\Doctrine\ORM\Repository\CategoryRepository
+    repositoryClass: Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\CategoryRepository
     uniqueConstraints:
         pim_category_code_uc:
             columns:
@@ -60,7 +60,7 @@ Akeneo\Category\back\Domain\Model\Category:
                 - treeRight
     oneToMany:
         translations:
-            targetEntity: Akeneo\Category\back\Domain\Model\CategoryTranslationInterface
+            targetEntity: Akeneo\Category\Domain\Model\CategoryTranslationInterface
             mappedBy: foreignKey
             cascade:
                 - persist
@@ -70,7 +70,7 @@ Akeneo\Category\back\Domain\Model\Category:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: category
         children:
-            targetEntity: Akeneo\Category\back\Domain\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
@@ -78,7 +78,7 @@ Akeneo\Category\back\Domain\Model\Category:
                 left: ASC
     manyToOne:
         parent:
-            targetEntity: Akeneo\Category\back\Domain\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
             inversedBy: children
             joinColumns:
                 parent_id:

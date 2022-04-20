@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Category\back\Infrastructure\Controller\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
-use Akeneo\Category\back\Domain\Model\CategoryInterface;
+use Akeneo\Category\Domain\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
