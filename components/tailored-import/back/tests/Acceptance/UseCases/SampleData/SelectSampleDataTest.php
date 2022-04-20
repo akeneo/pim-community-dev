@@ -67,4 +67,21 @@ class SelectSampleDataTest extends TestCase
             null,
         ], $result);
     }
+
+    public function test_it_replace_empty_string_by_null(): void
+    {
+        $column = [
+            1 => [
+                "value1", "", "value3"
+            ]
+        ];
+
+        $result = SelectSampleData::fromExtractedColumns($column);
+
+        $this->assertEqualsCanonicalizing([
+            null,
+            "value1",
+            "value3"
+        ], $result);
+    }
 }
