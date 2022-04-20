@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 
 /**
@@ -33,7 +32,7 @@ class CriteriaByFeatureRegistry
     {
         $this->allCriteriaCodes[] = $criterionEvaluationService->getCode();
 
-        if (AllCriteriaFeature::NAME !== $feature) {
+        if ('data_quality_insights_all_criteria' !== $feature) {
             $this->partialCriteriaCodes[] = $criterionEvaluationService->getCode();
         }
     }
