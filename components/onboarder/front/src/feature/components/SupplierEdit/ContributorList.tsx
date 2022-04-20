@@ -26,7 +26,7 @@ const ContributorList = ({contributors, setContributors}: Props) => {
             .filter(contributorEmail => isValidEmail(contributorEmail))
             .filter(contributorEmail => contributorEmail.length <= 255);
 
-        setContributors([...contributors, ...validContributorEmails]);
+        setContributors(Array.from(new Set([...contributors, ...validContributorEmails])));
         setNewContributors([]);
     };
 

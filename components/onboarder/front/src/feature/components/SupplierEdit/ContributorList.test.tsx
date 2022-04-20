@@ -25,7 +25,7 @@ test('it renders a searchable list of contributors', () => {
     contributors.map(contributorEmail => expect(screen.getByText(contributorEmail)).toBeInTheDocument());
 });
 
-test('it allows new contributors to be added', async () => {
+test('it allows new contributors to be added without duplicates', async () => {
     let defaultContributors: ContributorEmail[] = [];
     const setContributors = (newContributors: ContributorEmail[]) => {
         defaultContributors = newContributors;
@@ -33,10 +33,11 @@ test('it allows new contributors to be added', async () => {
     renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
 
     userEvent.type(screen.getByTestId('tag-input'), contributors.join('{space}').concat('{space}'));
+    userEvent.type(screen.getByTestId('tag-input'), 'contributor1@example.com{space}');
     userEvent.click(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.add_button'));
 
     renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
-    contributors.map(contributorEmail => expect(screen.getByText(contributorEmail)).toBeInTheDocument());
+    contributors.map(contributorEmail => expect(screen.queryAllByText(contributorEmail)).toHaveLength(1));
 });
 
 test('it excludes invalid emails', async () => {
