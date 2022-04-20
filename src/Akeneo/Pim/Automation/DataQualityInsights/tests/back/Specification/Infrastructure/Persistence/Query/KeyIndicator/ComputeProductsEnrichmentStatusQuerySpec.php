@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -35,7 +35,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_a_list_of_products($getEvaluationResultsByProductsAndCriterionQuery)
     {
-        $productIds = ProductIdCollection::fromInts([42, 56]);
+        $productIds = ProductUuidCollection::fromInts([42, 56]);
 
         $requiredAttributesResultDataProduct42 = [
             'total_number_of_attributes' => [
@@ -179,7 +179,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_does_not_compute_products_without_evaluations($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(33);
+        $productIds = ProductUuidCollection::fromInt(33);
 
         $getEvaluationResultsByProductsAndCriterionQuery->execute(
             $productIds,
@@ -206,7 +206,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_products_with_only_required_attributes($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(42);
+        $productIds = ProductUuidCollection::fromInt(42);
 
         $requiredAttributesResultDataProduct = [
             'total_number_of_attributes' => [
@@ -266,7 +266,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_products_without_required_attributes($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(42);
+        $productIds = ProductUuidCollection::fromInt(42);
 
         $nonRequiredAttributesResultDataProduct = [
             'total_number_of_attributes' => [

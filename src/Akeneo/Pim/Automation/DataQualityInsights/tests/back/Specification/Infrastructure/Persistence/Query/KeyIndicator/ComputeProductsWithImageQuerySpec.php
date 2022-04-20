@@ -7,8 +7,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,7 +24,7 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
 
     public function it_computes_products_with_image_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
-        $productIds = ProductIdCollection::fromInts([13,42,999]);
+        $productIds = ProductUuidCollection::fromInts([13,42,999]);
         $criterionCode = new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE);
 
         $getEvaluationRatesByProductAndCriterionQuery->execute($productIds, $criterionCode)->willReturn([
