@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\back\Infrastructure\Symfony;
 
-use Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
+
+use Akeneo\Category\back\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterCategoryItemCounterPass;
+use Akeneo\Category\back\Infrastructure\Symfony\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author    Weasels
- * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AkeneoCategoryBundle extends Bundle
@@ -27,13 +28,13 @@ class AkeneoCategoryBundle extends Bundle
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
         ;
 
-        $categoryMappings = [
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Category\back\Domain\Model'
         ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
-                $categoryMappings,
+                $mappings,
                 ['doctrine.orm.entity_manager'],
                 false
             )
