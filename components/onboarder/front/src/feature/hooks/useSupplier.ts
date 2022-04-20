@@ -40,6 +40,7 @@ const useSupplier = (identifier: string) => {
             return;
         }
 
+        setValidationErrors([]);
         notify(NotificationLevel.SUCCESS, translate('onboarder.supplier.supplier_edit.success_message'));
         await loadSupplier();
     }, [saveSupplierRoute, supplier, notify, translate, loadSupplier]);
