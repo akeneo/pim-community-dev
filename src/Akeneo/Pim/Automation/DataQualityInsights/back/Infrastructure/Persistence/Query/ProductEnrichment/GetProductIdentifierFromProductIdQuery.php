@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdentifier;
 use Doctrine\DBAL\Connection;
 
@@ -23,7 +23,7 @@ final class GetProductIdentifierFromProductIdQuery implements GetProductIdentifi
         $this->db = $db;
     }
 
-    public function execute(ProductId $productId): ProductIdentifier
+    public function execute(ProductUuid $productId): ProductIdentifier
     {
         $sql = <<<SQL
 SELECT identifier FROM pim_catalog_product WHERE id=:product_id;

@@ -11,8 +11,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -33,9 +34,9 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         $computeProductsKeyIndicators,
         $idFactory
     ) {
-        $productId42 = new ProductId(42);
-        $productId123 = new ProductId(123);
-        $productId456 = new ProductId(456);
+        $productId42 = new ProductModelId(42);
+        $productId123 = new ProductModelId(123);
+        $productId456 = new ProductModelId(456);
         $productIds = [
             'product_model_1' => $productId42,
             'product_model_2' => $productId123,
@@ -44,7 +45,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         $productModelCodes = [
             'product_model_1', 'product_model_2', 'product_model_without_rates'
         ];
-        $collection = ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]);
+        $collection = ProductUuidCollection::fromProductUuids([$productId42, $productId123, $productId456]);
 
         $getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes)->willReturn($productIds);
         $idFactory->createCollection(['42', '123', '456'])->willReturn($collection);
@@ -102,7 +103,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
             ],
         ];
 
-        $computeProductsKeyIndicators->compute(ProductIdCollection::fromProductIds($productIds))->willReturn($productModelsKeyIndicators);
+        $computeProductsKeyIndicators->compute(ProductUuidCollection::fromProductUuids($productIds))->willReturn($productModelsKeyIndicators);
 
         $this->fromProductModelCodes($productModelCodes)->shouldReturn([
             'product_model_1' => [

@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -28,17 +28,16 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
         $getLocalesByChannelQuery,
         $goodEnrichment,
         $hasImage
-    )
-    {
+    ) {
         $getLocalesByChannelQuery->getArray()->willReturn([
             'ecommerce' => ['en_US', 'fr_FR'],
             'mobile' => ['en_US'],
         ]);
 
-        $productIds = ProductIdCollection::fromInts([13, 42]);
+        $productIds = ProductUuidCollection::fromStrings(['0932dfd0-5f9a-49fb-ad31-a990339406a2', '3370280b-6c76-4720-aac1-ae3f9613d555']);
 
         $expectedKeyIndicators = [
-            13 => [
+            '0932dfd0-5f9a-49fb-ad31-a990339406a2' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -56,7 +55,7 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            42 => [
+            '3370280b-6c76-4720-aac1-ae3f9613d555' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => null,
@@ -80,13 +79,13 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
         $hasImage->getName()->willReturn('has_image');
 
         $goodEnrichment->compute($productIds)->willReturn([
-            13 => [
+            '0932dfd0-5f9a-49fb-ad31-a990339406a2' => [
                 'ecommerce' => [
                     'en_US' => true,
                     'fr_FR' => false,
                 ],
             ],
-            42 => [
+            '3370280b-6c76-4720-aac1-ae3f9613d555' => [
                 'ecommerce' => [
                     'en_US' => null,
                     'fr_FR' => null,
@@ -98,7 +97,7 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
         ]);
 
         $hasImage->compute($productIds)->willReturn([
-            13 => [
+            '0932dfd0-5f9a-49fb-ad31-a990339406a2' => [
                 'ecommerce' => [
                     'en_US' => true,
                 ],

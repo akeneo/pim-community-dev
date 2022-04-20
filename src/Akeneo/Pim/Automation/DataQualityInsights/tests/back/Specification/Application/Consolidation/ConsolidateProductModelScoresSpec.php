@@ -16,8 +16,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -48,8 +49,8 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
 
-        $productModelId1 = new ProductId(42);
-        $productModelId2 = new ProductId(56);
+        $productModelId1 = new ProductModelId(42);
+        $productModelId2 = new ProductModelId(56);
 
         $clock->getCurrentTime()->willReturn(new \DateTimeImmutable());
 
@@ -69,10 +70,10 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
                 && $productModelScores[1] instanceof Write\ProductScores && $productModelId2 === $productModelScores[1]->getProductId() && $scores2 === $productModelScores[1]->getScores();
         }))->shouldBeCalled();
 
-        $this->consolidate(ProductIdCollection::fromProductIds([$productModelId1, $productModelId2]));
+        $this->consolidate(ProductModelIdCollection::fromStrings([$productModelId1, $productModelId2]));
     }
 
-    private function givenACriterionEvaluationCollection(ProductId $productId): Read\CriterionEvaluationCollection
+    private function givenACriterionEvaluationCollection(ProductEntityIdInterface $entityId): Read\CriterionEvaluationCollection
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -86,14 +87,14 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
         return (new Read\CriterionEvaluationCollection())
             ->add(new Read\CriterionEvaluation(
                 $criterionA,
-                $productId,
+                $entityId,
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 new Read\CriterionEvaluationResult($criterionResultA, new CriterionEvaluationResultStatusCollection(), [])
             ))
             ->add(new Read\CriterionEvaluation(
                 $criterionB,
-                $productId,
+                $entityId,
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::done(),
                 new Read\CriterionEvaluationResult($criterionResultB, new CriterionEvaluationResultStatusCollection(), [])
