@@ -92,6 +92,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_evaluable_product_values'
             - '@akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria
@@ -103,6 +104,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_evaluable_product_model_values'
             - '@akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaApplicabilityRegistry:
         arguments:
@@ -238,8 +240,10 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'

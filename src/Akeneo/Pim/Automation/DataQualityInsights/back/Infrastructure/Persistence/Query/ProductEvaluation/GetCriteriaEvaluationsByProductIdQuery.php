@@ -9,10 +9,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -29,10 +29,10 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
     private string $tableName;
 
     public function __construct(
-        Connection $db,
-        Clock $clock,
+        Connection                            $db,
+        Clock                                 $clock,
         TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds,
-        string $tableName
+        string                                $tableName
     ) {
         $this->db = $db;
         $this->clock = $clock;
@@ -40,7 +40,7 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
         $this->tableName = $tableName;
     }
 
-    public function execute(ProductId $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
         $criterionEvaluationTable = $this->tableName;
 
@@ -57,7 +57,7 @@ SQL;
 
         $rows = $this->db->executeQuery(
             $sql,
-            ['product_id' => $productId->toInt()],
+            ['product_id' => (int)(string)$productId],
             ['product_id' => \PDO::PARAM_INT]
         )->fetchAllAssociative();
 
@@ -66,7 +66,7 @@ SQL;
             $criterionCode = new CriterionCode($rawCriterionEvaluation['criterion_code']);
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
                 $criterionCode,
-                ProductId::fromString($rawCriterionEvaluation['product_id']),
+                $productId,
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($criterionCode, $rawCriterionEvaluation['result']),

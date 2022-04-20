@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluableAttributesByProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\EditableAttributeFilter;
 use Doctrine\DBAL\Connection;
 
@@ -26,7 +26,7 @@ class GetEvaluableAttributesByProductQuery implements GetEvaluableAttributesByPr
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductEntityIdInterface $productId): array
     {
         $query = <<<SQL
 SELECT
@@ -48,7 +48,7 @@ SQL;
         $statement = $this->dbConnection->executeQuery(
             $query,
             [
-                'product_id' => $productId->toInt(),
+                'product_id' => (int)(string)$productId,
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
             ],
             [
