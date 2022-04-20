@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\Completeness;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeGroupCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\AttributeGroupActivationRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\TestCase;
@@ -121,7 +123,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
         $this->saveChannels($channels);
     }
 
-    protected function givenAProductModel(string $productModelCode, string $familyVariant): ProductId
+    protected function givenAProductModel(string $productModelCode, string $familyVariant): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($productModelCode)
@@ -129,11 +131,10 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
             ->build();
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-
-        return new ProductId((int) $productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    protected function givenASubProductModel(string $productModelCode, string $familyVariant, string $parentCode): ProductId
+    protected function givenASubProductModel(string $productModelCode, string $familyVariant, string $parentCode): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($productModelCode)
@@ -143,7 +144,7 @@ abstract class CompletenessTestCase extends DataQualityInsightsTestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId((int) $productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
     protected function givenADeactivatedAttributeGroup(string $code): void

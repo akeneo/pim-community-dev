@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +24,7 @@ class GetProductModelScores
      * Eventually returns all quality scores by channel and locale.
      * @return array{'evaluations_available':false} | array{'evaluations_available': true, 'scores': array }
      */
-    public function get(ProductId $productId): array
+    public function get(ProductEntityIdInterface $productId): array
     {
         $productScores = $this->getProductModelScoresQuery->byProductModelId($productId);
 

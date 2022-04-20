@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infra
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductModelsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -40,13 +40,19 @@ final class GetEvaluationResultsByProductModelsAndCriterionQueryIntegration exte
         $productModelWithPendingEvaluation = $this->givenAProductModelWithPendingEvaluation();
         $productModelWithoutAnyEvaluation = $this->givenAProductModelWithoutAnyEvaluation();
 
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$productModelWithEvaluation,
+            (string)$productModelWithPendingEvaluation,
+            (string)$productModelWithoutAnyEvaluation
+        ]);
+
         $results = $this->get(GetEvaluationResultsByProductModelsAndCriterionQuery::class)->execute(
-            ProductIdCollection::fromInts([$productModelWithEvaluation, $productModelWithPendingEvaluation, $productModelWithoutAnyEvaluation]),
+            $productModelIdCollection,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE)
         );
 
         $this->assertArrayHasKey($productModelWithEvaluation, $results, 'There should be an element for the evaluated product model in the results');
-        $this->assertInstanceOf(CriterionEvaluationResult::class, $results[$productModelWithEvaluation], 'The result for the evaluated product model should be an instance of CriterionEvaluationResult');
+        $this->assertInstanceOf(CriterionEvaluationResult::class, $results[(string)$productModelWithEvaluation], 'The result for the evaluated product model should be an instance of CriterionEvaluationResult');
 
         $this->assertArrayHasKey($productModelWithPendingEvaluation, $results, 'There should be an element for the product model with pending evaluation in the results');
         $this->assertNull($results[$productModelWithPendingEvaluation], 'The result for the product model with pending evaluation should be null');
@@ -65,7 +71,8 @@ final class GetEvaluationResultsByProductModelsAndCriterionQueryIntegration exte
             ]
         ])->getId();
 
-        ($this->get(EvaluateProductModels::class))(ProductIdCollection::fromInt($productModelId));
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productModelId]);
+        ($this->get(EvaluateProductModels::class))($productModelIdCollection);
 
         return $productModelId;
     }
