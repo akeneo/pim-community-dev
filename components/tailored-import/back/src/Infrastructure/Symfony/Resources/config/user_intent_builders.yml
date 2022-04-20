@@ -1,4 +1,9 @@
 services:
+  akeneo.tailored_import.user_intent_factory.boolean:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.measurement:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory
     tags:
