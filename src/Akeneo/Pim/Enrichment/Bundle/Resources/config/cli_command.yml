@@ -70,7 +70,6 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
-            - '@database_connection'
             - '@monolog.logger'
             - '@database_connection'
         tags:
