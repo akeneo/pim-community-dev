@@ -1,6 +1,6 @@
 import {Step} from './WizardModal';
 
-const getStepConfirmationLabel = (step: Step, isFirst: boolean, isLast: boolean): string => {
+const getStepConfirmationLabel = (step: Step, _isFirst: boolean, isLast: boolean): string => {
     if (isLast) {
         return 'akeneo_connectivity.connection.connect.apps.wizard.action.confirm';
     }

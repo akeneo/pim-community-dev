@@ -123,10 +123,11 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'connection_code']);
     }
 
-    public function it_denies_access_to_users_who_cannot_manage_apps(
+    public function it_denies_access_to_users_who_cannot_manage_or_open_apps(
         Request $request,
         SecurityFacade $security,
     ): void {
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
 
         $this
