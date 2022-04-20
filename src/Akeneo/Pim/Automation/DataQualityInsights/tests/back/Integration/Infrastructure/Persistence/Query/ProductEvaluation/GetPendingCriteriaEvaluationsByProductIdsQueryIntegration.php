@@ -11,8 +11,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -83,7 +83,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
             ->execute($productIdCollection));
     }
 
-    private function givenAProductWithTwoPendingAndOneDoneEvaluations(string $productCode): ProductId
+    private function givenAProductWithTwoPendingAndOneDoneEvaluations(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
         $productId = $this->get(ProductIdFactory::class)->create((string)$product->getId());
@@ -125,7 +125,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
             ));
     }
 
-    private function givenAProductWithOnePendingEvaluation(string $productCode): ProductId
+    private function givenAProductWithOnePendingEvaluation(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
         $productId = $this->get(ProductIdFactory::class)->create((string)$product->getId());
@@ -159,7 +159,7 @@ final class GetPendingCriteriaEvaluationsByProductIdsQueryIntegration extends Da
         return $productModelId;
     }
 
-    private function givenAProductWithOnlyDoneEvaluations(string $productCode): ProductId
+    private function givenAProductWithOnlyDoneEvaluations(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
         $productId = $this->get(ProductIdFactory::class)->create((string)$product->getId());

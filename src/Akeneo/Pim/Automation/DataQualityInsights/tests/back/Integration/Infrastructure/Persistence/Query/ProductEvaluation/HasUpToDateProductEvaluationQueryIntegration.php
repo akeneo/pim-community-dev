@@ -6,8 +6,8 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -82,11 +82,11 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
 
-        $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductIdCollection::fromProductIds(
+        $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductUuidCollection::fromProductUuids(
             [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
         ));
         $this->assertEqualsCanonicalizing(
-            ProductIdCollection::fromProductIds([$expectedProductIdA, $expectedProductIdB]),
+            ProductUuidCollection::fromProductUuids([$expectedProductIdA, $expectedProductIdB]),
             $productIdsWithUpToDateEvaluation
         );
     }
@@ -100,7 +100,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->assertNull($this->query->forProductIdCollection($productIdCollection));
     }
 
-    private function createProduct(): ProductId
+    private function createProduct(): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier(strval(Uuid::uuid4()))
@@ -111,7 +111,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
-    private function createProductVariant(string $parentCode): ProductId
+    private function createProductVariant(string $parentCode): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier(strval(Uuid::uuid4()))
@@ -124,7 +124,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
-    private function givenAProductWithAnUpToDateEvaluation(\DateTimeImmutable $today): ProductId
+    private function givenAProductWithAnUpToDateEvaluation(\DateTimeImmutable $today): ProductUuid
     {
         $productId = $this->createProduct();
         $this->updateProductAt($productId, $today);
@@ -133,7 +133,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $productId;
     }
 
-    private function givenAnUpdatedProductWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductId
+    private function givenAnUpdatedProductWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductUuid
     {
         $productId = $this->createProduct();
         $this->updateProductAt($productId, $updatedAt);
@@ -142,7 +142,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $productId;
     }
 
-    private function givenAProductVariantWithAnUpToDateEvaluation(\DateTimeImmutable $parentUpdatedAt): ProductId
+    private function givenAProductVariantWithAnUpToDateEvaluation(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
         $productId = $this->createProductVariant('a_product_model');
@@ -152,7 +152,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $productId;
     }
 
-    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $parentUpdatedAt): ProductId
+    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
         $productId = $this->createProductVariant('a_product_model');
@@ -162,7 +162,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $productId;
     }
 
-    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent(\DateTimeImmutable $grandParentUpdatedAt): ProductId
+    private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent(\DateTimeImmutable $grandParentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model_with_two_variant_levels', 'familyVariantA1', $grandParentUpdatedAt);
         $this->givenASubProductModel('a_recently_updated_sub_product_model', 'familyVariantA1', 'a_product_model_with_two_variant_levels', $grandParentUpdatedAt->modify('-2 HOUR'));
@@ -198,7 +198,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->updateProductModelAt($productModelCode, $updatedAt);
     }
 
-    private function updateProductAt(ProductId $productId, \DateTimeImmutable $updatedAt): void
+    private function updateProductAt(ProductUuid $productId, \DateTimeImmutable $updatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_catalog_product SET updated = :updated WHERE id = :product_id;
@@ -222,7 +222,7 @@ SQL;
         ]);
     }
 
-    private function updateProductEvaluationsAt(ProductId $productId, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductEvaluationsAt(ProductUuid $productId, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p

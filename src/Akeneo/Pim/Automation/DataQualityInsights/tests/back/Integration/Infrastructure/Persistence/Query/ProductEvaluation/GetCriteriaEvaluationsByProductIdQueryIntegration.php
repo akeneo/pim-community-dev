@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -30,8 +30,8 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
 
     public function test_it_gives_the_criteria_evaluations_of_a_product()
     {
-        $productId = new ProductId($this->createProductWithoutEvaluations('ziggy')->getId());
-        $anotherProductId = new ProductId($this->createProductWithoutEvaluations('yggiz')->getId());
+        $productId = new ProductUuid($this->createProductWithoutEvaluations('ziggy')->getUuid());
+        $anotherProductId = new ProductUuid($this->createProductWithoutEvaluations('yggiz')->getUuid());
 
         $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
 
@@ -57,8 +57,8 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
     {
         $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
 
-        $productModelId = new ProductId($this->createProductModelWithoutEvaluations('ziggy', 'a_family_variant')->getId());
-        $anotherProductModelId = new ProductId($this->createProductModelWithoutEvaluations('yggiz', 'a_family_variant')->getId());
+        $productModelId = new ProductUuid($this->createProductModelWithoutEvaluations('ziggy', 'a_family_variant')->getUuid());
+        $anotherProductModelId = new ProductUuid($this->createProductModelWithoutEvaluations('yggiz', 'a_family_variant')->getUuid());
 
         $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_model_criterion_evaluation');
 
@@ -80,7 +80,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
         $this->assertNotNull($spellingEvaluation, 'There should be a spelling evaluation');
     }
 
-    private function givenACompletenessEvaluationsDone(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenACompletenessEvaluationsDone(ProductUuid $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');
@@ -110,7 +110,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
         return $completenessEvaluationDone;
     }
 
-    private function givenAPendingSpellingEvaluation(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
+    private function givenAPendingSpellingEvaluation(ProductUuid $productId, CriterionEvaluationRepositoryInterface $repository): Write\CriterionEvaluation
     {
         $spellingEvaluationPending = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
@@ -123,7 +123,7 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
         return $spellingEvaluationPending;
     }
 
-    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductId $productId, CriterionEvaluationRepositoryInterface $repository): void
+    private function givenACompletenessEvaluationDoneForAnotherProduct(ProductUuid $productId, CriterionEvaluationRepositoryInterface $repository): void
     {
         $channelEcommerce = new ChannelCode('ecommerce');
         $localeEn = new LocaleCode('en_US');

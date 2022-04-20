@@ -10,7 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 
@@ -34,7 +34,7 @@ final class CalculateProductCompleteness implements CalculateProductCompleteness
 
     public function calculate(ProductEntityIdInterface $productId): CompletenessCalculationResult
     {
-        if (!$productId instanceof ProductId) {
+        if (!$productId instanceof ProductUuid) {
             throw new \InvalidArgumentException(sprintf('Invalid product id: %s', (string) $productId));
         }
 

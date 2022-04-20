@@ -10,13 +10,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 {
@@ -36,7 +37,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [(ProductIdCollection::fromInts([123, 456, 42]))]);
+            ->during('__invoke', [(ProductUuidCollection::fromInts([123, 456, 42]))]);
     }
 
     public function it_updates_products_index(
@@ -86,7 +87,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         )
             ->shouldBeCalled();
 
-        $this->__invoke(ProductIdCollection::fromInts([123, 456, 42]));
+        $this->__invoke(ProductUuidCollection::fromInts([123, 456, 42]));
     }
 
     public function it_updates_product_models_index(
@@ -136,7 +137,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         )
             ->shouldBeCalled();
 
-        $this->__invoke(ProductIdCollection::fromInts([123, 456, 42]));
+        $this->__invoke(ProductUuidCollection::fromInts([123, 456, 42]));
     }
 
     private function getData(): array
@@ -144,15 +145,19 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
 
-        $productIdCollection = ProductIdCollection::fromProductIds([new ProductId(123), new ProductId(456), new ProductId(42)]);
+        $productUuidCollection = ProductUuidCollection::fromProductUuids([
+            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            new ProductUuid(Uuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2')),
+            new ProductUuid(Uuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee')),
+        ]);
         $scores = [
-            123 => (new ChannelLocaleRateCollection)
+            'df470d52-7723-4890-85a0-e79be625e2ed' => (new ChannelLocaleRateCollection)
                 ->addRate($channel, $locale, new Rate(10)),
-            456 => (new ChannelLocaleRateCollection)
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => (new ChannelLocaleRateCollection)
                 ->addRate($channel, $locale, new Rate(96)),
         ];
         $keyIndicators = [
-            123 => [
+            'df470d52-7723-4890-85a0-e79be625e2ed' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -160,7 +165,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            456 => [
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -168,7 +173,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            42 => [
+            '6d125b99-d971-41d9-a264-b020cd486aee' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => null,
@@ -179,7 +184,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         ];
 
          return [
-             'productIdCollection' => $productIdCollection,
+             'productIdCollection' => $productUuidCollection,
              'scores' => $scores,
              'keyIndicators' => $keyIndicators
          ];

@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -86,7 +86,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
     )
     {
         $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
-        $productIdCollection = ProductIdCollection::fromStrings(['12345']);
+        $productIdCollection = ProductUuidCollection::fromStrings(['12345']);
 
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
@@ -112,7 +112,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         Result $result
     ) {
         $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
-        $productIdCollection = ProductIdCollection::fromStrings(['12345']);
+        $productIdCollection = ProductUuidCollection::fromStrings(['12345']);
 
         $product->getId()->willReturn(12345);
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);

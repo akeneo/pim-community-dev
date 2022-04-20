@@ -8,8 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsToEvaluateQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -35,7 +35,7 @@ class GetProductIdsToEvaluateQueryIntegration extends DataQualityInsightsTestCas
         $expectedProductIds = $this->givenThreeProductsToEvaluate();
 
         $productIds = iterator_to_array($this->productQuery->execute(4, 2));
-        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArrayString(), $productIds);
+        $productIds = array_map(fn (ProductUuidCollection $collection) => $collection->toArrayString(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);
@@ -44,35 +44,35 @@ class GetProductIdsToEvaluateQueryIntegration extends DataQualityInsightsTestCas
 
     private function givenThreeProductsToEvaluate(): array
     {
-        $productId1= $this->createProductWithoutEvaluations('product_1')->getId();
-        $productId2 = $this->createProductWithoutEvaluations('product_2')->getId();
-        $productId3 = $this->createProductWithoutEvaluations('product_3')->getId();
+        $productUuid1= $this->createProductWithoutEvaluations('product_1')->getUuid();
+        $productUuid2 = $this->createProductWithoutEvaluations('product_2')->getUuid();
+        $productUuid3 = $this->createProductWithoutEvaluations('product_3')->getUuid();
 
         $evaluations = (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductId($productId1),
+                new ProductUuid($productUuid1),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('spelling'),
-                new ProductId($productId1),
+                new ProductUuid($productUuid1),
                 CriterionEvaluationStatus::done()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($productId2),
+                new ProductUuid($productUuid2),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($productId3),
+                new ProductUuid($productUuid3),
                 CriterionEvaluationStatus::pending()
             ));
 
         $this->productCriterionEvaluationRepository->create($evaluations);
 
-        return [$productId1, $productId2, $productId3];
+        return [$productUuid1, $productUuid2, $productUuid3];
     }
 
     private function givenAProductWithEvaluationDone(): void
@@ -81,7 +81,7 @@ class GetProductIdsToEvaluateQueryIntegration extends DataQualityInsightsTestCas
 
         $evaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductId($productId),
+            new ProductUuid($productId),
             CriterionEvaluationStatus::pending()
         );
 

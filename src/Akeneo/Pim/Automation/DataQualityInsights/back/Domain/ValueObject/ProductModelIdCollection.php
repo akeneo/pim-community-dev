@@ -14,16 +14,16 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
     /**
      * @var array<ProductEntityIdInterface>
      */
-    private array $productIds;
+    private array $productModelIds;
 
-    private function __construct(array $productIds)
+    private function __construct(array $productModelIds)
     {
-        $this->productIds = array_values(array_unique($productIds));
+        $this->productModelIds = array_values(array_unique($productModelIds));
     }
 
-    public static function fromStrings(array $productIds): self
+    public static function fromStrings(array $productEntityIds): self
     {
-        return new self(array_map(fn ($productId) => ProductModelId::fromString((string) $productId), $productIds));
+        return new self(array_map(fn ($productModelId) => ProductModelId::fromString((string) $productModelId), $productEntityIds));
     }
 
     /**
@@ -31,26 +31,26 @@ final class ProductModelIdCollection implements ProductEntityIdCollection
      */
     public function toArray(): array
     {
-        return $this->productIds;
+        return $this->productModelIds;
     }
 
     public function getIterator(): \ArrayIterator
     {
-        return new \ArrayIterator($this->productIds);
+        return new \ArrayIterator($this->productModelIds);
     }
 
     public function count(): int
     {
-        return count($this->productIds);
+        return count($this->productModelIds);
     }
 
     public function isEmpty(): bool
     {
-        return empty($this->productIds);
+        return empty($this->productModelIds);
     }
 
     public function toArrayString(): array
     {
-        return array_map(fn (ProductModelId $productId) => (string)$productId, $this->productIds);
+        return array_map(fn (ProductModelId $productId) => (string)$productId, $this->productModelIds);
     }
 }
