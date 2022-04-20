@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\FilterImageAndImageAssetAttributesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesProductModelMasksQuery;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
@@ -35,6 +36,7 @@ class GetAttributeTypesProductModelMasksWithAssetsQuerySpec extends ObjectBehavi
         $filterImageAndImageAssetAttributes
     ): void
     {
+        $productModelId = new ProductModelId(1);
         $familyCodes = [0 => 'headphones'];
 
         $mask =
@@ -50,7 +52,7 @@ class GetAttributeTypesProductModelMasksWithAssetsQuerySpec extends ObjectBehavi
                 ),
             ]);
 
-        $getAttributeTypesProductModelMasksQuery->execute(new ProductId(1))->willReturn($mask);
+        $getAttributeTypesProductModelMasksQuery->execute($productModelId)->willReturn($mask);
 
         $filteredResult[$familyCodes[0]] = new RequiredAttributesMask(
             $familyCodes[0],
@@ -67,7 +69,7 @@ class GetAttributeTypesProductModelMasksWithAssetsQuerySpec extends ObjectBehavi
         );
         $filterImageAndImageAssetAttributes->filter($familyCodes, [$mask])->willReturn($filteredResult);
 
-        $this->execute(new ProductId(1))->shouldBeLike($filteredResult[$familyCodes[0]]);
+        $this->execute($productModelId)->shouldBeLike($filteredResult[$familyCodes[0]]);
     }
 
     public function it_will_return_null_if_filter_image_is_empty(
@@ -75,17 +77,18 @@ class GetAttributeTypesProductModelMasksWithAssetsQuerySpec extends ObjectBehavi
         $filterImageAndImageAssetAttributes
     ): void
     {
+        $productModelId = new ProductModelId(1);
         $familyCodes = [0 => 'headphones'];
         $mask =
             new RequiredAttributesMask(
                 $familyCodes[0],
                 [new RequiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US', [])]
             );
-        $getAttributeTypesProductModelMasksQuery->execute(new ProductId(1))->willReturn($mask);
+        $getAttributeTypesProductModelMasksQuery->execute($productModelId)->willReturn($mask);
 
         $filterImageAndImageAssetAttributes->filter($familyCodes, [$mask])->willReturn([]);
 
-        $this->execute(new ProductId(1))->shouldBeLike(null);
+        $this->execute($productModelId)->shouldBeLike(null);
     }
 
     public function it_returns_null_if_no_mask(
@@ -93,10 +96,11 @@ class GetAttributeTypesProductModelMasksWithAssetsQuerySpec extends ObjectBehavi
         $filterImageAndImageAssetAttributes
     ): void
     {
-        $getAttributeTypesProductModelMasksQuery->execute(new ProductId(1))->willReturn(null);
+        $productModelId = new ProductModelId(1);
+        $getAttributeTypesProductModelMasksQuery->execute($productModelId)->willReturn(null);
 
         $filterImageAndImageAssetAttributes->filter([], [])->shouldNotBeCalled();
 
-        $this->execute(new ProductId(1))->shouldBeLike(null);
+        $this->execute($productModelId)->shouldBeLike(null);
     }
 }

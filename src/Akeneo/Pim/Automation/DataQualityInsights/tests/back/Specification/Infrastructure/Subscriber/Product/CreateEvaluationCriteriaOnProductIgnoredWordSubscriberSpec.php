@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 use Psr\Log\LoggerInterface;
@@ -28,12 +28,14 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
     public function let(
         FeatureFlag $dataQualityInsightsFeature,
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
-            $logger
+            $logger,
+            $idFactory
         );
     }
 
@@ -50,12 +52,16 @@ class CreateEvaluationCriteriaOnProductIgnoredWordSubscriberSpec extends ObjectB
     public function it_schedule_evaluation_when_a_word_is_ignored(
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
-        ProductInterface $product
+        $idFactory
     ) {
-        $product->getId()->willReturn(12345);
-        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
-        $createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt(12345))->shouldBeCalled();
+        $product = new ProductId(12345);
+        $productIdCollection = ProductIdCollection::fromInt(12345);
 
-        $this->onIgnoredWord(new ProductWordIgnoredEvent(new ProductId(12345)));
+        $dataQualityInsightsFeature->isEnabled()->willReturn(true);
+        $createProductsCriteriaEvaluations->createAll($productIdCollection)->shouldBeCalled();
+
+        $idFactory->createCollection(['12345'])->willReturn($productIdCollection);
+
+        $this->onIgnoredWord(new ProductWordIgnoredEvent($product));
     }
 }

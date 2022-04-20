@@ -15,11 +15,12 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsWithUpdatedFamilyAttributesListQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -62,7 +63,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
 
         $productModelIds = $this->get(GetProductModelIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
         $productModelIds = iterator_to_array($productModelIds);
-        $productModelIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productModelIds);
+        $productModelIds = array_map(fn(ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(2, $productModelIds);
         $this->assertCount(2, $productModelIds[0]);
@@ -100,7 +101,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
         ]);
     }
 
-    private function givenProductModelWithoutAttributeSpellcheckEvaluatedSince(string $productModelCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductId
+    private function givenProductModelWithoutAttributeSpellcheckEvaluatedSince(string $productModelCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductModelId
     {
         $productModelId = $this->createProductModel($productModelCode, $familyVariantCode);
         $this->createProductModelAttributeSpellingEvaluation($productModelId, $evaluatedSince->modify('-1 second'));
@@ -108,7 +109,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
         return $productModelId;
     }
 
-    private function givenSubProductModelWithoutAttributeSpellcheckEvaluatedSince(string $parentCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductId
+    private function givenSubProductModelWithoutAttributeSpellcheckEvaluatedSince(string $parentCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductModelId
     {
         $subProductModelId = $this->createSubProductModel($parentCode, $familyVariantCode);
         $this->createProductModelAttributeSpellingEvaluation($subProductModelId, $evaluatedSince->modify('-1 second'));
@@ -116,7 +117,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
         return $subProductModelId;
     }
 
-    private function givenProductWithoutAttributeSpellcheckEvaluatedSince(string $productModelCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductId
+    private function givenProductWithoutAttributeSpellcheckEvaluatedSince(string $productModelCode, string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductModelId
     {
         $productModelId = $this->createProductModel($productModelCode, $familyVariantCode);
         $this->createProductModelAttributeSpellingEvaluation($productModelId, $evaluatedSince->modify('-1 second'));
@@ -124,15 +125,15 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
         return $productModelId;
     }
 
-    private function givenProductModelWithAttributeSpellcheckEvaluatedSince(string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductId
+    private function givenProductModelWithAttributeSpellcheckEvaluatedSince(string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductModelId
     {
-         $productModelId = $this->createProductModel(strval(Uuid::uuid4()), $familyVariantCode);
-         $this->createProductModelAttributeSpellingEvaluation($productModelId, $evaluatedSince->modify('+1 second'));
+        $productModelId = $this->createProductModel(strval(Uuid::uuid4()), $familyVariantCode);
+        $this->createProductModelAttributeSpellingEvaluation($productModelId, $evaluatedSince->modify('+1 second'));
 
-         return $productModelId;
+        return $productModelId;
     }
 
-    private function givenProductModelWithPendingAttributeSpellcheckEvaluation(string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductId
+    private function givenProductModelWithPendingAttributeSpellcheckEvaluation(string $familyVariantCode, \DateTimeImmutable $evaluatedSince): ProductModelId
     {
         $productModelId = $this->createProductModel(strval(Uuid::uuid4()), $familyVariantCode);
         $this->createProductModelAttributeSpellingEvaluation($productModelId, $evaluatedSince->modify('-2 second'), true);
@@ -140,7 +141,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
         return $productModelId;
     }
 
-    private function createProductModel(string $code, string $familyVariant): ProductId
+    private function createProductModel(string $code, string $familyVariant): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($code)
@@ -149,10 +150,10 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId((int) $productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
-    private function createSubProductModel(string $parent, string $familyVariant): ProductId
+    private function createSubProductModel(string $parent, string $familyVariant): ProductModelId
     {
         $productModel = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode(strval(Uuid::uuid4()))
@@ -162,7 +163,7 @@ final class GetProductModelIdsWithUpdatedFamilyAttributesListQueryIntegration ex
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId((int) $productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 
     private function createAttribute(string $code, string $type): void
@@ -240,7 +241,7 @@ SQL;
         ]);
     }
 
-    private function createProductModelAttributeSpellingEvaluation(ProductId $productModelId, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
+    private function createProductModelAttributeSpellingEvaluation(ProductModelId $productModelId, \DateTimeImmutable $evaluatedAt, bool $pending = false): void
     {
         $spellingEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateAttributeSpelling::CRITERION_CODE),
@@ -269,7 +270,7 @@ SQL;
         $this->updateProductModelEvaluationsAt($productModelId, 'spelling', $evaluatedAt->modify('+1 hour'));
     }
 
-    private function updateProductModelEvaluationsAt(ProductId $productModelId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductModelEvaluationsAt(ProductModelId $productModelId, string $criterionCode, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_model_criteria_evaluation

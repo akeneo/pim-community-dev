@@ -3,33 +3,21 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductWordIgnoredEvent;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class CreateEvaluationCriteriaOnProductIgnoredWordSubscriber implements EventSubscriberInterface
 {
-    /** @var FeatureFlag */
-    private $dataQualityInsightsFeature;
-
-    /** @var CreateCriteriaEvaluations */
-    private $createProductsCriteriaEvaluations;
-
-    /** @var LoggerInterface */
-    private $logger;
-
     public function __construct(
-        FeatureFlag $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger
+        private FeatureFlag                     $dataQualityInsightsFeature,
+        private CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
+        private LoggerInterface                 $logger,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
-        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
-        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents()
@@ -41,17 +29,14 @@ final class CreateEvaluationCriteriaOnProductIgnoredWordSubscriber implements Ev
 
     public function onIgnoredWord(ProductWordIgnoredEvent $event)
     {
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
+        if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return;
         }
 
-        $this->initializeCriteria($event->getProductId()->toInt());
-    }
+        $productIdCollection = $this->idFactory->createCollection([(string)$event->getProductId()]);
 
-    private function initializeCriteria($productId)
-    {
         try {
-            $this->createProductsCriteriaEvaluations->createAll(ProductIdCollection::fromInt($productId));
+            $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product criteria evaluation',

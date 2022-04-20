@@ -15,6 +15,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
@@ -59,7 +60,7 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
 
         $productIds = $this->get(GetProductIdsWithUpdatedFamilyAttributesListQuery::class)->updatedSince($now, 2);
         $productIds = iterator_to_array($productIds);
-        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productIds);
+        $productIds = array_map(fn(ProductIdCollection $collection) => $collection->toArray(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);
@@ -135,13 +136,13 @@ final class GetProductIdsWithUpdatedFamilyAttributesListQueryIntegration extends
     private function createProduct(string $family): ProductId
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(strval(Uuid::uuid4()))
+            ->withIdentifier(Uuid::uuid4()->toString())
             ->withFamily($family)
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     private function getLastFamilyVersionId(int $familyId): int

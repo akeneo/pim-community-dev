@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\AttributeOptionSpellcheck;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\SpellcheckResultByLocaleCollection;
@@ -22,8 +23,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetAttribut
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOptionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use PhpSpec\ObjectBehavior;
 use Webmozart\Assert\Assert;
 
@@ -32,15 +33,22 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuerySpec extends 
     public function let(
         GetProductIdsByAttributeOptionCodeQueryInterface $getProductIdsByAttributeOptionCodesQuery,
         GetAttributeOptionSpellcheckQueryInterface $getAttributeOptionSpellcheckQuery,
-        FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface $filterProductIdsWithCriterionNotEvaluatedSinceQuery
+        FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface $filterProductIdsWithCriterionNotEvaluatedSinceQuery,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->beConstructedWith($getProductIdsByAttributeOptionCodesQuery, $getAttributeOptionSpellcheckQuery, $filterProductIdsWithCriterionNotEvaluatedSinceQuery);
+        $this->beConstructedWith(
+            $getProductIdsByAttributeOptionCodesQuery,
+            $getAttributeOptionSpellcheckQuery,
+            $filterProductIdsWithCriterionNotEvaluatedSinceQuery,
+            $idFactory
+        );
     }
 
     public function it_retrieves_product_ids_with_outdated_attribute_option_spellcheck(
         $getProductIdsByAttributeOptionCodesQuery,
         $getAttributeOptionSpellcheckQuery,
-        $filterProductIdsWithCriterionNotEvaluatedSinceQuery
+        $filterProductIdsWithCriterionNotEvaluatedSinceQuery,
+        $idFactory
     ) {
         $bulkSize = 3;
         $evaluatedSince = new \DateTimeImmutable('2020-06-12 15:43:31');
@@ -61,44 +69,50 @@ final class GetProductIdsWithOutdatedAttributeOptionSpellcheckQuerySpec extends 
             $materialWoodSpellcheck
         ]));
 
-        $productId12 = new ProductId(12);
-        $productId34 = new ProductId(34);
-        $productId56 = new ProductId(56);
-        $productId78 = new ProductId(78);
-        $productId90 = new ProductId(90);
-        $productId99 = new ProductId(99);
-        $productId42 = new ProductId(42);
-        $productId43 = new ProductId(43);
+        $productIdCollectionA = ProductIdCollection::fromStrings(['12', '34', '56']);
+        $productIdCollectionB = ProductIdCollection::fromStrings(['78', '90', '99']);
+        $productIdCollectionC = ProductIdCollection::fromStrings(['42', '43']);
+        $productIdCollectionD = ProductIdCollection::fromStrings(['123']);
+
+        $filteredProductIdCollectionA = ProductIdCollection::fromStrings(['12', '34']);
+        $filteredProductIdCollectionB = ProductIdCollection::fromStrings([]);
+        $filteredProductIdCollectionC = ProductIdCollection::fromStrings(['42', '43']);
+        $filteredProductIdCollectionD = ProductIdCollection::fromStrings(['123']);
+
+        $expectedProductIdCollectionA = ProductIdCollection::fromStrings(['12', '34', '42']);
+        $expectedProductIdCollectionB = ProductIdCollection::fromStrings(['43', '123']);
+
+        $idFactory->createCollection(['12', '34', '42'])->willReturn($expectedProductIdCollectionA);
+        $idFactory->createCollection(['43', '123'])->willReturn($expectedProductIdCollectionB);
 
         $getProductIdsByAttributeOptionCodesQuery->execute($colorRedSpellcheck->getAttributeOptionCode(), $bulkSize)->willReturn(new \ArrayIterator([
-            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId56]),
-            ProductIdCollection::fromProductIds([$productId78, $productId90, $productId99]),
-            ProductIdCollection::fromProductIds([$productId42, $productId43]),
+            $productIdCollectionA,
+            $productIdCollectionB,
+            $productIdCollectionC
         ]));
 
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId56]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn( ProductIdCollection::fromProductIds([$productId12, $productId34]));
+            $productIdCollectionA, $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn($filteredProductIdCollectionA);
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            ProductIdCollection::fromProductIds([$productId78, $productId90, $productId99]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn(ProductIdCollection::fromProductIds([]));
+            $productIdCollectionB, $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn($filteredProductIdCollectionB);
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            ProductIdCollection::fromProductIds([$productId42, $productId43]), $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn(ProductIdCollection::fromProductIds([$productId42, $productId43]));
+            $productIdCollectionC, $colorRedSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn($filteredProductIdCollectionC);
 
-        $productId123 = new ProductId(123);
         $getProductIdsByAttributeOptionCodesQuery->execute($materialWoodSpellcheck->getAttributeOptionCode(), $bulkSize)->willReturn(new \ArrayIterator([
-            ProductIdCollection::fromProductIds([$productId123])
+            $productIdCollectionD
         ]));
         $filterProductIdsWithCriterionNotEvaluatedSinceQuery->execute(
-            ProductIdCollection::fromProductIds([$productId123]), $materialWoodSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
-        )->willReturn(ProductIdCollection::fromProductIds([$productId123]));
+            $productIdCollectionD, $materialWoodSpellcheck->getEvaluatedAt(), new CriterionCode(EvaluateAttributeOptionSpelling::CRITERION_CODE)
+        )->willReturn($filteredProductIdCollectionD);
 
         $productIds = $this->evaluatedSince($evaluatedSince, $bulkSize);
 
         Assert::eq(iterator_to_array($productIds->getWrappedObject()), [
-            ProductIdCollection::fromProductIds([$productId12, $productId34, $productId42]),
-            ProductIdCollection::fromProductIds([$productId43, $productId123])
+            $expectedProductIdCollectionA,
+            $expectedProductIdCollectionB
         ]);
     }
 }

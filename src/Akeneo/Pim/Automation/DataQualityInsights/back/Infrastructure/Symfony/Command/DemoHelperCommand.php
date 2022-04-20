@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\DictionarySource;
@@ -32,44 +33,22 @@ final class DemoHelperCommand extends Command
     protected static $defaultName = 'pimee:data-quality-insights:demo-helper';
     protected static $defaultDescription = 'DO NOT USE IN PRODUCTION - Command to help generate data quality data for several weeks.';
 
-    private DictionarySource $productValueInDatabaseDictionarySource;
-    private AspellDictionaryGenerator $aspellDictionaryGenerator;
-    private ConsolidateDashboardRates $consolidateDashboardRates;
-    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
-    private Connection $db;
-    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations    ;
-    private EvaluatePendingCriteria $evaluatePendingCriteria;
-    private ConsolidateProductScores $consolidateProductScores;
-    private BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores;
-    private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations;
-    private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria;
-
     public function __construct(
-        DictionarySource $productValueInDatabaseDictionarySource,
-        AspellDictionaryGenerator $aspellDictionaryGenerator,
-        ConsolidateDashboardRates $consolidateDashboardRates,
-        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
-        Connection $db,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateProductScores $consolidateProductScores,
-        BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores,
-        CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
-        EvaluatePendingCriteria $evaluateProductModelsPendingCriteria
+        private DictionarySource $productValueInDatabaseDictionarySource,
+        private AspellDictionaryGenerator $aspellDictionaryGenerator,
+        private ConsolidateDashboardRates $consolidateDashboardRates,
+        private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
+        private Connection $db,
+        private CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
+        private EvaluatePendingCriteria $evaluatePendingCriteria,
+        private ConsolidateProductScores $consolidateProductScores,
+        private BulkUpdateProductQualityScoresInterface $bulkUpdateProductQualityScores,
+        private CreateCriteriaEvaluations $createProductModelsCriteriaEvaluations,
+        private EvaluatePendingCriteria $evaluateProductModelsPendingCriteria,
+        private ProductEntityIdFactoryInterface $productIdFactory,
+        private ProductEntityIdFactoryInterface $productModelIdFactory,
     ) {
         parent::__construct();
-
-        $this->productValueInDatabaseDictionarySource = $productValueInDatabaseDictionarySource;
-        $this->aspellDictionaryGenerator = $aspellDictionaryGenerator;
-        $this->consolidateDashboardRates = $consolidateDashboardRates;
-        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
-        $this->db = $db;
-        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
-        $this->evaluatePendingCriteria = $evaluatePendingCriteria;
-        $this->consolidateProductScores = $consolidateProductScores;
-        $this->bulkUpdateProductQualityScores = $bulkUpdateProductQualityScores;
-        $this->createProductModelsCriteriaEvaluations = $createProductModelsCriteriaEvaluations;
-        $this->evaluateProductModelsPendingCriteria = $evaluateProductModelsPendingCriteria;
     }
 
     protected function configure()
@@ -371,7 +350,7 @@ final class DemoHelperCommand extends Command
 
     private function evaluateProducts(array $ids): void
     {
-        $productIdCollection = ProductIdCollection::fromInts($ids);
+        $productIdCollection = $this->productIdFactory->createCollection(array_map(fn ($id) => (string)$id, $ids));
 
         $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         $this->evaluatePendingCriteria->evaluateAllCriteria($productIdCollection);
@@ -381,7 +360,7 @@ final class DemoHelperCommand extends Command
 
     private function evaluateProductModels(array $ids): void
     {
-        $productIdCollection = ProductIdCollection::fromInts($ids);
+        $productIdCollection = $this->productModelIdFactory->createCollection(array_map(fn ($id) => (string)$id, $ids));
 
         $this->createProductModelsCriteriaEvaluations->createAll($productIdCollection);
         $this->evaluateProductModelsPendingCriteria->evaluateAllCriteria($productIdCollection);
