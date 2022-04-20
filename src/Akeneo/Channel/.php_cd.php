@@ -31,7 +31,7 @@ $rules = [
         'Doctrine\Persistence',
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
-        'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
+        'Akeneo\Category\back\Domain\Model\CategoryInterface',
 
         // TIP-1011: Create a Versioning component
         'Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface',

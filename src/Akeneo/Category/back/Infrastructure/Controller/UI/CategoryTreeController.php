@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
+namespace Akeneo\Category\back\Infrastructure\Controller\UI;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
@@ -27,6 +27,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Akeneo\Pim\Enrichment\Bundle\Controller\Ui\count;
 
 /**
  * Category Tree Controller
@@ -37,67 +38,29 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class CategoryTreeController extends AbstractController
 {
-    protected EventDispatcherInterface $eventDispatcher;
-    protected UserContext $userContext;
-    protected SaverInterface $categorySaver;
-    protected RemoverInterface $categoryRemover;
-    protected SimpleFactoryInterface $categoryFactory;
-    protected CategoryRepositoryInterface $categoryRepository;
     protected array $rawConfiguration;
-    protected SecurityFacade $securityFacade;
-    protected TranslatorInterface $translator;
-    private ObjectUpdaterInterface $categoryUpdater;
-
-    private NormalizerInterface $normalizer;
-
-    private ValidatorInterface $validator;
-
-    private NormalizerInterface $constraintViolationNormalizer;
-
-    private CategoryItemsCounterInterface $categoryItemsCounter;
-
-    private CountTreesChildrenInterface $countTreesChildrenQuery;
-
-    private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        UserContext $userContext,
-        SaverInterface $categorySaver,
-        RemoverInterface $categoryRemover,
-        SimpleFactoryInterface $categoryFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        SecurityFacade $securityFacade,
-        TranslatorInterface $translator,
-        NormalizerInterface $normalizer,
-        ObjectUpdaterInterface $categoryUpdater,
-        ValidatorInterface $validator,
-        NormalizerInterface $constraintViolationNormalizer,
-        CategoryItemsCounterInterface $categoryItemsCounter,
-        CountTreesChildrenInterface $countTreesChildrenQuery,
-        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
-        array $rawConfiguration
+        protected EventDispatcherInterface    $eventDispatcher,
+        protected UserContext                 $userContext,
+        protected SaverInterface              $categorySaver,
+        protected RemoverInterface            $categoryRemover,
+        protected SimpleFactoryInterface            $categoryFactory,
+        protected CategoryRepositoryInterface       $categoryRepository,
+        protected SecurityFacade                    $securityFacade,
+        protected TranslatorInterface               $translator,
+        private NormalizerInterface                 $normalizer,
+        private ObjectUpdaterInterface              $categoryUpdater,
+        private ValidatorInterface                  $validator,
+        private NormalizerInterface                 $constraintViolationNormalizer,
+        private CategoryItemsCounterInterface       $categoryItemsCounter,
+        private CountTreesChildrenInterface         $countTreesChildrenQuery,
+        private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
+        array                                       $rawConfiguration
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->userContext = $userContext;
-        $this->categorySaver = $categorySaver;
-        $this->categoryRemover = $categoryRemover;
-        $this->categoryFactory = $categoryFactory;
-        $this->categoryRepository = $categoryRepository;
-        $this->securityFacade = $securityFacade;
-
         $resolver = new OptionsResolver();
         $this->configure($resolver);
-
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
-        $this->translator = $translator;
-        $this->normalizer = $normalizer;
-        $this->categoryUpdater = $categoryUpdater;
-        $this->validator = $validator;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->categoryItemsCounter = $categoryItemsCounter;
-        $this->countTreesChildrenQuery = $countTreesChildrenQuery;
-        $this->categoryFormViewNormalizer = $categoryFormViewNormalizer;
     }
 
     /**
