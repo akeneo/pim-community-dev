@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\ProductEvaluatio
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQueryInterface
 {
@@ -24,7 +24,7 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
         $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
-    public function execute(ProductId $productId): ProductEvaluation
+    public function execute(ProductUuid $productId): ProductEvaluation
     {
         $productScores = $this->getProductScoresQuery->byProductId($productId);
         $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);

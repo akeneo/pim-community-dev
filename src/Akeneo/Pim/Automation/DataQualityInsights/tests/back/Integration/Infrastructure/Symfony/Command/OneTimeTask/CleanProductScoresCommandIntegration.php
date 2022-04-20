@@ -9,7 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -36,36 +36,36 @@ final class CleanProductScoresCommandIntegration extends DataQualityInsightsTest
 
     public function test_it_cleans_product_scores(): void
     {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
+        $productUuidA = $this->createProduct('product_A')->getUuid();
+        $productUuidB = $this->createProduct('product_B')->getUuid();
 
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
+            new ProductUuid($productUuidA),
             new \DateTimeImmutable('2020-11-18'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36))
         );
         $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
+            new ProductUuid($productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(79))
                 ->addRate($channelMobile, $localeFr, new Rate(12))
         );
         $productScoreA3 = new ProductScores(
-            new ProductId($productIdA),
+            new ProductUuid($productUuidA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42))
         );
         $productScoreB = new ProductScores(
-            new ProductId($productIdB),
+            new ProductUuid($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))

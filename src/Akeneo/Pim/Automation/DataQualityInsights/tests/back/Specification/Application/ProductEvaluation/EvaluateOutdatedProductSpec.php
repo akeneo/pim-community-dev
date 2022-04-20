@@ -7,9 +7,10 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -30,14 +31,14 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
         $evaluateProducts,
         $idFactory
     ) {
-        $productId = new ProductId(42);
-        $collection = ProductIdCollection::fromString('42');
+        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
-        $idFactory->createCollection(['42'])->willReturn($collection);
+        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(false);
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldBeCalled();
 
-        $this->__invoke($productId);
+        $this->__invoke($productUuid);
     }
 
     public function it_does_not_evaluate_a_product_with_up_to_date_evaluation(
@@ -45,13 +46,14 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
         $evaluateProducts,
         $idFactory
     ) {
-        $productId = new ProductId(42);
-        $collection = ProductIdCollection::fromString('42');
+        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(true);
-        $idFactory->createCollection(['42'])->willReturn($collection);
+        // TODO Update hasUpToDateEvaluationQuery
+        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(true);
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldNotBeCalled();
 
-        $this->__invoke($productId);
+        $this->__invoke($productUuid);
     }
 }
