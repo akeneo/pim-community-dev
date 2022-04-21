@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthentica
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -46,7 +47,7 @@ class RequestAppAuthenticationHandlerIntegration extends TestCase
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->connection = $this->get('database_connection');
         $this->userConsentLoader = $this->get(UserConsentLoader::class);
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
     }
 
     public function test_it_consents_automatically_when_openid_is_the_only_scope_requested(): void
