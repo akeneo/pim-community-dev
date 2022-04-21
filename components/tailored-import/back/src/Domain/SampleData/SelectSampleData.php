@@ -16,9 +16,15 @@ final class SelectSampleData
     {
         $formattedValues = FormatSampleData::format($extractedColumns);
         $uniqueValues = self::filterUniqueValues($formattedValues);
-        $pickedValues = self::pickRandomValues($uniqueValues, $length);
+        $cleanedStringValue = self::replaceEmptyString($uniqueValues);
+        $pickedValues = self::pickRandomValues($cleanedStringValue, $length);
 
         return self::fillBlankValues($pickedValues, $length);
+    }
+
+    private static function replaceEmptyString(array $sampleData): array
+    {
+        return \array_map(static fn ($value): ?string => strlen($value) === 0 ? null : $value, $sampleData);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array
