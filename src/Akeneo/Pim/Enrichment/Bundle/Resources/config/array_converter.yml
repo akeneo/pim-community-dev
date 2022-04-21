@@ -98,15 +98,6 @@ services:
     pim_connector.array_converter.standard_to_flat.group:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Group'
 
-    ### Category
-    pim_connector.array_converter.standard_to_flat.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\StandardToFlat\Category'
-
-    pim_connector.array_converter.flat_to_standard.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard\Category'
-        arguments:
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-
     ### Extractors
     pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\AttributeColumnInfoExtractor'
