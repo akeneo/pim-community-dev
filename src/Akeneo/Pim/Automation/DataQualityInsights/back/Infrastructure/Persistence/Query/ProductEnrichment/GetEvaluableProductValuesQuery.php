@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluableAttributesByProductQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 /**
@@ -40,7 +41,7 @@ class GetEvaluableProductValuesQuery implements GetEvaluableProductValuesQueryIn
         $this->localesByChannelQuery = $localesByChannelQuery;
     }
 
-    public function byProductId(ProductId $productId): ProductValuesCollection
+    public function byProductId(ProductEntityIdInterface $productId): ProductValuesCollection
     {
         $productValuesCollection = new ProductValuesCollection();
         $attributes = $this->getEvaluableAttributesByProductQuery->execute($productId);

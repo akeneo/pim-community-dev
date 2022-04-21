@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository;
@@ -19,7 +19,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
+final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
     public function test_it_returns_the_latest_scores_by_product_ids()
     {
@@ -79,10 +79,8 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
             $productIdB => $productsScores['product_B_latest_scores']->getScores(),
         ];
 
-        $productAxesRates = $this->get(GetProductScoresQuery::class)
-            ->byProductIds(ProductIdCollection::fromProductIds(
-                [new ProductId($productIdA), new ProductId($productIdB), new ProductId($productIdD)])
-            );
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productIdA, (string)$productIdB, (string)$productIdD]);
+        $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductIds($productModelIdCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
     }
