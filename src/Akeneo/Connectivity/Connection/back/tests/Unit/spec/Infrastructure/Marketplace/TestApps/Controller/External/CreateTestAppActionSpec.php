@@ -70,7 +70,7 @@ class CreateTestAppActionSpec extends ObjectBehavior
             ->during('__invoke', [$request]);
     }
 
-    public function it_throws_a_access_denied_exception_when_developer_mode_feature_flag_is_disabled(
+    public function it_throws_a_access_denied_exception_when_connection_cannot_manage_test_apps(
         FeatureFlag $developerModeFeatureFlag,
         Request $request,
         SecurityFacade $security,
