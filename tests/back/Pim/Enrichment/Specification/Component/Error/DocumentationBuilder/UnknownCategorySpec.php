@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder;
 
+use Akeneo\Category\Infrastructure\Component\Error\DocumentationBuilder\UnknownCategory;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownCategory;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use PhpSpec\ObjectBehavior;

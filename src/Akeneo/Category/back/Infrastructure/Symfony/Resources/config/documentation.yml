@@ -1,0 +1,3 @@
+services:
+    Akeneo\Category\Infrastructure\Component\Error\DocumentationBuilder\UnknownCategory:
+        tags: [pim_enrich.error.documentation_builder]
