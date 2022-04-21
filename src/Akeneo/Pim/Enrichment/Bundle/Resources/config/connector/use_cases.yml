@@ -87,11 +87,6 @@ services:
     akeneo.pim.enrichment.use_cases.validator.criterion:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCriterion
 
-    akeneo.pim.enrichment.use_cases.validator.categories:
-        class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCategories
-        arguments:
-            - '@pim_catalog.repository.cached_category'
-
     akeneo.pim.enrichment.use_cases.validator.properties:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateProperties
         arguments:

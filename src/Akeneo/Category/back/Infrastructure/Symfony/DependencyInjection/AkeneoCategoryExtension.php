@@ -24,11 +24,14 @@ class AkeneoCategoryExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('connector/flat_translators.yml');
+        $loader->load('connector/use_cases.yml');
         $loader->load('entities.yml');
         $loader->load('models.yml');
         $loader->load('controllers.yml');
         $loader->load('product_grid_category_tree.yml');
         $loader->load('category_counters.yml');
         $loader->load('repositories.yml');
+        $loader->load('routing.yml');
     }
 }

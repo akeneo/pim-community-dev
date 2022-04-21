@@ -8,17 +8,9 @@ external_api_product_model:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/product_model.yml'
     prefix: /api/rest/v1
 
-external_api_category:
-    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/category.yml'
-    prefix: /api/rest/v1
-
 external_api_product:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/external_api/product.yml'
     prefix: /api/rest/v1
-
-category_internal_api:
-    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/category.yml'
-    prefix: /enrich/category
 
 product_internal_api:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/product.yml'
@@ -51,10 +43,6 @@ mass_edit_rest:
 media_internal_api:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/internal_api/media.yml'
     prefix: /media
-
-categorytree_ui:
-    resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/categorytree.yml'
-    prefix: /enrich/product-category-tree
 
 media_ui:
     resource: '@AkeneoPimEnrichmentBundle/Resources/config/routing/ui/media.yml'

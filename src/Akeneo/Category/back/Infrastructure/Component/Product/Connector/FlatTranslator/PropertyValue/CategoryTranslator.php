@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue;
+namespace Akeneo\Category\Infrastructure\Component\Product\Connector\FlatTranslator\PropertyValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\PropertyValue\FlatPropertyValueTranslatorInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 
 class CategoryTranslator implements FlatPropertyValueTranslatorInterface
