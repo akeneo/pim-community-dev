@@ -70,7 +70,7 @@ Akeneo\Category\Infrastructure\Component\Model\Category:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             mappedBy: category
         children:
-            targetEntity: Akeneo\Category\Infrastructure\Component\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             mappedBy: parent
             cascade:
                 - persist
@@ -78,7 +78,7 @@ Akeneo\Category\Infrastructure\Component\Model\Category:
                 left: ASC
     manyToOne:
         parent:
-            targetEntity: Akeneo\Category\Infrastructure\Component\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             inversedBy: children
             joinColumns:
                 parent_id:
