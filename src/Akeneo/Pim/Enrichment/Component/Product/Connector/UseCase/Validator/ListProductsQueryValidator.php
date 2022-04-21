@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
+use Akeneo\Category\Infrastructure\Component\Product\Connector\UseCase\Validator\ValidateCategories;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductsQuery;
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 

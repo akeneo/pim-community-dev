@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
 
+use Akeneo\Category\Infrastructure\Component\Product\Connector\UseCase\Validator\ValidateCategories;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ListProductModelsQuery;
@@ -13,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\Validate
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedProperties;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAlwaysGrantedSearchLocale;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAttributes;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCategories;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateChannel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCriterion;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateLocales;

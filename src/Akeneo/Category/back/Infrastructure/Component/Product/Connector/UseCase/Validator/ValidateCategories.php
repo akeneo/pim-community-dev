@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator;
+namespace Akeneo\Category\Infrastructure\Component\Product\Connector\UseCase\Validator;
 
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use function Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\count;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
