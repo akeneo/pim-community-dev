@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Category\API\Commands;
+namespace Akeneo\Category\API\Command;
 
 use Webmozart\Assert\Assert;
 
@@ -29,6 +29,9 @@ class CreateCategoryCommand
 
         $labels = $data['labels'] ?? [];
         Assert::isArray($labels);
+
+        Assert::allString(\array_keys($labels));
+        Assert::allString(\array_values($labels));
 
         return new self($data['code'], $parent, $labels);
     }
