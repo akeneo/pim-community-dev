@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder;
+namespace Akeneo\Category\Infrastructure\Component\Error\DocumentationBuilder;
 
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\Documentation;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\DocumentationCollection;

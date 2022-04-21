@@ -34,5 +34,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('routing.yml');
         $loader->load('array_converter.yml');
+        $loader->load('documentation.yml');
     }
 }
