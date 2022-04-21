@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;

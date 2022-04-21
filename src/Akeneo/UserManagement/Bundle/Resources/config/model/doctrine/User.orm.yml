@@ -174,7 +174,7 @@ Akeneo\UserManagement\Component\Model\User:
             targetEntity: Akeneo\Channel\Component\Model\ChannelInterface
             nullable: false
         defaultTree:
-            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             nullable: false
     oneToOne:
         avatar:

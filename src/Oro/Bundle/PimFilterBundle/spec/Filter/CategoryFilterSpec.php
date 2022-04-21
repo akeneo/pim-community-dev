@@ -2,7 +2,7 @@
 
 namespace spec\Oro\Bundle\PimFilterBundle\Filter;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;

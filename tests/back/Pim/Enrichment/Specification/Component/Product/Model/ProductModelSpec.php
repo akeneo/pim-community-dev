@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Model;
 
-use Akeneo\Category\Domain\Model\Category;
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;

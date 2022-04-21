@@ -2,7 +2,7 @@
 
 namespace Akeneo\Channel\Component\Model;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Component\Event\ChannelEvent;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;

@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use Symfony\Component\HttpFoundation\Response;

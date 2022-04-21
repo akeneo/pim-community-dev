@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Channel\Integration\Channel\Storage\Orm;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Saver\ChannelSaverInterface;

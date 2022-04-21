@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\RemoveCategoryFilterInJobInstanceSubscriber;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;

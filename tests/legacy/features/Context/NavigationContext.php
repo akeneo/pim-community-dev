@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
