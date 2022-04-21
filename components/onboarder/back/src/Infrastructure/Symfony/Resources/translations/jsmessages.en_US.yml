@@ -62,7 +62,7 @@ onboarder:
                 notification:
                     email_error:
                         title: We were not able to add this contributor.
-                        content: "The mail {{ emailAdress }} is invalid : {{ message }}"
+                        content: "The email {{ emailAddress }} is invalid : {{ message }}"
             error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
             unknown_error: An error occured while updating the supplier.

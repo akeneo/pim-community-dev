@@ -52,7 +52,7 @@ const useSupplier = (identifier: string) => {
                         translate('onboarder.supplier.supplier_edit.contributors_form.notification.email_error.title'),
                         translate(
                             'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.content',
-                            {emailAdress: error.invalidValue, message: error.message}
+                            {emailAddress: error.invalidValue, message: error.message}
                         )
                     )
                 );
