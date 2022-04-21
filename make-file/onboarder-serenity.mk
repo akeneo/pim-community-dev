@@ -16,6 +16,7 @@ lint-front: #Doc: Run Prettier and Eslint for Onboarder Serenity
 .PHONY: coupling
 coupling: #Doc: Run coupling detector for Onboarder Serenity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/onboarder/back/tests/.php_cd.php components/onboarder/back
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 .PHONY: coupling-list-unused-requirements
 coupling-list-unused-requirements: #Doc: List unused coupling detector requirements for Onboarder Serenity
