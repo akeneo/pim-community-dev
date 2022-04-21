@@ -10,6 +10,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 {
+    public const ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA = [
+        'code' => 'onboarder_serenity_xlsx_supplier_import',
+        'label' => 'Onboarder Serenity XLSX Supplier Import',
+        'job_name' => 'onboarder_serenity_xlsx_supplier_import',
+        'connector' => 'Onboarder Serenity',
+        'raw_parameters' => 'a:0:{}',
+        'type' => 'import',
+    ];
+
     public function __construct(private Connection $connection)
     {
     }
@@ -23,6 +32,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     {
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
+        $this->addOnboarderSerenityXlsxSupplierImportJob();
     }
 
     private function addSupplierTable(): void
@@ -60,5 +70,43 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
         SQL;
 
         $this->connection->executeStatement($sql);
+    }
+
+    private function addOnboarderSerenityXlsxSupplierImportJob(): void
+    {
+        if ($this->onboarderSerenityXlsxSupplierImportJobExists()) {
+            return;
+        }
+
+        $sql = <<<SQL
+            INSERT INTO akeneo_batch_job_instance (code, label, job_name, status, connector, raw_parameters, type)
+            VALUES (:code, :label, :code, 0, :connector, :rawParameters, :type);
+        SQL;
+
+        $this->connection->executeStatement(
+            $sql,
+            [
+                'code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code'],
+                'label' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['label'],
+                'connector' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['connector'],
+                'rawParameters' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['raw_parameters'],
+                'type' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['type'],
+            ],
+        );
+    }
+
+    private function onboarderSerenityXlsxSupplierImportJobExists(): bool
+    {
+        $sql = <<<SQL
+            SELECT COUNT(*)
+            FROM `akeneo_batch_job_instance`
+            WHERE code = :code
+        SQL;
+
+        return 1 === (int) $this
+            ->connection
+            ->executeQuery($sql, ['code' => self::ONBOARDER_SERENITY_XLSX_SUPPLIER_IMPORT_JOB_DATA['code']])
+            ->fetchOne()
+        ;
     }
 }
