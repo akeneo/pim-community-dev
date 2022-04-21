@@ -6,7 +6,10 @@ namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Impo
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Component\Batch\Job\DuplicatedJobException;
+use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
+use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -52,7 +55,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     private function runOnboarderSerenityXlsxSupplierImportJob(string $filePath): void
     {
         $jobInstanceRepository = $this->get('pim_enrich.repository.job_instance');
-        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'onboarder_serenity.job.xlsx_supplier_import']);
+        $jobInstance = $jobInstanceRepository->findOneBy(['code' => 'onboarder_serenity_xlsx_supplier_import']);
 
         $jobParameters = new JobParameters(['filePath' => $filePath]);
         $jobExecution = new JobExecution();
@@ -69,11 +72,12 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
 
         $input = new ArrayInput([
             'command' => 'akeneo:batch:job',
-            'code' => 'onboarder_serenity.job.xlsx_supplier_import',
+            'code' => 'onboarder_serenity_xlsx_supplier_import',
             'execution' => $jobExecution->getId(),
         ]);
 
-        $application->run($input, new BufferedOutput());
+        $output = new BufferedOutput();
+        $application->run($input, $output);
     }
 
     private function findSupplierByCode(string $code): ?Supplier
@@ -101,7 +105,9 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
             $row['identifier'],
             $row['code'],
             $row['label'],
-            null !== $row['contributor_emails'] ? json_decode($row['contributor_emails'], true) : [],
+            null !== $row['contributor_emails']
+                ? json_decode($row['contributor_emails'], true)
+                : [],
         ) : null;
     }
 
