@@ -2,7 +2,17 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
+TODO
+- configure injectio nof messagebus in yaml
+- declare messagebus class in yml
+- declare handler with preoper tagging (cf product command handlers)
+
+
+
+use Akeneo\Category\API\Command\CreateCategoryCommand;
+use Akeneo\Category\API\MessageBus;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -27,6 +37,7 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -79,7 +90,8 @@ class CategoryController
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
         StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration
+        array $apiConfiguration,
+        MessageBus $messageBus
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
@@ -92,6 +104,7 @@ class CategoryController
         $this->paginator = $paginator;
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
+        $this->messageBus = $messageBus;
     }
 
     /**
@@ -191,11 +204,21 @@ class CategoryController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $category = $this->factory->create();
-        $this->updateCategory($category, $data, 'post_categories');
-        $this->validateCategory($category);
+        try {
+            $command = CreateCategoryCommand::fromArray($data);
+        } catch (\InvalidArgumentException $exception) {
+            throw new DocumentedHttpException(
+                Documentation::URL . 'post_categories',
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                $exception
+            );
+        }
 
-        $this->saver->save($category);
+
+        $this->messageBus->dispatch($command);
+
+// TODO query category using code
+// $category = ...
 
         $response = $this->getResponse($category, Response::HTTP_CREATED);
 
