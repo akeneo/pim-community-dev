@@ -28,6 +28,7 @@ class CommentNormalizer implements NormalizerInterface, NormalizerAwareInterface
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
+            'resourceUuid' => $comment->getResourceUuid(),
             'author'       => $this->normalizeAuthor($comment),
             'body'         => $comment->getBody(),
             'created'      => $this->normalizer->normalize($comment->getCreatedAt(), 'standard', $context),
