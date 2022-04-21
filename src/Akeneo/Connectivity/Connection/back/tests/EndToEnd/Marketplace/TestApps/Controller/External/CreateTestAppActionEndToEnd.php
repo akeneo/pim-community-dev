@@ -51,8 +51,8 @@ class CreateTestAppActionEndToEnd extends ApiTestCase
 
         $client->request('POST', '/api/rest/v1/test-apps', [], [], [], \json_encode([
             'name' => 'Test App',
-            'activateUrl' => 'http://activate.test',
-            'callbackUrl' => 'http://callback.test',
+            'activate_url' => 'http://activate.test',
+            'callback_url' => 'http://callback.test',
         ]));
 
         $response = $client->getResponse();

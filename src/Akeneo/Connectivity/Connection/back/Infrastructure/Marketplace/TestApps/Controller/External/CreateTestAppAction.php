@@ -57,8 +57,8 @@ final class CreateTestAppAction
         $createCommand = new CreateTestAppCommand(
             $clientId,
             (string) $request->get('name', ''),
-            (string) $request->get('activateUrl', ''),
-            (string) $request->get('callbackUrl', ''),
+            (string) $request->get('activate_url', ''),
+            (string) $request->get('callback_url', ''),
             $user->getId(),
         );
 

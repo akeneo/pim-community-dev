@@ -146,8 +146,8 @@ class CreateTestAppActionSpec extends ObjectBehavior
         $translator->trans(Argument::cetera())->willReturnArgument();
 
         $request->get('name', '')->willReturn('Too long');
-        $request->get('callbackUrl', '')->willReturn(420);
-        $request->get('activateUrl', '')->willReturn('Not url');
+        $request->get('activate_url', '')->willReturn(420);
+        $request->get('callback_url', '')->willReturn('Not url');
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse(
             [
@@ -199,8 +199,8 @@ class CreateTestAppActionSpec extends ObjectBehavior
         $getTestAppSecretQuery->execute(Argument::type('string'))->willReturn(null);
 
         $request->get('name', '')->willReturn('TestApp');
-        $request->get('callbackUrl', '')->willReturn('http://callback-url.test');
-        $request->get('activateUrl', '')->willReturn('http://activate-url.test');
+        $request->get('activate_url', '')->willReturn('http://callback-url.test');
+        $request->get('callback_url', '')->willReturn('http://activate-url.test');
 
         $this->__invoke($request)->shouldBeLike(new JsonResponse(
             [
@@ -242,8 +242,8 @@ class CreateTestAppActionSpec extends ObjectBehavior
         $getTestAppSecretQuery->execute(Argument::type('string'))->willReturn('app_secret');
 
         $request->get('name', '')->willReturn('TestApp');
-        $request->get('callbackUrl', '')->willReturn('http://callback-url.test');
-        $request->get('activateUrl', '')->willReturn('http://activate-url.test');
+        $request->get('activate_url', '')->willReturn('http://callback-url.test');
+        $request->get('callback_url', '')->willReturn('http://activate-url.test');
 
         $this->__invoke($request)->shouldBeAValidCreateTestAppResponse('app_secret');
     }
