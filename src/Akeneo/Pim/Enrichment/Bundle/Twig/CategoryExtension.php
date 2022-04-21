@@ -2,9 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Twig;
 
-use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Twig\TwigFunction;
 

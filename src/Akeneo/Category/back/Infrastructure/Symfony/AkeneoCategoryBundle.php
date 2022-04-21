@@ -26,7 +26,6 @@ class AkeneoCategoryBundle extends Bundle
     {
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
-            ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('category_repository'))
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
         ;
 
