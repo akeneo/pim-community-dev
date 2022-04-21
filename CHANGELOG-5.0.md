@@ -1,5 +1,7 @@
 # 5.0.x
 
+- PIM-10415: [Backport PIM-10227] Fix filter not applied properly on the Asset manager grid
+
 # 5.0.91 (2022-04-13)
 
 ## Bug fixes
