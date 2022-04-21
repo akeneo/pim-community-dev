@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\Domain\Model;
+namespace Akeneo\Category\Infrastructure\Component\Model;
 
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;

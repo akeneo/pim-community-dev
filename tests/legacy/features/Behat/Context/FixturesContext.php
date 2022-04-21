@@ -2,7 +2,7 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Channel\Infrastructure\Component\Model\Channel;
 use Akeneo\Channel\Infrastructure\Component\Model\Currency;
 use Akeneo\Channel\Infrastructure\Component\Model\Locale;

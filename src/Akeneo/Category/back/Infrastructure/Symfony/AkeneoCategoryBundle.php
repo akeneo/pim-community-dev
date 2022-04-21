@@ -31,7 +31,7 @@ class AkeneoCategoryBundle extends Bundle
         ;
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/doctrine/') => 'Akeneo\Category\Domain\Model'
+            realpath(__DIR__ . '/Resources/config/doctrine/') => 'Akeneo\Category\Infrastructure\Component\Model'
         ];
 
         $container->addCompilerPass(

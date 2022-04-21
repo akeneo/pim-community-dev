@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Category\Domain\Model;
+namespace Akeneo\Category\Infrastructure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\AbstractTranslation;
 

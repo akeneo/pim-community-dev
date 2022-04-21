@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass;
 
-use Akeneo\Category\Domain\Model\CategoryInterface;
-use Akeneo\Category\Domain\Model\CategoryTranslationInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslationInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**

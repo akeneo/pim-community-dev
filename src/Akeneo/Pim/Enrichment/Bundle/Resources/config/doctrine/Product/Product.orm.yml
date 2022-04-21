@@ -62,7 +62,7 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             inversedBy: products
             joinTable:
                 name: pim_catalog_category_product
