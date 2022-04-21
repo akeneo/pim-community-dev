@@ -35,7 +35,7 @@ class GetProductIdsToEvaluateQueryIntegration extends DataQualityInsightsTestCas
         $expectedProductIds = $this->givenThreeProductsToEvaluate();
 
         $productIds = iterator_to_array($this->productQuery->execute(4, 2));
-        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArrayInt(), $productIds);
+        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArrayString(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);

@@ -25,6 +25,7 @@
 - PIM-10372: Fix letter case issue when importing channels
 - PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
 - PIM-10398: Fix category validator to prevent break-lines
+- PIM-10409: Allow creating a measurement value with case insensitive unit code
 
 ## Improvements
 

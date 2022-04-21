@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 
 /**
@@ -15,7 +16,7 @@ interface GetProductIdsFromProductIdentifiersQueryInterface
     /**
      * @param string[] $productIdentifiers
      *
-     * @return ProductId[]
+     * @return ProductEntityIdInterface[]
      */
     public function execute(array $productIdentifiers): array;
 }

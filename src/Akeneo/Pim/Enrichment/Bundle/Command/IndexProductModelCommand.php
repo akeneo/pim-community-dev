@@ -99,7 +99,7 @@ class IndexProductModelCommand extends Command
 
         if (true === $input->getOption('all')) {
             $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
-            $productModelCount = $this->getTotalNumberOfRootProductModels();
+            $productModelCount = 0;
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
             $existingroductModelCodes = $this->getExistingProductModelCodes($requestedCodes);
@@ -207,13 +207,6 @@ SQL;
                 'codes' => Connection::PARAM_STR_ARRAY,
             ]
         )->fetchFirstColumn();
-    }
-
-    private function getTotalNumberOfRootProductModels(): int
-    {
-        return (int)$this->connection->executeQuery(
-            'SELECT COUNT(0) FROM pim_catalog_product_model WHERE parent_id IS NULL'
-        )->fetchOne();
     }
 
     /**

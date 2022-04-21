@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
@@ -20,15 +21,17 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
     public function let(
         GetProductModelScoresQueryInterface $getProductModelScoresQuery,
         GetProductModelIdsFromProductModelCodesQueryInterface $getProductModelIdsFromProductModelCodesQuery,
-        ComputeProductsKeyIndicators $computeProductsKeyIndicators
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->beConstructedWith($getProductModelScoresQuery, $getProductModelIdsFromProductModelCodesQuery, $computeProductsKeyIndicators);
+        $this->beConstructedWith($getProductModelScoresQuery, $getProductModelIdsFromProductModelCodesQuery, $computeProductsKeyIndicators, $idFactory);
     }
 
     public function it_returns_additional_properties_from_product_model_codes(
         $getProductModelScoresQuery,
         $getProductModelIdsFromProductModelCodesQuery,
-        $computeProductsKeyIndicators
+        $computeProductsKeyIndicators,
+        $idFactory
     ) {
         $productId42 = new ProductId(42);
         $productId123 = new ProductId(123);
@@ -41,15 +44,17 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         $productModelCodes = [
             'product_model_1', 'product_model_2', 'product_model_without_rates'
         ];
+        $collection = ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]);
 
         $getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes)->willReturn($productIds);
+        $idFactory->createCollection(['42', '123', '456'])->willReturn($collection);
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $getProductModelScoresQuery->byProductModelIds(ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]))->willReturn([
+        $getProductModelScoresQuery->byProductModelIds($collection)->willReturn([
             42 => (new ChannelLocaleRateCollection)
                 ->addRate($channelMobile, $localeEn, new Rate(81))
                 ->addRate($channelMobile, $localeFr, new Rate(30))
