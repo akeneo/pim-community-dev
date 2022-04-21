@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Classification\Updater;
 
-use Akeneo\Category\Domain\Model\CategoryTranslation;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Updater\CategoryUpdater;

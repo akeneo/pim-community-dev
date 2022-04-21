@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Normalizer\Standard;
 
-use Akeneo\Category\Domain\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;

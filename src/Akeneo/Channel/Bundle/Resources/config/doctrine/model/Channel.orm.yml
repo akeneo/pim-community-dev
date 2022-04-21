@@ -18,7 +18,7 @@ Akeneo\Channel\Component\Model\Channel:
             nullable: false
     manyToOne:
         category:
-            targetEntity: Akeneo\Category\Domain\Model\CategoryInterface
+            targetEntity: Akeneo\Category\Infrastructure\Component\Model\CategoryInterface
             inversedBy: channels
             joinColumns:
                 category_id:
