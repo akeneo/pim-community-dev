@@ -144,6 +144,24 @@ class FamilyRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('clothing', $families[1]->getCode());
     }
 
+    public function test_to_search_families_with_no_products(): void
+    {
+        $this->createFamily(['code' => 'accessories']);
+        $this->createFamily(['code' => 'clothing']);
+        $this->createFamily(['code' => 'other']);
+        $this->createProduct('a_product_with_a_family', ['family' => 'accessories']);
+        $this->createProduct('another_product_with_a_family', ['family' => 'clothing',]);
+
+        $families = $this->getRepository()->searchAfterOffset(
+            ['has_products' => [['operator' => '=', 'value' => false]]],
+            ['code' => 'ASC'],
+            5,
+            0
+        );
+        Assert::assertCount(1, $families);
+        Assert::assertEquals('other', $families[0]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsNotUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
@@ -24,7 +25,8 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
         EntityManager $entityManager,
         $className,
         protected FamilyRepositoryInterface $familyRepository,
-        protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery
+        protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery,
+        protected GetFamilyIdsNotUsedByProductsQueryInterface $getFamilyIdsNotUsedByProductsQuery
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
     }
@@ -105,11 +107,14 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         if ('has_products' !== $property) {
                             throw new \InvalidArgumentException('Invalid operator for search query.');
                         }
-                        $qb->andWhere($qb->expr()->in('r.id', ':family_ids_used_by_products'));
-                        $qb->setParameter(
-                            'family_ids_used_by_products',
-                            $this->getFamilyIdsUsedByProductsQuery->execute()
-                        );
+
+                        $familyIds = $criterion['value'] ?
+                            $this->getFamilyIdsUsedByProductsQuery->execute() :
+                            $this->getFamilyIdsNotUsedByProductsQuery->execute();
+
+                        $qb->andWhere($qb->expr()->in('r.id', ':family_ids'));
+                        $qb->setParameter('family_ids', $familyIds);
+
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');

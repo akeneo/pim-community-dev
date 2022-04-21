@@ -63,6 +63,7 @@ services:
             - '%pim_catalog.entity.family.class%'
             - '@pim_catalog.repository.family'
             - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsUsedByProductsQuery'
+            - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsNotUsedByProductsQuery'
 
     pim_api.repository.attribute_group:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeGroupRepository'

@@ -12,7 +12,7 @@ use PHPUnit\Framework\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class GetFamilyIdsUsedByProductsQueryIntegration extends TestCase
+class GetFamilyIdsNotUsedByProductsQueryIntegration extends TestCase
 {
     protected function getConfiguration(): Configuration
     {
@@ -28,14 +28,14 @@ class GetFamilyIdsUsedByProductsQueryIntegration extends TestCase
         $this->createProduct('a_product_with_a_family', ['family' => 'a_family_with_a_product']);
         $this->createProduct('another_product_with_a_family', ['family' => 'another_family_with_a_product']);
 
-        $getFamilyIdsUsedByProductsQuery = $this->get(
-            'Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsUsedByProductsQuery'
+        $getFamilyIdsNotUsedByProductsQuery = $this->get(
+            'Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsNotUsedByProductsQuery'
         );
 
-        $familyIdsUsedByProducts = $getFamilyIdsUsedByProductsQuery->execute();
+        $familyIdsNotUsedByProducts = $getFamilyIdsNotUsedByProductsQuery->execute();
 
-        Assert::assertCount(2, $familyIdsUsedByProducts);
-        Assert::assertEqualsCanonicalizing([$aFamilyWithAProduct->getId(), $anotherFamilyWithAProduct->getId()], $familyIdsUsedByProducts);
+        Assert::assertCount(1, $familyIdsNotUsedByProducts);
+        Assert::assertEqualsCanonicalizing([$aFamilyWithoutAProduct->getId()], $familyIdsNotUsedByProducts);
     }
 
     private function createFamily($data): Family
