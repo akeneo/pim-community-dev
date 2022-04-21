@@ -198,12 +198,14 @@ workflows:
             - clone_and_upgrade?:
                 name: "[grth] Clone and upgrade << matrix.CLIENT >> ?"
                 type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
                 matrix:
                     parameters:
                         CLIENT: *client-to-clone-grth
                         PRODUCT_TYPE: ["grth"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] Build"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
                   matrix:
@@ -212,6 +214,7 @@ workflows:
                           SOURCE_PFID: *client-to-clone-grth
                           LONG_TTL_INSTANCE: [true]
                   requires:
+                      - "[grth] Build"
                       - "[grth] Clone and upgrade << matrix.SOURCE_PFID >> ?"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
@@ -242,12 +245,14 @@ workflows:
             - clone_and_upgrade?:
                 name: "[srnt] Clone and upgrade << matrix.CLIENT >> ?"
                 type: approval
+                filters:
+                    branches:
+                        ignore:
+                            - "master"
                 matrix:
                     parameters:
                         CLIENT: *client-to-clone-srnt
                         PRODUCT_TYPE: ["srnt"]
-                requires:
-                    - "[<< matrix.PRODUCT_TYPE >>] Build"
             - test_clone_from_customer_db:
                   name: "[<< matrix.PRODUCT_TYPE >>] Clone << matrix.SOURCE_PFID >>"
                   matrix:
@@ -256,6 +261,7 @@ workflows:
                           SOURCE_PFID: *client-to-clone-srnt
                           LONG_TTL_INSTANCE: [true]
                   requires:
+                      - "[srnt] Build"
                       - "[srnt] Clone and upgrade << matrix.SOURCE_PFID >> ?"
             - test_upgrade_from_last_release:
                   name: "[<< matrix.PRODUCT_TYPE >>] Upgrade << matrix.INSTANCE_NAME >>"
