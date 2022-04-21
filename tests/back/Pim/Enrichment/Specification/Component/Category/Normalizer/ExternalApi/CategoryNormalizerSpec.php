@@ -45,11 +45,9 @@ class CategoryNormalizerSpec extends ObjectBehavior
         PositionResolverInterface $positionResolver
     ) {
         $aPosition = 1;
-        $aLevel = 1;
         $context = ['with_position'];
         $data = ['code' => 'my_category', 'labels' => []];
 
-        $category->getLevel()->willReturn($aLevel);
         $stdNormalizer->normalize($category, 'standard', $context)->willReturn($data);
         $positionResolver->getPosition($category)->willReturn($aPosition);
 
@@ -57,7 +55,6 @@ class CategoryNormalizerSpec extends ObjectBehavior
 
         $normalizedCategory->shouldHaveLabels();
         $normalizedCategory->shouldHavePosition($aPosition);
-        $normalizedCategory->shouldHaveLevel($aLevel);
     }
 
     public function getMatchers(): array
@@ -68,9 +65,6 @@ class CategoryNormalizerSpec extends ObjectBehavior
             },
             'havePosition' => function ($subject, $position) {
                 return array_key_exists('position', $subject) && $position === $subject['position'];
-            },
-            'haveLevel' => function ($subject, $level) {
-                return array_key_exists('level', $subject) && $level === $subject['level'];
             },
         ];
     }

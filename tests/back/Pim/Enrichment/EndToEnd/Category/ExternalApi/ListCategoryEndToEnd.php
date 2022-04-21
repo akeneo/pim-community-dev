@@ -404,7 +404,6 @@ JSON;
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 1,
-    "level" : 0,
     "labels": {}
 }
 JSON;
@@ -419,7 +418,6 @@ JSON;
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 1,
-    "level" : 1,
     "labels": {
         "en_US": "Category A",
         "fr_FR": "Catégorie A"
@@ -437,7 +435,6 @@ JSON;
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 1,
-    "level" : 2,
     "labels": {}
 }
 JSON;
@@ -452,7 +449,6 @@ JSON;
     "parent": "categoryA",
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 2,
-    "level" : 2,
     "labels": {}
 }
 JSON;
@@ -467,7 +463,6 @@ JSON;
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 2,
-    "level" : 1,
     "labels": {}
 }
 JSON;
@@ -482,7 +477,6 @@ JSON;
     "parent": "master",
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 3,
-    "level" : 1,
     "labels": {}
 }
 JSON;
@@ -497,7 +491,6 @@ JSON;
     "parent": null,
     "updated" : "2016-06-14T13:12:50+02:00",
     "position" : 1,
-    "level" : 0,
     "labels": {}
 }
 JSON;
