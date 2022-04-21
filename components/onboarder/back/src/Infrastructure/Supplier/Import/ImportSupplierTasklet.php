@@ -160,7 +160,10 @@ final class ImportSupplierTasklet implements TaskletInterface
 
         throw new InvalidItemFromViolationsException(
             $violations,
-            new FileInvalidItem($item, $itemPosition), [], 0, $previousException
+            new FileInvalidItem($item, $itemPosition),
+            [],
+            0,
+            $previousException,
         );
     }
 

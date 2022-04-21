@@ -6,10 +6,7 @@ namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Impo
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
-use Akeneo\Tool\Component\Batch\Job\DuplicatedJobException;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
-use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
