@@ -1,0 +1,5 @@
+services:
+    akeneo.pim.enrichment.use_cases.validator.categories:
+        class: Akeneo\Category\Infrastructure\Component\Product\Connector\UseCase\Validator\ValidateCategories
+        arguments:
+            - '@pim_catalog.repository.cached_category'
