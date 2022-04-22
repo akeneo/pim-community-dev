@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Query;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 
@@ -34,9 +34,9 @@ class ListChildrenCategoriesWithCountHandler
      * @param Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
      */
     public function __construct(
-        CategoryRepositoryInterface $categoryRepository,
-        UserContext $userContext,
-        Query\ListChildrenCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories,
+        CategoryRepositoryInterface                                                                                           $categoryRepository,
+        UserContext                                                                                                           $userContext,
+        Query\ListChildrenCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
         Query\ListChildrenCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
     ) {
         $this->categoryRepository = $categoryRepository;

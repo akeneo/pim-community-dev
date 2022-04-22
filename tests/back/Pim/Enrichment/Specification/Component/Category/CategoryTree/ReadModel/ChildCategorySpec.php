@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
 
 class ChildCategorySpec extends ObjectBehavior
 {

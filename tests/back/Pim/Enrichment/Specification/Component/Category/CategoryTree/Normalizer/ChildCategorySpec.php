@@ -2,15 +2,15 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
 class ChildCategorySpec extends ObjectBehavior
 {
     function it_is_a_child_category_normalizer()
     {
-        $this->shouldHaveType(Normalizer\ChildCategory::class);
+        $this->shouldHaveType(\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory::class);
     }
 
     function it_normalize_a_list_of_children_categories()
