@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver;
+namespace Akeneo\Category\Infrastructure\Doctrine\Common\Saver;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
