@@ -39,5 +39,8 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('form_types.yml');
         $loader->load('forms.yml');
+        $loader->load('job_constraints.yml');
+        $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
     }
 }
