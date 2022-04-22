@@ -3,9 +3,9 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Adder;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Product\Updater\Adder\CategoryFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AdderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\CategoryFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\FieldAdderInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;

@@ -4,9 +4,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\CategoryFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
