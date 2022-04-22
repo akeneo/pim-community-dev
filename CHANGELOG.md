@@ -26,6 +26,8 @@
 - PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
 - PIM-10398: Fix category validator to prevent break-lines
 - PIM-10409: Allow creating a measurement value with case insensitive unit code
+- PIM-10411: Fix non numeric metric value in imports
+- PIM-10413: Patch connections routes order
 - PIM-10251: Fix locale on API call
 
 ## Improvements

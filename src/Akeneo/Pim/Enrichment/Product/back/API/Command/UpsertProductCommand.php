@@ -29,7 +29,6 @@ final class UpsertProductCommand
     public function __construct(
         private int $userId,
         private string $productIdentifier,
-        private mixed $identifierUserIntent = null,
         private ?FamilyUserIntent $familyUserIntent = null,
         private ?CategoryUserIntent $categoryUserIntent = null,
         private ?ParentUserIntent $parentUserIntent = null,
