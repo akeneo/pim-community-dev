@@ -124,7 +124,6 @@ services:
         arguments:
             -
                 - 'csv_group_export'
-                - 'csv_category_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -133,7 +132,6 @@ services:
         arguments:
             -
                 - 'xlsx_group_export'
-                - 'xlsx_category_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -142,7 +140,6 @@ services:
         arguments:
             -
                 - 'csv_group_import'
-                - 'csv_category_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -151,7 +148,6 @@ services:
         arguments:
             -
                 - 'xlsx_group_import'
-                - 'xlsx_category_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
