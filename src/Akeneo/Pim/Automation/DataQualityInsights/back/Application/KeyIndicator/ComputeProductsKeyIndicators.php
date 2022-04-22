@@ -51,7 +51,7 @@ class ComputeProductsKeyIndicators
         foreach ($this->keyIndicatorQueries as $keyIndicatorQuery) {
             $keyIndicatorResult = $keyIndicatorQuery->compute($productIdCollection);
             if (!empty($keyIndicatorResult)) {
-                $keyIndicatorsResults[$keyIndicatorQuery->getName()] = $keyIndicatorResult;
+                $keyIndicatorsResults[(string)$keyIndicatorQuery->getCode()] = $keyIndicatorResult;
             }
         }
 

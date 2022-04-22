@@ -25,9 +25,9 @@ final class GetKeyIndicators implements GetKeyIndicatorsInterface
     public function __construct(
         private GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery,
         private GetProductKeyIndicatorsQueryInterface $getProductModelKeyIndicatorsQuery,
-        string ...$keyIndicators
+        ProductKeyIndicatorsByFeatureRegistry $productKeyIndicatorsRegistry
     ) {
-        $this->keyIndicatorCodes = array_map(static fn ($keyIndicator) => new KeyIndicatorCode($keyIndicator), $keyIndicators);
+        $this->keyIndicatorCodes = $productKeyIndicatorsRegistry->getCodes();
     }
 
     public function all(ChannelCode $channelCode, LocaleCode $localeCode): array
