@@ -2,8 +2,9 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\UI;
 
-use Akeneo\Category\Infrastructure\Component\Category\Form\CategoryFormViewNormalizerInterface;
+use Akeneo\Category\Infrastructure\Component\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use function Akeneo\Pim\Enrichment\Bundle\Controller\Ui\count;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -27,10 +28,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function Akeneo\Pim\Enrichment\Bundle\Controller\Ui\count;
 
 /**
- * Category Tree Controller
+ * Category Tree Controller.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -41,22 +41,22 @@ class CategoryTreeController extends AbstractController
     protected array $rawConfiguration;
 
     public function __construct(
-        protected EventDispatcherInterface    $eventDispatcher,
-        protected UserContext                 $userContext,
-        protected SaverInterface              $categorySaver,
-        protected RemoverInterface            $categoryRemover,
-        protected SimpleFactoryInterface            $categoryFactory,
-        protected CategoryRepositoryInterface       $categoryRepository,
-        protected SecurityFacade                    $securityFacade,
-        protected TranslatorInterface               $translator,
-        private NormalizerInterface                 $normalizer,
-        private ObjectUpdaterInterface              $categoryUpdater,
-        private ValidatorInterface                  $validator,
-        private NormalizerInterface                 $constraintViolationNormalizer,
-        private CategoryItemsCounterInterface       $categoryItemsCounter,
-        private CountTreesChildrenInterface         $countTreesChildrenQuery,
+        protected EventDispatcherInterface $eventDispatcher,
+        protected UserContext $userContext,
+        protected SaverInterface $categorySaver,
+        protected RemoverInterface $categoryRemover,
+        protected SimpleFactoryInterface $categoryFactory,
+        protected CategoryRepositoryInterface $categoryRepository,
+        protected SecurityFacade $securityFacade,
+        protected TranslatorInterface $translator,
+        private NormalizerInterface $normalizer,
+        private ObjectUpdaterInterface $categoryUpdater,
+        private ValidatorInterface $validator,
+        private NormalizerInterface $constraintViolationNormalizer,
+        private CategoryItemsCounterInterface $categoryItemsCounter,
+        private CountTreesChildrenInterface $countTreesChildrenQuery,
         private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
-        array                                       $rawConfiguration
+        array $rawConfiguration
     ) {
         $resolver = new OptionsResolver();
         $this->configure($resolver);
@@ -65,13 +65,9 @@ class CategoryTreeController extends AbstractController
 
     /**
      * List category trees. The select_node_id request parameter
-     * allow to send back the tree where the node belongs with a selected  reef attribute
-     *
-     * @param Request $request
+     * allow to send back the tree where the node belongs with a selected  reef attribute.
      *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
     public function listTreeAction(Request $request): Response
     {
@@ -90,19 +86,17 @@ class CategoryTreeController extends AbstractController
         return $this->render(
             '@AkeneoPimEnrichment/CategoryTree/listTree.json.twig',
             [
-                'trees'          => $this->categoryRepository->getTrees(),
+                'trees' => $this->categoryRepository->getTrees(),
                 'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-                'include_sub'    => (bool) $request->get('include_sub', false),
-                'item_count'     => (bool) $request->get('with_items_count', true),
-                'related_entity' => $this->rawConfiguration['related_entity']
+                'include_sub' => (bool) $request->get('include_sub', false),
+                'item_count' => (bool) $request->get('with_items_count', true),
+                'related_entity' => $this->rawConfiguration['related_entity'],
             ]
         );
     }
 
     /**
-     * Move a node
-     *
-     * @param Request $request
+     * Move a node.
      *
      * @throws AccessDeniedException
      *
@@ -148,8 +142,6 @@ class CategoryTreeController extends AbstractController
      * If the node to select is not a direct child of the parent category, the tree
      * is expanded until the selected node is found amongs the children
      *
-     * @param Request $request
-     *
      * @throws AccessDeniedException
      *
      * @return Response
@@ -193,21 +185,19 @@ class CategoryTreeController extends AbstractController
         return $this->render(
             $view,
             [
-                'categories'     => $categories,
-                'parent'         => ($includeParent) ? $parent : null,
-                'include_sub'    => $includeSub,
-                'item_count'     => $withItemsCount,
-                'select_node'    => $selectNode,
-                'related_entity' => $this->rawConfiguration['related_entity']
+                'categories' => $categories,
+                'parent' => ($includeParent) ? $parent : null,
+                'include_sub' => $includeSub,
+                'item_count' => $withItemsCount,
+                'select_node' => $selectNode,
+                'related_entity' => $this->rawConfiguration['related_entity'],
             ],
             new JsonResponse()
         );
     }
 
     /**
-     * Create a tree or category
-     *
-     * @param Request $request
+     * Create a tree or category.
      *
      * @throws AccessDeniedException
      *
@@ -244,10 +234,9 @@ class CategoryTreeController extends AbstractController
     }
 
     /**
-     * Edit tree action
+     * Edit tree action.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param int $id
      *
      * @throws AccessDeniedException
      *
@@ -274,13 +263,13 @@ class CategoryTreeController extends AbstractController
         }
 
         $rootCategory = null;
-        if ($category->isRoot() === false) {
+        if (false === $category->isRoot()) {
             $rootCategory = $this->findCategory($category->getRoot());
         }
 
         $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
         $normalizedCategory = array_merge($normalizedCategory, [
-            'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
+            'root' => null === $rootCategory ? null : $this->normalizer->normalize($rootCategory, 'internal_api'),
         ]);
 
         $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
@@ -289,7 +278,7 @@ class CategoryTreeController extends AbstractController
     }
 
     /**
-     * Remove category tree
+     * Remove category tree.
      *
      * @param int $id
      *
@@ -314,7 +303,7 @@ class CategoryTreeController extends AbstractController
         } catch (ConflictHttpException $exception) {
             return new JsonResponse(
                 [
-                    'message' => $exception->getMessage()
+                    'message' => $exception->getMessage(),
                 ],
                 $exception->getStatusCode(),
             );
@@ -322,7 +311,6 @@ class CategoryTreeController extends AbstractController
 
         return new Response('', 204);
     }
-
 
     public function getCategoryTreesProductsNumberAction(): JsonResponse
     {
@@ -357,7 +345,7 @@ class CategoryTreeController extends AbstractController
     }
 
     /**
-     * Find a category from its id
+     * Find a category from its id.
      *
      * @param int $categoryId
      *
@@ -377,9 +365,7 @@ class CategoryTreeController extends AbstractController
     }
 
     /**
-     * Gets the options for the form
-     *
-     * @param CategoryInterface $category
+     * Gets the options for the form.
      *
      * @return array
      */
@@ -389,7 +375,6 @@ class CategoryTreeController extends AbstractController
     }
 
     /**
-     * @param Request                $request
      * @param CategoryInterface|null $selectNode
      *
      * @return array|ArrayCollection
@@ -412,7 +397,7 @@ class CategoryTreeController extends AbstractController
      */
     protected function buildAclName($name)
     {
-        return $this->rawConfiguration['acl'] . '_' . $name;
+        return $this->rawConfiguration['acl'].'_'.$name;
     }
 
     /**
@@ -422,12 +407,9 @@ class CategoryTreeController extends AbstractController
      */
     protected function buildRouteName($name)
     {
-        return $this->rawConfiguration['route'] . '_' . $name;
+        return $this->rawConfiguration['route'].'_'.$name;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     protected function configure(OptionsResolver $resolver)
     {
         $resolver->setRequired(['related_entity', 'form_type', 'acl', 'route']);
