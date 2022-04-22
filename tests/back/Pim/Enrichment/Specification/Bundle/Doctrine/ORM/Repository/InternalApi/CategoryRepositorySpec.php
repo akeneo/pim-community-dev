@@ -39,7 +39,7 @@ class CategoryRepositorySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\InternalApi\CategoryRepository::class);
+        $this->shouldHaveType(\Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\InternalApi\CategoryRepository::class);
     }
 
     function it_provides_translated_data()

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
