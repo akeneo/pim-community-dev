@@ -1,12 +1,13 @@
 type LocalStorage = {
   type: 'local';
-  filePath: string;
+  file_path: string;
 };
 
 type SftpStorage = {
   type: 'sftp';
-  filePath: string;
+  file_path: string;
   host: string;
+  port: number;
   username: string;
   password: string;
 };
@@ -30,13 +31,14 @@ const getDefaultStorage = (storageType: StorageType): Storage => {
     case 'local':
       return {
         type: 'local',
-        filePath: '',
+        file_path: '',
       };
     case 'sftp':
       return {
         type: 'sftp',
-        filePath: '',
+        file_path: '',
         host: '',
+        port: 22,
         username: '',
         password: '',
       };

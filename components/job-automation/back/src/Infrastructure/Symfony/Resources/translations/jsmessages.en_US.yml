@@ -8,5 +8,6 @@ akeneo.automation:
       none: None
     file_path.label: File path
     host.label: URL
+    port.label: Port
     username.label: Login
     password.label: Password

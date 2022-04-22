@@ -1,8 +1,8 @@
 import React from 'react';
-import {TextField, useTranslate} from '@akeneo-pim-community/shared';
+import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isLocalStorage} from './model';
 
-const LocalStorageConfigurator = ({storage, onChange}: StorageConfiguratorProps) => {
+const LocalStorageConfigurator = ({storage, validationErrors, onStorageChange}: StorageConfiguratorProps) => {
   if (!isLocalStorage(storage)) {
     throw new Error(`Invalid storage type "${storage.type}" for local storage configurator`);
   }
@@ -12,9 +12,10 @@ const LocalStorageConfigurator = ({storage, onChange}: StorageConfiguratorProps)
   return (
     <>
       <TextField
-        value={storage.filePath}
+        value={storage.file_path}
         label={translate('akeneo.automation.storage.file_path.label')}
-        onChange={filePath => onChange({...storage, filePath})}
+        onChange={file_path => onStorageChange({...storage, file_path})}
+        errors={filterErrors(validationErrors, '[file_path]')}
       />
     </>
   );
