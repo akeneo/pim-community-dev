@@ -52,6 +52,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseGetIdentifierFromCode
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
