@@ -10,7 +10,7 @@ pim_api_family_get:
 
 pim_api_family_create:
     path: /families
-    defaults: { _controller: pim_api.controller.family:createAction, _format: json }
+    defaults: { _controller: pim_api.controller.family:EcreateAction, _format: json }
     methods: [POST]
 
 pim_api_family_partial_update:
