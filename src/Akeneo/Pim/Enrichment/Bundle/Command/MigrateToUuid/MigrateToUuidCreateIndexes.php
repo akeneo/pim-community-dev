@@ -42,9 +42,18 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     {
         $count = 0;
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
             $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
-            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
+            if (null !== $indexName && !$this->indexExists($tableName, $indexName)) {
                 $count++;
+            }
+            $additionalIndexes = $tableProperties[self::TEMPORARY_INDEXES_INDEX] ?? [];
+            foreach ($additionalIndexes as $indexName => $columns) {
+                if (!$this->indexExists($tableName, $indexName)) {
+                    $count++;
+                }
             }
         }
 
@@ -59,8 +68,12 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
             $logContext->addContext('substep', $tableName);
             $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
-            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
-                $this->logger->notice(sprintf('Will add index for %s', $tableName), $logContext->toArray());
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
+
+            if (null !== $indexName && !$this->indexExists($tableName, $indexName)) {
+                $this->logger->notice(sprintf('Will add index on uuid for %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addIndexOnUuid(
                         $tableName,
@@ -68,11 +81,32 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
                         $indexName
                     );
                     $this->logger->notice(
-                        \sprintf('Substep done: indexes added for %s', $tableName),
+                        \sprintf('index on uuid added for %s', $tableName),
                         $logContext->toArray(['updated_items_count' => ++$updatedItems])
                     );
                 }
             }
+            $additionalIndexes = $tableProperties[self::TEMPORARY_INDEXES_INDEX] ?? [];
+            foreach ($additionalIndexes as $additionalIndexName => $columns) {
+                if ($this->tableExists($tableName) && !$this->indexExists($tableName, $additionalIndexName)) {
+                    $this->logger->notice(sprintf('Will add additional index for %s', $tableName), $logContext->toArray());
+                    if (!$context->dryRun()) {
+                        $this->addAdditionalIndex(
+                            $tableName,
+                            $additionalIndexName,
+                            $columns
+                        );
+                        $this->logger->notice(
+                            \sprintf('additional indexes added for %s', $tableName),
+                            $logContext->toArray(['updated_items_count' => ++$updatedItems])
+                        );
+                    }
+                }
+            }
+            $this->logger->notice(
+                \sprintf('Substep done: indexes added for %s', $tableName),
+                $logContext->toArray()
+            );
         }
 
         return true;
@@ -97,19 +131,25 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         );
 
         $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
+    }
 
-        if (\in_array($tableName, ['pim_versioning_version', 'pim_comment_comment']) &&
-            !$this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')
-        ) {
-            $this->connection->executeQuery(\strtr(
-                <<<SQL
-                ALTER TABLE `{tableName}`
-                ADD INDEX `migrate_to_uuid_temp_index_to_delete` (`resource_name`, `resource_uuid`, `resource_id`),
-                ALGORITHM=INPLACE,
-                LOCK=NONE;
-                SQL,
-                ['{tableName}' => $tableName]
-            ));
-        }
+    /**
+     * @param string[] $columns
+     */
+    private function addAdditionalIndex(string $tableName, string $indexName, array $columns): void
+    {
+        $this->connection->executeQuery(\strtr(
+            <<<SQL
+            ALTER TABLE `{tableName}`
+            ADD INDEX `{indexName}` (`{columnNames}`),
+            ALGORITHM=INPLACE,
+            LOCK=NONE;
+            SQL,
+            [
+                '{tableName}' => $tableName,
+                '{indexName}' => $indexName,
+                '{columnNames}' => \implode('`, `', $columns)
+            ]
+        ));
     }
 }
