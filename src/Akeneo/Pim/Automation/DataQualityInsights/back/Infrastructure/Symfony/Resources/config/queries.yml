@@ -210,7 +210,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery'
         tags:
-            - { name:  akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query}
+            - { name:  akeneo.pim.automation.data_quality_insights.compute_product_key_indicator}
 
     akeneo.pim.automation.data_quality_insights.query.compute_product_models_enrichment_status_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsEnrichmentStatusQuery
@@ -218,21 +218,21 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductModelsAndCriterionQuery'
         tags:
-            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query }
+            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator }
 
     akeneo.pim.automation.data_quality_insights.query.compute_products_with_image_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsWithImageQuery
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery'
         tags:
-            - { name:  akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query}
+            - { name:  akeneo.pim.automation.data_quality_insights.compute_product_key_indicator}
 
     akeneo.pim.automation.data_quality_insights.query.compute_product_models_with_image_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsWithImageQuery
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductModelsAndCriterionQuery'
         tags:
-            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query }
+            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator }
 
     akeneo.pim.automation.data_quality_insights.query.product.get_enrichment_images_masks:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetAttributeTypesMasksQuery
