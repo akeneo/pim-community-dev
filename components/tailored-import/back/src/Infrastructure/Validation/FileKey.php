@@ -18,9 +18,4 @@ use Symfony\Component\Validator\Constraint;
 class FileKey extends Constraint
 {
     public const FILE_DOES_NOT_EXIST = 'akeneo.tailored_import.validation.file_key.file_does_not_exist';
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.file_key';
-    }
 }

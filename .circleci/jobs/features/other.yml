@@ -471,6 +471,9 @@ jobs:
                   name: Tailored Import Back Tests
                   command: PIM_CONTEXT=tailored-import make ci-back
             - run:
+                  name: Job Automation Back Tests
+                  command: PIM_CONTEXT=job-automation make ci-back
+            - run:
                   name: Install assets & css
                   command: make assets css
             - run:
@@ -494,6 +497,9 @@ jobs:
             - run:
                   name: Tailored Import Front Tests
                   command: PIM_CONTEXT=tailored-import make ci-front
+            - run:
+                  name: Job Automation Front Tests
+                  command: PIM_CONTEXT=job-automation make ci-front
             - store_test_results:
                   path: ${TYPE}/var/tests
             - store_artifacts:

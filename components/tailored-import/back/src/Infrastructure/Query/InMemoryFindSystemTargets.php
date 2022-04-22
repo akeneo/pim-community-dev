@@ -28,7 +28,7 @@ class InMemoryFindSystemTargets implements FindSystemTargetsInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
@@ -44,6 +44,7 @@ class InMemoryFindSystemTargets implements FindSystemTargetsInterface
         }
 
         $search = strtolower($search);
+
         return array_filter($fields, function (string $field) use ($search, $localeCode): bool {
             $label = $this->translator->trans(sprintf('pim_common.%s', $field), [], null, $localeCode);
 

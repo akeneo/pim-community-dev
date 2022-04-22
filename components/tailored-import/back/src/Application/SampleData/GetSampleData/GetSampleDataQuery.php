@@ -12,7 +12,8 @@ final class GetSampleDataQuery
 {
     public string $fileKey;
 
-    public int $columnIndex;
+    /** @var array<int> */
+    public array $columnIndices;
 
     public string $sheetName;
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {Block, Helper, SectionTitle, IconButton, CloseIcon} from 'akeneo-design-system';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {Column, ColumnIdentifier, generateColumnName, MAX_SOURCE_COUNT_BY_DATA_MAPPING} from '../../models';
+import {Column, ColumnIdentifier, generateColumnName, MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS} from '../../models';
 import {SourceDropdown} from './SourceDropdown';
 
 const SourcesContainer = styled.div`
@@ -18,13 +18,14 @@ const BlocksContainer = styled.div`
 `;
 
 type SourcesProps = {
+  isMultiSource: boolean;
   sources: ColumnIdentifier[];
   columns: Column[];
   validationErrors: ValidationError[];
   onSourcesChange: (sources: ColumnIdentifier[]) => void;
 };
 
-const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesProps) => {
+const Sources = ({sources, columns, validationErrors, isMultiSource, onSourcesChange}: SourcesProps) => {
   const translate = useTranslate();
 
   const handleAddSource = (selectedColumn: Column) => {
@@ -35,7 +36,7 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
     onSourcesChange(sources.filter(source => source !== sourceToRemove));
   };
 
-  const canAddSource = MAX_SOURCE_COUNT_BY_DATA_MAPPING > sources.length;
+  const canAddSource = isMultiSource ? MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS > sources.length : 0 === sources.length;
   const columnsAvailableToAddSource = columns.filter(({uuid}) => !sources.includes(uuid));
 
   return (
@@ -76,9 +77,9 @@ const Sources = ({sources, columns, validationErrors, onSourcesChange}: SourcesP
             {translate(
               'akeneo.tailored_import.data_mapping.sources.add.helper',
               {
-                limit: MAX_SOURCE_COUNT_BY_DATA_MAPPING,
+                limit: isMultiSource ? MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS : 1,
               },
-              MAX_SOURCE_COUNT_BY_DATA_MAPPING
+              isMultiSource ? MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS : 1
             )}
           </Helper>
         )}

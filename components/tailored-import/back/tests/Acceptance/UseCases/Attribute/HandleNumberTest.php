@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\NumberSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\NumberSourceConfiguration;
 use PHPUnit\Framework\Assert;
 
 final class HandleNumberTest extends AttributeTestCase
@@ -36,7 +36,10 @@ final class HandleNumberTest extends AttributeTestCase
     ): void {
         $executeDataMappingQuery = new ExecuteDataMappingQuery(
             new Row($row),
-            DataMappingCollection::create($dataMappings),
+            DataMappingCollection::create([
+                $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
+                ...$dataMappings,
+            ]),
         );
 
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
@@ -56,21 +59,6 @@ final class HandleNumberTest extends AttributeTestCase
                 ],
                 'data_mappings' => [
                     DataMapping::create(
-                        'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
-                        AttributeTarget::create(
-                            'sku',
-                            'pim_catalog_identifier',
-                            null,
-                            null,
-                            'set',
-                            'skip',
-                            null,
-                        ),
-                        ['25621f5a-504f-4893-8f0c-9f1b0076e53e'],
-                        OperationCollection::create([]),
-                        [],
-                    ),
-                    DataMapping::create(
                         'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
                         AttributeTarget::create(
                             'year',
@@ -79,7 +67,7 @@ final class HandleNumberTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new NumberSourceParameter('.'),
+                            new NumberSourceConfiguration('.'),
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -94,7 +82,7 @@ final class HandleNumberTest extends AttributeTestCase
                             'fr_FR',
                             'set',
                             'skip',
-                            new NumberSourceParameter(',')
+                            new NumberSourceConfiguration(',')
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),

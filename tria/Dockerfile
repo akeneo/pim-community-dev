@@ -139,6 +139,7 @@ COPY tria/public public
 COPY tria/frontend frontend
 COPY tria/src src
 COPY tria/templates templates
+COPY components components
 COPY grth grth
 COPY tria/upgrades upgrades
 COPY tria/front-packages front-packages
@@ -220,6 +221,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/bin bin
 COPY --from=builder --chown=www-data:www-data /srv/pim/config config
 COPY --from=builder --chown=www-data:www-data /srv/pim/public public
 COPY --from=builder --chown=www-data:www-data /srv/pim/src src
+COPY --from=builder --chown=www-data:www-data /srv/pim/components components
 COPY --from=builder --chown=www-data:www-data /srv/pim/grth grth
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/templates templates

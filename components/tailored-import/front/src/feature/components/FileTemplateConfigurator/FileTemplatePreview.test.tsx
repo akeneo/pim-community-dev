@@ -12,7 +12,7 @@ const fileStructure: FileStructure = {
   sheet_name: 'first sheet',
 };
 
-test('it display a placeholder when there is no rows', async () => {
+test('it displays a placeholder when there is no rows', async () => {
   await renderWithProviders(
     <FileTemplatePreview
       fileTemplateInformation={{
@@ -27,7 +27,7 @@ test('it display a placeholder when there is no rows', async () => {
   expect(screen.getByText('akeneo.tailored_import.validation.file_preview.empty_sheet.title')).toBeInTheDocument();
 });
 
-test('it display rows', async () => {
+test('it displays rows', async () => {
   await renderWithProviders(
     <FileTemplatePreview
       fileTemplateInformation={{

@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 
+use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 
-class OperationCollectionHydrator
+class OperationCollectionHydrator implements OperationCollectionHydratorInterface
 {
     public function hydrate(array $normalizedOperations): OperationCollection
     {
@@ -24,9 +25,7 @@ class OperationCollectionHydrator
             array_map(
                 static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
                     CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
-                    default => throw new \InvalidArgumentException(
-                        sprintf('Unsupported "%s" Operation type', $normalizedOperation['type']),
-                    ),
+                    default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
                 },
                 $normalizedOperations,
             ),

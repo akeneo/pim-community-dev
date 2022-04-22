@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 class TargetHydrator
 {
     public function __construct(
-        private SourceParameterHydrator $sourceParameterHydrator,
+        private SourceConfigurationHydrator $sourceConfigurationHydrator,
     ) {
     }
 
@@ -41,8 +41,8 @@ class TargetHydrator
             throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $normalizedTarget['code']));
         }
 
-        $sourceParameter = $this->sourceParameterHydrator->hydrate(
-            $normalizedTarget['source_parameter'] ?? null,
+        $sourceConfiguration = $this->sourceConfigurationHydrator->hydrate(
+            $normalizedTarget['source_configuration'] ?? null,
             $attribute->type(),
         );
 
@@ -53,7 +53,7 @@ class TargetHydrator
             $normalizedTarget['locale'],
             $normalizedTarget['action_if_not_empty'],
             $normalizedTarget['action_if_empty'],
-            $sourceParameter,
+            $sourceConfiguration,
         );
     }
 

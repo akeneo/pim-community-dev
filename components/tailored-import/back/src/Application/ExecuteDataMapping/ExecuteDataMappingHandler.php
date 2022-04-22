@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
@@ -22,7 +22,7 @@ class ExecuteDataMappingHandler
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
         private UserIntentAggregatorInterface $userIntentAggregator,
-        private SourceParameterApplier $sourceParameterApplier,
+        private SourceConfigurationApplier $sourceConfigurationApplier,
         private GetIdentifierAttributeCodeInterface $getIdentifierAttributeCode,
     ) {
     }
@@ -38,20 +38,32 @@ class ExecuteDataMappingHandler
             $target = $dataMapping->getTarget();
             $sources = $dataMapping->getSources();
 
-            $value = $row->getCellData($sources[0]);
-
-            if ($target instanceof AttributeTarget && $target->getSourceParameter() !== null) {
-                $value = $this->sourceParameterApplier->apply($target->getSourceParameter(), $value);
-            }
-
-            $value = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
-
             if ($target instanceof AttributeTarget && $target->getCode() === $identifierAttributeCode) {
-                $productIdentifier = $value;
-            } else {
-                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
-                $userIntents[] = $userIntentFactory->create($target, $value);
+                $productIdentifier = $row->getCellData($sources[0]);
+
+                continue;
             }
+
+            $processedValues = [];
+            foreach ($sources as $source) {
+                $value = $row->getCellData($source);
+
+                if ($target instanceof AttributeTarget && null !== $target->getSourceConfiguration()) {
+                    $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
+                }
+
+                $processedValues[] = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
+            }
+
+            $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
+            $userIntents[] = $userIntentFactory->create(
+                $target,
+                1 === \count($sources) ? $processedValues[0] : $processedValues,
+            );
+        }
+
+        if (null === $productIdentifier) {
+            throw new \LogicException('Missing data mapping targeting the identifier attribute');
         }
 
         $userIntents = $this->userIntentAggregator->aggregateByTarget($userIntents);

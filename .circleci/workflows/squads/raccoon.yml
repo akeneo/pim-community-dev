@@ -1,10 +1,10 @@
 workflows:
-  raccoon_pull_request:
+  raccoon_tailored_import_pull_request:
     when:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - ready_to_build?:
+      - ready_to_test_tailored_import?:
           type: approval
           filters:
             branches:
@@ -13,7 +13,7 @@ workflows:
                 - /RAC-.*/
       - checkout:
           requires:
-            - ready_to_build?
+            - ready_to_test_tailored_import?
       - build_srnt_dev:
           requires:
             - checkout
@@ -27,3 +27,32 @@ workflows:
           requires:
             - test_front_tailored_import
             - test_back_tailored_import
+
+  raccoon_job_automation_pull_request:
+    when:
+      not:
+        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+    jobs:
+      - ready_to_test_job_automation?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - checkout:
+          requires:
+            - ready_to_test_job_automation?
+      - build_srnt_dev:
+          requires:
+            - checkout
+      - test_front_job_automation:
+          requires:
+            - build_srnt_dev
+      - test_back_job_automation:
+          requires:
+            - build_srnt_dev
+      - pull_request_success:
+          requires:
+            - test_front_job_automation
+            - test_back_job_automation

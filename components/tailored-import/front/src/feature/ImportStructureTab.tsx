@@ -63,7 +63,7 @@ const ImportStructureTab = ({
         null !== identifierColumn
           ? await sampleDataFetcher(
               fileKey,
-              identifierColumn.index,
+              [identifierColumn.index],
               fileStructure.sheet_name,
               fileStructure.first_product_row
             )

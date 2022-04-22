@@ -19,12 +19,19 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class TextUserIntentFactory implements UserIntentFactoryInterface
+final class TextUserIntentFactory implements UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string $value): ValueUserIntent
+    /**
+     * @param AttributeTarget $target
+     */
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
-        if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a AttributeTarget');
+        if (!$this->supports($target)) {
+            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"');
+        }
+
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException('TextUserIntentFactory only supports string value');
         }
 
         return new SetTextValue(

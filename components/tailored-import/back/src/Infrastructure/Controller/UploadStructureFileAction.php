@@ -53,7 +53,7 @@ class UploadStructureFileAction
 
         $uploadFlatFileCommand = new UploadStructureFileCommand(
             $uploadedFile->getPathname(),
-            $uploadedFile->getClientOriginalName()
+            $uploadedFile->getClientOriginalName(),
         );
 
         $fileInfo = $this->uploadFlatFileHandler->handle($uploadFlatFileCommand);

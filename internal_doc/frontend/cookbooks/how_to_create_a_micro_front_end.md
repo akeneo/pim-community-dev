@@ -56,7 +56,7 @@ Then you need to run the following command in your project:
 
 The script will create all the things you need to develop a micro-frontend in the PIM.
 
-To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start` or `docker-compose run --rm -p 3000:3000 node yarn --cwd=$MICRO_FRONTEND_PATH/$MICRO_FRONTEND_NAME app:start`.
+To test it you can launch the following command in `$MICRO_FRONTEND_PATH` directory: `yarn app:start` or `docker-compose run --rm -p 3000:3000 node yarn workspace $MICRO_FRONTEND_NAME app:start`.
 
 ## Replace the package name
 Unfortunately it's not possible to create a scoped package with create-react-app (for example: @pim-community/measurement).

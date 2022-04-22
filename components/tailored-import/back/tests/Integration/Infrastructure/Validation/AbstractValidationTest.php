@@ -30,10 +30,15 @@ abstract class AbstractValidationTest extends IntegrationTestCase
             $foundViolations[$violation->getPropertyPath()][] = $violation->getMessage();
         }
 
+        $propertyPathFound = array_keys($foundViolations);
         $this->assertArrayHasKey(
             $propertyPathExpected,
             $foundViolations,
-            sprintf('No violation found at path "%s"', $propertyPathExpected)
+            sprintf(
+                'No violation found at path "%s", found "%s"',
+                $propertyPathExpected,
+                implode(',', array_values($propertyPathFound))
+            )
         );
 
         $foundViolationMessages = $foundViolations[$propertyPathExpected];
@@ -50,7 +55,9 @@ abstract class AbstractValidationTest extends IntegrationTestCase
 
     protected function assertNoViolation(ConstraintViolationListInterface $violationList): void
     {
-        $this->assertCount(0, $violationList, 'Violation list should be empty');
+        $propertyPathFound = array_map(fn ($violation) => $violation->getPropertyPath(), iterator_to_array($violationList));
+
+        $this->assertCount(0, $violationList, sprintf('Violation list should be empty, found on following path "%s"', implode(', ', $propertyPathFound)));
     }
 
     protected function getValidator(): ValidatorInterface

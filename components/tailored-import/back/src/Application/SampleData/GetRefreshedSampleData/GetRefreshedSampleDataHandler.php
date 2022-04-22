@@ -22,13 +22,13 @@ final class GetRefreshedSampleDataHandler
     {
         $fileReader = $this->xlsxFileReaderFactory->create($getRefreshedSampleDataQuery->fileKey);
 
-        $extractedColumn = $fileReader->readColumnValues(
+        $extractedColumns = $fileReader->readColumnsValues(
             $getRefreshedSampleDataQuery->sheetName,
             $getRefreshedSampleDataQuery->productLine,
-            $getRefreshedSampleDataQuery->columnIndex,
+            $getRefreshedSampleDataQuery->columnIndices,
         );
 
-        $sampleData = ReplaceSampleData::fromExtractedColumn($extractedColumn, $getRefreshedSampleDataQuery->currentSample);
+        $sampleData = ReplaceSampleData::fromExtractedColumns($extractedColumns, $getRefreshedSampleDataQuery->currentSample);
 
         return GetRefreshedSampleDataResult::create($sampleData);
     }

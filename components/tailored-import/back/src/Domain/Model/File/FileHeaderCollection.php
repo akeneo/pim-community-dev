@@ -32,7 +32,7 @@ class FileHeaderCollection implements \Countable, \IteratorAggregate
     {
         $fileHeaderInstances = array_map(
             static fn (array $normalizedFileHeader) => FileHeader::createFromNormalized($normalizedFileHeader),
-            $normalizedFileHeaders
+            $normalizedFileHeaders,
         );
 
         return new self($fileHeaderInstances);
@@ -44,10 +44,7 @@ class FileHeaderCollection implements \Countable, \IteratorAggregate
         $columnIterator = $columnCollection->getIterator();
 
         if ($fileHeaderIterator->count() !== $columnIterator->count()) {
-            throw new MismatchedFileHeadersException(
-                $columnCollection->getLabels(),
-                array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders)
-            );
+            throw new MismatchedFileHeadersException($columnCollection->getLabels(), array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders));
         }
 
         while ($fileHeaderIterator->valid()) {
@@ -55,10 +52,7 @@ class FileHeaderCollection implements \Countable, \IteratorAggregate
             $currentColumn = $columnIterator->current();
 
             if (!$currentFileHeader->matchToColumn($currentColumn)) {
-                throw new MismatchedFileHeadersException(
-                    $columnCollection->getLabels(),
-                    array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders)
-                );
+                throw new MismatchedFileHeadersException($columnCollection->getLabels(), array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders));
             }
 
             $fileHeaderIterator->next();
