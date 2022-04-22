@@ -41,6 +41,9 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid:
         parent: base_uuid_migration_step
 
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCleanCompletenessTable:
+        parent: base_uuid_migration_step
+
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid:
         parent: base_uuid_migration_step
 
@@ -65,6 +68,7 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateIndexes'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCleanCompletenessTable'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'

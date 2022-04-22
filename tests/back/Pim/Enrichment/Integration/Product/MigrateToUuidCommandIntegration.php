@@ -37,6 +37,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->assertTriggersExistAndWork();
         $this->assertProductsAreReindexed();
         $this->assertColumnsAreNullable();
+        $this->assertNoGhostCompletenessRecords();
 
         // check that the migration can be launched twice without error
         $this->launchMigrationCommand();
@@ -344,6 +345,21 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         }
     }
 
+    private function assertNoGhostCompletenessRecords(): void
+    {
+        Assert::assertSame(
+            0,
+            (int) $this->connection->executeQuery(
+                <<<SQL
+                SELECT COUNT(c.id)
+                FROM pim_catalog_completeness c
+                LEFT JOIN pim_catalog_product p ON p.id = c.product_id
+                WHERE p.id IS NULL
+                SQL
+            )->fetchOne()
+        );
+    }
+
     private function getIndexedProducts(): array
     {
         /** @var Client $esClient */
@@ -414,6 +430,19 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                         '{associated_product_id}' => $i - 1,
                     ]
                 )
+            );
+        }
+
+        // INSERT ghost records in pim_catalog_completeness table
+        for ($i = 1; $i <= 5; $i++) {
+            $this->connection->executeQuery(
+                <<<SQL
+                INSERT INTO pim_catalog_completeness (locale_id, channel_id, product_id, missing_count, required_count)
+                SELECT locale.id, channel.id, (SELECT MAX(id) + :i FROM pim_catalog_product), 1, 5
+                FROM pim_catalog_locale locale,
+                     pim_catalog_channel channel
+                SQL,
+                ['i' => $i]
             );
         }
 

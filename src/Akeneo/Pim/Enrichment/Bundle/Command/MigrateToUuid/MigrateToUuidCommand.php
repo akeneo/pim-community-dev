@@ -28,6 +28,7 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidCreateIndexes,
         MigrateToUuidStep $migrateToUuidAddTriggers,
         MigrateToUuidStep $migrateToUuidFillProductUuid,
+        MigrateToUuidStep $migrateToUuidCleanCompletenessTable,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
         MigrateToUuidStep $migrateToUuidFillJson,
         MigrateToUuidStep $migrateToUuidSetNotNullableUuidColumns,
@@ -41,6 +42,7 @@ class MigrateToUuidCommand extends Command
             $migrateToUuidCreateIndexes,
             $migrateToUuidAddTriggers,
             $migrateToUuidFillProductUuid,
+            $migrateToUuidCleanCompletenessTable,
             $migrateToUuidFillForeignUuid,
             $migrateToUuidFillJson,
             $migrateToUuidSetNotNullableUuidColumns,
@@ -154,8 +156,8 @@ class MigrateToUuidCommand extends Command
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
-            ':code' => self::$DQI_JOB_NAME,
-            ':status' => Status::IN_PROGRESS,
+            'code' => self::$DQI_JOB_NAME,
+            'status' => Status::IN_PROGRESS,
         ]);
     }
 
