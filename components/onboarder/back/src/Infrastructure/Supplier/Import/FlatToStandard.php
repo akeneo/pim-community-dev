@@ -26,20 +26,13 @@ class FlatToStandard implements ArrayConverterInterface
 
         return [
             'supplier_code' => (string) $supplier['supplier_code'],
-            'supplier_label' => isset($supplier['supplier_label']) && $supplier['supplier_label']
-                ? $supplier['supplier_label']
-                : null
-            ,
+            'supplier_label' => $supplier['supplier_label'],
             'contributor_emails' => $this->convertContributorEmails($supplier),
         ];
     }
 
-    private function convertContributorEmails(array $supplier): ?array
+    private function convertContributorEmails(array $supplier): array
     {
-        if (!isset($supplier['contributor_emails'])) {
-            return null;
-        }
-
         if (empty($supplier['contributor_emails'])) {
             return [];
         }

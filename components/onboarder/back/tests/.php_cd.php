@@ -101,6 +101,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Application\Supplier',
             'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
             // PIM coupling
+            'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
             'Ramsey\Uuid\Uuid',
