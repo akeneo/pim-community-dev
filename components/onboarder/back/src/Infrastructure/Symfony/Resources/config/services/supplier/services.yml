@@ -91,7 +91,6 @@ services:
 
     # Import
     onboarder_serenity.job.xlsx_supplier_import:
-        public: true
         class: '%pim_connector.job.simple_job.class%'
         arguments:
             - 'onboarder_serenity_xlsx_supplier_import'
