@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Connector\Reader\Database;
+namespace Akeneo\Category\Infrastructure\Component\Connector\Reader\Database;
 
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
