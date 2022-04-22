@@ -168,7 +168,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                     'value' => [
                         new Assert\Type([
                             'type' => 'bool',
-                            'message' => 'In order to search on family has_product you must send a {{ type }} value, {{ value }} given.',
+                            'message' => 'The "has_products" filter requires a boolean value, and the submitted value is not.',
                         ]),
                     ],
                 ]),
