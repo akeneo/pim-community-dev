@@ -17,6 +17,7 @@ services:
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
+            - '@Akeneo\Category\API\CommandBus'
 
     pim_enrich.controller.rest.category:
         public: true

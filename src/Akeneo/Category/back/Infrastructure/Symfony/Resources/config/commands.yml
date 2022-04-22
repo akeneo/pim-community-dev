@@ -1,0 +1,8 @@
+services:
+  Akeneo\Category\API\CommandBus: ~
+  Akeneo\Category\API\Command\DoctrineCreateCategoryHandler:
+    arguments:
+      - '@pim_catalog.factory.category'
+      - '@pim_catalog.updater.category'
+      - '@validator'
+      - '@pim_catalog.saver.category'
