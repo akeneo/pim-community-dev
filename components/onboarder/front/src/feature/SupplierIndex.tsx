@@ -13,6 +13,7 @@ const SecondaryActions = () => {
     const translate = useTranslate();
     const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
     const exportRoute = useRoute('onboarder_serenity_supplier_export');
+    const importRoute = '#' + useRoute('pim_importexport_import_profile_index');
 
     return (
         <Dropdown>
@@ -29,6 +30,11 @@ const SecondaryActions = () => {
                         <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
                     </Dropdown.Header>
                     <Dropdown.ItemCollection>
+                        <Dropdown.Item>
+                            <Link href={importRoute}>
+                                {translate('onboarder.supplier.supplier_list.dropdown.import_suppliers')}
+                            </Link>
+                        </Dropdown.Item>
                         <Dropdown.Item>
                             <Link href={exportRoute}>
                                 {translate('onboarder.supplier.supplier_list.dropdown.export_suppliers')}
