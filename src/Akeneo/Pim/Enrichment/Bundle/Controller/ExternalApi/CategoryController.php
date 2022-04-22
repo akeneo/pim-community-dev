@@ -173,7 +173,7 @@ class CategoryController
             $this->normalizer->normalize(
                 $categories,
                 'external_api',
-                ['with_position' => true === $request->query->getBoolean('with_position')]
+                ['with_position' => $request->query->getBoolean('with_position')]
             ),
             $parameters,
             $count
