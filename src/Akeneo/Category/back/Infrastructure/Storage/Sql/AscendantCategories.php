@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
+namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
+use Akeneo\Category\Infrastructure\Component\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Query;
+namespace Akeneo\Category\Infrastructure\Component\Query;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
