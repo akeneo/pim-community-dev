@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field;
+namespace Akeneo\Category\Infrastructure\Component\Product\Updater\Clearer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\ClearerInterface;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Webmozart\Assert\Assert;
 
 /**

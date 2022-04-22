@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Product\Updater\Remover\CategoryFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\CategoryFieldRemover;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\FieldRemoverInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
