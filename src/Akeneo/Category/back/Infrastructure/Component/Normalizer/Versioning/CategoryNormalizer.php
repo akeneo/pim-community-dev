@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
+namespace Akeneo\Category\Infrastructure\Component\Normalizer\Versioning;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;

@@ -2,11 +2,10 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning;
 
-use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer;
+use Akeneo\Category\Infrastructure\Component\Normalizer\Versioning\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\TranslationNormalizer;
-
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
