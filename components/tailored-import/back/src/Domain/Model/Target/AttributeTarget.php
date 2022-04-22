@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeTarget implements TargetInterface
 {
-    const TYPE = 'attribute';
+    public const TYPE = 'attribute';
 
     private function __construct(
         private string $code,

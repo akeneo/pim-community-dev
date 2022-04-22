@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation;
 
 use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
@@ -41,7 +40,7 @@ class ReadColumnsValidator extends ConstraintValidator
                 ReadColumns::MISSING_QUERY_PARAMS,
                 [
                     '{{ missing_params }}' => implode(', ', $missingParams),
-                ]
+                ],
             )->addViolation();
 
             return;
@@ -73,14 +72,14 @@ class ReadColumnsValidator extends ConstraintValidator
         $row = current($reader->readRows(
             $fileStructure['sheet_name'],
             $fileStructure['header_row'],
-            1
+            1,
         ));
 
         $this->validateLessThan500Column($row);
     }
 
     private function validateLessThan500Column(
-        array $columns
+        array $columns,
     ): void {
         if (count($columns) > 500) {
             $this->context->buildViolation(ReadColumns::MAX_COUNT_REACHED)

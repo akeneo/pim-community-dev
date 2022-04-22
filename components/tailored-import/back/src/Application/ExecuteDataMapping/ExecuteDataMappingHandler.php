@@ -48,7 +48,7 @@ class ExecuteDataMappingHandler
             foreach ($sources as $source) {
                 $value = $row->getCellData($source);
 
-                if ($target instanceof AttributeTarget && $target->getSourceConfiguration() !== null) {
+                if ($target instanceof AttributeTarget && null !== $target->getSourceConfiguration()) {
                     $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
                 }
 

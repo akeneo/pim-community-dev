@@ -25,9 +25,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
             array_map(
                 static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
                     CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
-                    default => throw new \InvalidArgumentException(
-                        sprintf('Unsupported "%s" Operation type', $normalizedOperation['type']),
-                    ),
+                    default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
                 },
                 $normalizedOperations,
             ),

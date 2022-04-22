@@ -26,7 +26,7 @@ class NumberSourceConfigurationApplier implements SourceConfigurationApplierInte
             throw new \InvalidArgumentException('Cannot apply Number source configuration on this value');
         }
 
-        if (str_contains($value, self::DEFAULT_DECIMAL_SEPARATOR) && $sourceConfiguration->getDecimalSeparator() !== self::DEFAULT_DECIMAL_SEPARATOR) {
+        if (str_contains($value, self::DEFAULT_DECIMAL_SEPARATOR) && self::DEFAULT_DECIMAL_SEPARATOR !== $sourceConfiguration->getDecimalSeparator()) {
             throw new \InvalidArgumentException(sprintf('Unexpected valid decimal separator "%s" on this value', self::DEFAULT_DECIMAL_SEPARATOR));
         }
 

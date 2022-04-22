@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraint;
 final class MeasurementSourceConfiguration extends Constraint
 {
     public function __construct(
-        private string $familyCode
+        private string $familyCode,
     ) {
         parent::__construct();
     }

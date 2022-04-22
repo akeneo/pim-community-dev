@@ -64,21 +64,21 @@ class IsValidFileStructureValidator extends ConstraintValidator
             'fields' => [
                 'header_row' => new Range([
                     'min' => FileStructure::MINIMUM_HEADER_LINE,
-                    'max' => FileStructure::MAXIMUM_HEADER_LINE
+                    'max' => FileStructure::MAXIMUM_HEADER_LINE,
                 ]),
                 'first_column' => new Range([
                     'min' => 0,
-                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT
+                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT,
                 ]),
                 'first_product_row' => new Range([
                     'min' => $value['header_row'] + 1,
                     'minMessage' => IsValidFileStructure::FIRST_PRODUCT_ROW_SHOULD_BE_AFTER_HEADER_ROW,
-                    'max' => FileStructure::MAXIMUM_FIRST_PRODUCT_LINE
+                    'max' => FileStructure::MAXIMUM_FIRST_PRODUCT_LINE,
                 ]),
                 'unique_identifier_column' => new Range([
                     'min' => $value['first_column'],
                     'minMessage' => IsValidFileStructure::UNIQUE_IDENTIFIER_COLUMN_SHOULD_BE_AFTER_FIRST_COLUMN,
-                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT
+                    'max' => FileStructure::MAXIMUM_COLUMN_COUNT,
                 ]),
             ],
             'allowExtraFields' => true,

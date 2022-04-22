@@ -1,7 +1,7 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for tailored import
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/tailored-import/back/tests/phpstan-ee.neon
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/tailored-import/back/tests/.php_cs.php components/tailored-import/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/tailored-import/back/tests/.php_cs.php components/tailored-import/back/src
 
 .PHONY: lint-fix-back
 lint-fix-back: #Doc: launch PHP CS fixer for tailored import
@@ -32,18 +32,18 @@ else
 endif
 
 lint-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:check
 
 unit-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import test:unit:run
 
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
 .PHONY: ci-front
 ci-front:
-	$(YARN_RUN) run --cwd=components/tailored-import/front test:unit:run
-	$(YARN_RUN) run --cwd=components/tailored-import/front lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import test:unit:run
 
 .PHONY: ci
 ci: ci-back ci-front

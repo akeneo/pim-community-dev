@@ -100,13 +100,12 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $sheetList;
     }
 
-
     private function selectSheet(?string $sheetName): SheetInterface
     {
         $sheetIterator = $this->fileReader->getSheetIterator();
         $sheetIterator->rewind();
 
-        if ($sheetName === null) {
+        if (null === $sheetName) {
             return $sheetIterator->current();
         }
 

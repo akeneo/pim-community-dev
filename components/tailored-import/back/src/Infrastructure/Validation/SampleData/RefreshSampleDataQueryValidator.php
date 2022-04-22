@@ -40,7 +40,7 @@ class RefreshSampleDataQueryValidator extends ConstraintValidator
                 RefreshSampleDataQuery::MISSING_QUERY_PARAMS,
                 [
                     '{{ missing_params }}' => implode(', ', $missingParams),
-                ]
+                ],
             )->addViolation();
         }
     }

@@ -29,7 +29,7 @@ class SampleDataQueryValidator extends ConstraintValidator
             'file_key',
             'column_indices',
             'sheet_name',
-            'product_line'
+            'product_line',
         ];
 
         $missingParams = array_filter($requiredParams, static fn ($param) => null === $value->get($param));
@@ -39,7 +39,7 @@ class SampleDataQueryValidator extends ConstraintValidator
                 SampleDataQuery::MISSING_QUERY_PARAMS,
                 [
                     '{{ missing_params }}' => implode(', ', $missingParams),
-                ]
+                ],
             )->addViolation();
         }
     }

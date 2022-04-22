@@ -25,7 +25,7 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
 {
     public function __construct(
         private FilesystemProvider $filesystemProvider,
-        private XlsxFileReaderFactoryInterface $fileReaderFactory
+        private XlsxFileReaderFactoryInterface $fileReaderFactory,
     ) {
     }
 
@@ -53,9 +53,9 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
 
     public function validateSheetExist(
         GetFileTemplateInformationQuery $query,
-        IsValidFileTemplateInformationQuery $constraint
+        IsValidFileTemplateInformationQuery $constraint,
     ): void {
-        if ($query->sheetName === null) {
+        if (null === $query->sheetName) {
             return;
         }
 

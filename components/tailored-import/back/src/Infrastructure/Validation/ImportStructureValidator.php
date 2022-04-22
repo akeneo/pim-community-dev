@@ -32,7 +32,7 @@ class ImportStructureValidator extends ConstraintValidator
             'fields' => [
                 'columns' => new Columns(),
                 'data_mappings' => new DataMappings($columnsUuid),
-            ]
+            ],
         ]));
     }
 }

@@ -23,7 +23,7 @@ final class GeneratePreviewDataResult
     public function normalize(): array
     {
         return [
-            'preview_data' => $this->previewData
+            'preview_data' => $this->previewData,
         ];
     }
 }

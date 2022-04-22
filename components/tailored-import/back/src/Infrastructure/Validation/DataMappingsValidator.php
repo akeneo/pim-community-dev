@@ -88,6 +88,7 @@ class DataMappingsValidator extends ConstraintValidator
             if ('attribute' === $dataMapping['target']['type']) {
                 $targetCodes[] = $dataMapping['target']['code'];
             }
+
             return $targetCodes;
         }, []);
 

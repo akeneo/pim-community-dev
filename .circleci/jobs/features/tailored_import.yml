@@ -41,6 +41,9 @@ jobs:
           name: Lint back
           command: PIM_CONTEXT=tailored-import make lint-back
       - run:
+          name: Coupling back
+          command: PIM_CONTEXT=tailored-import make coupling-back
+      - run:
           name: Unit back
           command: PIM_CONTEXT=tailored-import make unit-back
       - run:

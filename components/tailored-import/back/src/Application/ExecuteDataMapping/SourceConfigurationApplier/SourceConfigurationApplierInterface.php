@@ -13,5 +13,6 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\Sourc
 interface SourceConfigurationApplierInterface
 {
     public function applySourceConfiguration(SourceConfigurationInterface $sourceConfiguration, string $value): string;
+
     public function supports(SourceConfigurationInterface $sourceConfiguration, string $value): bool;
 }

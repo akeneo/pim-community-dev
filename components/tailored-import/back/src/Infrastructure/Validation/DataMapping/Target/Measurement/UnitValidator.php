@@ -29,7 +29,7 @@ final class UnitValidator extends ConstraintValidator
                 [
                     '{{ unit_code }}' => $unitCode,
                     '{{ measurement_family }}' => $constraint->getFamilyCode(),
-                ]
+                ],
             )
             ->addViolation();
         }

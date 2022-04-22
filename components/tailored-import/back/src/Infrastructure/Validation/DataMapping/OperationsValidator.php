@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 final class OperationsValidator extends ConstraintValidator
 {
     public function __construct(
-        private array $operationConstraints
+        private array $operationConstraints,
     ) {
     }
 

@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 final class PropertyTarget implements TargetInterface
 {
-    const TYPE = 'property';
+    public const TYPE = 'property';
 
     private function __construct(
         private string $code,
