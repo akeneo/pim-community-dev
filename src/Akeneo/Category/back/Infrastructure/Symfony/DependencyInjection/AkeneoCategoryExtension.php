@@ -46,5 +46,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('providers.yml');
         $loader->load('queries.yml');
         $loader->load('query_builders.yml');
+        $loader->load('readers.yml');
     }
 }
