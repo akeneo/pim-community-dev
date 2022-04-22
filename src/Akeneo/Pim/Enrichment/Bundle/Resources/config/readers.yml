@@ -57,23 +57,6 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@pim_connector.array_converter.flat_to_standard.product_model_association'
 
-    pim_connector.reader.database.category:
-        class: 'Akeneo\Pim\Enrichment\Component\Category\Connector\Reader\Database\CategoryReader'
-        arguments:
-            - '@pim_catalog.repository.category'
-
-    pim_connector.reader.file.csv_category:
-        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
-        arguments:
-            - '@pim_connector.reader.file.csv_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.category'
-
-    pim_connector.reader.file.xlsx_category:
-        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
-        arguments:
-            - '@pim_connector.reader.file.xlsx_iterator_factory'
-            - '@pim_connector.array_converter.flat_to_standard.category'
-
     pim_connector.reader.database.group:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\GroupReader'
         arguments:
