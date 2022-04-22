@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Group type entity
@@ -100,7 +101,7 @@ class GroupType implements GroupTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }

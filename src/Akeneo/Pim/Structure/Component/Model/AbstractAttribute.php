@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Abstract product attribute
@@ -942,7 +943,7 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
