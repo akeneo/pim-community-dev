@@ -1,0 +1,8 @@
+services:
+    pim_enrich.form.type.category:
+        class: 'Akeneo\Category\Infrastructure\Form\Type\CategoryType'
+        arguments:
+            - '%pim_catalog.entity.category.class%'
+            - '%pim_catalog.entity.category_translation.class%'
+        tags:
+            - { name: form.type, alias: pim_category }
