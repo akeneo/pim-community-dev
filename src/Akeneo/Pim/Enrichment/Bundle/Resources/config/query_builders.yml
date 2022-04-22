@@ -21,7 +21,6 @@ parameters:
     pim_catalog.query.elasticsearch.filter.identifier_field.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\IdFilter
     pim_catalog.query.elasticsearch.filter.family.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\FamilyFilter
-    pim_catalog.query.elasticsearch.filter.category.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\StatusFilter
     pim_catalog.query.elasticsearch.filter.datetime.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\DateTimeFilter
@@ -325,17 +324,6 @@ services:
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
-            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
-
-    pim_catalog.query.elasticsearch.filter.category:
-        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
-        arguments:
-            - '@pim_catalog.repository.category'
-            - ['categories']
-            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
-            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
             - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
 
     pim_catalog.query.elasticsearch.filter.status:
