@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Security;
+namespace Akeneo\Category\Infrastructure\Component\Security;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
 
