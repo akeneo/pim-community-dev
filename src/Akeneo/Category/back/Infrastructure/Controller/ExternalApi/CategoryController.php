@@ -2,15 +2,10 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
 
-TODO
-- configure injectio nof messagebus in yaml
-- declare messagebus class in yml
-- declare handler with preoper tagging (cf product command handlers)
-
-
-
 use Akeneo\Category\API\Command\CreateCategoryCommand;
-use Akeneo\Category\API\MessageBus;
+use Akeneo\Category\API\CommandBus;
+use Akeneo\Category\Domain\Exception\InvalidPropertyException;
+use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -46,65 +41,20 @@ use Webmozart\Assert\Assert;
  */
 class CategoryController
 {
-    /** @var ApiResourceRepositoryInterface */
-    protected $repository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
     public function __construct(
-        ApiResourceRepositoryInterface $repository,
-        NormalizerInterface $normalizer,
-        SimpleFactoryInterface $factory,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver,
-        RouterInterface $router,
-        PaginatorInterface $paginator,
-        ParameterValidatorInterface $parameterValidator,
-        StreamResourceResponse $partialUpdateStreamResource,
-        array $apiConfiguration,
-        MessageBus $messageBus
+        protected ApiResourceRepositoryInterface $repository,
+        protected NormalizerInterface $normalizer,
+        protected SimpleFactoryInterface $factory,
+        protected ObjectUpdaterInterface $updater,
+        protected ValidatorInterface $validator,
+        protected SaverInterface $saver,
+        protected RouterInterface $router,
+        protected PaginatorInterface $paginator,
+        protected ParameterValidatorInterface $parameterValidator,
+        protected StreamResourceResponse $partialUpdateStreamResource,
+        protected array $apiConfiguration,
+        protected CommandBus $messageBus
     ) {
-        $this->repository = $repository;
-        $this->normalizer = $normalizer;
-        $this->factory = $factory;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->saver = $saver;
-        $this->router = $router;
-        $this->parameterValidator = $parameterValidator;
-        $this->paginator = $paginator;
-        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
-        $this->apiConfiguration = $apiConfiguration;
-        $this->messageBus = $messageBus;
     }
 
     /**
@@ -206,23 +156,20 @@ class CategoryController
 
         try {
             $command = CreateCategoryCommand::fromArray($data);
-        } catch (\InvalidArgumentException $exception) {
+            $this->messageBus->dispatch($command);
+        }
+        catch (\InvalidArgumentException|InvalidPropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . 'post_categories',
                 sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
+        catch (ViolationsException $exception) {
+            throw new ViolationHttpException($exception->violations());
+        }
 
-
-        $this->messageBus->dispatch($command);
-
-// TODO query category using code
-// $category = ...
-
-        $response = $this->getResponse($category, Response::HTTP_CREATED);
-
-        return $response;
+        return $this->buildResponseFromCode($data['code'], Response::HTTP_CREATED);
     }
 
     /**
@@ -344,6 +291,22 @@ class CategoryController
         $route = $this->router->generate(
             'pim_api_category_get',
             ['code' => $category->getCode()],
+            Router::ABSOLUTE_URL
+        );
+
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+    /**
+     * Get a response with a location header to the created or updated resource.
+     */
+    protected function buildResponseFromCode(string $code, string $status): Response
+    {
+        $response = new Response(null, $status);
+        $route = $this->router->generate(
+            'pim_api_category_get',
+            ['code' => $code],
             Router::ABSOLUTE_URL
         );
 
