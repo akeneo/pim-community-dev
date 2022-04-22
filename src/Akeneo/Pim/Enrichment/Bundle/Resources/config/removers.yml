@@ -56,13 +56,6 @@ services:
             - '@event_dispatcher'
             - '%pim_catalog.entity.attribute_option.class%'
 
-    pim_catalog.remover.category:
-        class: '%pim_catalog.remover.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_catalog.entity.category.class%'
-
     pim_catalog.remover.group:
         class: '%pim_catalog.remover.base.class%'
         arguments:
