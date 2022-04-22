@@ -6,6 +6,7 @@ namespace Akeneo\Category\Infrastructure\Symfony;
 
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterCategoryItemCounterPass;
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
+use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -23,7 +24,7 @@ class AkeneoCategoryBundle extends Bundle
     public function build(ContainerBuilder $container): void
     {
         $mappings = [
-            realpath(__DIR__.'/Resources/config/doctrine/') => 'Akeneo\Category\Infrastructure\Component\Model',
+            realpath(__DIR__.'/Resources/config/doctrine/model/') => 'Akeneo\Category\Infrastructure\Component\Model',
         ];
 
         $container
@@ -36,6 +37,7 @@ class AkeneoCategoryBundle extends Bundle
             )
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new RegisterCategoryItemCounterPass())
+            ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('category_repository'))
         ;
     }
 }

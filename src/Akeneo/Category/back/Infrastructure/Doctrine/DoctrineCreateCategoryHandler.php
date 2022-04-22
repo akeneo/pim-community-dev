@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Category\API\Command;
+namespace Akeneo\Category\Infrastructure\Doctrine;
 
+use Akeneo\Category\API\Command\CreateCategoryCommand;
 use Akeneo\Category\Domain\Exception\InvalidPropertyException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
@@ -26,16 +27,12 @@ class DoctrineCreateCategoryHandler
 
         try {
             $this->updater->update($category, [
-                'code' =>$command->getCode(),
-                'labels' =>$command->getLabels(),
-                'parent' =>$command->getParent(),
+                'code' => $command->getCode(),
+                'labels' => $command->getLabels(),
+                'parent' => $command->getParent(),
             ]);
         } catch (PropertyException $exception) {
-            throw new InvalidPropertyException(
-                $exception->getMessage(),
-                $exception->getCode(),
-                $exception
-            );
+            throw new InvalidPropertyException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
         $violations = $this->validator->validate($category);
