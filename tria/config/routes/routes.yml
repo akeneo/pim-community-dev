@@ -86,6 +86,9 @@ akeneo_monitoring:
 pimee_table_attribute:
     resource: "@AkeneoPimTableAttributeBundle/Resources/config/routing.yml"
 
+pim_tailored_export:
+    resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
+
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
 
