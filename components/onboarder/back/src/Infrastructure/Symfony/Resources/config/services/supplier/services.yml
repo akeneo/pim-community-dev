@@ -124,6 +124,7 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode'
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'

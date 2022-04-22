@@ -8,6 +8,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -40,6 +41,7 @@ final class ImportSupplierTasklet implements TaskletInterface
     private JobRepositoryInterface $jobRepository;
     private EventDispatcherInterface $eventDispatcher;
     private ?StepExecution $stepExecution;
+    private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode;
 
     public function __construct(
         ItemReaderInterface $reader,
@@ -50,6 +52,7 @@ final class ImportSupplierTasklet implements TaskletInterface
         SupplierExists $supplierExists,
         JobRepositoryInterface $jobRepository,
         EventDispatcherInterface $eventDispatcher,
+        GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
     ) {
         $this->reader = $reader;
         $this->validator = $validator;
@@ -59,6 +62,7 @@ final class ImportSupplierTasklet implements TaskletInterface
         $this->supplierExists = $supplierExists;
         $this->jobRepository = $jobRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->getSupplierIdentifierFromSupplierCode = $getSupplierIdentifierFromSupplierCode;
     }
 
     /**
@@ -128,7 +132,9 @@ final class ImportSupplierTasklet implements TaskletInterface
     private function updateSupplier(array $supplierData): void
     {
         $command = new UpdateSupplier(
-            Uuid::uuid4()->toString(),
+            ($this->getSupplierIdentifierFromSupplierCode)(
+                Code::fromString($supplierData['supplier_code'])
+            ),
             $supplierData['supplier_label'],
             $supplierData['contributor_emails'],
         );
