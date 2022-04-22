@@ -1,7 +1,8 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field;
+namespace Akeneo\Category\Infrastructure\Elasticsearch\Filter\Field;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterHelper;

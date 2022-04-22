@@ -1,0 +1,14 @@
+parameters:
+    pim_catalog.query.elasticsearch.filter.category.class: Akeneo\Category\Infrastructure\Elasticsearch\Filter\Field\CategoryFilter
+
+services:
+    pim_catalog.query.elasticsearch.filter.category:
+        class: '%pim_catalog.query.elasticsearch.filter.category.class%'
+        arguments:
+            - '@pim_catalog.repository.category'
+            - ['categories']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.product_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_model_filter', priority: 30 }
+            - { name: 'pim_catalog.elasticsearch.query.product_and_product_model_filter', priority: 30 }
