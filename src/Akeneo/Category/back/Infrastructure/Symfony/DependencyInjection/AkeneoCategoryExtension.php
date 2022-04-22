@@ -43,5 +43,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
+        $loader->load('providers.yml');
     }
 }
