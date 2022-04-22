@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren;
+use Akeneo\Category\Infrastructure\Storage\Sql\CountTreesChildren;
 use Akeneo\Test\Integration\TestCase;
 
 /**

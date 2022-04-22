@@ -1,0 +1,37 @@
+services:
+    akeneo.enrichment.public_api.find_category_trees:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\SqlFindCategoryTrees
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
+
+    akeneo.enrichment.public_api.get_category_children_codes_per_tree:
+        class: Akeneo\Category\Infrastructure\Storage\Sql\SqlGetCategoryChildrenCodesPerTree
+        arguments:
+            - '@database_connection'
+            - '@pim_enrich.filter.category_code'
+
+    pim_enrich.doctrine.query.ascendant_categories:
+        class: 'Akeneo\Category\Infrastructure\Storage\Sql\AscendantCategories'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.query.get_descendent_category_codes:
+        class: 'Akeneo\Category\Infrastructure\Storage\Sql\GetDescendentCategoryCodes'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Category\Infrastructure\Storage\Sql\CountTreesChildren:
+        arguments:
+            - '@database_connection'

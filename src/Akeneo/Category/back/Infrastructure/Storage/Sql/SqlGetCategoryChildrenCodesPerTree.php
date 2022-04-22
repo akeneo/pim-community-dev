@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
+namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
+use Akeneo\Category\Infrastructure\Component\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 

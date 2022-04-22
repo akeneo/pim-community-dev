@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
+use Akeneo\Category\Infrastructure\Component\Query\PublicApi\CategoryTree;
+use Akeneo\Category\Infrastructure\Component\Query\PublicApi\FindCategoryTrees;
+use Akeneo\Category\Infrastructure\Component\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

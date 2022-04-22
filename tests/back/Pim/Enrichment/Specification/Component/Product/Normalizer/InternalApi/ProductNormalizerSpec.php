@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
+use Akeneo\Category\Infrastructure\Component\Query\AscendantCategoriesInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
-use Akeneo\Pim\Enrichment\Component\Category\Query\AscendantCategoriesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\MissingRequiredAttributesCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -20,8 +20,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ImageNormaliz
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\MissingRequiredAttributesNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ProductCompletenessWithMissingAttributeCodesCollectionNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VariantNavigationNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\QuantifiedAssociationsNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ValuesFiller\FillMissingValuesInterface;
 use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;

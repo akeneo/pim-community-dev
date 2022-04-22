@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi;
+namespace Akeneo\Category\Infrastructure\Component\Query\PublicApi;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

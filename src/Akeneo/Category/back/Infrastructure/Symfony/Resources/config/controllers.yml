@@ -61,7 +61,7 @@ services:
             - '@validator'
             - '@pim_enrich.normalizer.violation'
             - '@pim_enrich.doctrine.counter.category_product'
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
+            - '@Akeneo\Category\Infrastructure\Storage\Sql\CountTreesChildren'
             - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
             - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
