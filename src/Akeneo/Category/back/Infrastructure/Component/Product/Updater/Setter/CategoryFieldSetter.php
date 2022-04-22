@@ -1,10 +1,11 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
+namespace Akeneo\Category\Infrastructure\Component\Product\Updater\Setter;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownCategoryException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AbstractFieldSetter;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;

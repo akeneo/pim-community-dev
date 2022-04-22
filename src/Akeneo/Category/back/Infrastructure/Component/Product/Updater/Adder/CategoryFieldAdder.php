@@ -1,19 +1,20 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
+namespace Akeneo\Category\Infrastructure\Component\Product\Updater\Adder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AbstractFieldAdder;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
- * Remove one or several categories from a product
+ * Adds the category field
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryFieldRemover extends AbstractFieldRemover
+class CategoryFieldAdder extends AbstractFieldAdder
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $categoryRepository;
@@ -33,9 +34,9 @@ class CategoryFieldRemover extends AbstractFieldRemover
     /**
      * {@inheritdoc}
      *
-     * Expected data input format : ["category_code", "another_category_code"]
+     * Expected data input format : ["category_code"]
      */
-    public function removeFieldData($product, $field, $data, array $options = [])
+    public function addFieldData($product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
@@ -43,7 +44,9 @@ class CategoryFieldRemover extends AbstractFieldRemover
         foreach ($data as $categoryCode) {
             $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
 
-            if (null === $category) {
+            if (null !== $category) {
+                $categories[] = $category;
+            } else {
                 throw InvalidPropertyException::validEntityCodeExpected(
                     $field,
                     'category code',
@@ -52,11 +55,10 @@ class CategoryFieldRemover extends AbstractFieldRemover
                     $categoryCode
                 );
             }
-            $categories[] = $category;
         }
 
-        foreach ($categories as $categoryToRemove) {
-            $product->removeCategory($categoryToRemove);
+        foreach ($categories as $category) {
+            $product->addCategory($category);
         }
     }
 
