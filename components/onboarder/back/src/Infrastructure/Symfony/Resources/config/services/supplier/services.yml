@@ -52,6 +52,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierContributorsBelongToAnotherSupplier
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
@@ -88,3 +93,10 @@ services:
     # Encoders
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
+
+    # Validators
+    Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmailValidator:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier'
+        tags:
+            - { name: validator.constraint_validator }

@@ -46,16 +46,16 @@ const useSupplier = (identifier: string) => {
             setValidationErrors(errors);
             const emailErrors = filterErrors(errors, 'contributorEmails');
             if (emailErrors.length > 0) {
-                emailErrors.forEach(error =>
+                emailErrors.forEach((error) => {
                     notify(
                         NotificationLevel.ERROR,
                         translate('onboarder.supplier.supplier_edit.contributors_form.notification.email_error.title'),
                         translate(
-                            'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.content',
-                            {emailAddress: error.invalidValue, message: error.message}
+                            error.message,
+                            {emailAddress: error.invalidValue}
                         )
                     )
-                );
+                });
             } else {
                 notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.unknown_error'));
             }

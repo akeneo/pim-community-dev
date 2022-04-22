@@ -63,6 +63,9 @@ onboarder:
                     email_error:
                         title: We were not able to add this contributor.
                         content: "The email {{ emailAddress }} is invalid : {{ message }}"
+                    contributor_email_already_exists:
+                        title: We were not able to add this contributor.
+                        content: The email {{ emailAddress }} is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience.
             error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
             unknown_error: An error occured while updating the supplier.
