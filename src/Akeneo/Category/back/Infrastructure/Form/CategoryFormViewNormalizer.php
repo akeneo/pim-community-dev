@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Form;
+namespace Akeneo\Category\Infrastructure\Form;
 
-use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Symfony\Component\Form\FormView;
 
 final class CategoryFormViewNormalizer implements CategoryFormViewNormalizerInterface
