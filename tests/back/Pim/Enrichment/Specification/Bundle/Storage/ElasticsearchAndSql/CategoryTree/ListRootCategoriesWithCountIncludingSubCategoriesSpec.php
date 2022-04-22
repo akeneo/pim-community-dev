@@ -3,10 +3,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\CategoryTree;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\CategoryTree\ListRootCategoriesWithCountIncludingSubCategories;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Query;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
 
 class ListRootCategoriesWithCountIncludingSubCategoriesSpec extends ObjectBehavior
 {

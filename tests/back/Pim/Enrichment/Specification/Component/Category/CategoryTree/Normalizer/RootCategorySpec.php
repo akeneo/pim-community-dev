@@ -2,16 +2,16 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\RootCategory;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
 
 
 class RootCategorySpec extends ObjectBehavior
 {
     function it_is_a_root_category_normalizer()
     {
-        $this->shouldHaveType(Normalizer\RootCategory::class);
+        $this->shouldHaveType(\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory::class);
     }
 
     function it_normalize_a_list_of_root_categories()
