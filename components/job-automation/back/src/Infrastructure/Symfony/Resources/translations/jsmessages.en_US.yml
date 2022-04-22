@@ -11,3 +11,6 @@ akeneo.automation:
     port.label: Port
     username.label: Login
     password.label: Password
+  validation:
+    file_path:
+      bad_extension: The file extension should be .xlsx

@@ -6,5 +6,5 @@ use Symfony\Component\Validator\Constraint;
 
 class FilePath extends Constraint
 {
-    public const BAD_EXTENSION = 'akeneo.job_automation.file_path.bad_extension';
+    public const BAD_EXTENSION = 'akeneo.job_automation.validation.file_path.bad_extension';
 }
