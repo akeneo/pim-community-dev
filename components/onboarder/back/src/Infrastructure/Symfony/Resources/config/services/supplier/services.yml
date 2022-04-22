@@ -100,7 +100,7 @@ services:
             -   - '@pim_connector.step.charset_validator'
                 - '@onboarder_serenity.step.xlsx_supplier.import'
         tags:
-            - { name: akeneo_batch.job, connector: 'Akeneo Onboarder XLSX Connector', type: '%pim_connector.job.import_type%' }
+            - { name: akeneo_batch.job, connector: 'Akeneo Onboarder XLSX Connector', type: '%pim_connector.job.import_type%', feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.step.xlsx_supplier.import:
         class: '%pim_connector.step.tasklet.class%'
