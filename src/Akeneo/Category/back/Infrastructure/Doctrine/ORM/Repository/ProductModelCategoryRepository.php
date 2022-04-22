@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
+namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository;
 
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelCategoryRepositoryInterface;
+use Akeneo\Category\Infrastructure\Component\Product\Repository\ProductModelCategoryRepositoryInterface;
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use Doctrine\ORM\EntityManager;
 
