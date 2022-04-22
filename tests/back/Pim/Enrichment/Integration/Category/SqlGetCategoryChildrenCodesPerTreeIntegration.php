@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
+use Akeneo\Category\Infrastructure\Storage\Sql\SqlGetCategoryChildrenCodesPerTree;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;

@@ -3,9 +3,8 @@
 namespace Akeneo\Category\Infrastructure\Controller\UI;
 
 use Akeneo\Category\Infrastructure\Component\Form\CategoryFormViewNormalizerInterface;
+use Akeneo\Category\Infrastructure\Component\Query\CountTreesChildrenInterface;
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use function Akeneo\Pim\Enrichment\Bundle\Controller\Ui\count;
-use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;

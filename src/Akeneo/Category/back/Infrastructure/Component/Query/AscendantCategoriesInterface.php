@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Query;
+namespace Akeneo\Category\Infrastructure\Component\Query;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 

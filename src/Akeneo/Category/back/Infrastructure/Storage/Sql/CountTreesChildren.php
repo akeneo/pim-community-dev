@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category;
+namespace Akeneo\Category\Infrastructure\Storage\Sql;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
+use Akeneo\Category\Infrastructure\Component\Query\CountTreesChildrenInterface;
 use Doctrine\DBAL\Connection;
 
 /**
