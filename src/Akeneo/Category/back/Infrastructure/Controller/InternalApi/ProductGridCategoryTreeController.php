@@ -2,11 +2,11 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCount;
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -28,10 +28,10 @@ class ProductGridCategoryTreeController
     /** @var ListChildrenCategoriesWithCountHandler */
     private $listChildrenCategoriesWithCount;
 
-    /** @var Normalizer\RootCategory */
+    /** @var \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory */
     private $rootCategoryNormalizer;
 
-    /** @var Normalizer\ChildCategory */
+    /** @var \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory */
     private $childCategoryNormalizer;
 
     /** @var UserContext */
@@ -43,18 +43,18 @@ class ProductGridCategoryTreeController
     /**
      * @param ListRootCategoriesWithCountHandler     $listRootCategoriesWithCount
      * @param ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount
-     * @param Normalizer\RootCategory                $rootCategoryNormalizer
-     * @param Normalizer\ChildCategory               $childCategoryNormalizer
+     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory                $rootCategoryNormalizer
+     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory               $childCategoryNormalizer
      * @param UserContext                            $userContext
      * @param SecurityFacade                         $securityFacade
      */
     public function __construct(
-        ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
-        ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
-        Normalizer\RootCategory $rootCategoryNormalizer,
-        Normalizer\ChildCategory $childCategoryNormalizer,
-        UserContext $userContext,
-        SecurityFacade $securityFacade
+        ListRootCategoriesWithCountHandler                                              $listRootCategoriesWithCount,
+        ListChildrenCategoriesWithCountHandler                                          $listChildrenCategoriesWithCount,
+        \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory  $rootCategoryNormalizer,
+        \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory $childCategoryNormalizer,
+        UserContext                                                                     $userContext,
+        SecurityFacade                                                                  $securityFacade
     ) {
         $this->listRootCategoriesWithCount = $listRootCategoriesWithCount;
         $this->listChildrenCategoriesWithCount = $listChildrenCategoriesWithCount;

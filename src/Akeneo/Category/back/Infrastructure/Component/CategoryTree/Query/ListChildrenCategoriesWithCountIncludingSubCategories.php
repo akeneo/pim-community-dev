@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Query;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\Query;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel\ChildCategory;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ListChildrenCategoriesWithCountNotIncludingSubCategories
+interface ListChildrenCategoriesWithCountIncludingSubCategories
 {
     /**
      * @param string   $translationLocaleCode

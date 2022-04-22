@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+namespace Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
-use Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel;
 
 /**
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
