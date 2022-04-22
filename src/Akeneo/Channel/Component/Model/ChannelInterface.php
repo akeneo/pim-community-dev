@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Channel\Component\Event\ChannelEvent;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;

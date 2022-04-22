@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\Category\Infrastructure\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryTranslation;
 use Akeneo\Platform\Bundle\UIBundle\Form\Subscriber\DisableFieldSubscriber;
 use Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType;
 use Akeneo\Platform\Bundle\UIBundle\Form\Type\TranslatableFieldType;

@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Component\Model;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

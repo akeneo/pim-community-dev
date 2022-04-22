@@ -3,8 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
-use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\Category;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

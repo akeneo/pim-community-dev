@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimFilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior

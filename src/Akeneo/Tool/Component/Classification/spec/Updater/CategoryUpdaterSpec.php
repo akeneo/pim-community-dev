@@ -12,7 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryTranslation;
 use Akeneo\UserManagement\Component\Query\PublicApi\IsCategoryTreeLinkedToUser;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 

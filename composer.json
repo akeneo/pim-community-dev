@@ -21,7 +21,8 @@
             "Akeneo\\Platform\\Job\\": "src/Akeneo/Platform/Job/back",
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
-            "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back"
+            "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
+            "Akeneo\\Category\\": "src/Akeneo/Category/back"
         }
     },
     "autoload-dev": {

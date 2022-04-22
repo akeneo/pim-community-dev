@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\DependencyInjection\Compiler;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface;
@@ -31,8 +31,6 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping(): array
     {
         return [
-            CategoryInterface::class => 'pim_catalog.entity.category.class',
-            CategoryTranslationInterface::class => 'pim_catalog.entity.category_translation.class',
             GroupInterface::class => 'pim_catalog.entity.group.class',
             GroupTranslationInterface::class => 'pim_catalog.entity.group_translation.class',
             ProductInterface::class => 'pim_catalog.entity.product.class',

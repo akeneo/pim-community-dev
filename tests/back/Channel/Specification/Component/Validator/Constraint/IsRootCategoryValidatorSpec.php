@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Category\Model\CategoryInterface;
 use Akeneo\Channel\Component\Validator\Constraint\IsRootCategory;
 use Akeneo\Channel\Component\Validator\Constraint\IsRootCategoryValidator;
 use Symfony\Component\Validator\ConstraintValidator;
