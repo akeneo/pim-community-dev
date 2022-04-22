@@ -36,5 +36,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('array_converter.yml');
         $loader->load('documentation.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('factories.yml');
     }
 }
