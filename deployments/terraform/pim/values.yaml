@@ -378,12 +378,6 @@ onboarder:
 free_trial:
   enabled: false
 
-# Connectors
-connectors:
-  bigcommerce:
-    enabled: false
-    challengePapoActivation: true
-
 mysql:
   image:
     mysql:
