@@ -215,21 +215,20 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_key_indicator
 
     akeneo.pim.automation.data_quality_insights.compute_product_models_key_indicators:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
-            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query
+            - !tagged akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator
 
     akeneo.pim.automation.data_quality_insights.get_key_indicators:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicators
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query'
             - '@akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_model_key_indicators_query'
-            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment::CODE
-            - !php/const Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithImage::CODE
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ProductKeyIndicatorsByFeatureRegistry'
 
     akeneo.pim.automation.data_quality_insights.product.complete_evaluation_with_improvable_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes
@@ -280,5 +279,9 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ProductKeyIndicatorsByFeatureRegistry:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'

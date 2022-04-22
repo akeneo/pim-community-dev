@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Ke
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -76,8 +77,8 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
             ],
         ];
 
-        $goodEnrichment->getName()->willReturn('good_enrichment');
-        $hasImage->getName()->willReturn('has_image');
+        $goodEnrichment->getCode()->willReturn(new KeyIndicatorCode('good_enrichment'));
+        $hasImage->getCode()->willReturn(new KeyIndicatorCode('has_image'));
 
         $goodEnrichment->compute($productIds)->willReturn([
             13 => [
