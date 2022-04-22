@@ -184,7 +184,7 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?TranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
 
@@ -210,7 +210,7 @@ class FamilyVariant implements FamilyVariantInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }

@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Structure\Component\Model;
 
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Association type entity
@@ -136,7 +137,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }

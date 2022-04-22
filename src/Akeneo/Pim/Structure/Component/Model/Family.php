@@ -291,7 +291,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }

@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -107,7 +108,7 @@ class Group implements GroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslations()
+    public function getTranslations(): Collection
     {
         return $this->translations;
     }
