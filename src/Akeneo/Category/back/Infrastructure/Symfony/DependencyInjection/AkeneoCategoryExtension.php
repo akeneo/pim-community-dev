@@ -47,5 +47,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('query_builders.yml');
         $loader->load('readers.yml');
         $loader->load('removers.yml');
+        $loader->load('savers.yml');
     }
 }
