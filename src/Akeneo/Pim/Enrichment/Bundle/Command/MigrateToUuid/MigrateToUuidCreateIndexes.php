@@ -98,17 +98,18 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
 
         $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
 
-        if ('pim_versioning_version' === $tableName &&
-            !$this->indexExists('pim_versioning_version', 'migrate_to_uuid_temp_index_to_delete')
+        if (\in_array($tableName, ['pim_versioning_version', 'pim_comment_comment']) &&
+            !$this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')
         ) {
-            $this->connection->executeQuery(
+            $this->connection->executeQuery(\strtr(
                 <<<SQL
-                ALTER TABLE `pim_versioning_version`
+                ALTER TABLE `{tableName}`
                 ADD INDEX `migrate_to_uuid_temp_index_to_delete` (`resource_name`, `resource_uuid`, `resource_id`),
                 ALGORITHM=INPLACE,
                 LOCK=NONE;
-                SQL
-            );
+                SQL,
+                ['{tableName}' => $tableName]
+            ));
         }
     }
 }
