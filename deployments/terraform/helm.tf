@@ -239,7 +239,7 @@ resource "local_file" "helm_pim_config" {
         innodb_buffer_pool_size = format(
           "%d%s", ceil(
             trimsuffix(local.helm-default-values.mysql.mysql.innodbBufferPoolSize, local.mysql-memory-unit) +
-            1024 * local.tshirt-size-index
+            758 * local.tshirt-size-index
           ),
           local.mysql-memory-unit
         )
