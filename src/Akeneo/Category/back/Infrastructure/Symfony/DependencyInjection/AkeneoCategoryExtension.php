@@ -52,5 +52,6 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_versioning.yml');
         $loader->load('steps.yml');
+        $loader->load('twig.yml');
     }
 }
