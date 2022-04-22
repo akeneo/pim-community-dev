@@ -52,7 +52,7 @@ class ImportNonVariantProductsWithApiPerformance extends AbstractApiPerformance
         // Ensure only 1 completeness calculation is done
         $profileConfig->assert('metrics.completeness_calculation.count == 1', 'Completeness calculation calls');
         // Ensure only 1 call is done to ES
-        $profileConfig->assert('metrics.http.curl.requests.count == 1', 'Queries to ES');
+        $profileConfig->assert('metrics.http.curl.requests.count == 4', 'Queries to ES');
         // Original value: 354ms
         $profileConfig->assert('metrics.completeness_calculation.wall_time < 500ms', 'Completeness calculation time');
 
