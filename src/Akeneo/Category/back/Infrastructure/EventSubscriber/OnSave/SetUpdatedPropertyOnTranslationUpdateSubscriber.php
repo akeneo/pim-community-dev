@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave;
+namespace Akeneo\Category\Infrastructure\EventSubscriber\OnSave;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryTranslation;
 use Doctrine\Common\EventSubscriber;

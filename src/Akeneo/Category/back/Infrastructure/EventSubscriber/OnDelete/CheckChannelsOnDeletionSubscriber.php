@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
+namespace Akeneo\Category\Infrastructure\EventSubscriber\OnDelete;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use function Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\count;
 
 /**
  * Check if the category is used by a channel when try to remove it
