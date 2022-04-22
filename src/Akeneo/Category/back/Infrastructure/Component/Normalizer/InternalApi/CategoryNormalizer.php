@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
+namespace Akeneo\Category\Infrastructure\Component\Normalizer\InternalApi;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -8,20 +8,23 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    /** @var array $supportedFormats */
+    protected $supportedFormats = ['internal_api'];
+
     /** @var NormalizerInterface */
-    protected $stdNormalizer;
+    protected $categoryNormalizer;
 
     /**
-     * @param NormalizerInterface $stdNormalizer
+     * @param NormalizerInterface $categoryNormalizer
      */
-    public function __construct(NormalizerInterface $stdNormalizer)
+    public function __construct(NormalizerInterface $categoryNormalizer)
     {
-        $this->stdNormalizer = $stdNormalizer;
+        $this->categoryNormalizer = $categoryNormalizer;
     }
 
     /**
@@ -29,13 +32,14 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
      */
     public function normalize($category, $format = null, array $context = [])
     {
-        $normalizedCategory = $this->stdNormalizer->normalize($category, 'standard', $context);
+        $standardCategory = $this->categoryNormalizer->normalize($category, 'standard', $context);
 
-        if (empty($normalizedCategory['labels'])) {
-            $normalizedCategory['labels'] = (object) $normalizedCategory['labels'];
+        $standardCategory['id'] = $category->getId();
+        if ($context['with_root'] ?? false) {
+            $standardCategory['root'] = $category->getRoot();
         }
 
-        return $normalizedCategory;
+        return $standardCategory;
     }
 
     /**
@@ -43,7 +47,7 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof CategoryInterface && 'external_api' === $format;
+        return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
     }
 
     public function hasCacheableSupportsMethod(): bool
