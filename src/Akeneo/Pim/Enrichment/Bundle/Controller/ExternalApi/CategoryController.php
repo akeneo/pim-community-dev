@@ -115,7 +115,7 @@ class CategoryController
         $categoryApi = $this->normalizer->normalize(
             $category,
             'external_api',
-            ['with_position' => true === $request->query->getBoolean('with_position')]
+            ['with_position' => $request->query->getBoolean('with_position')]
         );
 
         return new JsonResponse($categoryApi);
