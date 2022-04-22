@@ -1,5 +1,4 @@
 parameters:
-    pim_serializer.normalizer.flat.category.class: Akeneo\Pim\Enrichment\Component\Category\Normalizer\Versioning\CategoryNormalizer
     pim_serializer.normalizer.flat.product.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer
     pim_serializer.normalizer.flat.value.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer
     pim_serializer.normalizer.flat.product_model.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer
@@ -12,14 +11,6 @@ parameters:
     pim_serializer.normalizer.flat.collection.class: Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\CollectionNormalizer
 
 services:
-    pim_versioning.serializer.normalizer.flat.category:
-        class: '%pim_serializer.normalizer.flat.category.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.category'
-            - '@pim_versioning.serializer.normalizer.flat.label_translation'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
-
     pim_versioning.serializer.normalizer.flat.product:
         class: '%pim_serializer.normalizer.flat.product.class%'
         arguments:
