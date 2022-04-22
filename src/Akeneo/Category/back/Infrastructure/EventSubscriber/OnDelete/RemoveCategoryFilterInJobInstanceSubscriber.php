@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
+namespace Akeneo\Category\Infrastructure\EventSubscriber\OnDelete;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -11,6 +11,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use function Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\count;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

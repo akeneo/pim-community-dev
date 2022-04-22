@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave;
+namespace Akeneo\Category\Infrastructure\EventSubscriber\OnSave;
 
 use Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
