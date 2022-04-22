@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
+namespace Akeneo\Category\Infrastructure\Component\Product\Repository;
 
 use Akeneo\Tool\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\ItemCategoryRepositoryInterface;
