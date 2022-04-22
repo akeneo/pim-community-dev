@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ElasticsearchProjection\GetElasticsearchProductProjection;
 use Akeneo\Platform\Job\Domain\Model\Status;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
@@ -68,21 +67,21 @@ class MigrateToUuidCommand extends Command
             return self::SUCCESS;
         }
 
-        while ($this->hasDQIJobStarted()) {
-            $this->logger->notice(sprintf(
-                'There is a "%s" job in progress. Wait for %d secondes before retry migration start...',
-                self::$DQI_JOB_NAME,
-                self::$WAIT_TIME_IN_SECONDS
-            ));
-
-            sleep(self::$WAIT_TIME_IN_SECONDS);
-        }
-
         $this->start();
-        $startMigrationTime = \time();
-        $this->logger->notice('Migration start');
-
         try {
+            while ($this->hasDQIJobStarted()) {
+                $this->logger->notice(sprintf(
+                    'There is a "%s" job in progress. Wait for %d seconds before retrying migration start...',
+                    self::$DQI_JOB_NAME,
+                    self::$WAIT_TIME_IN_SECONDS
+                ));
+
+                sleep(self::$WAIT_TIME_IN_SECONDS);
+            }
+
+            $startMigrationTime = \time();
+            $this->logger->notice('Migration start');
+
             foreach ($this->steps as $step) {
                 $logContext = new LogContext($step);
                 $context->logContext = $logContext;
