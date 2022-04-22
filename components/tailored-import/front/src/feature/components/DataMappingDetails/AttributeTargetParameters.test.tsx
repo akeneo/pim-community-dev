@@ -20,7 +20,7 @@ const attributeTarget: AttributeTarget = {
   type: 'attribute',
   action_if_not_empty: 'set',
   action_if_empty: 'skip',
-  source_parameter: null,
+  source_configuration: null,
   channel: 'ecommerce',
   locale: 'fr_FR',
 };

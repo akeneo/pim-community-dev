@@ -19,7 +19,7 @@ class RowPayload
     public function __construct(
         private Row $row,
         private ColumnCollection $columnCollection,
-        private int $rowPosition
+        private int $rowPosition,
     ) {
     }
 

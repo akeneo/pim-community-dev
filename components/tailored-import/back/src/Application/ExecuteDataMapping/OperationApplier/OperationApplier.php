@@ -43,7 +43,7 @@ class OperationApplier
         return $value;
     }
 
-    private function getApplier(OperationInterface $operation): OperationApplierInterface | null
+    private function getApplier(OperationInterface $operation): OperationApplierInterface|null
     {
         foreach ($this->operationAppliers as $applier) {
             if ($applier->supports($operation)) {

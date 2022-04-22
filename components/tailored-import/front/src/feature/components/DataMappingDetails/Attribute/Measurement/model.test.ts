@@ -7,7 +7,7 @@ test('it returns true if it is a measurement target', () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    source_parameter: {
+    source_configuration: {
       decimal_separator: ',',
       unit: 'WATT',
     },
@@ -24,7 +24,7 @@ test('it returns false if it is not a measurement target', () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    source_parameter: null,
+    source_configuration: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
   };
@@ -51,7 +51,7 @@ test('it returns a default measurement target', () => {
     type: 'attribute',
     locale: null,
     channel: null,
-    source_parameter: {
+    source_configuration: {
       decimal_separator: '.',
       unit: 'KILOGRAM',
     },

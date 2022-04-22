@@ -17,11 +17,6 @@ use Symfony\Component\Validator\Constraint;
 
 class IsValidFileTemplateInformationQuery extends Constraint
 {
-    public string $fileNotFound = 'akeneo.tailored_import.validation.file_not_found';
-    public string $sheetNotFoundMessage = 'akeneo.tailored_import.validation.sheet_not_found';
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.is_valid_file_template_information_query';
-    }
+    public const FILE_NOT_FOUND = 'akeneo.tailored_import.validation.file_not_found';
+    public const SHEET_NOT_FOUND = 'akeneo.tailored_import.validation.sheet_not_found';
 }

@@ -41,13 +41,13 @@ class FileStructure
         int $firstColumn,
         int $headerLine,
         int $productLine,
-        ?string $sheetName
-    ):self {
+        ?string $sheetName,
+    ): self {
         return new self(
             $firstColumn,
             $headerLine,
             $productLine,
-            $sheetName
+            $sheetName,
         );
     }
 

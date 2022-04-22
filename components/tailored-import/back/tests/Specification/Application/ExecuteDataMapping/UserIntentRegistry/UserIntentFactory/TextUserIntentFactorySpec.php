@@ -31,6 +31,16 @@ class TextUserIntentFactorySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(UserIntentFactoryInterface::class);
     }
 
+    public function it_throws_an_exception_when_target_type_is_invalid(
+        AttributeTarget $attributeTarget
+    ) {
+        $attributeTarget->getType()->willReturn('pim_catalog_textarea');
+        $value = '';
+
+        $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"'))
+            ->during('create', [$attributeTarget, $value]);
+    }
+
     public function it_create_a_set_text_value_object(
         AttributeTarget $attributeTarget
     ) {
@@ -39,14 +49,14 @@ class TextUserIntentFactorySpec extends ObjectBehavior
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
 
-        $expectedSetNumberValue = new SetTextValue(
+        $expected = new SetTextValue(
             'an_attribute_code',
             null,
             null,
             'a_value'
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expectedSetNumberValue);
+        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_text(

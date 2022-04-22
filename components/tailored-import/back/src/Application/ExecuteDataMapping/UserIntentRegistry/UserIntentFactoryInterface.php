@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 interface UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string $value): ValueUserIntent;
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent;
 
     public function supports(TargetInterface $target): bool;
 }

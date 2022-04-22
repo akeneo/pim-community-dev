@@ -21,7 +21,7 @@ services:
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
       - '@akeneo.tailored_import.user_intent_aggregator'
-      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceParameterApplier\SourceParameterApplier'
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier'
       - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
 
   akeneo.tailored_import.handler.get_file_template_information_handler:
@@ -38,6 +38,12 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler
     arguments:
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+
+  akeneo.tailored_import.handler.sample_data.generate_preview_data_handler:
+    class: Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewData\GeneratePreviewDataHandler
+    arguments:
+      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
+      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator'
 
   akeneo.tailored_import.user_intent_registry:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry

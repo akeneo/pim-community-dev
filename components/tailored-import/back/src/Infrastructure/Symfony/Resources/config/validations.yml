@@ -1,73 +1,81 @@
+parameters:
+  akeneo.tailored_import.validation.attribute_target_constraints:
+    pim_catalog_identifier: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Identifier\Identifier'
+    pim_catalog_metric: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\Measurement'
+    pim_catalog_number: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Number\Number'
+    pim_catalog_simpleselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SimpleSelect\SimpleSelect'
+    pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect\MultiSelect'
+    pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
+    pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
+
+  akeneo.tailored_import.validation.property_target_constraints: []
+
+  akeneo.tailored_import.validation.operation_constraints:
+    clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
+
 services:
-  akeneo.tailored_import.validation.is_valid_attribute:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
       - '@pim_channel.query.cache.channel_exists_with_locale'
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.is_valid_attribute' }
-    public: true
+      - { name: validator.constraint_validator }
 
-  akeneo.tailored_import.validation.locale_should_be_active:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\LocaleShouldBeActiveValidator'
-    arguments:
-      - '@pim_channel.query.cache.channel_exists_with_locale'
-    tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.locale_should_be_active' }
-    public: true
-
-  akeneo.tailored_import.validation.channel_should_exist:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\ChannelShouldExistValidator'
-    arguments:
-      - '@pim_channel.query.cache.channel_exists_with_locale'
-    tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.channel_should_exist' }
-    public: true
-
-  akeneo.tailored_import.validation.data_mappings:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMappingsValidator:
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
-      - '@akeneo.tailored_import.query.is_multi_source_target'
+      - '%akeneo.tailored_import.validation.attribute_target_constraints%'
+      - '%akeneo.tailored_import.validation.property_target_constraints%'
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.data_mappings' }
-    public: true
+      - { name: validator.constraint_validator }
 
-  akeneo.tailored_import.validation.target:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\TargetValidator'
-    arguments:
-      - '@akeneo.pim.structure.query.get_attributes'
-      - '@akeneo_measurement.public_api.find_unit'
-      - '%akeneo.tailored_import.supported_system_properties%'
-    tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.target' }
-    public: true
-
-  akeneo.tailored_import.validation.file_key:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKeyValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKeyValidator:
     arguments:
       - '@akeneo_file_storage.file_storage.filesystem_provider'
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.file_key' }
-    public: true
+      - { name: validator.constraint_validator }
 
-  akeneo.tailored_import.validation.is_valid_file_template_information_query:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileTemplateInformationQueryValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileTemplateInformationQueryValidator:
     arguments:
       - '@akeneo_file_storage.file_storage.filesystem_provider'
       - '@akeneo.tailored_import.spout.remote_file_reader.factory'
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.is_valid_file_template_information_query' }
-    public: true
+      - { name: validator.constraint_validator }
 
-  akeneo.tailored_import.validation.sample_data_query:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQueryValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQueryValidator:
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.sample_data_query' }
-    public: true
+      - { name: validator.constraint_validator }
 
-  akeneo.tailored_import.validation.refresh_sample_data_query:
-    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQueryValidator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQueryValidator:
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_import.validation.refresh_sample_data_query' }
-    public: true
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\OperationsValidator:
+    arguments:
+      - '%akeneo.tailored_import.validation.operation_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
+    arguments:
+      - [',', '.', '٫‎']
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\GeneratePreviewDataValidator:
+    arguments:
+      - '%akeneo.tailored_import.validation.operation_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\UnitValidator:
+    arguments:
+      - '@akeneo_measurement.public_api.find_unit'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\ReadColumnsValidator:
+    arguments:
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
+    tags:
+      - { name: validator.constraint_validator }

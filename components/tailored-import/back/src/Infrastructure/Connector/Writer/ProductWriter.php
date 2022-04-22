@@ -31,7 +31,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
     private ?StepExecution $stepExecution;
 
     public function __construct(
-        private MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
     ) {
     }
 
@@ -53,7 +53,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
             }
 
             $this->messageBus->dispatch($rowPayload->getUpsertProductCommand());
-        } catch (LegacyViolationsException | ViolationsException $violationsException) {
+        } catch (LegacyViolationsException|ViolationsException $violationsException) {
             $this->addWarning($violationsException->violations(), $rowPayload);
 
             if ('skip_value' === $this->stepExecution->getJobParameters()->get('error_action')
@@ -62,7 +62,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
                 $initialUserIntentsCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
 
                 $rowPayload->setUpsertProductCommand(
-                    UpsertProductCommandCleaner::removeInvalidUserIntents($violationsException, $rowPayload->getUpsertProductCommand())
+                    UpsertProductCommandCleaner::removeInvalidUserIntents($violationsException, $rowPayload->getUpsertProductCommand()),
                 );
 
                 if (count($rowPayload->getUpsertProductCommand()->valueUserIntents()) < $initialUserIntentsCount) {
@@ -78,7 +78,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
             $this->stepExecution->addWarning(
                 $violation->getMessage(),
                 $violation->getParameters(),
-                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition())
+                new FileInvalidItem($this->getFormattedCells($rowPayload), $rowPayload->getRowPosition()),
             );
         }
     }

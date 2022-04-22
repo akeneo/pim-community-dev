@@ -7,7 +7,7 @@ import {
   DataMapping,
   ColumnIdentifier,
   FileStructure,
-  findColumnByUuid,
+  filterColumnsByUuids,
   replaceSampleData,
   isAttributeDataMapping,
   Target,
@@ -54,10 +54,10 @@ const DataMappingDetails = ({
   const refreshedSampleDataFetcher = useRefreshedSampleDataFetcher();
 
   const handleSourcesChange = async (sources: ColumnIdentifier[]) => {
-    const column = findColumnByUuid(columns, sources[0]);
+    const columnIndices = filterColumnsByUuids(columns, sources).map(({index}) => index);
     const sampleData =
-      sources.length > 0 && null !== column
-        ? await sampleDataFetcher(fileKey, column.index, fileStructure.sheet_name, fileStructure.first_product_row)
+      0 < columnIndices.length
+        ? await sampleDataFetcher(fileKey, columnIndices, fileStructure.sheet_name, fileStructure.first_product_row)
         : [];
     onDataMappingChange({...dataMapping, sources, sample_data: sampleData});
   };
@@ -71,13 +71,13 @@ const DataMappingDetails = ({
   const handleOperationsChange = (operations: Operation[]) => onDataMappingChange({...dataMapping, operations});
 
   const handleRefreshSampleData = async (indexToRefresh: number) => {
-    const column = findColumnByUuid(columns, dataMapping.sources[0]);
+    const columnIndices = filterColumnsByUuids(columns, dataMapping.sources).map(({index}) => index);
     const refreshedData =
-      null !== column
+      0 < columnIndices.length
         ? await refreshedSampleDataFetcher(
             fileKey,
             dataMapping.sample_data,
-            column.index,
+            columnIndices,
             fileStructure.sheet_name,
             fileStructure.first_product_row
           )

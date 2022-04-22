@@ -4,6 +4,7 @@ export * from './useChannels';
 export * from './useFileTemplateInformationFetcher';
 export * from './useOffsetAvailableTargets';
 export * from './useMeasurementFamily';
+export * from './usePreviewData';
 export * from './useReadColumns';
 export * from './useRefreshedSampleDataFetcher';
 export * from './useSampleDataFetcher';

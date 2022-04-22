@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen, act, within} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Operations} from './Operations';
 import {AttributeTarget, DataMapping} from '../../models';
@@ -13,6 +13,10 @@ const dataMapping: DataMapping = {
   sample_data: ['product_1', 'product_2', 'product_3'],
 };
 
+jest.mock('../../hooks/usePreviewData', () => ({
+  usePreviewData: () => [false, ['product_1', 'product_2', 'product_3'], false],
+}));
+
 test('it displays preview if sample data is provided', async () => {
   await renderWithProviders(
     <Operations
@@ -24,7 +28,7 @@ test('it displays preview if sample data is provided', async () => {
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.title')).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.title')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.input_title')).toBeInTheDocument();
   expect(screen.queryByText('product_1')).toBeInTheDocument();
   expect(screen.queryByText('product_2')).toBeInTheDocument();
   expect(screen.queryByText('product_3')).toBeInTheDocument();
@@ -44,29 +48,11 @@ test('it does not display preview if no source is set', async () => {
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.no_source')).toBeInTheDocument();
-  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.title')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.input_title')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.output_title')).not.toBeInTheDocument();
 });
 
-test('it calls refresh sample data handler when user refreshes a non empty data', async () => {
-  const handleRefreshSampleData = jest.fn();
-
-  await renderWithProviders(
-    <Operations
-      dataMapping={dataMapping}
-      compatibleOperations={[]}
-      onOperationsChange={jest.fn()}
-      onRefreshSampleData={handleRefreshSampleData}
-    />
-  );
-
-  await act(async () => {
-    userEvent.click(screen.getAllByTitle('akeneo.tailored_import.data_mapping.preview.refresh')[0]);
-  });
-
-  expect(handleRefreshSampleData).toBeCalledWith(0);
-});
-
-test('it calls refresh sample data handler when user refreshes an empty data', async () => {
+test('it calls refresh sample data handler when user refreshes a data', async () => {
   const handleRefreshSampleData = jest.fn();
 
   await renderWithProviders(
@@ -148,11 +134,12 @@ test('it can remove an operation from data mapping', async () => {
   );
 
   userEvent.click(screen.getByTitle('pim_common.remove'));
+  userEvent.click(screen.getByText('pim_common.delete'));
 
   expect(handleOperationsChange).toHaveBeenCalledWith([]);
 });
 
-test('it cannot add an operation already present in data mapping', async () => {
+test('it tells when there are no more available operations and hides the add button', async () => {
   await renderWithProviders(
     <Operations
       dataMapping={{
@@ -165,14 +152,8 @@ test('it cannot add an operation already present in data mapping', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-
-  const dropdown = screen.getByRole('listbox');
-
-  expect(within(dropdown).getByText('akeneo.tailored_import.data_mapping.operations.no_result')).toBeInTheDocument();
-  expect(
-    within(dropdown).queryByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags')
-  ).not.toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.no_available.text')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.operations.add')).not.toBeInTheDocument();
 });
 
 test('it tells when the operation block is not found', async () => {

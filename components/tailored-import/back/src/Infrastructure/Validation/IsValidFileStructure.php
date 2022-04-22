@@ -17,6 +17,6 @@ use Symfony\Component\Validator\Constraint;
 
 class IsValidFileStructure extends Constraint
 {
-    public string $firstProductRowShouldBeAfterHeaderRow = 'akeneo.tailored_import.validation.file_structure.first_product_row_should_be_after_header_row';
-    public string $uniqueIdentifierColumnShouldBeAfterFirstColumnMessage = 'akeneo.tailored_import.validation.file_structure.unique_identifier_column_should_be_after_first_column_message';
+    public const FIRST_PRODUCT_ROW_SHOULD_BE_AFTER_HEADER_ROW = 'akeneo.tailored_import.validation.file_structure.first_product_row_should_be_after_header_row';
+    public const UNIQUE_IDENTIFIER_COLUMN_SHOULD_BE_AFTER_FIRST_COLUMN = 'akeneo.tailored_import.validation.file_structure.unique_identifier_column_should_be_after_first_column_message';
 }

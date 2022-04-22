@@ -19,6 +19,7 @@ interface UserIntentAggregatorInterface
 {
     /**
      * @param array<ValueUserIntent> $userIntents
+     *
      * @return array<ValueUserIntent>
      */
     public function aggregateByTarget(array $userIntents): array;

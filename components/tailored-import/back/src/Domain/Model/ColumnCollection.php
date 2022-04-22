@@ -42,7 +42,7 @@ class ColumnCollection implements \IteratorAggregate
     }
 
     /**
-     * @return Column[] | \ArrayIterator<int, Column>
+     * @return Column[]|\ArrayIterator<int, Column>
      */
     public function getIterator(): \ArrayIterator
     {
