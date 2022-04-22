@@ -24,7 +24,7 @@ final class SelectSampleData
 
     private static function replaceEmptyString(array $sampleData): array
     {
-        return \array_map(static fn ($value): ?string => strlen($value) === 0 ? null : $value, $sampleData);
+        return \array_map(static fn ($value): ?string => 0 === strlen($value) ? null : $value, $sampleData);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array

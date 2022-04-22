@@ -5,7 +5,7 @@ lint-back: #Doc: launch PHPStan for tailored import
 
 .PHONY: lint-fix-back
 lint-fix-back: #Doc: launch PHP CS fixer for tailored import
-	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/tailored-import/back/tests/.php_cs.php components/tailored-import/back
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/tailored-import/back/tests/.php_cs.php components/tailored-import/back/src
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored import
