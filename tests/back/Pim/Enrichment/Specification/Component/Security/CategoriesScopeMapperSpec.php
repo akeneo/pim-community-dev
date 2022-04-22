@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Security;
 
+use Akeneo\Category\Infrastructure\Component\Security\CategoriesScopeMapper;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface;
-use Akeneo\Pim\Enrichment\Component\Security\CategoriesScopeMapper;
 use PhpSpec\ObjectBehavior;
 
 class CategoriesScopeMapperSpec extends ObjectBehavior
