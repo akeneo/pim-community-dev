@@ -16,13 +16,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_catalog.event_subscriber.category.check_channels:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\CheckChannelsOnDeletionSubscriber'
-        arguments:
-            - '@translator'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_subscriber.reset_unique_validation:
         class: '%pim_catalog.event_subscriber.reset_unique_validation.class%'
         arguments:
@@ -90,36 +83,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.category.update_indexes_on_category_deletion:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\UpdateIndexesOnCategoryDeletion'
-        arguments:
-            - '@pim_catalog.query.get_descendent_category_codes'
-            - '@akeneo_elasticsearch.client.product_and_product_model'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.update_exports_on_channel_update:
-        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree'
-        arguments:
-            - '@akeneo_batch.job.job_instance_repository'
-            - '@akeneo_batch.updater.job_instance'
-            - '@akeneo_batch.saver.job_instance'
-            -
-                - 'csv_product_export'
-                - 'xlsx_product_export'
-                - 'csv_product_model_export'
-                - 'xlsx_product_model_export'
-                - 'csv_published_product_export'
-                - 'xlsx_published_product_export'
-                - 'akeneo_shared_catalog'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
-        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
-        tags:
-            - { name: doctrine.event_subscriber }
-
     pim_catalog.event_subscriber.init_completeness_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
         arguments:
@@ -144,14 +107,6 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\AttributeOption\SetAttributeOptionSortOrderSubscriber'
         arguments:
           - '@pim_catalog.query.get_attribute_options_max_sort_order'
-        tags:
-          - { name: kernel.event_subscriber }
-
-    pim_enrich.event_listener.remove_category_filter_in_job_instance:
-        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\RemoveCategoryFilterInJobInstanceSubscriber
-        arguments:
-          - '@akeneo_batch.job.job_instance_repository'
-          - '@akeneo_batch.saver.job_instance'
         tags:
           - { name: kernel.event_subscriber }
 

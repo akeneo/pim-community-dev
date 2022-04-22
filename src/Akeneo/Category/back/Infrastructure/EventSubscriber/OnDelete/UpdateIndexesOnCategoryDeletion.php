@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete;
+namespace Akeneo\Category\Infrastructure\EventSubscriber\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDescendentCategoryCodes;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
