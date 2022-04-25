@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -17,21 +17,21 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 class CreateCriteriaEvaluations
 {
     public function __construct(
-        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
+        private CriteriaEvaluationRegistry             $criteriaEvaluationRegistry,
         private CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
     }
 
-    public function createAll(ProductIdCollection $productIdCollection): void
+    public function createAll(ProductEntityIdCollection $productIdCollection): void
     {
         $this->create($this->criteriaEvaluationRegistry->getCriterionCodes(), $productIdCollection);
     }
 
     /**
      * @param CriterionCode[] $criterionCodes
-     * @param ProductIdCollection $productIdCollection
+     * @param ProductEntityIdCollection $productIdCollection
      */
-    public function create(array $criterionCodes, ProductIdCollection $productIdCollection): void
+    public function create(array $criterionCodes, ProductEntityIdCollection $productIdCollection): void
     {
         $criteria = new Write\CriterionEvaluationCollection();
 

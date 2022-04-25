@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -51,13 +51,13 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         $productModelIds = iterator_to_array($this->get(GetProductModelIdsImpactedByAttributeGroupActivationQuery::class)
             ->updatedSince($this->updatedSince, 2));
 
-        $productModelIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productModelIds);
+        $productModelIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productModelIds);
 
         $this->assertCount(3, $productModelIds);
         $this->assertEqualsCanonicalizing($expectedProductModelIds, array_merge_recursive(...$productModelIds));
     }
 
-    private function givenAnImpactedRootProductModelWithASingleVariationLevel(): ProductId
+    private function givenAnImpactedRootProductModelWithASingleVariationLevel(): ProductModelId
     {
         $this->createFamily('impacted_family_A', ['attributes' => ['name', 'weight', 'color']]);
         $this->createFamilyVariant('impacted_family_variant_A', 'impacted_family_A', [
@@ -72,10 +72,10 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
 
         $productModel = $this->createProductModel('ImpactedRootProductModelWithASingleVariationLevel', 'impacted_family_variant_A');
 
-        return new ProductId($productModel->getId());
+        return new ProductModelId($productModel->getId());
     }
 
-    private function givenAnImpactedRootProductModelWithTwoVariationLevels(): ProductId
+    private function givenAnImpactedRootProductModelWithTwoVariationLevels(): ProductModelId
     {
         $this->createFamily('impacted_family_A2', ['attributes' => ['name', 'weight', 'color', 'size']]);
         $this->createFamilyVariant('impacted_family_variant_A2', 'impacted_family_A2', [
@@ -95,14 +95,14 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
 
         $productModel = $this->createProductModel('ImpactedRootProductModelWithTwoVariationLevels', 'impacted_family_variant_A2');
 
-        return new ProductId($productModel->getId());
+        return new ProductModelId($productModel->getId());
     }
 
-    private function givenAnotherImpactedRootProductModelWithTwoVariationLevels(): ProductId
+    private function givenAnotherImpactedRootProductModelWithTwoVariationLevels(): ProductModelId
     {
         $productModel = $this->createProductModel('AnotherImpactedRootProductModelWithTwoVariationLevels', 'impacted_family_variant_A2');
 
-        return new ProductId($productModel->getId());
+        return new ProductModelId($productModel->getId());
     }
 
     private function givenARootProductModelNotImpactedBecauseOfItsVariantFamily(): void
@@ -136,14 +136,14 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         $this->createProductModel('RootProductModelNotImpactedBecauseOfItsLevelOneAttributes', 'remove_impact_family_variant_A');
     }
 
-    private function givenASubProductModelImpactedByACommonAttribute(): ProductId
+    private function givenASubProductModelImpactedByACommonAttribute(): ProductModelId
     {
         $subProductModel = $this->createSubProductModel('SubProductModelImpactedByACommonAttribute', 'impacted_family_variant_A2', 'ImpactedRootProductModelWithTwoVariationLevels');
 
-        return new ProductId($subProductModel->getId());
+        return new ProductModelId($subProductModel->getId());
     }
 
-    private function givenASubProductModelImpactedByALevelOneVariantAttribute(): ProductId
+    private function givenASubProductModelImpactedByALevelOneVariantAttribute(): ProductModelId
     {
         $this->createFamily('impacted_family_B2', ['attributes' => ['name', 'weight', 'color', 'size']]);
         $this->createFamilyVariant('impacted_family_variant_B2', 'impacted_family_B2', [
@@ -164,7 +164,7 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQueryIntegration
         $parent = $this->createProductModel('ParentSubProductModelImpactedByALevelOneVariantAttribute', 'impacted_family_variant_B2');
         $subProductModel = $this->createSubProductModel('SubProductModelImpactedByALevelOneVariantAttribute', 'impacted_family_variant_B2', $parent->getCode());
 
-        return new ProductId($subProductModel->getId());
+        return new ProductModelId($subProductModel->getId());
     }
 
     private function givenASubProductModelNotImpactedBecauseOfItsVariantFamily(): void

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Persistence\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -23,8 +24,8 @@ final class GetProductModelIdsFromProductModelCodesQueryIntegration extends Data
 
         $productModelIds = $this->get(GetProductModelIdsFromProductModelCodesQuery::class)->execute(['product_model_A', 'product_model_B', 'unknown_product_model']);
         $expectedProductIds = [
-            'product_model_A' => new ProductId($productModelIdA),
-            'product_model_B' => new ProductId($productModelIdB),
+            'product_model_A' => $this->get(ProductModelIdFactory::class)->create((string)$productModelIdA),
+            'product_model_B' => $this->get(ProductModelIdFactory::class)->create((string)$productModelIdB),
         ];
 
         $this->assertEquals($expectedProductIds, $productModelIds);

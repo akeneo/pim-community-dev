@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductRawValuesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -22,7 +22,7 @@ class GetProductRawValuesQuery implements GetProductRawValuesQueryInterface
         $this->db = $db;
     }
 
-    public function execute(ProductId $productId): array
+    public function execute(ProductEntityIdInterface $productId): array
     {
         $query = <<<SQL
 SELECT
@@ -40,7 +40,7 @@ SQL;
         $statement = $this->db->executeQuery(
             $query,
             [
-                'product_id' => $productId->toInt(),
+                'product_id' => (int)(string)$productId,
             ],
             [
                 'product_id' => \PDO::PARAM_INT,

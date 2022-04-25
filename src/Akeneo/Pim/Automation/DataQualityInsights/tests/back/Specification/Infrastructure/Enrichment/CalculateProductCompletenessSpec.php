@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdentifier;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodes;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessWithMissingAttributeCodesCollection;
@@ -21,8 +22,9 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
 {
     public function let(
         GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator $completenessCalculator
-    ) {
+        CompletenessCalculator                          $completenessCalculator
+    )
+    {
         $this->beConstructedWith($getProductIdentifierFromProductIdQuery, $completenessCalculator);
     }
 
@@ -31,10 +33,18 @@ class CalculateProductCompletenessSpec extends ObjectBehavior
         $this->shouldImplement(CalculateProductCompletenessInterface::class);
     }
 
+    public function it_throws_exception_when_product_model_id_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('calculate', [
+            new ProductModelId(42)
+        ]);
+    }
+
     public function it_evaluates_the_completeness_criterion(
         GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator $completenessCalculator
-    ) {
+        CompletenessCalculator                          $completenessCalculator
+    )
+    {
         $productId = new ProductId(42);
         $productIdentifier = new ProductIdentifier('ziggy_mug');
         $getProductIdentifierFromProductIdQuery->execute($productId)->willReturn($productIdentifier);

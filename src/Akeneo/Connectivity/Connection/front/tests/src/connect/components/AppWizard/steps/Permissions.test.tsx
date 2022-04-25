@@ -11,7 +11,13 @@ jest.mock('@src/connect/components/PermissionsForm', () => ({
 
 test('The permissions step renders with no providers', () => {
     renderWithProviders(
-        <Permissions appName='MyApp' providers={[]} setProviderPermissions={jest.fn()} permissions={{}} />
+        <Permissions
+            appName='MyApp'
+            providers={[]}
+            setProviderPermissions={jest.fn()}
+            permissions={{}}
+            scopeMessages={[{entities: 'products', type: 'edit', icon: 'products'}]}
+        />
     );
 
     expect(PermissionsForm).not.toHaveBeenCalled();
@@ -57,6 +63,7 @@ test('The permissions step renders with providers from the registry', () => {
             providers={mockedProviders}
             setProviderPermissions={jest.fn()}
             permissions={mockedPermissions}
+            scopeMessages={[{entities: 'products', type: 'edit', icon: 'products'}]}
         />
     );
 
@@ -67,6 +74,7 @@ test('The permissions step renders with providers from the registry', () => {
         expect.objectContaining({
             provider: mockedProviders[0],
             permissions: mockedPermissions.providerKey1,
+            onlyDisplayViewPermissions: false,
         }),
         {}
     );
@@ -75,6 +83,47 @@ test('The permissions step renders with providers from the registry', () => {
         expect.objectContaining({
             provider: mockedProviders[1],
             permissions: mockedPermissions.providerKey2,
+            onlyDisplayViewPermissions: false,
+        }),
+        {}
+    );
+});
+
+test('The permissions step renders and will only display view permissions', () => {
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+    };
+
+    renderWithProviders(
+        <Permissions
+            appName='MyApp'
+            providers={mockedProviders}
+            setProviderPermissions={jest.fn()}
+            permissions={mockedPermissions}
+            scopeMessages={[{entities: 'products', type: 'view', icon: 'products'}]}
+        />
+    );
+
+    expect(PermissionsForm).toHaveBeenCalledWith(
+        expect.objectContaining({
+            provider: mockedProviders[0],
+            permissions: mockedPermissions.providerKey1,
+            onlyDisplayViewPermissions: true,
         }),
         {}
     );
