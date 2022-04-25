@@ -29,9 +29,9 @@ class AssociationUserIntentCollectionSpec extends ObjectBehavior
 
     function it_returns_the_association_user_intents()
     {
-        $setTextUserIntent = new AssociateProducts('X_SELL', ['identifier']);
-        $this->beConstructedWith([$setTextUserIntent]);
-        $this->associationUserIntents()->shouldReturn([$setTextUserIntent]);
+        $userIntent = new AssociateProducts('X_SELL', ['identifier']);
+        $this->beConstructedWith([$userIntent]);
+        $this->associationUserIntents()->shouldReturn([$userIntent]);
     }
 
     function it_cannot_be_instantiated_with_other_intent_than_association_intent()
