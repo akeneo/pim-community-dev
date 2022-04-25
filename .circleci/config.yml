@@ -116,7 +116,7 @@ jobs:
             name: Restore cache - composer dependency cache
             keys:
                 - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
-      - change_pim_onboarder_branch_steps
+#      - change_pim_onboarder_branch_steps
       - run:
             name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
             command: |
