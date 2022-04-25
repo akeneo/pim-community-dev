@@ -28,7 +28,7 @@ LEFT JOIN pim_catalog_category as parentCategory
     ON parentCategory.id = category.parent_id
 LEFT JOIN pim_catalog_category_translation as labels
     ON labels.foreign_key = category.id 
-WHERE category.code = ':code'
+WHERE category.code = :code
 GROUP BY category.code
 SQL;
         $stmt = $this->connection->executeQuery($sql, ['code' => $code]);
@@ -46,7 +46,7 @@ SQL;
             $categoryRaw['code'],
             $categoryRaw['parentCode'],
             $dateType->convertToPhpValue($categoryRaw['updated'], $platform),
-            json_decode($categoryRaw['translatedLabels'])
+            json_decode($categoryRaw['translatedLabels'], true)
         );
     }
 }
