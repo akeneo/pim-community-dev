@@ -13,3 +13,7 @@ services:
             - '@pim_standard_format_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+  Akeneo\Category\Infrastructure\ExternalApi\CategoryNormalizer:
+    arguments:
+      - '@pim_catalog.normalizer.standard.datetime'

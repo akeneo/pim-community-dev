@@ -58,5 +58,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('updaters.yml');
         $loader->load('commands.yml');
+        $loader->load('queries.yml');
+        $loader->load('normalizers.yml');
     }
 }

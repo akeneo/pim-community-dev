@@ -1,13 +1,13 @@
 <?php
 
-namespace Akeneo\Category\Infrastructure\Controller\ExternalApi;
+namespace Akeneo\Category\Infrastructure\ExternalApi;
 
 use Akeneo\Category\API\Command\CreateCategoryCommand;
 use Akeneo\Category\API\CommandBus;
+use Akeneo\Category\API\Query\GetCategory;
 use Akeneo\Category\Domain\Exception\InvalidPropertyException;
 use Akeneo\Category\Domain\Exception\ViolationsException;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Component\Api\Exception\DocumentedHttpException;
@@ -32,7 +32,6 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -53,7 +52,9 @@ class CategoryController
         protected ParameterValidatorInterface $parameterValidator,
         protected StreamResourceResponse $partialUpdateStreamResource,
         protected array $apiConfiguration,
-        protected CommandBus $messageBus
+        protected CommandBus $messageBus,
+        private GetCategory $getCategory,
+        private CategoryNormalizer $categoryNormalizer,
     ) {
     }
 
@@ -68,17 +69,12 @@ class CategoryController
      */
     public function getAction(Request $request, $code)
     {
-        $category = $this->repository->findOneByIdentifier($code);
-
+        $category = $this->getCategory->byCode($code);
         if (null === $category) {
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $categoryApi = $this->normalizer->normalize(
-            $category,
-            'external_api',
-            ['with_position' => $request->query->getBoolean('with_position')]
-        );
+        $categoryApi = $this->categoryNormalizer->normalize($category);
 
         return new JsonResponse($categoryApi);
     }

@@ -4,7 +4,7 @@ parameters:
 services:
     pim_api.controller.category:
         public: true
-        class: 'Akeneo\Category\Infrastructure\Controller\ExternalApi\CategoryController'
+        class: 'Akeneo\Category\Infrastructure\ExternalApi\CategoryController'
         arguments:
             - '@pim_api.repository.category'
             - '@pim_external_api_serializer'
@@ -18,6 +18,8 @@ services:
             - '@pim_api.stream.category_partial_update_stream'
             - '%pim_api.configuration%'
             - '@Akeneo\Category\API\CommandBus'
+            - '@Akeneo\Category\API\Query\GetCategory'
+            - '@Akeneo\Category\Infrastructure\ExternalApi\CategoryNormalizer'
 
     pim_enrich.controller.rest.category:
         public: true
