@@ -73,6 +73,7 @@ type ConnectedAppPermissionsProps = {
     providers: PermissionFormProvider<any>[];
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
+    onlyDisplayViewPermissions: boolean;
 };
 jest.mock('@src/connect/components/ConnectedApp/ConnectedAppPermissions', () => ({
     ...jest.requireActual('@src/connect/components/ConnectedApp/ConnectedAppPermissions'),
@@ -99,7 +100,7 @@ jest.mock('@src/connect/hooks/use-permissions-form-providers', () => ({
 const connectedApp = {
     id: '12345',
     name: 'App A',
-    scopes: ['scope1', 'scope2'],
+    scopes: ['read_products', 'write_products'],
     connection_code: 'some_connection_code',
     logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
     author: 'Author A',
@@ -258,9 +259,158 @@ test('The connected app container renders with permissions tab', async () => {
         expect.objectContaining({
             providers: mockedProviders,
             permissions: mockedPermissions,
+            onlyDisplayViewPermissions: false,
         }),
         {}
     );
+});
+
+test('The connected app container renders the permissions tab with the view only option', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+        {
+            key: 'providerKey2',
+            label: 'Provider2',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+        providerKey2: {
+            view: {
+                all: false,
+                identifiers: ['codeA'],
+            },
+        },
+    };
+
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
+        mockedProviders,
+        mockedPermissions,
+        jest.fn(),
+    ]);
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, scopes: ['read_products']}} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+
+    assertPageHeader();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
+    ).toBeInTheDocument();
+    expect(ConnectedAppSettings).toHaveBeenCalledWith(
+        expect.objectContaining({
+            connectedApp: {...connectedApp, scopes: ['read_products']},
+        }),
+        {}
+    );
+    expect(ConnectedAppPermissions).not.toHaveBeenCalled();
+
+    act(() => {
+        userEvent.click(
+            screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
+        );
+    });
+
+    expect(ConnectedAppPermissions).toHaveBeenCalledWith(
+        expect.objectContaining({
+            providers: mockedProviders,
+            permissions: mockedPermissions,
+            onlyDisplayViewPermissions: true,
+        }),
+        {}
+    );
+});
+
+test('The connected app container does not render with permissions tab if there is no scope with product permission', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+        {
+            key: 'providerKey2',
+            label: 'Provider2',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+        providerKey2: {
+            view: {
+                all: false,
+                identifiers: ['codeA'],
+            },
+        },
+    };
+
+    (usePermissionsFormProviders as jest.Mock).mockImplementation(() => [
+        mockedProviders,
+        mockedPermissions,
+        jest.fn(),
+    ]);
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, scopes: ['read_catalog_structure']}} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+
+    assertPageHeader();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')
+    ).not.toBeInTheDocument();
 });
 
 test('The connected app container saves permissions', async () => {
