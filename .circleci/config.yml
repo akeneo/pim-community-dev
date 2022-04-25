@@ -116,7 +116,7 @@ jobs:
             name: Restore cache - composer dependency cache
             keys:
                 - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
-#      - change_pim_onboarder_branch_steps
+      - change_pim_onboarder_branch_steps
       - run:
             name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
             command: |
@@ -900,6 +900,4 @@ commands:
                                   -H 'Accept: application/vnd.github.v3.raw' \
                                   --output /dev/null --silent --head --fail \
                                   -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
-                                  ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
-                                  echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
-                                  sed -i "s#akeneo/pim-onboarder\": \"^6.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+                                  sed -i "s#akeneo/pim-onboarder\": \"^6.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || true
