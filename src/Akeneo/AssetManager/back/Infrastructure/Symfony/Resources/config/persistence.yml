@@ -504,14 +504,14 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales:
-            class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocales
-            arguments:
-                - '@database_connection'
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocales
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
 
     akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels

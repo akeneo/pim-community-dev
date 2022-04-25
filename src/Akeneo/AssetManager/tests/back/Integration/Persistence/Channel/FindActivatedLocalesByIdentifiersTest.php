@@ -11,23 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Locale;
+namespace Akeneo\AssetManager\Integration\Persistence\Channel;
 
-use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifierCollection;
-use Akeneo\ReferenceEntity\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
+use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
+use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
-class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
+class FindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $localesAreActivated;
+    private FindActivatedLocalesByIdentifiersInterface $localesAreActivated;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->localesAreActivated = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers');
-        $this->get('akeneoreference_entity.tests.helper.database_helper')->resetDatabase();
+        $this->localesAreActivated = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers');
+        $this->get('akeneoasset_manager.tests.helper.database_helper')->resetDatabase();
     }
 
     /**
@@ -36,6 +35,20 @@ class SqlFindActivatedLocalesByIdentifiersTest extends SqlIntegrationTestCase
     public function it_finds_the_activated_locales_from_a_list_of_locale_identifiers(): void
     {
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'fr_BE', 'en_US']);
+
+        $localesFound = $this->localesAreActivated->find($localeIdentifiers);
+        $localesFound = $localesFound->normalize();
+        sort($localesFound);
+
+        $this->assertSame(['en_US', 'fr_FR'], $localesFound);
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_case_insensitive(): void
+    {
+        $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['fr_fr', 'FR_BE', 'EN_US']);
 
         $localesFound = $this->localesAreActivated->find($localeIdentifiers);
         $localesFound = $localesFound->normalize();

@@ -27,6 +27,7 @@ $rules = [
         'Akeneo\AssetManager\Application',
         'Akeneo\AssetManager\Domain',
 
+        'Akeneo\Channel\API',
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
         'Akeneo\Pim\Automation\RuleEngine',
         'Akeneo\Pim\Enrichment\AssetManager\Component',

@@ -11,22 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Channel;
 
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
+use Akeneo\Channel\API\Query\FindLocales;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
+class FindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private FindLocales $findLocales
+    ) {
     }
 
     /**
@@ -47,21 +46,16 @@ class SqlFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIden
      */
     private function fetchActivatedLocaleCodesFromIdentifiers(LocaleIdentifierCollection $localeIdentifiers): array
     {
-        $query = <<<SQL
-          SELECT code
-          FROM pim_catalog_locale 
-          WHERE is_activated = 1 AND code IN (:locale_codes)
-SQL;
+        $activatedLocales = $this->findLocales->findAllActivated();
+        $localeIdentifiersAsString = array_map('strtolower', $localeIdentifiers->normalize());
+        $activatedLocaleCodes = [];
 
-        $statement = $this->sqlConnection->executeQuery($query, [
-            'locale_codes' => $localeIdentifiers->normalize(),
-        ], [
-            'locale_codes' => Connection::PARAM_STR_ARRAY,
-        ]);
+        foreach ($activatedLocales as $activatedLocale) {
+            if (in_array(strtolower($activatedLocale->getCode()), $localeIdentifiersAsString)) {
+                $activatedLocaleCodes[] = $activatedLocale->getCode();
+            }
+        }
 
-        $platform = $this->sqlConnection->getDatabasePlatform();
-        $results = $statement->fetchAllAssociative();
-
-        return array_map(fn ($result) => Type::getType(Types::STRING)->convertToPhpValue($result['code'], $platform), $results);
+        return $activatedLocaleCodes;
     }
 }
