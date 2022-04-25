@@ -62,11 +62,13 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $processedItems = 0;
             $logContext->addContext('substep', $tableName);
+
+            $this->logger->notice(
+                \sprintf('Fill foreign uuids for table %s', $tableName),
+                $logContext->toArray()
+            );
+
             while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
-                $this->logger->notice(
-                    \sprintf('Fill foreign uuids for table %s', $tableName),
-                    $logContext->toArray()
-                );
                 if (!$context->dryRun()) {
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
                     $processedItems += self::BATCH_SIZE;

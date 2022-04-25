@@ -18,8 +18,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MigrateToUuidCommand extends Command
 {
     protected static $defaultName = 'pim:product:migrate-to-uuid';
-    private static $DQI_JOB_NAME = 'data_quality_insights_evaluations';
-    private static $WAIT_TIME_IN_SECONDS = 30;
+
+    private const DQI_JOB_NAME = 'data_quality_insights_evaluations';
+    private const WAIT_TIME_IN_SECONDS = 30;
 
     /** @var array<MigrateToUuidStep> */
     private array $steps;
@@ -74,11 +75,11 @@ class MigrateToUuidCommand extends Command
             while ($this->hasDQIJobStarted()) {
                 $this->logger->notice(sprintf(
                     'There is a "%s" job in progress. Wait for %d seconds before retrying migration start...',
-                    self::$DQI_JOB_NAME,
-                    self::$WAIT_TIME_IN_SECONDS
+                    self::DQI_JOB_NAME,
+                    self::WAIT_TIME_IN_SECONDS
                 ));
 
-                sleep(self::$WAIT_TIME_IN_SECONDS);
+                sleep(self::WAIT_TIME_IN_SECONDS);
             }
 
             $startMigrationTime = \time();
@@ -94,6 +95,16 @@ class MigrateToUuidCommand extends Command
                     $this->logger->notice('Missing items', $logContext->toArray());
                 } else {
                     $logContext->addContext('total_missing_items_count', null);
+                }
+
+                if (!$step->shouldBeExecuted()) {
+                    $step->setStatusDone();
+                    $this->logger->notice(
+                        \sprintf('Nothing to do, skipping step %s', $step->getName()),
+                        $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
+                    );
+
+                    continue;
                 }
 
                 $step->setStatusInProgress();
@@ -156,7 +167,7 @@ class MigrateToUuidCommand extends Command
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
-            'code' => self::$DQI_JOB_NAME,
+            'code' => self::DQI_JOB_NAME,
             'status' => Status::IN_PROGRESS,
         ]);
     }
