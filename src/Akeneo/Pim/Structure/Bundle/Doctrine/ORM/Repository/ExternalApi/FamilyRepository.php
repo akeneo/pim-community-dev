@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsNotUsedByProductsQueryInterface;
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -19,17 +21,14 @@ use Symfony\Component\Validator\Validation;
  */
 class FamilyRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
     public function __construct(
         EntityManager $entityManager,
         $className,
-        FamilyRepositoryInterface $familyRepository
+        protected FamilyRepositoryInterface $familyRepository,
+        protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery,
+        protected GetFamilyIdsNotUsedByProductsQueryInterface $getFamilyIdsNotUsedByProductsQuery
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
-
-        $this->familyRepository = $familyRepository;
     }
 
     public function getIdentifierProperties(): array
@@ -46,13 +45,10 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
      * Find resources with offset > $offset and filtered by $criteria
      *
      * @param array{string: array{operator: string, value: mixed}[]} $searchFilters
-     * @param array $orders
-     * @param int   $limit
-     * @param int   $offset
      *
      * @return array
      */
-    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset)
+    public function searchAfterOffset(array $searchFilters, array $orders, $limit, $offset): array
     {
         $qb = $this->createQueryBuilder('r');
         $qb = $this->addFilters($qb, $searchFilters);
@@ -101,14 +97,28 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                 switch ($criterion['operator']) {
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
                         break;
                     case '>':
                         $qb->andWhere($qb->expr()->gt($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
+                        break;
+                    case '=':
+                        if ('has_products' !== $property) {
+                            throw new \InvalidArgumentException('Invalid operator for search query.');
+                        }
+
+                        $familyIds = $criterion['value'] ?
+                            $this->getFamilyIdsUsedByProductsQuery->execute() :
+                            $this->getFamilyIdsNotUsedByProductsQuery->execute();
+
+                        $qb->andWhere($qb->expr()->in('r.id', ':family_ids'));
+                        $qb->setParameter('family_ids', $familyIds);
+
                         break;
                     default:
                         throw new \InvalidArgumentException('Invalid operator for search query.');
                 }
-                $qb->setParameter($parameter, $criterion['value']);
             }
         }
 
@@ -148,6 +158,20 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                     ]),
                     'value' => new Assert\DateTime(['format' => \DateTime::ATOM]),
                 ])
+            ]),
+            'has_products' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on family has_product you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'The "has_products" filter requires a boolean value, and the submitted value is not.',
+                        ]),
+                    ],
+                ]),
             ]),
         ];
         $availableSearchFilters = array_keys($constraints);
