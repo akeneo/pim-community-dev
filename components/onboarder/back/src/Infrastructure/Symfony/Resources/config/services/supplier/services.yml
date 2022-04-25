@@ -90,6 +90,11 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
 
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder'
+
     # Encoders
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
