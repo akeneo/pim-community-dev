@@ -30,7 +30,7 @@ class FileHeader
     {
         return new self(
             $normalizedFileHeader['index'],
-            $normalizedFileHeader['label']
+            $normalizedFileHeader['label'],
         );
     }
 

@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData\GetSampleDataQuery;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +40,7 @@ final class GetSampleDataAction
 
         $query = new GetSampleDataQuery();
         $query->fileKey = $request->get('file_key');
-        $query->columnIndex = intval($request->get('column_index'));
+        $query->columnIndices = array_map('intval', $request->get('column_indices'));
         $query->sheetName = $request->get('sheet_name');
         $query->productLine = intval($request->get('product_line'));
 

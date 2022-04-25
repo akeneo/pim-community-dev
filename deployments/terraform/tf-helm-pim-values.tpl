@@ -24,15 +24,6 @@ global:
     papo_project_code_truncated: ${portal.project_code_truncated} # deprecated
     papo_project_code_hashed: ${portal.project_code_hashed} # deprecated
 
-connectors:
-  bigcommerce:
-    enabled: ${bigcommerce_connector.enabled}
-    pubsub:
-      topic_name: ${bigcommerce_connector.topic}
-      subscription_name: ${bigcommerce_connector.subscription}
-    akeneo_connect_bot_password: ${bigcommerce_connector.akeneo_connect.bot_password}
-    akeneo_connect_bot_client_secret: ${bigcommerce_connector.akeneo_connect.bot_client_secret}
-
 elasticsearch:
   cluster:
     env:

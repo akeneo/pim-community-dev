@@ -30,6 +30,6 @@ class AttributeTargetSpec extends ObjectBehavior
         $this->getLocale()->shouldReturn('fr_FR');
         $this->getActionIfNotEmpty()->shouldReturn('set');
         $this->getActionIfEmpty()->shouldReturn('skip');
-        $this->getSourceParameter()->shouldReturn(null);
+        $this->getSourceConfiguration()->shouldReturn(null);
     }
 }

@@ -339,6 +339,14 @@ pim:
         requests:
           cpu: "100m"
           memory: "256Mi"
+    clean-product-scores:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-product-scores --no-interaction"
+      schedule: "1 0 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
 
 # Onboarder
 onboarder:
@@ -369,12 +377,6 @@ onboarder:
 # Free Trial
 free_trial:
   enabled: false
-
-# Connectors
-connectors:
-  bigcommerce:
-    enabled: false
-    challengePapoActivation: true
 
 mysql:
   image:

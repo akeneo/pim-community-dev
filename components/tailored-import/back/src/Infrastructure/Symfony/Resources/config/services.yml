@@ -14,3 +14,7 @@ services:
         tags:
             - { name: pim_enrich.provider.form }
 
+    akeneo.tailored_import.feature:
+        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+        arguments:
+            - '%env(bool:FLAG_TAILORED_IMPORT_ENABLED)%'

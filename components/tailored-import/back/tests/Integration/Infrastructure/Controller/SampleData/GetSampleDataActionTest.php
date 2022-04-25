@@ -35,7 +35,7 @@ class GetSampleDataActionTest extends ControllerIntegrationTestCase
         $this->fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
-    public function test_it_return_sample_data(): void
+    public function test_it_returns_sample_data(): void
     {
         $fileKey = $this->storeFile(__DIR__ . '/../../../../Common/simple_import.xlsx');
         $this->webClientHelper->callApiRoute(
@@ -45,7 +45,7 @@ class GetSampleDataActionTest extends ControllerIntegrationTestCase
             'GET',
             [
                 'file_key' => $fileKey,
-                'column_index' => 1,
+                'column_indices' => [1],
                 'sheet_name' => 'Products',
                 'product_line' => 2,
             ],

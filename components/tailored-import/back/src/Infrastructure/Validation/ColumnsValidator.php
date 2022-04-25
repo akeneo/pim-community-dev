@@ -42,7 +42,7 @@ class ColumnsValidator extends ConstraintValidator
             new Count([
                 'max' => self::MAX_COLUMN_COUNT,
                 'maxMessage' => Columns::MAX_COUNT_REACHED,
-            ])
+            ]),
         ]);
 
         if (0 < $this->context->getViolations()->count() || empty($columns)) {
@@ -107,15 +107,15 @@ class ColumnsValidator extends ConstraintValidator
                 'uuid' => [new Uuid(), new NotBlank()],
                 'index' => [
                     new Type('integer'),
-                    new Length(['min' => self::MIN_INDEX])
+                    new Length(['min' => self::MIN_INDEX]),
                 ],
                 'label' => [
                     new Type('string'),
                     new NotBlank(['message' => Columns::LABEL_SHOULD_NOT_BE_BLANK]),
                     new Length([
                         'max' => self::LABEL_MAX_LENGTH,
-                        'maxMessage' => Columns::LABEL_MAX_LENGTH_REACHED
-                    ])
+                        'maxMessage' => Columns::LABEL_MAX_LENGTH_REACHED,
+                    ]),
                 ],
             ],
         ]));
@@ -123,12 +123,12 @@ class ColumnsValidator extends ConstraintValidator
         foreach ($violations as $violation) {
             $builder = $this->context->buildViolation(
                 $violation->getMessage(),
-                $violation->getParameters()
+                $violation->getParameters(),
             )
                 ->atPath(sprintf('[%s]%s', $column['uuid'], $violation->getPropertyPath()))
                 ->setInvalidValue($violation->getInvalidValue());
             if ($violation->getPlural()) {
-                $builder->setPlural((int)$violation->getPlural());
+                $builder->setPlural((int) $violation->getPlural());
             }
             $builder->addViolation();
         }

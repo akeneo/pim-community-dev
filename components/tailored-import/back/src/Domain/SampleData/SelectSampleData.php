@@ -12,13 +12,19 @@ final class SelectSampleData
 {
     public const NUMBER_OF_VALUES = 3;
 
-    public static function fromExtractedColumn(array $extractedColumn, int $length = self::NUMBER_OF_VALUES): array
+    public static function fromExtractedColumns(array $extractedColumns, int $length = self::NUMBER_OF_VALUES): array
     {
-        $formattedValues = FormatSampleData::format($extractedColumn);
+        $formattedValues = FormatSampleData::format($extractedColumns);
         $uniqueValues = self::filterUniqueValues($formattedValues);
-        $pickedValues = self::pickRandomValues($uniqueValues, $length);
+        $cleanedStringValue = self::replaceEmptyString($uniqueValues);
+        $pickedValues = self::pickRandomValues($cleanedStringValue, $length);
 
         return self::fillBlankValues($pickedValues, $length);
+    }
+
+    private static function replaceEmptyString(array $sampleData): array
+    {
+        return \array_map(static fn ($value): ?string => 0 === strlen($value) ? null : $value, $sampleData);
     }
 
     private static function fillBlankValues(array $sampleData, int $length): array

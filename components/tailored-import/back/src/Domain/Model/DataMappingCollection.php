@@ -26,7 +26,7 @@ class DataMappingCollection implements \IteratorAggregate
     }
 
     /**
-     * @return DataMapping[] | \ArrayIterator<int, DataMapping>
+     * @return DataMapping[]|\ArrayIterator<int, DataMapping>
      */
     public function getIterator(): \ArrayIterator
     {

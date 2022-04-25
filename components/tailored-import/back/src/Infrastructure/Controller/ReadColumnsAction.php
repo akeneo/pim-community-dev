@@ -16,8 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller;
 use Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler;
 use Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\Columns;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidFileStructure;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\ReadColumns;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -48,7 +47,7 @@ final class ReadColumnsAction
             throw new BadRequestException('Missing file key');
         }
 
-        $violations = $this->validator->validate($normalizedFileStructure, new IsValidFileStructure());
+        $violations = $this->validator->validate($request, new ReadColumns());
         if (count($violations) > 0) {
             return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
         }
@@ -59,12 +58,6 @@ final class ReadColumnsAction
 
         $columns = $this->readColumnsHandler->handle($readColumnsQuery);
         $normalizedColumns = $columns->normalize();
-
-        //Is there a better way to validate columns count and return the error to the user ?
-        $violations = $this->validator->validate($normalizedColumns, new Columns());
-        if (count($violations) > 0) {
-            return new JsonResponse($this->normalizer->normalize($violations), Response::HTTP_BAD_REQUEST);
-        }
 
         return new JsonResponse($normalizedColumns);
     }

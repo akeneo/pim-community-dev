@@ -1,9 +1,5 @@
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {Attribute} from './Attribute';
-import {AttributeTarget} from './Target';
-import {AttributeDataMapping} from './DataMapping';
-import {Column, ColumnIdentifier} from './Configuration';
-import {Operation} from './Operation';
+import {AttributeDataMapping, Attribute, Column, Operation, ColumnIdentifier, AttributeTarget} from '../models';
 
 type AttributeDataMappingConfiguratorProps = {
   dataMapping: AttributeDataMapping;

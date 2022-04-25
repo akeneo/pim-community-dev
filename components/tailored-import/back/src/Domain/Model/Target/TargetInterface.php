@@ -16,6 +16,8 @@ interface TargetInterface
     public const IF_EMPTY_SKIP = 'skip';
 
     public function getCode(): string;
+
     public function getActionIfNotEmpty(): string;
+
     public function getActionIfEmpty(): string;
 }

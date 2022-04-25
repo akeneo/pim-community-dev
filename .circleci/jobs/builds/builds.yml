@@ -269,7 +269,6 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - change_pim_onboarder_branch_steps
-            - connector_bigcommerce_checkout_steps
             - set_gcloud_config_dev
             - run:
                   name: Define value for next steps
@@ -381,7 +380,6 @@ jobs:
             - add_ssh_keys:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-            - connector_bigcommerce_checkout_steps
             - set_gcloud_config_dev
             - install_yq
             - when:
@@ -486,7 +484,6 @@ jobs:
             - add_ssh_keys:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-            - connector_bigcommerce_checkout_steps
             - set_gcloud_config_dev
             - install_yq
             - when:

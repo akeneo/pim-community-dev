@@ -128,7 +128,7 @@ test('it defines the decimal separator of the target', async () => {
 
   expect(onTargetChange).toHaveBeenCalledWith({
     ...dataMapping.target,
-    source_parameter: {
+    source_configuration: {
       decimal_separator: ',',
     },
   });

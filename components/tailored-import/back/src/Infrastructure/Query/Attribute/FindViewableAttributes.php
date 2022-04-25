@@ -27,7 +27,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
     private TokenStorageInterface $tokenStorage;
     private FindFlattenAttributesInterface $findFlattenAttributes;
     private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
-    /** @var array<string>  */
+    /** @var array<string> */
     private array $attributeTypes;
 
     /**
@@ -37,7 +37,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         FindFlattenAttributesInterface $findFlattenAttributes,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
         TokenStorageInterface $tokenStorage,
-        array $attributeTypes
+        array $attributeTypes,
     ) {
         $this->findFlattenAttributes = $findFlattenAttributes;
         $this->getViewableAttributeCodesForUser = $getViewableAttributeCodesForUser;
@@ -49,7 +49,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         string $localeCode,
         int $limit,
         int $offset = 0,
-        string $search = null
+        string $search = null,
     ): ViewableAttributesResult {
         $viewableAttributes = [];
         $currentOffset = max($offset, 0);
@@ -75,14 +75,14 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         int $limit,
         array $attributeTypes,
         int $currentOffset,
-        ?string $search
+        ?string $search,
     ): array {
         $flattenAttributes = $this->findFlattenAttributes->execute(
             $localeCode,
             $limit,
             $attributeTypes,
             $currentOffset,
-            $search
+            $search,
         );
 
         return array_map(
@@ -90,14 +90,14 @@ class FindViewableAttributes implements FindViewableAttributesInterface
                 $flattenAttribute->getCode(),
                 $flattenAttribute->getLabel(),
                 $flattenAttribute->getAttributeGroupCode(),
-                $flattenAttribute->getAttributeGroupLabel()
+                $flattenAttribute->getAttributeGroupLabel(),
             ),
-            $flattenAttributes
+            $flattenAttributes,
         );
     }
 
     /**
-     * @var Attribute[] $attributes
+     * @var Attribute[]
      *
      * @return Attribute[]
      */
@@ -109,7 +109,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
 
         return array_filter(
             $attributes,
-            static fn ($attribute) => in_array($attribute->getCode(), $viewableAttributeCodes)
+            static fn ($attribute) => in_array($attribute->getCode(), $viewableAttributeCodes),
         );
     }
 

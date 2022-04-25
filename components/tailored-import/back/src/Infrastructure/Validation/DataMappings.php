@@ -17,29 +17,20 @@ use Symfony\Component\Validator\Constraint;
 
 class DataMappings extends Constraint
 {
+    public const ATTRIBUTE_SHOULD_EXIST = 'akeneo.tailored_import.validation.target.attribute_should_exist';
     public const MAX_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.max_count_reached';
     public const UUID_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.data_mappings.uuid.should_be_unique';
     public const NO_IDENTIFIER_TARGET_FOUND = 'akeneo.tailored_import.validation.data_mappings.no_identifier_target_found';
     public const TOO_MANY_IDENTIFIER_TARGET_FOUND = 'akeneo.tailored_import.validation.data_mappings.too_many_identifier_target_found';
-    public const MIN_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.min_count_reached';
-    public const MAX_SOURCES_COUNT_REACHED = 'akeneo.tailored_import.validation.data_mappings.sources.max_count_reached';
-    public const SOURCES_COUNT_MISMATCHED = 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched';
-    public const SOURCES_SHOULD_BE_UNIQUE = 'akeneo.tailored_import.validation.data_mappings.sources.should_be_unique';
-    public const SOURCES_SHOULD_EXIST = 'akeneo.tailored_import.validation.data_mappings.sources.should_exist';
 
     public function __construct(
-        private array $columns,
+        private array $columnsUuids,
     ) {
         parent::__construct();
     }
 
-    public function getColumns(): array
+    public function getColumnUuids(): array
     {
-        return $this->columns;
-    }
-
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.data_mappings';
+        return $this->columnsUuids;
     }
 }

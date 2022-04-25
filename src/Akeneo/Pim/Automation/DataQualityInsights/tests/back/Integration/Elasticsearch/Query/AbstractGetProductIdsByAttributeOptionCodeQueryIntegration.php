@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Elasticsearch\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Test\Integration\TestCase;
@@ -66,24 +69,24 @@ abstract class AbstractGetProductIdsByAttributeOptionCodeQueryIntegration extend
 
     protected function createProduct(array $values): ProductId
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct(strval(Uuid::uuid4()), 'family_A');
+        $product = $this->get('pim_catalog.builder.product')->createProduct(Uuid::uuid4()->toString(), 'family_A');
 
         $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId($product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     protected function createProductVariant(string $parentCode): ProductId
     {
-        $productVariant = $this->get('pim_catalog.builder.product')->createProduct(strval(Uuid::uuid4()), 'family_A');
+        $productVariant = $this->get('pim_catalog.builder.product')->createProduct(Uuid::uuid4()->toString(), 'family_A');
         $this->get('pim_catalog.updater.product')->update($productVariant, ['parent' => $parentCode]);
         $this->get('pim_catalog.saver.product')->save($productVariant);
 
-        return new ProductId($productVariant->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$productVariant->getId());
     }
 
-    protected function createProductModel(string $code, array $values, ?string $parent = null): ProductId
+    protected function createProductModel(string $code, array $values, ?string $parent = null): ProductModelId
     {
         $productModelBuilder = $this->get('akeneo_integration_tests.catalog.product_model.builder')
             ->withCode($code)
@@ -101,6 +104,6 @@ abstract class AbstractGetProductIdsByAttributeOptionCodeQueryIntegration extend
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        return new ProductId($productModel->getId());
+        return $this->get(ProductModelIdFactory::class)->create((string)$productModel->getId());
     }
 }

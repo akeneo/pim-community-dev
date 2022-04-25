@@ -56,7 +56,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if channel data is consistent with the attribute is scopable property
+     * Check if channel data is consistent with the attribute is scopable property.
      */
     private function validateChannel(Attribute $attribute, ?string $channel): void
     {
@@ -77,7 +77,7 @@ final class IsValidAttributeValidator extends ConstraintValidator
     }
 
     /**
-     * Check if locale data is consistent with the attribute localizable property
+     * Check if locale data is consistent with the attribute localizable property.
      */
     private function validateLocale(Attribute $attribute, ?string $channel, ?string $localeCode): void
     {

@@ -23,7 +23,7 @@ final class GetRefreshedSampleDataResult
     public function normalize(): array
     {
         return [
-            'refreshed_data' => $this->refreshedData
+            'refreshed_data' => $this->refreshedData,
         ];
     }
 }

@@ -17,20 +17,27 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\MeasurementSourceParameter;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class MeasurementUserIntentFactory implements UserIntentFactoryInterface
+final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string $value): ValueUserIntent
+    /**
+     * @param AttributeTarget $target
+     */
+    public function create(TargetInterface $target, string|array $value): ValueUserIntent
     {
-        if (!$target instanceof AttributeTarget) {
-            throw new \InvalidArgumentException('The target must be a AttributeTarget');
+        if (!$this->supports($target)) {
+            throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"');
         }
 
-        $sourceParameter = $target->getSourceParameter();
-        if (!$sourceParameter instanceof MeasurementSourceParameter) {
-            throw new \InvalidArgumentException('The target source parameter must be a MeasurementSourceParameter');
+        if (!\is_string($value)) {
+            throw new \InvalidArgumentException('MeasurementUserIntentFactory only supports string value');
+        }
+
+        $sourceConfiguration = $target->getSourceConfiguration();
+        if (!$sourceConfiguration instanceof MeasurementSourceConfiguration) {
+            throw new \InvalidArgumentException('The target source configuration must be a MeasurementSourceConfiguration');
         }
 
         return new SetMeasurementValue(
@@ -38,7 +45,7 @@ class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             $target->getChannel(),
             $target->getLocale(),
             $value,
-            $sourceParameter->getUnit(),
+            $sourceConfiguration->getUnit(),
         );
     }
 

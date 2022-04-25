@@ -61,16 +61,6 @@ data:
   PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
   PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
 
-  PUBSUB_TOPIC_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.topic_name }}
-  PUBSUB_SUBSCRIPTION_CONNECTOR_BIGCOMMERCE: {{ .Values.connectors.bigcommerce.pubsub.subscription_name }}
-  {{- if .Values.connectors.bigcommerce.challengePapoActivation }}
-  CONNECTOR_BIGCOMMERCE_FEATURE_FLAG_MUST_CHECK_PAPO_ACTIVATION: "1"
-  {{- else }}
-  CONNECTOR_BIGCOMMERCE_FEATURE_FLAG_MUST_CHECK_PAPO_ACTIVATION: "0"
-  {{- end }}
-  CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_PASSWORD: {{ required "Environment variable CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_PASSWORD is missing" .Values.connectors.bigcommerce.akeneo_connect_bot_password | quote }}
-  CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_CLIENT_SECRET: {{ required "Environment variable CONNECTOR_BIGCOMMERCE_AKENEO_CONNECT_BOT_CLIENT_SECRET is missing" .Values.connectors.bigcommerce.akeneo_connect_bot_client_secret | quote }}
-
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
   FLAG_FREE_TRIAL_ENABLED: "1"

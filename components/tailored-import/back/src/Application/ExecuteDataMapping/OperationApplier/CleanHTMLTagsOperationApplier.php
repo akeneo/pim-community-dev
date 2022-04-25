@@ -21,9 +21,7 @@ class CleanHTMLTagsOperationApplier implements OperationApplierInterface
     public function applyOperation(OperationInterface $operation, string $value): string
     {
         if (!$operation instanceof CleanHTMLTagsOperation) {
-            throw new \InvalidArgumentException(
-                sprintf('Expecting Clean HTML Tags Operation, "%s" given', $operation::class),
-            );
+            throw new \InvalidArgumentException(sprintf('Expecting Clean HTML Tags Operation, "%s" given', $operation::class));
         }
 
         return strip_tags(

@@ -122,6 +122,33 @@ test('it displays validation errors when read columns fails', async () => {
   mockedConsole.mockRestore();
 });
 
+test('it displays global validation errors', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  mockedUseReadColumns.mockImplementation(
+    () => () =>
+      Promise.reject([
+        {
+          messageTemplate: 'error.key.a_global_error',
+          invalidValue: '',
+          message: 'this is a global error',
+          parameters: {},
+          propertyPath: '',
+        },
+      ])
+  );
+
+  await renderWithProviders(<InitializeFileStructure onConfirm={jest.fn()} />);
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.file_structure.placeholder.button'));
+  userEvent.click(screen.getByText('Upload file'));
+  await act(async () => {
+    userEvent.click(screen.getByText('pim_common.confirm'));
+  });
+
+  expect(screen.getByText('this is a global error')).toBeInTheDocument();
+  mockedConsole.mockRestore();
+});
+
 test('it clears the uploaded file when the user closes the modal', async () => {
   const handleConfirm = jest.fn();
 
