@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
@@ -14,7 +14,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
+final class GetProductUuidsToEvaluateQuery implements GetEntityIdsToEvaluateQueryInterface
 {
     public function __construct(private Connection $db, private ProductEntityIdFactoryInterface $idFactory)
     {
