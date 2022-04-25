@@ -30,7 +30,7 @@ final class GetProductScores
      */
     public function get(ProductUuid $productId): array
     {
-        $productScores = $this->getProductScoresQuery->byProductId($productId);
+        $productScores = $this->getProductScoresQuery->byProductUuid($productId);
 
         if ($productScores->isEmpty()) {
             return ["evaluations_available" => false];

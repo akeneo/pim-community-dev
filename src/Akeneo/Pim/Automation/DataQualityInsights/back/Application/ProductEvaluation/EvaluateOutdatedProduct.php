@@ -25,7 +25,7 @@ class EvaluateOutdatedProduct
 
     public function __invoke(ProductUuid $productId): void
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
+        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($productId)) {
             ($this->evaluateProducts)($this->factory->createCollection([(string) $productId]));
         }
     }

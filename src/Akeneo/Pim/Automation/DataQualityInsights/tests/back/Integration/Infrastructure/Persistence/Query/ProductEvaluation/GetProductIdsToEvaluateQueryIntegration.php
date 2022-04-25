@@ -10,12 +10,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsToEvaluateQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductUuidsToEvaluateQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
-class GetProductIdsToEvaluateQueryIntegration extends DataQualityInsightsTestCase
+class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestCase
 {
-    private GetProductIdsToEvaluateQuery $productQuery;
+    private GetProductUuidsToEvaluateQuery $productQuery;
 
     private CriterionEvaluationRepositoryInterface $productCriterionEvaluationRepository;
 

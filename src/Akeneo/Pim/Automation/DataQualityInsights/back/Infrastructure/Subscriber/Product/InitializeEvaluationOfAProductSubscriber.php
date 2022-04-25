@@ -10,6 +10,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -23,8 +24,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
         private FeatureFlag                     $dataQualityInsightsFeature,
         private CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
         private LoggerInterface                 $logger,
-        private ProductEntityIdFactoryInterface $idFactory,
-        private Connection $connection
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -51,22 +51,13 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        // @TODO CPM-576 remove to use the uuid
-        $id = $this->connection->executeQuery(
-            'SELECT id FROM pim_catalog_product WHERE uuid = ?',
-            [$subject->getUuid()->getBytes()]
-        )->fetchOne();
-        if (null === $id) {
-            return;
-        }
-
-        $this->initializeCriteria(intval($id));
+        $this->initializeCriteria($subject->getUuid());
     }
 
-    private function initializeCriteria(int $productId): void
+    private function initializeCriteria(UuidInterface $productUuid): void
     {
         try {
-            $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
+            $productIdCollection = $this->idFactory->createCollection([$productUuid->toString()]);
             $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         } catch (\Throwable $e) {
             $this->logger->error(

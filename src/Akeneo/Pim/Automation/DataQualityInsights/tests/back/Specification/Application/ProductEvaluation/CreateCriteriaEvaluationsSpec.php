@@ -25,7 +25,7 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($criterionEvaluationRegistry, $criterionEvaluationRepository);
 
-        $productId = ProductUuidCollection::fromInt(42);
+        $productIds = ProductUuidCollection::fromStrings(['df470d52-7723-4890-85a0-e79be625e2ed']);
 
         $criterionEvaluationRegistry->getCriterionCodes()->willReturn([new CriterionCode('criterion1'), new CriterionCode('criterion2')]);
 
@@ -33,6 +33,6 @@ final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
             return $collection->count() === 2;
         }))->shouldBeCalled();
 
-        $this->createAll($productId);
+        $this->createAll($productIds);
     }
 }

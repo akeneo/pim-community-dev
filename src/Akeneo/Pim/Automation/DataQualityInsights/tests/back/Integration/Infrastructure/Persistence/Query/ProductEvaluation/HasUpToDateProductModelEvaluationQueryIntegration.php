@@ -44,7 +44,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         $productId1 = $this->givenAProductModelWithAnUpToDateEvaluation($currentDate);
         $this->givenAnUpdatedProductModelWithAnOutdatedEvaluation($currentDate);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertTrue($productHasUpToDateEvaluation);
     }
 
@@ -55,7 +55,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         $this->givenAProductModelWithAnUpToDateEvaluation($currentDate);
         $productId1 = $this->givenAnUpdatedProductModelWithAnOutdatedEvaluation($currentDate);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertFalse($productHasUpToDateEvaluation);
     }
 
@@ -64,7 +64,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $productId1 = $this->givenASubProductModelWithAnOutdatedEvaluationComparedToItsParent($currentDate);
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertFalse($productHasUpToDateEvaluation);
     }
 
@@ -73,7 +73,7 @@ final class HasUpToDateProductModelEvaluationQueryIntegration extends TestCase
         $currentDate = new \DateTimeImmutable('2020-03-02 11:34:27');
 
         $productId1 = $this->givenASubProductModelWithAnUpToDateEvaluationComparedToItsParent($currentDate);
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId1);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId1);
         $this->assertTrue($productHasUpToDateEvaluation);
     }
 

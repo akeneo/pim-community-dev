@@ -26,17 +26,17 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
 
     public function byProductModelId(ProductEntityIdInterface $productModelId): ChannelLocaleRateCollection
     {
-        if ($this->hasUpToDateEvaluationQuery->forProductId($productModelId)) {
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
             return $this->getProductModelScoresQuery->byProductModelId($productModelId);
         }
 
         return new ChannelLocaleRateCollection();
     }
 
-    public function byProductModelIds(ProductEntityIdCollection $productIdCollection): array
+    public function byProductModelIdCollection(ProductEntityIdCollection $productIdCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection);
+        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productIdCollection);
 
-        return is_null($upToDateProducts) ? [] : $this->getProductModelScoresQuery->byProductModelIds($upToDateProducts);
+        return is_null($upToDateProducts) ? [] : $this->getProductModelScoresQuery->byProductModelIdCollection($upToDateProducts);
     }
 }
