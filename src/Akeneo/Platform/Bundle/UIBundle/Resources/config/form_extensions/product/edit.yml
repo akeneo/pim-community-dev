@@ -67,6 +67,7 @@ extensions:
         position: 90
         config:
             form: pim-product-duplicate-modal
+        feature: duplicate_product
 
     pim-product-edit-form-meta-published:
         module: pimee/product-edit-form/meta/published
