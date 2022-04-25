@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
@@ -12,6 +13,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 
@@ -27,37 +29,13 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
 {
     private const BATCH_SIZE = 100;
 
-    /** @var StepExecution */
-    private $stepExecution;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyRepository;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var BulkSaverInterface */
-    private $bulkProductSaver;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
-     * @param BulkSaverInterface                    $bulkProductSaver
-     * @param EntityManagerClearerInterface|null    $cacheClearer
-     */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyRepository,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        BulkSaverInterface $bulkProductSaver,
-        EntityManagerClearerInterface $cacheClearer = null
+        private IdentifiableObjectRepositoryInterface $familyRepository,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private CursorableRepositoryInterface $productRepository,
+        private BulkSaverInterface $bulkProductSaver,
+        private EntityManagerClearerInterface $cacheClearer
     ) {
-        $this->familyRepository = $familyRepository;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->bulkProductSaver = $bulkProductSaver;
-        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -82,8 +60,6 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /**
      * Get the family instance from the job parameters or null.
      *
-     * @return FamilyInterface
-     *
      * @throws UndefinedJobParameterException
      * @throws \InvalidArgumentException
      */
@@ -101,36 +77,34 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
 
     /**
      * Recompute the completenesses of all products belonging to the family by calling 'save' on them.
-     *
-     * @param FamilyInterface $family
      */
     private function computeCompletenesses(FamilyInterface $family): void
     {
-        $productsToSave = $this->findProductsForFamily($family);
+        $productIdentifiers = $this->findProductIdentifiersForFamily($family);
 
-        $productBatch = [];
-        foreach ($productsToSave as $product) {
-            $productBatch[] = $product;
-
-            if (self::BATCH_SIZE === count($productBatch)) {
-                $this->bulkProductSaver->saveAll($productBatch, ['force_save' => true]);
+        $productIdentifierBatch = [];
+        /** @var IdentifierResult $productIdentifier */
+        foreach ($productIdentifiers as $productIdentifier) {
+            $productIdentifierBatch[] = $productIdentifier->getIdentifier();
+            if (self::BATCH_SIZE === \count($productIdentifierBatch)) {
+                $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+                $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
                 $this->cacheClearer->clear();
-                $productBatch = [];
+                $productIdentifierBatch = [];
             }
         }
 
-        $this->bulkProductSaver->saveAll($productBatch, ['force_save' => true]);
-        $this->cacheClearer->clear();
+        if (0 < \count($productIdentifierBatch)) {
+            $products = $this->productRepository->getItemsFromIdentifiers($productIdentifierBatch);
+            $this->bulkProductSaver->saveAll($products, ['force_save' => true]);
+            $this->cacheClearer->clear();
+        }
     }
 
     /**
-     * Returns a cursor of all products belonging to the family.
-     *
-     * @param FamilyInterface $family
-     *
-     * @return CursorInterface
+     * Returns a cursor of all product identifiers belonging to the family.
      */
-    private function findProductsForFamily(FamilyInterface $family): CursorInterface
+    private function findProductIdentifiersForFamily(FamilyInterface $family): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
         $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
