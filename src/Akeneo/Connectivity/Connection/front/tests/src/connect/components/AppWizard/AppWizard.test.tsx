@@ -71,8 +71,6 @@ const notify = jest.fn();
 const providerSave = jest.fn();
 
 const setPermissionsAndConfirmWizard = async () => {
-    // await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next');
-
     await act(async () => {
         userEvent.click(
             await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
@@ -353,7 +351,7 @@ test('The wizard notifies an unspecified error occurred on app confirm', async (
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
                 oldAuthenticationScopes: null,
@@ -401,7 +399,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
                 oldAuthenticationScopes: null,
@@ -479,7 +477,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 oldScopeMessages: null,
                 authenticationScopes: [],
                 oldAuthenticationScopes: null,
@@ -582,4 +580,44 @@ test('The wizard saves app but have some failing permissions on confirm', async 
     expect(providerSave).toHaveBeenNthCalledWith(2, appUserGroup, {view: 'formProviderData2'});
     expect(providerSave).toHaveBeenNthCalledWith(3, appUserGroup, {view: 'formProviderData3'});
     expect(providerSave).toHaveBeenNthCalledWith(4, appUserGroup, {view: 'formProviderData4'});
+});
+
+test('The wizard does not display permissions and confirm steps when there is no products scopes requested', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                scopeMessages: [],
+                oldScopeMessages: null,
+                authenticationScopes: [],
+                oldAuthenticationScopes: null,
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+    renderWithProviders(<AppWizard clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    await screen.findByText('authorizations-component');
+
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+    expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')).toBeInTheDocument();
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.next')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
+    ).not.toBeInTheDocument();
 });

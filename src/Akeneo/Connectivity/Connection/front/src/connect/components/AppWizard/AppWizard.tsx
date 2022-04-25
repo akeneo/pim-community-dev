@@ -11,6 +11,7 @@ import {FullScreenLoader} from './FullScreenLoader';
 import {useConfirmHandler} from '../../hooks/use-confirm-handler';
 import {useFeatureFlags} from '../../../shared/feature-flags';
 import {Permissions} from './steps/Permissions';
+import ScopeMessage from '../../../model/Apps/scope-message';
 
 interface Props {
     clientId: string;
@@ -37,6 +38,11 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             const steps: Step[] = [];
 
             const supportsPermissions = true === featureFlags.isEnabled('connect_app_with_permissions');
+            const shouldDisplayPermissionsStep =
+                undefined !==
+                wizardData.scopeMessages.find((scopeMessage: ScopeMessage) => {
+                    return 'products' === scopeMessage.entities;
+                });
             const requiresAuthentication = wizardData.authenticationScopes.length > 0;
             const isAlreadyConnected = wizardData.oldScopeMessages !== null;
 
@@ -52,7 +58,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                 requires_explicit_approval: true,
             });
 
-            if (!isAlreadyConnected && supportsPermissions) {
+            if (!isAlreadyConnected && supportsPermissions && shouldDisplayPermissionsStep) {
                 steps.push({
                     name: 'permissions',
                     requires_explicit_approval: false,
@@ -128,6 +134,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             providers={providers}
                             setProviderPermissions={handleSetProviderPermissions}
                             permissions={permissions}
+                            scopeMessages={wizardData.scopeMessages}
                         />
                     )}
                 </>
