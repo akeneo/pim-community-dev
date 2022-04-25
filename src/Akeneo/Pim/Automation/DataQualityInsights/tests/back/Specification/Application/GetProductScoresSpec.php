@@ -21,14 +21,18 @@ use Ramsey\Uuid\Uuid;
  */
 final class GetProductScoresSpec extends ObjectBehavior
 {
-    public function let(GetProductScoresQueryInterface $getProductScoresQuery, GetLocalesByChannelQueryInterface $getLocalesByChannelQuery)
-    {
+    public function let(
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
+    ) {
         $this->beConstructedWith($getProductScoresQuery, $getLocalesByChannelQuery);
     }
 
-    public function it_gives_the_scores_by_channel_and_locale_for_a_given_product($getProductScoresQuery, $getLocalesByChannelQuery)
-    {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+    public function it_gives_the_scores_by_channel_and_locale_for_a_given_product(
+        GetProductScoresQueryInterface $getProductScoresQuery,
+        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery
+    ) {
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
@@ -36,7 +40,7 @@ final class GetProductScoresSpec extends ObjectBehavior
         ]));
 
         // TODO Update the GetProductScoresQuery
-        $getProductScoresQuery->byProductId($productUuid)->willReturn((new ChannelLocaleRateCollection())
+        $getProductScoresQuery->byProductUuid($productUuid)->willReturn((new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
                 ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))
         );

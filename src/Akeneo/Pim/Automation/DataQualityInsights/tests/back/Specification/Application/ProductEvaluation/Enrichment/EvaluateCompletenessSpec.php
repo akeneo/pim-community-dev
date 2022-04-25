@@ -35,7 +35,7 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
             $productUuid,

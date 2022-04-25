@@ -20,7 +20,7 @@ final class CriterionEvaluationSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(new CriterionCode('test'), new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
+        $this->beConstructedWith(new CriterionCode('test'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
     }
 
     public function it_starts_and_ends_an_evaluation()

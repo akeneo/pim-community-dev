@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\CalculateProductCompletenessInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CompletenessCalculationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductUuidQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
@@ -20,13 +20,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
  */
 final class CalculateProductCompleteness implements CalculateProductCompletenessInterface
 {
-    private GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery;
+    private GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery;
 
     private CompletenessCalculator $completenessCalculator;
 
     public function __construct(
-        GetProductIdentifierFromProductIdQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator $completenessCalculator
+        GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery,
+        CompletenessCalculator                            $completenessCalculator
     ) {
         $this->completenessCalculator = $completenessCalculator;
         $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;

@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluatio
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
@@ -23,9 +24,9 @@ class EvaluateOutdatedProductModel
     ) {
     }
 
-    public function __invoke(ProductUuid $productModelId): void
+    public function __invoke(ProductModelId $productModelId): void
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productModelId)) {
+        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
             ($this->evaluateProductModels)($this->factory->createCollection([(string) $productModelId]));
         }
     }

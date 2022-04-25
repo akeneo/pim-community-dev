@@ -27,14 +27,14 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
     }
 
     public function it_evaluate_a_product_if_it_has_outdated_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProducts,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProducts $evaluateProducts,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(false);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
         $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldBeCalled();
 
@@ -42,15 +42,14 @@ final class EvaluateOutdatedProductSpec extends ObjectBehavior
     }
 
     public function it_does_not_evaluate_a_product_with_up_to_date_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProducts,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProducts $evaluateProducts,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $collection = ProductUuidCollection::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        // TODO Update hasUpToDateEvaluationQuery
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(true);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
         $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed'])->willReturn($collection);
         $evaluateProducts->__invoke($collection)->shouldNotBeCalled();
 

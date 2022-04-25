@@ -53,7 +53,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         $getLocalesByChannelQuery,
         $completeEvaluationWithImprovableAttributes
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
@@ -89,7 +89,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
             new CriterionCode('consistency_textarea_lowercase_words'),
         ]);
 
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criteriaEvaluations = $this->givenDeprecatedCriteriaEvaluations($productUuid);
         $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->willReturn($criteriaEvaluations);
         $completeEvaluationWithImprovableAttributes->__invoke($criteriaEvaluations)->willReturn($criteriaEvaluations);

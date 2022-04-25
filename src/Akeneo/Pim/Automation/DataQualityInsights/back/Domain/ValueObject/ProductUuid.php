@@ -20,7 +20,7 @@ final class ProductUuid implements ProductEntityIdInterface
     public static function fromString(string $uuid): self
     {
         if (!Uuid::isValid($uuid)) {
-            throw new \InvalidArgumentException('TODO Put the message back that was in the construct');
+            throw new \InvalidArgumentException(sprintf('Product uuid should be a valid uuid, %s given', $uuid));
         }
 
         return new self(Uuid::fromString($uuid));
@@ -28,7 +28,7 @@ final class ProductUuid implements ProductEntityIdInterface
 
     public function __toString(): string
     {
-        return strval($this->uuid);
+        return $this->uuid->toString();
     }
 
     public function toInt(): int

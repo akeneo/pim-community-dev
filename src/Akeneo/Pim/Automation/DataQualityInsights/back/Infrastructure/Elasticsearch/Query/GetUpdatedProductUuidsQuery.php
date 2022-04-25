@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -18,7 +18,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
+class GetUpdatedProductUuidsQuery implements GetUpdatedProductUuidsQueryInterface
 {
     private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
     private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';

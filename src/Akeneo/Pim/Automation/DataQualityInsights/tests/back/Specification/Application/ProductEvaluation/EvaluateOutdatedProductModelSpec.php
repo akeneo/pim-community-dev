@@ -8,7 +8,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactory
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -27,14 +26,14 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
     }
 
     public function it_evaluate_a_product_model_if_it_has_outdated_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProductModels,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProductModels $evaluateProductModels,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
         $productModelId = new ProductModelId(42);
         $collection = ProductModelIdCollection::fromStrings(['42']);
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(false);
         $idFactory->createCollection(['42'])->willReturn($collection);
         $evaluateProductModels->__invoke($collection)->shouldBeCalled();
 
@@ -42,14 +41,14 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
     }
 
     public function it_does_not_evaluate_a_product_model_with_up_to_date_evaluation(
-        $hasUpToDateEvaluationQuery,
-        $evaluateProductModels,
-        $idFactory
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        EvaluateProductModels $evaluateProductModels,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
         $productModelId = new ProductModelId(42);
         $collection = ProductModelIdCollection::fromStrings(['42']);
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(true);
         $idFactory->createCollection(['42'])->willReturn($collection);
         $evaluateProductModels->__invoke($collection)->shouldNotBeCalled();
 
