@@ -25,9 +25,9 @@ class GetQualityScoresFactory
     {
         switch ($type) {
             case 'product':
-                return $this->getProductScoresQuery->byProductIds($productIdCollection);
+                return $this->getProductScoresQuery->byProductUuidCollection($productIdCollection);
             case 'product_model':
-                return $this->getProductModelScoresQuery->byProductModelIds($productIdCollection);
+                return $this->getProductModelScoresQuery->byProductModelIdCollection($productIdCollection);
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid type %s', $type));
         }

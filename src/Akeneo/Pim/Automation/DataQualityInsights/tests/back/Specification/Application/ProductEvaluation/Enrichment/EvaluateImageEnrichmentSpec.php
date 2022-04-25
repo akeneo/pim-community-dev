@@ -26,11 +26,11 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ): void
     {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
             CriterionEvaluationStatus::DONE,
-            $productUuid->toInt()
+            Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         );
         $imageAttribute = CatalogProvider::anAttribute('an_image_attribute', AttributeTypes::IMAGE);
         $secondImageAttribute = CatalogProvider::anAttribute('a_second_image_attribute', AttributeTypes::IMAGE);
@@ -82,11 +82,11 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ): void
     {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
             CriterionEvaluationStatus::DONE,
-            $productUuid->toInt()
+            Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         );
        $textAttribute = CatalogProvider::anAttribute('a_text_attribute');
         $productValues = CatalogProvider::aListOfProductValues([

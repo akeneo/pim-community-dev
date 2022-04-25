@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface HasUpToDateEvaluationQueryInterface
 {
-    public function forProductId(ProductEntityIdInterface $productId): bool;
+    public function forEntityId(ProductEntityIdInterface $productId): bool;
 
-    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection;
+    public function forEntityIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection;
 }

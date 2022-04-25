@@ -31,7 +31,7 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuery implements GetCriteri
 
     public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forProductId($productId)) {
+        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($productId)) {
             return new Read\CriterionEvaluationCollection();
         }
 

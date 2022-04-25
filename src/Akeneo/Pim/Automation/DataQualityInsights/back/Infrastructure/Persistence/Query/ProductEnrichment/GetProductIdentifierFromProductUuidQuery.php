@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdentifierFromProductUuidQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdentifier;
 use Doctrine\DBAL\Connection;
@@ -13,7 +13,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductIdentifierFromProductIdQuery implements GetProductIdentifierFromProductIdQueryInterface
+final class GetProductIdentifierFromProductUuidQuery implements GetProductIdentifierFromProductUuidQueryInterface
 {
     /** @var Connection */
     private $db;
@@ -23,26 +23,21 @@ final class GetProductIdentifierFromProductIdQuery implements GetProductIdentifi
         $this->db = $db;
     }
 
-    public function execute(ProductUuid $productId): ProductIdentifier
+    public function execute(ProductUuid $productUuid): ProductIdentifier
     {
         $sql = <<<SQL
-SELECT identifier FROM pim_catalog_product WHERE id=:product_id;
+SELECT identifier FROM pim_catalog_product WHERE uuid=:product_uuid;
 SQL;
 
-        $statement = $this->db->executeQuery(
+        $productIdentifier = $this->db->fetchOne(
             $sql,
             [
-                'product_id' => $productId->toInt(),
-            ],
-            [
-                'product_id' => \PDO::PARAM_INT,
+                'product_uuid' => $productUuid->toBytes(),
             ]
         );
 
-        $productIdentifier = $statement->fetchOne();
-
         if (false === $productIdentifier) {
-            throw new \Exception(sprintf('No identifier found for product id %s', $productId));
+            throw new \Exception(sprintf('No identifier found for product id %s', $productUuid));
         }
 
         return new ProductIdentifier($productIdentifier);

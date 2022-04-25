@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -28,11 +28,11 @@ final class EvaluateAllProductsCommand extends Command
     protected static $defaultDescription = 'Evaluate all products and product models having pending criteria.';
 
     public function __construct(
-        private Connection $dbConnection,
-        private GetProductIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
-        private GetProductIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
-        private EvaluateProducts $evaluateProducts,
-        private EvaluateProductModels $evaluateProductModels
+        private Connection                           $dbConnection,
+        private GetEntityIdsToEvaluateQueryInterface $getProductIdsToEvaluateQuery,
+        private GetEntityIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
+        private EvaluateProducts                     $evaluateProducts,
+        private EvaluateProductModels                $evaluateProductModels
     ) {
         parent::__construct();
     }
