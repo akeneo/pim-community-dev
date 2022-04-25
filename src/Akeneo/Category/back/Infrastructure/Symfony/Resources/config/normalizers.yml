@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Infrastructure\ExternalApi\CategoryNormalizer:
+    arguments:
+      - '@pim_catalog.normalizer.standard.datetime'
