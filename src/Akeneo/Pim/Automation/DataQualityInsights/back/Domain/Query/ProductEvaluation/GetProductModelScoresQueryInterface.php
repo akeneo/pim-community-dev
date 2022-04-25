@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -14,10 +14,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface GetProductModelScoresQueryInterface
 {
-    public function byProductModelId(ProductEntityIdInterface $productId): Read\Scores;
+    public function byProductModelId(ProductModelId $productId): Read\Scores;
 
     /**
      * @return array<Read\Scores>
      */
-    public function byProductModelIds(ProductEntityIdCollection $productModelIds): array;
+    public function byProductModelIdCollection(ProductModelIdCollection $productModelIds): array;
 }

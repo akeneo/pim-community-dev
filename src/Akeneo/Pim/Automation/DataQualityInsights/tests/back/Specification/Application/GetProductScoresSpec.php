@@ -15,7 +15,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -33,7 +32,7 @@ final class GetProductScoresSpec extends ObjectBehavior
 
     public function it_gives_the_scores_by_channel_and_locale_for_a_given_product($getProductScoresQuery, $getLocalesByChannelQuery, $getScoresByCriteria)
     {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
@@ -49,7 +48,7 @@ final class GetProductScoresSpec extends ObjectBehavior
                 ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(70))
         );
 
-        $getProductScoresQuery->byProductId($productUuid)->willReturn($scores);
+        $getProductScoresQuery->byProductUuid($productUuid)->willReturn($scores);
         $getScoresByCriteria->__invoke($scores)->willReturn($scores->allCriteria());
 
         $this->get($productUuid)->shouldBeLike([

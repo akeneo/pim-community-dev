@@ -13,8 +13,8 @@ class ProductModelIdFactory implements ProductEntityIdFactoryInterface
         return ProductModelId::fromString($id);
     }
 
-    public function createCollection(array $ids): ProductModelIdCollection
+    public function createCollection(array $uuids): ProductModelIdCollection
     {
-        return ProductModelIdCollection::fromStrings($ids);
+        return ProductModelIdCollection::fromStrings($uuids);
     }
 }

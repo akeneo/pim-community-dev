@@ -29,8 +29,8 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_the_product_model_scores_if_evaluation_for_product_id_is_up_to_date(
-        $hasUpToDateEvaluationQuery,
-        $getProductModelScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery
     ) {
         $productModelId = new ProductModelId(42);
 
@@ -43,19 +43,19 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(74))
         );
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(true);
         $getProductModelScoresQuery->byProductModelId($productModelId)->willReturn($scores);
 
         $this->byProductModelId($productModelId)->shouldReturn($scores);
     }
 
     public function it_returns_empty_scores_if_evaluation_for_product_id_is_outdated(
-        $hasUpToDateEvaluationQuery,
-        $getProductModelScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery
     ) {
         $productModelId = new ProductModelId(42);
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(false);
         $getProductModelScoresQuery->byProductModelId($productModelId)->shouldNotBeCalled();
 
         $this->byProductModelId($productModelId)->shouldBeLike(new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection()));

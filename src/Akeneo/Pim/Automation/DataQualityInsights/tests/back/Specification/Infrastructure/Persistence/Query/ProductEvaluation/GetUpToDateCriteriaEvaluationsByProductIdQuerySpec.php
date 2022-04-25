@@ -30,13 +30,13 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBeh
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(true);
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
 
         $criteriaEvaluations = (new Read\CriterionEvaluationCollection())
             ->add(new Read\CriterionEvaluation(
                 new CriterionCode('spelling'),
-                new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+                ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'),
                 new \DateTimeImmutable(),
                 CriterionEvaluationStatus::pending(),
                 null
@@ -51,8 +51,8 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBeh
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(false);
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
 
         $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->shouldNotBeCalled();
 

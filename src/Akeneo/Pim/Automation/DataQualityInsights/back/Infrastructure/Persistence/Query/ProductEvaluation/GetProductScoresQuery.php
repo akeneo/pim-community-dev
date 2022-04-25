@@ -24,20 +24,20 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
     ) {
     }
 
-    public function byProductId(ProductEntityIdInterface $productId): Read\Scores
+    public function byProductUuid(ProductEntityIdInterface $productUuid): Read\Scores
     {
-        $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
-        $productScores = $this->byProductIds($productIdCollection);
+        $productIdCollection = $this->idFactory->createCollection([(string)$productUuid]);
+        $productScores = $this->byProductUuidCollection($productIdCollection);
 
-        return $productScores[(string)$productId] ?? new Read\Scores(
+        return $productScores[(string)$productUuid] ?? new Read\Scores(
             new ChannelLocaleRateCollection(),
             new ChannelLocaleRateCollection()
         );
     }
 
-    public function byProductIds(ProductEntityIdCollection $productIdCollection): array
+    public function byProductUuidCollection(ProductEntityIdCollection $productUuidCollection): array
     {
-        if ($productIdCollection->isEmpty()) {
+        if ($productUuidCollection->isEmpty()) {
             return [];
         }
 
@@ -54,7 +54,7 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIdCollection->toArrayString()],
+            ['product_ids' => $productUuidCollection->toArrayString()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
