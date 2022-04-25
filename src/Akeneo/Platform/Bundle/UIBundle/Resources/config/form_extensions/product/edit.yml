@@ -42,6 +42,7 @@ extensions:
         aclResourceId: pimee_revert_product_version_revert
         targetZone: self
         position: 100
+        feature: restore_product
 
     pim-product-edit-form-publish:
         module: pimee/product-edit-form/publish
