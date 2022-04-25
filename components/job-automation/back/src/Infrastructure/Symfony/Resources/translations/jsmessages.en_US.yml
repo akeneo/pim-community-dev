@@ -1,0 +1,12 @@
+akeneo.automation:
+  storage:
+    title: Storage
+    connection:
+      label: Connection
+      local: Local
+      sftp: SFTP
+      none: None
+    file_path.label: File path
+    host.label: URL
+    username.label: Login
+    password.label: Password

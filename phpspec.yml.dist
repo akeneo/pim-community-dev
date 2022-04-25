@@ -59,6 +59,14 @@ suites:
         src_path: components/tailored-import/back/src
         spec_prefix: Specification
 
+    ## Job automation context
+    JobAutomation:
+        namespace: Akeneo\Platform\JobAutomation
+        psr4_prefix: Akeneo\Platform\JobAutomation
+        spec_path: components/job-automation/back/tests
+        src_path: components/job-automation/back/src
+        spec_prefix: Specification
+
     ## Pim extension
     ReferenceEntityExtension:
         namespace: Akeneo\Pim\Enrichment\ReferenceEntity

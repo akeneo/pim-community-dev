@@ -9,7 +9,13 @@ import {
   AttributesIllustration,
   Helper,
 } from 'akeneo-design-system';
-import {filterErrors, useTranslate, ValidationError, formatParameters} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  useTranslate,
+  ValidationError,
+  formatParameters,
+  getErrorsForPath,
+} from '@akeneo-pim-community/shared';
 import {useReadColumns} from '../hooks';
 import {Column, FileStructure, getDefaultFileStructure} from '../models';
 import {FileTemplateConfiguration} from '../components';
@@ -35,6 +41,13 @@ const Content = styled.div`
   padding: 0 2px;
 `;
 
+const HelperContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  flex-direction: column;
+`;
+
 type InitializeFileStructureProps = {
   onConfirm: (
     fileKey: string,
@@ -52,6 +65,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
   const [fileStructure, setFileStructure] = useState<FileStructure>(getDefaultFileStructure());
   const readColumns = useReadColumns();
   const fileStructureValidationErrors = filterErrors(validationErrors, '[file_structure]');
+  const globalValidationErrors = getErrorsForPath(validationErrors, '');
 
   const handleConfirm = async () => {
     setValidationErrors([]);
@@ -86,6 +100,7 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
 
   const handlePrevious = () => {
     setFileStructure(getDefaultFileStructure());
+    setValidationErrors([]);
     setFileInfo(null);
   };
 
@@ -109,7 +124,14 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         </Modal.SectionTitle>
         <Modal.Title>{translate('akeneo.tailored_import.file_structure.modal.title')}</Modal.Title>
         <Content>
-          <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
+          <HelperContainer>
+            <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
+            {globalValidationErrors.map((validationError, index) => (
+              <Helper key={index} level={'error'}>
+                {translate(validationError.message, validationError.parameters)}
+              </Helper>
+            ))}
+          </HelperContainer>
           {!fileInfo ? (
             <FileTemplateUploader onFileTemplateUpload={handleFileUpload} />
           ) : (

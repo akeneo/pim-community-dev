@@ -25,7 +25,7 @@ class AkeneoTailoredImportExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('handlers.yml');
         $loader->load('hydrators.yml');
@@ -36,15 +36,10 @@ class AkeneoTailoredImportExtension extends Extension
         $loader->load('ramsey.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
-        $loader->load('source_parameter_appliers.yml');
+        $loader->load('source_configuration_appliers.yml');
         $loader->load('spout.yml');
         $loader->load('user_intent_builders.yml');
         $loader->load('validations.yml');
         $loader->load('writers.yml');
-
-        $isEnabled = (bool)($_ENV['FLAG_TAILORED_IMPORT_ENABLED'] ?? false);
-        if (!$isEnabled) {
-            $container->removeDefinition('akeneo.tailored_import.job.xlsx_product.import');
-        }
     }
 }

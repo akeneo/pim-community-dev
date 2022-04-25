@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData;
 
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataHandler;
 use Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSampleData\GetRefreshedSampleDataQuery;
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\RefreshSampleDataQuery;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\RefreshSampleDataQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,7 +41,7 @@ final class GetRefreshedSampleDataAction
         $query = new GetRefreshedSampleDataQuery();
         $query->currentSample = $request->get('current_sample');
         $query->fileKey = $request->get('file_key');
-        $query->columnIndex = intval($request->get('column_index'));
+        $query->columnIndices = array_map('intval', $request->get('column_indices'));
         $query->sheetName = $request->get('sheet_name');
         $query->productLine = intval($request->get('product_line'));
 

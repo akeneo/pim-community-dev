@@ -239,7 +239,7 @@ resource "local_file" "helm_pim_config" {
         innodb_buffer_pool_size = format(
           "%d%s", ceil(
             trimsuffix(local.helm-default-values.mysql.mysql.innodbBufferPoolSize, local.mysql-memory-unit) +
-            1024 * local.tshirt-size-index
+            758 * local.tshirt-size-index
           ),
           local.mysql-memory-unit
         )
@@ -287,16 +287,6 @@ resource "local_file" "helm_pim_config" {
             client_secret   = var.akeneo_connect_api_client_secret
             client_password = var.akeneo_connect_api_client_password
           }
-        }
-      }
-
-      bigcommerce_connector = {
-        enabled      = local.type != "tria" ? true : false
-        topic        = local.type != "tria" ? google_pubsub_topic.connector_bigcommerce[0].name : "fakeValue"
-        subscription = local.type != "tria" ? google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
-        akeneo_connect = {
-          bot_password      = local.type != "tria" ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data : "fakeValue"
-          bot_client_secret = local.type != "tria" ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data : "fakeValue"
         }
       }
     }

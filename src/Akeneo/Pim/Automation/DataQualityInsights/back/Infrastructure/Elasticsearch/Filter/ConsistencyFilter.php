@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
-class ConsistencyFilter extends AbstractFieldFilter implements FieldFilterInterface
+class ConsistencyFilter extends AbstractFieldFilter
 {
     public function __construct()
     {

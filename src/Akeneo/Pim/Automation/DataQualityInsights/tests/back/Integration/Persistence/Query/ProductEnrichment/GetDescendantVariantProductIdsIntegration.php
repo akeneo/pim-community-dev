@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\ProductEnrichment;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
@@ -44,12 +44,13 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         $productIds[] = $this->createProduct('a_medium_shoe', 'clothing_size_color', $shoeProductModel);
         $productIds[] = $this->createProduct('a_large_shoe', 'clothing_size_color', $shoeProductModel);
 
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$shirtProductModel->getId(),
+            (string)$shoeProductModel->getId()
+        ]);
         Assert::assertEqualsCanonicalizing(
             $productIds,
-            $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds(
-                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
-                )
+            $this->get(GetDescendantVariantProductIds::class)->fromProductModelIds($productModelIdCollection)
         );
     }
 
@@ -121,12 +122,14 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         $productIds[] = $this->createProduct('a_large_red_shoe', 'shoe_size_color', $largeShoeProductModel);
         $productIds[] = $this->createProduct('a_large_green_shoe', 'shoe_size_color', $largeShoeProductModel);
 
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$shirtProductModel->getId(),
+            (string)$shoeProductModel->getId()
+        ]);
+
         Assert::assertEqualsCanonicalizing(
             $productIds,
-            $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds(
-                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
-                )
+            $this->get(GetDescendantVariantProductIds::class)->fromProductModelIds($productModelIdCollection)
         );
     }
 
@@ -185,12 +188,14 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
         $productIds[] = $this->createProduct('a_large_shoe', 'shoe_size_color', $shoeProductModel);
         $productIds[] = $this->createProduct('a_medium_shoe', 'shoe_size_color', $shoeProductModel);
 
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([
+            (string)$shirtProductModel->getId(),
+            (string)$shoeProductModel->getId()
+        ]);
+
         Assert::assertEqualsCanonicalizing(
             $productIds,
-            $this->get(GetDescendantVariantProductIds::class)
-                ->fromProductModelIds(
-                    ProductIdCollection::fromInts([$shirtProductModel->getId(), $shoeProductModel->getId()])
-                )
+            $this->get(GetDescendantVariantProductIds::class)->fromProductModelIds($productModelIdCollection)
         );
     }
 
@@ -226,11 +231,12 @@ class GetDescendantVariantProductIdsIntegration extends TestCase
     }
 
     private function createProduct(
-        string $identifier,
-        ?string $familyCode,
+        string                 $identifier,
+        ?string                $familyCode,
         ?ProductModelInterface $productModel,
-        array $values = []
-    ): int {
+        array                  $values = []
+    ): int
+    {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         if (null !== $productModel) {
             $product->setParent($productModel);

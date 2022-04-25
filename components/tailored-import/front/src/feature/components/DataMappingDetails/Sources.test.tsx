@@ -20,7 +20,13 @@ const columns: Column[] = [
 
 test('it displays columns as sources', () => {
   renderWithProviders(
-    <Sources sources={[columns[0].uuid]} columns={columns} validationErrors={[]} onSourcesChange={jest.fn()} />
+    <Sources
+      isMultiSource={false}
+      sources={[columns[0].uuid]}
+      columns={columns}
+      validationErrors={[]}
+      onSourcesChange={jest.fn()}
+    />
   );
 
   expect(screen.getByText('Product identifier (A)')).toBeInTheDocument();
@@ -30,7 +36,13 @@ test('it can add a source using the add source dropdown', () => {
   const handleSourcesChange = jest.fn();
 
   renderWithProviders(
-    <Sources sources={[]} columns={columns} validationErrors={[]} onSourcesChange={handleSourcesChange} />
+    <Sources
+      isMultiSource={false}
+      sources={[]}
+      columns={columns}
+      validationErrors={[]}
+      onSourcesChange={handleSourcesChange}
+    />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.label'));
@@ -52,6 +64,7 @@ test('it displays validation errors', () => {
 
   renderWithProviders(
     <Sources
+      isMultiSource={false}
       sources={[columns[0].uuid]}
       columns={columns}
       validationErrors={validationErrors}
@@ -62,9 +75,10 @@ test('it displays validation errors', () => {
   expect(screen.getByText('error.key.an_error')).toBeInTheDocument();
 });
 
-test('it cannot add source when limit is reached', () => {
+test('it cannot add source when limit is reached when single source', () => {
   renderWithProviders(
     <Sources
+      isMultiSource={false}
       sources={['288d85cb-3ffb-432d-a422-d2c6810113ab']}
       columns={columns}
       validationErrors={[]}
@@ -76,11 +90,56 @@ test('it cannot add source when limit is reached', () => {
   expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.helper')).toBeInTheDocument();
 });
 
+test('it cannot add source when limit is reached when multi source', () => {
+  renderWithProviders(
+    <Sources
+      isMultiSource={true}
+      sources={[
+        '288d85cb-3ffb-432d-a422-d2c6810113ab',
+        '288d85cb-3ffb-432d-a422-d2c6810113ac',
+        '288d85cb-3ffb-432d-a422-d2c6810113ad',
+        '288d85cb-3ffb-432d-a422-d2c6810113ae',
+      ]}
+      columns={columns}
+      validationErrors={[]}
+      onSourcesChange={jest.fn()}
+    />
+  );
+
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.sources.add.label')).not.toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.helper')).toBeInTheDocument();
+});
+
+test('it can add multiple sources if it handles it', () => {
+  const handleChange = jest.fn();
+
+  renderWithProviders(
+    <Sources
+      isMultiSource={true}
+      sources={['288d85cb-3ffb-432d-a422-d2c6810113ab']}
+      columns={columns}
+      validationErrors={[]}
+      onSourcesChange={handleChange}
+    />
+  );
+
+  expect(screen.queryByText('akeneo.tailored_import.data_mapping.sources.add.helper')).not.toBeInTheDocument();
+
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.sources.add.label'));
+  userEvent.click(screen.getByText('Name (B)'));
+
+  expect(handleChange).toHaveBeenCalledWith([
+    '288d85cb-3ffb-432d-a422-d2c6810113ab',
+    'dba0d9f8-2283-4a07-82b7-67e0435b7dcc',
+  ]);
+});
+
 test('it can remove a source', () => {
   const handleSourcesChange = jest.fn();
 
   renderWithProviders(
     <Sources
+      isMultiSource={false}
       sources={['288d85cb-3ffb-432d-a422-d2c6810113ab']}
       columns={columns}
       validationErrors={[]}

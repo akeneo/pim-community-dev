@@ -18,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\Products
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 final class ComputeProductsSpellingStatusQuery implements ComputeProductsKeyIndicator
 {
@@ -34,7 +34,7 @@ final class ComputeProductsSpellingStatusQuery implements ComputeProductsKeyIndi
         return ProductsWithPerfectSpelling::CODE;
     }
 
-    public function compute(ProductIdCollection $productIdCollection): array
+    public function compute(ProductEntityIdCollection $productIdCollection): array
     {
         $productsSpellingRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
             $productIdCollection,

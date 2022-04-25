@@ -14,26 +14,22 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class FilterProductIdsWithCriterionNotEvaluatedSinceQuery implements FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var string */
-    private $tableName;
-
-    public function __construct(Connection $dbConnection, string $tableName)
-    {
-        $this->dbConnection = $dbConnection;
-        $this->tableName = $tableName;
+    public function __construct(
+        private Connection                      $dbConnection,
+        private string                          $tableName,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
-    public function execute(ProductIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductIdCollection
+    public function execute(ProductEntityIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductEntityIdCollection
     {
         $tableName = $this->tableName;
 
@@ -45,13 +41,14 @@ WHERE product_id IN (:productIds) AND criterion_code = :criterionCode
 SQL;
 
         $stmt = $this->dbConnection->executeQuery($query, [
-            'productIds' => $productIds->toArrayInt(),
+            'productIds' => array_map(fn ($productId) => (int)$productId, $productIds->toArrayString()),
             'criterionCode' => $criterionCode,
             'evaluateSince' => $evaluatedSince->format(Clock::TIME_FORMAT),
         ], [
             'productIds' => Connection::PARAM_INT_ARRAY,
         ]);
 
-        return ProductIdCollection::fromStrings($stmt->fetchFirstColumn());
+
+        return $this->idFactory->createCollection($stmt->fetchFirstColumn());
     }
 }

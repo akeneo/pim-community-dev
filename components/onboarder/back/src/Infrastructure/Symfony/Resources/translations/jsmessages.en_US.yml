@@ -26,6 +26,8 @@ onboarder:
             search_by_supplier: Search by Supplier
             no_search_result: There are no suppliers matching this search.
             error: An error occured while loading the supplier list.
+            dropdown:
+                export_suppliers: Export suppliers
             columns:
                 supplier: Supplier
                 number_of_contributors: Number of contributors

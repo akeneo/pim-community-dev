@@ -19,8 +19,8 @@ class MismatchedFileHeadersException extends \Exception
     {
         $message = sprintf(
             "Header label does not match job configuration.\nExpected: %s\nActual: %s",
-            implode(", ", $expectedHeader),
-            implode(", ", $actualHeader)
+            implode(', ', $expectedHeader),
+            implode(', ', $actualHeader),
         );
         parent::__construct($message);
     }

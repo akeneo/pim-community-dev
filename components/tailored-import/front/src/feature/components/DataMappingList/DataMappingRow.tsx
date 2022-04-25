@@ -14,6 +14,10 @@ type DataMappingRowProps = {
   onRemove: (uuid: string) => void;
 };
 
+const DataMappingCodeCell = styled(Table.Cell)`
+  width: 50%;
+`;
+
 const Spacer = styled.div`
   flex: 1;
 `;
@@ -52,7 +56,7 @@ const DataMappingRow = ({
   return (
     <>
       <Table.Row onClick={() => onSelect(dataMapping.uuid)} isSelected={isSelected}>
-        <Table.Cell>{dataMapping.target.code}</Table.Cell>
+        <DataMappingCodeCell>{dataMapping.target.code}</DataMappingCodeCell>
         <Table.Cell>
           {sources.length === 0
             ? translate('akeneo.tailored_import.data_mapping_list.no_sources')

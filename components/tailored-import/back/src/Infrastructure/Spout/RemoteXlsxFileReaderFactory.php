@@ -24,7 +24,7 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
 
     public function __construct(
         private CellsFormatter $cellsFormatter,
-        private FilesystemProvider $filesystemProvider
+        private FilesystemProvider $filesystemProvider,
     ) {
     }
 

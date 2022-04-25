@@ -14,29 +14,25 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Structure\UpdatedFamily;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsWithUpdatedFamilyAttributesListQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetFamiliesWithUpdatedAttributesListQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 final class GetProductModelIdsWithUpdatedFamilyAttributesListQuery implements GetProductIdsWithUpdatedFamilyAttributesListQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var GetFamiliesWithUpdatedAttributesListQueryInterface */
-    private $getFamiliesWithUpdatedAttributesListQuery;
-
-    public function __construct(Connection $dbConnection, GetFamiliesWithUpdatedAttributesListQueryInterface $getFamiliesWithUpdatedAttributesListQuery)
-    {
-        $this->dbConnection = $dbConnection;
-        $this->getFamiliesWithUpdatedAttributesListQuery = $getFamiliesWithUpdatedAttributesListQuery;
+    public function __construct(
+        private Connection                                         $dbConnection,
+        private GetFamiliesWithUpdatedAttributesListQueryInterface $getFamiliesWithUpdatedAttributesListQuery,
+        private ProductEntityIdFactoryInterface                    $idFactory
+    ) {
     }
 
     /**
-     * @return \Generator<int, ProductIdCollection>
+     * @return \Generator<int, ProductEntityIdCollection>
      */
     public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
@@ -68,14 +64,14 @@ SQL;
                 $productModelIds[] = $productModelId;
 
                 if (count($productModelIds) >= $bulkSize) {
-                    yield ProductIdCollection::fromStrings($productModelIds);
+                    yield $this->idFactory->createCollection($productModelIds);
                     $productModelIds = [];
                 }
             }
         }
 
         if (!empty($productModelIds)) {
-            yield ProductIdCollection::fromStrings($productModelIds);
+            yield $this->idFactory->createCollection($productModelIds);
         }
     }
 }

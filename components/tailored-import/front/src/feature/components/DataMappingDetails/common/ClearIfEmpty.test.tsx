@@ -10,7 +10,7 @@ const skipValueTarget: MeasurementTarget = {
   type: 'attribute',
   locale: null,
   channel: null,
-  source_parameter: {
+  source_configuration: {
     decimal_separator: ',',
     unit: 'WATT',
   },
@@ -23,7 +23,7 @@ const clearValueTarget: MeasurementTarget = {
   type: 'attribute',
   locale: null,
   channel: null,
-  source_parameter: {
+  source_configuration: {
     decimal_separator: ',',
     unit: 'WATT',
   },

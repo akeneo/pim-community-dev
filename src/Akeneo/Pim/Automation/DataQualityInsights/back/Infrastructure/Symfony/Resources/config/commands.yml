@@ -21,6 +21,8 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
         tags:
             - { name: 'console.command' }
 

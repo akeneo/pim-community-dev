@@ -28,7 +28,8 @@
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/",
             "AkeneoEnterprise\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
-            "AkeneoEnterprise\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back"
+            "AkeneoEnterprise\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back",
+            "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -71,7 +72,8 @@
             "AkeneoEnterprise\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\OnboarderSerenity\\Test\\": "components/onboarder/back/tests",
             "Akeneo\\Test\\Channel\\Locale\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/Locale/back/Test",
-            "AkeneoEnterprise\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test"
+            "AkeneoEnterprise\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test",
+            "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests"
         }
     },
     "require": {

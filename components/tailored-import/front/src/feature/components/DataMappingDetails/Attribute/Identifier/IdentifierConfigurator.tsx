@@ -23,6 +23,7 @@ const IdentifierConfigurator = ({
         <Helper>{translate('akeneo.tailored_import.data_mapping.target.identifier')}</Helper>
       </div>
       <Sources
+        isMultiSource={false}
         sources={dataMapping.sources}
         columns={columns}
         validationErrors={filterErrors(validationErrors, '[sources]')}

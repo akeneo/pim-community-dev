@@ -27,7 +27,7 @@ const attributeDataMapping: DataMapping = {
     locale: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
-    source_parameter: null,
+    source_configuration: null,
   },
   sources: ['dba0d9f8-2283-4a07-82b7-67e0435b7dcc'],
   operations: [],
@@ -41,7 +41,7 @@ const propertyDataMapping: DataMapping = {
     type: 'property',
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
-    source_parameter: null,
+    source_configuration: null,
   },
   sources: ['288d85cb-3ffb-432d-a422-d2c6810113ab'],
   operations: [],
@@ -57,7 +57,7 @@ const attributeDataMappingWithoutSource: DataMapping = {
     locale: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
-    source_parameter: null,
+    source_configuration: null,
   },
   sources: [],
   operations: [],
@@ -146,7 +146,7 @@ test('it can change target parameters', async () => {
     action_if_empty: 'skip',
     channel: 'print',
     locale: 'en_US',
-    source_parameter: null,
+    source_configuration: null,
   };
 
   await renderWithProviders(

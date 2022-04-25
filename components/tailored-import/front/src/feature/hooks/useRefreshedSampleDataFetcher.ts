@@ -4,7 +4,7 @@ import {SampleData} from '../models';
 const useRefreshedSampleDataFetcher = (): ((
   fileKey: string,
   currentSample: SampleData[],
-  columnIndex: number,
+  columnIndices: number[],
   sheetName: string | null,
   productLine: number
 ) => Promise<string>) => {
@@ -13,14 +13,14 @@ const useRefreshedSampleDataFetcher = (): ((
   return (
     fileKey: string,
     currentSample: SampleData[],
-    columnIndex: number,
+    columnIndices: number[],
     sheetName: string | null,
     productLine: number
   ): Promise<string> => {
     const route = router.generate('pimee_tailored_import_get_refreshed_sample_data_action', {
       current_sample: currentSample,
       file_key: fileKey,
-      column_index: columnIndex,
+      column_indices: columnIndices,
       sheet_name: sheetName,
       product_line: productLine,
     });

@@ -17,7 +17,8 @@
             "Akeneo\\Pim\\TableAttribute\\": "src/Akeneo/Pim/TableAttribute/back",
             "Akeneo\\Platform\\TailoredExport\\": "components/tailored-export/back/src/",
             "Akeneo\\Platform\\TailoredImport\\": "components/tailored-import/back/src/",
-            "Akeneo\\Platform\\": "src/Akeneo/Platform"
+            "Akeneo\\Platform\\": "src/Akeneo/Platform",
+            "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src"
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -44,7 +45,8 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Channel\\Locale\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/Locale/back/Test",
             "Akeneo\\Platform\\TailoredExport\\Test\\": "components/tailored-export/back/tests",
-            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests"
+            "Akeneo\\Platform\\TailoredImport\\Test\\": "components/tailored-import/back/tests",
+            "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests"
         }
     },
     "require": {
