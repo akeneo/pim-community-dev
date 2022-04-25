@@ -7,6 +7,7 @@ extensions:
         config:
             fieldName: is_read_only
             label: pim_enrich.entity.attribute.property.is_read_only
+        feature: read_only_product_attribute
 
     pim-attribute-identifier-create-form-properties-common-is-read-only:
         module: pim/form/common/fields/boolean
@@ -16,3 +17,4 @@ extensions:
         config:
             fieldName: is_read_only
             label: pim_enrich.entity.attribute.property.is_read_only
+        feature: read_only_product_attribute
