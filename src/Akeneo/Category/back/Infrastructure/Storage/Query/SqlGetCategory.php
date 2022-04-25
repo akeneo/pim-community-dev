@@ -22,14 +22,15 @@ class SqlGetCategory implements GetCategory
     public function byCode(string $code): ?Category
     {
         $sql = <<<SQL
-SELECT category.code, category.updated,  parentCategory.code as parentCode, json_objectagg(labels.locale, labels.label) as translatedLabels
+SELECT category.code, category.updated, parentCategory.code as parentCode
+    ,(
+        SELECT JSON_OBJECTAGG(labels.locale, labels.label)
+        FROM pim_catalog_category_translation as labels
+        WHERE labels.foreign_key = category.id
+    ) AS translatedLabels
 FROM pim_catalog_category as category
-LEFT JOIN pim_catalog_category as parentCategory
-    ON parentCategory.id = category.parent_id
-LEFT JOIN pim_catalog_category_translation as labels
-    ON labels.foreign_key = category.id 
-WHERE category.code = :code
-GROUP BY category.code
+    LEFT JOIN pim_catalog_category as parentCategory ON parentCategory.id = category.parent_id
+WHERE category.code = :code;
 SQL;
         $stmt = $this->connection->executeQuery($sql, ['code' => $code]);
 
@@ -39,14 +40,13 @@ SQL;
         }
 
         $dateType = Type::getType(Types::DATETIME_IMMUTABLE);
-
         $platform = $this->connection->getDatabasePlatform();
 
         return new Category(
             $categoryRaw['code'],
             $categoryRaw['parentCode'],
             $dateType->convertToPhpValue($categoryRaw['updated'], $platform),
-            json_decode($categoryRaw['translatedLabels'], true)
+            null === $categoryRaw['translatedLabels'] ? [] : \json_decode($categoryRaw['translatedLabels'], true)
         );
     }
 }
