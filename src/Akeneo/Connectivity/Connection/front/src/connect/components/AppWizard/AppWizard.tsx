@@ -39,8 +39,6 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             const supportsPermissions = true === featureFlags.isEnabled('connect_app_with_permissions');
             const requiresAuthentication = wizardData.authenticationScopes.length > 0;
             const isAlreadyConnected = wizardData.oldScopeMessages !== null;
-            const hasAlreadyConsented =
-                !!wizardData.oldAuthenticationScopes && wizardData.oldAuthenticationScopes.length > 0;
 
             if (requiresAuthentication) {
                 steps.push({
@@ -63,7 +61,6 @@ export const AppWizard: FC<Props> = ({clientId}) => {
 
             setSteps(steps);
             setWizardData(wizardData);
-            setAuthenticationScopesConsent(hasAlreadyConsented);
         });
     }, [fetchWizardData]);
 
@@ -95,7 +92,6 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         return <FullScreenLoader />;
     }
 
-    const hasAlreadyConsented = !!wizardData.oldAuthenticationScopes && wizardData.oldAuthenticationScopes.length > 0;
     const userConsentRequired = wizardData.authenticationScopes.length !== 0 && !authenticationScopesConsentGiven;
 
     return (
@@ -105,7 +101,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             onClose={redirectToMarketplace}
             onConfirm={confirm}
             steps={steps}
-            maxAllowedStep={userConsentRequired && !hasAlreadyConsented ? 'authentication' : null}
+            maxAllowedStep={userConsentRequired ? 'authentication' : null}
         >
             {step => (
                 <>
@@ -115,7 +111,6 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             scopes={wizardData.authenticationScopes}
                             oldScopes={wizardData.oldAuthenticationScopes}
                             appUrl={wizardData.appUrl}
-                            skipConsent={hasAlreadyConsented}
                             scopesConsentGiven={authenticationScopesConsentGiven}
                             setScopesConsent={setAuthenticationScopesConsent}
                         />

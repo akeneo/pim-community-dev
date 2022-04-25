@@ -49,7 +49,6 @@ type Props = {
     appUrl: string | null;
     scopes: Array<'email' | 'profile'>;
     oldScopes?: Array<'email' | 'profile'> | null;
-    skipConsent: boolean;
     scopesConsentGiven: boolean;
     setScopesConsent: (newValue: boolean) => void;
 };
@@ -59,7 +58,6 @@ export const Authentication: FC<Props> = ({
     appUrl,
     scopes,
     oldScopes,
-    skipConsent,
     scopesConsentGiven,
     setScopesConsent,
 }) => {
@@ -91,9 +89,7 @@ export const Authentication: FC<Props> = ({
                     <ConsentList scopes={oldScopes} highlightMode={'old'} />
                 </>
             )}
-            {!skipConsent && (
-                <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
-            )}
+            <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
         </InfoContainer>
     );
 };

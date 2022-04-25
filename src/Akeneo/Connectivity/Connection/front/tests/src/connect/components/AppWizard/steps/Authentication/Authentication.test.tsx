@@ -29,7 +29,6 @@ test('it renders correctly for first connection', async () => {
             scopes={['email']}
             oldScopes={null}
             appUrl={null}
-            skipConsent={false}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
         />
@@ -58,7 +57,6 @@ test('it renders correctly with new scopes required when not already had old sco
             scopes={['email']}
             oldScopes={[]}
             appUrl={null}
-            skipConsent={false}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
         />
@@ -87,7 +85,6 @@ test('it renders correctly with new scopes required when already accepted old sc
             scopes={['email']}
             oldScopes={['profile']}
             appUrl={null}
-            skipConsent={false}
             scopesConsentGiven={false}
             setScopesConsent={() => null}
         />

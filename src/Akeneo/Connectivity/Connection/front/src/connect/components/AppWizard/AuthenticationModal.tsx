@@ -40,20 +40,12 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
     const handleClose = () => history.push('/connect/connected-apps');
 
     useEffect(() => {
-        fetchWizardData().then(wizardData => {
-            const hasAlreadyConsented =
-                !!wizardData.oldAuthenticationScopes && wizardData.oldAuthenticationScopes.length > 0;
-
-            setWizardData(wizardData);
-            setScopesConsent(hasAlreadyConsented);
-        });
+        fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
     if (!wizardData) {
         return null;
     }
-
-    const hasAlreadyConsented = !!wizardData.oldAuthenticationScopes && wizardData.oldAuthenticationScopes.length > 0;
 
     return (
         <WizardModal
@@ -75,7 +67,6 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
                     scopes={wizardData.authenticationScopes}
                     oldScopes={wizardData.oldAuthenticationScopes}
                     appUrl={wizardData.appUrl}
-                    skipConsent={hasAlreadyConsented}
                     scopesConsentGiven={scopesConsentGiven}
                     setScopesConsent={setScopesConsent}
                 />
