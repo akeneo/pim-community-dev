@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
@@ -84,13 +85,14 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
             return;
         }
 
-        $products = $this->getProductsForFamilies($familyCodes);
-        $this->stepExecution->setTotalItems($products->count());
+        $identifierResults = $this->getProductIdentifiersForFamilies($familyCodes);
+        $this->stepExecution->setTotalItems($identifierResults->count());
 
         $productsToCompute = [];
-        foreach ($products as $product) {
-            Assert::isInstanceOf($product, ProductInterface::class);
-            $productsToCompute[] = $product->getIdentifier();
+        /** @var IdentifierResult $identifierResult */
+        foreach ($identifierResults as $identifierResult) {
+            Assert::same($identifierResult->getType(), ProductInterface::class);
+            $productsToCompute[] = $identifierResult->getIdentifier();
 
             if (count($productsToCompute) >= self::BATCH_SIZE) {
                 $this->computeCompleteness($productsToCompute);
@@ -131,7 +133,7 @@ class ComputeCompletenessOfFamilyProductsTasklet implements TaskletInterface, Tr
         return $familyCodes;
     }
 
-    private function getProductsForFamilies(array $familyCodes): CursorInterface
+    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
     {
         $productQueryBuilder = $this->productQueryBuilderFactory->create();
         $productQueryBuilder->addFilter('family', Operators::IN_LIST, $familyCodes);
