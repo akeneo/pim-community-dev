@@ -28,6 +28,7 @@ onboarder:
             error: An error occured while loading the supplier list.
             dropdown:
                 export_suppliers: Export suppliers
+                download_template: Download template
                 import_suppliers: Import suppliers
             columns:
                 supplier: Supplier
