@@ -30,16 +30,6 @@ final class ProductUuidCollection implements ProductEntityIdCollection
         return new self(array_map(fn (string $productUuid) => ProductUuid::fromString($productUuid), $productUuids));
     }
 
-    public static function fromInts(array $productIds): self
-    {
-        throw new \Exception('Remove this medthod');
-    }
-
-    public static function fromInt(int $productId): self
-    {
-        throw new \Exception('Remove this medthod');
-    }
-
     public static function fromString(string $productUuid): self
     {
         return self::fromStrings([$productUuid]);

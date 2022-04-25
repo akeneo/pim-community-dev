@@ -13,8 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -30,10 +29,10 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
     }
 
     public function it_returns_additional_properties_from_product_model_codes(
-        $getProductModelScoresQuery,
-        $getProductModelIdsFromProductModelCodesQuery,
-        $computeProductsKeyIndicators,
-        $idFactory
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery,
+        GetProductModelIdsFromProductModelCodesQueryInterface $getProductModelIdsFromProductModelCodesQuery,
+        ComputeProductsKeyIndicators $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
         $productId42 = new ProductModelId(42);
         $productId123 = new ProductModelId(123);
@@ -46,7 +45,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         $productModelCodes = [
             'product_model_1', 'product_model_2', 'product_model_without_rates'
         ];
-        $collection = ProductUuidCollection::fromProductUuids([$productId42, $productId123, $productId456]);
+        $collection = ProductModelIdCollection::fromStrings(['42', '123', '456']);
 
         $getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes)->willReturn($productIds);
         $idFactory->createCollection(['42', '123', '456'])->willReturn($collection);
@@ -56,7 +55,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $getProductModelScoresQuery->byProductModelIds($collection)->willReturn([
+        $getProductModelScoresQuery->byProductModelIdCollection($collection)->willReturn([
             42 => new Read\Scores(
                 (new ChannelLocaleRateCollection)
                     ->addRate($channelMobile, $localeEn, new Rate(81))
@@ -114,7 +113,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
             ],
         ];
 
-        $computeProductsKeyIndicators->compute(ProductUuidCollection::fromProductUuids($productIds))->willReturn($productModelsKeyIndicators);
+        $computeProductsKeyIndicators->compute(ProductModelIdCollection::fromStrings(['42', '123', '456']))->willReturn($productModelsKeyIndicators);
 
         $this->fromProductModelCodes($productModelCodes)->shouldReturn([
             'product_model_1' => [

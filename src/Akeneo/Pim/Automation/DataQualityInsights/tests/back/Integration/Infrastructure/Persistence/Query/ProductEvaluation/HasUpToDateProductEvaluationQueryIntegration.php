@@ -45,11 +45,11 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $productId = $this->givenAProductWithAnUpToDateEvaluation($today);
         $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId);
         $this->assertTrue($productHasUpToDateEvaluation);
 
         $productVariantId = $this->givenAProductVariantWithAnUpToDateEvaluation($today);
-        $productVariantHasUpToDateEvaluation = $this->query->forProductId($productVariantId);
+        $productVariantHasUpToDateEvaluation = $this->query->forEntityId($productVariantId);
         $this->assertTrue($productVariantHasUpToDateEvaluation);
     }
 
@@ -60,15 +60,15 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $productId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
-        $productHasUpToDateEvaluation = $this->query->forProductId($productId);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productId);
         $this->assertFalse($productHasUpToDateEvaluation);
 
         $levelOneProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
-        $levelOneProductVariantHasUpToDateEvaluation = $this->query->forProductId($levelOneProductVariantId);
+        $levelOneProductVariantHasUpToDateEvaluation = $this->query->forEntityId($levelOneProductVariantId);
         $this->assertFalse($levelOneProductVariantHasUpToDateEvaluation);
 
         $levelTwoProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent($today);
-        $levelTwoProductVariantHasUpToDateEvaluation = $this->query->forProductId($levelTwoProductVariantId);
+        $levelTwoProductVariantHasUpToDateEvaluation = $this->query->forEntityId($levelTwoProductVariantId);
         $this->assertFalse($levelTwoProductVariantHasUpToDateEvaluation);
     }
 
@@ -82,7 +82,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
 
-        $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductUuidCollection::fromProductUuids(
+        $productIdsWithUpToDateEvaluation = $this->query->forEntityIdCollection(ProductUuidCollection::fromProductUuids(
             [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
         ));
         $this->assertEqualsCanonicalizing(
@@ -97,7 +97,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
         $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string)$outdatedProductId]);
 
-        $this->assertNull($this->query->forProductIdCollection($productIdCollection));
+        $this->assertNull($this->query->forEntityIdCollection($productIdCollection));
     }
 
     private function createProduct(): ProductUuid

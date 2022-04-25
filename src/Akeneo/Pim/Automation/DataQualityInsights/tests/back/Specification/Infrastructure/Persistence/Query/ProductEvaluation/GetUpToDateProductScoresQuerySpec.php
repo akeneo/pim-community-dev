@@ -24,15 +24,15 @@ use Ramsey\Uuid\Uuid;
 final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
 {
     public function let(
-        HasUpToDateEvaluationQueryInterface  $hasUpToDateEvaluationQuery,
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         GetProductScoresQueryInterface $getProductScoresQuery
     ) {
         $this->beConstructedWith($hasUpToDateEvaluationQuery, $getProductScoresQuery);
     }
 
     public function it_returns_the_product_scores_if_the_evaluation_of_the_product_is_up_to_date(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
     ) {
         $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
@@ -45,31 +45,31 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(67))
         );
 
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(true);
-        $getProductScoresQuery->byProductId($productUuid)->willReturn($productScores);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
+        $getProductScoresQuery->byProductUuid($productUuid)->willReturn($productScores);
 
-        $this->byProductId($productUuid)->shouldReturn($productScores);
+        $this->byProductUuid($productUuid)->shouldReturn($productScores);
     }
 
     public function it_returns_empty_scores_if_the_evaluation_of_the_product_is_outdated(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
     ) {
         $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productUuid)->willReturn(false);
-        $getProductScoresQuery->byProductId($productUuid)->shouldNotBeCalled();
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
+        $getProductScoresQuery->byProductUuid($productUuid)->shouldNotBeCalled();
 
-        $this->byProductId($productUuid)->shouldBeLike(new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection()));
+        $this->byProductUuid($productUuid)->shouldBeLike(new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection()));
     }
 
     public function it_returns_the_product_scores_only_for_up_to_date_products(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
     ) {
-        $productUuidA = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
-        $productUuidB = new ProductUuid(Uuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2'));
-        $productUuidC = new ProductUuid(Uuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee'));
+        $productUuidA = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productUuidB = ProductUuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2');
+        $productUuidC = ProductUuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee');
         $productUuidCollection = ProductUuidCollection::fromProductUuids([$productUuidA, $productUuidB, $productUuidC]);
         $upToDateProductUuidCollection = ProductUuidCollection::fromProductUuids([$productUuidA, $productUuidB]);
         $productsScores = [
@@ -87,21 +87,24 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
             )
         ];
 
-        $hasUpToDateEvaluationQuery->forProductIdCollection($productUuidCollection)->willReturn($upToDateProductUuidCollection);
-        $getProductScoresQuery->byProductIds($upToDateProductUuidCollection)->willReturn($productsScores);
+        $hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection)->willReturn($upToDateProductUuidCollection);
+        $getProductScoresQuery->byProductUuidCollection($upToDateProductUuidCollection)->willReturn($productsScores);
 
-        $this->byProductIds($productUuidCollection)->shouldReturn($productsScores);
+        $this->byProductUuidCollection($productUuidCollection)->shouldReturn($productsScores);
     }
 
     public function it_returns_empty_array_if_there_are_no_up_to_date_products(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
     ) {
-        $products = ProductUuidCollection::fromInts([42, 123]);
+        $products = ProductUuidCollection::fromStrings([
+            'df470d52-7723-4890-85a0-e79be625e2ed',
+            'fef37e64-a963-47a9-b087-2cc67968f0a2'
+        ]);
 
-        $hasUpToDateEvaluationQuery->forProductIdCollection($products)->willReturn(null);
-        $getProductScoresQuery->byProductIds(Argument::any())->shouldNotBeCalled();
+        $hasUpToDateEvaluationQuery->forEntityIdCollection($products)->willReturn(null);
+        $getProductScoresQuery->byProductUuidCollection(Argument::any())->shouldNotBeCalled();
 
-        $this->byProductIds($products)->shouldReturn([]);
+        $this->byProductUuidCollection($products)->shouldReturn([]);
     }
 }

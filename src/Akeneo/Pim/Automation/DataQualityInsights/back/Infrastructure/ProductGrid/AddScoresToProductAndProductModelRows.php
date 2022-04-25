@@ -23,7 +23,6 @@ class AddScoresToProductAndProductModelRows
     ) {
     }
 
-
     /**
      * @param Row[] $rows
      * @param 'product_model'|'product' $type
