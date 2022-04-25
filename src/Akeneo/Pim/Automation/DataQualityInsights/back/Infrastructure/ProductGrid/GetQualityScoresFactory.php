@@ -9,7 +9,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -27,8 +26,8 @@ class GetQualityScoresFactory
     public function __invoke(ProductEntityIdCollection $productIdCollection, string $type): array
     {
         $scoresByIds = match ($type) {
-            'product' => $this->getProductScoresQuery->byProductIds($productIdCollection),
-            'product_model' => $this->getProductModelScoresQuery->byProductModelIds($productIdCollection),
+            'product' => $this->getProductScoresQuery->byProductUuidCollection($productIdCollection),
+            'product_model' => $this->getProductModelScoresQuery->byProductModelIdCollection($productIdCollection),
             default => throw new \InvalidArgumentException(sprintf('Invalid type %s', $type))
         };
 

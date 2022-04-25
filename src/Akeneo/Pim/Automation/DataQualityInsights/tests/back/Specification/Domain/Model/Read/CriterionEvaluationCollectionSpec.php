@@ -32,7 +32,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -40,7 +40,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -57,7 +57,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -65,7 +65,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null
@@ -90,7 +90,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $completenessEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('completeness_of_required_attributes'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             $completenessResult
@@ -98,7 +98,7 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
 
         $spellingEvaluation = new Read\CriterionEvaluation(
             new CriterionCode('consistency_textarea_uppercase_words'),
-            new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')),
+            ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
             new \DateTimeImmutable(),
             CriterionEvaluationStatus::pending(),
             null

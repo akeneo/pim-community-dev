@@ -37,7 +37,7 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
     public function it_returns_nothing_when_there_is_no_evaluable_attributes(
         GetEvaluableAttributesByProductQueryInterface $getEvaluableAttributesByProductQuery
     ) {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
         $getEvaluableAttributesByProductQuery->execute($productUuid)->willReturn([]);
         $this->byProductId($productUuid)->shouldBeLike(new ProductValuesCollection());
@@ -48,7 +48,7 @@ class GetEvaluableProductValuesQuerySpec extends ObjectBehavior
         GetEvaluableAttributesByProductQueryInterface $getEvaluableAttributesByProductQuery,
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ) {
-        $productId = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productId = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],

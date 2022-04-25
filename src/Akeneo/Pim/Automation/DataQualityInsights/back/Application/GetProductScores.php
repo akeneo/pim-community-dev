@@ -27,7 +27,7 @@ final class GetProductScores
      */
     public function get(ProductUuid $productId): array
     {
-        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductId($productId));
+        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductUuid($productId));
 
         if ($productScores->isEmpty()) {
             return ["evaluations_available" => false];

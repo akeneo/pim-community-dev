@@ -22,7 +22,7 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
 
     public function execute(ProductUuid $productId): ProductEvaluation
     {
-        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductId($productId));
+        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductUuid($productId));
         $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
 
         return new ProductEvaluation($productId, $productScores, $productCriteriaEvaluations);
