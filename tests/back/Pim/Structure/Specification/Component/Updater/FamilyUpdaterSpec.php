@@ -2,7 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\Localization\TranslatableUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -10,7 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Structure\Component\Model\FamilyTranslation;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -24,23 +25,38 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
+function makeLocale(string $code): Locale
+{
+    $locale = new Locale();
+    $locale->setCode($code);
+    return $locale;
+}
 class FamilyUpdaterSpec extends ObjectBehavior
 {
+    private static Locale $enUS;
+    private static Locale $frFR;
+
     function let(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
         AttributeRequirementRepositoryInterface $attributeRequirementRepo,
-        TranslatableUpdater $translatableUpdater
+        TranslatableUpdater $translatableUpdater,
+        IdentifiableObjectRepositoryInterface $localeRepository,
+
     ) {
+        $this::$enUS = $this::$enUS ?? makeLocale('en_US');
+        $this::$frFR = $this::$frFR ?? makeLocale('fr_FR');
+
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
             $channelRepository,
             $attrRequiFactory,
             $attributeRequirementRepo,
-            $translatableUpdater
+            $translatableUpdater,
+            $localeRepository
         );
     }
 
@@ -771,5 +787,34 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $family->addAttributeRequirement($nameNewChannelRqrmt)->shouldBeCalled();
 
         $this->update($family, $data);
+    }
+
+    function it_does_locale_code_normalization_when_updating_labels(
+        $localeRepository,
+        $translatableUpdater,
+        FamilyInterface $family
+    ) {
+        $inputLabels = [
+            'fr_FR' => 'Tablette',
+            'EN_us' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $normalizedLabels = [
+            'fr_FR' => 'Tablette',
+            'en_US' => 'Tablet',
+            'foo_bar' => 'Tablefoo'
+        ];
+        $values = [
+            'code' => 'ecommerce',
+            'labels' => $inputLabels,
+        ];
+
+        $localeRepository->findOneByIdentifier('EN_us')->willReturn($this::$enUS); // by case-insentive matching BDD-side
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
+        $localeRepository->findOneByIdentifier('foo_bar')->willReturn(null); // unknown to PIM
+
+        $this->update($family, $values, []);
+
+        $translatableUpdater->update($family, $normalizedLabels)->shouldBeCalled();
     }
 }

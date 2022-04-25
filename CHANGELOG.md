@@ -28,6 +28,8 @@
 - PIM-10409: Allow creating a measurement value with case insensitive unit code
 - PIM-10411: Fix non numeric metric value in imports
 - PIM-10413: Patch connections routes order
+- PIM-10251: Fix locale on API call
+- PIM-10416: Fix letter case issue when importing families
 
 ## Improvements
 
