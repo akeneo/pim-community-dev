@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
 
@@ -26,7 +26,7 @@ final class GetEvaluationResultsByProductModelsAndCriterionQuery implements GetE
     /**
      * {@inheritdoc}
      */
-    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $query = <<<SQL
 SELECT product_id, result
@@ -37,7 +37,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productModelIds' => $productIdCollection->toArrayInt(),
+                'productModelIds' => array_map(fn (string $productModelId) => (int) $productModelId, $productIdCollection->toArrayString()),
                 'criterionCode' => $criterionCode,
             ],
             [
@@ -47,7 +47,7 @@ SQL;
 
         $evaluationResults = [];
         while ($evaluation = $stmt->fetchAssociative()) {
-            $evaluationResults[\intval($evaluation['product_id'])] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
+            $evaluationResults[$evaluation['product_id']] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
         }
 
         return $evaluationResults;
