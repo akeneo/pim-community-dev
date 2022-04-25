@@ -43,7 +43,7 @@ class CalculateProductModelCompletenessSpec extends ObjectBehavior
     public function it_throws_exception_when_product_model_id_is_invalid()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('calculate', [
-            new ProductModelId(42)
+            ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         ]);
     }
 

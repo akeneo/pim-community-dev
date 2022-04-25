@@ -45,7 +45,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         $calculateRequiredAttributesCompleteness,
         $calculateNonRequiredAttributesCompleteness
     ): void {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithCompleteness($productUuid);
 
         $channelCodeEcommerce = new ChannelCode('ecommerce');
@@ -115,7 +115,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         CalculateProductCompletenessInterface $calculateRequiredAttributesCompleteness,
         CalculateProductCompletenessInterface $calculateNonRequiredAttributesCompleteness
     ): void {
-        $productUuid = new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithoutCompleteness($productUuid);
 
         $localesByChannelQuery->getChannelLocaleCollection()->shouldNotBeCalled();

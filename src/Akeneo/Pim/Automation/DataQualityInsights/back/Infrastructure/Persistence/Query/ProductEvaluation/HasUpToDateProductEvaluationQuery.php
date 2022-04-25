@@ -21,15 +21,15 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
     {
     }
 
-    public function forProductId(ProductEntityIdInterface $productId): bool
+    public function forEntityId(ProductEntityIdInterface $productId): bool
     {
         $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
-        $upToDateProducts = $this->forProductIdCollection($productIdCollection);
+        $upToDateProducts = $this->forEntityIdCollection($productIdCollection);
 
         return !is_null($upToDateProducts);
     }
 
-    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
+    public function forEntityIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
     {
         if ($productIdCollection->isEmpty()) {
             return null;

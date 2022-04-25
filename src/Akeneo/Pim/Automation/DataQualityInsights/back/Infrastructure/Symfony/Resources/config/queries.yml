@@ -132,7 +132,7 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductIdQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdentifierFromProductUuidQuery:
         arguments:
             - '@database_connection'
 
@@ -157,7 +157,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\BuildSqlMaskField'
 
     akeneo.pim.automation.data_quality_insights.query.get_product_ids_to_evaluate:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsToEvaluateQuery
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductUuidsToEvaluateQuery
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'

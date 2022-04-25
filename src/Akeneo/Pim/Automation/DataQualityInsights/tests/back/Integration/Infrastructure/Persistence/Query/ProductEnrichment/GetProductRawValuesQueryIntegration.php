@@ -45,7 +45,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
     {
         $result = $this
             ->get(GetProductRawValuesQuery::class)
-            ->execute(new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')), ['a_text', 'a_yes_no']);
+            ->execute(ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), ['a_text', 'a_yes_no']);
 
         $this->assertSame([], $result);
     }

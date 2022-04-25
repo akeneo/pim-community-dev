@@ -8,13 +8,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 
 class ProductIdFactory implements ProductEntityIdFactoryInterface
 {
-    public function create(string $id): ProductEntityIdInterface
+    public function create(string $uuid): ProductEntityIdInterface
     {
-        return ProductUuid::fromString($id);
+        return ProductUuid::fromString($uuid);
     }
 
-    public function createCollection(array $ids): ProductUuidCollection
+    public function createCollection(array $uuids): ProductUuidCollection
     {
-        return ProductUuidCollection::fromStrings($ids);
+        return ProductUuidCollection::fromStrings($uuids);
     }
 }

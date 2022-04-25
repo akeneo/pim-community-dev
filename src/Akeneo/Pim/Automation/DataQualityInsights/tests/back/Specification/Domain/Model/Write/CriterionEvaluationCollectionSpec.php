@@ -31,8 +31,8 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $this->count()->shouldReturn(0);
 
-        $criterionEvaluation1 = new Write\CriterionEvaluation(new CriterionCode('completeness'), new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
-        $criterionEvaluation2 = new Write\CriterionEvaluation(new CriterionCode('completion'), new ProductUuid(Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
+        $criterionEvaluation1 = new Write\CriterionEvaluation(new CriterionCode('completeness'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
+        $criterionEvaluation2 = new Write\CriterionEvaluation(new CriterionCode('completion'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
         $this->add($criterionEvaluation1)->add($criterionEvaluation2);
 
         $this->count()->shouldReturn(2);
