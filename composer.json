@@ -152,10 +152,7 @@
     },
     "minimum-stability": "stable",
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "symfony/flex": false
-        }
+        "sort-packages": true
     },
     "extra": {
         "symfony": {
