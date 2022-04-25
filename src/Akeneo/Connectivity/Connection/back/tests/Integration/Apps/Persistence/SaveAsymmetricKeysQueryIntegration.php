@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Persistence;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -26,7 +27,7 @@ class SaveAsymmetricKeysQueryIntegration extends TestCase
         parent::setUp();
         $this->query = $this->get(SaveAsymmetricKeysQuery::class);
         $this->connection = $this->get('database_connection');
-        $this->clock = $this->get('akeneo_connectivity.connection.clock');
+        $this->clock = $this->get(SystemClock::class);
         $this->clock->setNow(new \DateTimeImmutable('2021-03-02T04:30:11'));
     }
 

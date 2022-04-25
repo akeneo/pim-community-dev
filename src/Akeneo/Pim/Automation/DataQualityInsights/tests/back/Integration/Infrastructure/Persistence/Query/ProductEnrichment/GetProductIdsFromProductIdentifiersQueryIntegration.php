@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery;
 use Akeneo\Test\Integration\Configuration;
@@ -53,6 +54,6 @@ final class GetProductIdsFromProductIdentifiersQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId(intval($product->getId()));
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 }

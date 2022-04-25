@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -51,28 +50,37 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             return;
         }
 
-        $queries = '';
-        $queriesParameters = [];
-        $queriesParametersTypes = [];
+        $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            return sprintf(
+                "(%d, '%s', '%s')",
+                (int) (string) $productScore->getProductId(),
+                $productScore->getEvaluatedAt()->format('Y-m-d'),
+                \json_encode($productScore->getScores()->toNormalizedRates())
+            );
+        }, $productsScores));
 
-        foreach ($productsScores as $index => $productScore) {
-            Assert::isInstanceOf($productScore, Write\ProductScores::class);
-            $productId = sprintf('productId_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $scores = sprintf('scores_%d', $index);
+        $this->dbConnection->executeQuery(
+            <<<SQL
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+VALUES $insertValues AS product_score_values
+ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
+SQL
+        );
 
-            $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
-ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
-SQL;
-            $queriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $queriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $queriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $queriesParameters[$scores] = \json_encode($productScore->getScores()->toNormalizedRates());
-        }
+        // We need to delete younger product scores after inserting the new ones,
+        // so we insure to have 1 product score per product
+        $deleteValues = implode(', ', array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getProductId(), $productsScores));
 
-        $this->dbConnection->executeQuery($queries, $queriesParameters, $queriesParametersTypes);
+        $this->dbConnection->executeQuery(
+            <<<SQL
+DELETE old_scores
+FROM pim_data_quality_insights_product_score AS old_scores
+INNER JOIN pim_data_quality_insights_product_score AS younger_scores
+    ON younger_scores.product_id = old_scores.product_id
+    AND younger_scores.evaluated_at > old_scores.evaluated_at
+WHERE old_scores.product_id IN ($deleteValues);
+SQL
+        );
     }
 
     public function purgeUntil(\DateTimeImmutable $date): void

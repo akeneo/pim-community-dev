@@ -65,6 +65,7 @@ test('The connected app permissions tab renders with providers', () => {
         expect.objectContaining({
             provider: mockedProviders[0],
             permissions: mockedPermissions.providerKey1,
+            onlyDisplayViewPermissions: false,
         }),
         {}
     );
@@ -73,6 +74,7 @@ test('The connected app permissions tab renders with providers', () => {
         expect.objectContaining({
             provider: mockedProviders[1],
             permissions: mockedPermissions.providerKey2,
+            onlyDisplayViewPermissions: false,
         }),
         {}
     );

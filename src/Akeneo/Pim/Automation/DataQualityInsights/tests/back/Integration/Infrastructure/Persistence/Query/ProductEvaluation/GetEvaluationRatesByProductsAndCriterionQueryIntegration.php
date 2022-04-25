@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -45,10 +46,11 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $productIds = array_keys($expectedEvaluationRates);
         $productIds[] = 12345; // Unknown product
-        $productIds = ProductIdCollection::fromInts($productIds);
+
+        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection(array_map(fn($id) => (string) $id, $productIds));
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductsAndCriterionQuery::class)
-            ->execute($productIds, new CriterionCode('spelling'));
+            ->execute($productIdCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }

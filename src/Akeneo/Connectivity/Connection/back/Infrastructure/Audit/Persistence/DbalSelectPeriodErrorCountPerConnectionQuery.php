@@ -9,9 +9,8 @@ use Akeneo\Connectivity\Connection\Domain\Audit\Model\Read\PeriodEventCount;
 use Akeneo\Connectivity\Connection\Domain\Audit\Persistence\SelectPeriodErrorCountPerConnectionQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\DateTimePeriod;
-use Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Traits\PeriodEventCountTrait;
+use Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\Traits\PeriodEventCountTrait;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Types\Types;
 
 /**

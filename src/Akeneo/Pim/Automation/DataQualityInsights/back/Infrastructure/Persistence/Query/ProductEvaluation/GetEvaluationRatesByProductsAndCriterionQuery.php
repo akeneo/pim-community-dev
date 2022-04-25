@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
@@ -24,7 +25,7 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
     ) {
     }
 
-    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
@@ -37,7 +38,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => $productIdCollection->toArrayInt(),
+                'productIds' => $productIdCollection->toArrayString(),
                 'criterionCode' => $criterionCode,
             ],
             [

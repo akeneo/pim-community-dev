@@ -62,9 +62,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $this->resetProductsScores();
         $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $unknownProductScore, $productScoreB]);
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 
@@ -107,12 +106,14 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         );
 
         $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $productScoreA3, $productScoreB]);
-        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-17'));
+        $this->insertProductScore($productScoreA1);
+        $this->insertProductScore($productScoreA2);
+        $this->insertProductScore($productScoreA3);
+        $this->insertProductScore($productScoreB);
+        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-18'));
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 
@@ -148,5 +149,21 @@ SQL,
         });
 
         $this->assertEquals($expectedScore, json_decode($productScore['scores'], true));
+    }
+
+    private function insertProductScore(ProductScores $productScore): void
+    {
+        $insertQuery = <<<SQL
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
+VALUES (:productId, :evaluatedAt, :scores);
+SQL;
+
+        $this->get('database_connection')->executeQuery($insertQuery, [
+            'productId' => $productScore->getProductId()->toInt(),
+            'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
+            'scores' => \json_encode($productScore->getScores()->toNormalizedRates()),
+        ], [
+            'productId' => \PDO::PARAM_INT,
+        ]);
     }
 }

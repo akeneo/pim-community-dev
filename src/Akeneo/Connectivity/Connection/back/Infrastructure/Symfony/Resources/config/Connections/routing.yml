@@ -1,3 +1,4 @@
+# Internal API
 akeneo_connectivity_connection_rest_list:
     path: '/rest/connections'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Connections\Controller\Internal\ListConnectionsAction

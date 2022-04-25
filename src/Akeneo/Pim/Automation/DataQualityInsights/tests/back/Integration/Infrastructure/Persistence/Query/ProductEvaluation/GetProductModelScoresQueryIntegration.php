@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -41,10 +42,12 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
             $productModelIds['idB'] => $scores['product_model_B_scores']->getScores(),
         ];
 
+        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([
+            $productModelIds['idA'],
+            $productModelIds['idB']
+        ]);
         $productAxesRates = $this->get(GetProductModelScoresQuery::class)
-            ->byProductModelIds(ProductIdCollection::fromProductIds(
-                [new ProductId($productModelIds['idA']), new ProductId($productModelIds['idB'])])
-            );
+            ->byProductModelIds($productModelIdCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductModelsScores, $productAxesRates);
     }
@@ -54,14 +57,14 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
      */
     private function assertEqualsScore(array $scores, int $productModelId)
     {
-        $searchProductId = new ProductId($productModelId);
+        $searchProductId = $this->get(ProductModelIdFactory::class)->create((string)$productModelId);
         $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($searchProductId);
         $this->assertEquals($result, $scores['product_model_A_scores']->getScores());
     }
 
     private function assertEqualsNoScore()
     {
-        $missingProductId = new ProductId(1590);
+        $missingProductId = $this->get(ProductModelIdFactory::class)->create('1590');
         $result = $this->get(GetProductModelScoresQuery::class)->byProductModelId($missingProductId);
         $this->assertEquals($result, new ChannelLocaleRateCollection());
     }
@@ -93,21 +96,21 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
 
         $productModelsScores = [
             'product_model_A_scores' => new ProductScores(
-                new ProductId($productModelIds['idA']),
+                $this->get(ProductModelIdFactory::class)->create((string)$productModelIds['idA']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
             'product_model_B_scores' => new ProductScores(
-                new ProductId($productModelIds['idB']),
+                $this->get(ProductModelIdFactory::class)->create((string)$productModelIds['idB']),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_model_scores' => new ProductScores(
-                new ProductId($productModelIds['idC']),
+                $this->get(ProductModelIdFactory::class)->create((string)$productModelIds['idC']),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))

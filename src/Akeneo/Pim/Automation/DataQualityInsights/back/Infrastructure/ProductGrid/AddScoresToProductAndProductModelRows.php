@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
@@ -18,8 +17,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
  */
 class AddScoresToProductAndProductModelRows
 {
-    public function __construct(private GetQualityScoresFactory $getQualityScoresFactory)
-    {
+    public function __construct(
+        private GetQualityScoresFactory         $getQualityScoresFactory,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
 
@@ -29,8 +30,8 @@ class AddScoresToProductAndProductModelRows
      */
     public function __invoke(
         FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters,
-        array $rows,
-        string $type
+        array                                     $rows,
+        string                                    $type
     ): array {
         if (empty($rows)) {
             return [];
@@ -38,10 +39,11 @@ class AddScoresToProductAndProductModelRows
 
         $productIds = [];
         foreach ($rows as $row) {
-            $productIds[] = new ProductId($row->technicalId());
+            $productIds[] = (string)$row->technicalId();
         }
+        $productIdCollection = $this->idFactory->createCollection($productIds);
 
-        $scores = ($this->getQualityScoresFactory)(ProductIdCollection::fromProductIds($productIds), $type);
+        $scores = ($this->getQualityScoresFactory)($productIdCollection, $type);
 
         $channel = new ChannelCode($fetchProductAndProductModelRowsParameters->channelCode());
         $locale = new LocaleCode($fetchProductAndProductModelRowsParameters->localeCode());

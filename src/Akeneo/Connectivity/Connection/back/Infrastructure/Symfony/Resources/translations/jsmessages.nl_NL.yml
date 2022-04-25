@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: 'Bekijk onze {{ link }} voor meer informatie over app-autorisaties.'
             information_link_anchor: Artikel in Hulp
             no_scope: Er zijn geen specifieke autorisaties aangevraagd.
+          authentication:
+            information_link_anchor: Artikel in Hulp
           pending: Deze app is niet verbonden met uw PIM. Door de app te openen, zou het probleem opgelost moeten zijn. Als dit niet zo is, neem dan contact op met het ondersteuningsteam voor apps.
         error_monitoring:
           error: Er is iets fout gegaan.
