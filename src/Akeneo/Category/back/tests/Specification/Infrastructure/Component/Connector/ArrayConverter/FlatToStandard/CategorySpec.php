@@ -2,11 +2,8 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\FlatToStandard;
 
-use Akeneo\Channel\Infrastructure\Component\Model\Locale;
-use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use PhpSpec\ObjectBehavior;
 
 class CategorySpec extends ObjectBehavior
 {
