@@ -14,12 +14,13 @@ import {Checkbox} from '../../../components';
 import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
-import {RowIcon} from '../../../icons';
+import {RowIcon, DangerIcon} from '../../../icons';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../hooks/usePlaceholderPosition';
 
 const RowContainer = styled.tr<
   {
     isSelected: boolean;
+    hasWarning: boolean;
     isClickable: boolean;
     isDragAndDroppable: boolean;
     placeholderPosition: PlaceholderPosition;
@@ -73,6 +74,14 @@ const RowContainer = styled.tr<
   &:hover > td > div {
     opacity: 1;
   }
+
+  ${({hasWarning}) =>
+    hasWarning &&
+    css`
+      > td {
+        background-color: ${getColor('yellow', 10)};
+      }
+    `};
 `;
 
 const CheckboxContainer = styled.td<{isVisible: boolean}>`
@@ -98,6 +107,10 @@ const HandleCell = styled(TableCell)`
   }
 `;
 
+const WarningIcon = styled(DangerIcon)`
+  color: ${getColor('yellow', 120)};
+`;
+
 type TableRowProps = Override<
   HTMLAttributes<HTMLTableRowElement>,
   {
@@ -115,6 +128,11 @@ type TableRowProps = Override<
      * Define if the row is selected, required when table is selectable
      */
     isSelected?: boolean;
+
+    /**
+     * Define if the row has a warning
+     */
+    hasWarning?: boolean;
 
     /**
      * Function called when the user clicks on the row
@@ -143,6 +161,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     {
       rowIndex = 0,
       isSelected,
+      hasWarning,
       onSelectToggle,
       onClick,
       draggable,
@@ -156,7 +175,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     const [placeholderPosition, placeholderDragEnter, placeholderDragLeave, placeholderDragEnd] =
       usePlaceholderPosition(rowIndex);
 
-    const {isSelectable, displayCheckbox, isDragAndDroppable} = useContext(TableContext);
+    const {isSelectable, displayCheckbox, isDragAndDroppable, hasWarnedRows} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
@@ -185,6 +204,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         ref={forwardedRef}
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
+        hasWarning={hasWarning}
         isDragAndDroppable={isDragAndDroppable}
         onClick={onClick}
         placeholderPosition={isDragAndDroppable ? placeholderPosition : 'none'}
@@ -215,6 +235,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
             <RowIcon size={16} />
           </HandleCell>
         )}
+        {hasWarnedRows && <TableCell>{hasWarning && <WarningIcon size={16} />}</TableCell>}
         {children}
       </RowContainer>
     );
