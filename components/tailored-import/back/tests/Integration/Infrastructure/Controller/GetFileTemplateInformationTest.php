@@ -60,6 +60,9 @@ class GetFileTemplateInformationTest extends ControllerIntegrationTestCase
                 'Empty sheet',
                 'Out of bound value',
                 'Two lines',
+                'Empty header',
+                'Trailing empty header',
+                'More than 500 cols',
             ],
             'rows' => [
                 ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
