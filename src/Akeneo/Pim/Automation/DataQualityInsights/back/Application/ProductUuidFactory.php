@@ -5,8 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
-// TODO Rename to ProductUuidFactory
-class ProductIdFactory implements ProductEntityIdFactoryInterface
+class ProductUuidFactory implements ProductEntityIdFactoryInterface
 {
     public function create(string $uuid): ProductUuid
     {

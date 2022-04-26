@@ -10,7 +10,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: kernel.event_subscriber }
 

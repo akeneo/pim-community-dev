@@ -20,8 +20,7 @@ final class ProductEvaluation
     ) {
     }
 
-    // TODO Rename to getProductUuid
-    public function getProductId(): ProductUuid
+    public function getProductUuid(): ProductUuid
     {
         return $this->productUuid;
     }

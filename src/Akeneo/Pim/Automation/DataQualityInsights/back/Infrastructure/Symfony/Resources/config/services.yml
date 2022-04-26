@@ -113,7 +113,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_evaluable_product_values'
             - '@akeneo.pim.automation.data_quality_insights.synchronous_criterion_evaluations_filter'
             - '@logger'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria
@@ -260,7 +260,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel:
         arguments:

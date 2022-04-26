@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-class ProductIdFactorySpec extends ObjectBehavior
+class ProductUuidFactorySpec extends ObjectBehavior
 {
     public function it_creates_a_product_uuid()
     {

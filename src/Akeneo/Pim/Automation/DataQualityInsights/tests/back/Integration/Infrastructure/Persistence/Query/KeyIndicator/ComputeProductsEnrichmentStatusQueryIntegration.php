@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -49,7 +49,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
         $productIds = array_keys($expectedProductsEnrichmentStatus);
 
-        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection(array_map(fn($productId) => (string) $productId, $productIds));
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection(array_map(fn($productId) => (string) $productId, $productIds));
         $productsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_products_enrichment_status_query')
             ->compute($productIdCollection);
 
@@ -66,7 +66,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ])->getId();
 
-        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string) $productId]);
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string) $productId]);
 
         ($this->get(EvaluateProducts::class))($productIdCollection);
 
@@ -94,7 +94,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
             ]
         ])->getId();
 
-        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string) $productId]);
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string) $productId]);
         ($this->get(EvaluateProducts::class))($productIdCollection);
 
         $expectedEnrichmentStatus = [$productId => [

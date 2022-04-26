@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infra
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQuery;
@@ -29,7 +29,7 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
         $productWithoutAnyEvaluation = $this->givenAProductWithoutAnyEvaluation();
 
         $results = $this->get(GetEvaluationResultsByProductsAndCriterionQuery::class)->execute(
-            $this->get(ProductIdFactory::class)->createCollection([
+            $this->get(ProductUuidFactory::class)->createCollection([
                 (string) $productWithEvaluation,
                 (string) $productWithPendingEvaluation,
                 (string) $productWithoutAnyEvaluation,
@@ -58,7 +58,7 @@ final class GetEvaluationResultsByProductsAndCriterionQueryIntegration extends D
             ]
         ])->getId();
 
-        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string)$productId]);
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productId]);
         ($this->get(EvaluateProducts::class))($productIdCollection);
 
         return $productId;

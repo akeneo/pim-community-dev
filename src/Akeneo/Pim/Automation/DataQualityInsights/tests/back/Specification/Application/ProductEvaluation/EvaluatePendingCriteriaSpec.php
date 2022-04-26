@@ -17,7 +17,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValues;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
@@ -43,30 +43,30 @@ use Webmozart\Assert\Assert;
 class EvaluatePendingCriteriaSpec extends ObjectBehavior
 {
     public function let(
-        CriterionEvaluationRepositoryInterface                  $repository,
-        CriteriaEvaluationRegistry                              $evaluationRegistry,
-        CriteriaApplicabilityRegistry                           $applicabilityRegistry,
-        GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
-        SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
-        LoggerInterface                                         $logger,
-        ProductEntityIdFactoryInterface                         $idFactory
+        CriterionEvaluationRepositoryInterface                 $repository,
+        CriteriaEvaluationRegistry                             $evaluationRegistry,
+        CriteriaApplicabilityRegistry                          $applicabilityRegistry,
+        GetPendingCriteriaEvaluationsByEntityIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface                $getEvaluableProductValuesQuery,
+        SynchronousCriterionEvaluationsFilterInterface         $synchronousCriterionEvaluationsFilter,
+        LoggerInterface                                        $logger,
+        ProductEntityIdFactoryInterface                        $idFactory
     )
     {
         $this->beConstructedWith($repository, $evaluationRegistry, $applicabilityRegistry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $synchronousCriterionEvaluationsFilter, $logger, $idFactory);
     }
 
     public function it_evaluates_criteria_for_a_set_of_products(
-        CriterionEvaluationRepositoryInterface                  $repository,
-        CriteriaEvaluationRegistry                              $evaluationRegistry,
-        GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface                              $evaluateNonRequiredAttributeCompleteness,
-        EvaluateCriterionInterface                              $evaluateCompleteness,
-        ProductEntityIdFactoryInterface                         $idFactory,
-        ProductEntityIdCollection                               $productIdCollection,
-        ProductEntityIdInterface                                $productId_fef37e64,
-        ProductEntityIdInterface                                $productIdB
+        CriterionEvaluationRepositoryInterface                 $repository,
+        CriteriaEvaluationRegistry                             $evaluationRegistry,
+        GetPendingCriteriaEvaluationsByEntityIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface                $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                             $evaluateNonRequiredAttributeCompleteness,
+        EvaluateCriterionInterface                             $evaluateCompleteness,
+        ProductEntityIdFactoryInterface                        $idFactory,
+        ProductEntityIdCollection                              $productIdCollection,
+        ProductEntityIdInterface                               $productId_fef37e64,
+        ProductEntityIdInterface                               $productIdB
     ) {
         $productIdCollection->isEmpty()->willReturn(false);
         $productIdCollection->toArrayString()->willReturn(['fef37e64-a963-47a9-b087-2cc67968f0a2', 'df470d52-7723-4890-85a0-e79be625e2ed']);
@@ -135,15 +135,15 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     }
 
     public function it_continues_to_evaluate_if_an_evaluation_failed(
-        CriterionEvaluationRepositoryInterface                  $repository,
-        CriteriaEvaluationRegistry                              $evaluationRegistry,
-        GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface                              $evaluateCriterion,
-        ProductEntityIdFactoryInterface                         $idFactory,
-        ProductEntityIdCollection                               $productIdCollection,
-        ProductEntityIdInterface                                $productIdA,
-        ProductEntityIdInterface                                $productIdB
+        CriterionEvaluationRepositoryInterface                 $repository,
+        CriteriaEvaluationRegistry                             $evaluationRegistry,
+        GetPendingCriteriaEvaluationsByEntityIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface                $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                             $evaluateCriterion,
+        ProductEntityIdFactoryInterface                        $idFactory,
+        ProductEntityIdCollection                              $productIdCollection,
+        ProductEntityIdInterface                               $productIdA,
+        ProductEntityIdInterface                               $productIdB
     )
     {
         $productIdCollection->isEmpty()->willReturn(false);
@@ -193,16 +193,16 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     }
 
     public function it_evaluates_synchronous_criteria_for_a_set_of_products(
-        CriterionEvaluationRepositoryInterface                  $repository,
-        CriteriaEvaluationRegistry                              $evaluationRegistry,
-        GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface                              $evaluateSpelling,
-        SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
-        ProductEntityIdFactoryInterface                         $idFactory,
-        ProductEntityIdCollection                               $productIdCollection,
-        ProductEntityIdInterface                                $productIdA,
-        ProductEntityIdInterface                                $productIdB
+        CriterionEvaluationRepositoryInterface                 $repository,
+        CriteriaEvaluationRegistry                             $evaluationRegistry,
+        GetPendingCriteriaEvaluationsByEntityIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        GetEvaluableProductValuesQueryInterface                $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                             $evaluateSpelling,
+        SynchronousCriterionEvaluationsFilterInterface         $synchronousCriterionEvaluationsFilter,
+        ProductEntityIdFactoryInterface                        $idFactory,
+        ProductEntityIdCollection                              $productIdCollection,
+        ProductEntityIdInterface                               $productIdA,
+        ProductEntityIdInterface                               $productIdB
     )
     {
         $productIdCollection->isEmpty()->willReturn(false);
