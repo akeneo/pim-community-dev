@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
@@ -81,8 +81,8 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
             ),
         ];
 
-        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
-        $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductIds($productModelIdCollection);
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
+        $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductUuidCollection($productUuidCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
     }

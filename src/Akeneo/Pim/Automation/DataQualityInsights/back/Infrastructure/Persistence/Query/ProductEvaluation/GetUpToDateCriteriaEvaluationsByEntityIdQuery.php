@@ -16,17 +16,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 final class GetUpToDateCriteriaEvaluationsByEntityIdQuery implements GetCriteriaEvaluationsByEntityIdQueryInterface
 {
     public function __construct(
-        private GetCriteriaEvaluationsByEntityIdQueryInterface $getLatestCriteriaEvaluationsByProductIdQuery,
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getLatestCriteriaEvaluationsByEntityIdQuery,
         private HasUpToDateEvaluationQueryInterface            $hasUpToDateEvaluationQuery
     ) {
     }
 
-    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $entityId): Read\CriterionEvaluationCollection
     {
-        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($productId)) {
+        if (false === $this->hasUpToDateEvaluationQuery->forEntityId($entityId)) {
             return new Read\CriterionEvaluationCollection();
         }
 
-        return $this->getLatestCriteriaEvaluationsByProductIdQuery->execute($productId);
+        return $this->getLatestCriteriaEvaluationsByEntityIdQuery->execute($entityId);
     }
 }
