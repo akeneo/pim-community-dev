@@ -5,6 +5,10 @@ parameters:
     pim_catalog.updater.category_translatable.class:          Akeneo\Category\Infrastructure\Component\CategoryUpdater
 
 services:
+
+    akeneo_category.updater.translatable:
+        class: 'Akeneo\Tool\Component\Localization\TranslatableUpdater'
+
     # Updaters
     pim_catalog.updater.category:
         class: '%akeneo_classification.updater.category.class%'
@@ -19,7 +23,7 @@ services:
         class: '%pim_catalog.updater.category_translatable.class%'
         arguments:
             - '@pim_catalog.updater.category.base'
-            - '@pim_enrichment.updater.translatable'
+            - '@akeneo_category.updater.translatable'
 
     # Setters
     pim_catalog.updater.setter.category_field:

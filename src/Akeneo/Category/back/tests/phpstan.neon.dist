@@ -5,3 +5,4 @@ parameters:
   excludes_analyse:
     - %rootDir%/../../../src/Akeneo/Category/back/tests/Specification
     - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure
+    - %rootDir%/../../../src/Akeneo/Category/tests
