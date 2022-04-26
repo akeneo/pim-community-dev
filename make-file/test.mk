@@ -34,6 +34,7 @@ lint-back:
 	$(MAKE) data-quality-insights-phpstan
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
+	$(MAKE) category-lint-back
 	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 
