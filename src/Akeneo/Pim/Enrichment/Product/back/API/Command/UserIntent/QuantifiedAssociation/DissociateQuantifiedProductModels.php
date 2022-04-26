@@ -2,28 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
+namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation;
 
 use Webmozart\Assert\Assert;
 
 /**
- * The former associated product models that are not defined in this object will stay associated.
- *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AssociateProductModels implements AssociationUserIntent
+final class DissociateQuantifiedProductModels implements QuantifiedAssociationUserIntent
 {
     /**
-     * @param array<string> $productModelCodes
+     * @param string[] $productModelCodes
      */
-    public function __construct(
-        private string $associationType,
-        private array  $productModelCodes,
-    ) {
+    public function __construct(private string $associationType, private array $productModelCodes)
+    {
+        Assert::stringNotEmpty($associationType);
         Assert::notEmpty($productModelCodes);
         Assert::allStringNotEmpty($productModelCodes);
-        Assert::stringNotEmpty($associationType);
     }
 
     public function associationType(): string
@@ -32,7 +28,7 @@ final class AssociateProductModels implements AssociationUserIntent
     }
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function productModelCodes(): array
     {
