@@ -3,6 +3,7 @@ parameters:
   paths:
     - %rootDir%/../../../src/Akeneo/Category
   excludes_analyse:
+    - %rootDir%/../../../src/Akeneo/Category/back/tests/Integration
     - %rootDir%/../../../src/Akeneo/Category/back/tests/Specification
     - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure
     - %rootDir%/../../../src/Akeneo/Category/tests
