@@ -122,7 +122,7 @@ VALUES (:productUuid, :evaluatedAt, :scores);
 SQL;
 
         $this->dbConnection->executeQuery($insertQuery, [
-            'productUuid' => $productScore->getProductId()->toBytes(),
+            'productUuid' => $productScore->getEntityId()->toBytes(),
             'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
             'scores' => \json_encode($productScore->getScores()->toNormalizedRates()),
         ]);

@@ -168,7 +168,7 @@ services:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQuery:
         arguments:
             - '@database_connection'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
