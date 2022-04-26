@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
-namespace back\Pim\Enrichment\Integration\Category;
+namespace Akeneo\Test\Category\Integration;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes;
-use Akeneo\Category\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
+use Akeneo\Category\Infrastructure\Storage\Sql\GetDirectChildrenCategoryCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -21,9 +22,7 @@ class GetDirectChildrenCategoryCodesIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->getDirectChildrenCategoryCodes = $this->get(
-            'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes'
-        );
+        $this->getDirectChildrenCategoryCodes = $this->get(GetDirectChildrenCategoryCodes::class);
         $categoryTreeFixturesLoader = $this->get('akeneo_integration_tests.loader.category_tree_loader');
 
         $categoryTreeFixturesLoader->givenTheCategoryTrees([

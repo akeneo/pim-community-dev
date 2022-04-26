@@ -1,15 +1,15 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
+namespace Akeneo\Test\Category\Integration\Doctrine;
 
 use Akeneo\Category\Infrastructure\Component\Model\Category;
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;
 use Akeneo\Category\Infrastructure\Doctrine\Common\Saver\CategorySaver;
+use Akeneo\Test\Category\Integration\Normalizer\NormalizedCategoryCleaner;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
 use PHPUnit\Framework\Assert;
 
 class CategorySaverIntegration extends TestCase
