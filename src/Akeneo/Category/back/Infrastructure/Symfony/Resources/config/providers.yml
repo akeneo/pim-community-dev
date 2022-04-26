@@ -1,5 +1,5 @@
 services:
-    pim_enrichment.provider.form.job_instance:
+    akeneo_category.provider.form.job_instance:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider'
         arguments:
             -   csv_category_export: pim-job-instance-csv-base-export
