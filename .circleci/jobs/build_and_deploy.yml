@@ -306,6 +306,9 @@ jobs:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
                   key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
             - restore_cache:
+                name: Restore micro-frontend Category cache
+                key: micro-frontend-category-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/category.hash" }}
+            - restore_cache:
                   name: Restore micro-frontend Config cache
                   key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
             - run:
@@ -355,6 +358,11 @@ jobs:
                   key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
+            - save_cache:
+                name: Save micro-frontend Category cache
+                key: micro-frontend-category-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/category.hash" }}
+                paths:
+                  - << parameters.path_to_front_packages >>/../src/Akeneo/Category/front
             - save_cache:
                   name: Save micro-frontend Config cache
                   key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}

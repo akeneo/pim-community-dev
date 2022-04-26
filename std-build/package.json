@@ -21,6 +21,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/front-packages/shared",
     "vendor/akeneo/pim-community-dev/front-packages/measurement",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Category/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/workspaces/permission-form",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
