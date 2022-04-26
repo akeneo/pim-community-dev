@@ -64,8 +64,8 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
 
         $productModelScoreRepository->saveAll(Argument::that(function (array $productModelScores) use ($productModelId1, $productModelId2, $scores1, $scores2) {
             return 2 === count($productModelScores)
-                && $productModelScores[0] instanceof Write\ProductScores && (string) $productModelId1 === (string) $productModelScores[0]->getProductId() && $scores1 === $productModelScores[0]->getScores()
-                && $productModelScores[1] instanceof Write\ProductScores && (string) $productModelId2 === (string) $productModelScores[1]->getProductId() && $scores2 === $productModelScores[1]->getScores();
+                && $productModelScores[0] instanceof Write\ProductScores && (string) $productModelId1 === (string) $productModelScores[0]->getEntityId() && $scores1 === $productModelScores[0]->getScores()
+                && $productModelScores[1] instanceof Write\ProductScores && (string) $productModelId2 === (string) $productModelScores[1]->getEntityId() && $scores2 === $productModelScores[1]->getScores();
         }))->shouldBeCalled();
 
         $this->consolidate(ProductModelIdCollection::fromStrings([$productModelId1, $productModelId2]));
