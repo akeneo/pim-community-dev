@@ -25,12 +25,12 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productId): ChannelLocaleRateCollection
+    public function byProductModelId(ProductEntityIdInterface $productModelId): ChannelLocaleRateCollection
     {
-        $productModelIdCollection = $this->idFactory->createCollection([(string) $productId]);
+        $productModelIdCollection = $this->idFactory->createCollection([(string) $productModelId]);
         $productScores = $this->byProductModelIdCollection($productModelIdCollection);
 
-        return $productScores[(string)$productId] ?? new ChannelLocaleRateCollection();
+        return $productScores[(string)$productModelId] ?? new ChannelLocaleRateCollection();
     }
 
     public function byProductModelIdCollection(ProductEntityIdCollection $productModelIds): array

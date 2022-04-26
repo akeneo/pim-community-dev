@@ -23,11 +23,11 @@ class GetProductModelEvaluationController
         $this->getProductModelEvaluation = $getProductModelEvaluation;
     }
 
-    public function __invoke(string $productUuid): Response
+    public function __invoke(string $productId): Response
     {
         try {
             $evaluation = $this->getProductModelEvaluation->get(
-                ProductUuid::fromString($productUuid)
+                ProductUuid::fromString($productId)
             );
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([

@@ -75,19 +75,19 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     public function test_it_returns_the_ids_of_the_products_that_have_up_to_date_evaluation()
     {
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
-        $expectedProductIdA = $this->givenAProductWithAnUpToDateEvaluation($today);
-        $expectedProductIdB = $this->givenAProductWithAnUpToDateEvaluation($today);
-        $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
-        $outdatedProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
+        $expectedProductUuidA = $this->givenAProductWithAnUpToDateEvaluation($today);
+        $expectedProductUuidB = $this->givenAProductWithAnUpToDateEvaluation($today);
+        $outdatedProductUuid = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
+        $outdatedProductVariantUuid = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
 
-        $productIdsWithUpToDateEvaluation = $this->query->forEntityIdCollection(ProductUuidCollection::fromProductUuids(
-            [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
+        $productUuidsWithUpToDateEvaluation = $this->query->forEntityIdCollection(ProductUuidCollection::fromProductUuids(
+            [$outdatedProductUuid, $outdatedProductVariantUuid, $expectedProductUuidA, $expectedProductUuidB]
         ));
         $this->assertEqualsCanonicalizing(
-            ProductUuidCollection::fromProductUuids([$expectedProductIdA, $expectedProductIdB]),
-            $productIdsWithUpToDateEvaluation
+            ProductUuidCollection::fromProductUuids([$expectedProductUuidA, $expectedProductUuidB]),
+            $productUuidsWithUpToDateEvaluation
         );
     }
 
@@ -111,7 +111,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
-    private function createProductVariant(string $parentCode): ProductUuid
+    private function createVariantProduct(string $parentCode): ProductUuid
     {
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
             ->withIdentifier(strval(Uuid::uuid4()))
@@ -126,40 +126,40 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
 
     private function givenAProductWithAnUpToDateEvaluation(\DateTimeImmutable $today): ProductUuid
     {
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $today);
-        $this->updateProductEvaluationsAt($productId, $today->modify('+1 SECOND'));
+        $productUuid = $this->createProduct();
+        $this->updateProductAt($productUuid, $today);
+        $this->updateProductEvaluationsAt($productUuid, $today->modify('+1 SECOND'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAnUpdatedProductWithAnOutdatedEvaluation(\DateTimeImmutable $updatedAt): ProductUuid
     {
-        $productId = $this->createProduct();
-        $this->updateProductAt($productId, $updatedAt);
-        $this->updateProductEvaluationsAt($productId, $updatedAt->modify('-1 SECOND'));
+        $productUuid = $this->createProduct();
+        $this->updateProductAt($productUuid, $updatedAt);
+        $this->updateProductEvaluationsAt($productUuid, $updatedAt->modify('-1 SECOND'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductVariantWithAnUpToDateEvaluation(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
-        $productId = $this->createProductVariant('a_product_model');
-        $this->updateProductAt($productId, $parentUpdatedAt->modify('-1 DAY'));
-        $this->updateProductEvaluationsAt($productId, $parentUpdatedAt->modify('+1 SECOND'));
+        $productUuid = $this->createVariantProduct('a_product_model');
+        $this->updateProductAt($productUuid, $parentUpdatedAt->modify('-1 DAY'));
+        $this->updateProductEvaluationsAt($productUuid, $parentUpdatedAt->modify('+1 SECOND'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent(\DateTimeImmutable $parentUpdatedAt): ProductUuid
     {
         $this->givenAProductModel('a_product_model', 'familyVariantA2', $parentUpdatedAt);
-        $productId = $this->createProductVariant('a_product_model');
-        $this->updateProductAt($productId, $parentUpdatedAt->modify('-1 DAY'));
-        $this->updateProductEvaluationsAt($productId, $parentUpdatedAt->modify('-1 SECOND'));
+        $productUuid = $this->createVariantProduct('a_product_model');
+        $this->updateProductAt($productUuid, $parentUpdatedAt->modify('-1 DAY'));
+        $this->updateProductEvaluationsAt($productUuid, $parentUpdatedAt->modify('-1 SECOND'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductVariantWithAnOutdatedEvaluationComparedToItsGrandParent(\DateTimeImmutable $grandParentUpdatedAt): ProductUuid
@@ -167,11 +167,11 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->givenAProductModel('a_product_model_with_two_variant_levels', 'familyVariantA1', $grandParentUpdatedAt);
         $this->givenASubProductModel('a_recently_updated_sub_product_model', 'familyVariantA1', 'a_product_model_with_two_variant_levels', $grandParentUpdatedAt->modify('-2 HOUR'));
 
-        $productId = $this->createProductVariant('a_recently_updated_sub_product_model');
-        $this->updateProductAt($productId, $grandParentUpdatedAt->modify('-1 HOUR'));
-        $this->updateProductEvaluationsAt($productId, $grandParentUpdatedAt->modify('-1 SECOND'));
+        $productUuid = $this->createVariantProduct('a_recently_updated_sub_product_model');
+        $this->updateProductAt($productUuid, $grandParentUpdatedAt->modify('-1 HOUR'));
+        $this->updateProductEvaluationsAt($productUuid, $grandParentUpdatedAt->modify('-1 SECOND'));
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductModel(string $productModelCode, string $familyVariant, \DateTimeImmutable $updatedAt)
@@ -198,15 +198,15 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->updateProductModelAt($productModelCode, $updatedAt);
     }
 
-    private function updateProductAt(ProductUuid $productId, \DateTimeImmutable $updatedAt): void
+    private function updateProductAt(ProductUuid $productUuid, \DateTimeImmutable $updatedAt): void
     {
         $query = <<<SQL
-UPDATE pim_catalog_product SET updated = :updated WHERE id = :product_id;
+UPDATE pim_catalog_product SET updated = :updated WHERE uuid = :product_uuid;
 SQL;
 
         $this->db->executeQuery($query, [
             'updated' => $updatedAt->format('Y-m-d H:i:s'),
-            'product_id' => $productId->toInt(),
+            'product_uuid' => $productUuid->toBytes(),
         ]);
     }
 
@@ -222,17 +222,17 @@ SQL;
         ]);
     }
 
-    private function updateProductEvaluationsAt(ProductUuid $productId, \DateTimeImmutable $evaluatedAt): void
+    private function updateProductEvaluationsAt(ProductUuid $productUuid, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
 SET e.evaluated_at = :evaluated_at 
-WHERE p.id = :product_id AND p.uuid = e.product_uuid;
+WHERE p.uuid = :product_uuid AND p.uuid = e.product_uuid;
 SQL;
 
         $this->db->executeQuery($query, [
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'product_id' => $productId->toInt(),
+            'product_uuid' => $productUuid->toBytes(),
         ]);
     }
 }

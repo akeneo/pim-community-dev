@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateOutdatedProductModel;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,10 +20,10 @@ final class EvaluateProductModelController
     ) {
     }
 
-    public function __invoke(string $productUuid): JsonResponse
+    public function __invoke(string $productId): JsonResponse
     {
         try {
-            ($this->evaluateProductModel)(ProductUuid::fromString($productUuid));
+            ($this->evaluateProductModel)(ProductModelId::fromString($productId));
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }

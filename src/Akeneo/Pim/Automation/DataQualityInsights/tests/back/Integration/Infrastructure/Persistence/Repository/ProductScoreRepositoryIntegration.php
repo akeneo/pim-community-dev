@@ -30,21 +30,21 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            new ProductUuid($productUuidA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36))
         );
         $productScoreA2 = new ProductScores(
-            new ProductUuid($productUuidA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42))
         );
         $productScoreB = new ProductScores(
-            new ProductUuid($productUuidB),
+            ProductUuid::fromString($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
@@ -52,7 +52,7 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         );
         // To ensure that it doesn't crash when saving a unknown product
         $unknownProductScore = new ProductScores(
-            new ProductUuid($productUuidB),
+            ProductUuid::fromString($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
@@ -77,28 +77,28 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            new ProductUuid($productUuidA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-18'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36))
         );
         $productScoreA2 = new ProductScores(
-            new ProductUuid($productUuidA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(79))
                 ->addRate($channelMobile, $localeFr, new Rate(12))
         );
         $productScoreA3 = new ProductScores(
-            new ProductUuid($productUuidA),
+            ProductUuid::fromString($productUuidA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42))
         );
         $productScoreB = new ProductScores(
-            new ProductUuid($productUuidB),
+            ProductUuid::fromString($productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))

@@ -334,7 +334,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         ];
     }
 
-    private function givenDeprecatedCriteriaEvaluations(ProductUuid $productId): CriterionEvaluationCollection
+    private function givenDeprecatedCriteriaEvaluations(ProductUuid $productUuid): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $localeCodeEn = new LocaleCode('en_US');
@@ -355,7 +355,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
         return (new CriterionEvaluationCollection())
             ->add($this->generateCriterionEvaluation(
-                $productId,
+                $productUuid,
                 'consistency_textarea_lowercase_words',
                 CriterionEvaluationStatus::DONE,
                 $lowercaseWordsRates,
