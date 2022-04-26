@@ -157,7 +157,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_removes_trailing_empty_columns()
+    public function it_removes_trailing_empty_columns(): void
     {
         $xlsxFileReader = $this->getFileReader();
         $rows = $xlsxFileReader->readRows('Trailing empty header', 1, 4);

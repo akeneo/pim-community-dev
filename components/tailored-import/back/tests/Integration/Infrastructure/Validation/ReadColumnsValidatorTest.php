@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ReadColumnsValidatorTest extends AbstractValidationTest
 {
-    public function test_it_does_not_build_violations_when_everything_is_valid()
+    public function test_it_does_not_build_violations_when_everything_is_valid(): void
     {
         $fileKey = $this->uploadFile();
         $request = new Request([
@@ -40,7 +40,7 @@ class ReadColumnsValidatorTest extends AbstractValidationTest
         $this->assertNoViolation($violations);
     }
 
-    public function test_it_builds_violations_when_a_header_is_empty()
+    public function test_it_builds_violations_when_a_header_is_empty(): void
     {
         $fileKey = $this->uploadFile();
         $request = new Request([
@@ -59,7 +59,7 @@ class ReadColumnsValidatorTest extends AbstractValidationTest
         $this->assertHasValidationError('akeneo.tailored_import.validation.file_structure.header_row_should_not_contain_empty_cell', '', $violations);
     }
 
-    public function test_it_builds_violations_when_a_file_has_more_than_500_columns()
+    public function test_it_builds_violations_when_a_file_has_more_than_500_columns(): void
     {
         $fileKey = $this->uploadFile();
         $request = new Request([

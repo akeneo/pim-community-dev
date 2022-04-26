@@ -89,7 +89,7 @@ class ReadColumnsValidator extends ConstraintValidator
         }
     }
 
-    private function validateNoEmptyHeader(array $headerRow)
+    private function validateNoEmptyHeader(array $headerRow): void
     {
         foreach ($headerRow as $cell) {
             if (empty($cell)) {
