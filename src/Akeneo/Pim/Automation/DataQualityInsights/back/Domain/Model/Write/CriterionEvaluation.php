@@ -19,9 +19,8 @@ final class CriterionEvaluation
     private ?CriterionEvaluationResult $result = null;
 
     public function __construct(
-        private CriterionCode $criterionCode,
-        // TODO Rename entityId
-        private ProductEntityIdInterface $productId,
+        private CriterionCode             $criterionCode,
+        private ProductEntityIdInterface  $entityId,
         private CriterionEvaluationStatus $status
     ) {
     }
@@ -74,9 +73,9 @@ final class CriterionEvaluation
         return $this->criterionCode;
     }
 
-    public function getProductId(): ProductEntityIdInterface
+    public function getEntityId(): ProductEntityIdInterface
     {
-        return $this->productId;
+        return $this->entityId;
     }
 
     public function getEvaluatedAt(): ?\DateTimeImmutable

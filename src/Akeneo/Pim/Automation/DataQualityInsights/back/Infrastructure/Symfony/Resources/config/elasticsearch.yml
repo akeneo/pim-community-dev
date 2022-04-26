@@ -22,7 +22,7 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQuery'
             - '@akeneo.pim.automation.data_quality_insights.compute_products_key_indicators'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query.indexing_additional_properties' }
 
@@ -40,7 +40,7 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
             - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query:
