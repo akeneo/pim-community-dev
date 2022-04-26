@@ -1,7 +1,6 @@
 <?php
 
-
-namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer;
+namespace Akeneo\Test\Category\Integration\Normalizer;
 
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
 

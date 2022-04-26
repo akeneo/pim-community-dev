@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category;
+namespace Akeneo\Test\Category\Integration;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\TestCase;
