@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
@@ -20,7 +20,7 @@ class EvaluateOutdatedProduct
     public function __construct(
         private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         private EvaluateProducts $evaluateProducts,
-        private ProductIdFactory $factory
+        private ProductUuidFactory $factory
     ) {
     }
 

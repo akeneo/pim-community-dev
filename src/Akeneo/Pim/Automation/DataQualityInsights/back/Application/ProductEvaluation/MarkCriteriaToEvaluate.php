@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
 
 /**
@@ -16,16 +16,16 @@ final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
     /** @var GetUpdatedProductUuidsQueryInterface */
     private $getUpdatedProductIdsQuery;
 
-    /** @var GetProductIdsImpactedByAttributeGroupActivationQueryInterface */
+    /** @var GetEntityIdsImpactedByAttributeGroupActivationQueryInterface */
     private $getProductIdsImpactedByAttributeGroupActivationQuery;
 
     /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
-        GetUpdatedProductUuidsQueryInterface                          $getUpdatedProductIdsQuery,
-        GetProductIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
-        CreateCriteriaEvaluations                                     $createProductsCriteriaEvaluations
+        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductIdsQuery,
+        GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
+        CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
         $this->getUpdatedProductIdsQuery = $getUpdatedProductIdsQuery;
         $this->getProductIdsImpactedByAttributeGroupActivationQuery = $getProductIdsImpactedByAttributeGroupActivationQuery;
