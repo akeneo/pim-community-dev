@@ -159,4 +159,21 @@ class MetricSpec extends ObjectBehavior
 
         $this->isEqual($anotherMetric)->shouldReturn(false);
     }
+
+    function it_is_not_equal_to_another_metric_with_non_numeric_data(
+        MetricInterface $anotherMetric
+    ) {
+        $this->beConstructedWith(
+            'length_family',
+            'centimeter',
+            '9.000.000',
+            'meter',
+            6.6611
+        );
+
+        $anotherMetric->getData()->willReturn('9000000');
+        $anotherMetric->getUnit()->willReturn('centimeter');
+
+        $this->isEqual($anotherMetric)->shouldReturn(false);
+    }
 }

@@ -3,15 +3,16 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer;
+use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $stdNormalizer)
+    function let(NormalizerInterface $stdNormalizer, PositionResolverInterface $positionResolver)
     {
-        $this->beConstructedWith($stdNormalizer);
+        $this->beConstructedWith($stdNormalizer, $positionResolver);
     }
 
     function it_is_initializable()
@@ -34,7 +35,26 @@ class CategoryNormalizerSpec extends ObjectBehavior
         $stdNormalizer->normalize($category, 'standard', [])->willReturn($data);
 
         $normalizedCategory = $this->normalize($category, 'external_api', []);
-        $normalizedCategory->shouldHaveLabels($data);
+
+        $normalizedCategory->shouldHaveLabels();
+    }
+
+    function it_normalizes_a_category_with_position(
+        $stdNormalizer,
+        CategoryInterface $category,
+        PositionResolverInterface $positionResolver
+    ) {
+        $aPosition = 1;
+        $context = ['with_position'];
+        $data = ['code' => 'my_category', 'labels' => []];
+
+        $stdNormalizer->normalize($category, 'standard', $context)->willReturn($data);
+        $positionResolver->getPosition($category)->willReturn($aPosition);
+
+        $normalizedCategory = $this->normalize($category, 'external_api', $context);
+
+        $normalizedCategory->shouldHaveLabels();
+        $normalizedCategory->shouldHavePosition($aPosition);
     }
 
     public function getMatchers(): array
@@ -42,7 +62,10 @@ class CategoryNormalizerSpec extends ObjectBehavior
         return [
             'haveLabels' => function ($subject) {
                 return is_object($subject['labels']);
-            }
+            },
+            'havePosition' => function ($subject, $position) {
+                return array_key_exists('position', $subject) && $position === $subject['position'];
+            },
         ];
     }
 }

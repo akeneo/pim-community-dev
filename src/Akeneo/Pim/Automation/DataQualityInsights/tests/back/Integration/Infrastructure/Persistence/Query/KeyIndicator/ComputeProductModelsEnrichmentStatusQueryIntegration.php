@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -94,7 +94,7 @@ final class ComputeProductModelsEnrichmentStatusQueryIntegration extends DataQua
             ]
         ];
 
-        $productModelIds = ProductIdCollection::fromInts([$productModelId, $subProductModelId]);
+        $productModelIds = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productModelId, (string)$subProductModelId]);
         ($this->get(EvaluateProductModels::class))($productModelIds);
 
         $productModelsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_product_models_enrichment_status_query')

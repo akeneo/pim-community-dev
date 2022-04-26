@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaApplicabilityRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateCriterionInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\SynchronousCriterionEvaluationsFilterInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
@@ -24,6 +25,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
@@ -39,25 +42,35 @@ use Webmozart\Assert\Assert;
 class EvaluatePendingCriteriaSpec extends ObjectBehavior
 {
     public function let(
-        CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $evaluationRegistry,
-        CriteriaApplicabilityRegistry $applicabilityRegistry,
+        CriterionEvaluationRepositoryInterface                  $repository,
+        CriteriaEvaluationRegistry                              $evaluationRegistry,
+        CriteriaApplicabilityRegistry                           $applicabilityRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
-        SynchronousCriterionEvaluationsFilterInterface $synchronousCriterionEvaluationsFilter,
-        LoggerInterface $logger
-    ) {
-        $this->beConstructedWith($repository, $evaluationRegistry, $applicabilityRegistry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $synchronousCriterionEvaluationsFilter, $logger);
+        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
+        SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
+        LoggerInterface                                         $logger,
+        ProductEntityIdFactoryInterface                         $idFactory
+    )
+    {
+        $this->beConstructedWith($repository, $evaluationRegistry, $applicabilityRegistry, $getPendingCriteriaEvaluationsQuery, $getEvaluableProductValuesQuery, $synchronousCriterionEvaluationsFilter, $logger, $idFactory);
     }
 
     public function it_evaluates_criteria_for_a_set_of_products(
-        CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriterionEvaluationRepositoryInterface                  $repository,
+        CriteriaEvaluationRegistry                              $evaluationRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface $evaluateNonRequiredAttributeCompleteness,
-        EvaluateCriterionInterface $evaluateCompleteness
-    ) {
+        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                              $evaluateNonRequiredAttributeCompleteness,
+        EvaluateCriterionInterface                              $evaluateCompleteness,
+        ProductEntityIdFactoryInterface                         $idFactory,
+        ProductEntityIdCollection                               $productIdCollection,
+        ProductEntityIdInterface                                $productIdA,
+        ProductEntityIdInterface                                $productIdB
+    )
+    {
+        $productIdCollection->isEmpty()->willReturn(false);
+        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+
         $criterionNonRequiredAttributesCompleteness = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
         $criterionRequiredAttributesCompleteness = new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
 
@@ -85,7 +98,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $criteriaProduct123 = (new Write\CriterionEvaluationCollection())
             ->add($criteria['product_123_non_required_att_completeness']);
 
-        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
             42 => $criteriaProduct42,
             123 => $criteriaProduct123
         ]);
@@ -93,8 +106,14 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $product42Values = $this->givenRandomProductValues();
         $product123Values = $this->givenRandomProductValues();
 
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+        $productIdA->__toString()->willReturn('42');
+        $productIdB->__toString()->willReturn('123');
+
+        $idFactory->create('42')->willReturn($productIdA);
+        $idFactory->create('123')->willReturn($productIdB);
+
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
 
         $evaluationRegistry->get($criterionNonRequiredAttributesCompleteness)->willReturn($evaluateNonRequiredAttributeCompleteness);
         $evaluationRegistry->get($criterionRequiredAttributesCompleteness)->willReturn($evaluateCompleteness);
@@ -108,7 +127,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
-        $this->evaluateAllCriteria(ProductIdCollection::fromInts([42, 123]));
+        $this->evaluateAllCriteria($productIdCollection);
 
         foreach ($criteria as $criterionEvaluation) {
             Assert::eq(CriterionEvaluationStatus::done(), $criterionEvaluation->getStatus());
@@ -116,27 +135,41 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
     }
 
     public function it_continues_to_evaluate_if_an_evaluation_failed(
-        CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriterionEvaluationRepositoryInterface                  $repository,
+        CriteriaEvaluationRegistry                              $evaluationRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface $evaluateCriterion
-    ) {
+        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                              $evaluateCriterion,
+        ProductEntityIdFactoryInterface                         $idFactory,
+        ProductEntityIdCollection                               $productIdCollection,
+        ProductEntityIdInterface                                $productIdA,
+        ProductEntityIdInterface                                $productIdB
+    )
+    {
+        $productIdCollection->isEmpty()->willReturn(false);
+        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+
+        $idFactory->create('42')->willReturn($productIdA);
+        $idFactory->create('123')->willReturn($productIdB);
+
+        $productIdA->__toString()->willReturn('42');
+        $productIdB->__toString()->willReturn('123');
+
         $criterionCode = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
 
         $criterionA = new Write\CriterionEvaluation(
             $criterionCode,
-            new ProductId(42),
+            $productIdA->getWrappedObject(),
             CriterionEvaluationStatus::pending()
         );
 
         $criterionB = new Write\CriterionEvaluation(
             $criterionCode,
-            new ProductId(123),
+            $productIdB->getWrappedObject(),
             CriterionEvaluationStatus::pending()
         );
 
-        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
             42 => (new Write\CriterionEvaluationCollection())->add($criterionA),
             123 => (new Write\CriterionEvaluationCollection())->add($criterionB),
         ]);
@@ -144,8 +177,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $product42Values = $this->givenRandomProductValues();
         $product123Values = $this->givenRandomProductValues();
 
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
 
         $evaluationRegistry->get($criterionCode)->willReturn($evaluateCriterion);
         $evaluateCriterion->evaluate($criterionA, $product42Values)->willThrow(new \Exception('Evaluation failed'));
@@ -153,38 +186,52 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
 
         $repository->update(Argument::any())->shouldBeCalledTimes(2);
 
-        $this->evaluateAllCriteria(ProductIdCollection::fromInts([42, 123]));
+        $this->evaluateAllCriteria($productIdCollection);
 
         Assert::eq(CriterionEvaluationStatus::error(), $criterionA->getStatus());
         Assert::eq(CriterionEvaluationStatus::done(), $criterionB->getStatus());
     }
 
     public function it_evaluates_synchronous_criteria_for_a_set_of_products(
-        CriterionEvaluationRepositoryInterface $repository,
-        CriteriaEvaluationRegistry $evaluationRegistry,
+        CriterionEvaluationRepositoryInterface                  $repository,
+        CriteriaEvaluationRegistry                              $evaluationRegistry,
         GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
-        EvaluateCriterionInterface $evaluateSpelling,
-        SynchronousCriterionEvaluationsFilterInterface $synchronousCriterionEvaluationsFilter
-    ) {
+        GetEvaluableProductValuesQueryInterface                 $getEvaluableProductValuesQuery,
+        EvaluateCriterionInterface                              $evaluateSpelling,
+        SynchronousCriterionEvaluationsFilterInterface          $synchronousCriterionEvaluationsFilter,
+        ProductEntityIdFactoryInterface                         $idFactory,
+        ProductEntityIdCollection                               $productIdCollection,
+        ProductEntityIdInterface                                $productIdA,
+        ProductEntityIdInterface                                $productIdB
+    )
+    {
+        $productIdCollection->isEmpty()->willReturn(false);
+        $productIdCollection->toArrayString()->willReturn(['42', '123']);
+
+        $idFactory->create('42')->willReturn($productIdA);
+        $idFactory->create('123')->willReturn($productIdB);
+
+        $productIdA->__toString()->willReturn('42');
+        $productIdB->__toString()->willReturn('123');
+
         $criterionNonRequiredAttributeCompleteness = new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
 
         $criteria = [
             'product_42_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributeCompleteness,
-                new ProductId(42),
+                $productIdA->getWrappedObject(),
                 CriterionEvaluationStatus::pending()
             ),
             'product_123_non_required_att_completeness' => new Write\CriterionEvaluation(
                 $criterionNonRequiredAttributeCompleteness,
-                new ProductId(123),
+                $productIdB->getWrappedObject(),
                 CriterionEvaluationStatus::pending()
             )
         ];
 
         $product42CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_42_non_required_att_completeness']);
         $product123CriteriaCollection = (new Write\CriterionEvaluationCollection())->add($criteria['product_123_non_required_att_completeness']);
-        $getPendingCriteriaEvaluationsQuery->execute(ProductIdCollection::fromInts([42, 123]))->willreturn([
+        $getPendingCriteriaEvaluationsQuery->execute($productIdCollection)->willreturn([
             42 => $product42CriteriaCollection,
             123 => $product123CriteriaCollection
         ]);
@@ -192,8 +239,8 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         $product42Values = $this->givenRandomProductValues();
         $product123Values = $this->givenRandomProductValues();
 
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(42))->willReturn($product42Values);
-        $getEvaluableProductValuesQuery->byProductId(new ProductId(123))->willReturn($product123Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdA)->willReturn($product42Values);
+        $getEvaluableProductValuesQuery->byProductId($productIdB)->willReturn($product123Values);
 
         $evaluationRegistry->get($criterionNonRequiredAttributeCompleteness)->willReturn($evaluateSpelling);
         $evaluateSpelling->evaluate($criteria['product_42_non_required_att_completeness'], $product42Values)
@@ -210,7 +257,7 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
             $criteria['product_123_non_required_att_completeness'],
         ]);
 
-        $this->evaluateSynchronousCriteria(ProductIdCollection::fromInts([42, 123]));
+        $this->evaluateSynchronousCriteria($productIdCollection);
 
         Assert::eq($criteria['product_42_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());
         Assert::eq($criteria['product_123_non_required_att_completeness']->getStatus(), CriterionEvaluationStatus::done());

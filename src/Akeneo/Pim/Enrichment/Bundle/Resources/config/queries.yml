@@ -383,3 +383,11 @@ services:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\GetProductModelIdentifiersWithRemovedAttribute
         arguments:
             - '@akeneo_elasticsearch.client.product_and_product_model'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes:
+        arguments:
+            - '@database_connection'

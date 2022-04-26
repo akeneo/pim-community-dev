@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../../../shared/translate';
 import {ScopeListContainer} from '../ScopeListContainer';
+import ScopeMessage from '../../../../model/Apps/scope-message';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -18,15 +19,9 @@ const Connect = styled.h3`
     margin: 0;
 `;
 
-type ScopeMessages = {
-    icon: string;
-    type: string;
-    entities: string;
-};
-
 type Props = {
     appName: string;
-    scopeMessages: ScopeMessages[];
+    scopeMessages: ScopeMessage[];
 };
 
 export const Authorizations: FC<Props> = ({appName, scopeMessages}) => {

@@ -1,0 +1,3 @@
+services:
+  Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory: ~
+  Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory: ~

@@ -2,6 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,15 +14,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    protected $stdNormalizer;
+    protected NormalizerInterface $stdNormalizer;
+    protected PositionResolverInterface $positionResolver;
 
-    /**
-     * @param NormalizerInterface $stdNormalizer
-     */
-    public function __construct(NormalizerInterface $stdNormalizer)
+    public function __construct(NormalizerInterface $stdNormalizer, PositionResolverInterface $positionResolver)
     {
         $this->stdNormalizer = $stdNormalizer;
+        $this->positionResolver = $positionResolver;
     }
 
     /**
@@ -33,6 +32,10 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
 
         if (empty($normalizedCategory['labels'])) {
             $normalizedCategory['labels'] = (object) $normalizedCategory['labels'];
+        }
+
+        if (in_array('with_position', $context)) {
+            $normalizedCategory['position'] = $this->positionResolver->getPosition($category);
         }
 
         return $normalizedCategory;
