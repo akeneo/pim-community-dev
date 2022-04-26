@@ -2,7 +2,7 @@
 
 namespace Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
+use Akeneo\Category\Infrastructure\Component\Manager\PositionResolverInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

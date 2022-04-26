@@ -113,6 +113,11 @@ services:
             - '@database_connection'
             - '@logger'
 
+    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.get_values_and_properties_from_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetValuesAndPropertiesFromProductIdentifiers'
         arguments:
@@ -155,6 +160,11 @@ services:
 
     akeneo.pim.enrichment.product.query.find_id:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductId'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
         arguments:
             - '@database_connection'
 

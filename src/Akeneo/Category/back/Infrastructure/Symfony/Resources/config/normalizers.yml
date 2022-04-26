@@ -3,6 +3,7 @@ services:
         class: 'Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer'
         arguments:
             - '@pim_catalog.normalizer.standard.category'
+            - '@Akeneo\Category\Infrastructure\Component\Manager\PositionResolver'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
 

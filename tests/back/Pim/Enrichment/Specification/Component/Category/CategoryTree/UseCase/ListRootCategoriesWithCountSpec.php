@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\UseCase;
+namespace Specification\Akeneo\Category\Component\CategoryTree\UseCase;
 
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
 use PhpSpec\ObjectBehavior;

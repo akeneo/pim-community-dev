@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\ReadModel;
+namespace Specification\Akeneo\Category\Component\CategoryTree\ReadModel;
 
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use PhpSpec\ObjectBehavior;

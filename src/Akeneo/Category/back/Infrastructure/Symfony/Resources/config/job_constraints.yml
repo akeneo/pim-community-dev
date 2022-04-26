@@ -1,5 +1,5 @@
 services:
-    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_export:
+    akeneo_category.job.job_parameters.constraint_collection_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
         arguments:
             -
@@ -7,7 +7,7 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+    akeneo_category.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
         arguments:
             -
@@ -15,7 +15,7 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_csv_import:
+    akeneo_category.job.job_parameters.constraint_collection_provider.simple_csv_import:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
         arguments:
             -
@@ -23,7 +23,7 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    akeneo_pim_enrichment.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
+    akeneo_category.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
         arguments:
             -

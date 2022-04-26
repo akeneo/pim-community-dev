@@ -1,0 +1,4 @@
+services:
+  Akeneo\Category\Infrastructure\Component\Manager\PositionResolver:
+    arguments:
+      - '@Akeneo\Category\Infrastructure\Storage\Sql\GetDirectChildrenCategoryCodes'

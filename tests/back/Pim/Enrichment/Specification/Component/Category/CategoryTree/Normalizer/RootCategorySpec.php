@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\CategoryTree\Normalizer;
+namespace Specification\Akeneo\Category\Component\CategoryTree\Normalizer;
 
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;

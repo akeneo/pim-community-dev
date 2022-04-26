@@ -223,7 +223,7 @@ class CategoryTreeController extends AbstractController
             $normalizedViolations[$normalizedViolation['path']] = $normalizedViolation['message'];
         }
 
-        if (count($normalizedViolations) > 0) {
+        if (\count($normalizedViolations) > 0) {
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 

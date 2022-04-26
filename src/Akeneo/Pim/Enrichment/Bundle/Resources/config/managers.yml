@@ -7,7 +7,3 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
-
-    Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolver:
-        arguments:
-            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes'

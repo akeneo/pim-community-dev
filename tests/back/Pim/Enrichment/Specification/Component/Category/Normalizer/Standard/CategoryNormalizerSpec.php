@@ -1,6 +1,6 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
+namespace Specification\Akeneo\Category\Component\Normalizer\Standard;
 
 use Akeneo\Category\Infrastructure\Component\Model\CategoryInterface;
 use Akeneo\Category\Infrastructure\Component\Normalizer\Standard\CategoryNormalizer;

@@ -8,8 +8,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\count;
-
 /**
  * Check if the category is used by a channel when try to remove it
  *
@@ -51,7 +49,7 @@ final class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterfac
             return;
         }
 
-        if (count($subject->getChannels()) > 0) {
+        if (\count($subject->getChannels()) > 0) {
             throw new ConflictHttpException($this->translator->trans('flash.tree.not removable'));
         }
     }
