@@ -150,10 +150,7 @@ SQL;
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_with_duplicate_options');
 
-        Assert::assertSame(
-            ['OPTIONA', 'OptionB', 'optionA', 'optionb'],
-            $product->getValue('a_multi_select')->getData()
-        );
+        Assert::assertSame(['optionA', 'optionB'], $product->getValue('a_multi_select')->getData());
     }
 
     /**
