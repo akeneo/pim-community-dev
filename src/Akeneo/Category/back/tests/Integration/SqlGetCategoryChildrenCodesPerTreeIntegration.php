@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category;
+namespace Akeneo\Test\Category\Integration;
 
+use Akeneo\Category\back\tests\Integration\Stubs\AllowAllCategoryCode;
+use Akeneo\Category\back\tests\Integration\Stubs\DenyAllCategoryCode;
 use Akeneo\Category\Infrastructure\Storage\Sql\SqlGetCategoryChildrenCodesPerTree;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -201,20 +203,3 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
         return $this->catalog->useMinimalCatalog();
     }
 }
-
-class AllowAllCategoryCode implements CategoryCodeFilterInterface
-{
-    public function filter(array $codes): array
-    {
-        return $codes;
-    }
-}
-
-class DenyAllCategoryCode implements CategoryCodeFilterInterface
-{
-    public function filter(array $codes): array
-    {
-        return [];
-    }
-}
-

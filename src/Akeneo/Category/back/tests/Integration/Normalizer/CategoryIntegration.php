@@ -1,8 +1,8 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Normalizer\Standard;
+namespace Akeneo\Test\Category\Integration\Normalizer;
 
-use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedCategoryCleaner;
+use AkeneoTest\Pim\Enrichment\Integration\Normalizer\Standard\AbstractStandardNormalizerTestCase;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>

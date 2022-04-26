@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category;
+namespace Akeneo\Test\Category\Integration;
 
+use Akeneo\Category\back\tests\Integration\Stubs\AllowAll;
+use Akeneo\Category\back\tests\Integration\Stubs\DenyAll;
 use Akeneo\Category\Infrastructure\Component\Query\PublicApi\CategoryTree;
 use Akeneo\Category\Infrastructure\Storage\Sql\SqlFindCategoryTrees;
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
@@ -55,31 +57,5 @@ final class SqlFindCategoryTreesIntegration extends TestCase
             $this->get('pim_catalog.normalizer.standard.translation'),
             $collectionFilter
         );
-    }
-}
-
-class AllowAll implements CollectionFilterInterface
-{
-    public function filterCollection($collection, $type, array $options = [])
-    {
-        return $collection;
-    }
-
-    public function supportsCollection($collection, $type, array $options = [])
-    {
-        return true;
-    }
-}
-
-class DenyAll implements CollectionFilterInterface
-{
-    public function filterCollection($collection, $type, array $options = [])
-    {
-        return [];
-    }
-
-    public function supportsCollection($collection, $type, array $options = [])
-    {
-        return true;
     }
 }

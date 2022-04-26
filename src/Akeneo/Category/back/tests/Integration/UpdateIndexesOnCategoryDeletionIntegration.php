@@ -1,6 +1,6 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Category;
+namespace Akeneo\Test\Category\Integration;
 
 use AkeneoTest\Pim\Enrichment\Integration\Elasticsearch\IndexConfiguration\AbstractPimCatalogTestCase;
 
