@@ -28,10 +28,10 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $productUuidA = $this->createProduct('product_A')->getUuid();
-        $productUuidB = $this->createProduct('product_B')->getUuid();
-        $productUuidC = $this->createProduct('product_C')->getUuid();
-        $productUuidD = $this->createProduct('product_D')->getUuid();
+        $productUuidA = $this->createProduct('product_A')->getUuid()->toString();
+        $productUuidB = $this->createProduct('product_B')->getUuid()->toString();
+        $productUuidC = $this->createProduct('product_C')->getUuid()->toString();
+        $productUuidD = $this->createProduct('product_D')->getUuid()->toString();
 
         $this->resetProductsScores();
 

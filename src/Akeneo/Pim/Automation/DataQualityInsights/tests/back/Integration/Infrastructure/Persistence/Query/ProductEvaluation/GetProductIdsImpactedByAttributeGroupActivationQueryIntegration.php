@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -33,7 +33,7 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $expectedProducts[] = $this->createProduct('expected_product_C', ['family' => 'impacted_family_B']);
 
         $expectedProductUuids = array_map(function ($product) {
-            return $this->get(ProductIdFactory::class)->create((string) $product->getUuid());
+            return $this->get(ProductUuidFactory::class)->create((string) $product->getUuid());
         }, $expectedProducts);
 
         $this->createProduct('not_impacted_product', ['family' => 'not_impacted_family']);

@@ -6,10 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
@@ -18,8 +19,7 @@ use Doctrine\DBAL\Connection;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-// TODO This class manage Products and ProductModels. Should be splitted into 2 classes
-final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluationsByProductIdQueryInterface
+final class GetCriteriaEvaluationsByEntityIdQuery implements GetCriteriaEvaluationsByEntityIdQueryInterface
 {
     private Connection $db;
 
@@ -41,47 +41,21 @@ final class GetCriteriaEvaluationsByProductIdQuery implements GetCriteriaEvaluat
         $this->tableName = $tableName;
     }
 
-    public function execute(ProductEntityIdInterface $productId): Read\CriterionEvaluationCollection
+    public function execute(ProductEntityIdInterface $entityId): Read\CriterionEvaluationCollection
     {
-        $criterionEvaluationTable = $this->tableName;
-
-        if ('pim_data_quality_insights_product_criteria_evaluation' === $criterionEvaluationTable) {
-            $sql = <<<SQL
-SELECT
-       product.id AS product_id,
-       evaluation.criterion_code,
-       evaluation.status,
-       evaluation.evaluated_at,
-       evaluation.result
-FROM $criterionEvaluationTable AS evaluation
-    JOIN pim_catalog_product product ON product.uuid = evaluation.product_uuid
-WHERE product.id = :product_id
-SQL;
-        } else {
-            $sql = <<<SQL
-SELECT
-       evaluation.product_id,
-       evaluation.criterion_code,
-       evaluation.status,
-       evaluation.evaluated_at,
-       evaluation.result
-FROM $criterionEvaluationTable AS evaluation
-WHERE evaluation.product_id = :product_id
-SQL;
+        $rows = [];
+        if ($entityId instanceof ProductUuid) {
+            $rows = $this->executeForProductUuid($entityId);
+        } elseif ($entityId instanceof ProductModelId) {
+            $rows = $this->executeForProductModelId($entityId);
         }
-
-        $rows = $this->db->executeQuery(
-            $sql,
-            ['product_id' => (int)(string)$productId],
-            ['product_id' => \PDO::PARAM_INT]
-        )->fetchAllAssociative();
 
         $criteriaEvaluations = new Read\CriterionEvaluationCollection();
         foreach ($rows as $rawCriterionEvaluation) {
             $criterionCode = new CriterionCode($rawCriterionEvaluation['criterion_code']);
             $criteriaEvaluations->add(new Read\CriterionEvaluation(
                 $criterionCode,
-                $productId,
+                $entityId,
                 null !== $rawCriterionEvaluation['evaluated_at'] ? $this->clock->fromString($rawCriterionEvaluation['evaluated_at']) : null,
                 new CriterionEvaluationStatus($rawCriterionEvaluation['status']),
                 $this->hydrateCriterionEvaluationResult($criterionCode, $rawCriterionEvaluation['result']),
@@ -89,6 +63,51 @@ SQL;
         }
 
         return $criteriaEvaluations;
+    }
+
+    private function executeForProductUuid(ProductUuid $entityId): array
+    {
+        $criterionEvaluationTable = $this->tableName;
+
+        $sql = <<<SQL
+SELECT
+       BIN_TO_UUID(product.uuid) AS entity_id,
+       evaluation.criterion_code,
+       evaluation.status,
+       evaluation.evaluated_at,
+       evaluation.result
+FROM $criterionEvaluationTable AS evaluation
+    JOIN pim_catalog_product product ON product.uuid = evaluation.product_uuid
+WHERE product.uuid = :product_uuid
+SQL;
+
+        return $this->db->executeQuery(
+            $sql,
+            ['product_uuid' => $entityId->toBytes()],
+            ['product_uuid' => \PDO::PARAM_STR]
+        )->fetchAllAssociative();
+    }
+
+    private function executeForProductModelId(ProductModelId $entityId): array
+    {
+        $criterionEvaluationTable = $this->tableName;
+
+        $sql = <<<SQL
+SELECT
+       evaluation.product_id AS entity_id,
+       evaluation.criterion_code,
+       evaluation.status,
+       evaluation.evaluated_at,
+       evaluation.result
+FROM $criterionEvaluationTable AS evaluation
+WHERE evaluation.product_id = :product_model_id
+SQL;
+
+        return $this->db->executeQuery(
+            $sql,
+            ['product_model_id' => $entityId->toInt()],
+            ['product_model_id' => \PDO::PARAM_INT]
+        )->fetchAllAssociative();
     }
 
     private function hydrateCriterionEvaluationResult(CriterionCode $criterionCode, $rawResult): ?Read\CriterionEvaluationResult

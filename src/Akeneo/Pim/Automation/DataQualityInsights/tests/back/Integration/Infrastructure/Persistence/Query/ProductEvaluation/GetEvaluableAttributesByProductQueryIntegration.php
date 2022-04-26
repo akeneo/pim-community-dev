@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Attribute;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\AttributeGroupActivation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
@@ -79,7 +79,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
     }
 
     private function createAttributes(array $attributesData): void

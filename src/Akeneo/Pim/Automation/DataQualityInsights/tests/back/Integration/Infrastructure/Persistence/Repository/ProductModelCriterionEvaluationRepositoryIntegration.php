@@ -147,8 +147,8 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
                 ->add($criterionEvaluationB)
         );
 
-        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getProductId(), $criterionEvaluationA->getCriterionCode());
-        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getProductId(), $criterionEvaluationB->getCriterionCode());
+        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getEntityId(), $criterionEvaluationA->getCriterionCode());
+        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getEntityId(), $criterionEvaluationB->getCriterionCode());
 
         $this->assertCriterionEvaluationEquals($criterionEvaluationA, $updatedCriterionEvaluationA);
         $this->assertCriterionEvaluationEquals($criterionEvaluationB, $updatedCriterionEvaluationB);
@@ -202,7 +202,7 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
     private function assertCriterionEvaluationEquals(Write\CriterionEvaluation $expectedCriterionEvaluation, Read\CriterionEvaluation $criterionEvaluation): void
     {
         $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
-        $this->assertEquals($expectedCriterionEvaluation->getProductId(), $criterionEvaluation->getProductId());
+        $this->assertEquals($expectedCriterionEvaluation->getEntityId(), $criterionEvaluation->getProductId());
         $this->assertEvaluatedAtEquals($expectedCriterionEvaluation->getEvaluatedAt(), $criterionEvaluation->getEvaluatedAt());
         $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
         $this->assertEquals($expectedCriterionEvaluation->getResult()->getRates()->toArrayInt(), $criterionEvaluation->getResult()->getRates()->toArrayInt());

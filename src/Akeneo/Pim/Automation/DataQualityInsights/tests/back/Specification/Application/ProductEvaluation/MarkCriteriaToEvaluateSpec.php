@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
@@ -17,9 +17,9 @@ use PhpSpec\ObjectBehavior;
 final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
 {
     public function let(
-        GetUpdatedProductUuidsQueryInterface                          $getUpdatedProductUuidsQuery,
-        GetProductIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
-        CreateCriteriaEvaluations                                     $createProductsCriteriaEvaluations
+        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductUuidsQuery,
+        GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
+        CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
         $this->beConstructedWith(
             $getUpdatedProductUuidsQuery,
@@ -29,9 +29,9 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
     }
 
     public function it_marks_criteria_to_evaluate_for_updates_since_a_given_date(
-        GetUpdatedProductUuidsQueryInterface $getUpdatedProductUuidsQuery,
-        GetProductIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
+        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductUuidsQuery,
+        GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
+        CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
         $updatedSince = new \DateTimeImmutable();
         $updatedProductIdsBatch1 = ProductUuidCollection::fromStrings(['df470d52-7723-4890-85a0-e79be625e2ed', '6d125b99-d971-41d9-a264-b020cd486aee']);
