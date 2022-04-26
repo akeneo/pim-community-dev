@@ -17,24 +17,21 @@ use Doctrine\DBAL\Connection;
  */
 final class GetRequiredProductModelAttributesMaskQuery implements GetProductModelAttributesMaskQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
+    use FormatAttributeCasesTrait;
 
-    public function __construct(Connection $dbConnection)
-    {
-        $this->dbConnection = $dbConnection;
+    /**
+     * @param AttributeCase[] $attributeCases
+     */
+    public function __construct(
+        private Connection $dbConnection,
+        private iterable   $attributeCases,
+    ) {
     }
 
     public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
     {
-        $sql = <<<SQL
-WITH
-table_column_exists AS (
-    SELECT EXISTS (
-       SELECT * FROM information_schema.tables
-       WHERE table_name = 'pim_catalog_table_column'
-    )
-)
+        $cases = $this->formatAttributeCases($this->attributeCases);
+        $sql = "
 SELECT
     family.code AS family_code,
     channel_code,
@@ -42,30 +39,7 @@ SELECT
     JSON_ARRAYAGG(
         CONCAT(
             CASE
-                WHEN attribute.attribute_type = 'pim_catalog_price_collection' 
-                    THEN CONCAT(
-                            attribute.code,
-                            '-',
-                            (
-                                SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
-                                FROM pim_catalog_channel channel
-                                JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
-                                JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-                                WHERE channel.code  = channel_code
-                                GROUP BY channel.id
-                            )
-                        )
-                WHEN attribute.attribute_type = 'pim_catalog_table' 
-                    THEN CONCAT(
-                            attribute.code,
-                            '-',
-                            (
-                                SELECT GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-')
-                                FROM pim_catalog_table_column table_column
-                                WHERE (table_column.is_required_for_completeness = '1' OR table_column.column_order = 0)
-                                AND table_column.attribute_id = attribute.id
-                            )
-                        )
+            " . $cases . "
                 ELSE attribute.code
             END,
             '-',
@@ -106,7 +80,7 @@ WHERE product_model.id = :productModelId
           AND (product_model.parent_id IS NULL OR attribute_set.level = 2)
     )
 GROUP BY family.code, channel_code, locale_code;
-SQL;
+";
         $rows = $this->dbConnection->executeQuery(
             $sql,
             ['productModelId' => $productModelId->toInt()],

@@ -15,26 +15,24 @@ use Doctrine\DBAL\Connection;
  */
 final class GetRequiredAttributesMasksQuery implements GetRequiredAttributesMasks
 {
-    /** @var Connection */
-    private $connection;
+    use FormatAttributeCasesTrait;
 
-    public function __construct(Connection $connection)
-    {
-        $this->connection = $connection;
+    /**
+     * @param AttributeCase[] $attributeCases
+     */
+    public function __construct(
+        private Connection $connection,
+        private iterable   $attributeCases,
+    ) {
     }
+
     /**
      * {@inheritdoc}
      */
     public function fromFamilyCodes(array $familyCodes): array
     {
-        $sql = <<<SQL
-WITH
-table_column_exists AS (
-    SELECT EXISTS (
-       SELECT * FROM information_schema.tables
-       WHERE table_name = 'pim_catalog_table_column'
-    )
-)
+        $cases = $this->formatAttributeCases($this->attributeCases);
+        $sql = "
 SELECT
     family.code AS family_code,
     channel_code,
@@ -42,30 +40,7 @@ SELECT
     JSON_ARRAYAGG(
         CONCAT(
             CASE
-                WHEN attribute.attribute_type = 'pim_catalog_price_collection' 
-                    THEN CONCAT(
-                            attribute.code,
-                            '-',
-                            (
-                                SELECT GROUP_CONCAT(currency.code ORDER BY currency.code SEPARATOR '-')
-                                FROM pim_catalog_channel channel
-                                JOIN pim_catalog_channel_currency pccc ON channel.id = pccc.channel_id
-                                JOIN pim_catalog_currency currency ON pccc.currency_id = currency.id
-                                WHERE channel.code  = channel_code
-                                GROUP BY channel.id
-                            )
-                        )
-                WHEN table_column_exists = '1' AND attribute.attribute_type = 'pim_catalog_table'
-                    THEN CONCAT(
-                            attribute.code,
-                            '-',
-                            (
-                                SELECT GROUP_CONCAT(table_column.id ORDER BY table_column.id SEPARATOR '-')
-                                FROM pim_catalog_table_column table_column
-                                WHERE (table_column.is_required_for_completeness = '1' OR table_column.column_order = 0)
-                                AND table_column.attribute_id = attribute.id
-                            )
-                        )
+            " . $cases . "
                 ELSE attribute.code
             END,
             '-',
@@ -96,7 +71,7 @@ WHERE
     AND family.code IN (:familyCodes)
     AND (attribute_group_activation.activated IS NULL OR attribute_group_activation.activated = 1)
 GROUP BY family.code, channel_code, locale_code
-SQL;
+";
         $rows = $this->connection->executeQuery(
             $sql,
             ['familyCodes' => $familyCodes],
@@ -114,7 +89,7 @@ SQL;
 
         $masks = [];
         foreach ($masksPerFamily as $familyCode => $masksPerChannelAndLocale) {
-            $masks[$familyCode] = new RequiredAttributesMask((string) $familyCode, $masksPerChannelAndLocale);
+            $masks[$familyCode] = new RequiredAttributesMask((string)$familyCode, $masksPerChannelAndLocale);
         }
 
         return $masks;
