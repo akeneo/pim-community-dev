@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-/**
- * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
 use Webmozart\Assert\Assert;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class ProductUuidCollection implements ProductEntityIdCollection
 {
     /**
@@ -75,5 +74,10 @@ final class ProductUuidCollection implements ProductEntityIdCollection
     public function toArrayString(): array
     {
         return array_map(fn (ProductUuid $productUuid) => (string) $productUuid, $this->productUuids);
+    }
+
+    public function toArrayBytes(): array
+    {
+        return array_map(fn (ProductUuid $productUuid) => $productUuid->toBytes(), $this->productUuids);
     }
 }

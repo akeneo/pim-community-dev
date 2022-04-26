@@ -39,7 +39,6 @@ final class GetProductScoresSpec extends ObjectBehavior
             'mobile' => ['en_US']
         ]));
 
-        // TODO Update the GetProductScoresQuery
         $getProductScoresQuery->byProductUuid($productUuid)->willReturn((new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
                 ->addRate(new ChannelCode('mobile'), new LocaleCode('en_US'), new Rate(80))

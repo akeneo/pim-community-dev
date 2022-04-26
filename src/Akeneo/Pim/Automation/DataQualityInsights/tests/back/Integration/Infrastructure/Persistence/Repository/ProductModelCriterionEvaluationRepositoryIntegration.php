@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
@@ -175,10 +176,10 @@ final class ProductModelCriterionEvaluationRepositoryIntegration extends DataQua
         return $stmt->fetchAllAssociative();
     }
 
-    private function findCriterionEvaluation(ProductUuid $productId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
+    private function findCriterionEvaluation(ProductEntityIdInterface $entityId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
     {
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations')
-            ->execute($productId);
+            ->execute($entityId);
 
         return $evaluations->get($criterionCode);
     }

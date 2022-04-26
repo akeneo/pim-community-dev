@@ -13,5 +13,5 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
  */
 interface GetProductEvaluationQueryInterface
 {
-    public function execute(ProductUuid $productId): ProductEvaluation;
+    public function execute(ProductUuid $productUuid): ProductEvaluation;
 }

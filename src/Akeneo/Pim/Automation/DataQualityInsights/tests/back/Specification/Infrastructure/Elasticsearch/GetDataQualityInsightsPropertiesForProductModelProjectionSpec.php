@@ -33,20 +33,20 @@ final class GetDataQualityInsightsPropertiesForProductModelProjectionSpec extend
         ComputeProductsKeyIndicators $computeProductsKeyIndicators,
         ProductEntityIdFactoryInterface $idFactory
     ) {
-        $productId42 = new ProductModelId(42);
-        $productId123 = new ProductModelId(123);
-        $productId456 = new ProductModelId(456);
-        $productIds = [
-            'product_model_1' => $productId42,
-            'product_model_2' => $productId123,
-            'product_model_without_rates' => $productId456,
+        $productModelId42 = new ProductModelId(42);
+        $productModelId123 = new ProductModelId(123);
+        $productModelId456 = new ProductModelId(456);
+        $productModelIds = [
+            'product_model_1' => $productModelId42,
+            'product_model_2' => $productModelId123,
+            'product_model_without_rates' => $productModelId456,
         ];
         $productModelCodes = [
             'product_model_1', 'product_model_2', 'product_model_without_rates'
         ];
         $collection = ProductModelIdCollection::fromStrings(['42', '123', '456']);
 
-        $getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes)->willReturn($productIds);
+        $getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes)->willReturn($productModelIds);
         $idFactory->createCollection(['42', '123', '456'])->willReturn($collection);
 
         $channelEcommerce = new ChannelCode('ecommerce');

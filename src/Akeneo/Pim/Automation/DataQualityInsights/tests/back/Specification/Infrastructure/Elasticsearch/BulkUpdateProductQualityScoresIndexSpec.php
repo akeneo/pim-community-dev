@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use PhpSpec\ObjectBehavior;
-use Ramsey\Uuid\Uuid;
 
 class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 {
@@ -38,7 +37,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('__invoke', [$this->getProductsData()['productIdCollection']]);
+            ->during('__invoke', [$this->getProductsData()['productUuidCollection']]);
     }
 
     public function it_updates_products_index(
@@ -55,13 +54,13 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
             ProductInterface::class
         );
 
-        $productIds = $this->getProductsData()['productIdCollection'];
+        $productUuids = $this->getProductsData()['productUuidCollection'];
 
-        $getProductScoresQuery->byProductUuidCollection($productIds)->willReturn($this->getProductsData()['scores']);
+        $getProductScoresQuery->byProductUuidCollection($productUuids)->willReturn($this->getProductsData()['scores']);
 
         $productsKeyIndicators = $this->getProductsData()['keyIndicators'];
 
-        $computeProductsKeyIndicators->compute($productIds)->willReturn($productsKeyIndicators);
+        $computeProductsKeyIndicators->compute($productUuids)->willReturn($productsKeyIndicators);
 
         $esClient->bulkUpdate(
             [
@@ -91,7 +90,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         )
             ->shouldBeCalled();
 
-        $this->__invoke($productIds);
+        $this->__invoke($productUuids);
     }
 
     public function it_updates_product_models_index(
@@ -188,7 +187,7 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
         ];
 
         return [
-            'productIdCollection' => $productUuidCollection,
+            'productUuidCollection' => $productUuidCollection,
             'scores' => $scores,
             'keyIndicators' => $keyIndicators
         ];

@@ -85,7 +85,7 @@ class GetProductModelIdsToEvaluateQueryIntegration extends DataQualityInsightsTe
 
         $evaluationDone = new CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductUuid($productModelId),
+            ProductModelId::fromString((string) $productModelId),
             CriterionEvaluationStatus::pending()
         );
 

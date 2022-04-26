@@ -14,7 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdC
  */
 interface GetProductModelScoresQueryInterface
 {
-    public function byProductModelId(ProductModelId $productId): ChannelLocaleRateCollection;
+    public function byProductModelId(ProductModelId $productModelId): ChannelLocaleRateCollection;
 
     /**
      * @return array<ChannelLocaleRateCollection>
