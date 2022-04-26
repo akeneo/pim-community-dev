@@ -70,6 +70,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
         }
 
         $rows = $this->removeTrailingEmptyRows($rows);
+        $rows = $this->removeTrailingEmptyColumns($rows);
 
         return $this->padRowsToTheLongestRow($rows);
     }
@@ -144,5 +145,23 @@ class XlsxFileReader implements XlsxFileReaderInterface
         }
 
         return array_reverse($reversedRows);
+    }
+
+    private function removeTrailingEmptyColumns(array $rows): array
+    {
+        foreach ($rows as $index => $row) {
+            $reversedColumns = array_reverse($row);
+            foreach ($reversedColumns as $columnIndex => $cell) {
+                if (!empty($cell)) {
+                    break;
+                }
+
+                unset($reversedColumns[$columnIndex]);
+            }
+
+            $rows[$index] = array_reverse($reversedColumns);
+        }
+
+        return $rows;
     }
 }

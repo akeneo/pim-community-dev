@@ -69,13 +69,14 @@ class ReadColumnsValidator extends ConstraintValidator
 
         $fileStructure = $value->get('file_structure');
         $reader = $this->xlsxFileReaderFactory->create($value->get('file_key'));
-        $row = current($reader->readRows(
+        $headerRow = current($reader->readRows(
             $fileStructure['sheet_name'],
             $fileStructure['header_row'],
             1,
         ));
 
-        $this->validateLessThan500Column($row);
+        $this->validateLessThan500Column($headerRow);
+        $this->validateNoEmptyHeader($headerRow);
     }
 
     private function validateLessThan500Column(
@@ -85,6 +86,17 @@ class ReadColumnsValidator extends ConstraintValidator
             $this->context->buildViolation(ReadColumns::MAX_COUNT_REACHED)
                 ->setParameter('limit', strval(self::MAX_COLUMN_COUNT))
                 ->addViolation();
+        }
+    }
+
+    private function validateNoEmptyHeader(array $headerRow)
+    {
+        foreach ($headerRow as $cell) {
+            if (empty($cell)) {
+                $this->context->buildViolation(ReadColumns::EMPTY_HEADER)->addViolation();
+
+                return;
+            }
         }
     }
 }

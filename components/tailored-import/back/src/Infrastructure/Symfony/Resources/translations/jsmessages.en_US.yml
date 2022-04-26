@@ -125,6 +125,7 @@ akeneo.tailored_import:
     file_structure:
       first_product_row_should_be_after_header_row: First product row should be after the header row.
       unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be at least the first column.
+      header_row_should_not_contain_empty_cell: Header row should not contain empty cells.
     file_preview:
       empty_sheet:
         title: This sheet is empty.
