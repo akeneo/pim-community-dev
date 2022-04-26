@@ -6,7 +6,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -51,10 +53,12 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         }
 
         $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            $productUuid = $productScore->getEntityId();
+            Assert::isInstanceOf($productUuid, ProductUuid::class);
+
             return sprintf(
-                "(%d, '%s', '%s', '%s')",
-                // TODO This is not implemented yet, it will crash.
-                (string) $productScore->getProductUuid(),
+                "(%s, '%s', '%s', '%s')",
+                $productUuid->toBytes(),
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates()),
                 \json_encode($productScore->getScoresPartialCriteria()->toNormalizedRates())
@@ -74,16 +78,16 @@ SQL
 
         // We need to delete younger product scores after inserting the new ones,
         // so we insure to have 1 product score per product
-        $deleteValues = implode(', ', array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getProductId(), $productsScores));
+        $deleteValues = implode(', ', array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getEntityId()->toBytes(), $productsScores));
 
         $this->dbConnection->executeQuery(
             <<<SQL
 DELETE old_scores
 FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
+    ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id IN ($deleteValues);
+WHERE old_scores.product_uuid IN ($deleteValues);
 SQL
         );
     }
