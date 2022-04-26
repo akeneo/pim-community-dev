@@ -35,6 +35,8 @@ onboarder:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
                 actions: Actions
+            contributors:
+                invalid_emails: Some emails are invalid and won’t be added.
         supplier_delete:
             sucess_message: The supplier was successfully deleted
             modal:
