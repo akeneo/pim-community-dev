@@ -20,11 +20,11 @@ final class GetUpToDateProductEvaluationQuery implements GetProductEvaluationQue
     ) {
     }
 
-    public function execute(ProductUuid $productId): ProductEvaluation
+    public function execute(ProductUuid $productUuid): ProductEvaluation
     {
-        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductUuid($productId));
-        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
+        $productScores = ($this->getScoresByCriteria)($this->getProductScoresQuery->byProductUuid($productUuid));
+        $productCriteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productUuid);
 
-        return new ProductEvaluation($productId, $productScores, $productCriteriaEvaluations);
+        return new ProductEvaluation($productUuid, $productScores, $productCriteriaEvaluations);
     }
 }
