@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery;
+use Akeneo\Test\Common\EntityWithValue\Builder\Product;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
@@ -42,10 +43,10 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     {
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
 
-        $productId = $this->givenAProductWithAnUpToDateEvaluation($today);
+        $productUuid = $this->givenAProductWithAnUpToDateEvaluation($today);
         $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
 
-        $productHasUpToDateEvaluation = $this->query->forEntityId($productId);
+        $productHasUpToDateEvaluation = $this->query->forEntityId($productUuid);
         $this->assertTrue($productHasUpToDateEvaluation);
 
         $productVariantId = $this->givenAProductVariantWithAnUpToDateEvaluation($today);
@@ -102,18 +103,18 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
 
     private function createProduct(): ProductUuid
     {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->getProductBuilder()
             ->withIdentifier(strval(Uuid::uuid4()))
             ->build();
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createVariantProduct(string $parentCode): ProductUuid
     {
-        $product = $this->get('akeneo_integration_tests.catalog.product.builder')
+        $product = $this->getProductBuilder()
             ->withIdentifier(strval(Uuid::uuid4()))
             ->withFamily('familyA')
             ->build();
@@ -121,7 +122,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, ['parent' => $parentCode]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function givenAProductWithAnUpToDateEvaluation(\DateTimeImmutable $today): ProductUuid
@@ -234,5 +235,10 @@ SQL;
             'evaluated_at' => $evaluatedAt->format(Clock::TIME_FORMAT),
             'product_uuid' => $productUuid->toBytes(),
         ]);
+    }
+
+    private function getProductBuilder(): Product
+    {
+        return $this->get('akeneo_integration_tests.catalog.product.builder');
     }
 }

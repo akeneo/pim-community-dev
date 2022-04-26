@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver\Statement;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -37,15 +38,15 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQuery implements GetPendingC
             return [];
         }
 
-        $entityCriteriaEvaluationRows = [];
+        $entityCriteriaEvaluationStatement = [];
         if ($entityIds instanceof ProductUuidCollection) {
-            $entityCriteriaEvaluationRows = $this->executeForProductUuidCollection($entityIds);
+            $entityCriteriaEvaluationStatement = $this->executeForProductUuidCollection($entityIds);
         } elseif ($entityIds instanceof ProductModelIdCollection) {
-            $entityCriteriaEvaluationRows = $this->executeForProductModelIdCollection($entityIds);
+            $entityCriteriaEvaluationStatement = $this->executeForProductModelIdCollection($entityIds);
         }
 
         $productsCriteriaEvaluations = [];
-        foreach ($entityCriteriaEvaluationRows as $resultRow) {
+        while ($resultRow = $entityCriteriaEvaluationStatement->fetchAssociative()) {
             $entityId = $this->idFactory->create($resultRow['entity_id']);
             $criteria = json_decode($resultRow['criteria']);
             $productsCriteriaEvaluations[(string)$entityId] = $this->hydrateProductCriteriaEvaluations($entityId, $criteria);
@@ -55,7 +56,7 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQuery implements GetPendingC
 
     }
 
-    private function executeForProductUuidCollection(ProductUuidCollection $productUuids): array
+    private function executeForProductUuidCollection(ProductUuidCollection $productUuids): Statement
     {
         $criterionEvaluationTable = $this->tableName;
 
@@ -68,7 +69,7 @@ AND p.uuid IN(:product_uuids)
 GROUP BY p.uuid
 SQL;
 
-        return $this->dbConnection->fetchAssociative($sql, [
+        return $this->dbConnection->executeQuery($sql, [
             'status' => CriterionEvaluationStatus::PENDING,
             'product_uuids' => $productUuids->toArrayBytes(),
         ], [
@@ -77,7 +78,7 @@ SQL;
         ]);
     }
 
-    private function executeForProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): array
+    private function executeForProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): Statement
     {
         $criterionEvaluationTable = $this->tableName;
 
@@ -89,7 +90,7 @@ AND product_id IN(:product_model_ids)
 GROUP BY product_id
 SQL;
 
-        return $this->dbConnection->fetchAssociative($sql, [
+        return $this->dbConnection->executeQuery($sql, [
             'status' => CriterionEvaluationStatus::PENDING,
             'product_model_ids' => $productModelIdCollection->toArrayString(),
         ], [

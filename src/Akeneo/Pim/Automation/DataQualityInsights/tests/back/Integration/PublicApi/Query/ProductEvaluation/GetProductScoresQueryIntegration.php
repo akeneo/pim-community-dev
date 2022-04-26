@@ -86,7 +86,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
 
         $productsScores = [
             'product_A_scores' => new ProductScores(
-                ProductUuid::fromString($productA->getUuid()),
+                ProductUuid::fromString($productA->getUuid()->toString()),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(86))
@@ -96,7 +96,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
                     ->addRate($channelMobile, $localeFr, new Rate(36)),
             ),
             'product_B_scores' => new ProductScores(
-                ProductUuid::fromString($productB->getUuid()),
+                ProductUuid::fromString($productB->getUuid()->toString()),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
@@ -106,7 +106,7 @@ final class getProductScoresQueryIntegration extends DataQualityInsightsTestCase
                     ->addRate($channelMobile, $localeFr, new Rate(95)),
             ),
             'other_product_scores' => new ProductScores(
-                ProductUuid::fromString($productC->getUuid()),
+                ProductUuid::fromString($productC->getUuid()->toString()),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(67))

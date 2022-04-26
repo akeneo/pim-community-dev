@@ -10,7 +10,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -41,27 +43,29 @@ final class GetProductScoresQuery implements GetProductScoresQueryInterface
             return [];
         }
 
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+
         $query = <<<SQL
-SELECT p.id AS product_id, latest_score.scores, latest_score.scores_partial_criteria
+SELECT BIN_TO_UUID(p.uuid) AS product_uuid, latest_score.scores, latest_score.scores_partial_criteria
 FROM pim_catalog_product p
     INNER JOIN pim_data_quality_insights_product_score AS latest_score ON latest_score.product_uuid = p.uuid
     LEFT JOIN pim_data_quality_insights_product_score AS younger_score
         ON younger_score.product_uuid = latest_score.product_uuid
         AND younger_score.evaluated_at > latest_score.evaluated_at
-WHERE p.id IN(:product_ids)
+WHERE p.uuid IN(:product_uuids)
     AND younger_score.evaluated_at IS NULL;
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productUuidCollection->toArrayString()],
-            ['product_ids' => Connection::PARAM_INT_ARRAY]
+            ['product_uuids' => $productUuidCollection->toArrayBytes()],
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
         );
 
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productId = $row['product_id'];
-            $productsScores[$productId] = new Read\Scores(
+            $productUuid = $row['product_uuid'];
+            $productsScores[$productUuid] = new Read\Scores(
                 $this->hydrateScores($row['scores']),
                 $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
             );

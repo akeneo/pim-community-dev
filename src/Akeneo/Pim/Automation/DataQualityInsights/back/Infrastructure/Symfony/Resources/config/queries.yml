@@ -21,13 +21,13 @@ services:
             - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateCriteriaEvaluationsByProductIdQuery
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateCriteriaEvaluationsByEntityIdQuery
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery'
 
     akeneo.pim.automation.data_quality_insights.query.get_up_to_date_product_model_criteria_evaluations:
-        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateCriteriaEvaluationsByProductIdQuery
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateCriteriaEvaluationsByEntityIdQuery
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_criteria_evaluations'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductModelEvaluationQuery'
