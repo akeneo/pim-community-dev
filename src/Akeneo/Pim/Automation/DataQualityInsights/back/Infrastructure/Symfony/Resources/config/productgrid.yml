@@ -32,7 +32,7 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.product_grid.get_quality_scores_factory'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
 
     akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_model_rows:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows

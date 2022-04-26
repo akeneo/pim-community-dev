@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
@@ -17,18 +17,18 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBehavior
+final class GetUpToDateCriteriaEvaluationsByEntityIdQuerySpec extends ObjectBehavior
 {
     public function let(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        HasUpToDateEvaluationQueryInterface            $hasUpToDateEvaluationQuery
     ) {
         $this->beConstructedWith($getCriteriaEvaluationsByProductIdQuery, $hasUpToDateEvaluationQuery);
     }
 
     public function it_returns_criteria_evaluations_if_the_evaluation_of_the_product_is_up_to_date(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        HasUpToDateEvaluationQueryInterface            $hasUpToDateEvaluationQuery
     ) {
         $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
         $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
@@ -48,8 +48,8 @@ final class GetUpToDateCriteriaEvaluationsByProductIdQuerySpec extends ObjectBeh
     }
 
     public function it_returns_empty_criteria_evaluations_if_the_evaluation_of_the_product_is_outdated(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        HasUpToDateEvaluationQueryInterface            $hasUpToDateEvaluationQuery
     ) {
         $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
         $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);

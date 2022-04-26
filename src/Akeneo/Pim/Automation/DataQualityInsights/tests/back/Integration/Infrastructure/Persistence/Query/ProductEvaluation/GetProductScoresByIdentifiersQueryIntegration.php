@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -32,41 +32,41 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
         $productD = $this->createProduct('product_D');
 
         $this->resetProductsScores();
-        $productIdA = $this->get(ProductIdFactory::class)->create((string)$productA->getId());
-        $productIdB = $this->get(ProductIdFactory::class)->create((string)$productB->getId());
-        $productIdC = $this->get(ProductIdFactory::class)->create((string)$productC->getId());
+        $productUuidA = $this->get(ProductUuidFactory::class)->create((string)$productA->getUuid());
+        $productUuidB = $this->get(ProductUuidFactory::class)->create((string)$productB->getUuid());
+        $productUuidC = $this->get(ProductUuidFactory::class)->create((string)$productC->getUuid());
 
         $productsScores = [
             'product_A_latest_scores' => new ProductScores(
-                $productIdA,
+                $productUuidA,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
             'product_A_previous_scores' => new ProductScores(
-                $productIdA,
+                $productUuidA,
                 new \DateTimeImmutable('2020-01-07'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(76))
                     ->addRate($channelMobile, $localeFr, new Rate(67))
             ),
             'product_B_latest_scores' => new ProductScores(
-                $productIdB,
+                $productUuidB,
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'product_B_previous_scores' => new ProductScores(
-                $productIdB,
+                $productUuidB,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(81))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_scores' => new ProductScores(
-                $productIdC,
+                $productUuidC,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))
