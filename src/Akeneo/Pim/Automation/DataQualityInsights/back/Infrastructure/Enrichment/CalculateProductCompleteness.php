@@ -20,26 +20,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
  */
 final class CalculateProductCompleteness implements CalculateProductCompletenessInterface
 {
-    private GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery;
-
-    private CompletenessCalculator $completenessCalculator;
-
     public function __construct(
-        GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery,
-        CompletenessCalculator                            $completenessCalculator
+        private GetProductIdentifierFromProductUuidQueryInterface $getProductIdentifierFromProductIdQuery,
+        private CompletenessCalculator $completenessCalculator
     ) {
-        $this->completenessCalculator = $completenessCalculator;
-        $this->getProductIdentifierFromProductIdQuery = $getProductIdentifierFromProductIdQuery;
     }
 
-    public function calculate(ProductEntityIdInterface $productId): CompletenessCalculationResult
+    public function calculate(ProductEntityIdInterface $productUuid): CompletenessCalculationResult
     {
-        if (!$productId instanceof ProductUuid) {
-            throw new \InvalidArgumentException(sprintf('Invalid product id: %s', (string) $productId));
+        if (!$productUuid instanceof ProductUuid) {
+            throw new \InvalidArgumentException(sprintf('Invalid product uuid: %s', (string) $productUuid));
         }
 
         $result = new CompletenessCalculationResult();
-        $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productId);
+        $productIdentifier = $this->getProductIdentifierFromProductIdQuery->execute($productUuid);
         $completenessCollection = $this->completenessCalculator->fromProductIdentifier((string) $productIdentifier);
 
         foreach ($completenessCollection as $completeness) {

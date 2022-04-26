@@ -27,7 +27,7 @@ class GetProductModelEvaluationController
     {
         try {
             $evaluation = $this->getProductModelEvaluation->get(
-                new ProductModelId(intval($productId))
+                ProductModelId::fromString($productId)
             );
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
