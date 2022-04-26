@@ -90,7 +90,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36)),
-            new ChannelLocaleRateCollection()
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(87))
         );
         $productScoreA2 = new ProductScores(
             new ProductId($productIdA),
@@ -98,7 +99,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(79))
                 ->addRate($channelMobile, $localeFr, new Rate(12)),
-            new ChannelLocaleRateCollection()
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(56))
         );
         $productScoreA3 = new ProductScores(
             new ProductId($productIdA),
@@ -106,7 +108,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42)),
-            new ChannelLocaleRateCollection()
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(34))
         );
         $productScoreB = new ProductScores(
             new ProductId($productIdB),
@@ -114,7 +117,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
                 ->addRate($channelMobile, $localeFr, new Rate(0)),
-            new ChannelLocaleRateCollection()
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(85))
         );
 
         $this->resetProductsScores();
@@ -173,14 +177,15 @@ SQL,
     private function insertProductScore(ProductScores $productScore): void
     {
         $insertQuery = <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:productId, :evaluatedAt, :scores);
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores, scores_partial_criteria)
+VALUES (:productId, :evaluatedAt, :scores, :scoresPartialCriteria);
 SQL;
 
         $this->get('database_connection')->executeQuery($insertQuery, [
             'productId' => $productScore->getProductId()->toInt(),
             'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
             'scores' => \json_encode($productScore->getScores()->toNormalizedRates()),
+            'scoresPartialCriteria' => \json_encode($productScore->getScoresPartialCriteria()->toNormalizedRates()),
         ], [
             'productId' => \PDO::PARAM_INT,
         ]);

@@ -48,28 +48,32 @@ final class CleanProductScoresCommandIntegration extends DataQualityInsightsTest
             new \DateTimeImmutable('2020-11-18'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
+                ->addRate($channelMobile, $localeFr, new Rate(36)),
+            new ChannelLocaleRateCollection()
         );
         $productScoreA2 = new ProductScores(
             new ProductId($productIdA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(79))
-                ->addRate($channelMobile, $localeFr, new Rate(12))
+                ->addRate($channelMobile, $localeFr, new Rate(12)),
+            new ChannelLocaleRateCollection()
         );
         $productScoreA3 = new ProductScores(
             new ProductId($productIdA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
+                ->addRate($channelMobile, $localeFr, new Rate(42)),
+            new ChannelLocaleRateCollection()
         );
         $productScoreB = new ProductScores(
             new ProductId($productIdB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            new ChannelLocaleRateCollection()
         );
 
         $this->resetProductsScores();
