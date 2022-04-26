@@ -29,6 +29,8 @@
 - PIM-10411: Fix non numeric metric value in imports
 - PIM-10413: Patch connections routes order
 - PIM-10377: Change Elastic Search field Limit for everyone
+- PIM-10251: Fix locale on API call
+
 
 ## Improvements
 
