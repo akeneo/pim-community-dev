@@ -27,7 +27,7 @@ class GetCategoryEndToEnd extends ApiTestCase
         $response = $client->getResponse();
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertResponse($response,$expectedCategory );
+        $this->assertResponse($response, $expectedCategory);
     }
 
     public function testGetACompleteCategory()

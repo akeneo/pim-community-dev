@@ -12,9 +12,20 @@ return (new PhpCsFixer\Config())
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->in(__DIR__ . '/..')
+            ->name('*.php')
             ->notName('*Spec.php')
             ->notName('*Integration.php')
-            ->exclude('Infrastructure')
-            ->name('*.php')
+            ->in(__DIR__ . '/..')
+            ->exclude([
+                // @fixme PHP CS issues and remove excluded infrastructure folders step by step
+                'Infrastructure/Component',
+                'Infrastructure/Controller',
+                'Infrastructure/Doctrine',
+                'Infrastructure/Elasticsearch',
+                'Infrastructure/EventSubscriber',
+                'Infrastructure/Form',
+                'Infrastructure/Storage',
+                'Infrastructure/Symfony',
+                'Infrastructure/Twig',
+            ])
     );

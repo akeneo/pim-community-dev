@@ -36,6 +36,7 @@ lint-back:
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
+	$(MAKE) category-lint-back
 
 .PHONY: lint-front
 lint-front:

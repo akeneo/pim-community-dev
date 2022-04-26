@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\CategoryTree;
 
-use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\Query;
+use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\RootCategory;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 

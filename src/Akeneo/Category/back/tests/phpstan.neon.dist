@@ -5,5 +5,14 @@ parameters:
   excludes_analyse:
     - %rootDir%/../../../src/Akeneo/Category/back/tests/Integration
     - %rootDir%/../../../src/Akeneo/Category/back/tests/Specification
-    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure
     - %rootDir%/../../../src/Akeneo/Category/tests
+    # @fixme phpstan issues and remove excluded infrastructure folders step by step
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Component
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Controller
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Doctrine
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Elasticsearch
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/EventSubscriber
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Form
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Storage
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Symfony
+    - %rootDir%/../../../src/Akeneo/Category/back/Infrastructure/Twig
