@@ -31,12 +31,6 @@ final class ProductUuid implements ProductEntityIdInterface
         return $this->uuid->toString();
     }
 
-    public function toInt(): int
-    {
-        // TODO Update interface
-        throw new \Exception('This method can not be called');
-    }
-
     public function toBytes(): string
     {
         return $this->uuid->getBytes();

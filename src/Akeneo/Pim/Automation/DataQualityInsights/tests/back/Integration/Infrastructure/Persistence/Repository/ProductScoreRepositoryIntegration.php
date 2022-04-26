@@ -22,8 +22,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 {
     public function test_it_save_multiple_products_scores(): void
     {
-        $productUuidA = $this->createProduct('product_A')->getUuid();
-        $productUuidB = $this->createProduct('product_B')->getUuid();
+        $productUuidA = $this->createProduct('product_A')->getUuid()->toString();
+        $productUuidB = $this->createProduct('product_B')->getUuid()->toString();
 
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -69,8 +69,8 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
 
     public function test_it_purges_scores_older_than_a_given_date(): void
     {
-        $productUuidA = $this->createProduct('product_A')->getUuid();
-        $productUuidB = $this->createProduct('product_B')->getUuid();
+        $productUuidA = $this->createProduct('product_A')->getUuid()->toString();
+        $productUuidB = $this->createProduct('product_B')->getUuid()->toString();
 
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -132,10 +132,10 @@ SQL
         $productScore = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT * FROM pim_data_quality_insights_product_score score
     JOIN pim_catalog_product product ON product.uuid = score.product_uuid
-WHERE product.id = :productId AND evaluated_at = :evaluatedAt;
+WHERE product.uuid = :productUuid AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productId' => $expectedProductScore->getEntityId()->toInt(),
+                'productUuid' => $expectedProductScore->getEntityId()->toBytes(),
                 'evaluatedAt' => $expectedProductScore->getEvaluatedAt()->format('Y-m-d'),
             ]
         )->fetchAssociative();
@@ -155,16 +155,16 @@ SQL,
     private function insertProductScore(ProductScores $productScore): void
     {
         $insertQuery = <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:productId, :evaluatedAt, :scores);
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores)
+VALUES (:productUuid, :evaluatedAt, :scores);
 SQL;
 
         $this->get('database_connection')->executeQuery($insertQuery, [
-            'productId' => $productScore->getEntityId()->toInt(),
+            'productUuid' => $productScore->getEntityId()->toBytes(),
             'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
             'scores' => \json_encode($productScore->getScores()->toNormalizedRates()),
         ], [
-            'productId' => \PDO::PARAM_INT,
+            'productUuid' => \PDO::PARAM_STR,
         ]);
     }
 }

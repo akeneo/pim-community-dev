@@ -163,7 +163,7 @@ SQL;
             $queries[] = sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
 
             $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
-            $queryParametersValues[$productId] = (string)$criterionEvaluation->getProductId();
+            $queryParametersValues[$productId] = (string)$criterionEvaluation->getEntityId();
             $queryParametersValues[$evaluatedAt] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
             $queryParametersValues[$result] = $this->formatCriterionEvaluationResult($criterionEvaluation->getResult());

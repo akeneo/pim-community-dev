@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -40,10 +40,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 class GetProductEvaluation
 {
     public function __construct(
-        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
-        private CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        private GetLocalesByChannelQueryInterface              $getLocalesByChannelQuery,
+        private CriteriaEvaluationRegistry                     $criteriaEvaluationRegistry,
+        private CompleteEvaluationWithImprovableAttributes     $completeEvaluationWithImprovableAttributes
     ) {
     }
 

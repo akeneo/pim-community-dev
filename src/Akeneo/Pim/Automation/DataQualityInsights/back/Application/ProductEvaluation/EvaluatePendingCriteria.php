@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactory
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ProductValuesCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetEvaluableProductValuesQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetPendingCriteriaEvaluationsByEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Psr\Log\LoggerInterface;
@@ -22,14 +22,14 @@ class EvaluatePendingCriteria
     public const NO_LIMIT = -1;
 
     public function __construct(
-        private CriterionEvaluationRepositoryInterface $repository,
-        private CriteriaEvaluationRegistry $evaluationRegistry,
-        private CriteriaApplicabilityRegistry $applicabilityRegistry,
-        private GetPendingCriteriaEvaluationsByProductIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
-        private GetEvaluableProductValuesQueryInterface $getEvaluableProductValuesQuery,
-        private SynchronousCriterionEvaluationsFilterInterface $synchronousCriterionEvaluationsFilter,
-        private LoggerInterface $logger,
-        private ProductEntityIdFactoryInterface $idFactory
+        private CriterionEvaluationRepositoryInterface                 $repository,
+        private CriteriaEvaluationRegistry                             $evaluationRegistry,
+        private CriteriaApplicabilityRegistry                          $applicabilityRegistry,
+        private GetPendingCriteriaEvaluationsByEntityIdsQueryInterface $getPendingCriteriaEvaluationsQuery,
+        private GetEvaluableProductValuesQueryInterface                $getEvaluableProductValuesQuery,
+        private SynchronousCriterionEvaluationsFilterInterface         $synchronousCriterionEvaluationsFilter,
+        private LoggerInterface                                        $logger,
+        private ProductEntityIdFactoryInterface                        $idFactory
     ) {
     }
 
@@ -75,7 +75,7 @@ class EvaluatePendingCriteria
         } catch (\Exception $exception) {
             $this->logger->error(
                 'Failed to evaluate criterion {criterion_code} for product id {product_id}',
-                ['criterion_code' => $criterionEvaluation->getCriterionCode(), 'product_id' => $criterionEvaluation->getProductId(), 'message' => $exception->getMessage()]
+                ['criterion_code' => $criterionEvaluation->getCriterionCode(), 'product_id' => $criterionEvaluation->getEntityId(), 'message' => $exception->getMessage()]
             );
             $criterionEvaluation->flagAsError();
         }
