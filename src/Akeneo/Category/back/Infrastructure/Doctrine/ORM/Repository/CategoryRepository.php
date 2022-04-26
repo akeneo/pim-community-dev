@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use function Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\count;
 
 /**
  * Category repository
@@ -78,7 +77,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getTreeFromParents(array $parentsIds)
     {
-        if (count($parentsIds) === 0) {
+        if (\count($parentsIds) === 0) {
             return [];
         }
 
@@ -317,7 +316,7 @@ class CategoryRepository extends NestedTreeRepository implements
             $nodeIds = array_keys($vectorMap);
             $nodesByLevel = [];
 
-            while ($nodeIt < count($nodeIds) && !$foundItemLess) {
+            while ($nodeIt < \count($nodeIds) && !$foundItemLess) {
                 $nodeId = $nodeIds[$nodeIt];
                 $nodeEntry = $vectorMap[$nodeId];
 

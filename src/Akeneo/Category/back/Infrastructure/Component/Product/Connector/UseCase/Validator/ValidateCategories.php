@@ -6,7 +6,6 @@ namespace Akeneo\Category\Infrastructure\Component\Product\Connector\UseCase\Val
 
 use Akeneo\Tool\Component\Api\Exception\InvalidQueryException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use function Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\count;
 
 /**
  * @author    Pierre Allard <pierre.allard@akeneo.com>
@@ -52,7 +51,7 @@ final class ValidateCategories
         }
 
         if (!empty($errors)) {
-            $plural = count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
+            $plural = \count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
             throw new InvalidQueryException(sprintf($plural, implode(', ', $errors)));
         }
     }

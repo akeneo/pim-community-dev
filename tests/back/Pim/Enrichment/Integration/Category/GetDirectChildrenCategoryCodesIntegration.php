@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace back\Pim\Enrichment\Integration\Category;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\GetDirectChildrenCategoryCodes;
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Category\Component\Model\CategoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;

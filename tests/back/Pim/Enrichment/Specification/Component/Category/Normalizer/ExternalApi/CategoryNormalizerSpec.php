@@ -1,9 +1,9 @@
 <?php
 
-namespace Specification\Akeneo\Pim\Enrichment\Component\Category\Normalizer\ExternalApi;
+namespace Specification\Akeneo\Category\Component\Normalizer\ExternalApi;
 
 use Akeneo\Category\Infrastructure\Component\Normalizer\ExternalApi\CategoryNormalizer;
-use Akeneo\Pim\Enrichment\Component\Category\Manager\PositionResolverInterface;
+use Akeneo\Category\Component\Manager\PositionResolverInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

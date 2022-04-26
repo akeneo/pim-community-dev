@@ -38,10 +38,11 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('job_constraints.yml');
         $loader->load('job_defaults.yml');
         $loader->load('jobs.yml');
-        $loader->load('normalizers.yml');
-        $loader->load('providers.yml');
+        $loader->load('managers.yml');
         $loader->load('models.yml');
+        $loader->load('normalizers.yml');
         $loader->load('product_grid_category_tree.yml');
+        $loader->load('providers.yml');
         $loader->load('queries.yml');
         $loader->load('query_builders.yml');
         $loader->load('readers.yml');
