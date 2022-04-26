@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -20,19 +20,19 @@ use Ramsey\Uuid\Uuid;
 final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetProductScoresQueryInterface                    $getProductScoresQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators                      $computeProductsKeyIndicators,
-        ProductEntityIdFactoryInterface $idFactory
+        GetProductScoresQueryInterface                      $getProductScoresQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface                     $idFactory
     ) {
         $this->beConstructedWith($getProductScoresQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators, $idFactory);
     }
 
     public function it_returns_additional_properties_from_product_identifiers(
-        GetProductScoresQueryInterface $getProductScoresQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators $computeProductsKeyIndicators,
-        ProductEntityIdFactoryInterface $idFactory
+        GetProductScoresQueryInterface                      $getProductScoresQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface                     $idFactory
     ) {
         $productUuid42 = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
         $productUuid123 = ProductUuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2');
