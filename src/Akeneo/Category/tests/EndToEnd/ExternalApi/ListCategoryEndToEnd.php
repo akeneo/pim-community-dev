@@ -498,7 +498,8 @@ JSON;
         return $categories;
     }
 
-    private function assertSameResponse(string $expectedJson, Response $actualResponse) {
+    private function assertSameResponse(string $expectedJson, Response $actualResponse)
+    {
         $this->assertSame(Response::HTTP_OK, $actualResponse->getStatusCode());
 
         $responseContent = json_decode($actualResponse->getContent(), true);
@@ -510,7 +511,8 @@ JSON;
         $this->assertEquals($expectedContent, $responseContent);
     }
 
-    private function normalizeCategories(array &$categories) {
+    private function normalizeCategories(array &$categories)
+    {
         foreach ($categories as &$category) {
             NormalizedCategoryCleaner::clean($category);
         }

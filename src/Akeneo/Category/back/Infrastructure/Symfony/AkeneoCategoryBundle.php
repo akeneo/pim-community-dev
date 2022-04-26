@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Symfony;
 
-
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\RegisterCategoryItemCounterPass;
 use Akeneo\Category\Infrastructure\Symfony\DependencyInjection\CompilerPass\ResolveDoctrineTargetModelPass;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;

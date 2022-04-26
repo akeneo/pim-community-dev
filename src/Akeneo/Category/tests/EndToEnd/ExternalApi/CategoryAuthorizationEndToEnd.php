@@ -163,7 +163,9 @@ JSON;
 {"code": "a_category"}
 JSON;
 
-        ob_start(function() { return ''; });
+        ob_start(function () {
+            return '';
+        });
         $client->request('PATCH', '/api/rest/v1/categories', [], [], [], $data);
         ob_end_flush();
 
@@ -179,7 +181,9 @@ JSON;
         $data = <<<JSON
 {"code": "a_category"}
 JSON;
-        ob_start(function() { return ''; });
+        ob_start(function () {
+            return '';
+        });
         $client->request('PATCH', '/api/rest/v1/categories', [], [], [], $data);
         ob_end_flush();
 

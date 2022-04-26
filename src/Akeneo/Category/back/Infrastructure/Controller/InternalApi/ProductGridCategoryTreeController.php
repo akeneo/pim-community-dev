@@ -2,11 +2,11 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
+use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCount;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListChildrenCategoriesWithCountHandler;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCount;
 use Akeneo\Category\Infrastructure\Component\CategoryTree\UseCase\ListRootCategoriesWithCountHandler;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,20 +41,16 @@ class ProductGridCategoryTreeController
     private $securityFacade;
 
     /**
-     * @param ListRootCategoriesWithCountHandler     $listRootCategoriesWithCount
-     * @param ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount
-     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory                $rootCategoryNormalizer
-     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory               $childCategoryNormalizer
-     * @param UserContext                            $userContext
-     * @param SecurityFacade                         $securityFacade
+     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory  $rootCategoryNormalizer
+     * @param \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory $childCategoryNormalizer
      */
     public function __construct(
-        ListRootCategoriesWithCountHandler                                              $listRootCategoriesWithCount,
-        ListChildrenCategoriesWithCountHandler                                          $listChildrenCategoriesWithCount,
-        \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\RootCategory  $rootCategoryNormalizer,
-        \Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer\ChildCategory $childCategoryNormalizer,
-        UserContext                                                                     $userContext,
-        SecurityFacade                                                                  $securityFacade
+        ListRootCategoriesWithCountHandler $listRootCategoriesWithCount,
+        ListChildrenCategoriesWithCountHandler $listChildrenCategoriesWithCount,
+        Normalizer\RootCategory $rootCategoryNormalizer,
+        Normalizer\ChildCategory $childCategoryNormalizer,
+        UserContext $userContext,
+        SecurityFacade $securityFacade
     ) {
         $this->listRootCategoriesWithCount = $listRootCategoriesWithCount;
         $this->listChildrenCategoriesWithCount = $listChildrenCategoriesWithCount;
@@ -68,11 +64,7 @@ class ProductGridCategoryTreeController
      * The select_node_id is the id of the category selected as filter.
      * It allows to determine the selected tree where the category selected as filter belongs to.
      *
-     * @param Request $request
-     *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
     public function listTreeAction(Request $request): Response
     {
@@ -104,11 +96,7 @@ class ProductGridCategoryTreeController
      * If the category selected as filter is a direct child of the category to expand, the tree
      * is expanded until the category selected as filter is found among the children.
      *
-     * @param Request $request
-     *
      * @throws AccessDeniedException
-     *
-     * @return Response
      */
     public function listChildrenAction(Request $request): Response
     {

@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
 /**
  * Check if the category is used by a channel when try to remove it
  *
