@@ -86,7 +86,7 @@ SELECT * FROM pim_data_quality_insights_product_model_score
 WHERE product_model_id = :productModelId AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productModelId' => $expectedProductModelScore->getProductId()->toInt(),
+                'productModelId' => $expectedProductModelScore->getEntityId()->toInt(),
                 'evaluatedAt' => $expectedProductModelScore->getEvaluatedAt()->format('Y-m-d'),
             ]
         )->fetchAssociative();

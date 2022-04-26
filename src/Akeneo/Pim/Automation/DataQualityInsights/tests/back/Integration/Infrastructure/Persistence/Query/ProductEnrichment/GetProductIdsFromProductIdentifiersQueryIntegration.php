@@ -6,7 +6,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -14,16 +14,16 @@ use Akeneo\Test\Integration\TestCase;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetProductIdsFromProductIdentifiersQueryIntegration extends TestCase
+final class GetProductUuidsFromProductIdentifiersQueryIntegration extends TestCase
 {
-    /** @var GetProductIdsFromProductIdentifiersQuery */
+    /** @var GetProductUuidsFromProductIdentifiersQuery */
     private $query;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->query = $this->get(GetProductIdsFromProductIdentifiersQuery::class);
+        $this->query = $this->get(GetProductUuidsFromProductIdentifiersQuery::class);
     }
 
     protected function getConfiguration(): Configuration
