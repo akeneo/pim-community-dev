@@ -1,9 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Manager;
+namespace Akeneo\Category\Infrastructure\Component\Manager;
 
-use Akeneo\Pim\Enrichment\Component\Category\Query\GetDirectChildrenCategoryCodesInterface;
+use Akeneo\Category\Infrastructure\Component\Query\GetDirectChildrenCategoryCodesInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
 /**
@@ -32,6 +33,6 @@ class PositionResolver implements PositionResolverInterface
      */
     private function getCategoryPositionAmongChildren(CategoryInterface $category, array $children): int
     {
-        return (int)($children[$category->getCode()]['row_num'] ?? 1);
+        return (int) ($children[$category->getCode()]['row_num'] ?? 1);
     }
 }

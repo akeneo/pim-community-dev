@@ -27,7 +27,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use function Akeneo\Pim\Enrichment\Bundle\Controller\Ui\count;
 
 /**
  * Category Tree Controller
@@ -234,7 +233,7 @@ class CategoryTreeController extends AbstractController
             $normalizedViolations[$normalizedViolation['path']] = $normalizedViolation['message'];
         }
 
-        if (count($normalizedViolations) > 0) {
+        if (\count($normalizedViolations) > 0) {
             return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 

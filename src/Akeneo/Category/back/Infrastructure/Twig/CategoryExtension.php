@@ -7,7 +7,6 @@ use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterInte
 use Akeneo\Category\Infrastructure\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
 use Doctrine\Common\Collections\Collection;
 use Twig\TwigFunction;
-use function Akeneo\Pim\Enrichment\Bundle\Twig\count;
 
 /**
  * Twig extension to render category from twig templates
@@ -514,7 +513,7 @@ class CategoryExtension extends \Twig\Extension\AbstractExtension
     {
         $children = $category['__children'];
         $category = $category['item'];
-        $hasChild = (count($children) > 0);
+        $hasChild = (\count($children) > 0);
 
         return $this->defineCategoryState($category, $hasChild, $selectedIds);
     }

@@ -11,7 +11,6 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use function Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnDelete\count;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -162,7 +161,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
             $this->bulkSaver->saveAll($jobsToUpdate);
         }
 
-        return count($jobsToUpdate);
+        return \count($jobsToUpdate);
     }
 
     /**
@@ -200,7 +199,7 @@ class RemoveCategoryFilterInJobInstanceSubscriber implements EventSubscriberInte
                     return true;
                 }
 
-                if (count($newValues) !== count(($filter['value']))) {
+                if (\count($newValues) !== \count(($filter['value']))) {
                     $rawParameters['filters']['data'][$filterKey]['value'] = $newValues;
                     $jobInstance->setRawParameters($rawParameters);
 

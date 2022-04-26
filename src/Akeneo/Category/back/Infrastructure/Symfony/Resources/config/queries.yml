@@ -22,16 +22,11 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.enrichment.product.query.category_codes_by_product_identifiers:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetCategoryCodesByProductIdentifiers'
-        arguments:
-            - '@database_connection'
-
-    akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
-        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
-        arguments:
-            - '@database_connection'
-
     Akeneo\Category\Infrastructure\Storage\Sql\CountTreesChildren:
         arguments:
             - '@database_connection'
+
+    Akeneo\Category\Infrastructure\Storage\Sql\GetDirectChildrenCategoryCodes:
+        arguments:
+            - '@database_connection'
+

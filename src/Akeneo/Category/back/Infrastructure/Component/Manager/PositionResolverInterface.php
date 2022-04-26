@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Component\Category\Manager;
+namespace Akeneo\Category\Infrastructure\Component\Manager;
 
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 
