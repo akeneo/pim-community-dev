@@ -56,18 +56,18 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
-        $productIds = iterator_to_array($getUpdatedProductIdsQuery->since($today->modify('+1 HOUR'), 3));
-        $productIds = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productIds);
+        $productUuids = iterator_to_array($getUpdatedProductIdsQuery->since($today->modify('+1 HOUR'), 3));
+        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
 
-        $this->assertCount(2, $productIds);
-        $this->assertCount(3, $productIds[0]);
-        $this->assertCount(1, $productIds[1]);
-        $productIds = array_merge($productIds[0], $productIds[1]);
+        $this->assertCount(2, $productUuids);
+        $this->assertCount(3, $productUuids[0]);
+        $this->assertCount(1, $productUuids[1]);
+        $productUuids = array_merge($productUuids[0], $productUuids[1]);
 
-        $this->assertExpectedProductId($expectedProduct1, $productIds);
-        $this->assertExpectedProductId($expectedProduct2, $productIds);
-        $this->assertExpectedProductId($expectedProductVariant1, $productIds);
-        $this->assertExpectedProductId($expectedProductVariant2, $productIds);
+        $this->assertExpectedProductUuid($expectedProduct1, $productUuids);
+        $this->assertExpectedProductUuid($expectedProduct2, $productUuids);
+        $this->assertExpectedProductUuid($expectedProductVariant1, $productUuids);
+        $this->assertExpectedProductUuid($expectedProductVariant2, $productUuids);
     }
 
     public function test_it_returns_all_updated_product_model_ids()
@@ -99,10 +99,10 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
         $this->assertCount(1, $productIds[1]);
         $productIds = array_merge($productIds[0], $productIds[1]);
 
-        $this->assertExpectedProductId($expectedProductModel1, $productIds);
-        $this->assertExpectedProductId($expectedProductModel2, $productIds);
-        $this->assertExpectedProductId($expectedSubProductModel1, $productIds);
-        $this->assertExpectedProductId($expectedSubProductModel2, $productIds);
+        $this->assertExpectedProductUuid($expectedProductModel1, $productIds);
+        $this->assertExpectedProductUuid($expectedProductModel2, $productIds);
+        $this->assertExpectedProductUuid($expectedSubProductModel1, $productIds);
+        $this->assertExpectedProductUuid($expectedSubProductModel2, $productIds);
     }
 
     private function createProduct(): ProductInterface
@@ -162,7 +162,7 @@ SQL;
         $product = $this->createProduct();
         $this->updateProductAt($product, $updatedAt);
 
-        return new ProductUuid($product->getUuid());
+        return ProductUuid::fromString($product->getUuid()->toString());
     }
 
     private function givenAnUpdatedProductVariant(string $parentCode, \DateTimeImmutable $updatedAt): ProductUuid
@@ -170,7 +170,7 @@ SQL;
         $productVariant = $this->createProductVariant($parentCode);
         $this->updateProductAt($productVariant, $updatedAt);
 
-        return new ProductUuid($productVariant->getUuid());
+        return ProductUuid::fromString($productVariant->getUuid()->toString());
     }
 
     private function givenAProductModel(string $productModelCode, string $familyVariant, \DateTimeImmutable $updatedAt)
@@ -212,14 +212,14 @@ SQL;
         return new ProductModelId($productModel->getId());
     }
 
-    private function assertExpectedProductId(ProductUuid $expectedProductId, array $productIds): void
+    private function assertExpectedProductUuid(ProductUuid $expectedProductUuid, array $productUuids): void
     {
-        foreach ($productIds as $productId) {
-            if ($productId->toInt() === $expectedProductId->toInt()) {
+        foreach ($productUuids as $productUuid) {
+            if ((string) $productUuid === (string) $expectedProductUuid) {
                 return;
             }
         }
 
-        throw new AssertionFailedError(sprintf('Expected product id %d not found', $expectedProductId->toInt()));
+        throw new AssertionFailedError(sprintf('Expected product uuid %s not found', (string) $expectedProductUuid));
     }
 }

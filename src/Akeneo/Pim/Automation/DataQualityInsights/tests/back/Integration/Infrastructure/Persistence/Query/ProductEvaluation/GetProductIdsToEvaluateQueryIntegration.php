@@ -32,41 +32,41 @@ class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestC
         $this->givenAProductWithEvaluationDone();
         $this->assertEquals([], iterator_to_array($this->productQuery->execute(4, 2)), 'All products evaluations should be done');
 
-        $expectedProductIds = $this->givenThreeProductsToEvaluate();
+        $expectedProductUuids = $this->givenThreeProductsToEvaluate();
 
-        $productIds = iterator_to_array($this->productQuery->execute(4, 2));
-        $productIds = array_map(fn (ProductUuidCollection $collection) => $collection->toArrayString(), $productIds);
+        $productUuids = iterator_to_array($this->productQuery->execute(4, 2));
+        $productUuids = array_map(fn (ProductUuidCollection $collection) => $collection->toArrayString(), $productUuids);
 
-        $this->assertCount(2, $productIds);
-        $this->assertCount(2, $productIds[0]);
-        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge_recursive(...$productIds));
+        $this->assertCount(2, $productUuids);
+        $this->assertCount(2, $productUuids[0]);
+        $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge_recursive(...$productUuids));
     }
 
     private function givenThreeProductsToEvaluate(): array
     {
-        $productUuid1= $this->createProductWithoutEvaluations('product_1')->getUuid();
+        $productUuid1 = $this->createProductWithoutEvaluations('product_1')->getUuid();
         $productUuid2 = $this->createProductWithoutEvaluations('product_2')->getUuid();
         $productUuid3 = $this->createProductWithoutEvaluations('product_3')->getUuid();
 
         $evaluations = (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductUuid($productUuid1),
+                ProductUuid::fromString((string) $productUuid1),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('spelling'),
-                new ProductUuid($productUuid1),
+                ProductUuid::fromString((string) $productUuid1),
                 CriterionEvaluationStatus::done()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductUuid($productUuid2),
+                ProductUuid::fromString((string) $productUuid2),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductUuid($productUuid3),
+                ProductUuid::fromString((string) $productUuid3),
                 CriterionEvaluationStatus::pending()
             ));
 
@@ -81,7 +81,7 @@ class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestC
 
         $evaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            new ProductUuid($productId),
+            ProductUuid::fromString($productId),
             CriterionEvaluationStatus::pending()
         );
 

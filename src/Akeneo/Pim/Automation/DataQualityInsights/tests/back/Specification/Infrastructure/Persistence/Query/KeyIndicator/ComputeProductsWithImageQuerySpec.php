@@ -28,10 +28,10 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
         $uuid42 = 'df470d52-7723-4890-85a0-e79be625e2ed';
         $uuid99 = 'fef37e64-a963-47a9-b087-2cc67968f0a2';
 
-        $productIds = ProductUuidCollection::fromStrings([$uuid13, $uuid42, $uuid99]);
+        $productUuids = ProductUuidCollection::fromStrings([$uuid13, $uuid42, $uuid99]);
         $criterionCode = new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE);
 
-        $getEvaluationRatesByProductAndCriterionQuery->execute($productIds, $criterionCode)->willReturn([
+        $getEvaluationRatesByProductAndCriterionQuery->execute($productUuids, $criterionCode)->willReturn([
             $uuid13 => [
                 'ecommerce' => [
                     'en_US' => 100,
@@ -48,7 +48,7 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->compute($productIds)->shouldBeLike([
+        $this->compute($productUuids)->shouldBeLike([
             $uuid13 => [
                 'ecommerce' => [
                     'en_US' => true,

@@ -68,9 +68,6 @@ class EvaluatePendingCriteriaSpec extends ObjectBehavior
         ProductEntityIdInterface                                $productId_fef37e64,
         ProductEntityIdInterface                                $productIdB
     ) {
-        // 42 = 'fef37e64-a963-47a9-b087-2cc67968f0a2'
-        // df470d52 = 'df470d52-7723-4890-85a0-e79be625e2ed'
-
         $productIdCollection->isEmpty()->willReturn(false);
         $productIdCollection->toArrayString()->willReturn(['fef37e64-a963-47a9-b087-2cc67968f0a2', 'df470d52-7723-4890-85a0-e79be625e2ed']);
 

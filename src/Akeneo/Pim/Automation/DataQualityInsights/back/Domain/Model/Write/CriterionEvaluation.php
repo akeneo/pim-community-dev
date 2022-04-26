@@ -20,6 +20,7 @@ final class CriterionEvaluation
 
     public function __construct(
         private CriterionCode $criterionCode,
+        // TODO Rename entityId
         private ProductEntityIdInterface $productId,
         private CriterionEvaluationStatus $status
     ) {
