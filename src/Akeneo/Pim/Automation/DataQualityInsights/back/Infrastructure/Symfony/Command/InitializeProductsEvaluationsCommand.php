@@ -95,6 +95,7 @@ SQL
         $lastProductId = 0;
         while ($productIds = $this->getProductIdsFrom($lastProductId)) {
             $values = implode(', ', $this->buildCriteriaEvaluationsValues($productIds, $criteria));
+            // TODO
             $query = <<<SQL
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, status) 
 VALUES $values

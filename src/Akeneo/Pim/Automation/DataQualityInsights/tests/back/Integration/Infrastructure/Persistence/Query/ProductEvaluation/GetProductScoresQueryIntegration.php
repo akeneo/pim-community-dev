@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -21,7 +21,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_latest_scores_by_product_ids()
+    public function test_it_returns_the_latest_scores_by_product_uuids()
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -79,8 +79,8 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
             $productUuidB => $productsScores['product_B_latest_scores']->getScores(),
         ];
 
-        $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
-        $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductIds($productModelIdCollection);
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
+        $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductUuidCollection($productUuidCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
     }
