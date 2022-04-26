@@ -16,4 +16,3 @@ class DenyAll implements CollectionFilterInterface
         return true;
     }
 }
-
