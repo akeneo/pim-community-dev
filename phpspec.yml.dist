@@ -15,6 +15,14 @@ suites:
         src_path: src/Akeneo/Channel
         spec_prefix: Specification
 
+    ## Category context
+    Category:
+        namespace: Akeneo\Category
+        psr4_prefix: Akeneo\Category
+        spec_path: src/Akeneo/Category/back/tests
+        src_path: src/Akeneo/Category/back
+        spec_prefix: Specification
+
     ## Structure context
     Structure:
         namespace: Akeneo\Pim\Structure
