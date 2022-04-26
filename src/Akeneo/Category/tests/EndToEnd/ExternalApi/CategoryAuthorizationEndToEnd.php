@@ -1,12 +1,12 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\EndToEnd\Category\ExternalApi;
+namespace Akeneo\Test\Category\EndToEnd\ExternalApi;
 
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryAuthorizationIntegration extends ApiTestCase
+class CategoryAuthorizationEndToEnd extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {
@@ -179,8 +179,9 @@ JSON;
         $data = <<<JSON
 {"code": "a_category"}
 JSON;
-
+        ob_start(function() { return ''; });
         $client->request('PATCH', '/api/rest/v1/categories', [], [], [], $data);
+        ob_end_flush();
 
         $expectedResponse = <<<JSON
 {

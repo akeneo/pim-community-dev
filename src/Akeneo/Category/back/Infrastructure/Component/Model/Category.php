@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Category class allowing to organize a flexible product class into trees
+ * Category class allowing to organize a flexible product class into trees.
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,7 +27,7 @@ class Category extends BaseCategory implements CategoryInterface
 
     /**
      * Used locale to override Translation listener's locale
-     * this is not a mapped field of entity metadata, just a simple property
+     * this is not a mapped field of entity metadata, just a simple property.
      *
      * @var string
      */
@@ -60,7 +60,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function hasProducts()
     {
-        return $this->products->count() !== 0;
+        return 0 !== $this->products->count();
     }
 
     /**
@@ -72,7 +72,7 @@ class Category extends BaseCategory implements CategoryInterface
     }
 
     /**
-     * Get products count
+     * Get products count.
      *
      * @return int
      */
@@ -86,7 +86,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function hasProductModels(): bool
     {
-        return $this->productModels->count() !== 0;
+        return 0 !== $this->productModels->count();
     }
 
     /**
@@ -98,7 +98,7 @@ class Category extends BaseCategory implements CategoryInterface
     }
 
     /**
-     * Get created date
+     * Get created date.
      *
      * @return \DateTime
      */
@@ -132,7 +132,7 @@ class Category extends BaseCategory implements CategoryInterface
     public function getTranslation(?string $locale = null): ?TranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
-        if (null == $locale) {
+        if (null === $locale) {
             return null;
         }
         foreach ($this->getTranslations() as $translation) {
@@ -197,11 +197,11 @@ class Category extends BaseCategory implements CategoryInterface
             $translated = $translation->getLabel();
         }
 
-        return ($translated !== '' && $translated !== null) ? $translated : '[' . $this->getCode() . ']';
+        return ('' !== $translated && null !== $translated) ? $translated : '['.$this->getCode().']';
     }
 
     /**
-     * Set label
+     * Set label.
      *
      * @param string $label
      *
@@ -219,7 +219,7 @@ class Category extends BaseCategory implements CategoryInterface
     }
 
     /**
-     * Returns the channels linked to the category
+     * Returns the channels linked to the category.
      */
     public function getChannels(): Collection
     {
