@@ -23,10 +23,10 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productModelId): Read\Scores
+    public function byProductModelId(ProductEntityIdInterface $productModelModelId): Read\Scores
     {
-        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
-            return $this->getProductModelScoresQuery->byProductModelId($productModelId);
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelModelId)) {
+            return $this->getProductModelScoresQuery->byProductModelId($productModelModelId);
         }
 
         return new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection());

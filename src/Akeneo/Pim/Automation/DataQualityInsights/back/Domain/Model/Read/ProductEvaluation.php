@@ -13,22 +13,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
  */
 final class ProductEvaluation
 {
-    private ProductUuid $productId;
-
-    private ChannelLocaleRateCollection $scores;
-
-    private CriterionEvaluationCollection $criteriaEvaluations;
-
-    public function __construct(ProductUuid $productId, ChannelLocaleRateCollection $scores, CriterionEvaluationCollection $criteriaEvaluations)
-    {
-        $this->productId = $productId;
-        $this->scores = $scores;
-        $this->criteriaEvaluations = $criteriaEvaluations;
+    public function __construct(
+        private ProductUuid                   $productUuid,
+        private ChannelLocaleRateCollection   $scores,
+        private CriterionEvaluationCollection $criteriaEvaluations
+    ) {
     }
 
+    // TODO Rename to getProductUuid
     public function getProductId(): ProductUuid
     {
-        return $this->productId;
+        return $this->productUuid;
     }
 
     public function getScores(): ChannelLocaleRateCollection

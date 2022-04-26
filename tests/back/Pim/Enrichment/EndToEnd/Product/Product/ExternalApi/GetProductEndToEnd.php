@@ -210,7 +210,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         ]);
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
-            ProductUuidCollection::fromInt($product->getId())
+            ProductUuidCollection::fromString($product->getUuid()->toString())
         );
 
         $client = $this->createAuthenticatedClient();

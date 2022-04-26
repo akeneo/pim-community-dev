@@ -45,7 +45,7 @@ class GetProductIdentifierFromProductUuidQueryIntegration extends TestCase
      */
     public function it_throws_an_exception_if_the_product_does_not_exist()
     {
-        $this->expectExceptionMessage('No identifier found for product id 42');
+        $this->expectExceptionMessage('No identifier found for product uuid 42');
         $this->query->execute(ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')));
     }
 
