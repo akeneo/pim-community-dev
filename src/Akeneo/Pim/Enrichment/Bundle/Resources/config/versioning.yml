@@ -1,0 +1,13 @@
+services:
+    Akeneo\Pim\Enrichment\Bundle\Versioning\CaseInsensitiveValueComparator:
+        arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\GetAttributeCodes'
+            -
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_multiselect'
+                - 'pim_catalog_metric'
+                - 'pim_catalog_price_collection'
+                - 'akeneo_reference_entity'
+                - 'akeneo_reference_entity_collection'
+                - 'pim_catalog_asset_collection'
+        tags: [pim_versioning.value_comparator]

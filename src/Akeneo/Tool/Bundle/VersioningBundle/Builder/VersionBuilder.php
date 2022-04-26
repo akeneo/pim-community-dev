@@ -3,9 +3,11 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Builder;
 
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
+use Akeneo\Tool\Component\Versioning\Model\ValueComparatorInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Version builder
@@ -16,20 +18,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersionBuilder
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    /** @var array<string, ValueComparatorInterface[]> */
+    private array $valueComparatorsByResourceName = [];
 
-    /** @var VersionFactory */
-    protected $versionFactory;
-
-    /**
-     * @param NormalizerInterface $normalizer
-     * @param VersionFactory      $versionFactory
-     */
-    public function __construct(NormalizerInterface $normalizer, VersionFactory $versionFactory)
-    {
-        $this->normalizer = $normalizer;
-        $this->versionFactory = $versionFactory;
+    public function __construct(
+        protected NormalizerInterface $normalizer,
+        protected VersionFactory $versionFactory,
+        iterable $valueComparators
+    ) {
+        Assert::allImplementsInterface($valueComparators, ValueComparatorInterface::class);
+        foreach ($valueComparators as $valueComparator) {
+            foreach ($valueComparator->getSupportedResourceNames() as $resourceName) {
+                $this->valueComparatorsByResourceName[$resourceName][] = $valueComparator;
+            }
+        }
     }
 
     /**
@@ -53,7 +55,7 @@ class VersionBuilder
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
         $snapshot = $this->normalizer->normalize($versionable, 'flat', []);
 
-        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshot, $resourceName);
 
         $version = $this->versionFactory->create($resourceName, $resourceId, $author, $context);
         $version->setVersion($versionNumber)
@@ -101,7 +103,7 @@ class VersionBuilder
 
         $modification = $pending->getChangeset();
         $snapshot = $modification + $oldSnapshot;
-        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshot, $pending->getResourceName());
 
         $pending->setVersion($versionNumber)
             ->setSnapshot($snapshot)
@@ -118,9 +120,9 @@ class VersionBuilder
      *
      * @return array
      */
-    protected function buildChangeset(array $oldSnapshot, array $newSnapshot)
+    protected function buildChangeset(array $oldSnapshot, array $newSnapshot, string $resourceName)
     {
-        return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
+        return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot), $resourceName);
     }
 
     /**
@@ -167,18 +169,24 @@ class VersionBuilder
      *
      * @return array
      */
-    protected function filterChangeset(array $changeset)
+    protected function filterChangeset(array $changeset, string $resourceName)
     {
         return array_filter(
             $changeset,
-            function ($item) {
-                return $this->hasValueChanged($item['old'], $item['new']);
-            }
+            function ($item, $field) use ($resourceName) {
+                return $this->hasValueChanged($item['old'], $item['new'], (string) $field, $resourceName);
+            },
+            ARRAY_FILTER_USE_BOTH
         );
     }
 
-    private function hasValueChanged($old, $new): bool
+    private function hasValueChanged($old, $new, string $field, string $resourceName): bool
     {
+        $comparator = $this->findValueComparator($field, $resourceName);
+        if (null !== $comparator) {
+            return !$comparator->isEqual($old, $new);
+        }
+
         if (null !== $hasChanged = $this->hasLegacyDateChanged($old, $new)) {
             return $hasChanged;
         }
@@ -219,5 +227,17 @@ class VersionBuilder
         }
 
         return $oldDateTime->format('U') !== $newDateTime->format('U');
+    }
+
+    private function findValueComparator(string $field, string $resourceName): ?ValueComparatorInterface
+    {
+        $comparators = $this->valueComparatorsByResourceName[$resourceName] ?? [];
+        foreach ($comparators as $comparator) {
+            if ($comparator->supportsField($field)) {
+                return $comparator;
+            }
+        }
+
+        return null;
     }
 }

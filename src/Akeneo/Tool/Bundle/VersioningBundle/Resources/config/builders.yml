@@ -7,3 +7,4 @@ services:
         arguments:
             - '@pim_versioning.serializer'
             - '@pim_versioning.factory.version'
+            - !tagged_iterator pim_versioning.value_comparator

@@ -2,6 +2,8 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Builder;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Tool\Component\Versioning\Model\ValueComparatorInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Factory\VersionFactory;
@@ -11,9 +13,11 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionBuilderSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, VersionFactory $versionFactory)
+    function let(NormalizerInterface $normalizer, VersionFactory $versionFactory, ValueComparatorInterface $valueComparator1)
     {
-        $this->beConstructedWith($normalizer, $versionFactory);
+        $valueComparator1->getSupportedResourceNames()->willReturn([ProductModel::class]);
+
+        $this->beConstructedWith($normalizer, $versionFactory, [$valueComparator1]);
     }
 
     function it_builds_versions_for_versionable_entities($normalizer, $versionFactory, ProductInterface $product, Version $version)
@@ -47,6 +51,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->setVersion(1)->willReturn($pending);
         $pending->setSnapshot(['foo' => 'bar'])->willReturn($pending);
         $pending->getChangeset()->willReturn(['foo' => 'bar']);
+        $pending->getResourceName()->willReturn('Akeneo\Pim\Enrichment\Component\Product\Model\Product');
 
         $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->shouldBeCalled()->willReturn($pending);
 
@@ -58,6 +63,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->setVersion(1)->willReturn($pending);
         $pending->setSnapshot([12345678 => 'bar'])->willReturn($pending);
         $pending->getChangeset()->willReturn([12345678 => 'bar']);
+        $pending->getResourceName()->willReturn('Akeneo\Pim\Enrichment\Component\Product\Model\Product');
 
         $pending->setChangeset([12345678 => ['old' => '', 'new' => 'bar']])->shouldBeCalled()->willReturn($pending);
 
@@ -72,6 +78,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->setVersion(2)->willReturn($pending);
         $pending->setSnapshot(['test' => '0112233'])->willReturn($pending);
         $pending->getChangeset()->willReturn(['test' => '0112233']);
+        $pending->getResourceName()->willReturn('Akeneo\Pim\Enrichment\Component\Product\Model\Product');
 
         $pending->setChangeset(['test' => ['old' => '00112233', 'new' => '0112233']])->willReturn($pending);
 
@@ -124,5 +131,37 @@ class VersionBuilderSpec extends ObjectBehavior
         ])->willReturn($version);
 
         $this->buildVersion($product, 'julia', $previousVersion, null);
+    }
+
+    function it_builds_versions_for_versionable_entities_using_comparator(
+        NormalizerInterface $normalizer,
+        VersionFactory $versionFactory,
+        ValueComparatorInterface $valueComparator1,
+        Version $previousVersion,
+        Version $version
+    ) {
+        $productModel = new ProductModel();
+        $reflectionClass = new \ReflectionClass(ProductModel::class);
+        $reflectionProperty = $reflectionClass->getProperty('id');
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($productModel, 1);
+
+        $normalizer->normalize($productModel, 'flat', [])
+            ->willReturn(['a_text' => 'foo', 'color' => 'red', 'description' => 'a text']);
+
+        $previousVersion->getVersion()->willReturn(1);
+        $previousVersion->getSnapshot()
+            ->willReturn(['a_text' => 'foo', 'color' => 'Red', 'description' => 'A text']);
+
+        $valueComparator1->supportsField('a_text')->willReturn(false);
+        $valueComparator1->supportsField('color')->willReturn(true);
+        $valueComparator1->supportsField('description')->willReturn(false);
+        $valueComparator1->isEqual('Red', 'red')->willReturn(true);
+
+        $versionFactory->create(Argument::Any(), 1, 'foo', null)->willReturn($version);
+        $version->setVersion(2)->willReturn($version);
+        $version->setSnapshot(['a_text' => 'foo', 'color' => 'red', 'description' => 'a text'])->willReturn($version);
+        $version->setChangeset(['description' => ['old' => 'A text', 'new' => 'a text']])->willReturn($version);
+        $this->buildVersion($productModel, 'foo', $previousVersion);
     }
 }
