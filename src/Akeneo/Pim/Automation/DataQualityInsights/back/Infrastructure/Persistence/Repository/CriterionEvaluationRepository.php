@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
@@ -28,7 +29,7 @@ class CriterionEvaluationRepository
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation
     (product_uuid, criterion_code, status)
 SELECT uuid, :%s, :%s
-FROM pim_catalog_product WHERE id = :%s
+FROM pim_catalog_product WHERE uuid = :%s
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
@@ -83,10 +84,16 @@ SQL;
             $queries[] = sprintf($queryFormat, $criterionCode, $status, $productId, $status);
 
             $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
-            $queryParametersValues[$productId] = (string)$criterionEvaluation->getProductId();
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
 
-            $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            $entityId = $criterionEvaluation->getEntityId();
+            if ($entityId instanceof ProductUuid) {
+                $queryParametersValues[$productId] = $entityId->toBytes();
+                $queryParametersTypes[$productId] = \PDO::PARAM_STR;
+            } else {
+                $queryParametersValues[$productId] = $entityId->toInt();
+                $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            }
         }
 
         $query = implode("\n", $queries);
