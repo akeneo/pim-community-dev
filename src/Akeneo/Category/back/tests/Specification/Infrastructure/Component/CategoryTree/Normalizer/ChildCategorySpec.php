@@ -3,7 +3,6 @@
 namespace Specification\Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 
 use Akeneo\Category\Infrastructure\Component\CategoryTree\ReadModel\ChildCategory;
-use Akeneo\Category\Infrastructure\Component\CategoryTree\Normalizer;
 use PhpSpec\ObjectBehavior;
 
 class ChildCategorySpec extends ObjectBehavior

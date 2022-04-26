@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Category\Infrastructure\Component\Connector\ArrayConverter\FlatToStandard;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use PhpSpec\ObjectBehavior;
 
 class CategorySpec extends ObjectBehavior
 {
