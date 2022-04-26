@@ -60,7 +60,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             ['product_uuids' => $productUuidCollection->toArrayBytes()],
-            ['product_uuids' => Connection::PARAM_INT_ARRAY]
+            ['product_uuids' => Connection::PARAM_STR_ARRAY]
         );
 
         $result = $stmt->fetchAllAssociative();

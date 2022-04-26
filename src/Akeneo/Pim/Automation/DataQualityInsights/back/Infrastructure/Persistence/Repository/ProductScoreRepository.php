@@ -57,8 +57,8 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             Assert::isInstanceOf($productUuid, ProductUuid::class);
 
             return sprintf(
-                "(%s, '%s', '%s', '%s')",
-                $productUuid->toBytes(),
+                "(UUID_TO_BIN('%s'), '%s', '%s')",
+                (string) $productUuid,
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates()),
                 \json_encode($productScore->getScoresPartialCriteria()->toNormalizedRates())
@@ -78,7 +78,7 @@ SQL
 
         // We need to delete younger product scores after inserting the new ones,
         // so we insure to have 1 product score per product
-        $deleteValues = implode(', ', array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getEntityId()->toBytes(), $productsScores));
+        $productUuids = array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getEntityId()->toBytes(), $productsScores);
 
         $this->dbConnection->executeQuery(
             <<<SQL
@@ -87,8 +87,12 @@ FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_uuid IN ($deleteValues);
-SQL
+WHERE old_scores.product_uuid IN (:product_uuids);
+SQL, [
+            'product_uuids' => $productUuids,
+            ], [
+                'product_uuids' => Connection::PARAM_STR_ARRAY
+            ]
         );
     }
 
