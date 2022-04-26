@@ -16,8 +16,13 @@ const ContributorList = ({contributors, setContributors}: Props) => {
     const [searchValue, setSearchValue] = useState('');
     const [newContributors, setNewContributors] = useState<string[]>([]);
     const filteredContributors = useFilteredContributors(contributors, searchValue);
+    const [displayInvalidContributorEmailsWarning, setDisplayInvalidContributorEmailsWarning] = useState(false);
 
     const onChangeNewContributors = (newContributors: string[]) => {
+        const notValidContributorEmails = newContributors.filter(email => !isValidEmail(email))
+
+        setDisplayInvalidContributorEmailsWarning(0 < notValidContributorEmails.length);
+
         setNewContributors(newContributors);
     };
 
@@ -47,6 +52,13 @@ const ContributorList = ({contributors, setContributors}: Props) => {
                         {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
                     </Button>
                 </FieldContent>
+                {
+                    displayInvalidContributorEmailsWarning && (
+                        <Helper level="warning">
+                            {translate('onboarder.supplier.supplier_list.contributors.invalid_emails')}
+                        </Helper>
+                    )
+                }
             </Field>
 
             {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
