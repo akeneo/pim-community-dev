@@ -38,30 +38,32 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
     return criteria.find(criterion => criterion.code === code);
   };
 
-  return (
+  const recommendations = Children.map(children, child => {
+    const element = child as ReactElement;
+    if (element.type === Criterion) {
+      const criterionEvaluation = getCriterionEvaluation(element.props.code);
+
+      if (!criterionEvaluation) {
+        return;
+      }
+
+      return React.cloneElement(element, {
+        axis,
+        evaluation,
+        criterionEvaluation,
+      });
+    }
+    return child;
+  });
+
+  return recommendations.length > 0 && (
     <div className="AknSubsection AxisEvaluationContainer">
       <AxisHeader evaluation={evaluation} axis={axis} />
 
       {axisHasError && <AxisError />}
       {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
 
-      {Children.map(children, child => {
-        const element = child as ReactElement;
-        if (element.type === Criterion) {
-          const criterionEvaluation = getCriterionEvaluation(element.props.code);
-
-          if (!criterionEvaluation) {
-            return;
-          }
-
-          return React.cloneElement(element, {
-            axis,
-            evaluation,
-            criterionEvaluation,
-          });
-        }
-        return child;
-      })}
+      {recommendations}
     </div>
   );
 };
