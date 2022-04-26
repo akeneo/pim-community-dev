@@ -46,7 +46,7 @@ INSERT INTO pim_data_quality_insights_product_model_score (product_model_id, eva
 VALUES (:$productModelId, :$evaluatedAt, :$scores, :$scoresPartialCriteria)
 ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores, scores_partial_criteria = :$scoresPartialCriteria;
 SQL;
-            $queriesParameters[$productModelId] = (string)$productModelScore->getProductId();
+            $queriesParameters[$productModelId] = (string)$productModelScore->getEntityId();
             $queriesParametersTypes[$productModelId] = \PDO::PARAM_INT;
             $queriesParameters[$evaluatedAt] = $productModelScore->getEvaluatedAt()->format('Y-m-d');
             $queriesParameters[$scores] = \json_encode($productModelScore->getScores()->toNormalizedRates());
