@@ -190,10 +190,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * set labels on a family, ensuring correct case of locale codes.
-     * @param FamilyInterface $family
-     * @param array           $localizedLabels
+     * @param array $localizedLabels
      */
-    private function setLabels($family, $localizedLabels)
+    private function setLabels(FamilyInterface $family, $localizedLabels): void
     {
         // using known locale code when found (modulo case-insensitive comparison)
         // leaving unknown locale code as is for the moment (Jira PIM-10372, )

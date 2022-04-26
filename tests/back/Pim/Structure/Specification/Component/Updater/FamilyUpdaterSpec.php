@@ -25,17 +25,8 @@ use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
-function makeLocale(string $code): Locale
-{
-    $locale = new Locale();
-    $locale->setCode($code);
-    return $locale;
-}
 class FamilyUpdaterSpec extends ObjectBehavior
 {
-    private static Locale $enUS;
-    private static Locale $frFR;
-
     function let(
         FamilyRepositoryInterface $familyRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -46,9 +37,6 @@ class FamilyUpdaterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $localeRepository,
 
     ) {
-        $this::$enUS = $this::$enUS ?? makeLocale('en_US');
-        $this::$frFR = $this::$frFR ?? makeLocale('fr_FR');
-
         $this->beConstructedWith(
             $familyRepository,
             $attributeRepository,
@@ -809,12 +797,19 @@ class FamilyUpdaterSpec extends ObjectBehavior
             'labels' => $inputLabels,
         ];
 
-        $localeRepository->findOneByIdentifier('EN_us')->willReturn($this::$enUS); // by case-insentive matching BDD-side
-        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this::$frFR);
+        $localeRepository->findOneByIdentifier('EN_us')->willReturn($this->makeLocale('en_US')); // by case-insentive matching BDD-side
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($this->makeLocale('fr_FR'));
         $localeRepository->findOneByIdentifier('foo_bar')->willReturn(null); // unknown to PIM
 
         $this->update($family, $values, []);
 
         $translatableUpdater->update($family, $normalizedLabels)->shouldBeCalled();
+    }
+
+    private function makeLocale(string $code): Locale
+    {
+        $locale = new Locale();
+        $locale->setCode($code);
+        return $locale;
     }
 }
