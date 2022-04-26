@@ -97,14 +97,17 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
     private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
     {
         $result = [];
+
         if (empty($existentOptionCodesIndexedInsensitive)) {
             return [];
         }
+
         foreach ($givenOptionCodes as $optionCode) {
             if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
                 $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
             }
         }
+
         return \array_unique($result);
     }
 }
