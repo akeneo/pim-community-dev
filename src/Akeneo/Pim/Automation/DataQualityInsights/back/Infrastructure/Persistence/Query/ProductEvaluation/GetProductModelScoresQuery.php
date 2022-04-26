@@ -10,8 +10,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -26,12 +24,12 @@ final class GetProductModelScoresQuery implements GetProductModelScoresQueryInte
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productId): Read\Scores
+    public function byProductModelId(ProductEntityIdInterface $productModelId): Read\Scores
     {
-        $productModelIdCollection = $this->idFactory->createCollection([(string) $productId]);
+        $productModelIdCollection = $this->idFactory->createCollection([(string) $productModelId]);
         $productScores = $this->byProductModelIdCollection($productModelIdCollection);
 
-        return $productScores[(string)$productId] ?? new Read\Scores(
+        return $productScores[(string)$productModelId] ?? new Read\Scores(
             new ChannelLocaleRateCollection(),
             new ChannelLocaleRateCollection()
         );

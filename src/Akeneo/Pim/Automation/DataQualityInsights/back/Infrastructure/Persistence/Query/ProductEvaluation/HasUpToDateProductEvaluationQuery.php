@@ -8,8 +8,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactory
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -21,26 +23,30 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
     {
     }
 
-    public function forEntityId(ProductEntityIdInterface $productId): bool
+    public function forEntityId(ProductEntityIdInterface $productUuid): bool
     {
-        $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
+        Assert::isInstanceOf($productUuid, ProductUuid::class);
+
+        $productIdCollection = $this->idFactory->createCollection([(string)$productUuid]);
         $upToDateProducts = $this->forEntityIdCollection($productIdCollection);
 
         return !is_null($upToDateProducts);
     }
 
-    public function forEntityIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
+    public function forEntityIdCollection(ProductEntityIdCollection $productUuidCollection): ?ProductEntityIdCollection
     {
-        if ($productIdCollection->isEmpty()) {
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+
+        if ($productUuidCollection->isEmpty()) {
             return null;
         }
 
         $query = <<<SQL
-SELECT product.id
+SELECT BIN_TO_UUID(product.uuid) AS uuid
 FROM pim_catalog_product AS product
 LEFT JOIN pim_catalog_product_model AS parent ON parent.id = product.product_model_id
 LEFT JOIN pim_catalog_product_model AS grand_parent ON grand_parent.id = parent.parent_id
-WHERE product.id IN (:product_ids)
+WHERE product.uuid IN (:product_uuids)
     AND EXISTS(
         SELECT 1 FROM pim_data_quality_insights_product_criteria_evaluation AS evaluation
         WHERE evaluation.product_uuid = product.uuid
@@ -53,8 +59,8 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIdCollection->toArrayString()],
-            ['product_ids' => Connection::PARAM_INT_ARRAY]
+            ['product_uuids' => $productUuidCollection->toArrayBytes()],
+            ['product_uuids' => Connection::PARAM_INT_ARRAY]
         );
 
         $result = $stmt->fetchAllAssociative();
@@ -63,14 +69,14 @@ SQL;
             return null;
         }
 
-        $ids = array_map(function ($resultRow) {
-            return $resultRow['id'];
+        $uuids = array_map(function ($resultRow) {
+            return $resultRow['uuid'];
         }, $result);
 
-        if (empty($ids)) {
+        if (empty($uuids)) {
             return null;
         }
 
-        return $this->idFactory->createCollection($ids);
+        return $this->idFactory->createCollection($uuids);
     }
 }

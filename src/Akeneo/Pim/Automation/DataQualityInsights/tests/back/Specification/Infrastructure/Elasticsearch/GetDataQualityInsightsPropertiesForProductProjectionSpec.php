@@ -22,16 +22,16 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
 {
     public function let(
         GetProductScoresQueryInterface                      $getProductScoresQuery,
-        GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductUuidsFromProductIdentifiersQuery,
         ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
         ProductEntityIdFactoryInterface                     $idFactory
     ) {
-        $this->beConstructedWith($getProductScoresQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators, $idFactory);
+        $this->beConstructedWith($getProductScoresQuery, $getProductUuidsFromProductIdentifiersQuery, $computeProductsKeyIndicators, $idFactory);
     }
 
     public function it_returns_additional_properties_from_product_identifiers(
         GetProductScoresQueryInterface                      $getProductScoresQuery,
-        GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductUuidsFromProductIdentifiersQuery,
         ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
         ProductEntityIdFactoryInterface                     $idFactory
     ) {
@@ -48,7 +48,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
         ];
         $productUuidCollection = ProductUuidCollection::fromProductUuids([$productUuid42, $productUuid123, $productUuid456]);
 
-        $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
+        $getProductUuidsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
         $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2', '6d125b99-d971-41d9-a264-b020cd486aee'])->willReturn($productUuidCollection);
 
         $channelEcommerce = new ChannelCode('ecommerce');

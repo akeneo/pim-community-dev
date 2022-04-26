@@ -28,7 +28,7 @@ final class ProductUuidCollectionSpec extends ObjectBehavior
         $this->toArray()[1]->shouldBeAnInstanceOf(ProductUuid::class);
     }
 
-    public function it_can_be_construct_from_an_array_of_productId()
+    public function it_can_be_construct_from_an_array_of_productUuid()
     {
         $ids = [
             ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
@@ -50,7 +50,7 @@ final class ProductUuidCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_throws_an_exception_if_the_product_id_is_not_productId_class_when_using_fromProductUuids()
+    public function it_throws_an_exception_if_the_product_id_is_not_productUuid_class_when_using_fromProductUuids()
     {
         $uuids = [
             ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),
@@ -61,7 +61,7 @@ final class ProductUuidCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_instantiates_with_unique_values_with_fromProductIds()
+    public function it_instantiates_with_unique_values_with_fromProductUuids()
     {
         $uuids = [
             ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')),

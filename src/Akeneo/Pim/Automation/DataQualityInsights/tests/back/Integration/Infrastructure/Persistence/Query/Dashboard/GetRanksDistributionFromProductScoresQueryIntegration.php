@@ -144,7 +144,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
         $this->createProductAxesRatesWithDifferentDates($countProducts, $rank, function () {
             $this->createProductWithFamily('mugs');
             // TODO To fix
-            return new ProductUuid($this->lastProductId);
+            return ProductUuid::fromString($this->lastProductId);
         });
     }
 
@@ -229,7 +229,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductUuid($product->getUuid());
+        return ProductUuid::fromString($product->getUuid()->toString());
     }
 
     private function createProductWithCategories(array $categories): ProductUuid
@@ -242,7 +242,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductUuid($product->getUuid());
+        return ProductUuid::fromString($product->getUuid()->toString());
     }
 
     private function getDifferentRank(int $rank): int

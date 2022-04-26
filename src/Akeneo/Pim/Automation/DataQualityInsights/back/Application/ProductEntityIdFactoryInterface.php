@@ -20,8 +20,8 @@ interface ProductEntityIdFactoryInterface
     public function create(string $id): ProductEntityIdInterface;
 
     /**
-     * @param string[] $uuids
+     * @param string[] $ids
      * @return ProductEntityIdCollection
      */
-    public function createCollection(array $uuids): ProductEntityIdCollection;
+    public function createCollection(array $ids): ProductEntityIdCollection;
 }

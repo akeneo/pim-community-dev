@@ -10,8 +10,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Result;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
@@ -103,11 +101,11 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature->isEnabled()->willReturn(true);
 
         $product->getUuid()->willReturn(Uuid::fromString('54162e35-ff81-48f1-96d5-5febd3f00fd5'));
-        $productIdCollection = ProductUuidCollection::fromStrings(['54162e35-ff81-48f1-96d5-5febd3f00fd5']);
-        $idFactory->createCollection(['54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($productIdCollection);
+        $productUuidCollection = ProductUuidCollection::fromStrings(['54162e35-ff81-48f1-96d5-5febd3f00fd5']);
+        $idFactory->createCollection(['54162e35-ff81-48f1-96d5-5febd3f00fd5'])->willReturn($productUuidCollection);
 
         $createProductsCriteriaEvaluations
-            ->createAll($productIdCollection)
+            ->createAll($productUuidCollection)
             ->willThrow(\Exception::class);
 
         $logger->error('Unable to create product criteria evaluation', Argument::any())->shouldBeCalledOnce();
