@@ -49,13 +49,13 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                             ]
                         ],
                         [
-                        'identifier' => 'product_C',
-                        'values' => [
-                            '<all_channels>' => [
-                                '<all_locales>' => 'OPTION_toto'
+                            'identifier' => 'product_C',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'OPTION_toto'
+                                ],
                             ],
-                        ]
-                    ],
+                        ],
                     ]
                 ],
                 AttributeTypes::TEXTAREA => [
@@ -97,7 +97,7 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'option_ToTo'
+                                    '<all_locales>' => 'option_toto'
                                 ],
                             ],
                         ],
@@ -113,7 +113,7 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_C',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'OPTION_toto'
+                                    '<all_locales>' => 'option_toto'
                                 ],
                             ],
                         ],

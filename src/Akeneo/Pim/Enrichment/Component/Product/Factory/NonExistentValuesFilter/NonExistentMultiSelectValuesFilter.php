@@ -26,7 +26,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
             return $onGoingFilteredRawValues;
         }
 
-        $optionCodes = $this->getExistingOptionCodes($selectValues);
+        $optionCodes = $this->getExistingCaseInsensitiveOptionCodes($selectValues);
 
         $filteredValues = [];
         foreach ($selectValues as $attributeCode => $productValueCollection) {
@@ -37,7 +37,7 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
                 foreach ($productValues['values'] as $channel => $channelValues) {
                     foreach ($channelValues as $locale => $values) {
                         if (\is_array($values)) {
-                            $multiSelectValues[$channel][$locale] = \array_values(\array_intersect($existingCodes, $values));
+                            $multiSelectValues[$channel][$locale] = $this->arrayIntersectCaseInsensitive($values, $existingCodes);
                         }
                     }
                 }
@@ -54,26 +54,18 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
         return $onGoingFilteredRawValues->addFilteredValuesIndexedByType($filteredValues);
     }
 
-    private function getExistingOptionCodes(array $selectValues): array
+    private function getExistingCaseInsensitiveOptionCodes(array $selectValues): array
     {
         $optionCodes = $this->getOptionCodes($selectValues);
         $existingOptionCodes = $this->getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes);
-
-        foreach ($optionCodes as $attributeCode => $optionCodesForThisAttribute) {
-            $existingOptionCodesForAttribute = $existingOptionCodes[$attributeCode] ?? [];
-            if (empty($existingOptionCodesForAttribute)) {
-                $optionCodes[$attributeCode] = [];
-                continue;
+        $caseInsensitiveOptionsCodes = [];
+        foreach ($existingOptionCodes as $attributeCode => $optionCodesForThisAttribute) {
+            foreach ($optionCodesForThisAttribute as $optionCodeForThisAttribute) {
+                $caseInsensitiveOptionsCodes[$attributeCode][\strtolower($optionCodeForThisAttribute)] = $optionCodeForThisAttribute;
             }
-
-            $existingOptionCodesForAttribute = \array_map('strtolower', $existingOptionCodesForAttribute);
-            $optionCodes[$attributeCode] = \array_filter(
-                $optionCodesForThisAttribute,
-                fn ($code) => \in_array(\strtolower($code), $existingOptionCodesForAttribute)
-            );
         }
 
-        return $optionCodes;
+        return $caseInsensitiveOptionsCodes;
     }
 
     private function getOptionCodes(array $selectValues): array
@@ -82,8 +74,8 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
 
         foreach ($selectValues as $attributeCode => $valueCollection) {
             foreach ($valueCollection as $values) {
-                foreach ($values['values'] as $channel => $channelValues) {
-                    foreach ($channelValues as $locale => $value) {
+                foreach ($values['values'] as $channelValues) {
+                    foreach ($channelValues as $value) {
                         if (\is_array($value)) {
                             foreach ($value as $optionCode) {
                                 $optionCodes[$attributeCode][] = $optionCode;
@@ -105,17 +97,14 @@ class NonExistentMultiSelectValuesFilter implements NonExistentValuesFilter
     private function arrayIntersectCaseInsensitive(array $givenOptionCodes, array $existentOptionCodesIndexedInsensitive): array
     {
         $result = [];
-
         if (empty($existentOptionCodesIndexedInsensitive)) {
             return [];
         }
-
         foreach ($givenOptionCodes as $optionCode) {
             if (isset($existentOptionCodesIndexedInsensitive[strtolower($optionCode ?? '')])) {
                 $result[] = $existentOptionCodesIndexedInsensitive[strtolower($optionCode)];
             }
         }
-
         return \array_unique($result);
     }
 }

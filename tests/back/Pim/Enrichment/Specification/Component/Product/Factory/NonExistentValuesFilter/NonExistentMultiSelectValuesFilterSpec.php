@@ -105,11 +105,11 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['micHEL'],
+                                    'en_US' => ['michel'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => ['Fraises'],
+                                    'fr_FR' => ['fraises'],
                                 ],
                             ],
                         ],
@@ -117,10 +117,10 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_C',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['MIChel'],
+                                    'en_US' => ['michel'],
                                 ],
                                 'tablet' => [
-                                    '<all_locales>' => ['FRAISES', 'TOUrloupe'],
+                                    '<all_locales>' => ['fraises', 'tourlOUPE'],
                                 ],
                             ]
                         ],
