@@ -9,8 +9,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,10 +22,10 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productModelId): ChannelLocaleRateCollection
+    public function byProductModelId(ProductEntityIdInterface $productModelModelId): ChannelLocaleRateCollection
     {
-        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
-            return $this->getProductModelScoresQuery->byProductModelId($productModelId);
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelModelId)) {
+            return $this->getProductModelScoresQuery->byProductModelId($productModelModelId);
         }
 
         return new ChannelLocaleRateCollection();

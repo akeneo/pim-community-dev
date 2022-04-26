@@ -14,7 +14,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -48,7 +47,7 @@ class GetProductEvaluation
     ) {
     }
 
-    public function get(ProductUuid $productId): array
+    public function get(ProductEntityIdInterface $productId): array
     {
         $criteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
         $criteriaEvaluations = ($this->completeEvaluationWithImprovableAttributes)($criteriaEvaluations);

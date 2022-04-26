@@ -32,20 +32,20 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $expectedProducts[] = $this->createProduct('expected_product_B', ['family' => 'impacted_family_B']);
         $expectedProducts[] = $this->createProduct('expected_product_C', ['family' => 'impacted_family_B']);
 
-        $expectedProductIds = array_map(function ($product) {
-            return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        $expectedProductUuids = array_map(function ($product) {
+            return $this->get(ProductIdFactory::class)->create((string) $product->getUuid());
         }, $expectedProducts);
 
         $this->createProduct('not_impacted_product', ['family' => 'not_impacted_family']);
 
-        $productIds = $this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->updatedSince($updatedSince, 2);
-        $productIds = iterator_to_array($productIds);
-        $this->assertCount(2, $productIds);
-        $this->assertCount(2, $productIds[0]);
-        $this->assertCount(1, $productIds[1]);
+        $productUuids = $this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->updatedSince($updatedSince, 2);
+        $productUuids = iterator_to_array($productUuids);
+        $this->assertCount(2, $productUuids);
+        $this->assertCount(2, $productUuids[0]);
+        $this->assertCount(1, $productUuids[1]);
 
-        $productIds = array_map(fn(ProductUuidCollection $collection) => $collection->toArray(), $productIds);
-        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge_recursive(...$productIds));
+        $productUuids = array_map(fn(ProductUuidCollection $collection) => $collection->toArray(), $productUuids);
+        $this->assertEqualsCanonicalizing($expectedProductUuids, array_merge_recursive(...$productUuids));
     }
 
     private function createAttributeGroupWithAttributes(string $code, array $attributes, bool $activated, \DateTimeImmutable $activationUpdatedAt): int
