@@ -11,7 +11,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductModelScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
@@ -31,7 +31,7 @@ use Prophecy\Argument;
 class ConsolidateProductModelScoresSpec extends ObjectBehavior
 {
     public function let(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsQuery,
         ComputeScores                                   $computeScores,
         ProductModelScoreRepositoryInterface            $productModelScoreRepository,
         Clock                                           $clock,
@@ -41,7 +41,7 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
     }
 
     public function it_consolidates_product_model_scores(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsQuery,
         ComputeScores $computeScores,
         ProductModelScoreRepositoryInterface $productModelScoreRepository,
         Clock $clock,
