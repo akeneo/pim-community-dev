@@ -20,7 +20,7 @@ jest.mock('../../Operations');
 jest.mock('../../Sources');
 jest.mock('../../AttributeTargetParameters');
 
-test('It display a text configurator', async () => {
+test('it displays a text configurator', async () => {
   const attribute = getTextAttribute();
   const dataMapping = createAttributeDataMapping(attribute, []);
 

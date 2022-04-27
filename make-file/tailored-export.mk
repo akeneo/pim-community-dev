@@ -28,8 +28,8 @@ ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
 .PHONY: ci-front
 ci-front:
-	$(YARN_RUN) run --cwd=components/tailored-export/front test:unit:run
-	$(YARN_RUN) run --cwd=components/tailored-export/front lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export lint:check
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export test:unit:run
 
 .PHONY: ci
 ci: ci-back ci-front

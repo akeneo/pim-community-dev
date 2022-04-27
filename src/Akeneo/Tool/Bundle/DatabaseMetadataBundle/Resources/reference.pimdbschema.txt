@@ -716,6 +716,7 @@ pim_comment_comment | resource_id | NO | varchar(24) |
 pim_comment_comment | body | NO | longtext |
 pim_comment_comment | created_at | NO | datetime |
 pim_comment_comment | replied_at | NO | datetime |
+pim_comment_comment | resource_uuid | YES | binary(16) |
 pim_configuration | code | NO | varchar(128) | PRI
 pim_configuration | values | NO | json |
 pim_data_quality_insights_attribute_group_activation | attribute_group_code | NO | varchar(100) | PRI

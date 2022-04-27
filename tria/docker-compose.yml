@@ -14,6 +14,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
       - '../grth:/srv/grth'
     working_dir: '/srv/pim'
@@ -36,6 +37,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - './docker/fpm.conf:/etc/php/8.0/fpm/pool.d/zzz-akeneo.conf'
       - '../grth:/srv/grth'
     working_dir: '/srv/pim'
@@ -50,6 +52,7 @@ services:
       PUPPETEER_DOWNLOAD_HOST: 'http://storage.googleapis.com'
     volumes:
       - './:/srv/pim'
+      - '../components:/srv/pim/components'
       - '${HOST_YARN_CACHE_FOLDER:-~/.cache/yarn}:/home/node/.yarn'
       - '../grth:/srv/grth'
     working_dir: '/srv/pim'
@@ -78,6 +81,7 @@ services:
       - '${DOCKER_PORT_HTTPS:-8443}:443'
     volumes:
       - './:/srv/pim:ro'
+      - '../components:/srv/pim/components:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
       - './docker/server.crt:/usr/local/apache2/conf/server.crt:ro'

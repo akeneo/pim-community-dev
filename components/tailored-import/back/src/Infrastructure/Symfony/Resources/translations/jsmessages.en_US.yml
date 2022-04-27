@@ -34,9 +34,11 @@ akeneo.tailored_import:
     no_data_mapping_selected: No data mapping selected
     attribute_not_found: This attribute has been deleted, you can no longer use it in a data mapping.
     preview:
-      title: Preview
+      input_title: Input preview
+      output_title: Output preview
       placeholder: N/A
       refresh: Refresh
+      unable_to_generate_preview_data: Unable to generate preview
     operations:
       title: Operations
       identifier: No operation available for identifier attribute
@@ -44,6 +46,10 @@ akeneo.tailored_import:
       clean_html_tags: Clean HTML tags
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
+      no_available:
+        text: No more available operations.
+        link: Click here to check our Help Center.
+      remove: Are you sure you want to remove this operation?
     sources:
       title: Sources
       add:
@@ -54,6 +60,10 @@ akeneo.tailored_import:
       title: Target parameters
       identifier: No settings available for the identifier attribute used as a target.
       locale_specific: This attribute is locale specific
+      action_if_not_empty:
+        title: Assign
+        add: Add to existing values
+        set: Replace existing values
       clear_if_empty: Clear if empty in file
       parameters:
         decimal_separator:
@@ -69,9 +79,7 @@ akeneo.tailored_import:
         import-structure:
           title: Import structure
   validation:
-    sample_data:
-      get_sample_data_query: Following params is missing from the query:{{ missing_params }}
-      get_refresh_sample_data_query: Following params is missing from the query:{{ missing_params }}
+    missing_query_params: "Following params is missing from the query: {{ missing_params }}"
     columns:
       max_count_reached: Your file must not contain more than {{ limit }} columns.
       uuid:
@@ -89,14 +97,14 @@ akeneo.tailored_import:
         should_be_unique: This data mapping UUID already exists, please enter a new one.
       sources:
         count_mismatched: You need to set only one source for this data mapping.
-        min_count_reached: You need to add at least one source to your data mapping.
+        at_least_one_required: You need to add at least one source to your data mapping.
         max_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your data mapping.
         should_be_unique: This source already exists, please enter a new one.
         should_exist: One of the source does not exist anymore, please delete all sources of this data mapping and retry
     target:
       attribute_should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different target.
       property_should_exist: The property {{ property_code }} does not exist. Please either create it or choose a different target.
-      source_parameter:
+      source_configuration:
         unit_should_exist: The unit {{ unit_code }} does not exist for the measurement family {{ measurement_family }}. Please select a valid unit.
     locale:
       should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
@@ -121,3 +129,5 @@ akeneo.tailored_import:
       empty_sheet:
         title: This sheet is empty.
         description: Please select another sheet with at least one row.
+    operations:
+      incompatible_operation_type: The operation type {{ operation_type }} is incompatible with your target type.

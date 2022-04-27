@@ -15,10 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
-class UserIntentRegistry
+final class UserIntentRegistry
 {
     /**
-     * @var iterable<UserIntentFactoryInterface> $factories
+     * @var iterable<UserIntentFactoryInterface>
      */
     public function __construct(private iterable $factories)
     {

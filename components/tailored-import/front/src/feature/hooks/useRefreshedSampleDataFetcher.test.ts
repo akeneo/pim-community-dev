@@ -13,7 +13,7 @@ test('it return refreshed sample data', async () => {
   const refreshedData = await refreshedSampleDataFetcher(
     '/file_key',
     ['sample1', 'sample2', 'sample3'],
-    2,
+    [1, 2],
     'sheet_1',
     2
   );
@@ -36,6 +36,6 @@ test('it return an error when cannot refresh sample data', async () => {
   const refreshedSampleDataFetcher = result.current;
 
   await expect(async () => {
-    await refreshedSampleDataFetcher('/file_key', ['sample1', 'sample2', 'sample3'], 2, 'sheet_1', 2);
+    await refreshedSampleDataFetcher('/file_key', ['sample1', 'sample2', 'sample3'], [2], 'sheet_1', 2);
   }).rejects.toBeUndefined();
 });

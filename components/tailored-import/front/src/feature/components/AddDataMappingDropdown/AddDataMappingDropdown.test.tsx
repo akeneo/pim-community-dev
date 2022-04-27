@@ -80,7 +80,7 @@ test('it adds data mapping with attribute target', async () => {
       action_if_empty: 'skip',
       channel: null,
       locale: null,
-      source_parameter: null,
+      source_configuration: null,
     },
     sources: [],
     operations: [],

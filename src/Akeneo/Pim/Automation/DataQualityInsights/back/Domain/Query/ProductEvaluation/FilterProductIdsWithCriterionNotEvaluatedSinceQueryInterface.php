@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 interface FilterProductIdsWithCriterionNotEvaluatedSinceQueryInterface
 {
-    public function execute(ProductIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductIdCollection;
+    public function execute(ProductEntityIdCollection $productIds, \DateTimeImmutable $evaluatedSince, CriterionCode $criterionCode): ProductEntityIdCollection;
 }

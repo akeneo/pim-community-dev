@@ -23,5 +23,9 @@ test('it can be removed using the remove button', () => {
 
   userEvent.click(screen.getByTitle('pim_common.remove'));
 
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.remove')).toBeInTheDocument();
+
+  userEvent.click(screen.getByText('pim_common.delete'));
+
   expect(handleRemove).toHaveBeenCalledWith('clean_html_tags');
 });

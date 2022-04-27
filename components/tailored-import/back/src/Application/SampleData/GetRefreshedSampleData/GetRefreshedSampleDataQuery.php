@@ -10,11 +10,13 @@ namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetRefreshedSamp
  */
 final class GetRefreshedSampleDataQuery
 {
+    /** @var array<string> */
     public array $currentSample;
 
     public string $fileKey;
 
-    public int $columnIndex;
+    /** @var array<int> */
+    public array $columnIndices;
 
     public string $sheetName;
 

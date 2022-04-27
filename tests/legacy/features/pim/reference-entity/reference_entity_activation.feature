@@ -12,7 +12,7 @@ Scenario: Reference entities are not available when deactivated
   Then I should see the text "Activity"
   And I should not see the text "Entities"
   When I am on the "test_csv" import job page
-  Then I should not see the text "Import profile - Asset Manager CSV import"
+  Then I should not see the text "Import profile - Record CSV import"
   When I am on the "test_xlsx" import job page
   Then I should not see the text "Import profile - Record XLSX import"
   When I am on the attributes page

@@ -10,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Platform\TailoredImport\Domain;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
@@ -20,7 +21,7 @@ class UpsertProductCommandCleaner
 {
     public static function removeInvalidUserIntents(
         ViolationsException $violationsException,
-        UpsertProductCommand $upsertProductCommand
+        UpsertProductCommand $upsertProductCommand,
     ): UpsertProductCommand {
         $valueUserIntents = $upsertProductCommand->valueUserIntents();
 
@@ -38,7 +39,7 @@ class UpsertProductCommandCleaner
         return new UpsertProductCommand(
             userId: $upsertProductCommand->userId(),
             productIdentifier: $upsertProductCommand->productIdentifier(),
-            valueUserIntents: $valueUserIntents
+            valueUserIntents: $valueUserIntents,
         );
     }
 }

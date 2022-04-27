@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dictionary\IgnoreWordForProductModel;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
@@ -22,12 +23,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AddProductModelWordInDictionaryController
 {
-    /** @var IgnoreWordForProductModel */
-    private $ignoreWordForProductModel;
-
-    public function __construct(IgnoreWordForProductModel $ignoreWordForProductModel)
-    {
-        $this->ignoreWordForProductModel = $ignoreWordForProductModel;
+    public function __construct(
+        private IgnoreWordForProductModel       $ignoreWordForProductModel,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
     public function __invoke(Request $request)
@@ -35,7 +34,7 @@ class AddProductModelWordInDictionaryController
         try {
             $word = new DictionaryWord($request->request->get('word'));
             $localeCode = new LocaleCode($request->request->get('locale'));
-            $productId = new ProductId($request->request->getInt('product_id'));
+            $productId = $this->idFactory->create($request->request->get('product_id'));
 
             $this->ignoreWordForProductModel->execute($word, $localeCode, $productId);
 

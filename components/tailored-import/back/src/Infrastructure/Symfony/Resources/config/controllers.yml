@@ -44,3 +44,11 @@ services:
       - '@akeneo.tailored_import.handler.sample_data.get_refreshed_sample_data_handler'
       - '@validator'
       - '@serializer'
+
+  akeneo.tailored_import.controller.generate_preview_data_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\SampleData\GeneratePreviewDataAction
+    public: true
+    arguments:
+      - '@akeneo.tailored_import.handler.sample_data.generate_preview_data_handler'
+      - '@validator'
+      - '@serializer'

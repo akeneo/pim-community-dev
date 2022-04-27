@@ -152,7 +152,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_throws_an_error_when_the_file_size_is_too_big()
     {
-        $data = $this->generateImage(15000, 100);
+        $data = $this->generateImage(16000, 100);
 
         $this->expectException(CouldNotGeneratePreviewException::class);
 

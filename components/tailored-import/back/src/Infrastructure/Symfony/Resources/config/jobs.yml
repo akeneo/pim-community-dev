@@ -10,7 +10,7 @@ services:
         - '@akeneo.tailored_import.connector.step.xlsx_product.import'
       - true
     tags:
-      - { name: akeneo_batch.job, connector: '%akeneo.tailored_import.connector.name%', type: '%pim_connector.job.import_type%' }
+      - { name: akeneo_batch.job, connector: '%akeneo.tailored_import.connector.name%', type: '%pim_connector.job.import_type%', feature: 'tailored_import' }
 
   akeneo.tailored_import.connector.step.xlsx_product.import:
     class: '%pim_connector.step.item_step.class%'

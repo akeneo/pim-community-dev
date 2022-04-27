@@ -17,8 +17,4 @@ use Symfony\Component\Validator\Constraint;
 
 final class IsValidAttribute extends Constraint
 {
-    public function validatedBy(): string
-    {
-        return 'akeneo.tailored_import.validation.is_valid_attribute';
-    }
 }

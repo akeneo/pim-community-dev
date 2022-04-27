@@ -16,24 +16,18 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\Dicti
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Events\ProductModelWordIgnoredEvent;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\DictionaryWord;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class IgnoreWordForProductModel
 {
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var IgnoreWord */
-    private $ignoreWord;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher, IgnoreWord $ignoreWord)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->ignoreWord = $ignoreWord;
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+        private IgnoreWord               $ignoreWord
+    ) {
     }
 
-    public function execute(DictionaryWord $word, LocaleCode $localeCode, ProductId $productId): void
+    public function execute(DictionaryWord $word, LocaleCode $localeCode, ProductEntityIdInterface $productId): void
     {
         $this->ignoreWord->execute($word, $localeCode);
 

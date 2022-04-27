@@ -1,3 +1,4 @@
+import {Column} from './Column';
 import {DataMapping} from './DataMapping';
 
 const MAX_COLUMN_COUNT = 500;
@@ -5,14 +6,6 @@ const MINIMUM_HEADER_ROW = 1;
 const MAXIMUM_HEADER_ROW = 19;
 const MINIMUM_FIRST_PRODUCT_ROW = 2;
 const MAXIMUM_FIRST_PRODUCT_ROW = 20;
-
-type ColumnIdentifier = string;
-
-type Column = {
-  uuid: ColumnIdentifier;
-  index: number;
-  label: string;
-};
 
 type FileStructure = {
   header_row: number;
@@ -45,30 +38,8 @@ const getDefaultFileStructure = (): FileStructure => ({
   unique_identifier_column: 0,
 });
 
-const generateExcelColumnLetter = (index: number): string => {
-  if (index <= 25) {
-    return `${String.fromCharCode(index + 65)}`;
-  }
-
-  const modulo = index % 26;
-  const nextIndex = (index - modulo) / 26;
-
-  return `${generateExcelColumnLetter(nextIndex - 1)}${String.fromCharCode(modulo + 65)}`;
-};
-
-const generateColumnName = (index: number, label: string): string => {
-  const columnLetter = generateExcelColumnLetter(index);
-
-  return `${label} (${columnLetter})`;
-};
-
-const findColumnByUuid = (columns: Array<Column>, uuid: string): Column | null => {
-  return columns.find((column: Column) => column.uuid === uuid) ?? null;
-};
-
-export type {StructureConfiguration, Column, ColumnIdentifier, FileStructure, ErrorAction};
+export type {StructureConfiguration, FileStructure, ErrorAction};
 export {
-  generateColumnName,
   MAX_COLUMN_COUNT,
   MAXIMUM_FIRST_PRODUCT_ROW,
   MINIMUM_FIRST_PRODUCT_ROW,
@@ -76,5 +47,4 @@ export {
   MINIMUM_HEADER_ROW,
   getDefaultFileStructure,
   isValidErrorAction,
-  findColumnByUuid,
 };

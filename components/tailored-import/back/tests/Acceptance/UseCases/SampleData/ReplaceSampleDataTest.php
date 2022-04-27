@@ -19,46 +19,58 @@ use PHPUnit\Framework\TestCase;
 
 class ReplaceSampleDataTest extends TestCase
 {
-    public function test_it_replace_sample_data_with_a_sample_data_not_already_present(): void
+    public function test_it_replaces_sample_data_with_a_sample_data_not_already_present(): void
     {
         $replaceSampleData = new ReplaceSampleData();
-        $values = ['value1', 'value2', 'value3', 'value3', 'value4'];
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value2'],
+            3 => ['another1', 'value3'],
+        ];
         $currentSampleData = ['value1', 'value2', 'value3'];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+        $result = $replaceSampleData->fromExtractedColumns($valuesIndexedByColumn, $currentSampleData);
 
-        $this->assertEquals('value4', $result);
+        $this->assertEquals('another1', $result);
     }
 
-    public function test_it_replace_sample_data_with_null_when_sample_data_contain_all_column_values(): void
+    public function test_it_replaces_sample_data_with_null_when_sample_data_contain_all_column_values(): void
     {
         $replaceSampleData = new ReplaceSampleData();
-        $values = ['value1', 'value2', 'value3', 'value3'];
-        $currentSampleData = ['value1', 'value2', 'value3'];
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value2'],
+            3 => ['another1'],
+        ];
+        $currentSampleData = ['value1', 'value2', 'another1'];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+        $result = $replaceSampleData->fromExtractedColumns($valuesIndexedByColumn, $currentSampleData);
 
         $this->assertEquals(null, $result);
     }
 
-    public function test_it_replace_sample_data_with_a_sample_data_when_sample_data_contain_null(): void
+    public function test_it_replaces_sample_data_with_a_sample_data_when_sample_data_contain_null(): void
     {
         $replaceSampleData = new ReplaceSampleData();
-        $values = ['value1', 'value2', 'value3', 'value3'];
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value2'],
+            3 => ['another1'],
+        ];
         $currentSampleData = ['value1', 'value2', null];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+        $result = $replaceSampleData->fromExtractedColumns($valuesIndexedByColumn, $currentSampleData);
 
-        $this->assertEquals('value3', $result);
+        $this->assertEquals('another1', $result);
     }
 
     public function test_it_replaces_sample_data_with_a_truncated_sample_data(): void
     {
         $replaceSampleData = new ReplaceSampleData();
-        $values = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1), 'value2', 'value3', 'value3'];
-        $currentSampleData = ['value3', 'value2', null];
+        $valuesIndexedByColumn = [
+            1 => ['value1', 'value2'],
+            3 => [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1)],
+        ];
+        $currentSampleData = ['value1', 'value2', null];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+        $result = $replaceSampleData->fromExtractedColumns($valuesIndexedByColumn, $currentSampleData);
 
         $this->assertEquals(\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH), $result);
     }
@@ -66,10 +78,13 @@ class ReplaceSampleDataTest extends TestCase
     public function test_it_handles_truncated_current_sample_data(): void
     {
         $replaceSampleData = new ReplaceSampleData();
-        $values = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1), 'value2'];
-        $currentSampleData = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH), 'value2', null];
+        $valuesIndexedByColumn = [
+            1 => ['value1'],
+            3 => [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH + 1)],
+        ];
+        $currentSampleData = [\str_repeat('a', FormatSampleData::SAMPLE_DATA_MAX_LENGTH), 'value1', null];
 
-        $result = $replaceSampleData->fromExtractedColumn($values, $currentSampleData);
+        $result = $replaceSampleData->fromExtractedColumns($valuesIndexedByColumn, $currentSampleData);
 
         $this->assertEquals(null, $result);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Target;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceParameter\SourceParameterInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\SourceConfigurationInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 class AttributeTarget implements TargetInterface
 {
-    const TYPE = 'attribute';
+    public const TYPE = 'attribute';
 
     private function __construct(
         private string $code,
@@ -22,7 +22,7 @@ class AttributeTarget implements TargetInterface
         private ?string $locale,
         private string $actionIfNotEmpty,
         private string $actionIfEmpty,
-        private ?SourceParameterInterface $sourceParameter,
+        private ?SourceConfigurationInterface $sourceConfiguration,
     ) {
         Assert::stringNotEmpty($this->code);
         Assert::stringNotEmpty($this->type);
@@ -39,9 +39,9 @@ class AttributeTarget implements TargetInterface
         ?string $locale,
         string $actionIfNotEmpty,
         string $actionIfEmpty,
-        ?SourceParameterInterface $sourceParameter,
+        ?SourceConfigurationInterface $sourceConfiguration,
     ): self {
-        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty, $sourceParameter);
+        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty, $sourceConfiguration);
     }
 
     public function getCode(): string
@@ -74,8 +74,8 @@ class AttributeTarget implements TargetInterface
         return $this->actionIfEmpty;
     }
 
-    public function getSourceParameter(): ?SourceParameterInterface
+    public function getSourceConfiguration(): ?SourceConfigurationInterface
     {
-        return $this->sourceParameter;
+        return $this->sourceConfiguration;
     }
 }

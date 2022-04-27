@@ -15,22 +15,25 @@ use PhpSpec\ObjectBehavior;
  */
 class GetSampleDataHandlerSpec extends ObjectBehavior
 {
-    public function it_return_a_sample_of_data(
+    public function it_returns_a_sample_of_data(
         XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
         XlsxFileReaderInterface $fileReader
     ) {
         $query = new GetSampleDataQuery();
-        $query->columnIndex = 1;
-        $query->sheetName = "sheet1";
-        $query->fileKey = "/filepath";
+        $query->columnIndices = [1, 2];
+        $query->sheetName = 'sheet1';
+        $query->fileKey = '/filepath';
         $query->productLine = 2;
 
         $xlsxFileReaderFactory->create($query->fileKey)->willReturn($fileReader)->shouldBeCalled();
-        $fileReader->readColumnValues(
+        $fileReader->readColumnsValues(
             $query->sheetName,
             $query->productLine,
-            $query->columnIndex
-        )->willReturn(["value1","value1","value2","value2","value3","value3"])->shouldBeCalled();
+            $query->columnIndices,
+        )->willReturn([
+            1 => ['value1', 'value1', 'value2'],
+            2 => ['value2', 'value3', 'value3'],
+        ])->shouldBeCalled();
 
         $this->beConstructedWith($xlsxFileReaderFactory);
 

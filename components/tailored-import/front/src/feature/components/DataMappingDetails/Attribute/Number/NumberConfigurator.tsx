@@ -1,6 +1,6 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
-import {isNumberTarget, NumberSourceParameter} from './model';
+import {isNumberTarget, NumberSourceConfiguration} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
@@ -23,8 +23,8 @@ const NumberConfigurator = ({
     throw new InvalidAttributeTargetError(`Invalid target data "${target.code}" for number configurator`);
   }
 
-  const handleSourceParameterChange = (updatedSourceParameter: NumberSourceParameter) =>
-    onTargetChange({...target, source_parameter: updatedSourceParameter});
+  const handleSourceConfigurationChange = (updatedSourceConfiguration: NumberSourceConfiguration) =>
+    onTargetChange({...target, source_configuration: updatedSourceConfiguration});
 
   return (
     <>
@@ -37,15 +37,16 @@ const NumberConfigurator = ({
         <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
         {attribute.decimals_allowed && (
           <DecimalSeparatorField
-            value={target.source_parameter.decimal_separator}
+            value={target.source_configuration.decimal_separator}
             onChange={decimalSeparator =>
-              handleSourceParameterChange({...target.source_parameter, decimal_separator: decimalSeparator})
+              handleSourceConfigurationChange({...target.source_configuration, decimal_separator: decimalSeparator})
             }
             validationErrors={decimalSeparatorErrors}
           />
         )}
       </AttributeTargetParameters>
       <Sources
+        isMultiSource={false}
         sources={dataMapping.sources}
         columns={columns}
         validationErrors={filterErrors(validationErrors, '[sources]')}

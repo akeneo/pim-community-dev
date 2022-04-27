@@ -1,11 +1,26 @@
 services:
+  akeneo.tailored_import.user_intent_factory.boolean:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.measurement:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
 
+  akeneo.tailored_import.user_intent_factory.multiselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
   akeneo.tailored_import.user_intent_factory.number:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\NumberUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.simpleselect:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleSelectUserIntentFactory
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
 

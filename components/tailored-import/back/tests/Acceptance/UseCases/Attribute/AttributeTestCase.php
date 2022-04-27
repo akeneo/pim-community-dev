@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AttributeTestCase extends KernelTestCase
@@ -21,6 +24,25 @@ abstract class AttributeTestCase extends KernelTestCase
     public function setUp(): void
     {
         static::bootKernel(['debug' => false]);
+    }
+
+    protected function createIdentifierDataMapping(string $identifierColumnUuid): DataMapping
+    {
+        return DataMapping::create(
+            'b244c45c-d5ec-4993-8cff-7ccd04e82fef',
+            AttributeTarget::create(
+                'sku',
+                'pim_catalog_identifier',
+                null,
+                null,
+                'set',
+                'skip',
+                null,
+            ),
+            [$identifierColumnUuid],
+            OperationCollection::create([]),
+            [],
+        );
     }
 
     protected function getExecuteDataMappingHandler(): ExecuteDataMappingHandler

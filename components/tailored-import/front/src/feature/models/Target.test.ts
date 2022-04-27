@@ -19,7 +19,7 @@ test('it can create an attribute target', () => {
     type: 'attribute',
     channel: null,
     locale: null,
-    source_parameter: null,
+    source_configuration: null,
   });
 
   expect(createAttributeTarget(getAttribute('name'), 'ecommerce', null)).toEqual({
@@ -29,7 +29,7 @@ test('it can create an attribute target', () => {
     type: 'attribute',
     channel: 'ecommerce',
     locale: null,
-    source_parameter: null,
+    source_configuration: null,
   });
 
   expect(createAttributeTarget(getAttribute('name'), null, 'fr_FR')).toEqual({
@@ -39,7 +39,7 @@ test('it can create an attribute target', () => {
     type: 'attribute',
     channel: null,
     locale: 'fr_FR',
-    source_parameter: null,
+    source_configuration: null,
   });
 
   expect(createAttributeTarget(getAttribute('name'), 'mobile', 'fr_FR')).toEqual({
@@ -49,7 +49,7 @@ test('it can create an attribute target', () => {
     type: 'attribute',
     channel: 'mobile',
     locale: 'fr_FR',
-    source_parameter: null,
+    source_configuration: null,
   });
 });
 
@@ -71,7 +71,7 @@ test('it can tell if a Target is an attribute target', () => {
       action_if_empty: 'skip',
       channel: null,
       locale: null,
-      source_parameter: null,
+      source_configuration: null,
     })
   ).toEqual(true);
 
@@ -115,7 +115,7 @@ test('it can tell if a Target is a property target', () => {
       action_if_empty: 'skip',
       channel: null,
       locale: null,
-      source_parameter: null,
+      source_configuration: null,
     })
   ).toEqual(false);
 });

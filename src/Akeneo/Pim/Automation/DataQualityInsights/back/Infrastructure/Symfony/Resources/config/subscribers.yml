@@ -10,6 +10,7 @@ services:
             $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
             $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             $logger: '@logger'
+            $idFactory: '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -28,6 +29,8 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetDescendantVariantProductIds'
             - '@pim_catalog.query.descendant_product_model_ids'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 

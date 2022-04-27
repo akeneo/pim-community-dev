@@ -47,7 +47,7 @@ test('it creates a default data mapping', () => {
       channel: null,
       code: 'sku',
       action_if_empty: 'skip',
-      source_parameter: null,
+      source_configuration: null,
       locale: null,
       type: 'attribute',
     },
@@ -77,7 +77,7 @@ test('it creates a default data mapping with sample data', () => {
       channel: null,
       code: 'sku',
       action_if_empty: 'skip',
-      source_parameter: null,
+      source_configuration: null,
       locale: null,
       type: 'attribute',
     },
@@ -95,7 +95,7 @@ test('it creates an attribute data mapping', () => {
       channel: null,
       code: 'description',
       action_if_empty: 'skip',
-      source_parameter: null,
+      source_configuration: null,
       locale: null,
       type: 'attribute',
     },
@@ -123,7 +123,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
       channel: null,
       code: 'description',
       action_if_empty: 'skip',
-      source_parameter: null,
+      source_configuration: null,
       locale: 'fr_FR',
       type: 'attribute',
     },
@@ -158,7 +158,7 @@ test('it adds a source to data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
-      source_parameter: null,
+      source_configuration: null,
     },
   };
 
@@ -174,7 +174,7 @@ test('it adds a source to data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
-      source_parameter: null,
+      source_configuration: null,
     },
   });
 });
@@ -193,7 +193,7 @@ test('it updates a data mapping', () => {
         action_if_empty: 'skip',
         locale: null,
         type: 'attribute',
-        source_parameter: null,
+        source_configuration: null,
       },
     },
     {
@@ -208,7 +208,7 @@ test('it updates a data mapping', () => {
         action_if_empty: 'clear',
         locale: null,
         type: 'attribute',
-        source_parameter: null,
+        source_configuration: null,
       },
     },
   ];
@@ -225,7 +225,7 @@ test('it updates a data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
-      source_parameter: null,
+      source_configuration: null,
     },
   };
 

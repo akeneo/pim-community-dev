@@ -30,8 +30,9 @@
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
     "free-trial:build": "yarn --cwd=front-packages/free-trial install --frozen-lockfile && yarn --cwd=front-packages/free-trial lib:build",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn free-trial:build",
-    "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn free-trial:build && yarn tailored-export:build",
+    "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build",
+    "tailored-export:build": "yarn workspace @akeneo-pim-enterprise/tailored-export lib:build"
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",
@@ -67,6 +68,7 @@
     "jest/**/ip-regex": "2.1.0"
   },
   "workspaces": [
+    "components/tailored-export/front",
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
     "vendor/akeneo/pim-community-dev/front-packages/shared",

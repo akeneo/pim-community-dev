@@ -151,7 +151,8 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
   renderForm: (
     onPermissionsChange,
     initialState: AttributeGroupPermissionState | undefined = defaultState,
-    readOnly: boolean = false
+    readOnly: boolean = false,
+    onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(AttributeGroupPermissionReducer, initialState);
 
@@ -164,33 +165,37 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.attribute_group.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.attribute_group.edit_permissions'),
-            })}
-          </Helper>
+        {!onlyDisplayViewPermissions && (
+          <>
+            {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.attribute_group.edit_permissions'),
+                })}
+              </Helper>
+            )}
+            <Label>{translate('pim_permissions.widget.level.edit')}</Label>
+            <PermissionFormWidget
+              selection={state.edit.identifiers}
+              onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+              onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
+              disabled={state.edit.all}
+              readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') || readOnly}
+              allByDefaultIsSelected={state.edit.all}
+              onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+              onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+              onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
+              ajax={{
+                ajaxUrl: attributeGroupsAjaxUrl,
+                processAjaxResponse: processAttributeGroups,
+                fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
+                buildQueryParams: buildQueryParams,
+              }}
+            />
+          </>
         )}
-        <Label>{translate('pim_permissions.widget.level.edit')}</Label>
-        <PermissionFormWidget
-          selection={state.edit.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
-          disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') || readOnly}
-          allByDefaultIsSelected={state.edit.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajax={{
-            ajaxUrl: attributeGroupsAjaxUrl,
-            processAjaxResponse: processAttributeGroups,
-            fetchByIdentifiers: fetchAttributeGroupsByIdentifiers,
-            buildQueryParams: buildQueryParams,
-          }}
-        />
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
           selection={state.view.identifiers}

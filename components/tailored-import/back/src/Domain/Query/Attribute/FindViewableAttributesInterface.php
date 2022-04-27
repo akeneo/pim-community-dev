@@ -23,6 +23,6 @@ interface FindViewableAttributesInterface
         string $localeCode,
         int $limit,
         int $offset = 0,
-        string $search = null
+        string $search = null,
     ): ViewableAttributesResult;
 }

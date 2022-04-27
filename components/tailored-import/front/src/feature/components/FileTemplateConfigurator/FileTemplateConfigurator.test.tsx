@@ -14,7 +14,7 @@ const fileStructure: FileStructure = {
   sheet_name: 'currentTestSheet',
 };
 
-test('it display correct value when provided with a templateInformation', async () => {
+test('it displays correct value when provided with a templateInformation', async () => {
   await renderWithProviders(
     <FileTemplateConfigurator
       fileTemplateInformation={{
@@ -152,7 +152,7 @@ test('it dispatch an event when column identifier change', async () => {
   expect(handleFileStructureChange).toBeCalledWith({...fileStructure, unique_identifier_column: 0});
 });
 
-test('it display validation errors', async () => {
+test('it displays validation errors', async () => {
   const validationErrors: ValidationError[] = [
     {
       messageTemplate: 'sheet_error.key.name',

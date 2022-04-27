@@ -29,7 +29,7 @@ class GetGroupedTargets implements GetGroupedTargetsInterface
     public function __construct(
         private FindViewableAttributesInterface $findViewableAttributes,
         private FindSystemTargetsInterface $findSystemTargets,
-        private TranslatorInterface $translator
+        private TranslatorInterface $translator,
     ) {
     }
 
@@ -50,12 +50,12 @@ class GetGroupedTargets implements GetGroupedTargetsInterface
         return new GroupedTargetsResult(
             array_merge(
                 $this->formatSystemFields($paginatedFields, $locale),
-                $this->formatAttributes($attributesResult->getAttributes())
+                $this->formatAttributes($attributesResult->getAttributes()),
             ),
             [
                 'system' => $systemOffset + count($paginatedFields),
-                'attribute' => $attributesResult->getOffset()
-            ]
+                'attribute' => $attributesResult->getOffset(),
+            ],
         );
     }
 
@@ -72,7 +72,7 @@ class GetGroupedTargets implements GetGroupedTargetsInterface
                 sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
                 [],
                 null,
-                $localeCode
+                $localeCode,
             ),
         ], $fields);
 

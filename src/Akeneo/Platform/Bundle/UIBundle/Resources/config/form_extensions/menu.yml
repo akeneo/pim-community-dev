@@ -7,6 +7,7 @@ extensions:
         config:
             title: pim_menu.item.rule
             to: pimee_catalog_rule_rule_index
+        feature: product_rules
 
     pim-menu-activity-proposal:
         module: pim/menu/item

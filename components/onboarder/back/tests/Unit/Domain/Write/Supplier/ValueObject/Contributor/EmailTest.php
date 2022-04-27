@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Unit\Domain\Write\Supplier\ValueObject\Contributor;
 
-use Akeneo\OnboarderSerenity\Domain\Write\Supplier\ValueObject\Contributor\Email;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Contributor\Email;
 use PHPUnit\Framework\TestCase;
 
 class EmailTest extends TestCase

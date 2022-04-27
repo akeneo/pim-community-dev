@@ -1,0 +1,15 @@
+services:
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier:
+    public: true
+    arguments:
+      - !tagged_iterator akeneo.tailored_import.source_configuration_applier
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\NumberSourceConfigurationApplier:
+    public: true
+    tags:
+      - { name: akeneo.tailored_import.source_configuration_applier }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\MeasurementSourceConfigurationApplier:
+    public: true
+    tags:
+      - { name: akeneo.tailored_import.source_configuration_applier }

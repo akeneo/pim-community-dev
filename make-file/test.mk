@@ -17,6 +17,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
 	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
 	PIM_CONTEXT=tailored-import $(MAKE) coupling-back
+	PIM_CONTEXT=job-automation $(MAKE) coupling-back
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 ### Static tests
@@ -48,6 +49,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
 	PIM_CONTEXT=tailored-export $(MAKE) lint-back
 	PIM_CONTEXT=tailored-import $(MAKE) lint-back
+	PIM_CONTEXT=job-automation $(MAKE) lint-back
 
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
@@ -65,6 +67,7 @@ unit-back: var/tests/phpspec community-unit-back growth-unit-back #Doc: launch a
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
 	PIM_CONTEXT=tailored-export $(MAKE) unit-back
 	PIM_CONTEXT=tailored-import $(MAKE) unit-back
+	PIM_CONTEXT=job-automation $(MAKE) unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -101,6 +104,7 @@ acceptance-back: var/tests/behat growth-acceptance-back #Doc: launch Behat accep
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-acceptance-back
 	PIM_CONTEXT=tailored-export $(MAKE) acceptance-back
 	PIM_CONTEXT=tailored-import $(MAKE) acceptance-back
+	PIM_CONTEXT=job-automation $(MAKE) acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 
@@ -124,6 +128,7 @@ integration-back: var/tests/phpunit pim-integration-back #Doc: launch all integr
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-integration-back
 	PIM_CONTEXT=tailored-export $(MAKE) integration-back
 	PIM_CONTEXT=tailored-import $(MAKE) integration-back
+	PIM_CONTEXT=job-automation $(MAKE) integration-back
 	PIM_CONTEXT=enrichment-product $(MAKE) enrichment-product-integration-back
 
 .PHONY: pim-integration-back
