@@ -39,7 +39,7 @@ final class GetRefreshedSampleDataAction
         }
 
         $query = new GetRefreshedSampleDataQuery();
-        $query->currentSample = $request->get('current_sample');
+        $query->currentSample = $request->get('current_sample', []);
         $query->fileKey = $request->get('file_key');
         $query->columnIndices = array_map('intval', $request->get('column_indices'));
         $query->sheetName = $request->get('sheet_name');

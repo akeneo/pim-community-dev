@@ -30,6 +30,7 @@ class GetSampleDataHandlerSpec extends ObjectBehavior
             $query->sheetName,
             $query->productLine,
             $query->columnIndices,
+            1000
         )->willReturn([
             1 => ['value1', 'value1', 'value2'],
             2 => ['value2', 'value3', 'value3'],

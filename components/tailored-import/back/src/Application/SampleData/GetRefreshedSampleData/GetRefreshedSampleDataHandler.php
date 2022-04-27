@@ -13,6 +13,8 @@ use Akeneo\Platform\TailoredImport\Domain\SampleData\ReplaceSampleData;
  */
 final class GetRefreshedSampleDataHandler
 {
+    private const MAX_SAMPLE_DATA_SIZE = 1000;
+
     public function __construct(
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
     ) {
@@ -26,6 +28,7 @@ final class GetRefreshedSampleDataHandler
             $getRefreshedSampleDataQuery->sheetName,
             $getRefreshedSampleDataQuery->productLine,
             $getRefreshedSampleDataQuery->columnIndices,
+            self::MAX_SAMPLE_DATA_SIZE,
         );
 
         $sampleData = ReplaceSampleData::fromExtractedColumns($extractedColumns, $getRefreshedSampleDataQuery->currentSample);

@@ -13,6 +13,8 @@ use Akeneo\Platform\TailoredImport\Domain\SampleData\SelectSampleData;
  */
 final class GetSampleDataHandler
 {
+    private const MAX_SAMPLE_DATA_SIZE = 1000;
+
     public function __construct(
         private XlsxFileReaderFactoryInterface $xlsxFileReaderFactory,
     ) {
@@ -26,6 +28,7 @@ final class GetSampleDataHandler
             $getSampleDataQuery->sheetName,
             $getSampleDataQuery->productLine,
             $getSampleDataQuery->columnIndices,
+            self::MAX_SAMPLE_DATA_SIZE,
         );
 
         $sampleData = SelectSampleData::fromExtractedColumns($extractedColumns);

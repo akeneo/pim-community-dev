@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\FileKey;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -25,23 +32,21 @@ class RefreshSampleDataQueryValidator extends ConstraintValidator
             return;
         }
 
-        $requiredParams = [
-            'file_key',
-            'column_indices',
-            'sheet_name',
-            'product_line',
-            'current_sample',
-        ];
-
-        $missingParams = array_filter($requiredParams, static fn ($param) => null === $value->get($param));
-
-        if (count($missingParams) > 0) {
-            $this->context->buildViolation(
-                RefreshSampleDataQuery::MISSING_QUERY_PARAMS,
-                [
-                    '{{ missing_params }}' => implode(', ', $missingParams),
-                ],
-            )->addViolation();
-        }
+        $this->context->getValidator()->inContext($this->context)->validate($value->query->all(), new Collection([
+            'file_key' => [
+                new FileKey(),
+            ],
+            'column_indices' => [
+                new All([
+                    new Type('digit'),
+                ]),
+            ],
+            'sheet_name' => [
+                new Type('string'),
+                new NotBlank(['allowNull' => true]),
+            ],
+            'product_line' => new Type('digit'),
+            'current_sample' => new Optional(new SampleData()),
+        ]));
     }
 }

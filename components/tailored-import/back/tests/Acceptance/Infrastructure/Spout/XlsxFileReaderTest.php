@@ -64,6 +64,46 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     /**
      * @test
      */
+    public function it_returns_columns_values_at_a_specific_sheet_and_a_specific_lines(): void
+    {
+        $xlsxFileReader = $this->getFileReader();
+
+        $this->assertEquals(
+            [
+                1 => [
+                    'ref1',
+                    'ref2',
+                ],
+                3 => [
+                    '12',
+                    '13.87',
+                ],
+            ],
+            $xlsxFileReader->readColumnsValues('Empty lines and columns', 4, [1, 3], 2)
+        );
+
+        $this->assertEquals(
+            [
+                1 => [],
+                3 => [],
+            ],
+            $xlsxFileReader->readColumnsValues('Empty lines and columns', 8, [1, 3], 5)
+        );
+
+        $this->assertEquals(
+            [
+                10 => [
+                    '',
+                    '',
+                ],
+            ],
+            $xlsxFileReader->readColumnsValues('Empty lines and columns', 4, [10], 2)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_exception_when_file_is_not_found(): void
     {
         $this->expectException(FileNotFoundException::class);
@@ -100,7 +140,7 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     {
         $xlsxFileReader = $this->getFileReader();
         $actualSheetNames = $xlsxFileReader->getSheetNames();
-        $expectedSheetNames = ['Products', 'Empty lines and columns', 'Empty sheet', 'Out of bound value'];
+        $expectedSheetNames = ['Products', 'Empty lines and columns', 'Empty sheet', 'Out of bound value', 'Two lines'];
 
         $this->assertEquals($expectedSheetNames, $actualSheetNames);
     }
