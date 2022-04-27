@@ -93,6 +93,31 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
     /**
      * @test
      */
+    public function it_returns_the_headers_even_with_empty_trailing_header()
+    {
+        $flatFileIterator = $this->getFlatFileIterator(
+            headerLine: 1,
+            firstColumn: 0,
+            productLine: 2,
+            sheetName: 'Trailing empty header',
+        );
+
+        $actualFileHeader = $flatFileIterator->getHeaders();
+        $expectedFileHeader = FileHeaderCollection::createFromNormalized([
+            ['index' => 0, 'label' => 'Sku'],
+            ['index' => 1, 'label' => 'Name'],
+            ['index' => 2, 'label' => 'Price'],
+            ['index' => 3, 'label' => 'Enabled'],
+            ['index' => 4, 'label' => 'Release date'],
+            ['index' => 5, 'label' => 'Price with tax']
+        ]);
+
+        $this->assertEquals($expectedFileHeader, $actualFileHeader);
+    }
+
+    /**
+     * @test
+     */
     public function it_throw_an_exception_when_file_is_not_found(): void
     {
         $this->expectException(FileNotFoundException::class);
