@@ -82,7 +82,7 @@ SQL
             $entity = $productScore->getEntityId();
             Assert::isInstanceOf($entity, ProductUuid::class);
 
-            return (string)$productScore->getEntityId()->toBytes();
+            return (string) $entity->toBytes();
         }, $productsScores);
 
         $this->dbConnection->executeQuery(
