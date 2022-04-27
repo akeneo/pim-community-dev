@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: Import rules
   In order to fix incorrect product data
   As an administrator

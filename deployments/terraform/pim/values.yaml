@@ -155,7 +155,7 @@ pim:
           memory: "30Mi"
   elasticsearch:
     settings:
-      totalFieldsLimit: 10000
+      totalFieldsLimit: 50000
       maxChunkSizeCharacters: 100000000
   dqi:
     settings:
