@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\OneTimeTaskCommandTrait;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -32,17 +33,17 @@ final class CleanCompletenessEvaluationResultsCommandIntegration extends DataQua
 
     public function test_it_cleans_completeness_evaluation_results(): void
     {
-        $cleanProductId = $this->givenAProductWithCleanCompletenessResults();
-        $aDirtyProductId = $this->givenAProductWithDirtyCompletenessResults();
-        $anotherDirtyProductId = $this->givenAnotherProductWithDirtyCompletenessResults();
-        $aDirtyProductModelId = $this->givenAProductModelWithDirtyCompletenessResults();
+        $cleanProductUuid = $this->givenAProductWithCleanCompletenessResults();
+        $aDirtyProductUuid = $this->givenAProductWithDirtyCompletenessResults();
+        $anotherDirtyProductUuid = $this->givenAnotherProductWithDirtyCompletenessResults();
+        $aDirtyProductModelUuid = $this->givenAProductModelWithDirtyCompletenessResults();
 
         $this->launchCleaning();
 
-        $this->assertDirtyProductHasBeenCleaned($aDirtyProductId);
-        $this->assertAnotherDirtyProductHasBeenCleaned($anotherDirtyProductId);
-        $this->assertCleanProductHasNoChanges($cleanProductId);
-        $this->assertDirtyProductModelHasBeenCleaned($aDirtyProductModelId);
+        $this->assertDirtyProductHasBeenCleaned($aDirtyProductUuid);
+        $this->assertAnotherDirtyProductHasBeenCleaned($anotherDirtyProductUuid);
+        $this->assertCleanProductHasNoChanges($cleanProductUuid);
+        $this->assertDirtyProductModelHasBeenCleaned($aDirtyProductModelUuid);
     }
 
     private function launchCleaning(): void
@@ -58,84 +59,84 @@ final class CleanCompletenessEvaluationResultsCommandIntegration extends DataQua
         self::assertEquals(0, $commandTester->getStatusCode(), $commandTester->getErrorOutput());
     }
 
-    private function givenAProductWithCleanCompletenessResults(): int
+    private function givenAProductWithCleanCompletenessResults(): UuidInterface
     {
-        $productId = $this->createProduct('a_clean_product')->getId();
+        $productUuid = $this->createProduct('a_clean_product')->getUuid();
 
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
             $this->buildCleanResult(5)
         );
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
             $this->buildCleanResult(1)
         );
 
-        return $productId;
+        return $productUuid;
     }
 
-    private function givenAProductWithDirtyCompletenessResults(): int
+    private function givenAProductWithDirtyCompletenessResults(): UuidInterface
     {
-        $productId = $this->createProduct('a_dirty_product')->getId();
+        $productUuid = $this->createProduct('a_dirty_product')->getUuid();
 
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
             $this->buildDirtyResult([12, 45, 64])
         );
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
             $this->buildDirtyResult([99, 57])
         );
 
-        return $productId;
+        return $productUuid;
     }
 
-    private function givenAnotherProductWithDirtyCompletenessResults(): int
+    private function givenAnotherProductWithDirtyCompletenessResults(): UuidInterface
     {
-        $productId = $this->createProduct('another_dirty_product')->getId();
+        $productUuid = $this->createProduct('another_dirty_product')->getUuid();
 
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE,
             $this->buildDirtyResult([89])
         );
         $this->updateProductCriterionResult(
-            $productId,
+            $productUuid,
             EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE,
             $this->buildDirtyResult([])
         );
 
-        return $productId;
+        return $productUuid;
     }
 
-    private function assertDirtyProductHasBeenCleaned(int $productId): void
+    private function assertDirtyProductHasBeenCleaned(UuidInterface $productUuid): void
     {
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(3), 'The completeness of non required attributes should have been cleaned for the dirty product');
 
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(2), 'The completeness of required attributes should have been cleaned for the dirty product');
     }
 
-    private function assertAnotherDirtyProductHasBeenCleaned(int $productId): void
+    private function assertAnotherDirtyProductHasBeenCleaned(UuidInterface $productUuid): void
     {
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(1), 'The completeness of non required attributes should have been cleaned for the another dirty product');
 
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(0), 'The completeness of required attributes should have been cleaned for the another dirty product');
     }
 
-    private function assertCleanProductHasNoChanges(int $productId): void
+    private function assertCleanProductHasNoChanges(UuidInterface $productUuid): void
     {
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(5), 'The completeness of non required attributes should not have been changed for the clean product');
 
-        $result = $this->getProductCriterionResult($productId, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
+        $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
         $this->assertEquals($result, $this->buildCleanResult(1), 'The completeness of required attributes should not have been changed for the clean product');
     }
 
@@ -173,31 +174,35 @@ final class CleanCompletenessEvaluationResultsCommandIntegration extends DataQua
         ];
     }
 
-    private function updateProductCriterionResult(int $productId, string $criterionCode, array $result): void
+    private function updateProductCriterionResult(UuidInterface $productUuid, string $criterionCode, array $result): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation
 SET result = :result 
-WHERE product_id = :productId AND criterion_code = :criterionCode;
+WHERE product_uuid = :productUuid AND criterion_code = :criterionCode;
 SQL;
 
         $this->dbConnection->executeQuery($query, [
-            'productId' => $productId,
+            'productUuid' => $productUuid->getBytes(),
             'criterionCode' => $criterionCode,
             'result' => \json_encode($result)
+        ], [
+            'productUuid' => \PDO::PARAM_STR,
         ]);
     }
 
-    private function getProductCriterionResult(int $productId, string $criterionCode): ?array
+    private function getProductCriterionResult(UuidInterface $productUuid, string $criterionCode): ?array
     {
         $query = <<<SQL
 SELECT result FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id = :productId AND criterion_code = :criterionCode;
+WHERE product_uuid = :productUuid AND criterion_code = :criterionCode;
 SQL;
 
         $result = $this->dbConnection->executeQuery($query, [
-            'productId' => $productId,
+            'productUuid' => $productUuid->getBytes(),
             'criterionCode' => $criterionCode
+        ], [
+            'productUuid' => \PDO::PARAM_STR,
         ])->fetchOne();
 
         return $result ? \json_decode($result, true) : null;
