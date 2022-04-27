@@ -78,7 +78,12 @@ SQL
 
         // We need to delete younger product scores after inserting the new ones,
         // so we insure to have 1 product score per product
-        $productUuids = array_map(fn (Write\ProductScores $productScore) => (string) $productScore->getEntityId()->toBytes(), $productsScores);
+        $productUuids = array_map(function (Write\ProductScores $productScore) {
+            $entity = $productScore->getEntityId();
+            Assert::isInstanceOf($entity, ProductUuid::class);
+
+            return (string)$productScore->getEntityId()->toBytes();
+        }, $productsScores);
 
         $this->dbConnection->executeQuery(
             <<<SQL

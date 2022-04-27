@@ -70,6 +70,7 @@ final class CleanProductScoresCommand extends Command
 
     private function getNextProductScoresToClean(int $lastProductId): string
     {
+        // TODO Manage this query, it sorts by product id
         $query = <<<SQL
 SELECT old_scores.product_id, old_scores.evaluated_at
 FROM pim_data_quality_insights_product_score AS old_scores
