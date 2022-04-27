@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseSupplierContributorsBelongToAnotherSupplier implements SupplierContributorsBelongToAnotherSupplier
+final class DatabaseSupplierContributorsBelongingToAnotherSupplier implements SupplierContributorsBelongingToAnotherSupplier
 {
     private Connection $connection;
 

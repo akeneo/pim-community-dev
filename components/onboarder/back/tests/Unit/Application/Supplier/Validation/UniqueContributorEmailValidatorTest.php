@@ -7,7 +7,7 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier\Validation;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmail;
 use Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmailValidator;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
@@ -30,7 +30,7 @@ final class UniqueContributorEmailValidatorTest extends TestCase
         $violationsBuilder->expects($this->once())->method('setParameter')->willReturn($violationsBuilder);
         $violationsBuilder->expects($this->once())->method('addViolation');
 
-        $spy = $this->createMock(SupplierContributorsBelongToAnotherSupplier::class);
+        $spy = $this->createMock(SupplierContributorsBelongingToAnotherSupplier::class);
 
         $spy->expects($this->once())->method('__invoke')->willReturn(
             ['contributor1@akeneo.com'],
@@ -54,7 +54,7 @@ final class UniqueContributorEmailValidatorTest extends TestCase
         $executionContext->expects($this->once())->method('getObject')->willReturn($updateSupplierCommand);
         $executionContext->expects($this->never())->method('buildViolation');
 
-        $spy = $this->createMock(SupplierContributorsBelongToAnotherSupplier::class);
+        $spy = $this->createMock(SupplierContributorsBelongingToAnotherSupplier::class);
 
         $spy->expects($this->once())->method('__invoke')->willReturn([]);
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Test\Integration\Infrastructure\Supplier\Query\Sql;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Akeneo\OnboarderSerenity\Test\Integration\SqlIntegrationTestCase;
 use Doctrine\DBAL\Connection;
 
-final class DatabaseSupplierContributorsBelongToAnotherSupplierIntegration extends SqlIntegrationTestCase
+final class DatabaseSupplierContributorsBelongingToAnotherSupplierIntegration extends SqlIntegrationTestCase
 {
     /** @test */
     public function itReturnsContributorEmailsThatBelongToAnotherSupplier(): void
@@ -19,7 +19,7 @@ final class DatabaseSupplierContributorsBelongToAnotherSupplierIntegration exten
 
         $this->assertEquals(
             ['contributor1@example.com', 'contributor2@example.com',],
-            $this->get(SupplierContributorsBelongToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [
+            $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [
                 'contributor1@example.com',
                 'contributor3@example.com',
                 'contributor2@example.com',
@@ -36,7 +36,7 @@ final class DatabaseSupplierContributorsBelongToAnotherSupplierIntegration exten
 
         $this->assertEquals(
             [],
-            $this->get(SupplierContributorsBelongToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [
+            $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [
                 'contributor3@example.com',
                 'contributor4@example.com',
             ])
@@ -51,7 +51,7 @@ final class DatabaseSupplierContributorsBelongToAnotherSupplierIntegration exten
         $this->createContributor('contributor2@example.com');
 
         $this->assertEmpty(
-            $this->get(SupplierContributorsBelongToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [])
+            $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [])
         );
     }
 

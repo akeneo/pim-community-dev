@@ -52,8 +52,8 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierContributorsBelongToAnotherSupplier
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierContributorsBelongingToAnotherSupplier
         arguments:
             - '@database_connection'
 
@@ -90,10 +90,10 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
 
-    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsThatBelongToAnotherSupplier:
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier:
         public: true
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
 
     # Encoders
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
@@ -102,6 +102,6 @@ services:
     # Validators
     Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmailValidator:
         arguments:
-            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
         tags:
             - { name: validator.constraint_validator }

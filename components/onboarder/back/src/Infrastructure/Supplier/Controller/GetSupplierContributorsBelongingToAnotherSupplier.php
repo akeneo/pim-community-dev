@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-final class GetSupplierContributorsThatBelongToAnotherSupplier
+final class GetSupplierContributorsBelongingToAnotherSupplier
 {
-    public function __construct(private SupplierContributorsBelongToAnotherSupplier $supplierContributorsBelongToAnotherSupplier)
+    public function __construct(private SupplierContributorsBelongingToAnotherSupplier $supplierContributorsBelongToAnotherSupplier)
     {
     }
 
@@ -19,7 +19,7 @@ final class GetSupplierContributorsThatBelongToAnotherSupplier
         return new JsonResponse(
             ($this->supplierContributorsBelongToAnotherSupplier)(
                 $request->get('supplierIdentifier'),
-                $request->get('email')
+                $request->get('emails')
             )
         );
     }

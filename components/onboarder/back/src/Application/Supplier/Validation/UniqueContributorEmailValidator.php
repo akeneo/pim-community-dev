@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Application\Supplier\Validation;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongToAnotherSupplier;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 final class UniqueContributorEmailValidator extends ConstraintValidator
 {
-    public function __construct(private SupplierContributorsBelongToAnotherSupplier $supplierContributorsBelongToAnotherSupplier)
+    public function __construct(private SupplierContributorsBelongingToAnotherSupplier $supplierContributorsBelongingToAnotherSupplier)
     {
     }
 
@@ -22,10 +22,10 @@ final class UniqueContributorEmailValidator extends ConstraintValidator
             return;
         }
 
-        $invalidEmails = ($this->supplierContributorsBelongToAnotherSupplier)($supplier->identifier, [$value]);
-        if(count($invalidEmails) > 0) {
+        $contributorEmails = ($this->supplierContributorsBelongingToAnotherSupplier)($supplier->identifier, [$value]);
+        if(count($contributorEmails) > 0) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ emailAddress }}', $invalidEmails[0])
+                ->setParameter('{{ emailAddress }}', $contributorEmails[0])
                 ->addViolation();
         }
     }
