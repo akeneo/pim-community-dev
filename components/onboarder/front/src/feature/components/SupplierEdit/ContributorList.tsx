@@ -20,7 +20,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
     const [contributorsBelongingToAnotherSupplier, setContributorsBelongingToAnotherSupplier] = useState<string[]>([]);
     const getContributorsBelongingToAnotherSupplierRoute = useRoute(
         'onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier',
-        {supplierIdentifier, emails: JSON.stringify(contributors)},
+        {supplierIdentifier, emails: JSON.stringify(contributors)}
     );
 
     const displayInvalidContributorEmailsWarning = newContributors.filter(email => !isValidEmail(email)).length > 0;
@@ -70,13 +70,11 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
                     </Button>
                 </FieldContent>
-                {
-                    displayInvalidContributorEmailsWarning && (
-                        <Helper level="warning">
-                            {translate('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')}
-                        </Helper>
-                    )
-                }
+                {displayInvalidContributorEmailsWarning && (
+                    <Helper level="warning">
+                        {translate('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')}
+                    </Helper>
+                )}
             </Field>
 
             {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
@@ -98,10 +96,13 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         </Search.ResultCount>
                     </Search>
 
-                    {contributorsBelongingToAnotherSupplier.length > 0 &&
-                        <StyledHelper level={"warning"}>
-                            {translate('onboarder.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning')}
-                        </StyledHelper>}
+                    {contributorsBelongingToAnotherSupplier.length > 0 && (
+                        <StyledHelper level={'warning'}>
+                            {translate(
+                                'onboarder.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning'
+                            )}
+                        </StyledHelper>
+                    )}
 
                     <Table hasWarnedRows={contributorsBelongingToAnotherSupplier.length > 0}>
                         <Table.Header>
@@ -112,7 +113,11 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         </Table.Header>
                         <Table.Body>
                             {filteredContributors.map(email => (
-                                <Table.Row key={email} data-testid={email} hasWarning={contributorsBelongingToAnotherSupplier.includes(email)}>
+                                <Table.Row
+                                    key={email}
+                                    data-testid={email}
+                                    hasWarning={contributorsBelongingToAnotherSupplier.includes(email)}
+                                >
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
                                         <DeleteIcon onClick={() => removeContributor(email)} />

@@ -70,10 +70,9 @@ test('it displays a warning helper if a contributor email is not valid', () => {
     };
     renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
 
-    userEvent.type(
-        screen.getByTestId('tag-input'),
-        'invalidemail'.concat('{space}')
-    );
+    userEvent.type(screen.getByTestId('tag-input'), 'invalidemail'.concat('{space}'));
 
-    expect(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')).toBeInTheDocument();
+    expect(
+        screen.getByText('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')
+    ).toBeInTheDocument();
 });

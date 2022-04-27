@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError,} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {

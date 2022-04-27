@@ -14,7 +14,7 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
     {
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         return new JsonResponse(
             ($this->supplierContributorsBelongToAnotherSupplier)(

@@ -2,7 +2,7 @@ import {act} from '@testing-library/react-hooks';
 import {mockedDependencies, NotificationLevel, renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useSupplier} from './useSupplier';
 import {waitFor} from '@testing-library/react';
-import {Supplier} from "../models";
+import {Supplier} from '../models';
 
 const backendResponse = {
     identifier: 'b2d485ef-49c4-45c8-b091-db0243b76055',
@@ -80,9 +80,9 @@ test('it saves a supplier', async () => {
 test('it renders an error notification if the saving of the supplier failed', async () => {
     const backendValidationErrors = [
         {
-            propertyPath:"label",
-            message:"This value is too long. It should have 3 characters or less.",
-            invalidValue:"Jean Michel",
+            propertyPath: 'label',
+            message: 'This value is too long. It should have 3 characters or less.',
+            invalidValue: 'Jean Michel',
         },
     ];
 
@@ -105,14 +105,18 @@ test('it renders an error notification if the saving of the supplier failed', as
 
     const [supplier, setSupplier, , saveSupplier] = result.current;
 
-    const updatedSupplier: Supplier = {...supplier, label: 'Jean Michel', contributors: [...supplier.contributors, 'invalidEmail']};
+    const updatedSupplier: Supplier = {
+        ...supplier,
+        label: 'Jean Michel',
+        contributors: [...supplier.contributors, 'invalidEmail'],
+    };
     await act(async () => setSupplier(updatedSupplier));
     await act(async () => saveSupplier());
 
     expect(notify).toHaveBeenNthCalledWith(
         1,
         NotificationLevel.ERROR,
-        'onboarder.supplier.supplier_edit.unknown_error',
+        'onboarder.supplier.supplier_edit.unknown_error'
     );
     const [, , , , validationErrors] = result.current;
     expect(validationErrors).toStrictEqual(backendValidationErrors);

@@ -43,6 +43,6 @@ test('it renders an error notification if the loading of the suppliers failed', 
         1,
         NotificationLevel.ERROR,
         'onboarder.supplier.supplier_list.notification.error.title',
-        'onboarder.supplier.supplier_list.notification.error.content',
+        'onboarder.supplier.supplier_list.notification.error.content'
     );
 });
