@@ -6,17 +6,17 @@ use Symfony\Component\Validator\Constraint;
 
 class FilePath extends Constraint
 {
-    public const BAD_EXTENSION = 'akeneo.job_automation.validation.file_path.bad_extension';
+    public const UNSUPPORTED_EXTENSION = 'akeneo.job_automation.validation.file_path.unsupported_extension';
 
     public function __construct(
         /** @var string[] */
-        private array $allowedFileExtensions,
+        private array $supportedFileExtensions,
     ) {
         parent::__construct();
     }
 
-    public function getAllowedFileExtensions(): array
+    public function getSupportedFileExtensions(): array
     {
-        return $this->allowedFileExtensions;
+        return $this->supportedFileExtensions;
     }
 }

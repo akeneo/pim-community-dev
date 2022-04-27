@@ -23,18 +23,18 @@ class FilePathValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateFileExtension($value, $constraint->getAllowedFileExtensions());
+        $this->validateFileExtension($value, $constraint->getSupportedFileExtensions());
     }
 
-    private function validateFileExtension(string $filePath, array $allowedFileExtensions): void
+    private function validateFileExtension(string $filePath, array $supportedFileExtensions): void
     {
         $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
 
-        if (!in_array($fileExtension, $allowedFileExtensions)) {
+        if (!in_array($fileExtension, $supportedFileExtensions)) {
             $this->context->addViolation(
-                FilePath::BAD_EXTENSION,
+                FilePath::UNSUPPORTED_EXTENSION,
                 [
-                    '{{ allowed_extensions }}' => implode(', ', $allowedFileExtensions),
+                    '{{ supported_extensions }}' => implode(', ', $supportedFileExtensions),
                 ],
             );
         }

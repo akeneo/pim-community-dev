@@ -23,18 +23,20 @@ class StorageValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Storage::class);
         }
 
-        $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
-            'fields' => [
-                'type' => new Choice($this->getStorageTypes()),
-            ],
-            'allowExtraFields' => true,
-        ]));
+        if(!in_array($value['type'], $this->getStorageTypes())) {
+            $this->context->buildViolation(
+                Storage::UNAVAILABLE_TYPE,
+                [
+                    '{{ available_types }}' => implode(', ', $this->getStorageTypes()),
+                ],
+            )
+            ->atPath('[type]')
+            ->addViolation();
 
-        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 
-        $this->validateStorageByType($value, $constraint->getFilePathAllowedFileExtensions());
+        $this->validateStorageByType($value, $constraint->getFilePathSupportedFileExtensions());
     }
 
     private function getStorageTypes(): array

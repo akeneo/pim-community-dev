@@ -8,13 +8,13 @@ abstract class StorageConstraint extends Constraint
 {
     public function __construct(
         /** @var string[] */
-        private array $filePathAllowedFileExtensions,
+        private array $filePathSupportedFileExtensions,
     ) {
         parent::__construct();
     }
 
-    public function getFilePathAllowedFileExtensions(): array
+    public function getFilePathSupportedFileExtensions(): array
     {
-        return $this->filePathAllowedFileExtensions;
+        return $this->filePathSupportedFileExtensions;
     }
 }

@@ -12,5 +12,7 @@ akeneo.automation:
     username.label: Login
     password.label: Password
   validation:
+    storage:
+      unavailable_type: This storage is not available, only {{ available_types }} are available.
     file_path:
-      bad_extension: The file extension should be {{ allowed_extensions }}
+      unsupported_extension: This file extension is not supported, only {{ supported_extensions }} are supported.

@@ -6,15 +6,17 @@ use Symfony\Component\Validator\Constraint;
 
 class Storage extends Constraint
 {
+    public const UNAVAILABLE_TYPE = 'akeneo.job_automation.validation.storage.unavailable_type';
+
     public function __construct(
         /** @var string[] */
-        private array $filePathAllowedFileExtensions,
+        private array $filePathSupportedFileExtensions,
     ) {
         parent::__construct();
     }
 
-    public function getFilePathAllowedFileExtensions(): array
+    public function getFilePathSupportedFileExtensions(): array
     {
-        return $this->filePathAllowedFileExtensions;
+        return $this->filePathSupportedFileExtensions;
     }
 }

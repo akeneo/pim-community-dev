@@ -60,7 +60,7 @@ class ValidateStorageTest extends AbstractValidationTest
     {
         return [
             'invalid storage type' => [
-                'The value you selected is not a valid choice.',
+                'akeneo.job_automation.validation.storage.unavailable_type',
                 '[type]',
                 [
                     'type' => 'invalid',

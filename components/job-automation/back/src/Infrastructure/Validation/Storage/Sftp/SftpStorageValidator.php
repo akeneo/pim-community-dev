@@ -24,7 +24,7 @@ class SftpStorageValidator extends ConstraintValidator
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
                 'type' => new EqualTo('sftp'),
-                'file_path' => new FilePath($constraint->getFilePathAllowedFileExtensions()),
+                'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
                 'host' => [new NotBlank(), new Hostname()],
                 'port' => [new NotBlank(), new GreaterThanOrEqual(1), new LessThanOrEqual(65535)],
                 'username' => new NotBlank(),
