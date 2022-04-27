@@ -17,18 +17,15 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
     const [searchValue, setSearchValue] = useState('');
     const [newContributors, setNewContributors] = useState<string[]>([]);
     const filteredContributors = useFilteredContributors(contributors, searchValue);
-    const [displayInvalidContributorEmailsWarning, setDisplayInvalidContributorEmailsWarning] = useState(false);
     const [contributorsBelongingToAnotherSupplier, setContributorsBelongingToAnotherSupplier] = useState<string[]>([]);
     const getContributorsBelongingToAnotherSupplierRoute = useRoute(
         'onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier',
         {supplierIdentifier, emails: JSON.stringify(contributors)},
     );
 
+    const displayInvalidContributorEmailsWarning = newContributors.filter(email => !isValidEmail(email)).length > 0;
+
     const onChangeNewContributors = (newContributors: string[]) => {
-        const notValidContributorEmails = newContributors.filter(email => !isValidEmail(email))
-
-        setDisplayInvalidContributorEmailsWarning(0 < notValidContributorEmails.length);
-
         setNewContributors(newContributors);
     };
 
