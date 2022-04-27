@@ -31,8 +31,13 @@ const ContributorList = ({contributors, setContributors}: Props) => {
             .filter(contributorEmail => isValidEmail(contributorEmail))
             .filter(contributorEmail => contributorEmail.length <= 255);
 
-        setContributors(Array.from(new Set([...contributors, ...validContributorEmails])));
         setNewContributors([]);
+
+        const updatedContributors = Array.from(new Set([...contributors, ...validContributorEmails]));
+        if (JSON.stringify(updatedContributors) !== JSON.stringify(contributors)) {
+            setContributors(updatedContributors);
+            return;
+        }
     };
 
     const removeContributor = (emailToRemove: ContributorEmail) => {
