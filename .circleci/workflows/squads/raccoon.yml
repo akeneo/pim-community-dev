@@ -33,26 +33,26 @@ workflows:
           name: "Build prod"
           requires:
             - test_helm_generated_k8s_files
-            - delete_pr_environment?
+            - "Deploy PR environment?"
       - deploy_pr_environment:
           name: "Deploy PR environment"
           requires:
-            - build_srnt_prod
+            - "Build prod"
       - delete_pr_environment?:
           name: "Delete PR environment?"
           type: approval
           requires:
-            - deploy_pr_environment
+            - "Deploy PR environment"
       - delete_pr_environment:
           name: "Delete PR environment"
           requires:
-            - delete_pr_environment?
+            - "Delete PR environment?"
       - test_front_tailored_import:
           requires:
-            - build_srnt_dev
+            - "Build dev"
       - test_back_tailored_import:
           requires:
-            - build_srnt_dev
+            - "Build dev"
       - pull_request_success:
           requires:
             - test_front_tailored_import
