@@ -4,8 +4,6 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation;
 
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\StorageConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -23,7 +21,7 @@ class StorageValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, Storage::class);
         }
 
-        if(!in_array($value['type'], $this->getStorageTypes())) {
+        if (!in_array($value['type'], $this->getStorageTypes())) {
             $this->context->buildViolation(
                 Storage::UNAVAILABLE_TYPE,
                 [
