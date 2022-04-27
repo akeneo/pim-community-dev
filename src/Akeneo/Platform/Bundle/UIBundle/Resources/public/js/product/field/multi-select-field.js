@@ -158,7 +158,9 @@ define([
                   var choices = _.map(
                     $(element).val().split(','),
                     function (choice) {
-                      var option = _.findWhere(results, {code: choice});
+                      var option = _.find(results, function (result) {
+                        return choice.toLowerCase() === (result.code ?? '').toLowerCase();
+                      });
                       if (option) {
                         return this.convertBackendItem(option);
                       }
