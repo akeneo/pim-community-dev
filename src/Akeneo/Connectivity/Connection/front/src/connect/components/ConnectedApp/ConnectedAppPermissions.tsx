@@ -28,6 +28,7 @@ export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermis
                             onPermissionsChange={handlePermissionsChange}
                             permissions={providerPermissions}
                             readOnly={readOnly}
+                            onlyDisplayViewPermissions={false}
                         />
                     );
                 })}

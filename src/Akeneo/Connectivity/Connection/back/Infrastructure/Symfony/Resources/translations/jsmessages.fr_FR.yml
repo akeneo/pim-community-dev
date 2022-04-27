@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Journal des événements
     data_flows: Flux de données
     connect_connection_settings: Paramètres de connexion
-    marketplace: Marketplace
-    connected_apps: Apps
+    marketplace: App Store
+    connected_apps: Apps connectées
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
-  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: Connecter
   akeneo_connectivity_connection_connect_apps_authorize: Connecter
   akeneo_connectivity_connection_connect_apps_authenticate: Connecter
@@ -35,78 +35,108 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
   akeneo_connectivity_connection_webhook_event_logs: Journal des événements
   akeneo_connectivity_connection_settings_redirect: Connexions
-  akeneo_connectivity_connection_connect_connected_apps: Apps
+  akeneo_connectivity_connection_connect_connected_apps: Apps connectées
   akeneo_connectivity_connection_connect_connected_apps_edit: Paramètres des apps
   akeneo_connectivity_connection_connect_connected_apps_delete: Suppression de l'app
-  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une application de test
-  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'application de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Créer une app de test
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Supprimer l'app de test
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Vous voulez connecter votre PIM avec une autre application ? 🤟
-      sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
-      link: Accéder à la marketplace
+      sub_title: Consultez notre App Store pour voir quelles app peuvent être connectées avec Akeneo PIM.
+      link: Accéder à l'App Store Akeneo
       helper:
-        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
-        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
-        description: Ce n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à notre marché web.
-        link: Aller sur la Marketplace web
+        title: '{0} Il n''y a aucune app ou connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} app ou connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} apps ou connecteurs compatibles avec votre version du PIM.'
+        title_without_apps: '{0} Il n''y a aucun connecteur compatible avec votre version du PIM.|{1} Il y a {{ count }} connecteur compatible avec votre version du PIM. |[2,Inf] Il y a {{ count }} connecteurs compatibles avec votre version du PIM.'
+        description: Ceci n'est qu'une vue d'ensemble. Pour plus de détails, jetez un coup d'œil à l'App Store Akeneo.
+        link: Allez sur l'App Store Akeneo
       card:
         developed_by: 'Développé par {{ author }}'
         read_more: en savoir plus
         more_info: Plus d'info
         connect: Connecter
         connected: Connectée
+        pending: En attente…
       extensions:
         title: Connecteurs
         total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
         empty: Aucun connecteur compatible avec votre version
       apps:
-        title: Apps
+        title: Apps connectées
         total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
         empty: Aucune app compatible avec votre version
-      unreachable: La marketplace est injoignable, veuillez revenir plus tard.
+      unreachable: Impossible d'accéder à l'App Store, revenez plus tard.
       scroll_to_top: Haut de la page
       test_apps:
-        title: Mes applications de test
+        title: Mes apps de test
         removed_user: Utilisateur supprimé
-        create_a_test_app: Créer une application de test
+        create_a_test_app: Créer une app de test
         modal:
-          subtitle: Créer une application de test
+          subtitle: Créer une app de test
           app_information:
-            title: Informations sur l'application
+            title: Informations de l'app
             description: Si vous avez besoin d'aide, veuillez consulter notre article
-            link: Comment tester mon application avant de la publier ?
+            link: Comment tester mon app avant de la publier ?
             fields:
               name: Nom
+              activate_url: URL d'activation (activate)
+              callback_url: URL de retour (callback)
           credentials:
             title: Identifiants
+            warning: Assurez-vous de sauvegarder ces informations d'identification quelque part car nous ne les affichons qu'une seule fois ici.
+            client_id: ID Client
+            client_secret: Clé secrète du client (client secret)
+        errors:
+          page_not_found: Page introuvable
+          creation:
+            name:
+              min_length: Le nom de l'app de test est trop court. Il doit comporter au moins 3 caractères.
+              max_length: Le nom de l'app de test est trop long. Il doit comporter 255 caractères ou moins.
+              not_blank: Le nom de l'app de test est requis.
+            client_id:
+              max_length: L'ID Client de l'app de test est trop long. Il doit avoir 36 caractères ou moins.
+              not_blank: L'ID Client est requis.
+            activate_url:
+              max_length: L'URL d'activation (activate) de l'app de test est trop longue. Elle doit contenir 255 caractères ou moins.
+              must_be_url: L'URL d'activation (activate) doit être une URL valide.
+              not_blank: L'URL d'activation (activate) est requise.
+            callback_url:
+              max_length: L'URL de retour (callback) de l'app de test est trop longue. Elle doit contenir 255 caractères ou moins.
+              must_be_url: L'URL de retour (callback) doit être une URL valide.
+              not_blank: L'URL de retour (callback) est requise.
         delete:
-          subtitle: Applications
+          subtitle: Apps connectées
           title: Confirmer la suppression
+          description: Vous êtes sur le point de supprimer votre app de test de ce PIM.
+          warning: En confirmant la suppression, vous supprimerez l'app de test sur la page App Store et l'app connectée correspondante.
           flash:
-            success: L'application de test a bien été supprimée.
-            error: Une erreur s'est produite lors de la suppression de l'application de test.
+            success: L'app de test a bien été supprimée.
+            error: Une erreur s'est produite lors de la suppression de l'app de test.
     connected_apps:
       list:
         apps:
           title: Apps connectées
           total: '{0} Aucune app|{1} 1 app|[2,Inf] {{ total }} apps'
           empty: Aucune app connectée pour le moment.
-          check_marketplace: 'Rendez-vous sur la {{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
-          marketplace_link_anchor: Marketplace
+          check_marketplace: 'Rendez-vous sur l''{{ marketplaceLink }} pour parcourir les extensions disponibles et connecter votre première app.'
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Certaines de vos apps connectées ne sont pas compatibles avec votre version du PIM ou n'existent plus sur l'Akeneo App Store. Contactez-nous pour obtenir plus d'informations.
+          pending_apps: Certaines de vos apps ne sont pas connectées à votre PIM.
         test_apps:
           title: Mes applications de test
           removed_user: Utilisateur supprimé
         helper:
           title: '[0,1] Votre PIM est connecté à {{ count }} app.|[2,Inf] Votre PIM est connecté à {{ count }} apps.'
-          description_1: De nouvelles apps sont publiées régulièrement. Consultez notre page Marketplace fréquemment pour découvrir comment connecter votre PIM.
+          description_1: De nouvelles apps sont développées régulièrement. Restez à l'écoute et consultez notre page App Store fréquemment pour découvrir comment connecter votre PIM.
           description_2: Vous voulez en savoir plus sur les apps ?
           link: Consultez notre Help Center pour plus d'informations.
         card:
-          developed_by: 'Développé par {{ author }}'
-          manage_app: Paramètres
+          developed_by: 'Développée par {{ author }}'
+          not_listed_on_the_appstore: Cette app n'est plus listée sur l'Akeneo App Store. Veuillez contacter le support de l'app.
+          manage_app: Gérer l'app
           open_app: Ouvrir l'app
+          pending: App non connectée. L'ouverture de l'app devrait résoudre le problème de la connexion.
         flash:
           error: Désolé, une erreur s'est produite lors de la récupération de la liste des apps.
       edit:
@@ -123,15 +153,18 @@ akeneo_connectivity.connection:
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
+          authentication:
+            information_link_anchor: Article sur le Help Center
+          pending: Cette app n'est pas connectée à votre PIM. Ouvrir l'app devrait résoudre le problème de connexion. Si le problème persiste, veuillez contacter le support de l'app.
         error_monitoring:
           error: Oups, quelque chose a mal tourné !
           helper:
             description: Ici, vous pouvez voir le détail de chaque erreur pour cette application au cours des 7 derniers jours. Le nombre d'erreurs est limité à 100.
-          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour l'application source.
+          not_data_source: Pour l'instant, la page de suivi n'est disponible que pour les apps de type source.
           not_auditable:
-            title: Application non surveillée
+            title: App non surveillée
             description:
-              1: Pour suivre les erreurs sur cette application,
+              1: Pour suivre les erreurs sur cette app,
               2: activer la surveillance
               3: dans les paramètres.
         flash:
@@ -140,15 +173,18 @@ akeneo_connectivity.connection:
           save_permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être mises à jour.'
           save_permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
           success: Paramètres mis à jour avec succès.
+          monitoring_settings_error.description: Désolé, une erreur s'est produite lors de la modification de l'app.
       delete:
-        subtitle: Apps
+        subtitle: Apps connectées
         title: Confirmer la suppression
         description: Êtes-vous sûr de vouloir supprimer cette app ? Vous n'êtes pas sûr des impacts ?
-        link: Découvrez-les ici.
+        link: Découvrez-le ici.
         flash:
           success: App supprimée avec succès.
           error: Désolé, une erreur s'est produite lors de la suppression de l'app.
     apps:
+      loader:
+        message: Chargement...
       flash:
         permissions_error.title: 'Les permissions pour l''app {{ entity }} n''ont pas pu être enregistrées.'
         permissions_error.description: Veuillez vérifier les permissions accordées à cette app.
@@ -160,6 +196,7 @@ akeneo_connectivity.connection:
           previous: Précédent
           next: Suivant
           allow_and_next: Autoriser et suivant
+          allow_and_finish: Autoriser et terminer
         progress:
           authentication: Authentification
           authorizations: Autorisations
@@ -167,9 +204,18 @@ akeneo_connectivity.connection:
           summary: Bien joué !
         authentication:
           title: 'L''app {{ app_name }} a besoin de '
+          helper: Pour en savoir plus sur l'authentification aux Apps, veuillez consulter notre article
           helper_link: Comment connecter mon PIM à des Apps ?
-          scope_profile: Voir votre prénom et votre nom de famille
-          scope_email: Voir votre adresse e-mail
+          scope_profile: 'Voir votre {{ firstname }} et votre {{ lastname }}'
+          scope_email: 'Voir votre adresse {{ email }}'
+          consent:
+            label: 'J''accepte la politique de confidentialité et les conditions d''utilisation de cette application, qui peuvent être consultées sur la {{ app_marketplace_page }}.'
+            app_marketplace_page: page de l'app sur l'App Store Akeneo
+            subtext: 'Vous reconnaissez et acceptez que vous serez redirigé vers une application tierce. Akeneo n''est pas responsable et ne peut être tenu responsable du contenu de cette application. Si vous rencontrez des problèmes lors de votre visite sur l''App Store Akeneo, veuillez {{ contact_us }}.'
+            contact_us: nous contacter
+          firstname: prénom
+          lastname: nom
+          email: e-mail
         authorize:
           title: '{{ app_name }} a besoin de'
           no_scope_title: 'L''app {{ app_name }} voudrait accéder à votre PIM.'
@@ -181,7 +227,7 @@ akeneo_connectivity.connection:
           error: Désolé, une erreur s'est produite lors de la connexion à l'app.
         permission:
           helper: Si vous avez besoin d'aide, veuillez consulter notre article
-          helper_link: How to set-up app permissions?
+          helper_link: Comment configurer les autorisations des apps ?
       title: Connecter
       activate:
         flash:
@@ -199,23 +245,24 @@ akeneo_connectivity.connection:
           channel_settings: les canaux
           association_types: les types d'association
           products: les produits et modèles de produits
-          reference_entity: entités référentielles
-          reference_entity_record: enregistrements des entités référentielles
-          asset_families: familles de ressources
-          assets: ressources
+          reference_entity: les entités référentielles
+          reference_entity_record: les enregistrements des entités référentielles
+          asset_families: les familles de ressources
+          assets: les ressources
       error:
         sub_text: Veuillez contacter le développeur de l'application ou le support d'Akeneo
+        app_not_found: Le "client_id" ne correspond à aucune app connue.
       constraint:
         client_id:
-          not_blank: Le client_id est requis.
-          must_be_valid: Le client_id ne correspond à aucun client connu.
-          must_have_ongoing_authorization: Le client_id n'a pas de processus d'autorisation en cours pour le moment
+          not_blank: L'ID client est requis.
+          must_be_valid: L'ID client ne correspond à aucun client connu.
+          must_have_ongoing_authorization: L'ID client n'a pas de processus d'autorisation en cours pour le moment
         response_type:
-          not_blank: Le response_type est requis.
-          must_be_code: Le response_type doit être "code".
+          not_blank: Le "response_type" est requis.
+          must_be_code: Le "response_type" doit être "code".
         redirect_uri:
-          not_blank: La redirect_uri est requise.
-          must_be_url: Le redirect_uri n'est pas une URL valide.
+          not_blank: La "redirect_uri" est requise.
+          must_be_url: Le "redirect_uri" n'est pas une URL valide.
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -225,6 +272,7 @@ akeneo_connectivity.connection:
     label: Libellé
     flow_type: Type de flux
     image: Image
+    auditable: Suivre dans le tableau de bord des flux de données (Data flows)
     client_id: Client ID
     secret: Secret
     username: Username
@@ -232,6 +280,7 @@ akeneo_connectivity.connection:
     user_role_id: Rôle
     user_group_id: Groupe
     constraint:
+      connections_number_limit_reached: Vous avez atteint la limite de 50 connexions et apps connectées.
       code:
         required: Le code de la connexion est requis.
         invalid: Le code d'une connexion peut contenir uniquement des lettres, des chiffres et des tirets bas.
@@ -260,6 +309,7 @@ akeneo_connectivity.connection:
     message_link: cliquez ici.
   create_connection:
     title: Créer une nouvelle connexion
+    description: Vous pouvez connecter jusqu'à 50 tiers via les connexions ou les apps.
     flash:
       success: Connexion créée avec succès.
       error: Désolé, une erreur s'est produite lors de la création de la connexion.
@@ -355,6 +405,9 @@ akeneo_connectivity.connection:
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
       button: C'est parti !
     connection_selector:
+      title:
+        source: Sources de données
+        destination: Destinations
       all: Toutes
     charts:
       inbound: En entrée du PIM
@@ -368,10 +421,12 @@ akeneo_connectivity.connection:
     error_management:
       data_source_error_chart:
         section:
+          title: Erreurs liées aux sources de données
           helper: Ici vous pouvez voir le nombre total d'erreurs, y compris les erreurs métier.
         chart:
           title: Nombre d'erreurs par jour
       widget:
+        title: Erreurs métier par source de données
         over_the_last_seven_days: Au cours des 7 derniers jours
         business_errors: erreurs métier
     no_connection:
@@ -457,6 +512,7 @@ akeneo_connectivity.connection:
           message: Message
   error_management:
     connection_monitoring:
+      title: Surveillance des erreurs
       helper:
         title: '{0} Vous avez {{ count }} erreur |[1,Inf] Vous avez {{ count }} erreurs'
         description: Ici, vous pouvez voir le détail de chaque erreur métier pour cette connexion au cours des 7 derniers jours. Le nombre d'erreur est limité à 100 erreurs.

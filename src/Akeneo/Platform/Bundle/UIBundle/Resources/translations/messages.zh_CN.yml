@@ -207,7 +207,7 @@ pim_enrich:
     drag_or_upload: 拖放即可上传或点击这里
 #Confirmation messages
 confirmation:
-  delete: 确认删除
+  delete: 确认删除 
   leave: 确定要离开此页面？
   discard changes: 如果离开此页面，将会丢失对 %entity% 的更改。
   remove:
@@ -410,7 +410,7 @@ View group: 查看组
 Products: 产品
 #Tabs
 Properties: 属性
-History: 历史记录
+History: 历史记录 
 pane.accordion:
   node_values: 节点值
   general_properties: 常规属性
@@ -552,3 +552,4 @@ pim_login:
   footer:
     powered: 提供者
     powered_image_title: Logo Akeneo
+pim_system.acl_group.developer_mode: 开发者模式

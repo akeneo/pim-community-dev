@@ -44,8 +44,8 @@ class SendApiEventRequestLogger
             'message' => $message,
             'success' => $success,
             'response' => $response ? ['status_code' => $response->getStatusCode()] : null,
-            'event_count' => count($webhookRequest->apiEvents()),
-            'events' => array_map(function (WebhookEvent $event) {
+            'event_count' => \count($webhookRequest->apiEvents()),
+            'events' => \array_map(function (WebhookEvent $event) {
                 $date = \DateTime::createFromFormat(\DateTime::ATOM, $event->eventDateTime());
                 return [
                     'uuid' => $event->eventId(),
@@ -57,7 +57,7 @@ class SendApiEventRequestLogger
             }, $webhookRequest->apiEvents()),
         ] + $this->getPropagationSeconds($webhookRequest, $endTime);
 
-        $this->logger->info(json_encode($log, JSON_THROW_ON_ERROR));
+        $this->logger->info(\json_encode($log, JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -79,14 +79,14 @@ class SendApiEventRequestLogger
                 $youngerEventTimestamp = $timestamp;
             }
             if (null !== $timestamp) {
-                $youngerEventTimestamp = max($timestamp, $youngerEventTimestamp);
+                $youngerEventTimestamp = \max($timestamp, $youngerEventTimestamp);
             }
 
             if (null === $olderEventTimestamp) {
                 $olderEventTimestamp = $timestamp;
             }
             if (null !== $timestamp) {
-                $olderEventTimestamp = min($timestamp, $olderEventTimestamp);
+                $olderEventTimestamp = \min($timestamp, $olderEventTimestamp);
             }
         }
 
@@ -100,6 +100,6 @@ class SendApiEventRequestLogger
     {
         $durationSeconds = $endTime - $startTime;
 
-        return (int) round($durationSeconds * 1000);
+        return (int) \round($durationSeconds * 1000);
     }
 }

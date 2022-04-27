@@ -1,0 +1,21 @@
+pim_enrich.product:
+  validation:
+    upsert:
+      unknown_user: 'Użytkownik „{{ user_id }}” nie istnieje.'
+      category_no_access_to_products: Nie masz dostępu do produktów w żadnym drzewie. Skontaktuj się z administratorem.
+      should_keep_one_owned_category: Zachowaj produkt co najmniej w jednej kategorii, do której masz własne uprawnienia.
+      locale_no_access_to_products: Nie masz dostępu do danych produktu w żadnej z aktywnych wersji językowych, skontaktuj się z administratorem.
+      attribute_group_no_access_to_attributes: Nie masz dostępu do atrybutu {{ attributeCode }} tego produktu. Skontaktuj się z administratorem.
+      product_identifier_empty: Ten identyfikator produktu nie może być pustym ciągiem znaków.
+      duplicated_user_intents: Wartość atrybutu {{ attributeCode }} jest wielokrotnie aktualizowana.
+      family_code_empty: Kod rodziny nie może być pustym ciągiem znaków.
+      category_does_not_exist: '{1}Kategoria „{{ categoryCodes }}” nie istnieje.|]1, +Inf[Kategorie „{{ categoryCodes }}” nie istnieją.'
+      set_value:
+        no_channel_code_provided_for_scopable_attribute: 'Atrybut {{ attributeCode }} wymaga kanału.'
+        channel_code_provided_for_non_scopable_attribute: 'Atrybut {{ attributeCode }} nie wymaga kanału, wykryto kod „{{ channelCode }}”.'
+        no_locale_code_provided_for_localizable_attribute: 'Atrybut {{ attributeCode }} wymaga wersji językowej.'
+        locale_code_provided_for_non_localizable_attribute: 'Atrybut {{ attributeCode }} nie wymaga wersji językowej, wykryto kod „{{ localeCode }}”.'
+        invalid_locale_code_for_locale_specific_attribute: 'Atrybut {{ attributeCode }} wymaga jednej z następujących wersji językowych: {{ availableLocales }}; wykryto kod „{{ localeCode }}”.'
+        channel_does_not_exist: 'Kanał {{ channelCode }} nie istnieje.'
+        locale_is_not_active: 'Wersja językowa {{ localeCode }} nie istnieje lub nie jest aktywna.'
+        locale_not_activated_for_channel: 'Wersja językowa {{ localeCode }} nie została aktywowana w kanale {{ channelCode }}.'

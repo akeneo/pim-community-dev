@@ -113,7 +113,7 @@ class ClientProviderIntegration extends TestCase
     private function createApp(array $data): App
     {
         return App::fromWebMarketplaceValues(
-            array_merge([
+            \array_merge([
                 'name' => 'name',
                 'logo' => 'logo',
                 'author' => 'author',

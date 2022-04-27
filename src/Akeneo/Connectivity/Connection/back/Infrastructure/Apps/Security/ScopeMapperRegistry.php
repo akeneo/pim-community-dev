@@ -29,10 +29,10 @@ final class ScopeMapperRegistry
             foreach ($scopeMapper->getScopes() as $scope) {
                 if (\array_key_exists($scope, $this->scopeMappers)) {
                     throw new \InvalidArgumentException(
-                        sprintf(
+                        \sprintf(
                             'The scope "%s" is already supported by the scope mapper "%s".',
                             $scope,
-                            get_class($this->scopeMappers[$scope])
+                            \get_class($this->scopeMappers[$scope])
                         )
                     );
                 }
@@ -121,7 +121,7 @@ final class ScopeMapperRegistry
     private function getScopeMapper(string $scope): ScopeMapperInterface
     {
         if (!\array_key_exists($scope, $this->scopeMappers)) {
-            throw new \LogicException(sprintf('The scope "%s" does not exist.', $scope));
+            throw new \LogicException(\sprintf('The scope "%s" does not exist.', $scope));
         }
 
         return $this->scopeMappers[$scope];

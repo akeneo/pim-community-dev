@@ -36,24 +36,14 @@ class QuantifiedAssociationsStructureValidatorSpec extends ObjectBehavior
         );
     }
 
-    public function it_throws_when_association_type_code_not_a_scalar()
+    public function it_accepts_numeric_association_type_codes()
     {
         $field = 'quantified_associations';
         $data = [
-            0 => [],
+            '1234' => [],
         ];
 
-        $this->shouldThrow(
-            InvalidPropertyTypeException::validArrayStructureExpected(
-                $field,
-                'association type code should be a string',
-                QuantifiedAssociationsStructureValidator::class,
-                $data
-            )
-        )->during(
-            'validate',
-            [$field, $data]
-        );
+        $this->shouldNotThrow()->during('validate', [$field, $data]);
     }
 
     public function it_throws_when_association_type_values_is_not_an_array()

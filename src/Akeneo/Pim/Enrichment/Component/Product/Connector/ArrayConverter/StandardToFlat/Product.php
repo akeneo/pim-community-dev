@@ -17,15 +17,10 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimple
  */
 class Product extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
-    /** @var ProductValueConverter */
-    protected $valueConverter;
-
-    /**
-     * @param ProductValueConverter $valueConverter
-     */
-    public function __construct(ProductValueConverter $valueConverter)
-    {
-        $this->valueConverter = $valueConverter;
+    public function __construct(
+        protected ProductValueConverter $valueConverter,
+        private QualityScoreConverter $qualityScoreConverter
+    ) {
     }
 
     /**
@@ -64,7 +59,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 break;
             case 'quality_scores':
                 if (is_array($data)) {
-                    $convertedItem = $this->convertQualityScores($data, $convertedItem);
+                    $convertedItem = $convertedItem + $this->qualityScoreConverter->convert($data);
                 }
                 break;
             case 'identifier':
@@ -187,17 +182,6 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $propertyName = sprintf('%s-%s', $associationTypeCode, $entityType);
                 $convertedItem[$propertyName] = implode(',', array_column($quantifiedLinks, 'identifier'));
                 $convertedItem[sprintf('%s-quantity', $propertyName)] = implode('|', array_column($quantifiedLinks, 'quantity'));
-            }
-        }
-
-        return $convertedItem;
-    }
-
-    private function convertQualityScores(array $scores, array $convertedItem): array
-    {
-        foreach ($scores as $channel => $localeScores) {
-            foreach ($localeScores as $locale => $score) {
-                $convertedItem[sprintf('%s-%s-%s', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX, $locale, $channel)] = $score;
             }
         }
 

@@ -1,0 +1,59 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
+import {Block} from './Block';
+import {IconButton} from '../IconButton/IconButton';
+import {CloseIcon, EditIcon, MoreIcon} from '../../icons';
+
+<Meta
+  title="Components/Block"
+  component={Block}
+  argTypes={{
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'I am a block',
+  }}
+/>
+
+# Block
+
+## Usage
+
+Block is a visual component that can be used to group content.
+When it is removable and hovered, it can be removed by clicking on the X icon.
+
+## Playground
+
+Use this playground to test the block component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Block {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With Actions
+
+<Canvas>
+  <Story name="With Action">
+    {args => {
+      return (
+        <>
+          <Block {...args}>
+            Block without action
+          </Block>
+          <Block
+            {...args}
+            action={<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />}
+          >
+            Block with action
+          </Block>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

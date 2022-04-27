@@ -73,7 +73,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'unknown_family_code',
             'values' => [
@@ -159,7 +159,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'values' => [
@@ -244,7 +244,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             $connection->password()
         );
 
-        $content = json_encode([
+        $content = \json_encode([
             'identifier' => 'high-top_sneakers',
             'family' => 'shoes',
             'categories' => ['unknown_category_code']

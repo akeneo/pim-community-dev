@@ -58,11 +58,6 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
         'Akeneo\Pim\Structure\Component\Repository\AttributeOptionRepositoryInterface',
 
-        // TIP-918: PIM/Enrichment should not be linked to GroupType
-        'Akeneo\Pim\Structure\Component\Model\GroupTypeInterface',
-
-        'Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface',
-
         // TIP-920: PIM/Enrichment should not be linked to Locale
         'Akeneo\Channel\Component\Model\LocaleInterface',
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
@@ -70,9 +65,6 @@ $rules = [
         // TIP-921: PIM/Enrichment should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
         'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-
-        // TIP-922: PIM/Enrichment should not be linked to Currency
-        'Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface',
 
         // TIP-923: PIM/Enrichment should not be linked to AttributeRequirement
         'Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface',
@@ -82,10 +74,6 @@ $rules = [
 
         // TIP-933: CategoryRepository should not depend on Gedmo
         'Gedmo\Tree\Entity\Repository\NestedTreeRepository',
-
-        // TIP-934: AttributeIsAFamilyVariantAxis is part of Structure
-        // TIP-935: AddBooleanValuesToNewProductSubscriber design problem
-        'Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface',
 
         //TIP-936: PIM/Enrichment should not be linked to FamilyVariant
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
@@ -120,12 +108,10 @@ $rules = [
 
         // TIP-1013: Rework Notification system
         'Akeneo\Platform\Bundle\DashboardBundle\Widget\WidgetInterface',
-        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 
         // TIP-1022: Drop LocaleResolver
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
-        'Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface',
         'Elasticsearch\Common\Exceptions\ElasticsearchException',
         'Akeneo\Pim\Structure\Bundle\Manager\AttributeCodeBlacklister',
 
@@ -156,12 +142,8 @@ $rules = [
 
         // Required to add quality scores into external API normalized products.
         'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetLatestProductScoresByIdentifiersQueryInterface',
-        'Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection',
-
-        // TIP-915: PIM/Enrichment should not be linked to AttributeOption
-        // TIP-916: Do not check if entities exist in PQB filters or sorters
-        'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Query',
+        'Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model',
 
         // TIP-918: PIM/Enrichment should not be linked to GroupType
         'Akeneo\Pim\Structure\Component\Model\GroupTypeInterface',
@@ -200,6 +182,7 @@ $rules = [
 
         // TIP-931: SearchQueryBuilder design problem
         'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\SearchQueryBuilder',
+        'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult',
 
         // TIP-932: KeepOnlyValuesForVariation should use the public API related to the root aggregate Family Variant
         'Akeneo\Pim\Structure\Component\Model\CommonAttributeCollection',
@@ -231,9 +214,6 @@ $rules = [
         // TIP-1012: Create a Measure component
         'Akeneo\Tool\Bundle\MeasureBundle',
 
-        // TIP-1033: PIM/Enrichment should not depend on EntityRepository
-        'Doctrine\ORM\EntityRepository',
-
         // TIP-939: Remove filter system for permissions
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
@@ -259,9 +239,6 @@ $rules = [
 
         // TIP-1023: Drop CatalogContext
         'Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext',
-
-        // TIP-1020: Move JobLauncherInterface
-        'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
 
         'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
 

@@ -9,6 +9,7 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -31,7 +32,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->featureFlagMarketplaceActivate = $this->get(
             'akeneo_connectivity.connection.marketplace_activate.feature'
         );
@@ -54,7 +55,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
         );
         $response = $this->client->getResponse();
 
@@ -71,13 +72,13 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
         );
 
         $response = $this->client->getResponse();
 
         Assert::assertEquals(Response::HTTP_FOUND, $response->getStatusCode());
-        assert($response instanceof RedirectResponse);
+        \assert($response instanceof RedirectResponse);
         Assert::assertEquals('/', $response->getTargetUrl());
     }
 
@@ -89,7 +90,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            '/rest/apps/confirm-authorization/test',
+            '/rest/apps/confirm-authorization/unknown-id',
             [],
             [],
             [
@@ -99,10 +100,10 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $content = json_decode($response->getContent(), true);
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $content = \json_decode($response->getContent(), true);
         Assert::assertArrayHasKey('errors', $content);
-        Assert::assertGreaterThan(0, count($content['errors']));
+        Assert::assertGreaterThan(0, \count($content['errors']));
     }
 
     public function test_it_returns_json_with_app_id(): void
@@ -125,7 +126,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
             [],
             [],
             [
@@ -134,7 +135,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');
@@ -165,7 +166,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
             [],
             [],
             [
@@ -174,7 +175,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('appId', $responseContent, 'Response missing appId');

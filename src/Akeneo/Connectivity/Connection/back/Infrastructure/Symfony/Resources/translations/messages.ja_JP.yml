@@ -1,4 +1,5 @@
 akeneo_connectivity.connection:
   acl.manage_settings: 接続設定を管理
   acl.manage_apps: アプリを管理
+  acl.manage_test_apps: テストアプリを管理
   acl.open_apps: アプリを開く

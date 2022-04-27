@@ -1,9 +1,9 @@
 services:
-    akeneo_connectivity.connection.clock:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\FakeClock
-    akeneo_connectivity.connection.dns_lookup:
+    Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeDnsLookup
-    akeneo_connectivity.connection.marketplace.web_marketplace_api:
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi
     akeneo_connectivity.connection.marketplace_activate.feature:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag

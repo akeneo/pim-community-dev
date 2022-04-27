@@ -25,7 +25,7 @@ final class SuffixExceptionRule implements Rule
     {
         $classReflection = $scope->getClassReflection();
 
-        $isAnExceptionSubclass = in_array(\Exception::class, $classReflection->getParentClassesNames(), true);
+        $isAnExceptionSubclass = \in_array(\Exception::class, $classReflection->getParentClassesNames(), true);
 
         $className = (string) $node->getOriginalNode()->name;
         $doesNameEndWithException = \str_ends_with($className, 'Exception');

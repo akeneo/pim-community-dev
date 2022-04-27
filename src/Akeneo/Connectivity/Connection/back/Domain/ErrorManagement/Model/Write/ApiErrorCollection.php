@@ -19,11 +19,11 @@ class ApiErrorCollection
      */
     public function __construct(array $apiErrors = [])
     {
-        $this->apiErrors = array_fill_keys(ErrorTypes::getAll(), []);
+        $this->apiErrors = \array_fill_keys(ErrorTypes::getAll(), []);
         foreach ($apiErrors as $apiError) {
             if (!$apiError instanceof ApiErrorInterface) {
                 throw new \InvalidArgumentException(
-                    sprintf(
+                    \sprintf(
                         'Class "%s" accepts only "%s" in the collection.',
                         self::class,
                         ApiErrorInterface::class
@@ -44,14 +44,14 @@ class ApiErrorCollection
         if (null === $errorType) {
             $count = 0;
             foreach ($this->apiErrors as $errors) {
-                $count += count($errors);
+                $count += \count($errors);
             }
 
             return $count;
         }
         $type = new ErrorType($errorType);
 
-        return count($this->apiErrors[(string) $type]);
+        return \count($this->apiErrors[(string) $type]);
     }
 
     /**

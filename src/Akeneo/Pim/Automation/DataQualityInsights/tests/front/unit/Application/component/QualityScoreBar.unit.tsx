@@ -5,41 +5,11 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-test('it renders quality score bar with an opacity when current score is null', () => {
-  render(
-    <DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={null} />
-      </ThemeProvider>
-    </DependenciesProvider>
-  );
-
-  expect(screen.getByTestId('quality-score-bar')).toBeInTheDocument();
-  expect(screen.getByTestId('quality-score-bar')).toHaveStyle({opacity: '0.3'});
-});
-
-test('it renders quality score bar with no selected score when current score is N/A', () => {
-  render(
-    <DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={'N/A'} />
-      </ThemeProvider>
-    </DependenciesProvider>
-  );
-
-  expect(screen.getByTestId('quality-score-bar')).toBeInTheDocument();
-  expect(screen.getByText('A')).toHaveStyle({height: '20px', width: '20px'});
-  expect(screen.getByText('B')).toHaveStyle({height: '20px', width: '20px'});
-  expect(screen.getByText('C')).toHaveStyle({height: '20px', width: '20px'});
-  expect(screen.getByText('D')).toHaveStyle({height: '20px', width: '20px'});
-  expect(screen.getByText('E')).toHaveStyle({height: '20px', width: '20px'});
-});
-
 test('it renders quality score bar with A score selected', () => {
   render(
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={'A'} />
+        <QualityScoreBar score={'A'} />
       </ThemeProvider>
     </DependenciesProvider>
   );
@@ -56,7 +26,7 @@ test('it renders quality score bar with A stacked score selected', () => {
   render(
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={'A'} stacked />
+        <QualityScoreBar score={'A'} stacked />
       </ThemeProvider>
     </DependenciesProvider>
   );
@@ -90,28 +60,11 @@ test('it renders quality score bar with A stacked score selected', () => {
   expect(screen.getByText('E')).toHaveStyle({height: '20px', width: '20px'});
 });
 
-test('it renders quality score bar rounded at left and at right when is no selected score', () => {
-  render(
-    <DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={'N/A'} />
-      </ThemeProvider>
-    </DependenciesProvider>
-  );
-
-  expect(screen.getByTestId('quality-score-bar')).toBeInTheDocument();
-  expect(screen.getByText('A')).toHaveStyle({borderRadius: '4px 0 0 4px'});
-  expect(screen.getByText('B')).toHaveStyle({borderRadius: '0'});
-  expect(screen.getByText('C')).toHaveStyle({borderRadius: '0'});
-  expect(screen.getByText('D')).toHaveStyle({borderRadius: '0'});
-  expect(screen.getByText('E')).toHaveStyle({borderRadius: '0 4px 4px 0'});
-});
-
 test('it renders quality score bar rounded at left and at right when B is selected score', () => {
   render(
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <QualityScoreBar currentScore={'B'} />
+        <QualityScoreBar score={'B'} />
       </ThemeProvider>
     </DependenciesProvider>
   );

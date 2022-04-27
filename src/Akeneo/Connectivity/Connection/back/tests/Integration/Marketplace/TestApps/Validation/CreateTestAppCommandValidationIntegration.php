@@ -247,6 +247,6 @@ class CreateTestAppCommandValidationIntegration extends TestCase
             }
         }
 
-        Assert::assertTrue($violationFound, sprintf('The violation at property path "%s" has not been found.', $propertyPath));
+        Assert::assertTrue($violationFound, \sprintf('The violation at property path "%s" has not been found.', $propertyPath));
     }
 }

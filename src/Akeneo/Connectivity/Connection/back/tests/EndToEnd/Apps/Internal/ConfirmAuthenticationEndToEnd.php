@@ -15,8 +15,10 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
-use Akeneo\Connectivity\Connection\Infrastructure\User\Internal\CreateUser;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -31,6 +33,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class ConfirmAuthenticationEndToEnd extends WebTestCase
 {
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FakeWebMarketplaceApi $webMarketplaceApi;
     private PropertyAccessor $propertyAccessor;
     private ClientManagerInterface $clientManager;
     private AppAuthorizationSession $appAuthorizationSession;
@@ -48,6 +51,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
         $this->featureFlagMarketplaceActivate = $this->get(
             'akeneo_connectivity.connection.marketplace_activate.feature'
         );
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->appAuthorizationSession = $this->get(AppAuthorizationSession::class);
@@ -55,7 +59,9 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
         $this->createConnection = $this->get(CreateConnection::class);
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->createUserGroup = $this->get(CreateUserGroup::class);
-        $this->createUser = $this->get('akeneo_connectivity.connection.service.user.create_user');
+        $this->createUser = $this->get(CreateUser::class);
+
+        $this->loadAppsFixtures();
     }
 
     protected function getConfiguration(): Configuration
@@ -91,7 +97,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
+            \sprintf('/rest/apps/confirm-authentication/%s', $this->clientId),
             [],
             [],
             [
@@ -160,5 +166,28 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
         $this->clientManager->updateClient($client);
 
         return $client;
+    }
+
+    private function loadAppsFixtures(): void
+    {
+        $apps = [
+            [
+                'id' => 'a_client_id',
+                'name' => 'Akeneo Shopware 6 Connector by EIKONA Media',
+                'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+                'author' => 'EIKONA Media GmbH',
+                'partner' => 'Akeneo Preferred Partner',
+                'description' => 'With the new "Akeneo-Shopware-6-Connector" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
+                'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+                'categories' => [
+                    'E-commerce',
+                ],
+                'certified' => false,
+                'activate_url' => 'http://shopware.example.com/activate',
+                'callback_url' => 'http://shopware.example.com/callback',
+            ],
+        ];
+
+        $this->webMarketplaceApi->setApps($apps);
     }
 }

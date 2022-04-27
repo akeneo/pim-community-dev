@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: Dit koppelingstype bestaat niet. Zorg ervoor dat deze in de tussentijd niet verwijderd is.
       association_type_is_not_quantified: '"{{ association_type }}" kan niet worden gebruikt voor koppeling met hoeveelheden. Kies een ander koppelingstype met hoeveelheden of gebruik de "koppeling" eigenschap.'
       association_type_should_not_be_quantified: '"{{ association_type }}" kan niet worden gebruikt voor koppeling met hoeveelheden. Kies een ander koppelingstype met hoeveelheden of gebruik de "aantallen_koppeling" eigenschap.'
+    boolean:
+      boolean_value_is_required: Het attribuut {{ attribute_code }} vereist een booleaanse waarde (waar of niet waar) als data, er is een {{ given_type }} gedetecteerd.
+      boolean_value_is_required_in_import: Het attribuut {{ attribute_code }} vereist een booleaanse waarde (1 of 0) als data, er is een {{ given_type }} gedetecteerd.
 mass_edit:
   edit_common_attributes:
     invalid_values: Er zijn fouten in het attributenformulier

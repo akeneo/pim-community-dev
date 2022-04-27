@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -23,16 +24,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class DeleteAppAction
 {
     public function __construct(
-        private FeatureFlag $featureFlag,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
         private SecurityFacade $security,
         private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
-        private DeleteAppHandler $deleteAppHandler,
+        private DeleteAppHandler $deleteAppHandler
     ) {
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
@@ -40,20 +41,27 @@ final class DeleteAppAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
-        }
-
         $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
 
         if (null === $connectedApp) {
-            throw new NotFoundHttpException(
-                sprintf('Connected app with connection code "%s" does not exist.', $connectionCode)
-            );
+            throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
+
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
 
         $this->deleteAppHandler->handle(new DeleteAppCommand($connectedApp->getId()));
 
         return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $connectedApp): void
+    {
+        if (!$connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

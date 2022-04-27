@@ -27,7 +27,7 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
         $productIds = ProductIdCollection::fromInts([13,42,999]);
         $criterionCode = new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE);
 
-        $getEvaluationRatesByProductAndCriterionQuery->toArrayInt($productIds, $criterionCode)->willReturn([
+        $getEvaluationRatesByProductAndCriterionQuery->execute($productIds, $criterionCode)->willReturn([
             13 => [
                 'ecommerce' => [
                     'en_US' => 100,

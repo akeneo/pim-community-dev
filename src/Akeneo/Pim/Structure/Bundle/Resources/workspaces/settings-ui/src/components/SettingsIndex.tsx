@@ -306,7 +306,7 @@ const SettingsIndex = () => {
                     )}
                   />
                 )}
-                {canAccessRules && (
+                {canAccessRules && featureFlags.isEnabled('product_rules') && (
                   <IconCard
                     id="pim-enrich-rule"
                     icon={<AttributeLinkIcon />}

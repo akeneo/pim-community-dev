@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd;
 
 use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand;
+use Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
@@ -36,7 +37,8 @@ abstract class WebTestCase extends TestCase
     {
         $createConnectionCommand = new CreateConnectionCommand($code, $label, $flowType, $auditable);
 
-        return $this->get('akeneo_connectivity.connection.application.handler.create_connection')
+        return $this
+            ->get(CreateConnectionHandler::class)
             ->handle($createConnectionCommand);
     }
 
@@ -56,7 +58,7 @@ abstract class WebTestCase extends TestCase
 
         $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
         $session = $this->getSession();
-        $session->set('_security_' . $firewallContext, serialize($token));
+        $session->set('_security_' . $firewallContext, \serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
@@ -88,10 +90,10 @@ abstract class WebTestCase extends TestCase
         $roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
 
         $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($roleCode);
-        assert(null !== $roleWithPermissions);
+        \assert(null !== $roleWithPermissions);
 
         $permissions = $roleWithPermissions->permissions();
-        $permissions[sprintf('action:%s', $acl)] = $enabled;
+        $permissions[\sprintf('action:%s', $acl)] = $enabled;
         $roleWithPermissions->setPermissions($permissions);
 
         $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);

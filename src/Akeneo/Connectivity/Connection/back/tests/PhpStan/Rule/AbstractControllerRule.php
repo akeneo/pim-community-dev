@@ -20,6 +20,6 @@ abstract class AbstractControllerRule implements Rule
 
     protected function isInControllerNamespace(Scope $scope): bool
     {
-        return 1 === preg_match('~Akeneo\\\Connectivity\\\Connection\\\Infrastructure\\\([^\\\]+\\\)*Controller(\\\.+)*~', $scope->getNamespace());
+        return 1 === \preg_match('~Akeneo\\\Connectivity\\\Connection\\\Infrastructure\\\([^\\\]+\\\)*Controller(\\\.+)*~', $scope->getNamespace());
     }
 }

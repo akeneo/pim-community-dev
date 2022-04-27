@@ -28,6 +28,6 @@ SQL;
 
         $secret = $this->connection->fetchOne($sql, ['clientId' => $clientId]);
 
-        return is_string($secret) ? $secret : null;
+        return \is_string($secret) ? $secret : null;
     }
 }

@@ -30,7 +30,7 @@ final class CreateUserConsentQuery implements CreateUserConsentQueryInterface
         $this->connection->executeQuery($query, [
             'userId' => $userId,
             'appId' => $appId,
-            'scopes' => array_values($authenticationScopes),
+            'scopes' => \array_values($authenticationScopes),
             'uuid' => Uuid::uuid4(),
             'consentDate' => $consentDate,
         ], [

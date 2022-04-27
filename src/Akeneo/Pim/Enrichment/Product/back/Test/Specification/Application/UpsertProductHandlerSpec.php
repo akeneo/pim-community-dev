@@ -11,11 +11,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplier;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
-use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasCreated;
-use Akeneo\Pim\Enrichment\Product\Domain\Event\ProductWasUpdated;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -33,18 +36,18 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         EventDispatcherInterface $eventDispatcher,
+        UserIntentApplierRegistry $applierRegistry
     ) {
         $this->beConstructedWith(
             $validator,
             $productRepository,
             $productBuilder,
             $productSaver,
-            $productUpdater,
             $productValidator,
-            $eventDispatcher
+            $eventDispatcher,
+            $applierRegistry
         );
     }
 
@@ -166,40 +169,51 @@ class UpsertProductHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
+        UserIntentApplierRegistry $applierRegistry,
+        UserIntentApplier $userIntentApplier
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
+        $setTextUserIntent = new SetTextValue('name', null, null, 'foo');
+        $command = new UpsertProductCommand(1, 'identifier1', valueUserIntents: [$setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
-        $productUpdater->update($product, Argument::cetera())->shouldbeCalledOnce()->willThrow(
+        $applierRegistry->getApplier($setTextUserIntent)->willReturn($userIntentApplier);
+        $userIntentApplier->apply($setTextUserIntent, $product, 1)->willThrow(
             InvalidPropertyException::expected('error', 'class')
         );
         $productValidator->validate($product)->shouldNotBeCalled();
         $productSaver->save($product)->shouldNotBeCalled();
 
-        $this->shouldThrow(LegacyViolationsException::class)->during('__invoke', [$command]);
+        $this->shouldThrow(ViolationsException::class)->during('__invoke', [$command]);
     }
 
-    function it_updates_a_product_with_a_set_text_value(
+    function it_updates_a_product_with_user_intents(
         ValidatorInterface $validator,
         ProductRepositoryInterface $productRepository,
         SaverInterface $productSaver,
-        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         EventDispatcherInterface $eventDispatcher,
+        UserIntentApplierRegistry $applierRegistry,
+        UserIntentApplier $applier,
+        UserIntentApplier $applier2
     ) {
-        $command = new UpsertProductCommand(1, 'identifier1', valuesUserIntent: [new SetTextValue('name', null, null, 'foo')]);
+        $userIntent = new SetEnabled(true);
+        $setTextUserIntent = new SetTextValue('name', null, null, 'Lorem Ipsum');
+        $command = new UpsertProductCommand(1, 'identifier1', enabledUserIntent: $userIntent, valueUserIntents: [$setTextUserIntent]);
         $product = new Product();
         $product->setIdentifier('identifier1');
 
         $validator->validate($command)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productRepository->findOneByIdentifier('identifier1')->shouldBeCalledOnce()->willReturn($product);
 
-        $productUpdater->update($product, Argument::cetera())->shouldbeCalledOnce();
+        $applierRegistry->getApplier($userIntent)->shouldBeCalledOnce()->willReturn($applier);
+        $applierRegistry->getApplier($setTextUserIntent)->shouldBeCalledOnce()->willReturn($applier2);
+        $applier->apply($userIntent, $product, 1)->shouldBeCalledOnce();
+        $applier2->apply($setTextUserIntent, $product, 1)->shouldBeCalledOnce();
+
         $productValidator->validate($product)->shouldBeCalledOnce()->willReturn(new ConstraintViolationList());
         $productSaver->save($product)->shouldBeCalledOnce();
         $event = new ProductWasUpdated('identifier1');
@@ -233,7 +247,7 @@ class UpsertProductHandlerSpec extends ObjectBehavior
                 return null;
             }
         };
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: [
             $unknownUserIntent
         ]);
 

@@ -33,7 +33,7 @@ pim_api:
       list: Elenco tipi di associazione
   acl_group:
     overall_access: Accesso globale alle API Web
-    attribute: Atributi
+    attribute: Attributi
     attribute_option: Opzioni degli attributi
     attribute_group: Gruppi di attributi
     category: Categorie

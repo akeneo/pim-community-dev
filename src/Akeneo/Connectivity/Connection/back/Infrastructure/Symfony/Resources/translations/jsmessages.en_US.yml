@@ -17,12 +17,12 @@ pim_menu:
         connection_webhook_event_logs: Event logs
         data_flows: Data flows
         connect_connection_settings: Connection settings
-        marketplace: Marketplace
-        connected_apps: Apps
+        marketplace: App Store
+        connected_apps: Connected Apps
 
 pim_title:
-    akeneo_connectivity_connection_connect_marketplace: Marketplace
-    akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_marketplace: App Store
+    akeneo_connectivity_connection_connect_marketplace_profile: App Store
     akeneo_connectivity_connection_connect_apps_activate: Connect
     akeneo_connectivity_connection_connect_apps_authorize: Connect
     akeneo_connectivity_connection_connect_apps_authenticate: Connect
@@ -37,7 +37,7 @@ pim_title:
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
     akeneo_connectivity_connection_settings_redirect: Connections
-    akeneo_connectivity_connection_connect_connected_apps: Apps
+    akeneo_connectivity_connection_connect_connected_apps: Connected Apps
     akeneo_connectivity_connection_connect_connected_apps_edit: App settings
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
     akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
@@ -46,19 +46,20 @@ akeneo_connectivity.connection:
     connect:
         marketplace:
             title: Want to connect your PIM with another application? 🤟
-            sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
-            link: Access the marketplace
+            sub_title: Check our App Store to see which application can be connected with Akeneo PIM.
+            link: Access the App Store
             helper:
                 title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
                 title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
-                description: This is just an overview. For more details, take a look at our web marketplace.
-                link: Go to web marketplace
+                description: This is just an overview. For more details, take a look at the Akeneo App Store.
+                link: Go to the Akeneo App Store
             card:
                 developed_by: 'Developed by {{ author }}'
                 read_more: read more
                 more_info: More info
                 connect: Connect
                 connected: Connected
+                pending: Pending...
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
@@ -67,7 +68,7 @@ akeneo_connectivity.connection:
                 title: Apps
                 total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                 empty: No apps compatible with your version
-            unreachable: We can't reach the marketplace, please come back later.
+            unreachable: We can't reach the App Store, please come back later.
             scroll_to_top: Scroll to the top
             test_apps:
                 title: My test apps
@@ -89,6 +90,7 @@ akeneo_connectivity.connection:
                         client_id: Client id
                         client_secret: Client secret
                 errors:
+                    page_not_found: Page not found
                     creation:
                         name:
                             min_length: The name of the test app is too short. It must have 3 characters or more.
@@ -109,7 +111,7 @@ akeneo_connectivity.connection:
                     subtitle: Apps
                     title: Confirm deletion
                     description: You are about to delete your test app from this PIM.
-                    warning: By confirming the deletion, you will delete the test app on the marketplace page and the related connected app.
+                    warning: By confirming the deletion, you will delete the test app on the App Store page and the related connected app.
                     flash:
                         success: Test app successfully deleted.
                         error: Sorry, an error occured while deleting the test app.
@@ -120,19 +122,23 @@ akeneo_connectivity.connection:
                     total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
                     empty: No apps connected yet.
                     check_marketplace: 'Check the {{ marketplaceLink }} to browse all the available content and install your first app.'
-                    marketplace_link_anchor: Marketplace
+                    marketplace_link_anchor: App Store
+                    at_least_one_is_not_listed_on_the_appstore: Some of your connected apps are not compatible with your PIM version or doesn't exist anymore on the Akeneo App Store. Contact us to get more information.
+                    pending_apps: Some of your apps are not connected with your PIM.
                 test_apps:
                     title: My test apps
                     removed_user: Removed user
                 helper:
                     title: '[0,1] Your PIM is connected with {{ count }} app.|[2,Inf] Your PIM is connected with {{ count }} apps.'
-                    description_1: New apps are developed regularly, so stay tuned and check our Marketplace page frequently to discover how to connect your PIM.
+                    description_1: New apps are developed regularly, so stay tuned and check our App Store page frequently to discover how to connect your PIM.
                     description_2: Eager to know more about Apps ?
                     link: Check out our Help Center for more information.
                 card:
                     developed_by: 'Developed by {{ author }}'
+                    not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
+                    pending: App not connected. Opening the App should fix the conection issue.
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
@@ -149,6 +155,12 @@ akeneo_connectivity.connection:
                         information: 'To know more about app authorizations, check out our {{ link }}.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
+                    authentication:
+                        title: authentication
+                        information: 'To know more about app authentication, check out our {{ link }}.'
+                        information_link_anchor: Help Center article
+                        openid_only: This app uses Akeneo App authentication without using your personal data.
+                    pending: This app is not connected to your PIM. Opening the app should fix the connection issue. If it persists, please contact the App support.
                 error_monitoring:
                     error: Oups, something went wrong!
                     helper:
@@ -199,13 +211,16 @@ akeneo_connectivity.connection:
                     title: '{{ app_name }} needs to'
                     helper: To know more about App authentication please check our article
                     helper_link: How to connect my PIM with Apps?
-                    scope_profile: View your firstname and your lastname
-                    scope_email: View your email address
+                    scope_profile: 'View your {{ firstname }} and your {{ lastname }}'
+                    scope_email: 'View your {{ email }} address'
                     consent:
                         label: 'I agree to this App’s Privacy Policy and Terms of Use, which can be viewed on the {{ app_marketplace_page }}.'
-                        app_marketplace_page: App marketplace page
-                        subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the marketplace, please {{ contact_us }}.'
+                        app_marketplace_page: App Store page
+                        subtext: 'You acknowledge and agree that you will be redirected to a third party app. Akeneo is not responsible and cannot be held responsible for the content of this app. If you have any problems while visiting the Akeneo App Store, please {{ contact_us }}.'
                         contact_us: contact us
+                    firstname: firstname
+                    lastname: lastname
+                    email: email
                 authorize:
                     title: '{{ app_name }} needs to'
                     no_scope_title: '{{ app_name }} would like to access your PIM.'
@@ -241,6 +256,7 @@ akeneo_connectivity.connection:
                     assets: assets
             error:
                 sub_text: Please contact the app developer or Akeneo support
+                app_not_found: The client_id does not match any existing app.
             constraint:
                 client_id:
                     not_blank: The client_id is required.

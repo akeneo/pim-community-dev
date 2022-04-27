@@ -3,6 +3,8 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldSplitter;
+use Akeneo\Tool\Component\Connector\Exception\DataArrayConversionException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Converts boolean value into structured one.
@@ -13,12 +15,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
  */
 class BooleanConverter extends AbstractValueConverter
 {
-    /**
-     * @param FieldSplitter $fieldSplitter
-     * @param array         $supportedFieldType
-     */
-    public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
-    {
+    public function __construct(
+        FieldSplitter $fieldSplitter,
+        array $supportedFieldType,
+        private TranslatorInterface $translator
+    ) {
         parent::__construct($fieldSplitter);
 
         $this->supportedFieldType = $supportedFieldType;
@@ -31,10 +32,19 @@ class BooleanConverter extends AbstractValueConverter
     {
         if (in_array($value, ['1', '0'])) {
             $data = (bool) $value;
-        } elseif ('' !== $value) {
-            $data = $value;
-        } else {
+        } elseif ('' === $value || null === $value) {
             $data = null;
+        } elseif (!\is_bool($value)) {
+            throw new DataArrayConversionException($this->translator->trans(
+                'pim_catalog.constraint.boolean.boolean_value_is_required_in_import',
+                [
+                    '{{ attribute_code }}' => $attributeFieldInfo['attribute']->getCode(),
+                    '{{ given_type }}' => gettype($value),
+                ],
+                'validators'
+            ));
+        } else {
+            $data = $value;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

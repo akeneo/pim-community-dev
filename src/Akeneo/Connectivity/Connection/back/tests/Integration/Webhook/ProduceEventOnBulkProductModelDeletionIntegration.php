@@ -42,7 +42,7 @@ class ProduceEventOnBulkProductModelDeletionIntegration extends TestCase
         for ($i = 0; $i < $count; $i++) {
             $productModel = $this->productModelFactory->create();
             $this->productModelUpdater->update($productModel, [
-                'code' => sprintf('foo-%s', $i),
+                'code' => \sprintf('foo-%s', $i),
                 'family_variant' => 'familyVariantA1',
             ]);
             $productModels[] = $productModel;

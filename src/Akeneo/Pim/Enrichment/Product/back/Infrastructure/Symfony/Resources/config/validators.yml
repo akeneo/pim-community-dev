@@ -13,6 +13,14 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProductValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserShouldExistValidator:
         arguments:
             - '@pim_user.repository.user'
@@ -21,6 +29,22 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator:
         arguments:
-            - '@Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes'
+            - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator:
+        arguments:
+            - '@Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\UserIntentsShouldBeUnique:
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\CategoriesShouldBeViewableValidator:
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
         tags:
             - { name: validator.constraint_validator }

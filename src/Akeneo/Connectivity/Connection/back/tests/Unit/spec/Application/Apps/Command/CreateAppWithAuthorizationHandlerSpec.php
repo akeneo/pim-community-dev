@@ -45,7 +45,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
         CreateConnectionInterface $createConnection,
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
-        CreateConnectedAppInterface $createApp
+        CreateConnectedAppInterface $createApp,
     ): void {
         $this->beConstructedWith(
             $validator,
@@ -56,7 +56,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             $createConnection,
             $appRoleWithScopesFactory,
             $clientProvider,
-            $createApp
+            $createApp,
         );
     }
 
@@ -159,6 +159,7 @@ class CreateAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->validate($command)
             ->willReturn(new ConstraintViolationList([]));
 
+        $app->isTestApp()->willReturn(false);
         $getAppQuery->execute('an_app_id')->willReturn($app);
         $appAuthorizationSession->getAppAuthorization('an_app_id')->willReturn($appAuthorization);
         $clientProvider->findClientByAppId('an_app_id')->willReturn($client);

@@ -79,7 +79,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [],
                 [],
-                new ReadValueCollection([])
+                new ReadValueCollection([]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
@@ -140,7 +141,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
@@ -203,7 +205,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         ),
                         ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                     ]
-                )
+                ),
+                null
             ),
         ]);
 
@@ -265,7 +268,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [],
                 [],
-                new ReadValueCollection([])
+                new ReadValueCollection([]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
@@ -319,7 +323,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
@@ -374,7 +379,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
         ]);
 
@@ -451,7 +457,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         'en_US'
                     ),
                 ]
-            )
+            ),
+            null
         );
 
         $actualProductModel = $this->getQuery()->fromProductModelCode('sub_pm_A', $this->getUserIdFromUsername('admin'));
@@ -512,7 +519,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                 ],
                 [],
                 [],
-                new ReadValueCollection([])
+                new ReadValueCollection([]),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
@@ -573,7 +581,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                             'en_US'
                         ),
                     ]
-                )
+                ),
+                null
             ),
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
@@ -636,7 +645,8 @@ class SqlGetConnectorProductModelsIntegration extends TestCase
                         ),
                         ScalarValue::value('a_text', 'Lorem ipsum dolor sit amet'),
                     ]
-                )
+                ),
+                null
             ),
         ]);
 

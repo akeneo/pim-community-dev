@@ -97,6 +97,10 @@ class LocaleSubscriber implements EventSubscriberInterface
      */
     protected function getLocale(Request $request)
     {
+        if ('api' === $this->firewall->getFirewallConfig($request)->getName()) {
+            return 'en_US';
+        }
+
         return $this->hasActiveSession($request) && null !== $request->getSession()->get('_locale') ?
             $request->getSession()->get('_locale') : $this->getLocaleFromOroConfigValue();
     }

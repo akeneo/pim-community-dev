@@ -4,7 +4,7 @@ pim_enrich.product:
       unknown_user: 'Der Benutzer "{{ user_id }}" existiert nicht'
       category_no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
       locale_no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata. Bitte kontaktieren Sie Ihren Administrator.
-      attribute_group_no_access_to_attributes: Sie haben keinen Zugriff auf die Attribute dieses Produktes. Bitte kontaktieren Sie Ihren Administrator.
+      attribute_group_no_access_to_attributes: Sie haben keinen Zugriff auf das {{ attributeCode }} -Attribut dieses Artikels. Bitte kontaktieren Sie Ihren Administrator.
       product_identifier_empty: Der Produkt-Bezeichner benötigt eine nicht leere Zeichenkette
       set_value:
         no_channel_code_provided_for_scopable_attribute: 'Das {{ attributeCode }} -Attribut benötigt einen Kanal'

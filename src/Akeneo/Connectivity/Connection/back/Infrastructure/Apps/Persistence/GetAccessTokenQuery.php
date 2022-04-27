@@ -32,8 +32,8 @@ SQL;
             $query,
             [
                 'client_id' => $clientId,
-                'scopes' => json_encode($scopes),
-                'scopesCount' => count($scopes),
+                'scopes' => \json_encode($scopes),
+                'scopesCount' => \count($scopes),
             ]
         );
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal;
 
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetAllConnectedAppScopeMessagesAction
 {
     public function __construct(
-        private FeatureFlag $featureFlag,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
         private SecurityFacade $security,
         private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
         private ScopeMapperRegistry $scopeMapperRegistry,
@@ -31,16 +32,12 @@ final class GetAllConnectedAppScopeMessagesAction
 
     public function __invoke(Request $request, string $connectionCode): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }
-
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
         }
 
         $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
@@ -49,8 +46,21 @@ final class GetAllConnectedAppScopeMessagesAction
             throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
 
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
+
         $scopeMessages = $this->scopeMapperRegistry->getMessages($connectedApp->getScopes());
 
         return new JsonResponse($scopeMessages);
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $connectedApp): void
+    {
+        if (!$connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

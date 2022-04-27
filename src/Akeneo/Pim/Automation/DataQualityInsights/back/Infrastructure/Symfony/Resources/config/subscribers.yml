@@ -10,6 +10,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -18,6 +19,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -36,14 +38,14 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\UpdateProductsIndexSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductQualityScoresIndexSubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductsIndex'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_quality_scores_index'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\UpdateProductModelsIndexSubscriber:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\BulkUpdateProductModelQualityScoresIndexSubscriber:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\UpdateProductModelsIndex'
+            - '@akeneo.pim.automation.data_quality_insights.elasticsearch.bulk_update_product_model_quality_scores_index'
         tags:
             - { name: kernel.event_subscriber }

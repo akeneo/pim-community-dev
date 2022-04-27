@@ -86,6 +86,7 @@ class DeleteAppHandlerIntegration extends TestCase
             'akeneo_print',
             'magento',
         ], $this->findNameOfOAuthRefreshToken());
+        Assert::assertSame([], $this->findRevokedAccessTokens());
 
         $this->deleteAppHandler->handle(new DeleteAppCommand('2677e764-f852-4956-bf9b-1a1ec1b0d145'));
 
@@ -120,6 +121,9 @@ class DeleteAppHandlerIntegration extends TestCase
         Assert::assertSame([
             'akeneo_print',
         ], $this->findNameOfOAuthRefreshToken());
+        Assert::assertSame([
+            'magento',
+        ], $this->findRevokedAccessTokens());
     }
 
     private function findNameOfConnectedApps(): array
@@ -218,6 +222,17 @@ SQL;
         $query = <<<SQL
 SELECT token
 FROM pim_api_refresh_token
+ORDER BY token
+SQL;
+
+        return $this->connection->fetchFirstColumn($query);
+    }
+
+    private function findRevokedAccessTokens(): array
+    {
+        $query = <<<SQL
+SELECT token
+FROM akeneo_connectivity_revoked_app_token
 ORDER BY token
 SQL;
 

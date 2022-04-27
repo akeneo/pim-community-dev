@@ -47,7 +47,7 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
 
         $acls = $this->scopeMapperRegistry->getAcls($scopes);
         foreach ($acls as $acl) {
-            $permissions[sprintf('action:%s', $acl)] = true;
+            $permissions[\sprintf('action:%s', $acl)] = true;
         }
 
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role, $permissions);
@@ -58,6 +58,6 @@ final class AppRoleWithScopesFactory implements AppRoleWithScopesFactoryInterfac
 
     private function createRandomRoleCode(): string
     {
-        return base_convert(bin2hex(random_bytes(16)), 16, 36);
+        return \base_convert(\bin2hex(\random_bytes(16)), 16, 36);
     }
 }

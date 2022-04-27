@@ -78,6 +78,10 @@ connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 
 connectivity-connection-unit-back:
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	.circleci/find_non_executed_phpspec.sh
+endif
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 	# Scope Mapper unit tests
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
@@ -111,8 +115,8 @@ connectivity-connection-back:
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci ${O}
+	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage ${O}
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
@@ -172,7 +176,10 @@ connectivity-connection-coverage:
 		coverage/Connectivity/Back/Global/
 
 connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse -v --no-interaction -c src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
+	$(PHP_RUN) vendor/bin/phpinsights analyse --summary --no-interaction --config-path=src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
+
+connectivity-connection-unused-coupling-rules:
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back

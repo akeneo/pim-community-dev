@@ -64,7 +64,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
 
         $retrievedApp = $this->query->execute('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
 
-        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
     public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_test_app(): void
@@ -91,7 +91,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
 
         $retrievedApp = $this->query->execute('86d603e6-ec67-45fa-bd79-aa8b2f649e12');
 
-        Assert::assertEquals(serialize($createdApp), serialize($retrievedApp));
+        Assert::assertEquals(\serialize($createdApp), \serialize($retrievedApp));
     }
 
     private function createTestApp(string $id): void

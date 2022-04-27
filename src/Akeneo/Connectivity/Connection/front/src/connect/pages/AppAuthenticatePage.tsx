@@ -17,7 +17,7 @@ export const AppAuthenticatePage: FC = () => {
     const newAuthenticationScopes = query.get('new_authentication_scopes')?.split(',');
 
     if (!clientId || !newAuthenticationScopes) {
-        history.push('/connect/marketplace');
+        history.push('/connect/app-store');
 
         return null;
     }

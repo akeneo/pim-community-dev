@@ -107,11 +107,16 @@ class CategoryController
     public function getAction(Request $request, $code)
     {
         $category = $this->repository->findOneByIdentifier($code);
+
         if (null === $category) {
             throw new NotFoundHttpException(sprintf('Category "%s" does not exist.', $code));
         }
 
-        $categoryApi = $this->normalizer->normalize($category, 'external_api');
+        $categoryApi = $this->normalizer->normalize(
+            $category,
+            'external_api',
+            ['with_position' => $request->query->getBoolean('with_position')]
+        );
 
         return new JsonResponse($categoryApi);
     }
@@ -163,8 +168,13 @@ class CategoryController
         ];
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
+
         $paginatedCategories = $this->paginator->paginate(
-            $this->normalizer->normalize($categories, 'external_api'),
+            $this->normalizer->normalize(
+                $categories,
+                'external_api',
+                ['with_position' => $request->query->getBoolean('with_position')]
+            ),
             $parameters,
             $count
         );

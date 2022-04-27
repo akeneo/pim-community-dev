@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\QualityScoreConverter;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimpleArrayConverter;
 
@@ -15,15 +16,10 @@ use Akeneo\Tool\Component\Connector\ArrayConverter\StandardToFlat\AbstractSimple
  */
 class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverterInterface
 {
-    /** @var ProductValueConverter */
-    protected $valueConverter;
-
-    /**
-     * @param ProductValueConverter $valueConverter
-     */
-    public function __construct(ProductValueConverter $valueConverter)
-    {
-        $this->valueConverter = $valueConverter;
+    public function __construct(
+        protected ProductValueConverter $valueConverter,
+        private QualityScoreConverter $qualityScoreConverter
+    ) {
     }
 
     /**
@@ -44,15 +40,17 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
             case 'code':
             case 'family_variant':
             case 'parent':
-                $convertedItem[$property] = (string) $data;
+                $convertedItem[$property] = (string)$data;
                 break;
             case 'values':
                 foreach ($data as $code => $attribute) {
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
-            case 'created':
-            case 'updated':
+            case 'quality_scores':
+                if (is_array($data)) {
+                    $convertedItem = $convertedItem + $this->qualityScoreConverter->convert($data);
+                }
                 break;
             default:
                 break;
@@ -90,7 +88,7 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
      *
      * @return array
      */
-    protected function convertAssociations(array $data, array $convertedItem)
+    protected function convertAssociations(array $data, array $convertedItem): array
     {
         foreach ($data as $assocName => $associations) {
             foreach ($associations as $assocType => $entities) {

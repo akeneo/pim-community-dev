@@ -22,13 +22,14 @@ class InstallSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createConnectionsTable', -10],
+            InstallerEvents::POST_DB_CREATE => ['updateSchema', -10],
         ];
     }
 
-    public function createConnectionsTable(): void
+    public function updateSchema(): void
     {
         $this->dbalConnection->executeStatement(CreateAppTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateUserConsentTable::QUERY);
+        $this->dbalConnection->executeStatement(CreateRevokedAppTokenTableQuery::QUERY);
     }
 }

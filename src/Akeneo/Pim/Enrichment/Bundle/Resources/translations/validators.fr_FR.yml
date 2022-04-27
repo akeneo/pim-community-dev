@@ -122,9 +122,3 @@ pim_datagrid:
   column_configurator:
     label:
       unique_message: Le libellé doit être unique
-#TODO: move elsewhere?
-pim_enrich.product:
-  validation:
-    upsert:
-      set_value:
-        no_channel_code_provided_for_scopable_attribute: 'L''attribut "{{ attributeCode }}" requiert un canal'

@@ -103,41 +103,39 @@ SQL;
         );
     }
 
-    public function createConnectedAppWithUserAndTokens(string $id, string $code, array $scopes = ['read_products']): void
-    {
-        $marketplaceApp = App::fromWebMarketplaceValues([
-            'id' => $id,
-            'name' => $code,
-            'logo' => 'http://example.com/logo.png',
-            'author' => 'Akeneo',
-            'url' => 'http://marketplace.akeneo.com/foo',
-            'categories' => ['ecommerce'],
-            'activate_url' => 'http://example.com/activate',
-            'callback_url' => 'http://example.com/callback',
-        ]);
-        $client = $this->clientProvider->findOrCreateClient($marketplaceApp);
-        $group = $this->createUserGroup->execute(sprintf('app_%s', $code));
+    public function createConnectedAppWithUserAndTokens(
+        string $id,
+        string $code,
+        array $scopes = ['read_products'],
+        bool $isTestApp = false,
+        bool $isPending = false,
+    ): void {
+        $app = $this->createApp($id, $code, $isPending, $isTestApp);
+
+        $client = $this->clientProvider->findOrCreateClient($app);
+        $group = $this->createUserGroup->execute(\sprintf('app_%s', $code));
         $role = $this->userRoleLoader->create([
-            'role' => sprintf('ROLE_%s', strtoupper($code)),
+            'role' => \sprintf('ROLE_%s', \strtoupper($code)),
             'label' => $code,
             'type' => 'app',
         ]);
         $user = $this->createUser->execute(
             $code,
-            $marketplaceApp->getName(),
+            $app->getName(),
             ' ',
             [$group->getName()],
             [$role->getRole()]
         );
+        $userId = $user->id();
         $connection = $this->createConnection->execute(
             $code,
-            $marketplaceApp->getName(),
+            $app->getName(),
             FlowType::OTHER,
             $client->getId(),
-            $user->id(),
+            $userId,
         );
         $this->createApp->execute(
-            $marketplaceApp,
+            $app,
             $scopes,
             $connection->code(),
             $group->getName()
@@ -146,10 +144,53 @@ SQL;
         $user = $this->findConnectionUser($code);
 
         $this->OAuthStorage->createAuthCode($code, $client, $user, '', null);
-        $this->OAuthStorage->createAccessToken($code, $client, $user, null);
+        if (!$isPending) {
+            $this->OAuthStorage->createAccessToken($code, $client, $user, null);
+        }
         $this->OAuthStorage->createRefreshToken($code, $client, $user, null);
 
+        if ($isTestApp) {
+            $this->dbalConnection->insert('akeneo_connectivity_test_app', [
+                'client_id' => $id,
+                'client_secret' => 'secret',
+                'name' => $code,
+                'activate_url' => \sprintf('http://%s.example.com/activate', $code),
+                'callback_url' => \sprintf('http://%s.example.com/callback', $code),
+                'user_id' => $userId,
+            ]);
+        }
+
         $this->unitOfWorkAndRepositoriesClearer->clear();
+    }
+
+    private function createApp(string $id, string $code, bool $isPending, bool $isTestApp): App
+    {
+        if ($isTestApp) {
+            return App::fromTestAppValues(
+                [
+                    'id' => $id,
+                    'name' => $code,
+                    'author' => 'Akeneo',
+                    'activate_url' => 'http://example.com/activate',
+                    'callback_url' => 'http://example.com/callback',
+                    'connected' => !$isPending,
+                    'isPending' => $isPending,
+                ]
+            );
+        }
+
+        return App::fromWebMarketplaceValues([
+            'id' => $id,
+            'name' => $code,
+            'logo' => 'http://example.com/logo.png',
+            'author' => 'Akeneo',
+            'url' => 'http://marketplace.akeneo.com/foo',
+            'categories' => ['ecommerce'],
+            'activate_url' => 'http://example.com/activate',
+            'callback_url' => 'http://example.com/callback',
+            'connected' => !$isPending,
+            'isPending' => $isPending,
+        ]);
     }
 
     private function findConnectionUser(string $code): UserInterface

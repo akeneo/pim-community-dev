@@ -58,7 +58,7 @@ class TechnicalErrorSpec extends ObjectBehavior
         $this->beConstructedWith($content, $dateTime);
 
         $expected = [
-            'content' => json_decode($content, true),
+            'content' => \json_decode($content, true),
             'error_datetime' => '2020-01-01T00:00:00+00:00',
         ];
 

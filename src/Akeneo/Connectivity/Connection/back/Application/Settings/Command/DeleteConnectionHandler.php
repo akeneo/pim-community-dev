@@ -36,7 +36,7 @@ class DeleteConnectionHandler
         $connection = $this->repository->findOneByCode($command->code());
         if (null === $connection) {
             throw new \InvalidArgumentException(
-                sprintf('Connection with code "%s" does not exist', $command->code())
+                \sprintf('Connection with code "%s" does not exist', $command->code())
             );
         }
 

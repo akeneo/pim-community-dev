@@ -19,7 +19,7 @@ class ScopeListSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'fromScopeString',
             [
-                sprintf(
+                \sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,
@@ -48,7 +48,7 @@ class ScopeListSpec extends ObjectBehavior
         $this->beConstructedThrough(
             'fromScopeString',
             [
-                sprintf(
+                \sprintf(
                     "%s %s %s",
                     AuthenticationScope::SCOPE_EMAIL,
                     AuthenticationScope::SCOPE_PROFILE,

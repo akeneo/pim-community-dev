@@ -23,10 +23,10 @@ final class GetAllExtensionsResult
     {
         foreach ($extensions as $extension) {
             if (!$extension instanceof Extension) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'Expected an array of "%s", got "%s".',
                     Extension::class,
-                    gettype($extension)
+                    \gettype($extension)
                 ));
             }
         }
@@ -49,7 +49,7 @@ final class GetAllExtensionsResult
     {
         return self::create(
             $this->total,
-            array_map(function (Extension $extension) use ($queryParameters) {
+            \array_map(function (Extension $extension) use ($queryParameters) {
                 return $extension->withAnalytics($queryParameters);
             }, $this->extensions),
         );

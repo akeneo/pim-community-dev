@@ -23,7 +23,7 @@ class CreateTestAppQueryIntegration extends TestCase
     {
         $this->createAdminUser();
         $clientId = Uuid::uuid4()->toString();
-        $clientSecret = substr($this->randomCodeGenerator->generate(), 0, 100);
+        $clientSecret = \substr($this->randomCodeGenerator->generate(), 0, 100);
         $this->createTestAppQuery->execute(
             $clientId,
             'Any new name',

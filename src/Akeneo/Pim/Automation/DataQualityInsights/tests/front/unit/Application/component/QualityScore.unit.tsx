@@ -5,18 +5,6 @@ import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 
-test('it renders N/A when quality score is null', () => {
-  render(<QualityScore score={null} />);
-
-  expect(screen.getByText('N/A')).toBeInTheDocument();
-});
-
-test('it renders N/A when quality score is equal to N/A', () => {
-  render(<QualityScore score={'N/A'} />);
-
-  expect(screen.getByText('N/A')).toBeInTheDocument();
-});
-
 test('it renders a quality score equal to A', () => {
   render(
     <DependenciesProvider>

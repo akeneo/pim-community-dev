@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: システム
+      save_ok: 構成が正常に保存されました
+      save_error: 申し訳ありませんが、構成を保存できませんでした ({{ reason }})
       group:
         localization:
-          title: ローカライズ
-          system_locale: 言語
+          title: ログインページの設定
+          fields:
+            system_locale:
+              label: 言語
         notification:
-          title: お知らせ
-          system_notification: 新しいバージョンの通知
+          title: 新しいバージョンの通知
+          helper: 有効にすると、新しいバージョンが利用可能な場合に通知が届きます。
+          fields:
+            enabler:
+              label: 有効
         loading_message:
-          title: メッセージを読み込み中...
-          label: メッセージの読み込みを有効にする
-        loading_messages:
-          label: メッセージの読み込み有効
+          title: カスタマイズされた読み込み中のメッセージ
+          helper: 画面を読み込むためのカスタマイズされたメッセージでユーザーを楽しませます。
+          placeholder: 読み込み画面で表示される独自のメッセージを書いてください
+          fields:
+            enabler:
+              label: メッセージの読み込みを有効にする
+            messages:
+              label: 独自の読み込みメッセージを追加
 pim_ui:
   flash:
     unsaved_changes: '保存していない変更内容があります。このページから移動しますか?'

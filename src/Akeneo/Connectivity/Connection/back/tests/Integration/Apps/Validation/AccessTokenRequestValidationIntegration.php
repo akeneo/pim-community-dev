@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -121,7 +122,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
         $this->validator = $this->get('validator');
 
-        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
@@ -159,7 +160,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
             }
         }
 
-        Assert::assertTrue($violationFound, sprintf('The violation at property path "%s" has not been found.', $propertyPath));
+        Assert::assertTrue($violationFound, \sprintf('The violation at property path "%s" has not been found.', $propertyPath));
     }
 
     private function getAuthCode(): string
@@ -174,7 +175,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/rest/apps/confirm-authorization/%s', $appId),
+            \sprintf('/rest/apps/confirm-authorization/%s', $appId),
             [],
             [],
             [
@@ -183,13 +184,13 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $responseContent = json_decode($response->getContent(), true);
+        $responseContent = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $response->getStatusCode());
         Assert::assertArrayHasKey('redirectUrl', $responseContent);
 
-        $query = parse_url($responseContent['redirectUrl'], PHP_URL_QUERY);
-        parse_str($query, $params);
+        $query = \parse_url($responseContent['redirectUrl'], PHP_URL_QUERY);
+        \parse_str($query, $params);
 
         return $params['code'];
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\PublicApi\Model\QualityScoreCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -60,7 +60,7 @@ final class ConnectorProduct
     /** @var ReadValueCollection */
     private $values;
 
-    private ?ChannelLocaleRateCollection $qualityScores;
+    private ?QualityScoreCollection $qualityScores;
 
     private ?ProductCompletenessCollection $completenesses;
 
@@ -78,7 +78,7 @@ final class ConnectorProduct
         array $quantifiedAssociations,
         array $metadata,
         ReadValueCollection $values,
-        ?ChannelLocaleRateCollection $qualityScores,
+        ?QualityScoreCollection $qualityScores,
         ?ProductCompletenessCollection $completenesses
     ) {
         $this->id = $id;
@@ -168,7 +168,7 @@ final class ConnectorProduct
         return $this->values->getAttributeCodes();
     }
 
-    public function qualityScores(): ?ChannelLocaleRateCollection
+    public function qualityScores(): ?QualityScoreCollection
     {
         return $this->qualityScores;
     }
@@ -264,7 +264,7 @@ final class ConnectorProduct
         );
     }
 
-    public function buildWithQualityScores(ChannelLocaleRateCollection $productQualityScores): self
+    public function buildWithQualityScores(QualityScoreCollection $productQualityScores): self
     {
         return new self(
             $this->id,

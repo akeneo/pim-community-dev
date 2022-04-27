@@ -53,14 +53,6 @@ class QualityScoreFilter extends AbstractFieldFilter implements FieldFilterInter
             throw InvalidPropertyException::dataExpected($field, sprintf('values among "%s"', implode('", "', Rank::LETTERS_MAPPING)), static::class);
         }
 
-        $this->searchQueryBuilder->addMustNot(
-            [
-                'term' => [
-                    'document_type' => ProductModelInterface::class
-                ]
-            ]
-        );
-
         $this->searchQueryBuilder->addFilter(
             [
                 'terms' => [

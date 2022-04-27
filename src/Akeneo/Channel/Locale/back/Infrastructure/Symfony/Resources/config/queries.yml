@@ -1,5 +1,5 @@
 services:
-    Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes:
-        class: Akeneo\Channel\Locale\Infrastructure\Query\DummyGetEditableLocaleCodes
+    Akeneo\Channel\Locale\API\Query\IsLocaleEditable:
+        class: Akeneo\Channel\Locale\Infrastructure\Query\DummyIsLocaleEditable
         arguments:
             - '@database_connection'

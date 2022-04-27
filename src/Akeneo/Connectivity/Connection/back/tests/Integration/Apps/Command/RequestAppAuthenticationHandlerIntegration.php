@@ -64,7 +64,7 @@ class RequestAppAuthenticationHandlerIntegration extends TestCase
             ]
         );
 
-        $this->assertEquals(['openid'], json_decode($result['scopes'], true));
+        $this->assertEquals(['openid'], \json_decode($result['scopes'], true));
     }
 
     public function test_it_throws_when_new_scopes_are_requiring_consent(): void

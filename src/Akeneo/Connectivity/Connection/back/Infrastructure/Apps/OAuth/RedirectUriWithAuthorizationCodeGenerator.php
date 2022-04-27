@@ -42,12 +42,12 @@ class RedirectUriWithAuthorizationCodeGenerator implements RedirectUriWithAuthor
 
     private function appendQueryParams(string $url, array $parameters): string
     {
-        $query = http_build_query($parameters);
+        $query = \http_build_query($parameters);
 
-        if (parse_url($url, PHP_URL_QUERY)) {
-            $url = sprintf('%s&%s', $url, $query);
+        if (\parse_url($url, PHP_URL_QUERY)) {
+            $url = \sprintf('%s&%s', $url, $query);
         } else {
-            $url = sprintf('%s?%s', $url, $query);
+            $url = \sprintf('%s?%s', $url, $query);
         }
 
         return $url;

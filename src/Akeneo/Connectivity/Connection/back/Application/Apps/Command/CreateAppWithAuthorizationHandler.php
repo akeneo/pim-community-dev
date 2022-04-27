@@ -22,42 +22,23 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAppWithAuthorizationHandler
 {
-    private ValidatorInterface $validator;
-    private AppAuthorizationSessionInterface $session;
-    private GetAppQueryInterface $getAppQuery;
-    private CreateUserInterface $createUser;
-    private CreateUserGroupInterface $createUserGroup;
-    private CreateConnectionInterface $createConnection;
-    private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory;
-    private ClientProviderInterface $clientProvider;
-    private CreateConnectedAppInterface $createApp;
-
     public function __construct(
-        ValidatorInterface $validator,
-        AppAuthorizationSessionInterface $session,
-        GetAppQueryInterface $getAppQuery,
-        CreateUserInterface $createUser,
-        CreateUserGroupInterface $createUserGroup,
-        CreateConnectionInterface $createConnection,
-        AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
-        ClientProviderInterface $clientProvider,
-        CreateConnectedAppInterface $createApp,
+        private ValidatorInterface $validator,
+        private AppAuthorizationSessionInterface $session,
+        private GetAppQueryInterface $getAppQuery,
+        private CreateUserInterface $createUser,
+        private CreateUserGroupInterface $createUserGroup,
+        private CreateConnectionInterface $createConnection,
+        private AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
+        private ClientProviderInterface $clientProvider,
+        private CreateConnectedAppInterface $createConnectedApp,
     ) {
-        $this->validator = $validator;
-        $this->session = $session;
-        $this->getAppQuery = $getAppQuery;
-        $this->createUser = $createUser;
-        $this->createUserGroup = $createUserGroup;
-        $this->createConnection = $createConnection;
-        $this->appRoleWithScopesFactory = $appRoleWithScopesFactory;
-        $this->clientProvider = $clientProvider;
-        $this->createApp = $createApp;
     }
 
     public function handle(CreateAppWithAuthorizationCommand $command): void
     {
         $violations = $this->validator->validate($command);
-        if (count($violations) > 0) {
+        if (\count($violations) > 0) {
             throw new InvalidAppAuthorizationRequestException($violations);
         }
 
@@ -106,7 +87,7 @@ class CreateAppWithAuthorizationHandler
             $user->id(),
         );
 
-        $this->createApp->execute(
+        $this->createConnectedApp->execute(
             $marketplaceApp,
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
@@ -116,6 +97,6 @@ class CreateAppWithAuthorizationHandler
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
     {
-        return substr(sprintf('%s%s', $prefix, base_convert(bin2hex(random_bytes(16)), 16, 36)), 0, $maxLength);
+        return \substr(\sprintf('%s%s', $prefix, \base_convert(\bin2hex(\random_bytes(16)), 16, 36)), 0, $maxLength);
     }
 }

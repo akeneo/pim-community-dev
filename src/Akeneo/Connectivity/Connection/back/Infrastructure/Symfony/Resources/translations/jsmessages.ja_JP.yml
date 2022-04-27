@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: イベントログ
     data_flows: データフロー
     connect_connection_settings: 接続設定
-    marketplace: マーケットプレイス
-    connected_apps: アプリ
+    marketplace: App Store
+    connected_apps: 接続済みのアプリ
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
-  akeneo_connectivity_connection_connect_marketplace_profile: マーケットプレイス
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: 接続
   akeneo_connectivity_connection_connect_apps_authorize: 接続
   akeneo_connectivity_connection_connect_apps_authenticate: 接続
@@ -35,25 +35,29 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション
   akeneo_connectivity_connection_webhook_event_logs: イベントログ
   akeneo_connectivity_connection_settings_redirect: 接続
-  akeneo_connectivity_connection_connect_connected_apps: アプリ
+  akeneo_connectivity_connection_connect_connected_apps: 接続済みのアプリ
   akeneo_connectivity_connection_connect_connected_apps_edit: アプリの設定
   akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: テストアプリを作成
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: テストアプリを削除
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: PIM を別のアプリケーションに接続しますか？🤟
-      sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
-      link: マーケットプレイスにアクセス
+      sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、App Store でご覧ください。
+      link: App Store にアクセス
       helper:
         title: '{0} お使いの PIM バージョンと互換性のあるアプリまたはコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるアプリまたはコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるアプリとコネクターが {{ count }} 個あります。'
         title_without_apps: '{0} お使いの PIM バージョンと互換性のあるコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
-        description: これは概要です。詳細については Web マーケットプレイスをご覧ください。
-        link: ' Web マーケットプレイスに移動'
+        description: これは概要です。詳細については Akeneo App Store をご覧ください。
+        link: Akeneo App Store に移動
       card:
+        developed_by: '開発者: {{ author }}'
         read_more: 続きを読む
         more_info: さらに詳しい情報
         connect: 接続
         connected: 接続済み
+        pending: 保留中...
       extensions:
         title: コネクター
         total: '{0} コネクターがありません|{1} 1 個のコネクター|[2,Inf] {{ total }} 個のコネクター'
@@ -62,14 +66,53 @@ akeneo_connectivity.connection:
         title: アプリ
         total: '{0} アプリなし|{1} 1 個のアプリ|[2,Inf] {{ total }} 個のアプリ'
         empty: お使いのバージョンと互換性のあるアプリがありません
-      unreachable: マーケットに接続できません。後でもう一度確認してください。
+      unreachable: App Store に接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
       test_apps:
+        title: マイテストアプリ
+        removed_user: 削除済みのユーザー
+        create_a_test_app: テストアプリを作成
         modal:
+          subtitle: テストアプリを作成
+          app_information:
+            title: アプリ情報
+            description: ヘルプが必要な場合は、記事をご確認ください
+            link: アプリを公開する前にテストする方法
+            fields:
+              name: 名前
+              activate_url: 有効化URL
+              callback_url: コールバックURL
           credentials:
             title: 認証情報
+            warning: これらの資格情報はここで一度だけ表示されるため、どこかに保存するようにしてください。
+            client_id: クライアントID
+            client_secret: クライアントシークレット
+        errors:
+          page_not_found: ページが見つかりません
+          creation:
+            name:
+              min_length: テストアプリの名前が長すぎます。3文字以上である必要があります。
+              max_length: テストアプリの名前が長すぎます。255文字以下である必要があります。
+              not_blank: テストアプリの名前は必須です。
+            client_id:
+              max_length: テストアプリのクライアントIDが長すぎます。36文字以下である必要があります。
+              not_blank: クライアントIDは必須です。
+            activate_url:
+              max_length: テストアプリの有効化URLが長すぎます。255文字以下である必要があります。
+              must_be_url: 有効化URLは有効なURLである必要があります。
+              not_blank: 有効化URLは必須です。
+            callback_url:
+              max_length: テストアプリのコールバックURLが長すぎます。255文字以下である必要があります。
+              must_be_url: コールバックURLは有効なURLである必要があります。
+              not_blank: コールバックURLは必須です。
         delete:
+          subtitle: アプリ
           title: 削除を確認
+          description: このPIMからテストアプリを削除しようとしています。
+          warning: 削除を確認すると、App Store ページのテストアプリと関連する接続済みのアプリが削除されます。
+          flash:
+            success: テストアプリが正常に削除されました。
+            error: 申し訳ございません、テストアプリを削除中にエラーが発生しました。
     connected_apps:
       list:
         apps:
@@ -77,15 +120,23 @@ akeneo_connectivity.connection:
           total: '{0} アプリなし|{1} 1個のアプリ|[2,Inf] {{ total }} 個のアプリ'
           empty: 接続されているアプリがまだありません。
           check_marketplace: '使用可能なすべてのコンテンツを参照し、最初のアプリをインストールするには {{ marketplaceLink }} をチェックしてください。'
-          marketplace_link_anchor: マーケットプレイス
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: 一部の接続済みのアプリにご使用の PIM バージョンと互換性がないか、Akeneo App Store に存在しないものがあります。詳しくは、お問い合わせください。
+          pending_apps: 一部のアプリが PIM に接続されていません。
+        test_apps:
+          title: マイテストアプリ
+          removed_user: 削除済みのユーザー
         helper:
           title: '[0,1] PIMは {{ count }} 個のアプリに接続されています。|[2,Inf] PIMは {{ count }} 個のアプリに接続されています。'
-          description_1: 新しいアプリが定期的に開発されているため、PIMの接続方法についてマーケットプレイスのページを頻繁にチェックし、最新情報をご確認ください。
+          description_1: 新しいアプリが定期的に開発されているため、PIM の接続方法について App Store ページを頻繁にチェックし、最新情報をご確認ください。
           description_2: アプリに関する詳しい情報をご要望ですか？
           link: 詳細についてはヘルプセンターをご確認ください。
         card:
+          developed_by: '開発者: {{ author }}'
+          not_listed_on_the_appstore: アプリが Akeneo App Store に表示されなくなりました。アプリのサポートにお問い合わせください。
           manage_app: アプリの管理
           open_app: アプリを開く
+          pending: アプリが接続されていません。アプリを開くと接続問題は解決されるはずです。
         flash:
           error: 申し訳ございません、接続されたアプリリストを取得中にエラーが発生しました。
       edit:
@@ -102,6 +153,9 @@ akeneo_connectivity.connection:
             information: 'アプリの承認についての詳細は、{{ link }} をご覧ください。'
             information_link_anchor: ヘルプセンターの記事
             no_scope: 特定の承認は要求されていません。
+          authentication:
+            information_link_anchor: ヘルプセンターの記事
+          pending: このアプリは PIM に接続されていません。アプリを開くと接続問題は解決されるはずです。解決しない場合は、アプリのサポートにお問い合わせください。
         error_monitoring:
           error: エラーが発生しました！
           helper:
@@ -152,8 +206,16 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} には以下が必要です:'
           helper: アプリ認証の詳細については、こちらの記事をご確認ください
           helper_link: PIMにアプリで接続する方法
-          scope_profile: 名と姓を表示
-          scope_email: メールアドレスを表示
+          scope_profile: '{{ firstname }}と{{ lastname }}を表示'
+          scope_email: '{{ email }}アドレスを表示'
+          consent:
+            label: 'このアプリのプライバシーポリシーと利用規約に同意します。これらについては{{ app_marketplace_page }}でご覧いただけます。'
+            app_marketplace_page: App Store ページ
+            subtext: 'サードパーティのアプリにリダイレクトされることに同意したことになります。Akeneo はこのアプリのコンテンツについて一切の責任を負いません。Akeneo App Store で問題が発生した場合は、{{ contact_us }}ください。'
+            contact_us: お問い合わせ
+          firstname: 名
+          lastname: 姓
+          email: メール
         authorize:
           title: '{{ app_name }} には以下が必要です:'
           no_scope_title: '{{ app_name }} がPIMにアクセスしようとしています。'
@@ -189,6 +251,7 @@ akeneo_connectivity.connection:
           assets: アセット
       error:
         sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
+        app_not_found: client_id が既存のアプリと一致しません。
       constraint:
         client_id:
           not_blank: client_idは必須です。
@@ -217,6 +280,7 @@ akeneo_connectivity.connection:
     user_role_id: 権限
     user_group_id: グループ
     constraint:
+      connections_number_limit_reached: 接続と接続済みアプリの件数が上限である50に達しました。
       code:
         required: 接続コードは必須項目です。
         invalid: 接続コードに利用できるのは半角英数字とアンダースコアのみです。
@@ -245,6 +309,7 @@ akeneo_connectivity.connection:
     message_link: ここをクリック
   create_connection:
     title: 新しい接続を作成
+    description: 最大50件のサードパーティまたはアプリに接続できます。
     flash:
       success: 接続は正常に作成されました。
       error: 申し訳ございません、接続の作成中にエラーが発生しました。

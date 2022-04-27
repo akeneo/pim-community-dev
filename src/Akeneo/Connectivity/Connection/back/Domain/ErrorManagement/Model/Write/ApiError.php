@@ -20,7 +20,7 @@ abstract class ApiError implements ApiErrorInterface
     public function __construct(string $content, \DateTimeImmutable $dateTime = null)
     {
         try {
-            $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            $decoded = \json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $jsonException) {
             throw new \InvalidArgumentException(
                 'The content of the API error must be in JSON format.',
@@ -55,7 +55,7 @@ abstract class ApiError implements ApiErrorInterface
     public function normalize(): array
     {
         return [
-            'content' => json_decode($this->content(), true, 512, JSON_THROW_ON_ERROR),
+            'content' => \json_decode($this->content(), true, 512, JSON_THROW_ON_ERROR),
             'error_datetime' => $this->dateTime->format(\DateTimeInterface::ATOM),
         ];
     }

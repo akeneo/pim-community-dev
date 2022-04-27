@@ -7,6 +7,7 @@ import {AppWizardWithPermissions} from '@src/connect/components/AppWizard/AppWiz
 import {PermissionFormProvider, PermissionFormRegistryContext} from '@src/shared/permission-form-registry';
 import {NotificationLevel, NotifyContext} from '@src/shared/notify';
 import {PermissionsByProviderKey} from '@src/model/Apps/permissions-by-provider-key';
+import ScopeMessage from '@src/model/Apps/scope-message';
 
 /*eslint-disable */
 declare global {
@@ -54,6 +55,7 @@ type PermissionsProps = {
     providers: PermissionFormProvider<any>[];
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
+    scopeMessages: ScopeMessage[];
 };
 jest.mock('@src/connect/components/AppWizard/steps/Permissions', () => ({
     ...jest.requireActual('@src/connect/components/AppWizard/steps/Permissions'),
@@ -90,7 +92,7 @@ test('The step wizard renders without error', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -115,7 +117,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -132,7 +134,7 @@ test('The wizard redirect to the marketplace when closed', async () => {
         userEvent.click(screen.getByTitle('akeneo_connectivity.connection.connect.apps.wizard.action.cancel'));
     });
 
-    expect(historyMock.history.location.pathname).toBe('/connect/marketplace');
+    expect(historyMock.history.location.pathname).toBe('/connect/app-store');
 });
 
 test('The wizard renders steps and is able to navigate between steps', async () => {
@@ -141,7 +143,7 @@ test('The wizard renders steps and is able to navigate between steps', async () 
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -182,6 +184,45 @@ test('The wizard renders steps and is able to navigate between steps', async () 
     assertAuthorizationsScreen();
 });
 
+test('The wizard does not display permissions and confirm steps when there is no products scopes requested', async () => {
+    const fetchAppWizardDataResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_wizard_data?clientId=8d8a7dc1-0827-4cc9-9ae5-577c6419230b': {
+            json: {
+                appName: 'MyApp',
+                appLogo: 'http://example.com/logo.png',
+                scopeMessages: [],
+                authenticationScopes: [],
+            },
+        },
+    };
+
+    mockFetchResponses({
+        ...fetchAppWizardDataResponses,
+    });
+    renderWithProviders(<AppWizardWithPermissions clientId='8d8a7dc1-0827-4cc9-9ae5-577c6419230b' />);
+    await screen.findByText('authorizations-component');
+
+    expect(screen.queryByText('authorizations-component')).toBeInTheDocument();
+    expect(screen.queryByText('permissions-component', {exact: false})).not.toBeInTheDocument();
+    expect(screen.queryByText('permissions-summary-component', {exact: false})).not.toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')).toBeInTheDocument();
+
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.progress.authorizations')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.allow_and_next')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.next')
+    ).not.toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.apps.wizard.action.previous')
+    ).not.toBeInTheDocument();
+});
+
 test('The wizard notifies an unspecified error occurred on app confirm ', async () => {
     const clientId = '8d8a7dc1-0827-4cc9-9ae5-577c6419230b';
     const fetchAppWizardDataResponses: MockFetchResponses = {
@@ -189,7 +230,7 @@ test('The wizard notifies an unspecified error occurred on app confirm ', async 
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -228,7 +269,7 @@ test('The wizard saves app and permissions on confirm', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -297,7 +338,7 @@ test('The wizard saves app but have some failing permissions on confirm', async 
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: [],
             },
         },
@@ -406,7 +447,7 @@ test('The wizard display the authentication step', async () => {
             json: {
                 appName: 'MyApp',
                 appLogo: 'http://example.com/logo.png',
-                scopeMessages: [],
+                scopeMessages: [{entities: 'products', type: 'view', icon: 'products'}],
                 authenticationScopes: ['profile'],
             },
         },

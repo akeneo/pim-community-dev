@@ -1,0 +1,24 @@
+parameters:
+    env(ALLOWED_NETWORK_WHITELIST): ''
+
+services:
+    Akeneo\Connectivity\Connection\Application\Webhook\Validation\ConnectionMustExistValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Settings\Persistence\DbalConnectionRepository'
+        tags:
+            - { name: validator.constraint_validator, alias: connection_must_exist }
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\Persistence\DbalSelectActiveWebhooksQuery'
+            - '%webhook_active_event_subscriptions_limit%'
+        tags:
+            - { name: validator.constraint_validator }
+
+    Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrlValidator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher'
+            - '%env(string:ALLOWED_NETWORK_WHITELIST)%'
+        tags:
+            - { name: validator.constraint_validator }

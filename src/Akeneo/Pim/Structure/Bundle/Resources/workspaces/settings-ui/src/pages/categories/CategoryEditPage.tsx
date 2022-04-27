@@ -18,6 +18,7 @@ import {
   PageHeader,
   PimView,
   UnsavedChanges,
+  useFeatureFlags,
   useRouter,
   useSecurity,
   useSessionStorageState,
@@ -70,6 +71,7 @@ const CategoryEditPage: FC = () => {
     thereAreUnsavedChanges,
     saveCategory,
   } = useEditCategoryForm(parseInt(categoryId));
+  const permissionFeatureFlagIsEnabled = useFeatureFlags().isEnabled('permission');
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_edit', {'category.label': categoryLabel}));
 
@@ -201,17 +203,20 @@ const CategoryEditPage: FC = () => {
           >
             {translate('pim_common.properties')}
           </TabBar.Tab>
-          {formData && formData.permissions && isGranted('pimee_enrich_category_edit_permissions') && (
-            <TabBar.Tab
-              isActive={isCurrent(permissionTabName)}
-              onClick={() => {
-                setActiveTab(permissionTabName);
-                switchTo(permissionTabName);
-              }}
-            >
-              {translate('pim_common.permissions')}
-            </TabBar.Tab>
-          )}
+          {formData &&
+            formData.permissions &&
+            permissionFeatureFlagIsEnabled &&
+            isGranted('pimee_enrich_category_edit_permissions') && (
+              <TabBar.Tab
+                isActive={isCurrent(permissionTabName)}
+                onClick={() => {
+                  setActiveTab(permissionTabName);
+                  switchTo(permissionTabName);
+                }}
+              >
+                {translate('pim_common.permissions')}
+              </TabBar.Tab>
+            )}
           {isGranted('pim_enrich_product_category_history') && (
             <TabBar.Tab
               isActive={isCurrent(historyTabName)}
@@ -238,7 +243,7 @@ const CategoryEditPage: FC = () => {
             }}
           />
         )}
-        {isCurrent(permissionTabName) && (
+        {isCurrent(permissionTabName) && permissionFeatureFlagIsEnabled && (
           <EditPermissionsForm
             formData={formData}
             onChangePermissions={onChangePermissions}

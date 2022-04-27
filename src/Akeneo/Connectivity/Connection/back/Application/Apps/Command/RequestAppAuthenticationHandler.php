@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class RequestAppAuthenticationHandler
+class RequestAppAuthenticationHandler
 {
     private GetUserConsentedAuthenticationScopesQueryInterface $getUserConsentedAuthenticationScopesQuery;
     private CreateUserConsentQueryInterface $createUserConsentQuery;
@@ -59,11 +59,11 @@ final class RequestAppAuthenticationHandler
         $consentedScopes = $this->getUserConsentedAuthenticationScopesQuery->execute($userId, $appId);
         $requestedScopes = $command->getRequestedAuthenticationScopes()->getScopes();
 
-        $requestedScopesAlreadyConsented = array_intersect($consentedScopes, $requestedScopes);
-        $newScopesRequiringConsent = array_diff($requestedScopes, $requestedScopesAlreadyConsented);
+        $requestedScopesAlreadyConsented = \array_intersect($consentedScopes, $requestedScopes);
+        $newScopesRequiringConsent = \array_diff($requestedScopes, $requestedScopesAlreadyConsented);
 
         // Check & remove previously consented scopes that are not requested anymore.
-        if (count($requestedScopesAlreadyConsented) < count($consentedScopes)) {
+        if (\count($requestedScopesAlreadyConsented) < \count($consentedScopes)) {
             $this->createUserConsentQuery->execute(
                 $userId,
                 $appId,
@@ -73,12 +73,12 @@ final class RequestAppAuthenticationHandler
         }
 
         // Nothing to do if there is no new scopes to consent.
-        if (count($newScopesRequiringConsent) === 0) {
+        if (\count($newScopesRequiringConsent) === 0) {
             return;
         }
 
         // If there is only one new scope and it's openid, then we automatically give consent.
-        if (count($newScopesRequiringConsent) === 1 && reset($newScopesRequiringConsent) === AuthenticationScope::SCOPE_OPENID) {
+        if (\count($newScopesRequiringConsent) === 1 && \reset($newScopesRequiringConsent) === AuthenticationScope::SCOPE_OPENID) {
             $this->createUserConsentQuery->execute(
                 $userId,
                 $appId,

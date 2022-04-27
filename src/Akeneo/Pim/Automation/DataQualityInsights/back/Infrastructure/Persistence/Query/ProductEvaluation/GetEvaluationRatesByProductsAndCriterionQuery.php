@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
@@ -18,11 +19,13 @@ use Doctrine\DBAL\Connection;
  */
 final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluationRatesByProductsAndCriterionQueryInterface
 {
-    public function __construct(private Connection $dbConnection, private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds)
-    {
+    public function __construct(
+        private Connection $dbConnection,
+        private TransformCriterionEvaluationResultIds $transformCriterionEvaluationResultIds
+    ) {
     }
 
-    public function toArrayInt(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
@@ -35,7 +38,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => $productIdCollection->toArrayInt(),
+                'productIds' => $productIdCollection->toArrayString(),
                 'criterionCode' => $criterionCode,
             ],
             [
@@ -45,20 +48,20 @@ SQL;
 
         $evaluationRates = [];
         while ($evaluationResult = $stmt->fetchAssociative()) {
-            $evaluationRates[$evaluationResult['product_id']] = $this->formatEvaluationRates($evaluationResult);
+            $evaluationRates[$evaluationResult['product_id']] = $this->formatEvaluationRates($criterionCode, $evaluationResult);
         }
 
         return $evaluationRates;
     }
 
-    private function formatEvaluationRates(array $evaluationResult): array
+    private function formatEvaluationRates(CriterionCode $criterionCode, array $evaluationResult): array
     {
         if (!isset($evaluationResult['rates'])) {
             return [];
         }
 
         $rates = json_decode($evaluationResult['rates'], true, 512, JSON_THROW_ON_ERROR);
-        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes(([TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]));
+        $rates = $this->transformCriterionEvaluationResultIds->transformToCodes($criterionCode, [TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates'] => $rates]);
 
         return $rates['rates'] ?? [];
     }

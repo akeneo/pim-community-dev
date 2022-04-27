@@ -19,7 +19,7 @@ export const AppAuthorizePage: FC = () => {
     }
 
     if (null === clientId) {
-        history.push('/connect/marketplace');
+        history.push('/connect/app-store');
         return null;
     }
 

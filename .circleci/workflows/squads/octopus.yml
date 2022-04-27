@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+    slack-app: circleci/slack@4.8.3
+
 workflows:
     version: 2
 
@@ -43,5 +47,7 @@ workflows:
                   requires:
                       - checkout_ce
             - test_octopus_code_quality:
+                  context:
+                      - octopus-slack
                   requires:
                       - build_dev

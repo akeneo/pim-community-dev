@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Channel\Locale\API\Query\GetEditableLocaleCodes;
+use Akeneo\Channel\Locale\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
@@ -18,9 +18,9 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 {
-    function let(GetEditableLocaleCodes $getEditableLocaleCodes, ExecutionContext $context)
+    function let(IsLocaleEditable $isLocaleEditable, ExecutionContext $context)
     {
-        $this->beConstructedWith($getEditableLocaleCodes);
+        $this->beConstructedWith($isLocaleEditable);
         $this->initialize($context);
     }
 
@@ -45,59 +45,57 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
 
     function it_validates_when_the_locale_is_editable_by_the_user(
         ExecutionContext $context,
-        getEditableLocaleCodes $getEditableLocaleCodes
+        IsLocaleEditable $isLocaleEditable
     ) {
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', null, 'en_US', 'new value'),
-        ]);
+        $valueUserIntent = new SetTextValue('a_text', null, 'en_US', 'new value');
 
-        $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
+        $context->getRoot()->willReturn(new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'foo',
+            valueUserIntents: [$valueUserIntent]
+        ));
+        $isLocaleEditable->forUserId('en_US', 1)->willReturn(true);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $this->validate($command, new LocaleShouldBeEditableByUser());
+        $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
 
     function it_adds_a_violation_when_the_locale_is_not_editable_for_the_user(
         ExecutionContext $context,
-        getEditableLocaleCodes $getEditableLocaleCodes,
+        IsLocaleEditable $isLocaleEditable,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
     ) {
         $constraint = new LocaleShouldBeEditableByUser();
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', null, 'de_DE', 'new value'),
-        ]);
+        $valueUserIntent = new SetTextValue('a_text', null, 'de_DE', 'new value');
 
-        $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
+        $context->getRoot()->willReturn(new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'foo',
+            valueUserIntents: [$valueUserIntent]
+        ));
+        $isLocaleEditable->forUserId('de_DE', 1)->willReturn(false);
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
             ->shouldBeCalledOnce()
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
-        $this->validate($command, new LocaleShouldBeEditableByUser());
+        $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
 
-    function it_adds_a_violation_for_every_user_intent_for_which_the_locale_is_not_editable_for_the_user(
+    function it_does_nothing_when_value_intent_does_not_concern_a_locale(
         ExecutionContext $context,
-        getEditableLocaleCodes $getEditableLocaleCodes,
-        ConstraintViolationBuilderInterface $constraintViolationBuilder
+        IsLocaleEditable $isLocaleEditable
     ) {
-        $constraint = new LocaleShouldBeEditableByUser();
-        $command = new UpsertProductCommand(userId: 1, productIdentifier: 'product_identifier', valuesUserIntent: [
-            new SetTextValue('a_text', null, 'de_DE', 'new value'),
-            new SetTextValue('a_text', null, 'en_GB', 'new value'),
-        ]);
+        $valueUserIntent = new SetTextValue('a_text', null, null, 'new value');
 
-        $getEditableLocaleCodes->forUserId(1)->willReturn(['en_US', 'fr_FR']);
-        $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
-            ->shouldBeCalledOnce()
-            ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
+        $context->getRoot()->willReturn(new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'foo',
+            valueUserIntents: [$valueUserIntent]
+        ));
+        $isLocaleEditable->forUserId(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
-        $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'en_GB'])
-            ->shouldBeCalledOnce()
-            ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate($command, new LocaleShouldBeEditableByUser());
+        $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
     }
 }

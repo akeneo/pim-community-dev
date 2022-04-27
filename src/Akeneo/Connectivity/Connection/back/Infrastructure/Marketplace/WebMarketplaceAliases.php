@@ -46,7 +46,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
     {
         $version = $this->versionProvider->getVersion();
 
-        if (preg_match('|(\d\.\d)\.\d|', $version, $matches)) {
+        if (\preg_match('|(\d\.\d)\.\d|', $version, $matches)) {
             return $matches[1];
         }
 

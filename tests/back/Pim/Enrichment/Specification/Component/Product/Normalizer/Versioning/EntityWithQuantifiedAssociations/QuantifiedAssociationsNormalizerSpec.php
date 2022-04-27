@@ -48,7 +48,7 @@ class QuantifiedAssociationsNormalizerSpec extends ObjectBehavior
                     ['identifier' => 'productModelB', 'quantity' => 8],
                 ],
             ],
-            'PRODUCT_SET2' => [
+            '1234' => [
                 'products' => [
                     ['identifier' => 'productA', 'quantity' => 5],
                 ],
@@ -67,10 +67,10 @@ class QuantifiedAssociationsNormalizerSpec extends ObjectBehavior
             'PRODUCT_SET1-products-quantity' => '5|3',
             'PRODUCT_SET1-product_models' => 'productModelA,productModelB',
             'PRODUCT_SET1-product_models-quantity' => '5|8',
-            'PRODUCT_SET2-products' => 'productA',
-            'PRODUCT_SET2-products-quantity' => '5',
-            'PRODUCT_SET2-product_models' => 'productModelB',
-            'PRODUCT_SET2-product_models-quantity' => '8',
+            '1234-products' => 'productA',
+            '1234-products-quantity' => '5',
+            '1234-product_models' => 'productModelB',
+            '1234-product_models-quantity' => '8',
         ]);
     }
 }

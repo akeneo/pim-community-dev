@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Command\PurgeEventsApiLogsCommand:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiSuccessLogsQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\PurgeEventsApiErrorLogsQuery'
+        tags:
+            - {name: 'console.command'}

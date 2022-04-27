@@ -140,7 +140,7 @@ pim_enrich.entity.product:
       delete_confirm: Sei sicuro di voler eliminare questo commento?
       removed_author: Utente rimosso
     asset:
-      title: Attività
+      title: Assets
 pim_enrich.entity.product_model:
   label: modello di prodotto
   uppercase_label: Modello di prodotto

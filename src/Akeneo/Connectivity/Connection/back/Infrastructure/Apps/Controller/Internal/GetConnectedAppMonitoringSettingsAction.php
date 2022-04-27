@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal
 
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionHandler;
 use Akeneo\Connectivity\Connection\Application\Settings\Query\FindAConnectionQuery;
+use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByConnectionCodeQueryInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,15 +24,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 final class GetConnectedAppMonitoringSettingsAction
 {
     public function __construct(
-        private FeatureFlag $featureFlag,
+        private FeatureFlag $marketplaceActivateFeatureFlag,
         private SecurityFacade $security,
         private FindAConnectionHandler $findAConnectionHandler,
+        private FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
     ) {
     }
 
     public function __invoke(Request $request, string $connectionCode): Response
     {
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->marketplaceActivateFeatureFlag->isEnabled()) {
             throw new NotFoundHttpException();
         }
 
@@ -38,9 +41,13 @@ final class GetConnectedAppMonitoringSettingsAction
             return new RedirectResponse('/');
         }
 
-        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
-            throw new AccessDeniedHttpException();
+        $connectedApp = $this->findOneConnectedAppByConnectionCodeQuery->execute($connectionCode);
+
+        if (null === $connectedApp) {
+            throw new NotFoundHttpException("Connected app with connection code $connectionCode does not exist.");
         }
+
+        $this->denyAccessUnlessGrantedToManage($connectedApp);
 
         $connection = $this->findAConnectionHandler->handle(new FindAConnectionQuery($connectionCode));
 
@@ -52,5 +59,16 @@ final class GetConnectedAppMonitoringSettingsAction
             'flowType' => $connection->flowType(),
             'auditable' => $connection->auditable(),
         ]);
+    }
+
+    private function denyAccessUnlessGrantedToManage(ConnectedApp $connectedApp): void
+    {
+        if (!$connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if ($connectedApp->isTestApp() && !$this->security->isGranted('akeneo_connectivity_connection_manage_test_apps')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

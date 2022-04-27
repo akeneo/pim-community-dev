@@ -16,20 +16,20 @@ class RandomCodeGenerator implements RandomCodeGeneratorInterface
 {
     public function generate(): string
     {
-        if (@file_exists('/dev/urandom')) { // Get 100 bytes of random data
-            $randomData = file_get_contents('/dev/urandom', false, null, 0, 100);
-        } elseif (function_exists('openssl_random_pseudo_bytes')) { // Get 100 bytes of pseudo-random data
-            $bytes = openssl_random_pseudo_bytes(100, $strong);
+        if (@\file_exists('/dev/urandom')) { // Get 100 bytes of random data
+            $randomData = \file_get_contents('/dev/urandom', false, null, 0, 100);
+        } elseif (\function_exists('openssl_random_pseudo_bytes')) { // Get 100 bytes of pseudo-random data
+            $bytes = \openssl_random_pseudo_bytes(100, $strong);
             if (true === $strong && false !== $bytes) {
                 $randomData = $bytes;
             }
         }
         // Last resort: mt_rand
         if (empty($randomData)) { // Get 108 bytes of (pseudo-random, insecure) data
-            $randomData = mt_rand() . mt_rand() . mt_rand() . uniqid((string) mt_rand(), true) . microtime(true) .
-                uniqid((string) mt_rand(), true);
+            $randomData = \mt_rand() . \mt_rand() . \mt_rand() . \uniqid((string) \mt_rand(), true) . \microtime(true) .
+                \uniqid((string) \mt_rand(), true);
         }
 
-        return rtrim(strtr(base64_encode(hash('sha256', $randomData)), '+/', '-_'), '=');
+        return \rtrim(\strtr(\base64_encode(\hash('sha256', $randomData)), '+/', '-_'), '=');
     }
 }

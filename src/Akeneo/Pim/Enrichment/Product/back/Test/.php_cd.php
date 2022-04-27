@@ -33,14 +33,12 @@ $rules = [
         // Legacy
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Tool\Component\StorageUtils\Exception\PropertyException',
-        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([
         'Akeneo\Pim\Enrichment\Product\API',
-        'Akeneo\Pim\Enrichment\Product\Application',
         'Akeneo\Pim\Enrichment\Product\Domain',
 
         // Public APIs

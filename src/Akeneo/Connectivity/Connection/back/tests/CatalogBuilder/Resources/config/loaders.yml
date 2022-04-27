@@ -5,19 +5,19 @@ services:
     akeneo_connectivity.connection.fixtures.connection_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader'
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
 
     akeneo_connectivity.connection.fixtures.audit_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'
         arguments:
             - '@database_connection'
-            - '@akeneo_connectivity.connection.persistence.repository.event_count'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
 
     akeneo_connectivity.connection.fixtures.audit_error_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader'
         arguments:
-            - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
+            - '@Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler'
 
     akeneo_connectivity.connection.fixtures.structure.attribute:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader'
@@ -94,7 +94,7 @@ services:
     akeneo_connectivity.connection.fixtures.event_subscription_log_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
 
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader:
         arguments:
@@ -113,7 +113,7 @@ services:
             - '@fos_oauth_server.storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
-            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@pim_user.repository.user'
