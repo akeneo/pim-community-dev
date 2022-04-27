@@ -1,5 +1,8 @@
 # 6.0.x
 
+## Bug fixes
+- PIM-10405: [Backport PIM-10399] Fix media link internal value on initialValue change
+
 # 6.0.25 (2022-04-14)
 
 # 6.0.24 (2022-04-13)
