@@ -8,9 +8,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddAttributeCase implements AttributeCase
+class AddPriceCollectionCase implements AttributeCase
 {
-    public function addCases(): string
+    public function getCase(): string
     {
         return "
                 WHEN attribute.attribute_type = 'pim_catalog_price_collection' 

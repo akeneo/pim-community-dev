@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\AttributeCase;
+use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -38,13 +39,13 @@ SQL;
             $attributeTypeA,
             $attributeTypeB
         ]);
-        $attributeTypeA->addCases()->willReturn(
-"WHEN attribute.attribute_type = 'typeA'
-                    THEN 'TypeA'\n"
+        $attributeTypeA->getCase()->willReturn(
+        "WHEN attribute.attribute_type = 'typeA'
+            THEN 'TypeA'"
         );
-        $attributeTypeB->addCases()->willReturn(
-"               WHEN attribute.attribute_type = 'typeB'
-                    THEN 'TypeB'"
+        $attributeTypeB->getCase()->willReturn(
+        "WHEN attribute.attribute_type = 'typeB'
+            THEN 'TypeB'"
         );
 
         $sql = <<<SQL
@@ -52,9 +53,9 @@ JSON_ARRAYAGG(
     CONCAT(
         CASE
             WHEN attribute.attribute_type = 'typeA'
-                    THEN 'TypeA'
-                WHEN attribute.attribute_type = 'typeB'
-                    THEN 'TypeB'
+                THEN 'TypeA'
+            WHEN attribute.attribute_type = 'typeB'
+                THEN 'TypeB'
             ELSE attribute.code
         END,
         '-',
@@ -64,6 +65,25 @@ JSON_ARRAYAGG(
     )
 ) AS mask
 SQL;
-        $this->__invoke()->shouldContain($sql);
+        $this->__invoke()->shouldHaveSqlQueryEqualsTo($sql);
+    }
+
+    public function getMatchers(): array
+    {
+        return [
+            'haveSqlQueryEqualsTo' => function ($subject, $expected) {
+                // Remove all spaces to compare sql query
+                $strippedSubject = trim(preg_replace('/\s+/', ' ', $subject));
+                $strippedExpected = trim(preg_replace('/\s+/', ' ', $expected));
+                if ($strippedSubject !== $strippedExpected) {
+                    throw new FailureException(sprintf(
+                        'The mask has not the expected sql structure  :' . PHP_EOL . '%s ' . PHP_EOL . 'but we got this : ' . PHP_EOL . '%s',
+                        $strippedExpected,
+                        $strippedSubject
+                    ));
+                }
+                return true;
+            }
+        ];
     }
 }

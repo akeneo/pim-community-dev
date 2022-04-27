@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\GetProductModelAttributesMaskQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\BuildSqlMaskField;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMask;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\RequiredAttributesMaskForChannelAndLocale;
 use Doctrine\DBAL\Connection;
@@ -17,38 +18,20 @@ use Doctrine\DBAL\Connection;
  */
 class GetNonRequiredProductModelAttributesMaskQuery implements GetProductModelAttributesMaskQueryInterface
 {
-    use FormatAttributeCasesTrait;
-
-    /**
-     * @param AttributeCase[] $attributeCases
-     */
     public function __construct(
-        private Connection $dbConnection,
-        private iterable   $attributeCases,
+        private Connection        $dbConnection,
+        private BuildSqlMaskField $mask,
     ) {
     }
 
     public function execute(ProductModelId $productModelId): ?RequiredAttributesMask
     {
-        $cases = $this->formatAttributeCases($this->attributeCases);
         $sql = "
 SELECT
     family.code AS family_code,
     channel_code,
     locale_code,
-    JSON_ARRAYAGG(
-        CONCAT(
-            CASE
-                " . $cases . "
-                
-                ELSE attribute.code
-            END,
-            '-',
-            IF(attribute.is_scopable, channel_locale.channel_code, '<all_channels>'),
-            '-',
-            IF(attribute.is_localizable, channel_locale.locale_code, '<all_locales>')
-        )
-    ) AS mask
+    " . $this->mask->__invoke() . "
 FROM pim_catalog_product_model AS product_model
 INNER JOIN pim_catalog_family_variant AS family_variant ON family_variant.id = product_model.family_variant_id
 INNER JOIN pim_catalog_family AS family ON family.id = family_variant.family_id

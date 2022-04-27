@@ -28,7 +28,7 @@ class BuildSqlMaskField
         return $this->getMaskWithCases($this->formatAttributeCases());
     }
 
-    private function getDefaultMask()
+    private function getDefaultMask(): string
     {
         return <<<SQL
 JSON_ARRAYAGG(
@@ -48,12 +48,12 @@ SQL;
     {
         $formattedCases = [];
         foreach ($this->attributeCases as $attributeCase) {
-            $formattedCases[] = $attributeCase->addCases();
+            $formattedCases[] = $attributeCase->getCase();
         }
         return implode(' ', $formattedCases);
     }
 
-    private function getMaskWithCases(string $cases)
+    private function getMaskWithCases(string $cases): string
     {
         return "
 JSON_ARRAYAGG(

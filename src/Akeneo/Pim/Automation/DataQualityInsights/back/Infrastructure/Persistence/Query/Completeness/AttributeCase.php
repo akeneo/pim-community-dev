@@ -10,5 +10,5 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
  */
 interface AttributeCase
 {
-    public function addCases(): string;
+    public function getCase(): string;
 }
