@@ -22,8 +22,8 @@ class SqlGetAttributeTranslations implements GetAttributeTranslations
 
         $query = <<<SQL
 SELECT code, label
-FROM pim_catalog_attribute a
-INNER JOIN pim_catalog_attribute_translation at ON a.id = at.foreign_key
+FROM pim_catalog_attribute_translation at
+LEFT JOIN pim_catalog_attribute a ON a.id = at.foreign_key
 WHERE locale = :locale
 AND code IN (:attributeCodes);
 SQL;
@@ -60,8 +60,8 @@ SQL;
             SELECT
                 code,
                 JSON_OBJECTAGG(attribute_translation.locale, attribute_translation.label) as labels
-            FROM pim_catalog_attribute attribute
-            INNER JOIN pim_catalog_attribute_translation attribute_translation ON attribute.id = attribute_translation.foreign_key
+            FROM pim_catalog_attribute_translation attribute_translation
+            LEFT JOIN pim_catalog_attribute attribute ON attribute.id = attribute_translation.foreign_key
             WHERE attribute.code IN (:attributeCodes)
             GROUP BY attribute.code;
         SQL;
