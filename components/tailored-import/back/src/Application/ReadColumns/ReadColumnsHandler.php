@@ -15,33 +15,40 @@ namespace Akeneo\Platform\TailoredImport\Application\ReadColumns;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeader;
-use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\ReadFileHeadersInterface;
+use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactoryInterface;
 
 class ReadColumnsHandler
 {
     public function __construct(
-        private ReadFileHeadersInterface $readFileHeaders,
+        private XlsxFileReaderFactoryInterface $fileReaderFactory,
         private UuidGeneratorInterface $uuidGenerator,
     ) {
     }
 
     public function handle(ReadColumnsQuery $query): ColumnCollection
     {
-        $fileHeaders = $this->readFileHeaders->read($query->getFileKey(), $query->getFileStructure());
+        $fileStructure = $query->getFileStructure();
+        $fileReader = $this->fileReaderFactory->create($query->getFileKey());
+        $headerRow = $fileReader->readRow($fileStructure->getSheetName(), $fileStructure->getHeaderLine());
+        $headerRow = $this->truncateHeaderToFirstColumn($headerRow, $fileStructure->getFirstColumn());
 
         return ColumnCollection::create(array_map(
-            fn (FileHeader $fileHeader) => $this->fileHeaderToColumn($fileHeader),
-            iterator_to_array($fileHeaders),
+            fn ($index, $headerCell) => $this->fileHeaderToColumn($index, $headerCell),
+            array_keys($headerRow), $headerRow,
         ));
     }
 
-    private function fileHeaderToColumn(FileHeader $fileHeader): Column
+    private function fileHeaderToColumn(int $index, string $headerCell): Column
     {
         return Column::create(
             $this->uuidGenerator->generate(),
-            $fileHeader->getIndex(),
-            $fileHeader->getLabel(),
+            $index,
+            $headerCell,
         );
+    }
+
+    private function truncateHeaderToFirstColumn(array $headerRow, int $firstColumn): array
+    {
+        return array_slice($headerRow, $firstColumn);
     }
 }

@@ -6,6 +6,7 @@ use Akeneo\Platform\TailoredImport\Domain\Query\Filesystem\XlsxFileReaderFactory
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -69,11 +70,7 @@ class ReadColumnsValidator extends ConstraintValidator
 
         $fileStructure = $value->get('file_structure');
         $reader = $this->xlsxFileReaderFactory->create($value->get('file_key'));
-        $headerRow = current($reader->readRows(
-            $fileStructure['sheet_name'],
-            $fileStructure['header_row'],
-            1,
-        ));
+        $headerRow = $reader->readRow($fileStructure['sheet_name'], $fileStructure['header_row']);
 
         $this->validateLessThan500Column($headerRow);
         $this->validateNoEmptyHeader($headerRow);
@@ -82,11 +79,14 @@ class ReadColumnsValidator extends ConstraintValidator
     private function validateLessThan500Column(
         array $columns,
     ): void {
-        if (count($columns) > 500) {
-            $this->context->buildViolation(ReadColumns::MAX_COUNT_REACHED)
-                ->setParameter('limit', strval(self::MAX_COLUMN_COUNT))
-                ->addViolation();
-        }
+        $this->context->getValidator()->inContext($this->context)->validate($columns, new Count(
+            [
+                'min' => 1,
+                'max' => self::MAX_COLUMN_COUNT,
+                'minMessage' => ReadColumns::AT_lEAST_ONE_COLUMN,
+                'maxMessage' => ReadColumns::MAX_COUNT_REACHED,
+            ]
+        ));
     }
 
     private function validateNoEmptyHeader(array $headerRow): void
