@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFile;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
@@ -36,6 +37,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedWith(
             1,
             'identifier1',
+            null,
             null,
             null,
             null,
@@ -75,6 +77,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             null,
             null,
             null,
+            null,
             $valueUserIntents
         );
         $this->userId()->shouldReturn(1);
@@ -87,6 +90,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
         $this->beConstructedWith(
             1,
             '',
+            null,
             null,
             null,
             null,
@@ -108,6 +112,7 @@ class UpsertProductCommandSpec extends ObjectBehavior
             'identifier1',
             $familyUserIntent,
             $categoryUserIntent,
+            null,
             null,
             null,
             null,
@@ -197,6 +202,20 @@ class UpsertProductCommandSpec extends ObjectBehavior
             [
                 new SetGroups(['foo']),
                 new AddToGroups(['bar']),
+            ]
+        ]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
+    function it_cannot_be_constructed_with_multiple_set_file_intents()
+    {
+        $this->beConstructedThrough('createFromCollection', [
+            1,
+            'identifier1',
+            [
+                new SetFile('myImage', '/path/to/file'),
+                new SetFile('myImage', '/path/to/another/file'),
             ]
         ]);
 
