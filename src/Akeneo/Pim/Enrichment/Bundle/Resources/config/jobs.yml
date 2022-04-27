@@ -294,7 +294,7 @@ services:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.connector.reader.mass_edit.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'

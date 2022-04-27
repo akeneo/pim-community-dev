@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -30,33 +31,17 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     private const DEFAULT_BATCH_SIZE = 100;
 
     private StepExecution $stepExecution;
-    private JobRepositoryInterface $jobRepository;
-    private ItemReaderInterface $familyReader;
-    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
-    private ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory;
-    private ProductAndAncestorsIndexer $productAndAncestorsIndexer;
-    private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
-    private EntityManagerClearerInterface $cacheClearer;
-    private int $batchSize;
 
     public function __construct(
-        JobRepositoryInterface $jobRepository,
-        ItemReaderInterface $familyReader,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
-        ProductAndAncestorsIndexer $productAndAncestorsIndexer,
-        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        EntityManagerClearerInterface $cacheClearer,
-        int $batchSize = self::DEFAULT_BATCH_SIZE
+        private JobRepositoryInterface $jobRepository,
+        private ItemReaderInterface $familyReader,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private ProductQueryBuilderFactoryInterface $productModelQueryBuilderFactory,
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        private EntityManagerClearerInterface $cacheClearer,
+        private int $batchSize = self::DEFAULT_BATCH_SIZE
     ) {
-        $this->jobRepository = $jobRepository;
-        $this->familyReader = $familyReader;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->productModelQueryBuilderFactory = $productModelQueryBuilderFactory;
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
-        $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
-        $this->cacheClearer = $cacheClearer;
-        $this->batchSize = $batchSize;
     }
 
     /**
@@ -86,17 +71,18 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
             return;
         }
 
-        $products = $this->getProductsForFamilies($familyCodes);
+        $productIdentifiers = $this->getProductsForFamilies($familyCodes);
         $productModels = $this->getProductModelsForFamilies($familyCodes);
 
-        $this->stepExecution->setTotalItems($products->count() + $productModels->count());
+        $this->stepExecution->setTotalItems($productIdentifiers->count() + $productModels->count());
 
         $productIdentifiersToIndex = [];
         $productModelCodesToIndex = [];
 
-        foreach ($products as $product) {
-            Assert::isInstanceOf($product, ProductInterface::class);
-            $productIdentifiersToIndex[] = $product->getIdentifier();
+        /** @var IdentifierResult $productIdentifier */
+        foreach ($productIdentifiers as $productIdentifier) {
+            Assert::same($productIdentifier->getType(), ProductInterface::class);
+            $productIdentifiersToIndex[] = $productIdentifier->getIdentifier();
 
             if (count($productIdentifiersToIndex) >= $this->batchSize) {
                 $this->indexProducts($productIdentifiersToIndex);
