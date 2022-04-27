@@ -57,6 +57,8 @@ parameters:
     pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory
 
 services:
+    # Disclaimer: use this factory only for read purpose. For write purpose, it could bring some problems (see PIM-10232).
+    # For write, use "pim_catalog.query.product_identifier_query_builder_factory" instead
     pim_catalog.query.product_query_builder_factory:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
