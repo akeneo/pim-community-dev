@@ -29,7 +29,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFile;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
@@ -988,7 +988,7 @@ final class UpsertProductIntegration extends TestCase
         $command = new UpsertProductCommand(
             userId: $this->getUserId('admin'),
             productIdentifier: 'identifier',
-            fileUserIntent: new SetFile('a_file', $aFilePath)
+            valueUserIntents: [new SetFileValue('a_file', null, null, $aFilePath)]
         );
         $this->messageBus->dispatch($command);
 
@@ -1001,7 +1001,7 @@ final class UpsertProductIntegration extends TestCase
         // update product 'identifier'
         $anotherFilePath = $this->getFileInfoKey($this->getFixturePath('akeneo.txt'));
         $this->updateProduct(
-            new SetFile('a_file', $anotherFilePath)
+            new SetFileValue('a_file', null, null, $anotherFilePath)
         );
 
         $product = $this->productRepository->findOneByIdentifier('identifier');

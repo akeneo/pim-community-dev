@@ -13,7 +13,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ParentUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedAssociationUserIntentCollection;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFile;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Webmozart\Assert\Assert;
@@ -39,7 +38,6 @@ final class UpsertProductCommand
         private ?SetEnabled $enabledUserIntent = null,
         private ?AssociationUserIntentCollection $associationUserIntents = null,
         private ?QuantifiedAssociationUserIntentCollection $quantifiedAssociationUserIntents = null,
-        private ?SetFile $fileUserIntent = null,
         private array $valueUserIntents = []
     ) {
         Assert::allImplementsInterface($this->valueUserIntents, ValueUserIntent::class);
@@ -62,7 +60,6 @@ final class UpsertProductCommand
         $quantifiedAssociationUserIntents = \array_values(
             \array_filter($userIntents, fn ($userIntent): bool => $userIntent instanceof QuantifiedAssociationUserIntent)
         );
-        $fileUserIntent = null;
         foreach ($userIntents as $userIntent) {
             if ($userIntent instanceof ValueUserIntent) {
                 $valueUserIntents[] = $userIntent;
@@ -81,9 +78,6 @@ final class UpsertProductCommand
             } elseif ($userIntent instanceof ParentUserIntent) {
                 Assert::null($parentUserIntent, 'Only one parent intent can be passed to the command.');
                 $parentUserIntent = $userIntent;
-            } elseif ($userIntent instanceof SetFile) {
-                Assert::null($fileUserIntent, 'Only one file intent can be passed to the command.');
-                $fileUserIntent = $userIntent;
             }
         }
 
@@ -101,7 +95,6 @@ final class UpsertProductCommand
             quantifiedAssociationUserIntents: [] === $quantifiedAssociationUserIntents
                 ? null
                 : new QuantifiedAssociationUserIntentCollection($quantifiedAssociationUserIntents),
-            fileUserIntent: $fileUserIntent,
             valueUserIntents: $valueUserIntents
         );
     }
@@ -157,10 +150,5 @@ final class UpsertProductCommand
     public function quantifiedAssociationUserIntents(): ?QuantifiedAssociationUserIntentCollection
     {
         return $this->quantifiedAssociationUserIntents;
-    }
-
-    public function fileUserIntent(): ?SetFile
-    {
-        return $this->fileUserIntent;
     }
 }

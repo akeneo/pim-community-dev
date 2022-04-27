@@ -10,15 +10,15 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class SetFile implements MediaUserIntent
+final class SetFileValue implements ValueUserIntent
 {
     public function __construct(
         private string $attributeCode,
-        private string $filePath,
-        private ?string $channelCode = null,
-        private ?string $localeCode = null
+        private ?string $channelCode,
+        private ?string $localeCode,
+        private string $value
     ) {
-        Assert::stringNotEmpty($this->filePath);
+        Assert::stringNotEmpty($this->value);
     }
 
     public function attributeCode(): string
@@ -36,8 +36,8 @@ final class SetFile implements MediaUserIntent
         return $this->localeCode;
     }
 
-    public function filePath(): string
+    public function value(): string
     {
-        return $this->filePath;
+        return $this->value;
     }
 }
