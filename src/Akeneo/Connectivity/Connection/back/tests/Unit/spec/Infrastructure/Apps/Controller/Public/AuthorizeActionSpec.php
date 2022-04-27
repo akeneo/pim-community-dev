@@ -387,6 +387,9 @@ class AuthorizeActionSpec extends ObjectBehavior
         SecurityFacade $security,
         GetAppConfirmationQueryInterface $getAppConfirmationQuery,
         UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
+        AppAuthorizationSessionInterface $appAuthorizationSession,
+        GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
+        ScopeListComparatorInterface $scopeListComparator,
     ): void {
         $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
         $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
@@ -406,6 +409,20 @@ class AuthorizeActionSpec extends ObjectBehavior
         $getAppQuery->execute($clientId)->willReturn($app);
 
         $getAppConfirmationQuery->execute($clientId)->willReturn(null);
+
+        $appAuthorization = AppAuthorization::createFromNormalized([
+            'client_id' => $clientId,
+            'authorization_scope' => 'write_products',
+            'authentication_scope' => '',
+            'redirect_uri' => 'http://url.test',
+            'state' => 'state'
+        ]);
+        $appAuthorizationSession->getAppAuthorization($clientId)->willReturn($appAuthorization);
+        $getConnectedAppScopesQuery->execute($clientId)->willReturn([]);
+        $scopeListComparator->diff(
+            ['write_products'],
+            []
+        )->willReturn([]);
 
         $request->query = new InputBag([
             'client_id' => $clientId,

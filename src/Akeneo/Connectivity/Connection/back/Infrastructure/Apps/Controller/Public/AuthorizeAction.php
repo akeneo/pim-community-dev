@@ -12,7 +12,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizat
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\UserConsentRequiredException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAppConfirmationQueryInterface;
@@ -60,9 +59,6 @@ final class AuthorizeAction
         }
 
         $clientId = $request->query->get('client_id', '');
-        $responseType = $request->query->get('response_type', '');
-        $requestedRawScopes = $request->query->get('scope', '');
-        $state = $request->query->get('state');
 
         if ('' === $clientId || null === $app = $this->getAppQuery->execute($clientId)) {
             return new RedirectResponse(
@@ -74,19 +70,16 @@ final class AuthorizeAction
 
         $this->denyAccessUnlessGrantedToManageOrOpen($app);
 
-        $isFirstAuthorizationRequest = null === $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
-        if ($isFirstAuthorizationRequest) {
-            $this->denyAccessUnlessGrantedToManage($app);
-        }
+        $command = new RequestAppAuthorizationCommand(
+            $clientId,
+            $request->query->get('response_type', ''),
+            $request->query->get('scope', ''),
+            $app->getCallbackUrl(),
+            $request->query->get('state', null),
+        );
 
         try {
-            $appAuthorization = $this->saveAuthorizationRequestInSession(
-                $clientId,
-                $responseType,
-                $requestedRawScopes,
-                $app->getCallbackUrl(),
-                $state,
-            );
+            $this->requestAppAuthorizationHandler->handle($command);
         } catch (InvalidAppAuthorizationRequestException $e) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
@@ -95,19 +88,35 @@ final class AuthorizeAction
             );
         }
 
-        $hasNewScopes = $this->hasNewScopes($clientId, $appAuthorization);
+        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
+        if (null === $appAuthorization) {
+            throw new \LogicException('There is no active app authorization in session');
+        }
 
-        if (($isFirstAuthorizationRequest || $hasNewScopes) && $this->isGrantedToManage($app)) {
+        // Check if the App is already connected
+        $appConfirmation = $this->getAppConfirmationQuery->execute($clientId);
+
+        $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
+        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
+
+        $hasNewScopes = false === empty($this->scopeListComparator->diff(
+            $requestedScopes,
+            $originalScopes
+        ));
+
+        if (null === $appConfirmation) {
+            $this->denyAccessUnlessGrantedToManage($app);
+        }
+
+        if ((null === $appConfirmation || $hasNewScopes) && $this->isGrantedToManage($app)) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
-                    'client_id' => $clientId,
+                    'client_id' => $command->getClientId(),
                 ])
             );
         }
 
-        if ($this->isGrantedToManage($app)) {
-            $this->updateConnectedAppScopesWithAuthorizationHandler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($clientId));
-        }
+        $this->updateConnectedAppScopesWithAuthorizationHandler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($clientId));
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
@@ -117,10 +126,10 @@ final class AuthorizeAction
                 $connectedPimUserId,
                 $appAuthorization->getAuthenticationScopes(),
             ));
-        } catch (UserConsentRequiredException) {
+        } catch (UserConsentRequiredException $e) {
             return new RedirectResponse(
                 '/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authenticate', [
-                    'client_id' => $clientId,
+                    'client_id' => $e->getAppId(),
                 ])
             );
         }
@@ -170,42 +179,5 @@ final class AuthorizeAction
         if (!$this->isGrantedToManage($app) && !$this->isGrantedToOpen($app)) {
             throw new AccessDeniedHttpException();
         }
-    }
-
-    /**
-     * @throws InvalidAppAuthorizationRequestException
-     */
-    private function saveAuthorizationRequestInSession(
-        string $clientId,
-        string $responseType,
-        string $scope,
-        string $appCallbackUrl,
-        ?string $state,
-    ): AppAuthorization {
-        $this->requestAppAuthorizationHandler->handle(new RequestAppAuthorizationCommand(
-            $clientId,
-            $responseType,
-            $scope,
-            $appCallbackUrl,
-            $state,
-        ));
-
-        $appAuthorization = $this->appAuthorizationSession->getAppAuthorization($clientId);
-        if (null === $appAuthorization) {
-            throw new \LogicException('There is no active app authorization in session');
-        }
-
-        return $appAuthorization;
-    }
-
-    private function hasNewScopes(string $clientId, AppAuthorization $appAuthorization): bool
-    {
-        $originalScopes = $this->getConnectedAppScopesQuery->execute($clientId);
-        $requestedScopes = $appAuthorization->getAuthorizationScopes()->getScopes();
-
-        return false === empty($this->scopeListComparator->diff(
-            $requestedScopes,
-            $originalScopes
-        ));
     }
 }
