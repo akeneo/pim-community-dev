@@ -1,8 +1,13 @@
 services:
-  Akeneo\Category\API\CommandBus: ~
-  Akeneo\Category\API\Command\DoctrineCreateCategoryHandler:
+  Akeneo\Category\API\CommandBus:
+    arguments:
+      - !tagged_iterator { tag: 'akeneo.category.command_handler', index_by: 'command' }
+
+  Akeneo\Category\Infrastructure\Doctrine\DoctrineCreateCategoryHandler:
     arguments:
       - '@pim_catalog.factory.category'
       - '@pim_catalog.updater.category'
       - '@validator'
       - '@pim_catalog.saver.category'
+    tags:
+      - { name: 'akeneo.category.command_handler', command: 'Akeneo\Category\API\Command\CreateCategoryCommand' }
