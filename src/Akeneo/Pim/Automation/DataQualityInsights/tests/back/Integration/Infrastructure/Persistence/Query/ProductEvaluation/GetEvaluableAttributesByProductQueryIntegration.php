@@ -55,7 +55,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
             ],
         ]);
 
-        $productId = $this->createProduct();
+        $productUuid = $this->createProduct();
 
         $expectedAttributes = [
             new Attribute(new AttributeCode('a_localizable_textarea'), AttributeType::textarea(), true),
@@ -65,7 +65,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
         $result = $this
             ->get(GetEvaluableAttributesByProductQuery::class)
-            ->execute($productId);
+            ->execute($productUuid);
 
         $this->assertEqualsCanonicalizing($expectedAttributes, $result);
     }
@@ -79,7 +79,7 @@ class GetEvaluableAttributesByProductQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createAttributes(array $attributesData): void
