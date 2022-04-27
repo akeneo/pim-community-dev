@@ -27,16 +27,10 @@ class ListRootCategoriesWithCountHandler
     /** @var Query\ListRootCategoriesWithCountNotIncludingSubCategories */
     private $listAndCountNotIncludingSubCategories;
 
-    /**
-     * @param CategoryRepositoryInterface                                $categoryRepository
-     * @param UserContext                                                $userContext
-     * @param Query\ListRootCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories
-     * @param Query\ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
-     */
     public function __construct(
-        CategoryRepositoryInterface                                                                                       $categoryRepository,
-        UserContext                                                                                                       $userContext,
-        Query\ListRootCategoriesWithCountIncludingSubCategories    $listAndCountIncludingSubCategories,
+        CategoryRepositoryInterface $categoryRepository,
+        UserContext $userContext,
+        Query\ListRootCategoriesWithCountIncludingSubCategories $listAndCountIncludingSubCategories,
         Query\ListRootCategoriesWithCountNotIncludingSubCategories $listAndCountNotIncludingSubCategories
     ) {
         $this->categoryRepository = $categoryRepository;
@@ -46,8 +40,6 @@ class ListRootCategoriesWithCountHandler
     }
 
     /**
-     * @param ListRootCategoriesWithCount $query
-     *
      * @return ReadModel\RootCategory[]
      */
     public function handle(ListRootCategoriesWithCount $query): array
@@ -57,7 +49,7 @@ class ListRootCategoriesWithCountHandler
 
         if (null === $categorySelectedAsFilter) {
             $categorySelectedAsFilter = $this->userContext->getAccessibleUserTree();
-            if ($categorySelectedAsFilter === null) {
+            if (null === $categorySelectedAsFilter) {
                 return [];
             }
         }
