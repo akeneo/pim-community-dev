@@ -19,7 +19,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 {
     public function test_it_returns_product_values_by_attribute()
     {
-        $productId = $this->createProduct();
+        $productUuid = $this->createProduct();
 
         $expectedRawValues = [
             'a_text' => [
@@ -36,7 +36,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 
         $productRawValues = $this
             ->get(GetProductRawValuesQuery::class)
-            ->execute($productId);
+            ->execute($productUuid);
 
         $this->assertProductHasRawValues($expectedRawValues, $productRawValues);
     }
@@ -171,7 +171,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll([$product]);
 
-        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createVariantProduct(string $identifier, array $data): ProductUuid
@@ -180,7 +180,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        return $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
     }
 
     private function createProductModel(array $data): ProductModelInterface

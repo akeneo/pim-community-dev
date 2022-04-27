@@ -62,8 +62,8 @@ class DataQualityInsightsTestCase extends TestCase
     protected function deleteProductModelCriterionEvaluations(int $productModelId): void
     {
         $this->get('database_connection')->executeQuery(
-            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productId',
-            ['productId' => $productModelId]
+            'DELETE FROM pim_data_quality_insights_product_model_criteria_evaluation WHERE product_id = :productModelId',
+            ['productModelId' => $productModelId]
         );
     }
 
@@ -280,18 +280,20 @@ SQL
         return $attributeGroupActivation;
     }
 
-    protected function updateProductEvaluationsAt(int $productId, string $status, \DateTimeImmutable $evaluatedAt): void
+    protected function updateProductEvaluationsAt(UuidInterface $uuid, string $status, \DateTimeImmutable $evaluatedAt): void
     {
         $query = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
 SET e.status = :status, e.evaluated_at = :evaluatedAt
-WHERE p.id = :productId AND e.product_uuid = p.uuid;
+WHERE p.uuid = :productUuid AND e.product_uuid = p.uuid;
 SQL;
 
         $this->get('database_connection')->executeQuery($query, [
             'status' => $status,
             'evaluatedAt' => $evaluatedAt->format(Clock::TIME_FORMAT),
-            'productId' => $productId,
+            'productUuid' => $uuid->getBytes(),
+        ], [
+            'productUuid' => \PDO::PARAM_STR,
         ]);
     }
 

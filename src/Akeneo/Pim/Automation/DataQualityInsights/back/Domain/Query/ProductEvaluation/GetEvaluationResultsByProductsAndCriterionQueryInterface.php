@@ -17,5 +17,5 @@ interface GetEvaluationResultsByProductsAndCriterionQueryInterface
     /**
      * @return array<string, ?CriterionEvaluationResult>
      */
-    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array;
+    public function execute(ProductEntityIdCollection $entityIdCollection, CriterionCode $criterionCode): array;
 }
