@@ -116,7 +116,11 @@ final class AuthorizeAction
             );
         }
 
-        $this->updateConnectedAppScopesWithAuthorizationHandler->handle(new UpdateConnectedAppScopesWithAuthorizationCommand($clientId));
+        if ($this->isGrantedToManage($app)) {
+            $this->updateConnectedAppScopesWithAuthorizationHandler->handle(
+                new UpdateConnectedAppScopesWithAuthorizationCommand($clientId)
+            );
+        }
 
         $connectedPimUserId = $this->connectedPimUserProvider->getCurrentUserId();
 
