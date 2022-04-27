@@ -3,12 +3,17 @@ services:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\FileIteratorFactory
     arguments:
       - '@akeneo.tailored_import.spout.cell_formatter'
+      - '@akeneo.tailored_import.spout.row_cleaner'
 
   akeneo.tailored_import.spout.remote_file_reader.factory:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\RemoteXlsxFileReaderFactory
     arguments:
       - '@akeneo.tailored_import.spout.cell_formatter'
       - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - '@akeneo.tailored_import.spout.row_cleaner'
 
   akeneo.tailored_import.spout.cell_formatter:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter
+
+  akeneo.tailored_import.spout.row_cleaner:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Spout\RowCleaner

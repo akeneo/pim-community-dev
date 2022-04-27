@@ -28,6 +28,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
     public function __construct(
         private string $filePath,
         private CellsFormatter $cellsFormatter,
+        private RowCleaner $rowCleaner,
     ) {
         $this->fileReader = $this->openFile();
     }
@@ -134,10 +135,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
 
         $maxCellPerRow = count(max($rows));
 
-        return array_map(
-            static fn (array $row) => array_pad($row, $maxCellPerRow, ''),
-            $rows,
-        );
+        return array_map(fn (array $row) => $this->rowCleaner->padRowToLength($row, $maxCellPerRow), $rows);
     }
 
     private function removeTrailingEmptyRows(array $rows): array
@@ -156,19 +154,6 @@ class XlsxFileReader implements XlsxFileReaderInterface
 
     private function removeTrailingEmptyColumns(array $rows): array
     {
-        foreach ($rows as $index => $row) {
-            $reversedColumns = array_reverse($row);
-            foreach ($reversedColumns as $columnIndex => $cell) {
-                if (!empty($cell)) {
-                    break;
-                }
-
-                unset($reversedColumns[$columnIndex]);
-            }
-
-            $rows[$index] = array_reverse($reversedColumns);
-        }
-
-        return $rows;
+        return array_map(fn (array $row) => $this->rowCleaner->removeTrailingEmptyColumns($row), $rows);
     }
 }

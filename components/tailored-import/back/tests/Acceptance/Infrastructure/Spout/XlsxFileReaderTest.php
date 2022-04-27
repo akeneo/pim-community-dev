@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\RowCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
 
@@ -176,6 +177,6 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     private function getFileReader(
         string $filePath = __DIR__.'/../../../Common/simple_import.xlsx'
     ): XlsxFileReader {
-        return new XlsxFileReader($filePath, new CellsFormatter());
+        return new XlsxFileReader($filePath, new CellsFormatter(), new RowCleaner());
     }
 }

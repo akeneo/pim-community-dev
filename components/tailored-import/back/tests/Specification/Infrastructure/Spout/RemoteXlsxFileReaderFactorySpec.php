@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\RowCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\FilesystemOperator;
@@ -25,11 +26,12 @@ class RemoteXlsxFileReaderFactorySpec extends ObjectBehavior
 {
     public function let(
         CellsFormatter $cellsFormatter,
+        RowCleaner $rowCleaner,
         FilesystemProvider $filesystemProvider,
         FilesystemOperator $jobFilesystem
     ) {
         $filesystemProvider->getFilesystem('tailoredImport')->willReturn($jobFilesystem);
-        $this->beConstructedWith($cellsFormatter, $filesystemProvider);
+        $this->beConstructedWith($cellsFormatter, $filesystemProvider, $rowCleaner);
     }
 
     public function it_transfer_remote_file_to_local_file(FilesystemReader $jobFilesystem)

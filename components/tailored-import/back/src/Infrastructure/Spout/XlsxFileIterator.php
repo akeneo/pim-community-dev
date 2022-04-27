@@ -17,7 +17,6 @@ use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileHeaderCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
-use Box\Spout\Common\Entity\Cell;
 use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\IteratorInterface;
 use Box\Spout\Reader\ReaderInterface;
@@ -35,6 +34,7 @@ class XlsxFileIterator implements FileIteratorInterface
         private string $filePath,
         private FileStructure $fileStructure,
         private CellsFormatter $cellsFormatter,
+        private RowCleaner $rowCleaner,
     ) {
         $this->fileReader = $this->openFile();
         $this->sheet = $this->selectSheet();
@@ -63,10 +63,11 @@ class XlsxFileIterator implements FileIteratorInterface
 
         $firstColumn = $this->fileStructure->getFirstColumn();
 
-        $cells = array_values(array_slice($productRow->toArray(), $firstColumn));
-        $formattedCells = $this->cellsFormatter->formatCells($cells);
+        $row = array_values(array_slice($productRow->toArray(), $firstColumn));
+        $row = $this->cellsFormatter->formatCells($row);
+        $row = $this->rowCleaner->removeTrailingEmptyColumns($row);
 
-        return $this->addTrimmedCells($formattedCells);
+        return $this->rowCleaner->padRowToLength($row, $this->headers->count());
     }
 
     public function next(): void
@@ -144,14 +145,16 @@ class XlsxFileIterator implements FileIteratorInterface
 
         $headersRow = $rowIterator->current();
         $firstColumn = $this->fileStructure->getFirstColumn();
-        $headerCells = array_values(array_slice($headersRow->getCells(), $firstColumn));
+        $headerValues = $this->cellsFormatter->formatCells($headersRow->toArray());
+        $headerValues = array_values(array_slice($headerValues, $firstColumn));
+        $headerValues = $this->rowCleaner->removeTrailingEmptyColumns($headerValues);
 
         // /!\ Index is relative => 0 is the first header column but not necessary the first file column
         // We have to homogenize this index generation with the column list generation from a file (RAB-494)
-        $normalizedHeaders = array_map(fn (Cell $headerCell, int $relativeIndex) => [
+        $normalizedHeaders = array_map(fn (string $headerValue, int $relativeIndex) => [
             'index' => $firstColumn + $relativeIndex,
-            'label' => $this->cellsFormatter->formatCell($headerCell->getValue()),
-        ], array_values($headerCells), array_keys($headerCells));
+            'label' => $headerValue,
+        ], array_values($headerValues), array_keys($headerValues));
 
         return FileHeaderCollection::createFromNormalized($normalizedHeaders);
     }
@@ -164,12 +167,5 @@ class XlsxFileIterator implements FileIteratorInterface
                 return;
             }
         }
-    }
-
-    private function addTrimmedCells(array $formattedCells): array
-    {
-        $expectedValueCount = $this->headers->count();
-
-        return array_replace(array_fill(0, $expectedValueCount, ''), $formattedCells);
     }
 }

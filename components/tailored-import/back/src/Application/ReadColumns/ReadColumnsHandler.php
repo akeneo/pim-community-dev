@@ -33,16 +33,17 @@ class ReadColumnsHandler
         $headerRow = $this->truncateHeaderToFirstColumn($headerRow, $fileStructure->getFirstColumn());
 
         return ColumnCollection::create(array_map(
-            fn ($index, $headerCell) => $this->fileHeaderToColumn($index, $headerCell),
-            array_keys($headerRow), $headerRow,
+            fn ($index, $headerCell) => $this->fileHeaderToColumn($index, $headerCell, $fileStructure->getFirstColumn()),
+            array_keys($headerRow),
+            $headerRow,
         ));
     }
 
-    private function fileHeaderToColumn(int $index, string $headerCell): Column
+    private function fileHeaderToColumn(int $index, string $headerCell, $firstColumnIndex): Column
     {
         return Column::create(
             $this->uuidGenerator->generate(),
-            $index,
+            $index + $firstColumnIndex,
             $headerCell,
         );
     }
