@@ -5,6 +5,14 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Psr\Log\Test\TestLogger;
@@ -22,56 +30,41 @@ class PartialUpdateProductEndToEnd extends AbstractProductTestCase
         parent::setUp();
 
         $this->createProduct('product_family', [
-            'family' => 'familyA2',
+            new SetFamily('familyA2')
         ]);
 
         $this->createProduct('product_groups', [
-            'groups' => ['groupA'],
+            new SetGroups(['groupA'])
         ]);
 
         $this->createProduct('product_categories', [
-            'categories' => ['master'],
+            new SetCategories(['master'])
         ]);
 
         $this->createProduct('product_associations', [
-            'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
-            ],
+            new AssociateProducts('X_SELL', ['product_categories']),
+            new AssociateGroups('X_SELL', ['groupA'])
         ]);
 
         $this->createProduct('localizable', [
-            'values'     => [
+            // TODO : use SetImageValue when ready
+            /**'values'     => [
                 'a_localizable_image' => [
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
                     ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
                 ]
-            ]
+            ]*/
         ]);
 
         $this->createProduct('complete', [
-            'family'        => 'familyA2',
-            'groups'        => ['groupA'],
-            'categories'    => ['master'],
-            'values'        => [
-                'a_metric' => [
-                    ['data' => ['amount' => '10.0000', 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null],
-                ],
-                'a_date'   => [
-                    ['data' => '2016-06-13T00:00:00+02:00', 'locale' => null, 'scope' => null],
-                ],
-                'a_simple_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-            ],
-            'associations'  => [
-                'PACK'         => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'SUBSTITUTION' => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'UPSELL'       => ['groups'   => [], 'products' => [], 'product_models' => []],
-                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories'], 'product_models' => []],
-            ],
+            new SetFamily('familyA2'),
+            new SetGroups(['groupA']),
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, '10.0000', 'KILOWATT'),
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-13T00:00:00+02:00')),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
+            new AssociateProducts('X_SELL', ['product_categories']),
+            new AssociateGroups('X_SELL', ['groupA'])
         ]);
     }
 

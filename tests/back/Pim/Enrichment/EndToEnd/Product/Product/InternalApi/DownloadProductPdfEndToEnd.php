@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\SetSingleValueApplier;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
 use PHPUnit\Framework\Assert;
@@ -32,15 +35,11 @@ class DownloadProductPdfEndToEnd extends InternalApiTestCase
             'simple',
             'familyA',
             [
-                'values' => [
-                    'an_image' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
-                        ],
-                    ],
-                ],
+                new SetTextValue(
+                    'an_image',
+                    null,
+                    null,
+                    $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
             ]
         );
 

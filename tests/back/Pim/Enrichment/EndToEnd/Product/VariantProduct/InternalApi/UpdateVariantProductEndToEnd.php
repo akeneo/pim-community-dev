@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\InternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountInTransportTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\InternalApiTestCase;
@@ -21,18 +25,10 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
             'apollon_optionb_false',
             'clothing_colorsize',
             [
-                'categories' => ['master', 'categoryB'],
-                'parent' => 'amor',
-                'groups' => ['groupA'],
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => false,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master', 'categoryB']),
+                new ChangeParent('amor'),
+                new SetGroups(['groupA']),
+                new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
         $normalizedProduct = $this->getProductFromInternalApi((string) $product->getId());

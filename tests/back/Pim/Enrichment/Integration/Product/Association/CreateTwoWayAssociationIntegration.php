@@ -6,11 +6,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class CreateTwoWayAssociationIntegration extends TestCase
 {
+    private ProductRepositoryInterface $productRepository;
+    protected MessageBusInterface $messageBus;
+
     /**
      * @test
      */
@@ -19,13 +29,9 @@ class CreateTwoWayAssociationIntegration extends TestCase
         $this->createProduct(
             'test',
             [
-                'associations' => [
-                    'COMPATIBILITY' => [
-                        'products' => ['product_1'],
-                        'product_models' => ['product_model_1'],
-                        'groups' => ['groupA'],
-                    ],
-                ],
+                new AssociateProducts('COMPATIBILITY', ['product_1']),
+                new AssociateProductModels('COMPATIBILITY', ['product_model_1']),
+                new AssociateGroups('COMPATIBILITY', ['groupA']),
             ]
         );
 
@@ -104,13 +110,9 @@ class CreateTwoWayAssociationIntegration extends TestCase
         $product = $this->createProduct(
             'test',
             [
-                'associations' => [
-                    'COMPATIBILITY' => [
-                        'products' => ['product_1', 'product_2'],
-                        'product_models' => ['product_model_1', 'product_model_2'],
-                        'groups' => ['groupA'],
-                    ],
-                ],
+                new AssociateProducts('COMPATIBILITY', ['product_1', 'product_2']),
+                new AssociateProductModels('COMPATIBILITY', ['product_model_1', 'product_model_2']),
+                new AssociateGroups('COMPATIBILITY', ['groupA']),
             ]
         );
         $this->get('pim_catalog.updater.product')->update(
@@ -207,13 +209,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         $product = $this->createProduct(
             'test',
-            [
-                'associations' => [
-                    'COMPATIBILITY' => [
-                        'products' => ['product_1'],
-                    ],
-                ],
-            ]
+            [new AssociateProducts('COMPATIBILITY', ['product_1'])]
         );
         $productModel = $this->createProductModel(
             [
@@ -260,6 +256,8 @@ class CreateTwoWayAssociationIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->messageBus = $this->get('pim_enrich.product.message_bus');
+        $this->productRepository = $this->get('pim_catalog.repository.product');
         $associationType = $this->get('pim_catalog.factory.association_type')->create();
         $this->get('pim_catalog.updater.association_type')->update(
             $associationType,
@@ -285,16 +283,33 @@ class CreateTwoWayAssociationIntegration extends TestCase
             ]
         );
     }
-
-    private function createProduct(string $identifier, array $data): ProductInterface
+    protected function getUserId(string $username): int
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is invalid: %s', (string)$violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
 
-        return $product;
+        return \intval($id);
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents): ProductInterface
+    {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
+
+        return $this->productRepository->findOneByIdentifier($identifier);
     }
 
     private function createProductModel(array $data): ProductModelInterface
@@ -365,6 +380,11 @@ class CreateTwoWayAssociationIntegration extends TestCase
     }
 
     private function clearUnitOfWork(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    protected function clearDoctrineUoW(): void
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }

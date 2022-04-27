@@ -6,7 +6,10 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\HttpKernelBrowser;
@@ -39,25 +42,22 @@ abstract class InternalApiTestCase extends TestCase
         $this->client->getCookieJar()->set($cookie);
     }
 
-    protected function createProduct(string $identifier, ?string $familyCode, array $data = []) : ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProduct(string $identifier, ?string $familyCode, array $userIntents): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     protected function createProductModel(array $data = []) : ProductModelInterface
@@ -87,5 +87,22 @@ abstract class InternalApiTestCase extends TestCase
     private function getSession(): SessionInterface
     {
         return self::$container->get('session');
+    }
+
+    protected function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

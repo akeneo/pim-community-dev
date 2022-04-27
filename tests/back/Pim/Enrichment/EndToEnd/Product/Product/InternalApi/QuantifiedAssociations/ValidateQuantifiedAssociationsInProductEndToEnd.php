@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\InternalApi\QuantifiedAssociations;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Symfony\Component\HttpFoundation\Response;
 
 class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWithQuantifiedAssociationsTestCase
@@ -14,16 +15,9 @@ class ValidateQuantifiedAssociationsInProductEndToEnd extends AbstractProductWit
         $product = $this->createProduct(
             'yellow_chair',
             'shoes',[
-            'values' => [
-                'sku' => [
-                    [
-                        'scope' => null,
-                        'locale' => null,
-                        'data' => 'yellow_chair',
-                    ],
-                ],
+                new SetTextValue('sku', null, null, 'yellow_chair')
             ],
-        ]);
+        );
         $normalizedProduct = $this->getProductFromInternalApi($product->getId());
 
         $quantifiedAssociations = [

@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListProducts;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
@@ -25,44 +31,39 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
 
         // product complete, whatever the scope
         $this->createProduct('product_complete', [
-            'family'     => 'familyA2',
-            'categories' => ['categoryA', 'categoryB', 'master'],
-            'values'     => [
-                'a_metric' => [
-                    ['data' => ['amount' => 1, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]
-                ],
-                'a_number_float' => [
-                    ['data' => '12.05', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('familyA2'),
+            new SetCategories(['categoryA', 'categoryB', 'master']),
+            new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
+            new SetNumberValue('a_number_float', null, null, '12.05')
         ]);
 
         // product complete only on en_US-tablet & en-US-ecommerce
         $this->createProduct('product_complete_en_locale', [
-            'family'     => 'familyA1',
-            'categories' => ['categoryA', 'master', 'master_china'],
-            'values'     => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                ],
-                'a_date' => [
-                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
-                ],
-                'a_file' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'locale' => null, 'scope' => null],
-                ]
-            ]
+            new SetFamily('familyA1'),
+            new SetCategories(['categoryA', 'master', 'master_china']),
+            // TODO use SetImageValue when ready
+            new SetTextValue(
+                'a_localizable_image',
+                null,
+                null,
+                $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
+            ),
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-28')),
+            // TODO: use SetFileValue when ready
+            new SetTextValue(
+                'a_file',
+                null,
+                null,
+                $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))
+            )
         ]);
 
         // product incomplete
         $this->createProduct('product_incomplete', [
-            'family'     => 'familyA',
-            'categories' => ['categoryA', 'master', 'master_china'],
-            'values'     => [
-                'a_file' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'locale' => null, 'scope' => null],
-                ]
-            ]
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA', 'master', 'master_china']),
+            // TODO: use SetFileValue when ready
+            new SetTextValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt')))
         ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();

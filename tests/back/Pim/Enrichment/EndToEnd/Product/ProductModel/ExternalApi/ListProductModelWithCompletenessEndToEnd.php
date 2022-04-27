@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 
@@ -142,20 +147,9 @@ JSON;
 
         // product complete, whatever the scope
         $this->createVariantProduct('product_complete', [
-            'categories' => ['categoryA', 'categoryB', 'master'],
-            'parent' => 'product_model_complete',
-            'values'     => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-                'sku' => [
-                    ['data' => 'sku-product-complete', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetCategories(['categoryA', 'categoryB', 'master']),
+            new ChangeParent('product_model_complete'),
+            new SetBooleanValue('a_yes_no', null, null, false),
         ]);
     }
 
@@ -201,20 +195,9 @@ JSON;
 
         // product complete, whatever the scope
         $this->createVariantProduct('product_uncomplete', [
-            'categories' => ['categoryA', 'categoryB', 'master'],
-            'parent' => 'product_model_uncomplete',
-            'values'     => [
-                'a_simple_select' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'optionB',
-                    ],
-                ],
-                'sku' => [
-                    ['data' => 'sku-product-uncomplete', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetCategories(['categoryA', 'categoryB', 'master']),
+            new ChangeParent('product_model_uncomplete'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
         ]);
     }
 

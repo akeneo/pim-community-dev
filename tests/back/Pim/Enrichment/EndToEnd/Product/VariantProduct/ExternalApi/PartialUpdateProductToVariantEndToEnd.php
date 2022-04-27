@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
@@ -132,11 +135,9 @@ JSON;
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $this->createProduct('product_familyA3', [
-            'family' => 'familyA3',
-            'categories' => ['master'],
-            'values' => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('familyA3'),
+            new SetCategories(['master']),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
         $client = $this->createAuthenticatedClient();
         $data =
@@ -178,9 +179,8 @@ JSON;
         );
 
         $this->createProduct('product_no_value', [
-            'family' => 'familyA',
-            'categories' => ['categoryA2'],
-            'values' => []
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA2']),
         ]);
         $client = $this->createAuthenticatedClient();
         $data =
@@ -239,11 +239,9 @@ JSON;
             ],
         ]);
         $this->createProduct('product_family_variant', [
-            'family' => 'familyA',
-            'categories' => ['categoryA2'],
-            'values' => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('familyA'),
+            new SetCategories(['categoryA2']),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->get('doctrine.orm.default_entity_manager')->clear();

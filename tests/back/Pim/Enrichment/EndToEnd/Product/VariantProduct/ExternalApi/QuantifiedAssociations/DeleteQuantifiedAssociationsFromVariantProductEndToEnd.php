@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\ExternalApi\QuantifiedAssociations;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -41,10 +44,9 @@ class DeleteQuantifiedAssociationsFromVariantProductEndToEnd extends AbstractPro
 
         $this->createProduct('chair');
         $this->createVariantProduct('garden_table_set-black-gold', [
-            'parent' => 'garden_table_set-black',
-            'values' => [
-                'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
-            ],
+            new ChangeParent('garden_table_set-black'),
+            new SetBooleanValue('a_yes_no', null, null, true),
+            new AssociateProducts()
             'quantified_associations' => [
                 "PRODUCTSET" => [
                     "products" => [
