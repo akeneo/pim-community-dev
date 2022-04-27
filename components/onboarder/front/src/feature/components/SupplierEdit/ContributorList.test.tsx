@@ -75,5 +75,5 @@ test('it displays a warning helper if a contributor email is not valid', () => {
         'invalidemail'.concat('{space}')
     );
 
-    expect(screen.getByText('onboarder.supplier.supplier_list.contributors.invalid_emails')).toBeInTheDocument();
+    expect(screen.getByText('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')).toBeInTheDocument();
 });

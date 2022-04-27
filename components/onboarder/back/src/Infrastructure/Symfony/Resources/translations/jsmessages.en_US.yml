@@ -35,8 +35,6 @@ onboarder:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
                 actions: Actions
-            contributors:
-                invalid_emails: Some emails are invalid and won’t be added.
         supplier_delete:
             sucess_message: The supplier was successfully deleted
             modal:
@@ -54,6 +52,8 @@ onboarder:
                 label: Supplier label (required)
             contributors_form:
                 info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                invalid_emails_warning: Some emails are invalid and won’t be added.
+                emails_belonging_to_other_suppliers_warning: A contributor can only belong to one supplier. When you save this supplier, all emails shown as warnings will be deleted.
                 add_contributors: Add contributors
                 add_button: Add
                 search_by_email_address: Search by email address

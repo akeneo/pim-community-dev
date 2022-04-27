@@ -19,7 +19,7 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
         return new JsonResponse(
             ($this->supplierContributorsBelongToAnotherSupplier)(
                 $request->get('supplierIdentifier'),
-                $request->get('emails')
+                \json_decode($request->get('emails'))
             )
         );
     }

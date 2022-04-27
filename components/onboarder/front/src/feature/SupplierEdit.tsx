@@ -89,6 +89,7 @@ const SupplierEdit = () => {
                 )}
                 {isCurrent('contributors') && (
                     <ContributorList
+                        supplierIdentifier={supplier.identifier}
                         contributors={supplier.contributors}
                         setContributors={handleSupplierContributorsChange}
                     />

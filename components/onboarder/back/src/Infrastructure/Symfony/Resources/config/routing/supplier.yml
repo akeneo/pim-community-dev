@@ -46,9 +46,11 @@ onboarder_serenity_supplier_update:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [PUT]
 
-onboarder_serenity_get_supplier_contributors_that_belong_to_another_supplier:
-    path: /supplier-contributors-that-belong-to-another-supplier
+onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier:
+    path: /supplier-contributors-that-belong-to-another-supplier/{supplierIdentifier}
     defaults:
         _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier
         _feature: onboarder_serenity_supplier
+    requirements:
+        supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [GET]
