@@ -126,17 +126,11 @@ services:
     networks:
       - 'pim'
 
-  ftp_server:
-    image: stilliard/pure-ftpd:hardened
-    environment:
-      PUBLICHOST: ftp_server
-      FTP_USER_NAME: ziggy
-      FTP_USER_PASS: ziggy
-      FTP_USER_HOME: /home/ziggy
-      FTP_USER_UID: 1000
-      FTP_USER_GID: 1000
+  sftp_server:
+    image: 'atmoz/sftp:debian'
+    command: 'ziggy:ziggy:::pim'
     volumes:
-      - ./var/ftp_files:/home/ziggy
+      - './var/sftp_server:/home/ziggy/pim'
     networks:
       - 'pim'
 
