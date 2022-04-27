@@ -23,7 +23,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 {
     private const CONSOLIDATION_DATE = '2020-01-15';
 
-    private int $lastProductId ;
+    private int $lastInsertedProductIdentifier ;
 
     private GetRanksDistributionFromProductScoresQuery $query;
 
@@ -35,7 +35,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->productScoreRepository = $this->get(ProductScoreRepository::class);
         $this->query = $this->get(GetRanksDistributionFromProductScoresQuery::class);
-        $this->lastProductId = 0;
+        $this->lastInsertedProductIdentifier = 0;
     }
 
     protected function getConfiguration()
@@ -142,9 +142,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
     private function givenProductsByRankAndAxisForWholeCatalog(int $countProducts, int $rank): void
     {
         $this->createProductAxesRatesWithDifferentDates($countProducts, $rank, function () {
-            $this->createProductWithFamily('mugs');
-            // TODO To fix
-            return ProductUuid::fromString($this->lastProductId);
+            return $this->createProductWithFamily('mugs');
         });
     }
 
@@ -168,18 +166,17 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $productIdentifiers = [];
         for ($i = 0; $i < $nbProducts; $i++) {
-            $productId = $createProduct();
-            $productUuid = $this->getProductUuidFromId($productId->toInt());
-            $productIdentifiers[] = 'product_' . $productId;
+            $productUuid = $createProduct();
+            $productIdentifiers[] = 'product_' . $this->lastInsertedProductIdentifier;
 
             $this->get('database_connection')->executeQuery(
                 "DELETE FROM pim_data_quality_insights_product_score WHERE product_uuid = ?",
-                [$productUuid->getBytes()]
+                [$productUuid->toBytes()]
             );
 
             $this->productScoreRepository->saveAll([
                 new ProductScores(
-                    $productId,
+                    $productUuid,
                     $consolidationDate,
                     (new ChannelLocaleRateCollection())
                         ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), $this->getRateFromRank($rank))
@@ -219,9 +216,9 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
     private function createProductWithFamily(string $family): ProductUuid
     {
-        $this->lastProductId++;
+        $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(sprintf('product_%d', $this->lastProductId))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withFamily($family)
             ->build();
 
@@ -232,9 +229,9 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
     private function createProductWithCategories(array $categories): ProductUuid
     {
-        $this->lastProductId++;
+        $this->lastInsertedProductIdentifier++;
         $product = $this->get('akeneo_integration_tests.catalog.product.builder')
-            ->withIdentifier(sprintf('product_%d', $this->lastProductId))
+            ->withIdentifier(sprintf('product_%d', $this->lastInsertedProductIdentifier))
             ->withCategories(...$categories)
             ->build();
 
@@ -243,22 +240,8 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
         return ProductUuid::fromString($product->getUuid()->toString());
     }
 
-    private function getDifferentRank(int $rank): int
-    {
-        $ranks = array_diff([1,2,3,4,5], [$rank]);
-
-        return $ranks[array_rand($ranks)];
-    }
-
     private function getRateFromRank(int $rank): Rate
     {
         return new Rate(100 - $rank*10);
-    }
-
-    private function getProductUuidFromId(int $productId): UuidInterface
-    {
-        return Uuid::fromString($this->get('database_connection')->fetchOne(
-            'SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE id = ?', [$productId]
-        ));
     }
 }
