@@ -78,8 +78,12 @@ const setPermissionsAndConfirmWizard = async () => {
     });
 
     await act(async () => userEvent.click(await screen.findByTestId('set-permissions')));
-    await act(async () => userEvent.click(await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.next')));
-    await act(async () => userEvent.click(await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')));
+    await act(async () =>
+        userEvent.click(await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.next'))
+    );
+    await act(async () =>
+        userEvent.click(await screen.findByText('akeneo_connectivity.connection.connect.apps.wizard.action.confirm'))
+    );
 };
 
 beforeEach(() => {
