@@ -373,7 +373,7 @@ pim_asset_manager:
             in: Dans la liste
       more_result:
         title: Ce n'est pas tout !
-        description: Vous venez de faire défiler les {{ maxDisplayedAssets }}} premiers résultats parmi {{ total }} ressources. Pour en voir plus, essayez avec des critères de recherche plus spécifiques.
+        description: Vous venez de faire défiler les {{ maxDisplayedAssets }} premiers résultats parmi {{ total }} ressources. Pour en voir plus, essayez avec des critères de recherche plus spécifiques.
       column:
         code: Code
         image: Image
