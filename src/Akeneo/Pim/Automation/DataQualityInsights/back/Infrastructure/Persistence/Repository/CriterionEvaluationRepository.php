@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
@@ -180,7 +181,7 @@ SQL;
             if ($entityId instanceof ProductUuid) {
                 $queryParametersValues[$productId] = $entityId->toBytes();
                 $queryParametersTypes[$productId] = \PDO::PARAM_STR;
-            } else {
+            } elseif ($entityId instanceof ProductModelId) {
                 $queryParametersValues[$productId] = $entityId->toInt();
                 $queryParametersTypes[$productId] = \PDO::PARAM_INT;
             }
