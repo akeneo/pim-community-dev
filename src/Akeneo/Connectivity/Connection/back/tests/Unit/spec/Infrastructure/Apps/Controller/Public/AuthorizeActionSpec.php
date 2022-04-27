@@ -380,6 +380,49 @@ class AuthorizeActionSpec extends ObjectBehavior
             ->shouldNotHaveBeenCalled();
     }
 
+    public function it_denies_access_to_users_who_cannot_manage_and_its_first_connection_attempt(
+        FeatureFlag $marketplaceActivateFeatureFlag,
+        Request $request,
+        GetAppQueryInterface $getAppQuery,
+        SecurityFacade $security,
+        GetAppConfirmationQueryInterface $getAppConfirmationQuery,
+        UpdateConnectedAppScopesWithAuthorizationHandler $updateConnectedAppScopesWithAuthorizationHandler,
+    ): void {
+        $marketplaceActivateFeatureFlag->isEnabled()->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
+
+        $clientId = 'a_client_id';
+        $app = App::fromWebMarketplaceValues([
+            'id' => $clientId,
+            'name' => 'some app',
+            'activate_url' => 'http://url.test',
+            'callback_url' => 'http://url.test',
+            'logo' => 'logo',
+            'author' => 'admin',
+            'url' => 'http://manage_app.test',
+            'categories' => ['master'],
+        ]);
+        $getAppQuery->execute($clientId)->willReturn($app);
+
+        $getAppConfirmationQuery->execute($clientId)->willReturn(null);
+
+        $request->query = new InputBag([
+            'client_id' => $clientId,
+            'response_type' => 'code',
+            'scope' => 'write_products',
+            'state' => 'random_state_string',
+        ]);
+
+        $this
+            ->shouldThrow(AccessDeniedHttpException::class)
+            ->during('__invoke', [$request]);
+
+        $updateConnectedAppScopesWithAuthorizationHandler
+            ->handle(Argument::type(UpdateConnectedAppScopesWithAuthorizationCommand::class))
+            ->shouldNotHaveBeenCalled();
+    }
+
     private function setUpBeforeScopes(
         string $clientId,
         FeatureFlag $marketplaceActivateFeatureFlag,
