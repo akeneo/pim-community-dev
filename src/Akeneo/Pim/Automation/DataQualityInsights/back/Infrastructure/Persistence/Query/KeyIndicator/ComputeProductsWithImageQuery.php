@@ -27,10 +27,10 @@ final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
         return ProductsWithImage::CODE;
     }
 
-    public function compute(ProductEntityIdCollection $productIdCollection): array
+    public function compute(ProductEntityIdCollection $entityIdCollection): array
     {
         $productsWithImageRates = $this->getEvaluationRatesByProductAndCriterionQuery->execute(
-            $productIdCollection,
+            $entityIdCollection,
             new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE)
         );
 

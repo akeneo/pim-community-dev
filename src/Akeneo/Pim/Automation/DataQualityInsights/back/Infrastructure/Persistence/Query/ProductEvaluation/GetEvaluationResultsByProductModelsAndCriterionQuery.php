@@ -8,8 +8,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -26,8 +28,10 @@ final class GetEvaluationResultsByProductModelsAndCriterionQuery implements GetE
     /**
      * {@inheritdoc}
      */
-    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productModelIdCollection, CriterionCode $criterionCode): array
     {
+        Assert::isInstanceOf($productModelIdCollection, ProductModelIdCollection::class);
+
         $query = <<<SQL
 SELECT product_id, result
 FROM pim_data_quality_insights_product_model_criteria_evaluation
@@ -37,7 +41,7 @@ SQL;
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productModelIds' => array_map(fn (string $productModelId) => (int) $productModelId, $productIdCollection->toArrayString()),
+                'productModelIds' => array_map(fn (string $productModelId) => (int) $productModelId, $productModelIdCollection->toArrayString()),
                 'criterionCode' => $criterionCode,
             ],
             [

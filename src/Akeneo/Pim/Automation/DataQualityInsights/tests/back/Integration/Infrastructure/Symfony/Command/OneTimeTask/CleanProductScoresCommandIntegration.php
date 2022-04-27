@@ -13,6 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Doctrine\DBAL\Driver\PDO\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -44,28 +45,28 @@ final class CleanProductScoresCommandIntegration extends DataQualityInsightsTest
         $localeFr = new LocaleCode('fr_FR');
 
         $productScoreA1 = new ProductScores(
-            ProductUuid::fromString($productUuidA),
+            ProductUuid::fromString((string) $productUuidA),
             new \DateTimeImmutable('2020-11-18'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36))
         );
         $productScoreA2 = new ProductScores(
-            ProductUuid::fromString($productUuidA),
+            ProductUuid::fromString((string) $productUuidA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(79))
                 ->addRate($channelMobile, $localeFr, new Rate(12))
         );
         $productScoreA3 = new ProductScores(
-            ProductUuid::fromString($productUuidA),
+            ProductUuid::fromString((string) $productUuidA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42))
         );
         $productScoreB = new ProductScores(
-            ProductUuid::fromString($productUuidB),
+            ProductUuid::fromString((string) $productUuidB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
@@ -112,11 +113,13 @@ SQL
     {
         $productScore = $this->get('database_connection')->executeQuery(<<<SQL
 SELECT * FROM pim_data_quality_insights_product_score
-WHERE product_id = :productId AND evaluated_at = :evaluatedAt;
+WHERE product_uuid = :productUuid AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productId' => $expectedProductScore->getEntityId()->toInt(),
+                'productUuid' => $expectedProductScore->getEntityId()->toBytes(),
                 'evaluatedAt' => $expectedProductScore->getEvaluatedAt()->format('Y-m-d'),
+            ], [
+                'productUuid' => Connection::PARAM_STR,
             ]
         )->fetchAssociative();
 
@@ -135,16 +138,16 @@ SQL,
     private function insertProductScore(ProductScores $productScore): void
     {
         $insertQuery = <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:productId, :evaluatedAt, :scores);
+INSERT INTO pim_data_quality_insights_product_score (product_uuid, evaluated_at, scores)
+VALUES (:productUuid, :evaluatedAt, :scores);
 SQL;
 
         $this->get('database_connection')->executeQuery($insertQuery, [
-            'productId' => $productScore->getEntityId()->toInt(),
+            'productUuid' => $productScore->getEntityId()->toBytes(),
             'evaluatedAt' => $productScore->getEvaluatedAt()->format('Y-m-d'),
             'scores' => \json_encode($productScore->getScores()->toNormalizedRates()),
         ], [
-            'productId' => \PDO::PARAM_INT,
+            'productId' => \PDO::PARAM_STR,
         ]);
     }
 }
