@@ -11,7 +11,7 @@ class ValidateStorageTest extends AbstractValidationTest
      */
     public function testItDoesNotBuildViolationsWhenStorageAreValid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new Storage());
+        $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
@@ -24,7 +24,7 @@ class ValidateStorageTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new Storage());
+        $violations = $this->getValidator()->validate($value, new Storage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }

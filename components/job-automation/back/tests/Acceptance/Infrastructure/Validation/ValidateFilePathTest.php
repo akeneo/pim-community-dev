@@ -11,7 +11,7 @@ class ValidateFilePathTest extends AbstractValidationTest
      */
     public function testItDoesNotBuildViolationsWhenFilePathAreValid(string $value): void
     {
-        $violations = $this->getValidator()->validate($value, new FilePath());
+        $violations = $this->getValidator()->validate($value, new FilePath(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
@@ -24,7 +24,7 @@ class ValidateFilePathTest extends AbstractValidationTest
         string $expectedErrorPath,
         string $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new FilePath());
+        $violations = $this->getValidator()->validate($value, new FilePath(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }

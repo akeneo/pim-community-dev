@@ -12,7 +12,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
      */
     public function testItDoesNotBuildViolationsWhenSftpStorageAreValid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new SftpStorage());
+        $violations = $this->getValidator()->validate($value, new SftpStorage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
@@ -25,7 +25,7 @@ class ValidateSftpStorageTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new SftpStorage());
+        $violations = $this->getValidator()->validate($value, new SftpStorage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -116,6 +116,39 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'password' => 'MySecretPassword',
                 ],
             ],
+            'sftp storage with host with user and password inside' => [
+                'This value is not a valid hostname.',
+                '[host]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => 'ziggy:pass@example.com',
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'sftp storage with url host with trailing port' => [
+                'This value is not a valid hostname.',
+                '[host]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => 'example.com:8080',
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'sftp storage with ip host with trailing port' => [
+                'This value is not a valid hostname.',
+                '[host]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => '192.168.0.98:8080',
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
             'sftp storage without port' => [
                 'This field is missing.',
                 '[port]',
@@ -127,7 +160,19 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'password' => 'MySecretPassword',
                 ],
             ],
-            'sftp storage with invalid port' => [
+            'sftp storage with blank port' => [
+                'This value should be greater than or equal to 1.',
+                '[port]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => 'example.com',
+                    'port' => '',
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'sftp storage with port lesser than 1' => [
                 'This value should be greater than or equal to 1.',
                 '[port]',
                 [
@@ -135,6 +180,18 @@ class ValidateSftpStorageTest extends AbstractValidationTest
                     'file_path' => '/tmp/products.xlsx',
                     'host' => 'example.com',
                     'port' => 0,
+                    'username' => 'ziggy',
+                    'password' => 'MySecretPassword',
+                ],
+            ],
+            'sftp storage with port greater than 65535' => [
+                'This value should be less than or equal to 65535.',
+                '[port]',
+                [
+                    'type' => 'sftp',
+                    'file_path' => '/tmp/products.xlsx',
+                    'host' => 'example.com',
+                    'port' => 65536,
                     'username' => 'ziggy',
                     'password' => 'MySecretPassword',
                 ],

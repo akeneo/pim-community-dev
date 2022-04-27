@@ -4,7 +4,6 @@ namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -18,10 +17,26 @@ class FilePathValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, [
             new NotBlank(),
-            new Regex([
-                'pattern' => '/.\.xlsx$/',
-                'message' => FilePath::BAD_EXTENSION,
-            ]),
         ]);
+
+        if (0 < $this->context->getViolations()->count()) {
+            return;
+        }
+
+        $this->validateFileExtension($value, $constraint->getAllowedFileExtensions());
+    }
+
+    private function validateFileExtension(string $filePath, array $allowedFileExtensions): void
+    {
+        $fileExtension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+        if (!in_array($fileExtension, $allowedFileExtensions)) {
+            $this->context->addViolation(
+                FilePath::BAD_EXTENSION,
+                [
+                    '{{ allowed_extensions }}' => implode(', ', $allowedFileExtensions),
+                ],
+            );
+        }
     }
 }

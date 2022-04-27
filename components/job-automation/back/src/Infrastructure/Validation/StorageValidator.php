@@ -34,7 +34,7 @@ class StorageValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateStorageByType($value);
+        $this->validateStorageByType($value, $constraint->getFilePathAllowedFileExtensions());
     }
 
     private function getStorageTypes(): array
@@ -42,7 +42,7 @@ class StorageValidator extends ConstraintValidator
         return array_keys($this->storageConstraintClasses);
     }
 
-    private function validateStorageByType(array $storage): void
+    private function validateStorageByType(array $storage, array $allowedExtensions): void
     {
         $storageType = $storage['type'];
         $storageConstraintClass = $this->storageConstraintClasses[$storageType] ?? null;
@@ -51,11 +51,11 @@ class StorageValidator extends ConstraintValidator
             return;
         }
 
-        $this->context->getValidator()->inContext($this->context)->validate($storage, new $storageConstraintClass());
+        $this->context->getValidator()->inContext($this->context)->validate($storage, new $storageConstraintClass($allowedExtensions));
     }
 
     private function isStorageConstraint(string $storageConstraintClass): bool
     {
-        return class_exists($storageConstraintClass) && is_subclass_of($storageConstraintClass, StorageConstraint::class, true);
+        return is_subclass_of($storageConstraintClass, StorageConstraint::class, true);
     }
 }

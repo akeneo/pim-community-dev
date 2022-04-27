@@ -12,7 +12,7 @@ class ValidateNoneStorageTest extends AbstractValidationTest
      */
     public function testItDoesNotBuildViolationsWhenNoneStorageAreValid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new NoneStorage());
+        $violations = $this->getValidator()->validate($value, new NoneStorage([]));
 
         $this->assertNoViolation($violations);
     }
@@ -25,7 +25,7 @@ class ValidateNoneStorageTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new NoneStorage());
+        $violations = $this->getValidator()->validate($value, new NoneStorage([]));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }

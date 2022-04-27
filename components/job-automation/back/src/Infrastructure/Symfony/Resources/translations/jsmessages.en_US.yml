@@ -13,4 +13,4 @@ akeneo.automation:
     password.label: Password
   validation:
     file_path:
-      bad_extension: The file extension should be .xlsx
+      bad_extension: The file extension should be {{ allowed_extensions }}

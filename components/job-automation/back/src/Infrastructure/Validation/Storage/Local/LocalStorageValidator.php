@@ -20,7 +20,7 @@ class LocalStorageValidator extends ConstraintValidator
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
                 'type' => new EqualTo('local'),
-                'file_path' => new FilePath(),
+                'file_path' => new FilePath($constraint->getFilePathAllowedFileExtensions()),
             ],
         ]));
     }

@@ -2,11 +2,13 @@ import BaseView = require('pimui/js/view/base');
 import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageForm, StorageFormProps, Storage} from '@akeneo-pim-enterprise/job-automation';
 
+type StorageFormControllerConfig = {tabCode?: string};
+
 class StorageFormController extends BaseView {
-  public config: any;
+  public config: StorageFormControllerConfig;
   private validationErrors: ValidationError[] = [];
 
-  constructor(options: {config: any}) {
+  constructor(options: {config: StorageFormControllerConfig}) {
     super(options);
 
     this.config = {...this.config, ...options.config};

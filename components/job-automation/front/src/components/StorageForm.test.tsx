@@ -129,7 +129,7 @@ test('it displays validation errors', () => {
     {
       messageTemplate: 'error.key.a_file_path_error',
       invalidValue: '',
-      message: 'this is a fil_path error passed to the configurator',
+      message: 'this is a file_path error passed to the configurator',
       parameters: {},
       propertyPath: '[file_path]',
     },
