@@ -11,6 +11,7 @@ import {FullScreenLoader} from './FullScreenLoader';
 import {useConfirmHandler} from '../../hooks/use-confirm-handler';
 import {useFeatureFlags} from '../../../shared/feature-flags';
 import {Permissions} from './steps/Permissions';
+import {PermissionsSummary} from './steps/PermissionsSummary';
 import ScopeMessage from '../../../model/Apps/scope-message';
 
 interface Props {
@@ -61,6 +62,10 @@ export const AppWizard: FC<Props> = ({clientId}) => {
             if (!isAlreadyConnected && supportsPermissions && shouldDisplayPermissionsStep) {
                 steps.push({
                     name: 'permissions',
+                    requires_explicit_approval: false,
+                });
+                steps.push({
+                    name: 'summary',
                     requires_explicit_approval: false,
                 });
             }
@@ -135,6 +140,13 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             setProviderPermissions={handleSetProviderPermissions}
                             permissions={permissions}
                             scopeMessages={wizardData.scopeMessages}
+                        />
+                    )}
+                    {step.name === 'summary' && (
+                        <PermissionsSummary
+                            appName={wizardData.appName}
+                            providers={providers}
+                            permissions={permissions}
                         />
                     )}
                 </>
