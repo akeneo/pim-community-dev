@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Ramsey\Uuid\Uuid;
 
 final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends DataQualityInsightsTestCase
 {
@@ -77,7 +78,7 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends Dat
 
     public function test_it_returns_an_empty_array_if_there_is_no_pending_criteria_evaluations()
     {
-        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection(['42']);
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([Uuid::uuid4()->toString()]);
         $this->assertEmpty($this->get('akeneo.pim.automation.data_quality_insights.query.get_product_pending_criteria_evaluations')
             ->execute($productIdCollection));
     }
@@ -85,12 +86,12 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends Dat
     private function givenAProductWithTwoPendingAndOneDoneEvaluations(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
-        $productId = $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        $productUuid = $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
 
-        $criterionEvaluationCollection = $this->createTwoPendingAndOneDoneEvaluations($productId);
+        $criterionEvaluationCollection = $this->createTwoPendingAndOneDoneEvaluations($productUuid);
         $this->productCriterionEvaluationRepository->create($criterionEvaluationCollection);
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductModelWithTwoPendingAndOneDoneEvaluations(string $productModelCode): ProductModelId
@@ -127,18 +128,18 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends Dat
     private function givenAProductWithOnePendingEvaluation(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
-        $productId = $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        $productUuid = $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
 
         $criterionEvaluationCollection = (new Write\CriterionEvaluationCollection())
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                $productId,
+                $productUuid,
                 CriterionEvaluationStatus::pending()
             ));
 
         $this->productCriterionEvaluationRepository->create($criterionEvaluationCollection);
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductModelWithOnePendingEvaluation(string $productModelCode): ProductModelId
@@ -161,11 +162,11 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends Dat
     private function givenAProductWithOnlyDoneEvaluations(string $productCode): ProductUuid
     {
         $product = $this->createProductWithoutEvaluations($productCode);
-        $productId = $this->get(ProductUuidFactory::class)->create((string)$product->getId());
+        $productUuid = $this->get(ProductUuidFactory::class)->create((string)$product->getUuid());
 
         $evaluation = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -175,7 +176,7 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQueryIntegration extends Dat
         $evaluation->end(new Write\CriterionEvaluationResult());
         $this->productCriterionEvaluationRepository->update($evaluations);
 
-        return $productId;
+        return $productUuid;
     }
 
     private function givenAProductModelWithOnlyDoneEvaluations(string $productModelCode): ProductModelId

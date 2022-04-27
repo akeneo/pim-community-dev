@@ -9,8 +9,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeType;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Structure\EditableAttributeFilter;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -26,8 +28,10 @@ class GetEvaluableAttributesByProductQuery implements GetEvaluableAttributesByPr
         $this->dbConnection = $dbConnection;
     }
 
-    public function execute(ProductEntityIdInterface $productId): array
+    public function execute(ProductEntityIdInterface $productUuid): array
     {
+        Assert::isInstanceOf($productUuid, ProductUuid::class);
+
         $query = <<<SQL
 SELECT
     attribute.code,
@@ -40,7 +44,7 @@ INNER JOIN pim_catalog_product AS product ON product.family_id = pca.family_id
 INNER JOIN pim_catalog_family AS family ON (product.family_id = family.id)
 LEFT JOIN pim_catalog_attribute_group AS attribute_group ON attribute_group.id = attribute.group_id
 LEFT JOIN pim_data_quality_insights_attribute_group_activation AS activation ON activation.attribute_group_code = attribute_group.code
-WHERE product.id = :product_id
+WHERE product.uuid = :product_uuid
 AND attribute.attribute_type IN (:attribute_types)
 AND (activation.activated IS NULL OR activation.activated = 1);
 SQL;
@@ -48,11 +52,11 @@ SQL;
         $statement = $this->dbConnection->executeQuery(
             $query,
             [
-                'product_id' => (int)(string)$productId,
+                'product_uuid' => $productUuid->toBytes(),
                 'attribute_types' => AttributeType::EVALUABLE_ATTRIBUTE_TYPES,
             ],
             [
-                'product_id' => \PDO::PARAM_INT,
+                'product_uuid' => \PDO::PARAM_STR,
                 'attribute_types' => Connection::PARAM_STR_ARRAY,
             ]
         );

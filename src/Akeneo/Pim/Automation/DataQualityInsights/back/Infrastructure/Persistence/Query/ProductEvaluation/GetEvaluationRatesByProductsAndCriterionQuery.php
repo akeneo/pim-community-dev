@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -25,31 +26,33 @@ final class GetEvaluationRatesByProductsAndCriterionQuery implements GetEvaluati
     ) {
     }
 
-    public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
+    public function execute(ProductEntityIdCollection $productUuidCollection, CriterionCode $criterionCode): array
     {
+        Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
+
         $ratesPath = sprintf('$."%s"', TransformCriterionEvaluationResultCodes::PROPERTIES_ID['rates']);
 
         $query = <<<SQL
-SELECT p.id AS product_id, JSON_EXTRACT(e.result, '$ratesPath') AS rates
+SELECT BIN_TO_UUID(p.uuid) AS product_uuid, JSON_EXTRACT(e.result, '$ratesPath') AS rates
 FROM pim_catalog_product p
     JOIN pim_data_quality_insights_product_criteria_evaluation e ON e.product_uuid = p.uuid
-WHERE p.id IN (:productIds) AND e.criterion_code = :criterionCode;
+WHERE p.uuid IN (:productUuids) AND e.criterion_code = :criterionCode;
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => $productIdCollection->toArrayString(),
+                'productUuids' => $productUuidCollection->toArrayBytes(),
                 'criterionCode' => $criterionCode,
             ],
             [
-                'productIds' => Connection::PARAM_INT_ARRAY,
+                'productUuids' => Connection::PARAM_STR_ARRAY,
             ]
         );
 
         $evaluationRates = [];
         while ($evaluationResult = $stmt->fetchAssociative()) {
-            $evaluationRates[$evaluationResult['product_id']] = $this->formatEvaluationRates($criterionCode, $evaluationResult);
+            $evaluationRates[$evaluationResult['product_uuid']] = $this->formatEvaluationRates($criterionCode, $evaluationResult);
         }
 
         return $evaluationRates;
