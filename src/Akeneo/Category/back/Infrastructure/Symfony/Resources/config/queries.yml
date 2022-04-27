@@ -30,13 +30,13 @@ services:
         arguments:
             - '@database_connection'
 
-  Akeneo\Category\API\Query\GetCategory: '@Akeneo\Category\Infrastructure\Storage\Query\SqlGetCategory'
+    Akeneo\Category\API\Query\GetCategory: '@Akeneo\Category\Infrastructure\Storage\Query\SqlGetCategory'
 
-  Akeneo\Category\Infrastructure\Storage\Query\OrmGetCategory:
-    arguments:
-      - '@pim_catalog.repository.category'
-      - '@pim_catalog.repository.cached_locale'
+    Akeneo\Category\Infrastructure\Storage\Query\OrmGetCategory:
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_locale'
 
-  Akeneo\Category\Infrastructure\Storage\Query\SqlGetCategory:
-    arguments:
-      - '@database_connection'
+    Akeneo\Category\Infrastructure\Storage\Query\SqlGetCategory:
+        arguments:
+            - '@database_connection'

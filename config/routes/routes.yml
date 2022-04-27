@@ -6,10 +6,6 @@ akeneo_channel:
     resource: "@AkeneoLegacyChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
-akeneo_category:
-    resource: "@AkeneoCategoryBundle/Resources/config/routing.yml"
-    prefix:   /
-
 akeneo_pim_structure:
     resource: "@AkeneoPimStructureBundle/Resources/config/routing.yml"
 
