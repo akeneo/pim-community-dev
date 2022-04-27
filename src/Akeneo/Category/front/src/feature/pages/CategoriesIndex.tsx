@@ -1,9 +1,9 @@
 import React, {FC, useEffect} from 'react';
 import {Breadcrumb, Button, useBooleanState} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
-import {CategoryTreesDataGrid, EmptyCategoryTreeList} from '../../components';
+import {CategoryTreesDataGrid, EmptyCategoryTreeList} from '../components';
 import {useCategoryTreeList} from '../hooks/categories';
-import {NewCategoryModal} from './NewCategoryModal';
+import {NewCategoryModal} from '../components/modals';
 
 const CategoriesIndex: FC = () => {
   const router = useRouter();

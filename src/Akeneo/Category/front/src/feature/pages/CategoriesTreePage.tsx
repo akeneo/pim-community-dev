@@ -12,10 +12,9 @@ import {
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../../hooks';
-import {CategoryTree} from '../../components';
-import {NewCategoryModal} from './NewCategoryModal';
-import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
+import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
+import {CategoryTree} from '../components/tree';
+import {NewCategoryModal, DeleteCategoryModal} from '../components/modals';
 
 type Params = {
   treeId: string;

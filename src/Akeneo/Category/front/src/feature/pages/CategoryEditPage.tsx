@@ -31,11 +31,11 @@ import {
   useCountProductsBeforeDeleteCategory,
   useDeleteCategory,
   useEditCategoryForm,
-} from '../../hooks';
-import {Category} from '../../models';
+} from '../hooks';
+import {Category} from '../models';
 import {HistoryPimView, View} from './HistoryPimView';
-import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
-import {EditPermissionsForm, EditPropertiesForm} from '../../components/categories/';
+import {DeleteCategoryModal} from '../components';
+import {EditPermissionsForm, EditPropertiesForm} from '../components/categories/';
 
 type Params = {
   categoryId: string;
