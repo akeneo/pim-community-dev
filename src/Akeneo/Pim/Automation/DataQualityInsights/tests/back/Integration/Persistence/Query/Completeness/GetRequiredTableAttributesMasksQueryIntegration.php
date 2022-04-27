@@ -92,10 +92,10 @@ final class GetRequiredTableAttributesMasksQueryIntegration extends Completeness
             'sku-<all_channels>-<all_locales>',
             \sprintf(
                 'a_localizable_scopable_table-%s-ecommerce-en_US',
-                $this->getColumnId('a_localizable_scopable_table', 'column_1')
+                $this->getColumnId('a_localizable_scopable_table', 'column_2')
             ),
             \sprintf('a_non_localizable_scopable_table-%s-<all_channels>-<all_locales>',
-                $this->getColumnId('a_non_localizable_scopable_table', 'column_1')),
+                $this->getColumnId('a_non_localizable_scopable_table', 'column_2')),
         ], $ecommerceEnUsMask->mask());
     }
 

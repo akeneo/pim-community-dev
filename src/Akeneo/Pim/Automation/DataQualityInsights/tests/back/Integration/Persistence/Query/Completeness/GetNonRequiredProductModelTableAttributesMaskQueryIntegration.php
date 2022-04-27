@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredProductModelAttributesMaskQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -117,7 +117,7 @@ class GetNonRequiredProductModelTableAttributesMaskQueryIntegration extends Comp
                 $this->getColumnId('a_non_localizable_scopable_table', 'column_2')),
         ], $ecommerceEnUsMask->mask());
 
-        $unknownProductId = new ProductId(42);
+        $unknownProductId = new ProductModelId(42);
         $this->assertNull($this->get(GetNonRequiredProductModelAttributesMaskQuery::class)->execute($unknownProductId));
     }
 

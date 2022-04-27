@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Persistence\Query\Completeness;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetRequiredProductModelAttributesMaskQuery;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
@@ -115,13 +115,13 @@ class GetRequiredProductModelTableAttributesMaskQueryIntegration extends Complet
         $this->assertEqualsCanonicalizing([
             \sprintf(
                 'a_localizable_scopable_table-%s-ecommerce-en_US',
-                $this->getColumnId('a_localizable_scopable_table', 'column_1')
+                $this->getColumnId('a_localizable_scopable_table', 'column_2')
             ),
             \sprintf('a_non_localizable_scopable_table-%s-<all_channels>-<all_locales>',
-                $this->getColumnId('a_non_localizable_scopable_table', 'column_1')),
+                $this->getColumnId('a_non_localizable_scopable_table', 'column_2')),
         ], $ecommerceEnUsMask->mask());
 
-        $unknownProductId = new ProductId(42);
+        $unknownProductId = new ProductModelId(42);
         $this->assertNull($this->get(GetRequiredProductModelAttributesMaskQuery::class)->execute($unknownProductId));
     }
 
