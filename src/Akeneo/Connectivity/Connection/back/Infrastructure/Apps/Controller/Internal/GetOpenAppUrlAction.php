@@ -58,7 +58,7 @@ final class GetOpenAppUrlAction
 
         $app = $app->withPimUrlSource($this->appUrlGenerator->getAppQueryParameters());
 
-        if ($connectedApp->hasOutdatedScopes()) {
+        if ($connectedApp->hasOutdatedScopes() && $this->isGrantedToManage($app)) {
             $this->saveConnectedAppOutdatedScopesFlagQuery->execute($connectedApp->getId(), false);
         }
 
