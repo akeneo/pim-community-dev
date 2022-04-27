@@ -8,8 +8,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -28,27 +30,29 @@ final class GetEvaluationResultsByProductsAndCriterionQuery implements GetEvalua
      */
     public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array
     {
+        Assert::isInstanceOf($productIdCollection, ProductUuidCollection::class);
+
         $query = <<<SQL
-SELECT p.id AS product_id, e.result
+SELECT BIN_TO_UUID(p.uuid) AS product_uuid, e.result
 FROM pim_data_quality_insights_product_criteria_evaluation e
     JOIN pim_catalog_product p ON p.uuid = e.product_uuid
-WHERE p.id IN (:productIds) AND e.criterion_code = :criterionCode;
+WHERE p.uuid IN (:productUuids) AND e.criterion_code = :criterionCode;
 SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
             [
-                'productIds' => $productIdCollection->toArrayString(),
+                'productUuids' => $productIdCollection->toArrayBytes(),
                 'criterionCode' => $criterionCode,
             ],
             [
-                'productIds' => Connection::PARAM_INT_ARRAY,
+                'productUuids' => Connection::PARAM_STR_ARRAY,
             ]
         );
 
         $evaluationResults = [];
         while ($evaluation = $stmt->fetchAssociative()) {
-            $evaluationResults[\intval($evaluation['product_id'])] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
+            $evaluationResults[$evaluation['product_uuid']] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
         }
 
         return $evaluationResults;

@@ -47,7 +47,7 @@ final class GetProductModelScoresQueryIntegration extends DataQualityInsightsTes
             $productModelIds['idB']
         ]);
         $productAxesRates = $this->get(GetProductModelScoresQuery::class)
-            ->byProductModelIds($productModelIdCollection);
+            ->byProductModelIdCollection($productModelIdCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductModelsScores, $productAxesRates);
     }

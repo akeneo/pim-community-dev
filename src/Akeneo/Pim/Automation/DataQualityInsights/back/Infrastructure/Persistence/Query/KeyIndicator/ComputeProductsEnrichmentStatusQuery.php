@@ -36,13 +36,13 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     /**
      * {@inheritdoc}
      */
-    public function compute(ProductEntityIdCollection $productIdCollection): array
+    public function compute(ProductEntityIdCollection $entityIdCollection): array
     {
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
-        $productsEvaluationResults = $this->getProductsCompletenessResults($productIdCollection);
+        $productsEvaluationResults = $this->getProductsCompletenessResults($entityIdCollection);
         $productsEnrichmentStatus = [];
-        foreach ($productIdCollection->toArrayString() as $productId) {
-            $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluationResults[$productId], $channelsLocales);
+        foreach ($entityIdCollection->toArrayString() as $entityId) {
+            $productsEnrichmentStatus[$entityId] = $this->computeForChannelsLocales($productsEvaluationResults[$entityId], $channelsLocales);
         }
 
         return $productsEnrichmentStatus;
@@ -92,19 +92,19 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return $enrichmentRatio >= self::GOOD_ENRICHMENT_RATIO;
     }
 
-    private function getProductsCompletenessResults(ProductEntityIdCollection $productIds): array
+    private function getProductsCompletenessResults(ProductEntityIdCollection $entityIds): array
     {
         $requiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
-            $productIds,
+            $entityIds,
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         );
         $nonRequiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
-            $productIds,
+            $entityIds,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE),
         );
 
         $productsEvaluations = [];
-        foreach ($productIds->toArrayString() as $productId) {
+        foreach ($entityIds->toArrayString() as $productId) {
             $productsEvaluations[$productId] = [
                 EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => $requiredAttributesEvaluations[$productId] ?? null,
                 EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => $nonRequiredAttributesEvaluations[$productId] ?? null,

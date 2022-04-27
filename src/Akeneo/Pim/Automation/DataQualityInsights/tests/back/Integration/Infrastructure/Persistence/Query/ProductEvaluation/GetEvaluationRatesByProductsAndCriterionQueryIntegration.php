@@ -16,6 +16,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -45,13 +46,13 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $this->givenANotInvolvedProduct();
 
-        $productIds = array_keys($expectedEvaluationRates);
-        $productIds[] = 12345; // Unknown product
+        $productUuids = array_keys($expectedEvaluationRates);
+        $productUuids[] = Uuid::uuid4()->toString(); // Unknown product
 
-        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection(array_map(fn($id) => (string) $id, $productIds));
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection($productUuids);
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductsAndCriterionQuery::class)
-            ->execute($productIdCollection, new CriterionCode('spelling'));
+            ->execute($productUuidCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }
@@ -82,7 +83,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $this->saveEvaluationResults($product->getUuid(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$product->getUuid()->toString() => $expectedRates];
     }
 
     private function givenSampleB(): array
@@ -102,7 +103,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $this->saveEvaluationResults($product->getUuid(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$product->getUuid()->toString() => $expectedRates];
     }
 
     private function givenANotInvolvedProduct(): void
@@ -136,7 +137,7 @@ SQL,
             ]
         );
 
-        return [$product->getId() => []];
+        return [$product->getUuid()->toString() => []];
     }
 
     private function saveEvaluationResults(UuidInterface $productUuid, array $evaluationResults): void
