@@ -32,8 +32,8 @@ final class GetCriteriaEvaluationsByProductIdQueryIntegration extends DataQualit
 
     public function test_it_gives_the_criteria_evaluations_of_a_product()
     {
-        $productId = ProductUuid::fromString($this->createProductWithoutEvaluations('ziggy')->getUuid()->toString());
-        $anotherProductId = ProductUuid::fromString($this->createProductWithoutEvaluations('yggiz')->getUuid()->toString());
+        $productId = ProductUuid::fromUuid($this->createProductWithoutEvaluations('ziggy')->getUuid());
+        $anotherProductId = ProductUuid::fromUuid($this->createProductWithoutEvaluations('yggiz')->getUuid());
 
         $criterionEvaluationRepository = $this->get('akeneo.pim.automation.data_quality_insights.repository.product_criterion_evaluation');
 

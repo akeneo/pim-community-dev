@@ -226,7 +226,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return ProductUuid::fromString($product->getUuid()->toString());
+        return ProductUuid::fromUuid($product->getUuid());
     }
 
     private function createProductWithCategories(array $categories): ProductUuid
@@ -239,7 +239,7 @@ final class GetRanksDistributionFromProductScoresQueryIntegration extends TestCa
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return ProductUuid::fromString($product->getUuid()->toString());
+        return ProductUuid::fromUuid($product->getUuid());
     }
 
     private function getRateFromRank(int $rank): Rate

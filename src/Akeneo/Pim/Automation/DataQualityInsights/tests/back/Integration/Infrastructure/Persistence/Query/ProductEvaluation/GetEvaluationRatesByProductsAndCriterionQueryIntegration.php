@@ -142,7 +142,7 @@ SQL,
 
     private function saveEvaluationResults(UuidInterface $productUuid, array $evaluationResults): void
     {
-        $productUuid = ProductUuid::fromString($productUuid->toString());
+        $productUuid = ProductUuid::fromUuid($productUuid);
         $evaluations = new Write\CriterionEvaluationCollection();
 
         foreach ($evaluationResults as $criterion => $evaluationResult) {
