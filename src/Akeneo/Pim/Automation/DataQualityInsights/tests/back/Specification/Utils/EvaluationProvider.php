@@ -24,7 +24,7 @@ abstract class EvaluationProvider
         $productUuid = $productUuid ?? Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
         $evaluation = new Write\CriterionEvaluation(
             new CriterionCode($code),
-            ProductUuid::fromString($productUuid->toString()),
+            ProductUuid::fromUuid($productUuid),
             new CriterionEvaluationStatus($status)
         );
 

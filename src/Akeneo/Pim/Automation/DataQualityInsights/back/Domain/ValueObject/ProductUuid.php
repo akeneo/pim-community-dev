@@ -17,6 +17,11 @@ final class ProductUuid implements ProductEntityIdInterface
     {
     }
 
+    public static function fromUuid(UuidInterface $uuid): self
+    {
+        return new self($uuid);
+    }
+
     public static function fromString(string $uuid): self
     {
         if (!Uuid::isValid($uuid)) {
