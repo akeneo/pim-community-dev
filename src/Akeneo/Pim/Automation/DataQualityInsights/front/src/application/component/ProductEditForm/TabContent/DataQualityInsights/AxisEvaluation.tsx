@@ -56,15 +56,17 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
     return child;
   });
 
-  return recommendations.length > 0 && (
-    <div className="AknSubsection AxisEvaluationContainer">
-      <AxisHeader evaluation={evaluation} axis={axis} />
+  return (
+    recommendations.length > 0 && (
+      <div className="AknSubsection AxisEvaluationContainer">
+        <AxisHeader evaluation={evaluation} axis={axis} />
 
-      {axisHasError && <AxisError />}
-      {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
+        {axisHasError && <AxisError />}
+        {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
 
-      {recommendations}
-    </div>
+        {recommendations}
+      </div>
+    )
   );
 };
 
