@@ -43,7 +43,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
     {
         $this->assertCountProductCriterionEvaluations(0);
         $product = $this->createProduct('ziggy');
-        $productUuid = ProductUuid::fromString($product->getUuid()->toString());
+        $productUuid = ProductUuid::fromUuid($product->getUuid());
         $this->deleteAllProductCriterionEvaluations();
 
         $criteria = (new Write\CriterionEvaluationCollection)
@@ -77,8 +77,8 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
 
     public function test_it_updates_the_status_of_a_criterion_evaluation_instead_of_creating_it_when_it_already_exists()
     {
-        $productUuidWithExistingEvaluation = ProductUuid::fromString($this->createProduct('product_with_evaluation')->getUuid()->toString());
-        $productUuidWithoutEvaluation = ProductUuid::fromString($this->createProduct('product_without_evaluation')->getUuid()->toString());
+        $productUuidWithExistingEvaluation = ProductUuid::fromUuid($this->createProduct('product_with_evaluation')->getUuid());
+        $productUuidWithoutEvaluation = ProductUuid::fromUuid($this->createProduct('product_without_evaluation')->getUuid());
         $criterionCode = new CriterionCode('completeness');
         $this->deleteAllProductCriterionEvaluations();
 
@@ -109,7 +109,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->createAttribute('description');
         $this->createChannel('mobile', ['locales' => ['en_US']]);
 
-        $productUuid = ProductUuid::fromString($this->createProduct('ziggy')->getUuid()->toString());
+        $productUuid = ProductUuid::fromUuid($this->createProduct('ziggy')->getUuid());
 
         $criterionEvaluationA = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
@@ -159,12 +159,12 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         return (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                ProductUuid::fromString($this->createProduct('a_product')->getUuid()->toString()),
+                ProductUuid::fromUuid($this->createProduct('a_product')->getUuid()),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                ProductUuid::fromString($this->createProduct('another_product')->getUuid()->toString()),
+                ProductUuid::fromUuid($this->createProduct('another_product')->getUuid()),
                 CriterionEvaluationStatus::pending()
             ));
     }
