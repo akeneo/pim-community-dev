@@ -5,6 +5,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_tailored_import?:
+          name: "Start?"
           type: approval
           filters:
             branches:
@@ -12,15 +13,17 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - checkout:
+          name: "Checkout"
           requires:
-            - ready_to_test_tailored_import?
+            - "Start?"
       - build_srnt_dev:
           name: "Build dev"
           requires:
-            - checkout
+            - "Checkout"
       - test_helm_generated_k8s_files:
+          name: "🤷 ça bouine"
           requires:
-            - checkout
+            - "Checkout"
       - deploy_pr_environment?:
           name: "Deploy PR environment?"
           type: approval
@@ -32,7 +35,7 @@ workflows:
       - build_srnt_prod:
           name: "Build prod"
           requires:
-            - test_helm_generated_k8s_files
+            - "🤷 ça bouine"
             - "Deploy PR environment?"
       - deploy_pr_environment:
           name: "Deploy PR environment"
@@ -48,15 +51,18 @@ workflows:
           requires:
             - "Delete PR environment?"
       - test_front_tailored_import:
+          name: "Front test"
           requires:
             - "Build dev"
       - test_back_tailored_import:
+          name: "Back test"
           requires:
             - "Build dev"
       - pull_request_success:
+          name: "PR Success"
           requires:
-            - test_front_tailored_import
-            - test_back_tailored_import
+            - "Front test"
+            - "Back test"
 
   raccoon_job_automation_pull_request:
     when:
@@ -64,6 +70,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_job_automation?:
+          name: "Start?"
           type: approval
           filters:
             branches:
@@ -71,18 +78,53 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - checkout:
+          name: "Checkout"
           requires:
-            - ready_to_test_job_automation?
+            - "Start?"
       - build_srnt_dev:
+          name: "Build dev"
           requires:
-            - checkout
+            - "Checkout"
+      - test_helm_generated_k8s_files:
+          name: "🤷 ça bouine"
+          requires:
+            - "Checkout"
+      - deploy_pr_environment?:
+          name: "Deploy PR environment?"
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - build_srnt_prod:
+          name: "Build prod"
+          requires:
+            - "🤷 ça bouine"
+            - "Deploy PR environment?"
+      - deploy_pr_environment:
+          name: "Deploy PR environment"
+          requires:
+            - "Build prod"
+      - delete_pr_environment?:
+          name: "Delete PR environment?"
+          type: approval
+          requires:
+            - "Deploy PR environment"
+      - delete_pr_environment:
+          name: "Delete PR environment"
+          requires:
+            - "Delete PR environment?"
       - test_front_job_automation:
+          name: "Front test"
           requires:
-            - build_srnt_dev
+            - "Build dev"
       - test_back_job_automation:
+          name: "Back test"
           requires:
-            - build_srnt_dev
+            - "Build dev"
       - pull_request_success:
+          name: "PR Success"
           requires:
-            - test_front_job_automation
-            - test_back_job_automation
+            - "Front test"
+            - "Back test"
