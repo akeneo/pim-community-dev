@@ -54,6 +54,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.channel.flash.delete.success
                 fail: pim_enrich.entity.channel.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_channel_index
 
     pim-channel-edit-form-save-buttons:

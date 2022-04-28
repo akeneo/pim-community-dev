@@ -30,7 +30,7 @@
 - PIM-10413: Patch connections routes order
 - PIM-10377: Change Elastic Search field Limit for everyone
 - PIM-10251: Fix locale on API call
-
+- PIM-10421: Add missing translation key for delete button
 
 ## Improvements
 
