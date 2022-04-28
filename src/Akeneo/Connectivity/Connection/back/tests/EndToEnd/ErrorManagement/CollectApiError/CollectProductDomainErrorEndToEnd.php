@@ -12,6 +12,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Elasticsearch\Client;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -134,13 +135,14 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' => [
-                'id' => 1,
+                'uuid' => Uuid::uuid4(),
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
                 'family' => 'shoes'
             ]
         ];
-        Assert::assertEquals($expectedContent, $doc['content']);
+
+        $this->assertReponsesEquals($expectedContent, $doc['content']);
     }
 
     public function test_it_collects_an_unknown_attribute_error(): void
@@ -209,7 +211,7 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' => [
-                'id' => 1,
+                'uuid' => Uuid::uuid4(),
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
                 'family' => 'shoes'
@@ -226,7 +228,8 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
 
         $doc = $result['hits']['hits'][0]['_source'];
         Assert::assertEquals('erp', $doc['connection_code']);
-        Assert::assertEquals($expectedContent, $doc['content']);
+
+        $this->assertReponsesEquals($expectedContent, $doc['content']);
     }
 
     public function test_it_collects_an_unknown_category_error(): void
@@ -297,13 +300,14 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
                 ]
             ],
             'product' => [
-                'id' => null,
+                'uuid' => Uuid::uuid4(),
                 'identifier' => 'high-top_sneakers',
                 'label' => 'high-top_sneakers',
                 'family' => 'shoes'
             ]
         ];
-        Assert::assertEquals($expectedContent, $doc['content']);
+
+        $this->assertReponsesEquals($expectedContent, $doc['content']);
     }
 
     public function test_it_collects_an_unknown_product_error(): void
@@ -336,6 +340,18 @@ class CollectProductDomainErrorEndToEnd extends ApiTestCase
             'message_template' => 'The {product_identifier} product does not exist in your PIM or you do not have permission to access it.',
             'message_parameters' => ['product_identifier' => 'unknown_product_identifier']
         ];
-        Assert::assertEquals($expectedContent, $doc['content']);
+
+        $this->assertReponsesEquals($expectedContent, $doc['content']);
+    }
+
+    private function assertReponsesEquals(array $expectedContent, array $actualContent): void
+    {
+        if (isset($expectedContent['product']['uuid'])) {
+            Assert::assertTrue(Uuid::isValid($actualContent['product']['uuid']));
+            unset($expectedContent['product']['uuid']);
+            unset($actualContent['product']['uuid']);
+        }
+
+        Assert::assertEquals($expectedContent, $actualContent);
     }
 }
