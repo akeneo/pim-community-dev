@@ -77,7 +77,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
     public function it_gives_the_evaluation_of_a_product_model(
         $getCriteriaEvaluationsByProductIdQuery,
-        $criteriaEvaluationRegistry,
+        $criteriaRegistry,
         $getLocalesByChannelQuery,
         $completeEvaluationWithImprovableAttributes
     ) {
@@ -88,7 +88,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
             'mobile' => ['en_US']
         ]));
 
-        $criteriaEvaluationRegistry->getCriterionCodes()->willReturn([
+        $criteriaRegistry->getEnabledCriterionCodes()->willReturn([
             new CriterionCode('completeness_of_required_attributes'),
             new CriterionCode('completeness_of_non_required_attributes'),
             new CriterionCode('consistency_spelling'),
