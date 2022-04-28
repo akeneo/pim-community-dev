@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class FlatToStandardUnit extends TestCase
 {
     /** @test */
-    public function it_converts_flat_supplier_data_into_structured_data(): void
+    public function itConvertsFlatSupplierDataIntoStructuredData(): void
     {
         $flatSupplierData = [
             'supplier_code' => 42,
@@ -40,7 +40,7 @@ final class FlatToStandardUnit extends TestCase
     }
 
     /** @test */
-    public function it_converts_flat_supplier_data_into_structured_data_when_there_is_no_contributors(): void
+    public function itConvertsFlatSupplierDataIntoStructuredDataWhenThereIsNoContributors(): void
     {
         $flatSupplierData = [
             'supplier_code' => 42,

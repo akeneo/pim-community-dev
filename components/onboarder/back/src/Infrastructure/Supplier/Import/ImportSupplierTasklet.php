@@ -141,7 +141,6 @@ final class ImportSupplierTasklet implements TaskletInterface
     private function skipItemWithConstraintViolations(
         array $item,
         ConstraintViolationListInterface $violations,
-        \Exception $previousException = null,
     ): void {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
@@ -154,7 +153,6 @@ final class ImportSupplierTasklet implements TaskletInterface
             new FileInvalidItem($item, $itemPosition),
             [],
             0,
-            $previousException,
         );
     }
 
