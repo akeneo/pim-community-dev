@@ -168,6 +168,7 @@ define([
                           return option.code;
                         }
                       }
+
                       return choice;
                     }.bind(this)
                   ).join(',');
