@@ -54,9 +54,9 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function readRow(?string $sheetName, int $start): array
+    public function readRow(?string $sheetName, int $lineNumber): array
     {
-        $rows = $this->readRows($sheetName, $start, 1);
+        $rows = $this->readRows($sheetName, $lineNumber, 1);
 
         return empty($rows) ? [] : current($rows);
     }

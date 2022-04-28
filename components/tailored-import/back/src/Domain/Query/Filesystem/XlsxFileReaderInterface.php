@@ -18,7 +18,7 @@ interface XlsxFileReaderInterface
     /**
      * @return array<string>
      */
-    public function readRow(?string $sheetName, int $start): array;
+    public function readRow(?string $sheetName, int $lineNumber): array;
 
     /**
      * @return array<array<string>>

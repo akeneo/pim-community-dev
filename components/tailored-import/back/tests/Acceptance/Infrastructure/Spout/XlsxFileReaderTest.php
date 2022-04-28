@@ -174,6 +174,26 @@ class XlsxFileReaderTest extends AcceptanceTestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_reads_a_single_row(): void
+    {
+        $xlsxFileReader = $this->getFileReader();
+
+        $row = $xlsxFileReader->readRow('Trailing empty header', 3);
+        $this->assertEquals(
+            ['ref2','Produit 2', '13.87','FALSE','5/23/2022'],
+            $row
+        );
+
+        $row = $xlsxFileReader->readRow('Trailing empty header', 2);
+        $this->assertEquals(
+            ['ref1','Produit 1', '12','TRUE','3/22/2022', '14.4'],
+            $row
+        );
+    }
+
     private function getFileReader(
         string $filePath = __DIR__.'/../../../Common/simple_import.xlsx'
     ): XlsxFileReader {
