@@ -14,12 +14,19 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
     {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, string $supplierIdentifier): JsonResponse
     {
+        $urlEncodedEmails = $request->query->get('emails');
+        if (empty($urlEncodedEmails)) {
+            return new JsonResponse([]);
+        }
+
+        $emails = \json_decode($request->get('emails'));
+
         return new JsonResponse(
             ($this->supplierContributorsBelongToAnotherSupplier)(
-                $request->get('supplierIdentifier'),
-                \json_decode($request->get('emails'))
+                $supplierIdentifier,
+                $emails,
             )
         );
     }
