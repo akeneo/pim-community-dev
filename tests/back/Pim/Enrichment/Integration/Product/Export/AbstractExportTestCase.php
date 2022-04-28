@@ -5,6 +5,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\AssociationType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
@@ -13,6 +15,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use PHPUnit\Framework\Assert;
 
 abstract class AbstractExportTestCase extends TestCase
 {
@@ -46,43 +49,34 @@ abstract class AbstractExportTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct(string $identifier, array $data = []) : ProductInterface
+    protected function createProduct(string $identifier, array $userIntents = []) : ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
-
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
-    /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
-     */
-    protected function createVariantProduct(string $identifier, array $data = []) : ProductInterface
+    protected function getUserId(string $username): int
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(0, $constraintList->count());
-        $this->get('pim_catalog.saver.product')->save($product);
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
 
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-
-        return $product;
+        return \intval($id);
     }
-
     /**
      * @param array  $data
      *

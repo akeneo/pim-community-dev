@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByPriceCollectionsIntegration extends AbstractExportTestCase
@@ -12,29 +13,19 @@ class ExportProductsByPriceCollectionsIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            'values'     => [
-                'a_price' => [[
-                    'data' => [
-                        ['amount' => 10, 'currency' => 'EUR'],
-                        ['amount' => 20, 'currency' => 'USD']
-                    ],
-                    'locale' => null,
-                    'scope' => null
-                ]]
-            ]
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_price', null, null, [
+                ['amount' => 10, 'currency' => 'EUR'],
+                ['amount' => 20, 'currency' => 'USD']
+            ]),
         ]);
 
         $this->createProduct('product_2', [
-            'values' => [
-                'a_price' => [[
-                    'data' => [
-                        ['amount' => 20, 'currency' => 'EUR'],
-                        ['amount' => 10, 'currency' => 'USD']
-                    ],
-                    'locale' => null,
-                    'scope' => null
-                ]]
-            ],
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_price', null, null, [
+                ['amount' => 20, 'currency' => 'EUR'],
+                ['amount' => 10, 'currency' => 'USD']
+            ]),
         ]);
 
         $this->createProduct('product_3');

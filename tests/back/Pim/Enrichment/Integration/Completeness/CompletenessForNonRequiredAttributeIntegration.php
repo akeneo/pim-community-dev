@@ -3,6 +3,9 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -24,25 +27,11 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
         $this->createAttribute('a_number', AttributeTypes::NUMBER);
 
         $product = $this->createProductWithStandardValues(
-            $family,
             'always_complete_product',
             [
-                'values' => [
-                    'a_text'   => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => 'This is some text',
-                        ],
-                    ],
-                    'a_number' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => null,
-                        ],
-                    ],
-                ],
+                new SetFamily('family_without_any_attribute_requirements'),
+                new SetTextValue('a_text', null, null, 'This is some text'),
+                new SetNumberValue('a_number', null, null, null)
             ]
         );
 
@@ -51,7 +40,7 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
 
     public function testAttributeRequiredByFamily()
     {
-        $family = $this->createFamilyWithRequirement(
+        $this->createFamilyWithRequirement(
             'another_family',
             'ecommerce',
             'a_text',
@@ -59,18 +48,10 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
         );
 
         $product = $this->createProductWithStandardValues(
-            $family,
             'product_complete',
             [
-                'values' => [
-                    'a_text' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => 'Some text for ecommerce channel'
-                        ],
-                    ]
-                ]
+                new SetFamily('another_family'),
+                new SetTextValue('a_text', null, null, 'Some text for ecommerce channel')
             ]
         );
 

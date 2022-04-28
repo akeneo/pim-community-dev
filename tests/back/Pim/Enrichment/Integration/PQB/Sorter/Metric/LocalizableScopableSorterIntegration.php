@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Metric;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -35,35 +36,19 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_metric' => [
-                    ['data' => ['amount' => '10.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_scopable_metric', 'tablet', 'fr_FR', '10.5', 'KILOWATT')
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_metric' => [
-                    ['data' => ['amount' => '15000', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_scopable_metric', 'tablet', 'fr_FR', '15000', 'KILOWATT')
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_scopable_metric' => [
-                    ['data' => ['amount' => '-2.5', 'unit' => 'KILOWATT'], 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_scopable_metric', 'tablet', 'fr_FR', '-2.5', 'KILOWATT')
         ]);
 
         $this->createProduct('product_four', [
-            'values' => [
-                'a_localizable_scopable_metric' => [
-                    ['data' => ['amount' => '12', 'unit' => 'KILOWATT'], 'locale' => 'en_US', 'scope' => 'tablet']
-                ]
-            ]
+            new SetMeasurementValue('a_localizable_scopable_metric', 'tablet', 'en_US', '12', 'KILOWATT')
         ]);
     }
 

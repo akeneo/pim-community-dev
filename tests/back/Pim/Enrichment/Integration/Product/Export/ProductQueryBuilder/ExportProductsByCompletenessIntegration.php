@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
@@ -29,34 +31,22 @@ class ExportProductsByCompletenessIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('french', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null]
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name')
         ]);
 
         $this->createProduct('english', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null]
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'en_US', 'English name')
         ]);
 
         $this->createProduct('complete', [
-            'family' => 'localized',
-            'values'     => [
-                'name' => [
-                    ['data' => 'French complete', 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => 'English complete', 'locale' => 'en_US', 'scope' => null],
-                ]
-            ]
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French complete'),
+            new SetTextValue('name', null, 'en_US', 'English complete')
         ]);
 
-        $this->createProduct('empty', ['family' => 'localized']);
+        $this->createProduct('empty', [new SetFamily('localized')]);
     }
 
     public function testProductExportWithCompleteProductsOnAtLeastOneLocale()

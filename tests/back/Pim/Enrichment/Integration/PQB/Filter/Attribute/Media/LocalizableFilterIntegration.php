@@ -3,6 +3,9 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -27,26 +30,22 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use SetImageValue when ready
+            new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            // TODO: use SetImageValue when ready
+            new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'locale' => 'fr_FR', 'scope' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use SetImageValue when ready
+            new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            // TODO: use SetImageValue when ready
+            new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartWith()

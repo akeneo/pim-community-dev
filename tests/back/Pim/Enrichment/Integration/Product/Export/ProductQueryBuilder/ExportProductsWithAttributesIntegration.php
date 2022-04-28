@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
@@ -21,24 +24,14 @@ class ExportProductsWithAttributesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_1', [
-            'family'     => 'my_family',
-            'values'     => [
-                'a_text' => [
-                    ['data' => 'Awesome', 'locale' => null, 'scope' => null]
-                ],
-                'a_text_area' => [
-                    ['data' => 'Amazing', 'locale' => null, 'scope' => null]
-                ],
-            ]
+            new SetFamily('my_family'),
+            new SetTextValue('a_text', null, null, 'Awesome'),
+            new SetTextareaValue('a_text_area', null, null, 'Amazing')
         ]);
 
         $this->createProduct('product_2', [
-            'family'     => 'my_family',
-            'values'     => [
-                'a_text' => [
-                    ['data' => 'Awesome product', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('my_family'),
+            new SetTextValue('a_text', null, null, 'Awesome product'),
         ]);
 
         $this->createProduct('product_4');

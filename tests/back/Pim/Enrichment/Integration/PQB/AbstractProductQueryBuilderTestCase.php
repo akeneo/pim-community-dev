@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -38,31 +40,21 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param array  $data
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct($identifier, array $data)
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
     {
-        $family = isset($data['family']) ? $data['family'] : null;
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
-        $this->updateProduct($product, $data);
-
-        return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateProduct(ProductInterface $product, array $data)
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->esProductClient->refreshIndex();
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     /**
@@ -189,5 +181,17 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $channel->addLocale($locale);
 
         $this->get('pim_catalog.saver.channel')->save($channel);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

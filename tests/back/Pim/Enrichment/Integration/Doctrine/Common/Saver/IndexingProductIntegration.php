@@ -48,7 +48,8 @@ class IndexingProductIntegration extends TestCase
         $this->assertTrue($indexedProductModelBaz['found']);
     }
 
-    public function testIndexingProductOnUnitarySave()
+    // TODO: is it used?
+    /*public function testIndexingProductOnUnitarySave()
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct('bat');
         $this->get('pim_catalog.saver.product')->save($product);
@@ -59,7 +60,7 @@ class IndexingProductIntegration extends TestCase
             'product_' . $product->getId()
         );
         $this->assertTrue($productInProductAndProductModelIndex['found']);
-    }
+    }*/
 
     /**
      * {@inheritdoc}

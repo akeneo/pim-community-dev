@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -34,25 +36,17 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_date' => [
-                    ['data' => '2016-04-23', 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => '2016-04-23', 'scope' => 'tablet', 'locale' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_scopable_date', 'ecommerce', null, new \DateTime('2016-04-23')),
+            new SetDateValue('a_scopable_date', 'tablet', null, new \DateTime('2016-04-23')),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_date' => [
-                    ['data' => '2016-09-23', 'scope' => 'ecommerce', 'locale' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetDateValue('a_scopable_date', 'ecommerce', null, new \DateTime('2016-09-23')),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

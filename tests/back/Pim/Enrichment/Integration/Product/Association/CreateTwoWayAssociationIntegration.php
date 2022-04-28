@@ -11,6 +11,9 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\DissociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
@@ -107,7 +110,7 @@ class CreateTwoWayAssociationIntegration extends TestCase
      */
     public function it_removes_inversed_association_when_removing_associated_entities()
     {
-        $product = $this->createProduct(
+        $this->createProduct(
             'test',
             [
                 new AssociateProducts('COMPATIBILITY', ['product_1', 'product_2']),
@@ -115,19 +118,12 @@ class CreateTwoWayAssociationIntegration extends TestCase
                 new AssociateGroups('COMPATIBILITY', ['groupA']),
             ]
         );
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
-            [
-                'associations' => [
-                    'COMPATIBILITY' => [
-                        'products' => ['product_2'],
-                        'product_models' => ['product_model_2'],
-                        'groups' => [],
-                    ],
-                ],
-            ]
-        );
-        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->createProduct('test', [
+            new DissociateProducts('COMPATIBILITY', ['product_1']),
+            new DissociateProductModels('COMPATIBILITY', ['product_model_1']),
+            new DissociateGroups('COMPATIBILITY', ['groupA'])
+        ]);
 
         $productModel = $this->createProductModel(
             [

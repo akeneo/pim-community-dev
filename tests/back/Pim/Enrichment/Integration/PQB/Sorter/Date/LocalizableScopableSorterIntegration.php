@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Date;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -75,35 +76,19 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2017-04-11', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2017-04-11'))
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2016-03-10', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2016-03-10'))
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2015-02-09', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'fr_FR', new \DateTime('2015-02-09'))
         ]);
 
         $this->createProduct('product_four', [
-            'values' => [
-                'a_localizable_scopable_date' => [
-                    ['data' => '2014-01-08', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ],
-            ],
+            new SetDateValue('a_localizable_scopable_date', 'tablet', 'en_US', new \DateTime('2014-01-08'))
         ]);
 
         $this->createProduct('empty_product', []);

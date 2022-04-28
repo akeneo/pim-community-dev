@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
@@ -11,11 +12,11 @@ class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
-        $this->createProduct('product_1', ['family' => 'familyA2']);
+        $this->createProduct('product_1', [new SetFamily('familyA2')]);
 
-        $this->createProduct('product_2', ['family' => 'familyA2']);
+        $this->createProduct('product_2', [new SetFamily('familyA2')]);
 
-        $this->createProduct('product_3', ['family' => 'familyA2']);
+        $this->createProduct('product_3', [new SetFamily('familyA2')]);
     }
 
     public function testProductExportByFilteringOnDateSinceLastJob()

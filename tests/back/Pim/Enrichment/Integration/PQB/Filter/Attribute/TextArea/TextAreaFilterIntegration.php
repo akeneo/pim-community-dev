@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,60 +33,36 @@ class TextAreaFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [['data' => 'cat', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'cat'),
         ]);
 
         $this->createProduct('cattle', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [['data' => 'cattle', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'cattle'),
         ]);
 
         $this->createProduct('dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [['data' => 'dog', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'dog'),
         ]);
 
         $this->createProduct('best_dog', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [['data' => 'my dog is the most beautiful', 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'my dog is the most beautiful'),
         ]);
 
         $this->createProduct('best_cat', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [
-                    [
-                        'data' => 'my <bold>cat</bold> is the most <i>beautiful</i><br/>',
-                        'locale' => null,
-                        'scope' => null,
-                    ],
-                ],
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, 'my <bold>cat</bold> is the most <i>beautiful</i><br/>'),
         ]);
 
         $this->createProduct('best_rabbit', [
-            'family' => 'a_family',
-            'values' => [
-                'a_text_area' => [
-                    [
-                        'data' => $this->rabbitNewLineData,
-                        'locale' => null,
-                        'scope' => null,
-                    ],
-                ],
-            ]
+            new SetFamily('a_family'),
+            new SetTextareaValue('a_text_area', null, null, $this->rabbitNewLineData),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartsWith()

@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -26,37 +28,25 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_price' => [
-                    [
-                        'data'   => [['amount' => '10.55', 'currency' => 'EUR']],
-                        'locale' => null,
-                        'scope'  => 'ecommerce',
-                    ],
-                    ['data' => [['amount' => '25', 'currency' => 'USD']], 'locale' => null, 'scope' => 'tablet'],
-                ],
-            ],
+            new SetFamily('a_family'),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_scopable_price', 'ecommerce', null, [['amount' => '10.55', 'currency' => 'EUR']]),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_scopable_price', 'tablet', null, [['amount' => '25', 'currency' => 'USD']]),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_price' => [
-                    [
-                        'data'   => [
-                            ['amount' => '2', 'currency' => 'EUR'],
-                            ['amount' => '2.2', 'currency' => 'USD'],
-                        ],
-                        'locale' => null,
-                        'scope'  => 'ecommerce',
-                    ],
-                    ['data' => [['amount' => '30', 'currency' => 'EUR']], 'locale' => null, 'scope' => 'tablet'],
-                ],
-            ],
+            new SetFamily('a_family'),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_scopable_price', 'ecommerce', null, [
+                ['amount' => '2', 'currency' => 'EUR'],
+                ['amount' => '2.2', 'currency' => 'USD'],
+            ]),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_scopable_price', 'tablet', null, [['amount' => '30', 'currency' => 'EUR']]),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

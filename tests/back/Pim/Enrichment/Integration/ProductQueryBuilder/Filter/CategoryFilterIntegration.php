@@ -7,6 +7,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\ProductQueryBuilder\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -211,8 +213,8 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createProduct('another-shoe', [
-            'categories' => ['women', 'winter-2018'],
-            'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
+            new SetCategories(['women', 'winter-2018']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
         ]);
         $this->createProduct('unclassified-product', []);
     }

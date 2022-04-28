@@ -8,6 +8,10 @@ use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\FollowUp\GetComplet
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\ChannelCompleteness;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\CompletenessWidget;
 use Akeneo\Pim\Enrichment\Component\FollowUp\ReadModel\LocaleCompleteness;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -246,31 +250,21 @@ class GetCompletenessPerChannelAndLocaleIntegration extends AbstractProductQuery
     {
         for ($i = 0; $i < $numberComplete; $i++) {
             $this->createProduct('product_complete_'.$i, [
-                'family' => 'family_for_complete',
-                'categories' => ['shoes'],
-                'values' => [
-                    'name'       => [
-                        ['data' => 'name_ecom_fr_'.$i, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'name_ecom_us_'.$i, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'name_mobile_us_'.$i, 'locale' => 'en_US', 'scope' => 'mobile']
-                    ],
-                    'description' => [
-                        ['data' => 'descr_ecom_fr_'.$i, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                        ['data' => 'descr_ecom_us_'.$i, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                        ['data' => 'descr_mobile_us_'.$i, 'locale' => 'en_US', 'scope' => 'mobile']
-                    ]
-                ]
+                new SetFamily('family_for_complete'),
+                new SetCategories(['shoes']),
+                new SetTextValue('name', 'ecommerce', 'fr_FR', 'name_ecom_fr_'.$i),
+                new SetTextValue('name', 'ecommerce', 'en_US', 'name_ecom_us_'.$i),
+                new SetTextValue('name', 'mobile', 'en_US', 'name_mobile_us_'.$i),
+                new SetTextareaValue('description', 'ecommerce', 'fr_FR', 'descr_ecom_fr_'.$i),
+                new SetTextareaValue('description', 'ecommerce', 'en_US', 'descr_ecom_us_'.$i),
+                new SetTextareaValue('description', 'mobile', 'en_US', 'descr_mobile_us_'.$i),
             ]);
         }
         for ($i = 0; $i < $numberIncomplete; $i++) {
             $this->createProduct('product_incomplete_'.$i, [
-                'family' => 'family_for_incomplete',
-                'categories' => ['shoes'],
-                'values' => [
-                    'name'       => [
-                        ['data' => 'name_mobile_US_'.$i, 'locale' => 'en_US', 'scope' => 'mobile']
-                    ]
-                ]
+                new SetFamily('family_for_incomplete'),
+                new SetCategories(['shoes']),
+                new SetTextValue('name', 'mobile', 'en_US', 'name_mobile_US_'.$i)
             ]);
         }
     }

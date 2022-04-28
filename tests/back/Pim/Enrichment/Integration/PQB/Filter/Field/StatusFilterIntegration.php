@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -21,8 +22,8 @@ class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createProduct('foo', ['enabled' => true]);
-        $this->createProduct('bar', ['enabled' => false]);
+        $this->createProduct('foo', [new SetEnabled(true)]);
+        $this->createProduct('bar', [new SetEnabled(false)]);
     }
 
     public function testOperatorEquals()

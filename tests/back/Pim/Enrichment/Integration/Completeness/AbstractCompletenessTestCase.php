@@ -6,6 +6,8 @@ use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
@@ -89,21 +91,21 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param FamilyInterface $family
-     * @param string          $code
-     * @param array           $standardValues
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProductWithStandardValues(FamilyInterface $family, $code, $standardValues = [])
+    protected function createProductWithStandardValues(string $identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($code, $family->getCode());
-        $this->get('pim_catalog.updater.product')->update($product, $standardValues);
-        Assert::assertCount(0, $this->get('validator')->validate($product));
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Number;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -33,29 +34,17 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_number' => [
-                    ['data' => '192.103', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => '-16', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetNumberValue('a_localizable_scopable_number', 'ecommerce', 'en_US', '192.103'),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'fr_FR', '-16'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_number' => [
-                    ['data' => '-16', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => '192.103', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetNumberValue('a_localizable_scopable_number', 'ecommerce', 'en_US', '-16'),
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'fr_FR', '192.103'),
         ]);
 
         $this->createProduct('product_three', [
-            'values' => [
-                'a_localizable_scopable_number' => [
-                    ['data' => '52', 'locale' => 'de_DE', 'scope' => 'tablet']
-                ]
-            ]
+            new SetNumberValue('a_localizable_scopable_number', 'tablet', 'de_DE', '52'),
         ]);
     }
 

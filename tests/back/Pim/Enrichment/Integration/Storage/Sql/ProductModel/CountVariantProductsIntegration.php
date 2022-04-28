@@ -7,9 +7,15 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\ProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountVariantProductsInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * Product models / variant products available for the tests:
@@ -86,23 +92,15 @@ class CountVariantProductsIntegration extends TestCase
         $this->createVariantProduct(
             'a_red_shoes',
             [
-                'parent' => 'a_shoes',
-                'values' => [
-                    'a_simple_select' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'optionA',],
-                    ],
-                ],
+                new ChangeParent('a_shoes'),
+                new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
             ]
         );
         $this->createVariantProduct(
             'a_blue_shoes',
             [
-                'parent' => 'a_shoes',
-                'values' => [
-                    'a_simple_select' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'optionB',],
-                    ],
-                ],
+                new ChangeParent('a_shoes'),
+                new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
             ]
         );
 
@@ -148,34 +146,22 @@ class CountVariantProductsIntegration extends TestCase
         $this->createVariantProduct(
             'a_red_small_shirt',
             [
-                'parent' => 'a_small_shirt',
-                'values' => [
-                    'a_text' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'A',],
-                    ],
-                ],
+                new ChangeParent('a_small_shirt'),
+                new SetTextValue('a_text', null, null, 'A'),
             ]
         );
         $this->createVariantProduct(
             'a_blue_small_shirt',
             [
-                'parent' => 'a_small_shirt',
-                'values' => [
-                    'a_text' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'B',],
-                    ],
-                ],
+                new ChangeParent('a_small_shirt'),
+                new SetTextValue('a_text', null, null, 'B'),
             ]
         );
         $this->createVariantProduct(
             'a_red_medium_shirt',
             [
-                'parent' => 'a_medium_shirt',
-                'values' => [
-                    'a_text' => [
-                        ['locale' => null, 'scope' => null, 'data' => 'A',],
-                    ],
-                ],
+                new ChangeParent('a_medium_shirt'),
+                new SetTextValue('a_text', null, null, 'A'),
             ]
         );
     }
@@ -221,24 +207,31 @@ class CountVariantProductsIntegration extends TestCase
         return $productModel;
     }
 
-    private function createVariantProduct($identifier, array $data = []): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createVariantProduct($identifier, array $userIntents = []): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
 
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(
-                sprintf(
-                    'Impossible to setup test in %s: %s',
-                    static::class,
-                    $errors->get(0)->getMessage()
-                )
-            );
-        }
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
 
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        return \intval($id);
     }
 }

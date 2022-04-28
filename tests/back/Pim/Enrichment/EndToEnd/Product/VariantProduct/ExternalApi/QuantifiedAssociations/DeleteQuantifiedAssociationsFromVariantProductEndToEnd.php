@@ -4,6 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\VariantProduct\ExternalApi\
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
@@ -46,17 +49,12 @@ class DeleteQuantifiedAssociationsFromVariantProductEndToEnd extends AbstractPro
         $this->createVariantProduct('garden_table_set-black-gold', [
             new ChangeParent('garden_table_set-black'),
             new SetBooleanValue('a_yes_no', null, null, true),
-            new AssociateProducts()
-            'quantified_associations' => [
-                "PRODUCTSET" => [
-                    "products" => [
-                        ["identifier" => "chair", "quantity" => 8]
-                    ],
-                    "product_models" => [
-                        ["identifier" => "umbrella", "quantity" => 2]
-                    ],
-                ],
-            ],
+            new AssociateQuantifiedProducts('PRODUCTSET', [
+                new QuantifiedEntity('chair', 8)
+            ]),
+            new AssociateQuantifiedProductModels('PRODUCTSET', [
+                new QuantifiedEntity('umbrella', 2)
+            ])
         ]);
 
         $data = <<<JSON

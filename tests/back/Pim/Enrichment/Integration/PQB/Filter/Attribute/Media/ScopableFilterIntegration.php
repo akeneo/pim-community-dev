@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -27,26 +29,22 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'tablet', 'locale' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use setImageValue when ready
+            new SetTextValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            // TODO: use setImageValue when ready
+            new SetTextValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_scopable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'ecommerce', 'locale' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('ziggy.png')), 'scope' => 'tablet', 'locale' => null],
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use setImageValue when ready
+            new SetTextValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            // TODO: use setImageValue when ready
+            new SetTextValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorStartWith()

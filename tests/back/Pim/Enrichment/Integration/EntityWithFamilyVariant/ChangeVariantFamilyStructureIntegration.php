@@ -3,9 +3,12 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\EntityWithFamilyVariant;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Jobs\JobExecutionObserver;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -123,22 +126,17 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testMoveAttributeUpRemovesValuesOnTwoLevels()
     {
-        $product = $this->get('pim_catalog.repository.product')
-            ->findOneByIdentifier('running-shoes-m-antique-white');
-
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'values' => [
-                'composition' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'ham'
-                    ]
-                ]
-            ],
-        ]);
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'running-shoes-m-antique-white',
+            userIntents: [
+                new SetTextareaValue('composition', null, null, 'ham')
+            ]
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')
             ->findOneByIdentifier('shoes_size_color');
@@ -364,5 +362,17 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         }
 
         $this->get('akeneo_batch.saver.job_instance')->save($jobInstance);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

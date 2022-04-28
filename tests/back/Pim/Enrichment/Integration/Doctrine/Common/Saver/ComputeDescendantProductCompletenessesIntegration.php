@@ -7,6 +7,10 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\Common\Saver;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use AkeneoTest\Pim\Enrichment\Integration\Completeness\AbstractCompletenessTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -25,14 +29,9 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
             'code' => 'pm',
             'family_variant' => 'familyVariantA1',
         ]);
-        $product = $this->createProduct('p', $productModel, [
-            'a_text' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'pouet',
-                ],
-            ],
+        $product = $this->createProduct('p', [
+            new ChangeParent('pm'),
+            new SetTextValue('a_text', null, null, 'pouet')
         ]);
         $completenessBeforeSave = $this->getCompletenessByLocaleCode($product, 'en_US');
 
@@ -65,14 +64,9 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
             'code' => 'pm2',
             'family_variant' => 'familyVariantA1',
         ]);
-        $product = $this->createProduct('p', $productModel1, [
-            'a_text' => [
-                [
-                    'locale' => null,
-                    'scope'  => null,
-                    'data'   => 'pouet',
-                ],
-            ],
+        $product = $this->createProduct('p', [
+            new ChangeParent('pm1'),
+            new SetTextValue('a_text', null, null, 'pouet')
         ]);
         $completenessBeforeSave = $this->getCompletenessByLocaleCode($product, 'en_US');
 
@@ -117,20 +111,21 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
         return $productModel;
     }
 
-    private function createProduct(
-        string $identifier,
-        ?ProductModelInterface $productModel,
-        array $values = []
-    ): ProductInterface {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents = []): ProductInterface {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'parent' => $productModel->getCode(),
-            'values' => $values
-        ]);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     /**
@@ -150,5 +145,17 @@ class ComputeDescendantProductCompletenessesIntegration extends AbstractComplete
         }
 
         throw new \Exception(sprintf('No completeness for the locale "%s"', $localeCode));
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

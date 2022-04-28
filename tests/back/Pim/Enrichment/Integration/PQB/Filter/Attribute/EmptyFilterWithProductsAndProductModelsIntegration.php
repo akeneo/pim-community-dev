@@ -6,6 +6,18 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -19,7 +31,11 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
 {
     public function testEmptyOperatorForDateFilter()
     {
-        $this->loadFixtures('a_date', ['data' => '2020-05-16', 'scope' => null, 'locale' => null]);
+        $this->loadFixtures(
+            'a_date',
+            ['data' => '2020-05-16', 'scope' => null, 'locale' => null],
+            new SetDateValue('a_date', null, null, new \DateTime('2020-05-16'))
+        );
         $this->assert('a_date');
     }
 
@@ -27,7 +43,9 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_file',
-            ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'scope' => null, 'locale' => null]
+            ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'scope' => null, 'locale' => null],
+            // TODO use SetFileValue when ready
+            new SetTextValue('a_file', null, null, 'coucou')
         );
         $this->assert('a_file');
     }
@@ -36,7 +54,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_metric',
-            ['data' => ['amount' => 2, 'unit' => 'KILOWATT'], 'scope' => null, 'locale' => null]
+            ['data' => ['amount' => 2, 'unit' => 'KILOWATT'], 'scope' => null, 'locale' => null],
+            new SetMeasurementValue('a_metric', null, null, 2, 'KILOWATT')
         );
         $this->assert('a_metric');
     }
@@ -45,7 +64,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_number_float',
-            ['data' => 25, 'scope' => null, 'locale' => null]
+            ['data' => 25, 'scope' => null, 'locale' => null],
+            new SetNumberValue('a_number_float', null, null, '25')
         );
         $this->assert('a_number_float');
     }
@@ -54,7 +74,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_simple_select',
-            ['data' => 'optionA', 'scope' => null, 'locale' => null]
+            ['data' => 'optionA', 'scope' => null, 'locale' => null],
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         );
         $this->assert('a_simple_select');
     }
@@ -63,7 +84,9 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_price',
-            ['data' => [['amount' => 100, 'currency' => 'USD']], 'scope' => null, 'locale' => null]
+            ['data' => [['amount' => 100, 'currency' => 'USD']], 'scope' => null, 'locale' => null],
+            // TODO use SetPriceValue when ready
+            new SetTextValue('a_price', null, null, 'coucou')
         );
         $this->assert('a_price');
     }
@@ -72,7 +95,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_ref_data_simple_select',
-            ['data' => 'red', 'scope' => null, 'locale' => null]
+            ['data' => 'red', 'scope' => null, 'locale' => null],
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'red')
         );
         $this->assert('a_ref_data_simple_select');
     }
@@ -81,7 +105,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_text_area',
-            ['data' => 'Lorem ipsum dolor sit amet', 'scope' => null, 'locale' => null]
+            ['data' => 'Lorem ipsum dolor sit amet', 'scope' => null, 'locale' => null],
+            new SetTextareaValue('a_text_area', null, null, 'Lorem ipsum dolor sit amet')
         );
         $this->assert('a_text_area');
     }
@@ -90,7 +115,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     {
         $this->loadFixtures(
             'a_text',
-            ['data' => 'Foobar', 'scope' => null, 'locale' => null]
+            ['data' => 'Foobar', 'scope' => null, 'locale' => null],
+            new SetTextValue('a_text', null, null, 'Foobar')
         );
         $this->assert('a_text');
     }
@@ -123,7 +149,7 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
      * - 2 simple products, one with empty value, one with non empty value
      * - a simple product without family
      */
-    private function loadFixtures(string $attributeCode, array $nonEmptyData)
+    private function loadFixtures(string $attributeCode, array $nonEmptyData, UserIntent $userIntent)
     {
         $this->createFamily([
             'code' => 'a_family',
@@ -145,10 +171,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             'family_variant' => 'attribute_at_common_level',
         ]);
         $this->createProduct('variant_1_empty', [
-            'parent' => 'pm_1_empty',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
-            ]
+            new ChangeParent('pm_1_empty'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
         $this->createProductModel([
             'code' => 'pm_2_filled',
@@ -158,10 +182,8 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             ]
         ]);
         $this->createProduct('variant_2_filled', [
-            'parent' => 'pm_2_filled',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
-            ]
+            new ChangeParent('pm_2_filled'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createFamilyVariant([
@@ -182,28 +204,24 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         ]);
 
         $this->createProduct('variant_3_empty', [
-            'parent' => 'pm_3',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
-            ]
+            new ChangeParent('pm_3'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
-        $this->createProduct('variant_3_filled', [
-            'parent' => 'pm_3',
-            'values' => [
-                'a_yes_no' => [['data' => false, 'scope' => null, 'locale' => null]],
-                $attributeCode => [$nonEmptyData],
+        $this->createProduct('variant_3_filled', \array_merge(
+            [$userIntent],
+            [
+                new ChangeParent('pm_3'),
+                new SetBooleanValue('a_yes_no', null, null, false),
             ]
-        ]);
+        ));
 
         $this->createProduct('simple_product_empty', [
-            'family' => 'a_family',
+            new SetFamily('a_family')
         ]);
-        $this->createProduct('simple_product_filled', [
-            'family' => 'a_family',
-            'values' => [
-                $attributeCode => [$nonEmptyData],
-            ]
-        ]);
+        $this->createProduct('simple_product_filled', \array_merge(
+            [new SetFamily('a_family')],
+            [$userIntent]
+        ));
         $this->createProduct('simple_product_without_family', []);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
@@ -225,13 +243,20 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertEmpty($violations, sprintf('The %s product is not valid: %s', $product->getIdentifier(), $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     private function createProductModel(array $data): void
@@ -240,5 +265,17 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
         Assert::assertEmpty($this->get('pim_catalog.validator.product_model')->validate($productModel));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

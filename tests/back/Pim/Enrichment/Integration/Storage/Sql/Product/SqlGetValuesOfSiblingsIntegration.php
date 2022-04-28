@@ -8,6 +8,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterfa
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -47,13 +52,7 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
 
     public function test_that_it_gets_the_siblings_values_of_a_new_variant_product()
     {
-        $variantProduct = $this->createProduct(
-            'new_identifier',
-            [
-                'parent' => 'sub_sweat_option_a',
-            ],
-            false
-        );
+        $variantProduct = $this->createProduct('new_identifier', [new ChangeParent('sub_sweat_option_a')]);
 
         $valuesOfSiblings = $this->getValuesOfSiblings($variantProduct);
         Assert::assertCount(2, $valuesOfSiblings);
@@ -149,33 +148,17 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         $this->createProduct(
             'apollon_optiona_true',
             [
-                'categories' => ['master'],
-                'parent' => 'sub_sweat_option_a',
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => true,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_a'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
         $this->createProduct(
             'apollon_optiona_false',
             [
-                'categories' => ['master'],
-                'parent' => 'sub_sweat_option_a',
-                'values' => [
-                    'a_yes_no' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => false,
-                        ],
-                    ],
-                ],
+                new SetCategories(['master']),
+                new ChangeParent('sub_sweat_option_a'),
+                new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
     }
@@ -185,27 +168,22 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createProduct($identifier, array $data = [], bool $save = true): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct($identifier, array $userIntents = []): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        if (true === $save) {
-            $errors = $this->get('pim_catalog.validator.product')->validate($product);
-            if (0 !== $errors->count()) {
-                throw new \Exception(
-                    sprintf(
-                        'Impossible to setup test in %s: %s',
-                        static::class,
-                        $errors->get(0)->getMessage()
-                    )
-                );
-            }
-
-            $this->get('pim_catalog.saver.product')->save($product);
-        }
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function createProductModel(array $data = [], bool $save = true): ProductModelInterface
@@ -234,5 +212,17 @@ class SqlGetValuesOfSiblingsIntegration extends TestCase
     {
         return $this->get('akeneo.pim.enrichment.product_model.query.get_values_of_siblings')
                     ->for($entity, $attributeCodes);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

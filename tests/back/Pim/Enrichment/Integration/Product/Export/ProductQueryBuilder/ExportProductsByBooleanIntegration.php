@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByBooleanIntegration extends AbstractExportTestCase
@@ -20,27 +22,19 @@ class ExportProductsByBooleanIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_with_localisable_scopable_boolean', [
-            'values'     => [
-                'a_boolean_scopable_localizable' => [['data' => true, 'locale' => 'en_US', 'scope' => 'tablet']],
-            ]
+            new SetBooleanValue('a_boolean_scopable_localizable', 'tablet', 'en_US', true)
         ]);
 
         $this->createProduct('product_with_boolean_true', [
-            'values'     => [
-                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
-            ]
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createProduct('product_with_boolean_false', [
-            'values'     => [
-                'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]],
-            ]
+            new SetBooleanValue('a_yes_no', null, null, false)
         ]);
 
         $this->createproduct('product_without_boolean', [
-            'values'     => [
-                'a_number_float' => [['data' => '20.09', 'locale' => null, 'scope' => null]],
-            ]
+            new SetNumberValue('a_number_float', null, null, '20.09')
         ]);
     }
 

@@ -7,6 +7,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\ProductQueryBuilder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -305,17 +308,13 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
             'values'     => ['color' => [['data' => 'blue', 'locale' => null, 'scope' => null]]],
         ]);
         $this->createProduct('another-shoe', [
-            'categories' => ['women', 'winter-2018'],
-            'values' => [
-                'color'       => [['data' => 'blue', 'locale' => null, 'scope' => null]],
-                'description' => [['data' => 'Superb other shoe!', 'locale' => null, 'scope' => null]],
-                'brand' => [['data' => 'nyke', 'locale' => null, 'scope' => null]],
-            ],
+            new SetCategories(['women', 'winter-2018']),
+            new SetSimpleSelectValue('color', null, null, 'blue'),
+            new SetTextValue('description', null, null, 'Superb other shoe!'),
+            new SetTextValue('brand', null, null, 'nyke!'),
         ]);
         $this->createProduct('unclassified-product', [
-            'values' => [
-                'description' => [['data' => 'quantum mechanics', 'locale' => null, 'scope' => null]],
-            ],
+            new SetTextValue('description', null, null, 'quantum mechanics'),
         ]);
     }
 

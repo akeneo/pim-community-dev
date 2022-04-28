@@ -9,6 +9,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductComplet
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -82,63 +88,33 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
 
     private function createProduct(): ProductInterface
     {
-        $product = new Product();
-        $this->get('pim_catalog.updater.product')->update(
-            $product,
-            [
-                'family' => 'familyA',
-                'values' => [
-                    'sku' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => 'test_completeness',
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'test_completeness',
+            userIntents: [
+                new SetFamily('familyA'),
+                new SetDateValue('a_date', null, null, new \DateTime('2020-03-18T00:00:00+00:00')),
+                new SetTextValue('a_text', null, null, 'lorem ipsum'),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                // TODO: use SetPriceValue when ready
+                /**'a_scopable_price' => [
+                    [
+                        'scope' => 'ecommerce',
+                        'locale' => null,
+                        'data' => [
+                            ['amount' => '10.00', 'currency' => 'EUR'],
+                            ['amount' => '12.00', 'currency' => 'USD'],
                         ],
                     ],
-                    'a_date' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => '2020-03-18T00:00:00+00:00',
-                        ],
-                    ],
-                    'a_text' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => 'lorem ipsum',
-                        ],
-                    ],
-                    'a_yes_no' => [
-                        [
-                            'scope' => null,
-                            'locale' => null,
-                            'data' => false,
-                        ],
-                    ],
-                    'a_scopable_price' => [
-                        [
-                            'scope' => 'ecommerce',
-                            'locale' => null,
-                            'data' => [
-                                ['amount' => '10.00', 'currency' => 'EUR'],
-                                ['amount' => '12.00', 'currency' => 'USD'],
-                            ],
-                        ],
-                    ],
-                    'a_localized_and_scopable_text_area' => [
-                        [
-                            'scope' => 'ecommerce',
-                            'locale' => 'en_US',
-                            'data' => 'Lorem ipsum dolor sit amet',
-                        ],
-                    ],
-                ],
+                ],*/
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Lorem ipsum dolor sit amet')
             ]
         );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier('test_completeness');
     }
 }

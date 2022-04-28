@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByStatusIntegration extends AbstractExportTestCase
@@ -11,9 +12,9 @@ class ExportProductsByStatusIntegration extends AbstractExportTestCase
      */
     protected function loadFixtures() : void
     {
-        $this->createProduct('product_1', ['enabled' => true]);
+        $this->createProduct('product_1', [new SetEnabled(true)]);
 
-        $this->createProduct('product_2', ['enabled' => false]);
+        $this->createProduct('product_2', [new SetEnabled(false)]);
 
         $this->createProduct('product_3');
     }

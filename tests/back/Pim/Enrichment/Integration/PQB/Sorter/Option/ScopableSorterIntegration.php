@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Option;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -41,21 +42,13 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'black', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'orange', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'black'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'tablet', null, 'orange'),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_select_scopable_simple_select' => [
-                    ['data' => 'orange', 'locale' => null, 'scope' => 'ecommerce'],
-                    ['data' => 'black', 'locale' => null, 'scope' => 'tablet']
-                ]
-            ]
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'ecommerce', null, 'orange'),
+            new SetSimpleSelectValue('a_select_scopable_simple_select', 'tablet', null, 'black'),
         ]);
 
         $this->createProduct('empty_product', []);

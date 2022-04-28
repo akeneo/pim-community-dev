@@ -4,6 +4,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -28,27 +30,21 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_one', [
-            'family' => 'a_family',
-            'values' => [
-                'a_price' => [
-                    ['data' => [
-                        ['amount' => '10.55', 'currency' => 'EUR'],
-                        ['amount' => '11', 'currency' => 'USD']
-                    ], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_price', null, null, [
+                ['amount' => '10.55', 'currency' => 'EUR'],
+                ['amount' => '11', 'currency' => 'USD']
+            ]),
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'a_family',
-            'values' => [
-                'a_price' => [
-                    ['data' => [['amount' => '15', 'currency' => 'EUR']], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_price', null, null, [['amount' => '15', 'currency' => 'EUR']]),
         ]);
 
-        $this->createProduct('empty_product', ['family' => 'a_family']);
+        $this->createProduct('empty_product', [new SetFamily('a_family')]);
     }
 
     public function testOperatorInferior()

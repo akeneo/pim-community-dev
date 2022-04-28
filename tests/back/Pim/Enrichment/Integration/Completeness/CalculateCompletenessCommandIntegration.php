@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\CommandLauncher;
@@ -64,28 +69,22 @@ class CalculateCompletenessCommandIntegration extends TestCase
         $this->createProduct(
             'variant_A_yes',
             [
-                'parent' => 'sub_pm_A',
-                'values' => [
-                    'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
+                new ChangeParent('sub_pm_A'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
         $this->createProduct(
             'variant_A_no',
             [
-                'parent' => 'sub_pm_A',
-                'values' => [
-                    'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => false]],
-                ],
+                new ChangeParent('sub_pm_A'),
+                new SetBooleanValue('a_yes_no', null, null, false)
             ]
         );
         $this->createProduct(
             'simple_product',
             [
-                'family' => 'familyA3',
-                'values' => [
-                    'a_yes_no' => [['scope' => null, 'locale' => null, 'data' => true]],
-                ],
+                new SetFamily('familyA3'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
         );
 
@@ -120,11 +119,22 @@ class CalculateCompletenessCommandIntegration extends TestCase
         );
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
 
         $this->productIds[$identifier] = $product->getId();
     }

@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
@@ -17,42 +19,26 @@ class ExportProductsByMultiSelectIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_option_A', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_multi_select' => [
-                    ['data' => ['optionA'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA'])
         ]);
 
         $this->createProduct('product_option_B', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_multi_select' => [
-                    ['data' => ['optionB'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionB'])
         ]);
 
         $this->createProduct('product_option_A_B', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_multi_select' => [
-                    ['data' => ['optionA', 'optionB'], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
 
         $this->createProduct('product_without_option', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_multi_select' => [
-                    ['data' => [], 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetMultiSelectValue('a_multi_select', null, null, [])
         ]);
 
-        $this->createProduct('product_without_option_attribute', ['family' => 'a_family']);
+        $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);
 
     }
 

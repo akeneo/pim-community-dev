@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -31,24 +32,16 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'fr_FR', false),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'fr_FR', true),
         ]);
     }
 

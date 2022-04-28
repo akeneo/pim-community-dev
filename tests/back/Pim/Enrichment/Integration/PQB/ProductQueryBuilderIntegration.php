@@ -4,6 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 
 /**
  * Tests that queries results executed by combining filters with different operators are consistent.
@@ -124,74 +127,35 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct(
             'complex_product_1',
             [
-                'family' => 'familyA',
-                'values' => [
-                    'a_file' => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')),
-                        ],
-                    ],
-
-                    'a_localizable_image'                => [
-                        [
-                            'locale' => 'en_US',
-                            'scope'  => null,
-                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
-                        ],
-                        [
-                            'locale' => 'fr_FR',
-                            'scope'  => null,
-                            'data'   => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')),
-                        ],
-                    ],
-                    'a_regexp'                           => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => '\w+ .*',
-                        ],
-                    ],
-                    'a_scopable_price'                   => [
-                        [
-                            'locale' => null,
-                            'scope'  => 'ecommerce',
-                            'data'   => [
-                                [
-                                    'amount'   => 12,
-                                    'currency' => 'EUR',
-                                ],
-                                [
-                                    'amount'   => 14,
-                                    'currency' => 'USD',
-                                ],
+                new SetFamily('familyA'),
+                // TODO: use SetFileValue when ready
+                new SetTextValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
+                // TODO: use SetImageValue when ready
+                new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                // TODO: use SetImageValue when ready
+                new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetTextValue('a_regexp', null, null, '\w+ .*'),
+                // TODO: use SetPriceValue when ready
+                'a_scopable_price'                   => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'ecommerce',
+                        'data'   => [
+                            [
+                                'amount'   => 12,
+                                'currency' => 'EUR',
+                            ],
+                            [
+                                'amount'   => 14,
+                                'currency' => 'USD',
                             ],
                         ],
                     ],
-                    'a_localized_and_scopable_text_area' => [
-                        [
-                            'locale' => 'fr_FR',
-                            'scope'  => 'ecommerce',
-                            'data'   => 'Mon textarea localisé et scopable ecommerce',
-                        ],
-                        [
-                            'locale' => 'en_US',
-                            'scope'  => 'ecommerce',
-                            'data'   => null,
-                        ],
-                        [
-                            'locale' => 'fr_FR',
-                            'scope'  => 'tablet',
-                            'data'   => 'Mon textarea localisé et scopable tablet',
-                        ],
-                        [
-                            'locale' => 'en_US',
-                            'scope'  => 'tablet',
-                            'data'   => 'My localizable and scopable textearea tablet',
-                        ],
-                    ],
                 ],
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'fr_FR', 'Mon textarea localisé et scopable ecommerce'),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', null),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Mon textarea localisé et scopable tablet'),
+                new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'My localizable and scopable textearea tablet'),
             ]
         );
     }

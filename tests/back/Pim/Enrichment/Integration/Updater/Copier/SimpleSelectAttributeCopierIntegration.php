@@ -2,6 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -14,15 +15,7 @@ class SimpleSelectAttributeCopierIntegration extends AbstractCopierTestCase
     public function testCopySimpleSelectAttributeValue()
     {
         $product = $this->createProduct('test-copy-simple-select', [
-            'values' => [
-                'a_simple_select' => [
-                    [
-                        'data' => 'optionA',
-                        'locale' => null,
-                        'scope' => null,
-                    ],
-                ],
-            ],
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $this->get('pim_catalog.updater.property_copier')->copyData(

@@ -2,6 +2,9 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByLocalesIntegration extends AbstractExportTestCase
@@ -65,54 +68,30 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('french', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc')
         ]);
 
         $this->createProduct('english', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc')
         ]);
 
         $this->createProduct('complete', [
-            'family' => 'localized',
-            'values' => [
-                'name'        => [
-                    ['data' => 'French name', 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'description' => [
-                    ['data' => 'French desc', 'locale' => 'fr_FR', 'scope' => null],
-                ],
-            ],
+            new SetFamily('localized'),
+            new SetTextValue('name', null, 'fr_FR', 'French name'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('description', null, 'fr_FR', 'French desc'),
         ]);
 
-        $this->createProduct('empty', ['family' => 'localized']);
+        $this->createProduct('empty', [new SetFamily('localized')]);
 
         $this->createProduct('withLocaleSpecificAttribute', [
-            'family' => 'accessories',
-            'values' => [
-                'name'        => [
-                    ['data' => 'English name', 'locale' => 'en_US', 'scope' => null],
-                ],
-                'localeSpecificAttribute' => [
-                    ['data' => 'Locale Specific Value', 'locale' => null, 'scope' => null, 'available_locales' => 'en_US'],
-                ],
-            ],
+            new SetFamily('accessories'),
+            new SetTextValue('name', null, 'en_US', 'English name'),
+            new SetTextareaValue('localeSpecificAttribute', null, null, 'Locale Specific Value')
         ]);
     }
 

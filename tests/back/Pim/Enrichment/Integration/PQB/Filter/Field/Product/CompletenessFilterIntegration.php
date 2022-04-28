@@ -3,6 +3,11 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Field\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -50,39 +55,30 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->get('pim_catalog.saver.family')->save($family);
 
         $this->createProduct('product_one', [
-            'family' => 'familyB',
-            'categories' => ['categoryA1'],
-            'values' => [
-                'a_metric' => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-            ]
+            new SetFamily('familyB'),
+            new SetCategories(['categoryA1']),
+            new SetMeasurementValue('a_metric', null, null, 10, 'WATT')
         ]);
 
         $this->createProduct('product_two', [
-            'family' => 'familyB',
-            'categories' => ['categoryA2', 'categoryA1'],
-            'values' => [
-                'a_metric'                           => [['data' => ['amount' => 15, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]],
-                'a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'tablet']],
-                'a_scopable_price'                   => [
-                    [
-                        'data'      => [
-                            ['amount' => 15, 'currency' => 'EUR'],
-                            ['amount' => 15.5, 'currency' => 'USD']
-                        ], 'locale' => null, 'scope' => 'tablet'
-                    ]
-                ],
-            ]
+            new SetFamily('familyB'),
+            new SetCategories(['categoryA2', 'categoryA1']),
+            new SetMeasurementValue('a_metric', null, null, 15, 'WATT'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'text'),
+            // TODO: use SetPriceValue when ready
+            new SetTextValue('a_scopable_price', 'tablet', null, [
+                ['amount' => 15, 'currency' => 'EUR'],
+                ['amount' => 15.5, 'currency' => 'USD']
+            ])
         ]);
 
         $this->createProduct('empty_product', [
-            'family' => 'familyB',
-            'categories' => ['categoryA2', 'categoryA1']
+            new SetFamily('familyB'),
+            new SetCategories(['categoryA2', 'categoryA1'])
         ]);
 
         $this->createProduct('no_family', [
-            'values' => [
-                'a_metric' => [['data' => ['amount' => 10, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]]
-            ]
+            new SetMeasurementValue('a_metric', null, null, 10, 'WATT')
         ]);
     }
 

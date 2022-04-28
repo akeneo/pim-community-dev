@@ -2,8 +2,11 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -25,6 +28,7 @@ class MediaAttributeSetterIntegration extends TestCase
         $attributeName = 'a_localizable_image';
 
         $parameters = [
+            // TODO : use SetImageValue when ready
             'values' => [
                 $attributeName => [
                     [
@@ -53,6 +57,7 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
+                // TODO: use SetImageValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1C-t.png'),
@@ -80,6 +85,7 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
+                // TODO: use SetMediaValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
@@ -107,6 +113,7 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
+                // TODO: use SetMediaValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
@@ -135,14 +142,21 @@ class MediaAttributeSetterIntegration extends TestCase
         $this->assertCommandMedia($parameters, $result, $attributeName);
     }
 
-    protected function assertCommandMedia(array $parameters, array $result, $attributeName)
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function assertCommandMedia(array $userIntents, array $result, string $attributeName)
     {
-        $productUpdater = $this->get('pim_catalog.updater.product');
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct('product_media');
-        $productUpdater->update($product, $parameters);
-
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'product_media',
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_media');
 
         $standardProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');
 
@@ -166,5 +180,17 @@ class MediaAttributeSetterIntegration extends TestCase
         }
 
         return $data;
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

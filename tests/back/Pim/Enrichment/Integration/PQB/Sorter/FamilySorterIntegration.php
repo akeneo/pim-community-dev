@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
 /**
@@ -20,9 +21,9 @@ class FamilySorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         parent::setUp();
 
-        $this->createProduct('fooA', ['family' => 'familyA']);
-        $this->createProduct('fooA1', ['family' => 'familyA1']);
-        $this->createProduct('fooA2', ['family' => 'familyA2']);
+        $this->createProduct('fooA', [new SetFamily('familyA')]);
+        $this->createProduct('fooA1', [new SetFamily('familyA1')]);
+        $this->createProduct('fooA2', [new SetFamily('familyA2')]);
         $this->createProduct('baz', []);
     }
 

@@ -4,6 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Common\EntityBuilder;
 use Akeneo\Test\Common\EntityWithValue\Builder;
@@ -21,7 +24,7 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
     public function test_that_unique_value_is_deleted_in_database_when_values_is_deleted_in_product_raw_value()
     {
         $attributeId = $this->createAttributeWithUniqueConstraint('name');
-        $this->createProductWithUniqueValue('name', 'my_unique_value');
+        $this->createProductWithUniqueValue([new SetTextValue('name', null, null, 'my_unique_value')]);
 
         $isValueExistingInUniqueTable = $this
             ->get('database_connection')
@@ -64,24 +67,20 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         return $attribute->getId();
     }
 
-    private function createProductWithUniqueValue(string $attributeCode, string $uniqueValueData): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProductWithUniqueValue(array $userIntents): void
     {
-        $product = $this->getProductBuilder()->withIdentifier('foo')->withValue($attributeCode, $uniqueValueData)->build();
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        // We have the following flow:
-        //      1. create a product "foo". Currently, it has no ID as it has not been saved yet to database.
-        //      2. validate this product
-        //              pim_catalog.validator.unique_value_set is called and foo is assigned to a spl_object_hash (see https://github.com/akeneo/pim-community-dev/blob/master/src/Akeneo/Pim/Enrichment/Component/Product/Validator/UniqueValuesSet.php#L86)
-        //      3. save this project to database, "foo" now has the ID 1
-        //      3. update this product
-        //      4. validate this product again
-        //              foo is assigned to a spl_object_hash while our product now has an ID... the "value" foo
-        //              is considered as already existing
-        //      BOOOM
-        // so, that's why we need to reset the unique value set...
-        // TODO: ideally, after each unitary or bulk product save, this set should be reset
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'foo',
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     private function deleteUniqueValueForAttribute(string $attributeCode): void
@@ -102,8 +101,15 @@ class DeleteUniqueValueInDatabaseIntegration extends TestCase
         return $this->get('akeneo_integration_tests.base.attribute.builder');
     }
 
-    private function getProductBuilder(): Builder\Product
+    protected function getUserId(string $username): int
     {
-        return $this->get('akeneo_integration_tests.catalog.product.builder');
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }
