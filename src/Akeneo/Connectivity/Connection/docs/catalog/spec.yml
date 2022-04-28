@@ -123,7 +123,7 @@ paths:
                     description: "Forbidden"
                 "404":
                     description: "Not Found"
-    /api/rest/v1/catalogs/{id}/identifiers:
+    /api/rest/v1/catalogs/{id}/product-identifiers:
         get:
             summary: "List of product identifiers belonging to the catalog"
             produces:
@@ -133,12 +133,20 @@ paths:
                     name: id
                     type: string
                     required: true
+                -   in: query
+                    name: search_after
+                    type: string
+                    required: false
+                -   in: query
+                    name: limit
+                    type: number
+                    required: false
             responses:
                 "200":
                     description: "OK"
                     examples:
                         application/json:
-                            current_page: "1"
+                            search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
                             _embedded:
                                 items:
                                     - "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
@@ -165,12 +173,20 @@ paths:
                     name: id
                     type: string
                     required: true
+                -   in: query
+                    name: search_after
+                    type: string
+                    required: false
+                -   in: query
+                    name: limit
+                    type: number
+                    required: false
             responses:
                 "200":
                     description: "OK"
                     examples:
                         application/json:
-                            current_page: "1"
+                            search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
                             _embedded:
                                 items:
                                     -   identifier: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
