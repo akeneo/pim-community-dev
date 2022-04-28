@@ -93,9 +93,11 @@ INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_uuid = old_scores.product_uuid
     AND younger_scores.evaluated_at > old_scores.evaluated_at
 WHERE old_scores.product_uuid IN (:product_uuids);
-SQL, [
-            'product_uuids' => $productUuids,
-            ], [
+SQL,
+            [
+                'product_uuids' => $productUuids,
+            ],
+            [
                 'product_uuids' => Connection::PARAM_STR_ARRAY
             ]
         );
