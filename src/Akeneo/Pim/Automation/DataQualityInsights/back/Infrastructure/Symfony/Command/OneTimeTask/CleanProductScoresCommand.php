@@ -109,7 +109,8 @@ WHERE old_scores.product_uuid IN (:productUuidAsBytes);
 SQL,
             [
                 'productUuidAsBytes' => $productUuidsAsBytes
-            ], [
+            ],
+            [
                 'productUuidAsBytes' => Connection::PARAM_STR_ARRAY,
             ]
         );
