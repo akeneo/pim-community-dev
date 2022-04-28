@@ -19,6 +19,11 @@ class RowCleanerSpec extends ObjectBehavior
 {
     public function it_only_remove_empty_columns_at_end()
     {
-        $this->removeTrailingEmptyColumns(['a', '', 'b', 'c', '', ''])->shouldReturn(['a', '', 'b', 'c']);
+        $this->removeTrailingEmptyColumns([])->shouldReturn([]);
+        $this->removeTrailingEmptyColumns(['', ''])->shouldReturn([]);
+        $this->removeTrailingEmptyColumns(['c', '', ''])->shouldReturn(['c']);
+        $this->removeTrailingEmptyColumns(['c', '', 'd', ''])->shouldReturn(['c', '', 'd']);
+        $this->removeTrailingEmptyColumns(['c', '0', 'd', ''])->shouldReturn(['c', '0', 'd']);
+        $this->removeTrailingEmptyColumns(['', 'a', '', 'b', 'c', '', ''])->shouldReturn(['', 'a', '', 'b', 'c']);
     }
 }

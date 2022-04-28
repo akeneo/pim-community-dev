@@ -19,7 +19,7 @@ class RowCleaner
     {
         $reversedColumns = array_reverse($row);
         foreach ($reversedColumns as $columnIndex => $cell) {
-            if (!empty($cell)) {
+            if ($cell !== '') {
                 break;
             }
 

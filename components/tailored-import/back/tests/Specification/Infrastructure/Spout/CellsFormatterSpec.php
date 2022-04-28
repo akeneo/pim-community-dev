@@ -48,14 +48,10 @@ class CellsFormatterSpec extends ObjectBehavior
     public function it_throws_an_exception_when_type_is_unsupported()
     {
         $this->shouldThrow(\RuntimeException::class)->during('formatCells', [[new \stdClass()]]);
-
-        $this->shouldThrow(\RuntimeException::class)->during('formatCell', [new \stdClass()]);
     }
 
     public function it_throws_an_exception_when_cell_is_invalid()
     {
         $this->shouldThrow(\RuntimeException::class)->during('formatCells', [[null]]);
-
-        $this->shouldThrow(\RuntimeException::class)->during('formatCell', [null]);
     }
 }
