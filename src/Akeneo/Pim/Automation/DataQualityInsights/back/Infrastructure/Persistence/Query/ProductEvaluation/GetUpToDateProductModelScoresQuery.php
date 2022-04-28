@@ -7,9 +7,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,23 +17,23 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryInterface
 {
     public function __construct(
-        private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        private HasUpToDateProductModelEvaluationQuery $hasUpToDateEvaluationQuery,
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productModelModelId): Read\Scores
+    public function byProductModelId(ProductModelId $productModelId): Read\Scores
     {
-        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelModelId)) {
-            return $this->getProductModelScoresQuery->byProductModelId($productModelModelId);
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productModelId)) {
+            return $this->getProductModelScoresQuery->byProductModelId($productModelId);
         }
 
         return new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection());
     }
 
-    public function byProductModelIdCollection(ProductEntityIdCollection $productIdCollection): array
+    public function byProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productIdCollection);
+        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productModelIdCollection);
 
         return is_null($upToDateProducts) ? [] : $this->getProductModelScoresQuery->byProductModelIdCollection($upToDateProducts);
     }
