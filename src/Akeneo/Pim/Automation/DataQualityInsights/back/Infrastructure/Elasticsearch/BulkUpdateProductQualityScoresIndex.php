@@ -8,10 +8,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputePr
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -35,10 +37,12 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
     {
         switch ($this->documentType) {
             case ProductModelInterface::class:
+                Assert::isInstanceOf($entityIdCollection, ProductModelIdCollection::class);
                 $scores = $this->getProductModelScoresQuery->byProductModelIdCollection($entityIdCollection);
                 $identifierPrefix = self::PRODUCT_MODEL_IDENTIFIER_PREFIX;
                 break;
             case ProductInterface::class:
+                Assert::isInstanceOf($entityIdCollection, ProductUuidCollection::class);
                 $scores = $this->getProductScoresQuery->byProductUuidCollection($entityIdCollection);
                 $identifierPrefix = self::PRODUCT_IDENTIFIER_PREFIX;
                 break;
