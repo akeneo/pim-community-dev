@@ -5,7 +5,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_tailored_import?:
-          name: "Start? (tailored import)"
+          name: "Start tailored import?"
           type: approval
           filters:
             branches:
@@ -15,7 +15,7 @@ workflows:
       - checkout:
           name: "Checkout"
           requires:
-            - "Start? (tailored import)"
+            - "Start tailored import?"
       - build_srnt_dev:
           name: "Build dev"
           requires:
@@ -51,18 +51,18 @@ workflows:
           requires:
             - "Delete PR environment?"
       - test_front_tailored_import:
-          name: "Front test (tailored import)"
+          name: "Tailored import front test"
           requires:
             - "Build dev"
       - test_back_tailored_import:
-          name: "Back test (tailored import)"
+          name: "Tailored import back test"
           requires:
             - "Build dev"
       - pull_request_success:
           name: "PR Success"
           requires:
-            - "Front test (tailored import)"
-            - "Back test (tailored import)"
+            - "Tailored import front test"
+            - "Tailored import back test"
 
   raccoon_job_automation_pull_request:
     when:
@@ -70,7 +70,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_job_automation?:
-          name: "Start? (job automation)"
+          name: "Start job automation?"
           type: approval
           filters:
             branches:
@@ -80,7 +80,7 @@ workflows:
       - checkout:
           name: "Checkout"
           requires:
-            - "Start? (job automation)"
+            - "Start job automation?"
       - build_srnt_dev:
           name: "Build dev"
           requires:
@@ -116,15 +116,15 @@ workflows:
           requires:
             - "Delete PR environment?"
       - test_front_job_automation:
-          name: "Front test (job automation)"
+          name: "Job automation front test"
           requires:
             - "Build dev"
       - test_back_job_automation:
-          name: "Back test (job automation)"
+          name: "Job automation back test"
           requires:
             - "Build dev"
       - pull_request_success:
           name: "PR Success"
           requires:
-            - "Front test (job automation)"
-            - "Back test (job automation)"
+            - "Job automation front test"
+            - "Job automation back test"
