@@ -5,11 +5,16 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Test\Pim\TableAttribute\Helper\ColumnIdGenerator;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -17,14 +22,27 @@ use PhpSpec\ObjectBehavior;
 
 class TableValueFactorySpec extends ObjectBehavior
 {
-    function let(TableConfigurationRepository $tableConfigurationRepository)
-    {
-        $this->beConstructedWith($tableConfigurationRepository);
+    function let(
+        TableConfigurationRepository $tableConfigurationRepository,
+        SelectOptionCollectionRepository $selectOptionCollectionRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
+    ) {
+        $this->beConstructedWith(
+            $tableConfigurationRepository,
+            $selectOptionCollectionRepository,
+            $getExistingRecordCodes
+        );
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
             SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
             NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
         ]));
+
+        $selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredient'))
+            ->willReturn(SelectOptionCollection::fromNormalized([
+                ['code' => 'salt'],
+                ['code' => 'sugAR'],
+            ]));
     }
 
     function it_is_initializable()
@@ -56,13 +74,13 @@ class TableValueFactorySpec extends ObjectBehavior
             null,
             [
                 ['quantity' => 5, 'ingrediENT' => 'salt'],
-                ['quantity' => 10, 'ingredient' => 'sugar'],
+                ['quantity' => 10, 'ingredient' => 'sugAR'],
             ]
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([
             [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
-            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
         ]));
     }
 
@@ -76,13 +94,13 @@ class TableValueFactorySpec extends ObjectBehavior
             null,
             [
                 ['quantity' => 5, 'ingrediENT' => 'salt'],
-                ['quantity' => 10, 'ingredient' => 'sugar', 'unknown' => 12],
+                ['quantity' => 10, 'ingredient' => 'sugAR', 'unknown' => 12],
             ]
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([
             [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
-            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar', 'unknown' => 12],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR', 'unknown' => 12],
         ]));
     }
 
@@ -96,13 +114,13 @@ class TableValueFactorySpec extends ObjectBehavior
             null,
             [
                 [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
-                [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+                [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
             ]
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([
             [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
-            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
         ]));
     }
 
@@ -116,15 +134,50 @@ class TableValueFactorySpec extends ObjectBehavior
             null,
             [
                 ['quantity' => 5, 'ingrediENT' => 'SAlt'],
-                ['quantity' => 10, 'ingredient' => 'sugar'],
+                ['quantity' => 10, 'ingredient' => 'sugAR'],
                 ['quantity' => 20, 'INGredient' => 'SALT'],
                 ['quantity' => 30, 'ingredient' => 'salt'],
             ]
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([
-            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugar'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
             [ColumnIdGenerator::quantity() => 30, ColumnIdGenerator::ingredient() => 'salt'],
+        ]));
+    }
+
+    function it_sanitizes_select_option_codes_and_record_codes(
+        TableConfigurationRepository $tableConfigurationRepository,
+        GetExistingRecordCodes $getExistingRecordCodes
+    ) {
+        $attribute = $this->buildTableAttribute(false, false);
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['id' => ColumnIdGenerator::ingredient(), 'code' => 'ingredient', 'is_required_for_completeness' => true]),
+            NumberColumn::fromNormalized(['id' => ColumnIdGenerator::quantity(), 'code' => 'quantity']),
+            ReferenceEntityColumn::fromNormalized([
+                'id' => ColumnIdGenerator::supplier(),
+                'code' => 'supplier',
+                'reference_entity_identifier' => 'brand',
+            ])
+        ]));
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['brand' => ['AKENeo']])
+            ->willReturn(['brand' => ['Akeneo']]);
+
+        $value = $this->createWithoutCheckingData(
+            $attribute,
+            null,
+            null,
+            [
+                [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+                [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
+                [ColumnIdGenerator::quantity() => 15, ColumnIdGenerator::supplier() => 'AKENeo'],
+            ]
+        );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([
+            [ColumnIdGenerator::quantity() => 5, ColumnIdGenerator::ingredient() => 'salt'],
+            [ColumnIdGenerator::quantity() => 10, ColumnIdGenerator::ingredient() => 'sugAR'],
+            [ColumnIdGenerator::quantity() => 15, ColumnIdGenerator::supplier() => 'Akeneo'],
         ]));
     }
 
