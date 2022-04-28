@@ -206,7 +206,6 @@ akeneo_connectivity.connection:
                     previous: Previous
                     next: Next
                     allow_and_next: Allow and next
-                    allow_and_finish: Allow and finish
                 progress:
                     authentication: Authentication
                     authorizations: Authorizations

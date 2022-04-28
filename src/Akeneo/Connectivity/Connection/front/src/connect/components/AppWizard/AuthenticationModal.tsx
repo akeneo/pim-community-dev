@@ -40,9 +40,7 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
     const handleClose = () => history.push('/connect/connected-apps');
 
     useEffect(() => {
-        fetchWizardData().then(wizardData => {
-            setWizardData(wizardData);
-        });
+        fetchWizardData().then(setWizardData);
     }, [fetchWizardData]);
 
     if (!wizardData) {
@@ -59,7 +57,7 @@ export const AuthenticationModal: FC<Props> = ({clientId}) => {
             steps={[
                 {
                     name: 'authentication',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >

@@ -123,10 +123,11 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
             ->during('__invoke', [$request, 'connection_code']);
     }
 
-    public function it_denies_access_to_users_who_cannot_manage_apps(
+    public function it_denies_access_to_users_who_cannot_manage_or_open_apps(
         Request $request,
         SecurityFacade $security,
     ): void {
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(false);
         $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
 
         $this
@@ -194,8 +195,47 @@ class GetOpenAppUrlActionSpec extends ObjectBehavior
             ->shouldNotBeCalled();
     }
 
-    public function it_returns_url_to_open_the_app_with_pim_url_within(Request $request): void
-    {
+    public function it_does_not_update_the_flag_if_user_cannot_manage_apps(
+        Request $request,
+        SecurityFacade $security,
+        FindOneConnectedAppByConnectionCodeQueryInterface $findOneConnectedAppByConnectionCodeQuery,
+        SaveConnectedAppOutdatedScopesFlagQueryInterface $saveConnectedAppOutdatedScopesFlagQuery,
+    ): void {
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
+
+        $findOneConnectedAppByConnectionCodeQuery
+            ->execute('connection_code')
+            ->willReturn(new ConnectedApp(
+                'connected_app_id',
+                'connected_app_name',
+                ['some_scope'],
+                'connection_code',
+                'a/path/to/a/logo',
+                'author',
+                'group',
+                [],
+                false,
+                null,
+                false,
+                false,
+                true
+            ));
+
+        $this->__invoke($request, 'connection_code');
+
+        $saveConnectedAppOutdatedScopesFlagQuery
+            ->execute('connected_app_id', false)
+            ->shouldNotBeCalled();
+    }
+
+    public function it_returns_url_to_open_the_app_with_pim_url_within(
+        Request $request,
+        SecurityFacade $security
+    ): void {
+        $security->isGranted('akeneo_connectivity_connection_open_apps')->willReturn(true);
+        $security->isGranted('akeneo_connectivity_connection_manage_apps')->willReturn(false);
+
         $this->__invoke($request, 'connection_code')->shouldBeLike(new JsonResponse([
             'url' => 'http://app.example.com/activate?pim_url=https%3A%2F%2Fsome_pim_url'
         ]));
