@@ -163,7 +163,7 @@ SQL;
         $product = $this->createProduct();
         $this->updateProductAt($product, $updatedAt);
 
-        return ProductUuid::fromString($product->getUuid()->toString());
+        return ProductUuid::fromUuid($product->getUuid());
     }
 
     private function givenAnUpdatedProductVariant(string $parentCode, \DateTimeImmutable $updatedAt): ProductUuid
@@ -171,7 +171,7 @@ SQL;
         $productVariant = $this->createProductVariant($parentCode);
         $this->updateProductAt($productVariant, $updatedAt);
 
-        return ProductUuid::fromString($productVariant->getUuid()->toString());
+        return ProductUuid::fromUuid($productVariant->getUuid());
     }
 
     private function givenAProductModel(string $productModelCode, string $familyVariant, \DateTimeImmutable $updatedAt)
