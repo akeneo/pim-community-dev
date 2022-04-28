@@ -110,3 +110,24 @@ test('it did not display cell not visible according to file structure', async ()
   expect(screen.getByText('5/23/2022')).toBeInTheDocument();
   expect(screen.getByText('16.644')).toBeInTheDocument();
 });
+
+test('it displays row number', async () => {
+  await renderWithProviders(
+    <FileTemplatePreview
+      fileTemplateInformation={{
+        sheet_names: ['first sheet', 'second sheet', 'third sheet'],
+        rows: [
+          ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
+          ['ref1', 'Produit 1', '$13.87', 'TRUE', '3/22/2022', '14.4'],
+          ['ref2', 'Produit 2', '$12.00', 'FALSE', '5/23/2022', '16.644'],
+        ],
+        column_count: 6,
+      }}
+      fileStructure={fileStructure}
+    />
+  );
+
+  expect(screen.getByText(fileStructure.header_row)).toBeInTheDocument();
+  expect(screen.getByText('1')).toBeInTheDocument();
+  expect(screen.getByText('2')).toBeInTheDocument();
+});
