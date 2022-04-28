@@ -517,9 +517,9 @@ JSON;
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             $this->get(ProductUuidFactory::class)->createCollection([
-                (string) $product1->getId(),
-                (string) $product2->getId(),
-                (string) $product3->getId(),
+                (string) $product1->getUuid(),
+                (string) $product2->getUuid(),
+                (string) $product3->getUuid(),
             ])
         );
 
