@@ -29,7 +29,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ImportSupplierTasklet implements TaskletInterface
 {
-
     private ItemReaderInterface $reader;
     private ValidatorInterface $validator;
     private CreateSupplierHandler $createSupplierHandler;
