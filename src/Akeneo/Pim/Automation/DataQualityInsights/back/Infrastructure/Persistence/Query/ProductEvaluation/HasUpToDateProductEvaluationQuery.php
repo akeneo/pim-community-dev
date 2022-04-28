@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
@@ -19,8 +19,10 @@ use Webmozart\Assert\Assert;
  */
 final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQueryInterface
 {
-    public function __construct(private Connection $dbConnection, private ProductEntityIdFactoryInterface $idFactory)
-    {
+    public function __construct(
+        private Connection $dbConnection,
+        private ProductUuidFactory $idFactory
+    ) {
     }
 
     public function forEntityId(ProductEntityIdInterface $productUuid): bool
@@ -33,7 +35,7 @@ final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQu
         return !is_null($upToDateProducts);
     }
 
-    public function forEntityIdCollection(ProductEntityIdCollection $productUuidCollection): ?ProductEntityIdCollection
+    public function forEntityIdCollection(ProductEntityIdCollection $productUuidCollection): ?ProductUuidCollection
     {
         Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
 

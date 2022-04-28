@@ -20,10 +20,10 @@ final class EvaluateProductController
     ) {
     }
 
-    public function __invoke(string $productUuid): JsonResponse
+    public function __invoke(string $productId): JsonResponse
     {
         try {
-            ($this->evaluateProduct)(ProductUuid::fromString($productUuid));
+            ($this->evaluateProduct)(ProductUuid::fromString($productId));
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
