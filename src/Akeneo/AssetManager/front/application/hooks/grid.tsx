@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect} from 'react';
 import {Selection} from 'akeneo-design-system';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
@@ -99,33 +99,30 @@ export const useFetchResult = (
       0,
       FIRST_PAGE_SIZE
     );
-    totalRequestCount++;
 
+    totalRequestCount++;
+    const currentRequestCount = totalRequestCount;
     dataProvider.assetFetcher.search(query).then((searchResult: SearchResult<ListAsset>) => {
-      const currentRequestCount = totalRequestCount;
+      if (currentRequestCount !== totalRequestCount) return;
+
       setSearchResult(searchResult);
       if (searchResult.matchesCount > FIRST_PAGE_SIZE) {
-        fetchMoreResult(currentRequestCount, dataProvider)(query, setSearchResult);
+        fetchMoreResult(dataProvider)(query, setSearchResult);
       }
     });
   };
 
-  React.useEffect(executeQuery, [
-    filters,
-    searchValue,
-    context,
-    excludedAssetCollection,
-    isOpen,
-    assetFamilyIdentifier,
-  ]);
+  useEffect(executeQuery, [filters, searchValue, context, excludedAssetCollection, isOpen, assetFamilyIdentifier]);
 
   return () => executeQuery();
 };
 
-const fetchMoreResult = (currentRequestCount: number, dataProvider: AssetDataProvider) => (
+const fetchMoreResult = (dataProvider: AssetDataProvider) => (
   query: Query,
   setSearchResult: (result: SearchResult<ListAsset>) => void
 ) => {
+  const currentRequestCount = totalRequestCount;
+
   dataProvider.assetFetcher.search({...query, size: MAX_RESULT}).then((searchResult: SearchResult<ListAsset>) => {
     if (currentRequestCount === totalRequestCount) {
       setSearchResult(searchResult);
