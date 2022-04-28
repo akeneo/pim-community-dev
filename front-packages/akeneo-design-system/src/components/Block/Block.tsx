@@ -11,7 +11,7 @@ type BlockProps = Override<
     /**
      * Add an action that will be displayed on the right of the block.
      */
-    action?: ReactNode;
+    actions?: ReactNode;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -68,7 +68,7 @@ const Container = styled.div<AkeneoThemedProps>`
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {action, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, ...rest}: BlockProps,
+    {actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     return (
@@ -88,15 +88,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             return child;
           })}
         </div>
-        <ActionsContainer>
-          {isValidElement<IconButtonProps>(action) && action.type === IconButton
-            ? cloneElement(action, {
-                level: 'tertiary',
-                ghost: 'borderless',
-                size: 'small',
-              })
-            : action}
-        </ActionsContainer>
+        <ActionsContainer>{actions}</ActionsContainer>
       </Container>
     );
   }

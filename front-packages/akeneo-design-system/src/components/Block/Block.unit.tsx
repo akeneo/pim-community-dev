@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {PlusIcon, CloseIcon} from '../../icons';
+import {PlusIcon, CloseIcon, ArrowDownIcon} from '../../icons';
 
 test('it renders without actions', () => {
   render(<Block>My block</Block>);
@@ -12,14 +12,44 @@ test('it renders without actions', () => {
 
 test('it renders action passed by props', () => {
   const onRemove = jest.fn();
+  const onCollapse = jest.fn();
 
   render(
-    <Block action={<IconButton key="delete" icon={<CloseIcon />} onClick={onRemove} title="Remove" />}>My block</Block>
+    <Block
+      actions={
+        <>
+          <IconButton
+            level="tertiary"
+            ghost="borderless"
+            size="small"
+            key="collapse"
+            icon={<ArrowDownIcon />}
+            title="Collapse"
+            onClick={onCollapse}
+          />
+          <IconButton
+            level="tertiary"
+            ghost="borderless"
+            size="small"
+            key="remove"
+            icon={<CloseIcon />}
+            title="Remove"
+            onClick={onRemove}
+          />
+        </>
+      }
+    >
+      My block
+    </Block>
   );
 
   const removeIconButton = screen.getByTitle('Remove');
   fireEvent.click(removeIconButton);
   expect(onRemove).toBeCalled();
+
+  const collapseIconButton = screen.getByTitle('Collapse');
+  fireEvent.click(collapseIconButton);
+  expect(onCollapse).toBeCalled();
 });
 
 test('Block supports forwardRef', () => {
