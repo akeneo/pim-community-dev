@@ -27,7 +27,7 @@ class ReadColumnTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_return_generated_column_from_the_file()
+    public function it_return_generated_column_from_the_file(): void
     {
         $fileKey = $this->storeFile();
         $query = new ReadColumnsQuery($fileKey, FileStructure::create(0, 1, 2, 'Products'));
@@ -48,7 +48,7 @@ class ReadColumnTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_return_generated_column_from_the_file_that_does_not_start_at_first_column_and_first_line()
+    public function it_return_generated_column_from_the_file_that_does_not_start_at_first_column_and_first_line(): void
     {
         $fileKey = $this->storeFile();
         $query = new ReadColumnsQuery($fileKey, FileStructure::create(1, 2, 4, 'Empty lines and columns'));
