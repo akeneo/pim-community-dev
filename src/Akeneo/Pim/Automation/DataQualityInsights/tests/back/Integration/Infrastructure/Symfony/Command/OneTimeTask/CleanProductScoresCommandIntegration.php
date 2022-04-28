@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Symfony\Command\OneTimeTask;
+namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Symfony\Command\OneTimeTask;
 
-use Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\OneTimeTaskCommandTrait;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\OneTimeTask\OneTimeTaskCommandTrait;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
