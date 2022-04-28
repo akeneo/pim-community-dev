@@ -15,7 +15,7 @@ workflows:
       - checkout:
           name: "Checkout"
           requires:
-            - "Start?"
+            - "Start? (tailored import)"
       - build_srnt_dev:
           name: "Build dev"
           requires:
@@ -80,7 +80,7 @@ workflows:
       - checkout:
           name: "Checkout"
           requires:
-            - "Start?"
+            - "Start? (job automation)"
       - build_srnt_dev:
           name: "Build dev"
           requires:
