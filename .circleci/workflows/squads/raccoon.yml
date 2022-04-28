@@ -13,17 +13,16 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - checkout:
-          name: "Checkout"
           requires:
             - "Start tailored import?"
       - build_srnt_dev:
           name: "Build dev"
           requires:
-            - "Checkout"
+            - checkout
       - test_helm_generated_k8s_files:
           name: "🤷 ça bouine"
           requires:
-            - "Checkout"
+            - checkout
       - deploy_pr_environment?:
           name: "Deploy PR environment?"
           type: approval
@@ -78,17 +77,16 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - checkout:
-          name: "Checkout"
           requires:
             - "Start job automation?"
       - build_srnt_dev:
           name: "Build dev"
           requires:
-            - "Checkout"
+            - checkout
       - test_helm_generated_k8s_files:
           name: "🤷 ça bouine"
           requires:
-            - "Checkout"
+            - checkout
       - deploy_pr_environment?:
           name: "Deploy PR environment?"
           type: approval
