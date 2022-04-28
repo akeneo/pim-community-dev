@@ -89,6 +89,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier:
         public: true

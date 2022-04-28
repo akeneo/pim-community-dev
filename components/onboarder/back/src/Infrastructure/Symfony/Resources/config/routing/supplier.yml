@@ -47,7 +47,7 @@ onboarder_serenity_supplier_update:
     methods: [PUT]
 
 onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier:
-    path: /supplier-contributors-that-belong-to-another-supplier/{supplierIdentifier}
+    path: /supplier-contributors-belonging-to-another-supplier/{supplierIdentifier}
     defaults:
         _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier
         _feature: onboarder_serenity_supplier
