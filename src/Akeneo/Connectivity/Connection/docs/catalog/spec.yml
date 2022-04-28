@@ -204,3 +204,37 @@ paths:
                     description: "Unauthorized"
                 "403":
                     description: "Forbidden"
+    /api/rest/v1/catalogs/{id}/products/{identifier}:
+        get:
+            summary: "Product belonging to the catalog"
+            produces:
+                - "application/json"
+            parameters:
+                -   in: path
+                    name: id
+                    type: string
+                    required: true
+                -   in: path
+                    name: identifier
+                    type: string
+                    required: true
+            responses:
+                "200":
+                    description: "OK"
+                    examples:
+                        application/json:
+                            identifier: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                            family: "tshirt"
+                            groups: [ ]
+                            parent: null
+                            categories: [ ]
+                            enabled: true
+                            values:
+                                name:
+                                    -   data: Top
+                                        locale: en_US
+                                        scope: null
+                "401":
+                    description: "Unauthorized"
+                "403":
+                    description: "Forbidden"
