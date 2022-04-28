@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Elasticsearch\Query;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
@@ -64,10 +65,10 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
         $this->assertCount(1, $productUuids[1]);
         $productUuids = array_merge($productUuids[0], $productUuids[1]);
 
-        $this->assertExpectedProductUuid($expectedProduct1, $productUuids);
-        $this->assertExpectedProductUuid($expectedProduct2, $productUuids);
-        $this->assertExpectedProductUuid($expectedProductVariant1, $productUuids);
-        $this->assertExpectedProductUuid($expectedProductVariant2, $productUuids);
+        $this->assertExpectedEntityId($expectedProduct1, $productUuids);
+        $this->assertExpectedEntityId($expectedProduct2, $productUuids);
+        $this->assertExpectedEntityId($expectedProductVariant1, $productUuids);
+        $this->assertExpectedEntityId($expectedProductVariant2, $productUuids);
     }
 
     public function test_it_returns_all_updated_product_model_ids()
@@ -99,10 +100,10 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
         $this->assertCount(1, $productIds[1]);
         $productIds = array_merge($productIds[0], $productIds[1]);
 
-        $this->assertExpectedProductUuid($expectedProductModel1, $productIds);
-        $this->assertExpectedProductUuid($expectedProductModel2, $productIds);
-        $this->assertExpectedProductUuid($expectedSubProductModel1, $productIds);
-        $this->assertExpectedProductUuid($expectedSubProductModel2, $productIds);
+        $this->assertExpectedEntityId($expectedProductModel1, $productIds);
+        $this->assertExpectedEntityId($expectedProductModel2, $productIds);
+        $this->assertExpectedEntityId($expectedSubProductModel1, $productIds);
+        $this->assertExpectedEntityId($expectedSubProductModel2, $productIds);
     }
 
     private function createProduct(): ProductInterface
@@ -212,14 +213,14 @@ SQL;
         return new ProductModelId($productModel->getId());
     }
 
-    private function assertExpectedProductUuid(ProductUuid $expectedProductUuid, array $productUuids): void
+    private function assertExpectedEntityId(ProductEntityIdInterface $expectedEntityId, array $entityIds): void
     {
-        foreach ($productUuids as $productUuid) {
-            if ((string) $productUuid === (string) $expectedProductUuid) {
+        foreach ($entityIds as $entityId) {
+            if ((string) $entityId === (string) $expectedEntityId) {
                 return;
             }
         }
 
-        throw new AssertionFailedError(sprintf('Expected product uuid %s not found', (string) $expectedProductUuid));
+        throw new AssertionFailedError(sprintf('Expected entity id %s not found', (string) $expectedEntityId));
     }
 }

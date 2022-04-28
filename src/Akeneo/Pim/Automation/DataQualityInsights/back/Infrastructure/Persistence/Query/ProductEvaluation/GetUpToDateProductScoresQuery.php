@@ -7,9 +7,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -17,19 +16,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
 {
-    private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery;
-
-    private GetProductScoresQueryInterface $getProductScoresQuery;
-
     public function __construct(
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
-        GetProductScoresQueryInterface      $getProductScoresQuery
+        private HasUpToDateProductEvaluationQuery $hasUpToDateEvaluationQuery,
+        private GetProductScoresQueryInterface $getProductScoresQuery
     ) {
-        $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
-        $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
-    public function byProductUuid(ProductEntityIdInterface $productUuid): Read\Scores
+    public function byProductUuid(ProductUuid $productUuid): Read\Scores
     {
         if ($this->hasUpToDateEvaluationQuery->forEntityId($productUuid)) {
             return $this->getProductScoresQuery->byProductUuid($productUuid);
@@ -38,7 +31,7 @@ class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
         return new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection());
     }
 
-    public function byProductUuidCollection(ProductEntityIdCollection $productUuidCollection): array
+    public function byProductUuidCollection(ProductUuidCollection $productUuidCollection): array
     {
         $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection);
 
