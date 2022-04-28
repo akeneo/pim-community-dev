@@ -26,4 +26,12 @@ class RowCleanerSpec extends ObjectBehavior
         $this->removeTrailingEmptyColumns(['c', '0', 'd', ''])->shouldReturn(['c', '0', 'd']);
         $this->removeTrailingEmptyColumns(['', 'a', '', 'b', 'c', '', ''])->shouldReturn(['', 'a', '', 'b', 'c']);
     }
+
+    public function it_pad_with_empty_value_to_the_given_length()
+    {
+        $this->padRowToLength([], 0)->shouldReturn([]);
+        $this->padRowToLength([], 2)->shouldReturn(['', '']);
+        $this->padRowToLength(['first', 'second', 'third'], 2)->shouldReturn(['first', 'second', 'third']);
+        $this->padRowToLength(['first', 'second', 'third'], 4)->shouldReturn(['first', 'second', 'third', '']);
+    }
 }
