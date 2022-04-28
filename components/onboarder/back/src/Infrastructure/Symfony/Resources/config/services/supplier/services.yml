@@ -130,7 +130,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\ImportSupplierTasklet'
         tags:
-            - { feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.step, feature: 'onboarder_serenity_supplier' }
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\ImportSupplierTasklet:
         arguments:
@@ -143,7 +143,7 @@ services:
             - '@event_dispatcher'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode'
         tags:
-            - { feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.tasklet, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'
@@ -151,7 +151,7 @@ services:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\FlatToStandard'
         tags:
-            - { feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.reader, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.job.job_parameters.default_values_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%'
@@ -171,7 +171,7 @@ services:
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
         tags:
-            - { feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.converter, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.supplier.job_instance.form_provider:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider
