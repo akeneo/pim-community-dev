@@ -53,7 +53,6 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQuery implements GetPendingC
         }
 
         return $productsCriteriaEvaluations;
-
     }
 
     private function executeForProductUuidCollection(ProductUuidCollection $productUuids): Result
