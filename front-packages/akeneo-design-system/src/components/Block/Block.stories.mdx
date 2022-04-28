@@ -2,7 +2,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {CloseIcon, EditIcon, MoreIcon} from '../../icons';
+import {CloseIcon, ArrowDownIcon, MoreIcon} from '../../icons';
 
 <Meta
   title="Components/Block"
@@ -39,7 +39,7 @@ Use this playground to test the block component
 ## With Actions
 
 <Canvas>
-  <Story name="With Action">
+  <Story name="With Actions">
     {args => {
       return (
         <>
@@ -48,9 +48,12 @@ Use this playground to test the block component
           </Block>
           <Block
             {...args}
-            action={<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />}
+            actions={<>
+              <IconButton level="tertiary" ghost="borderless" size="small" key="collapse" icon={<ArrowDownIcon />} title='Collapse' onClick={action('Collapse block')} />
+              <IconButton level="tertiary" ghost="borderless" size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
+            </>}
           >
-            Block with action
+            Block with actions
           </Block>
         </>
       );
