@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
@@ -17,10 +18,10 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProduct
 final class GetDataQualityInsightsPropertiesForProductProjection implements GetAdditionalPropertiesForProductProjectionInterface
 {
     public function __construct(
-        private GetProductScoresQueryInterface                      $getProductScoresQuery,
+        private GetProductScoresQueryInterface $getProductScoresQuery,
         private GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        private ComputeProductsKeyIndicators                        $getProductsKeyIndicators,
-        private ProductEntityIdFactoryInterface                     $idFactory
+        private ComputeProductsKeyIndicators $getProductsKeyIndicators,
+        private ProductUuidFactory $idFactory
     ) {
     }
 

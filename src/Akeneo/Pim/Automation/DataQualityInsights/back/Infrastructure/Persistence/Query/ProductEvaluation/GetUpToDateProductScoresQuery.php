@@ -6,9 +6,6 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 
@@ -18,19 +15,13 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
  */
 class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
 {
-    private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery;
-
-    private GetProductScoresQueryInterface $getProductScoresQuery;
-
     public function __construct(
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
-        GetProductScoresQueryInterface      $getProductScoresQuery
+        private HasUpToDateProductEvaluationQuery $hasUpToDateEvaluationQuery,
+        private GetProductScoresQueryInterface $getProductScoresQuery
     ) {
-        $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
-        $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
-    public function byProductUuid(ProductEntityIdInterface $productUuid): ChannelLocaleRateCollection
+    public function byProductUuid(ProductUuid $productUuid): ChannelLocaleRateCollection
     {
         if ($this->hasUpToDateEvaluationQuery->forEntityId($productUuid)) {
             return $this->getProductScoresQuery->byProductUuid($productUuid);
@@ -39,7 +30,7 @@ class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
         return new ChannelLocaleRateCollection();
     }
 
-    public function byProductUuidCollection(ProductEntityIdCollection $productUuidCollection): array
+    public function byProductUuidCollection(ProductUuidCollection $productUuidCollection): array
     {
         $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection);
 
