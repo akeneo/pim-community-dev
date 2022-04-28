@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
-use Akeneo\Platform\Job\Infrastructure\Query\GetJobInstanceServerCredentials;
+use Akeneo\Platform\Job\Infrastructure\Flysystem\Sftp\SftpAdapterFactory;
+use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceRemoteStorage\GetJobInstanceRemoteStorage;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -14,9 +15,6 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Ftp\FtpAdapter;
-use League\Flysystem\Ftp\FtpConnectionOptions;
-use League\Flysystem\Ftp\FtpConnectionProvider;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\UnableToReadFile;
 use League\Flysystem\UnableToWriteFile;
@@ -30,10 +28,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class WriteRemoteFilesAfterExport implements EventSubscriberInterface
 {
     public function __construct(
-        private JobRegistry $jobRegistry,
-        private FilesystemProvider $filesystemProvider,
-        private GetJobInstanceServerCredentials $getJobInstanceServerCredentials,
-        private LoggerInterface $logger
+        private JobRegistry                 $jobRegistry,
+        private FilesystemProvider          $filesystemProvider,
+        private GetJobInstanceRemoteStorage $getJobInstanceRemoteStorage,
+        private LoggerInterface             $logger
     ) {
     }
 
@@ -52,23 +50,13 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
         }
 
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
-        $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
-        if ($serverCredentials === null) {
+        $jobInstanceRemoteStorage = $this->getJobInstanceRemoteStorage->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
+        if ($jobInstanceRemoteStorage === null) {
             return;
         }
 
-        $normalizedServerCredentials = $serverCredentials->normalize();
-        $destinationOptions = FtpConnectionOptions::fromArray([
-            'host' => $normalizedServerCredentials['host'],
-            'root' => '',
-            'username' => $normalizedServerCredentials['user'],
-            'password' => $normalizedServerCredentials['password'],
-            'port' => $normalizedServerCredentials['port'],
-        ]);
-
-        $ftpFilesystem = new Filesystem(new FtpAdapter($destinationOptions));
-        $connectionProvider = new FtpConnectionProvider();
-        $connectionProvider->createConnection($destinationOptions);
+        $sftpAdapter = SftpAdapterFactory::fromJobInstanceRemoteStorage($jobInstanceRemoteStorage);
+        $sftpFilesystem = new Filesystem($sftpAdapter);
 
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
@@ -80,7 +68,6 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
                 continue;
             }
 
-            $outputDirectory = \dirname($writer->getPath());
             foreach ($writer->getWrittenFiles() as $writtenFile) {
                 if ($writtenFile->isLocalFile()) {
                     $localAdepter = new LocalFilesystemAdapter('/');
@@ -89,21 +76,15 @@ class WriteRemoteFilesAfterExport implements EventSubscriberInterface
                     $sourceFilesystem = $this->filesystemProvider->getFilesystem($writtenFile->sourceStorage());
                 }
 
-                $outputFilePath = \sprintf(
-                    '%s%s%s',
-                    $outputDirectory,
-                    DIRECTORY_SEPARATOR,
-                    $writtenFile->outputFilepath()
-                );
                 try {
-                    $this->transferFile($sourceFilesystem, $ftpFilesystem, $writtenFile->sourceKey(), $outputFilePath);
+                    $this->transferFile($sourceFilesystem, $sftpFilesystem, $writtenFile->sourceKey(), $writtenFile->outputFilepath());
                 } catch (FileTransferException | \LogicException $e) {
                     $this->logger->warning(
                         'The remote file could not be fetched into the local filesystem',
                         [
                             'key' => $writtenFile->sourceKey(),
                             'storage' => $writtenFile->sourceStorage(),
-                            'destination' => $outputFilePath,
+                            'destination' => $writtenFile->outputFilepath(),
                             'exception' => [
                                 'type' => \get_class($e),
                                 'message' => $e->getMessage(),

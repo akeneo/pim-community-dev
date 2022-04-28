@@ -23,14 +23,14 @@ services:
             - '@oro_security.security_facade'
             - '@Akeneo\Platform\Job\Application\SearchJobUser\SearchJobUserHandler'
 
-    akeneo.job.controller.get_job_instance_server_credentials_action:
-        class: 'Akeneo\Platform\Job\Infrastructure\Controller\GetJobInstanceServerCredentialsAction'
+    akeneo.job.controller.get_job_instance_remote_storage_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\JobInstanceRemoteStorage\GetJobInstanceRemoteStorageAction'
         public: true
         arguments:
-            - '@akeneo.job.query.get_job_instance_server_credentials'
+            - '@akeneo.job.query.get_job_instance_remote_storage'
 
-    akeneo.job.controller.save_job_instance_server_credentials_action:
-        class: 'Akeneo\Platform\Job\Infrastructure\Controller\SaveJobInstanceServerCredentialsAction'
+    akeneo.job.controller.save_job_instance_remote_storage_action:
+        class: 'Akeneo\Platform\Job\Infrastructure\Controller\JobInstanceRemoteStorage\SaveJobInstanceRemoteStorageAction'
         public: true
         arguments:
-            - '@akeneo.job.query.save_job_instance_server_credentials'
+            - '@akeneo.job.query.save_job_instance_remote_storage'

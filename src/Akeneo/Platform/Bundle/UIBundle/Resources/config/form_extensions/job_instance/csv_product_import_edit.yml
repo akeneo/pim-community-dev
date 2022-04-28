@@ -66,14 +66,14 @@ extensions:
             title: pim_common.history
             tabCode: pim-job-instance-history
 
-    pim-job-instance-csv-product-import-edit-server:
-        module: akeneojob/js/job/product/edit/server
+    pim-job-instance-csv-product-import-edit-remote-storage:
+        module: akeneojob/js/job/product/edit/remote-storage
         parent: pim-job-instance-csv-product-import-edit-tabs
         targetZone: container
         position: 140
         config:
-            tabTitle: Server
-            tabCode: pim-job-instance-server-credentials
+            tabTitle: Remote storage
+            tabCode: pim-job-instance-remote-storage
 
     pim-job-instance-csv-product-import-edit-properties-code:
         module: pim/job/common/edit/field/text

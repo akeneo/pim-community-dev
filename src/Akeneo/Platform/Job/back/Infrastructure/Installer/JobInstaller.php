@@ -27,7 +27,7 @@ class JobInstaller implements EventSubscriberInterface
 
     public function installJob() {
         $this->createJobExecutionIndexes();
-        $this->createJobInstanceServerCredentialsTable();
+        $this->createJobInstanceRemoteStorageTable();
     }
 
     public function createJobExecutionIndexes(): void
@@ -43,16 +43,16 @@ SQL;
         $this->connection->executeStatement($sql);
     }
 
-    public function createJobInstanceServerCredentialsTable(): void
+    public function createJobInstanceRemoteStorageTable(): void
     {
         $sql = <<<SQL
-CREATE TABLE akeneo_batch_job_instance_server_credentials (
+CREATE TABLE akeneo_batch_job_instance_remote_storage (
     job_instance_code VARCHAR(255) NOT NULL,
     host VARCHAR(255) NOT NULL,
-    user VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    port INTEGER DEFAULT 21,
-    is_secure TINYINT(1) NOT NULL DEFAULT 0,
+    port INTEGER DEFAULT 22,
+    root VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    login JSON NOT NULL,
     PRIMARY KEY (job_instance_code)
 );
 SQL;

@@ -1,5 +1,5 @@
 import BaseView = require('pimui/js/view/base');
-import {ServerTab, ServerTabProps} from './ServerTab';
+import {RemoteStorageTab, RemoteStorageTabProps} from './RemoteStorageTab';
 
 const mediator = require('oro/mediator');
 
@@ -36,11 +36,11 @@ class FileTransferView extends BaseView {
   render(): BaseView {
     const {code} = this.getFormData(); // `job_name` also works
 
-    const props: ServerTabProps = {
+    const props: RemoteStorageTabProps = {
       jobInstanceCode: code,
     };
 
-    this.renderReact(ServerTab, props, this.el);
+    this.renderReact(RemoteStorageTab, props, this.el);
 
     return this;
   }

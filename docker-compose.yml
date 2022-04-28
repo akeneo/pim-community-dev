@@ -129,6 +129,8 @@ services:
   sftp_server:
     image: 'atmoz/sftp:debian'
     command: 'ziggy:ziggy:::pim'
+    ports:
+      - '2222:22'
     volumes:
       - './var/sftp_server:/home/ziggy/pim'
     networks:

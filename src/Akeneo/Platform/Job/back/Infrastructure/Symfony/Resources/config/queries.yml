@@ -15,12 +15,12 @@ services:
             - '@database_connection'
             - '@Akeneo\Platform\Job\Infrastructure\Hydrator\JobExecutionRowHydrator'
 
-    akeneo.job.query.get_job_instance_server_credentials:
-        class: Akeneo\Platform\Job\Infrastructure\Query\GetJobInstanceServerCredentials
+    akeneo.job.query.get_job_instance_remote_storage:
+        class: Akeneo\Platform\Job\Infrastructure\Query\JobInstanceRemoteStorage\GetJobInstanceRemoteStorage
         arguments:
             - '@database_connection'
 
-    akeneo.job.query.save_job_instance_server_credentials:
-        class: Akeneo\Platform\Job\Infrastructure\Query\SaveJobInstanceServerCredentials
+    akeneo.job.query.save_job_instance_remote_storage:
+        class: Akeneo\Platform\Job\Infrastructure\Query\JobInstanceRemoteStorage\SaveJobInstanceRemoteStorage
         arguments:
             - '@database_connection'

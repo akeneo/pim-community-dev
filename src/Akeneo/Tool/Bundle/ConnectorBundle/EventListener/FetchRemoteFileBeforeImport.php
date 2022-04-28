@@ -2,8 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
-use Akeneo\Platform\Job\Infrastructure\Query\GetJobInstanceServerCredentials;
-use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceServerCredentials;
+use Akeneo\Platform\Job\Infrastructure\Flysystem\Sftp\SftpAdapterFactory;
+use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceRemoteStorage\GetJobInstanceRemoteStorage;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
@@ -12,8 +12,6 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemReader;
-use League\Flysystem\Ftp\FtpAdapter;
-use League\Flysystem\Ftp\FtpConnectionOptions;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -28,7 +26,7 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 {
     public function __construct(
         private FilesystemReader $filesystem,
-        private GetJobInstanceServerCredentials $getJobInstanceServerCredentials
+        private GetJobInstanceRemoteStorage $getJobInstanceRemoteStorage
     ) {
     }
 
@@ -75,23 +73,9 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
             return $this->filesystem;
         }
 
-        if ('ftp' === 'ftp') {
-            $serverCredentials = $this->getJobInstanceServerCredentials->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
-            $serverCredentials = $serverCredentials->normalize();
+        $jobInstanceRemoteStorage = $this->getJobInstanceRemoteStorage->byJobInstanceCode($jobExecution->getJobInstance()->getCode());
+        $sftpAdapter = SftpAdapterFactory::fromJobInstanceRemoteStorage($jobInstanceRemoteStorage);
 
-            $adapter = new FtpAdapter(
-                FtpConnectionOptions::fromArray([
-                    'host' => $serverCredentials['host'],
-                    'root' => '',
-                    'username' => $serverCredentials['user'],
-                    'password' => $serverCredentials['password'],
-                    'port' => $serverCredentials['port'],
-                ])
-            );
-
-            return new Filesystem($adapter);
-        }
-
-        return null;
+        return new Filesystem($sftpAdapter);
     }
 }
