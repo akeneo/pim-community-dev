@@ -33,7 +33,7 @@ class ReadColumnsHandler
         $headerRow = $this->truncateHeaderToFirstColumn($headerRow, $fileStructure->getFirstColumn());
 
         return ColumnCollection::create(array_map(
-            fn ($index, $headerCell) => $this->fileHeaderToColumn($index, $headerCell, $fileStructure->getFirstColumn()),
+            fn (int $index, string $headerCell) => $this->fileHeaderToColumn($index, $headerCell, $fileStructure->getFirstColumn()),
             array_keys($headerRow),
             $headerRow,
         ));
