@@ -15,7 +15,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Portability\Statement;
+use Doctrine\DBAL\ForwardCompatibility\Result;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -58,7 +58,7 @@ final class GetPendingCriteriaEvaluationsByEntityIdsQuery implements GetPendingC
 
     }
 
-    private function executeForProductUuidCollection(ProductUuidCollection $productUuids): Statement
+    private function executeForProductUuidCollection(ProductUuidCollection $productUuids): Result
     {
         $criterionEvaluationTable = $this->tableName;
 
@@ -80,7 +80,7 @@ SQL;
         ]);
     }
 
-    private function executeForProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): Statement
+    private function executeForProductModelIdCollection(ProductModelIdCollection $productModelIdCollection): Result
     {
         $criterionEvaluationTable = $this->tableName;
 
