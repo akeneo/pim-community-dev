@@ -17,7 +17,7 @@ final class SetImageValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/image');
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/image.png');
     }
 
     function it_is_initializable()
@@ -43,6 +43,6 @@ final class SetImageValueSpec extends ObjectBehavior
 
     function it_returns_the_value()
     {
-        $this->value()->shouldReturn('/path/to/image');
+        $this->value()->shouldReturn('/path/to/image.png');
     }
 }
