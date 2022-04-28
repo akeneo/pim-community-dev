@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -16,12 +16,14 @@ use Doctrine\DBAL\Connection;
  */
 final class GetProductUuidsToEvaluateQuery implements GetEntityIdsToEvaluateQueryInterface
 {
-    public function __construct(private Connection $db, private ProductEntityIdFactoryInterface $idFactory)
-    {
+    public function __construct(
+        private Connection $db,
+        private ProductUuidFactory $idFactory
+    ) {
     }
 
     /**
-     * @return \Generator<int, ProductEntityIdCollection>
+     * @return \Generator<int, ProductUuidCollection>
      */
     public function execute(int $limit, int $bulkSize): \Generator
     {

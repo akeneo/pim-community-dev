@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tas
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsToEvaluateQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductUuidsToEvaluateQuery;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 
@@ -19,14 +21,14 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private ?StepExecution $stepExecution;
 
     public function __construct(
-        private GetEntityIdsToEvaluateQueryInterface $getProductUuidsToEvaluateQuery,
-        private GetEntityIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
-        private EvaluateProducts                     $evaluateProducts,
-        private EvaluateProductModels                $evaluateProductModels,
-        private int                                  $limitPerLoop = 1000,
-        private int                                  $bulkSize = 100,
-        private int                                  $timeBoxInSecondsAllowed = 1700, //~28 minutes
-        private int                                  $noEvaluationSleep = 60,
+        private GetProductUuidsToEvaluateQuery $getProductUuidsToEvaluateQuery,
+        private GetProductModelIdsToEvaluateQuery $getProductModelsIdsToEvaluateQuery,
+        private EvaluateProducts $evaluateProducts,
+        private EvaluateProductModels $evaluateProductModels,
+        private int $limitPerLoop = 1000,
+        private int $bulkSize = 100,
+        private int $timeBoxInSecondsAllowed = 1700, //~28 minutes
+        private int $noEvaluationSleep = 60,
     ) {
     }
 

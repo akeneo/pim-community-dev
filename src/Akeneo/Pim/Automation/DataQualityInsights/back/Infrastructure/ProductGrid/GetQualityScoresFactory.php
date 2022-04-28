@@ -7,7 +7,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,13 +23,17 @@ class GetQualityScoresFactory
     ) {
     }
 
-    public function __invoke(ProductEntityIdCollection $productIdCollection, string $type): array
+    public function __invoke(ProductEntityIdCollection $entityIdCollection, string $type): array
     {
         switch ($type) {
             case 'product':
-                return $this->getProductScoresQuery->byProductUuidCollection($productIdCollection);
+                Assert::isInstanceOf($entityIdCollection, ProductUuidCollection::class);
+
+                return $this->getProductScoresQuery->byProductUuidCollection($entityIdCollection);
             case 'product_model':
-                return $this->getProductModelScoresQuery->byProductModelIdCollection($productIdCollection);
+                Assert::isInstanceOf($entityIdCollection, ProductModelIdCollection::class);
+
+                return $this->getProductModelScoresQuery->byProductModelIdCollection($entityIdCollection);
             default:
                 throw new \InvalidArgumentException(sprintf('Invalid type %s', $type));
         }
