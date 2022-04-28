@@ -51,22 +51,22 @@ class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestC
         $evaluations = (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                ProductUuid::fromString((string) $productUuid1),
+                ProductUuid::fromUuid($productUuid1),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('spelling'),
-                ProductUuid::fromString((string) $productUuid1),
+                ProductUuid::fromUuid($productUuid1),
                 CriterionEvaluationStatus::done()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                ProductUuid::fromString((string) $productUuid2),
+                ProductUuid::fromUuid($productUuid2),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                ProductUuid::fromString((string) $productUuid3),
+                ProductUuid::fromUuid($productUuid3),
                 CriterionEvaluationStatus::pending()
             ));
 
