@@ -121,6 +121,38 @@ describe('Test grid fetching hook', () => {
   });
 
   test('It returns an empty result if the asset family identifier is null', async () => {
+    const results = {
+      matchesCount: 50,
+      totalCount: 100,
+      items: [],
+    };
+
+    mockedSearch.mockImplementation(() => Promise.resolve(results));
+
+    const handleReceivedSearchResults = jest.fn();
+
+    const {rerender} = renderHook(() =>
+      useFetchResult(createQuery)(
+        true,
+        'ASSET_FAMILY_IDENTIFIER',
+        [],
+        'MY_SEARCH',
+        ['EXCLUDED_ASSET_CODE'],
+        {
+          locale: 'en_US',
+          channel: 'ecommerce',
+        },
+        handleReceivedSearchResults
+      )
+    );
+
+    rerender();
+    await flushPromises();
+    expect(handleReceivedSearchResults).toHaveBeenCalledTimes(1);
+    expect(handleReceivedSearchResults).toHaveBeenCalledWith(results);
+  });
+
+  test('It returns an empty result if the asset family identifier is null', async () => {
     const handleReceivedSearchResults = jest.fn();
     renderHook(() =>
       useFetchResult(createQuery)(
