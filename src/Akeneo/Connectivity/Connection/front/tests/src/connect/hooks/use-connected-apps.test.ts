@@ -136,6 +136,7 @@ test('it fetches connected apps', async () => {
         partner: 'partner A',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
     };
 
     const marketplaceApp = {
@@ -201,12 +202,15 @@ test('it fetches connected test apps', async () => {
         partner: 'partner A',
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
     };
 
     const testApp: TestApp = {
         id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
         name: 'Extension 1',
+        logo: null,
         author: 'Partner 1',
+        url: null,
         activate_url: 'https://example.com/activate',
         callback_url: 'https://example.com/oauth2',
         connected: true,
@@ -266,6 +270,7 @@ test('it returns connected apps and warns when not listed on the appstore', asyn
         partner: 'partner A',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
     };
 
     const expectedApp = {

@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -30,7 +30,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $evaluateProductModels,
         $idFactory
     ) {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
         $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
@@ -45,7 +45,7 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
         $evaluateProductModels,
         $idFactory
     ) {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
         $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);

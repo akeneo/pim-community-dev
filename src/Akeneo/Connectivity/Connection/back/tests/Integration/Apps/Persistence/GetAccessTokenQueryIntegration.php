@@ -15,6 +15,19 @@ class GetAccessTokenQueryIntegration extends TestCase
     private ConnectedAppLoader $connectedAppLoader;
     private GetAccessTokenQuery $query;
 
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useMinimalCatalog();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->query = $this->get(GetAccessTokenQuery::class);
+        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
+    }
+
     public function test_it_gets_the_access_token_in_terms_of_the_given_client_and_scopes(): void
     {
         $this->connectedAppLoader->createConnectedAppWithUserAndTokens(
@@ -23,8 +36,7 @@ class GetAccessTokenQueryIntegration extends TestCase
             ['read_products', 'write_products']
         );
 
-        // Scopes are not sent in the same order as they are saved to be sure it works
-        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', ['write_products', 'read_products']);
+        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', 'read_products write_products');
         Assert::assertNotNull($token);
         Assert::assertSame('foo', $token);
     }
@@ -37,7 +49,7 @@ class GetAccessTokenQueryIntegration extends TestCase
             ['read_products']
         );
 
-        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', ['write_products', 'read_products']);
+        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', 'read_products write_products');
         Assert::assertNull($token);
     }
 
@@ -49,7 +61,7 @@ class GetAccessTokenQueryIntegration extends TestCase
             ['read_products', 'write_products']
         );
 
-        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', ['read_products']);
+        $token = $this->query->execute('2677e764-f852-4956-bf9b-1a1ec1b0d145', 'read_products');
         Assert::assertNull($token);
     }
 
@@ -61,20 +73,7 @@ class GetAccessTokenQueryIntegration extends TestCase
             ['read_products']
         );
 
-        $token = $this->query->execute('123456-1234-abcd-abcd-1a1ec1b0d145', ['read_products']);
+        $token = $this->query->execute('123456-1234-abcd-abcd-1a1ec1b0d145', 'read_products');
         Assert::assertNull($token);
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->query = $this->get(GetAccessTokenQuery::class);
-        $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useMinimalCatalog();
     }
 }

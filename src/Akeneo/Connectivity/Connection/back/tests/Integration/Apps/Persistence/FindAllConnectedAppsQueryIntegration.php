@@ -54,6 +54,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
             'is_test_app' => true,
             'is_pending' => false,
             'scopes' => ['read_products'],
+            'has_outdated_scopes' => false,
         ];
 
         // App
@@ -74,6 +75,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
             'partner' => null,
             'certified' => false,
             'is_pending' => false,
+            'has_outdated_scopes' => false,
         ];
 
         // Pending App
@@ -97,6 +99,7 @@ class FindAllConnectedAppsQueryIntegration extends TestCase
             'partner' => null,
             'is_test_app' => false,
             'is_pending' => true,
+            'has_outdated_scopes' => false,
         ];
 
         $connectedApps = $this->query->execute();

@@ -10,8 +10,5 @@ namespace Akeneo\Connectivity\Connection\Domain\Apps\Persistence;
  */
 interface GetAccessTokenQueryInterface
 {
-    /**
-     * @param array<string> $scopes
-     */
-    public function execute(string $clientId, array $scopes = []): ?string;
+    public function execute(string $appId, string $scopes): ?string;
 }

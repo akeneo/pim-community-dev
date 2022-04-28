@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Application\Applier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
@@ -33,6 +34,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             && !$userIntent instanceof SetBooleanValue
             && !$userIntent instanceof SetSimpleSelectValue
             && !$userIntent instanceof SetIdentifierValue
+            && !$userIntent instanceof SetFileValue
         ) {
             throw new \InvalidArgumentException('Not expected class');
         }
@@ -58,6 +60,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             SetBooleanValue::class,
             SetSimpleSelectValue::class,
             SetIdentifierValue::class,
+            SetFileValue::class,
         ];
     }
 }

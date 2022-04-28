@@ -22,7 +22,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -71,6 +73,33 @@ class GetProductEvaluationSpec extends ObjectBehavior
         $completeEvaluationWithImprovableAttributes->__invoke($criteriaEvaluations)->willReturn($completedCriteriaEvaluations);
 
         $this->get($productId)->shouldBeLike($this->getExpectedProductEvaluation());
+    }
+
+    public function it_gives_the_evaluation_of_a_product_model(
+        $getCriteriaEvaluationsByProductIdQuery,
+        $criteriaEvaluationRegistry,
+        $getLocalesByChannelQuery,
+        $completeEvaluationWithImprovableAttributes
+    ) {
+        $productModelId = new ProductModelId(42);
+
+        $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
+            'ecommerce' => ['en_US', 'fr_FR'],
+            'mobile' => ['en_US']
+        ]));
+
+        $criteriaEvaluationRegistry->getCriterionCodes()->willReturn([
+            new CriterionCode('completeness_of_required_attributes'),
+            new CriterionCode('completeness_of_non_required_attributes'),
+            new CriterionCode('consistency_spelling'),
+        ]);
+
+        $criteriaEvaluations = $this->givenProductCriteriaEvaluations($productModelId);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productModelId)->willReturn($criteriaEvaluations);
+        $completedCriteriaEvaluations = $this->givenCompletedCriteriaEvaluations($criteriaEvaluations);
+        $completeEvaluationWithImprovableAttributes->__invoke($criteriaEvaluations)->willReturn($completedCriteriaEvaluations);
+
+        $this->get($productModelId)->shouldBeLike($this->getExpectedProductEvaluation());
     }
 
     public function it_handle_deprecated_improvable_attribute_structure(
@@ -132,7 +161,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         );
     }
 
-    private function givenProductCriteriaEvaluations(ProductId $productId): CriterionEvaluationCollection
+    private function givenProductCriteriaEvaluations(ProductEntityIdInterface $productId): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $channelCodeMobile = new ChannelCode('mobile');

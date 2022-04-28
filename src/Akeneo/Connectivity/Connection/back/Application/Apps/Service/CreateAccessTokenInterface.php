@@ -7,12 +7,12 @@ namespace Akeneo\Connectivity\Connection\Application\Apps\Service;
 interface CreateAccessTokenInterface
 {
     /**
-     * @param string $clientId
+     * @param string $appId
      * @param string $authCode
      *
      * @throws \InvalidArgumentException
      *
      * @return array{access_token: string, token_type: string}
      */
-    public function create(string $clientId, string $authCode): array;
+    public function create(string $appId, string $authCode): array;
 }

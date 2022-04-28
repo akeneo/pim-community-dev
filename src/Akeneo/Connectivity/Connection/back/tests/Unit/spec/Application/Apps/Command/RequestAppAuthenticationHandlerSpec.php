@@ -145,7 +145,7 @@ class RequestAppAuthenticationHandlerSpec extends ObjectBehavior
         $getUserConsentedAuthenticationScopesQuery->execute(1, 'a_app_id')
             ->willReturn(['openid']);
 
-        $exception = new UserConsentRequiredException('a_app_id', 1, ['a_new_scope']);
+        $exception = new UserConsentRequiredException('a_app_id', 1);
         $this->shouldThrow($exception)->during('handle', [$command]);
     }
 }

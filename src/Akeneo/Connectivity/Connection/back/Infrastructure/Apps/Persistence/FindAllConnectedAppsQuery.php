@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindAllConnectedAppsQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\DenormalizeConnectedAppTrait;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -42,7 +41,8 @@ final class FindAllConnectedAppsQuery implements FindAllConnectedAppsQueryInterf
             certified,
             partner,
             IF(akeneo_connectivity_test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app,
-            IF(pending.marketplace_public_app_id IS NULL, FALSE, TRUE) AS is_pending
+            IF(pending.marketplace_public_app_id IS NULL, FALSE, TRUE) AS is_pending,
+            has_outdated_scopes
         FROM akeneo_connectivity_connected_app AS connected_app
         LEFT JOIN akeneo_connectivity_test_app ON akeneo_connectivity_test_app.client_id = connected_app.id
         LEFT JOIN pending ON connected_app.id = pending.marketplace_public_app_id
