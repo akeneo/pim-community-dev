@@ -5,7 +5,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_tailored_import?:
-          name: "Start?"
+          name: "Start? (tailored import)"
           type: approval
           filters:
             branches:
@@ -51,18 +51,18 @@ workflows:
           requires:
             - "Delete PR environment?"
       - test_front_tailored_import:
-          name: "Front test"
+          name: "Front test (tailored import)"
           requires:
             - "Build dev"
       - test_back_tailored_import:
-          name: "Back test"
+          name: "Back test (tailored import)"
           requires:
             - "Build dev"
       - pull_request_success:
           name: "PR Success"
           requires:
-            - "Front test"
-            - "Back test"
+            - "Front test (tailored import)"
+            - "Back test (tailored import)"
 
   raccoon_job_automation_pull_request:
     when:
@@ -70,7 +70,7 @@ workflows:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - ready_to_test_job_automation?:
-          name: "Start?"
+          name: "Start? (job automation)"
           type: approval
           filters:
             branches:
@@ -116,15 +116,15 @@ workflows:
           requires:
             - "Delete PR environment?"
       - test_front_job_automation:
-          name: "Front test"
+          name: "Front test (job automation)"
           requires:
             - "Build dev"
       - test_back_job_automation:
-          name: "Back test"
+          name: "Back test (job automation)"
           requires:
             - "Build dev"
       - pull_request_success:
           name: "PR Success"
           requires:
-            - "Front test"
-            - "Back test"
+            - "Front test (job automation)"
+            - "Back test (job automation)"
