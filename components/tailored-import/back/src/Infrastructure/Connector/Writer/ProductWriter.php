@@ -18,21 +18,30 @@ use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Column;
 use Akeneo\Platform\TailoredImport\Domain\UpsertProductCommandCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
+use Akeneo\Platform\TailoredImport\Infrastructure\Subscriber\UpdateJobExecutionSummarySubscriber;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
+use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
-class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
+class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface, InitializableInterface
 {
     private ?StepExecution $stepExecution;
 
     public function __construct(
         private MessageBusInterface $messageBus,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
+    }
+
+    public function initialize(): void
+    {
+        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionSummarySubscriber($this->stepExecution));
     }
 
     public function write(array $items): void
@@ -43,6 +52,10 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         foreach ($items as $rowPayload) {
             $this->upsertProduct($rowPayload);
         }
+
+        $skippedNoDiffDuringThisBatch = $this->calculateSkippedNoDiff($this->stepExecution);
+
+        $this->stepExecution->incrementSummaryInfo('skipped_no_diff', $skippedNoDiffDuringThisBatch);
     }
 
     private function upsertProduct(RowPayload $rowPayload): void
@@ -56,19 +69,16 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
         } catch (LegacyViolationsException|ViolationsException $violationsException) {
             $this->addWarning($violationsException->violations(), $rowPayload);
 
-            if ('skip_value' === $this->stepExecution->getJobParameters()->get('error_action')
-                && $violationsException instanceof ViolationsException
+            if (
+                'skip_product' === $this->stepExecution->getJobParameters()->get('error_action')
+                || $violationsException instanceof LegacyViolationsException
             ) {
-                $initialUserIntentsCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
+                $this->stepExecution->incrementSummaryInfo('skip');
 
-                $rowPayload->setUpsertProductCommand(
-                    UpsertProductCommandCleaner::removeInvalidUserIntents($violationsException, $rowPayload->getUpsertProductCommand()),
-                );
-
-                if (count($rowPayload->getUpsertProductCommand()->valueUserIntents()) < $initialUserIntentsCount) {
-                    $this->upsertProduct($rowPayload);
-                }
+                return;
             }
+
+            $this->upsertProductWithSkippedValues($rowPayload, $violationsException);
         }
     }
 
@@ -98,5 +108,34 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    private function upsertProductWithSkippedValues(
+        RowPayload $rowPayload,
+        ViolationsException $violationsException,
+    ): void {
+        $initialUserIntentsCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
+
+        $rowPayload->setUpsertProductCommand(
+            UpsertProductCommandCleaner::removeInvalidUserIntents(
+                $violationsException,
+                $rowPayload->getUpsertProductCommand(),
+            ),
+        );
+
+        if (count($rowPayload->getUpsertProductCommand()->valueUserIntents()) < $initialUserIntentsCount) {
+            $this->upsertProduct($rowPayload);
+        } else {
+            $this->stepExecution->incrementSummaryInfo('skip');
+        }
+    }
+
+    private function calculateSkippedNoDiff(StepExecution $stepExecution): int
+    {
+        return $stepExecution->getSummaryInfo('item_position', 0)
+            - $stepExecution->getSummaryInfo('create', 0)
+            - $stepExecution->getSummaryInfo('process', 0)
+            - $stepExecution->getSummaryInfo('skip', 0)
+            - $stepExecution->getSummaryInfo('skipped_no_diff', 0);
     }
 }
