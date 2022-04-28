@@ -18,12 +18,12 @@ const Container = styled.div<{noTextTransform: boolean}>`
   }
 `;
 
-type Props = {
+type TitleProps = {
   showPlaceholder?: boolean;
   noTextTransform?: boolean;
 };
 
-const Title: FC<Props> = ({children, showPlaceholder, noTextTransform}) => {
+const Title: FC<TitleProps> = ({children, showPlaceholder, noTextTransform}) => {
   return (
     <Container noTextTransform={noTextTransform ?? false}>
       {showPlaceholder ? <SkeletonPlaceholder>{children}</SkeletonPlaceholder> : <>{children}</>}
@@ -32,3 +32,4 @@ const Title: FC<Props> = ({children, showPlaceholder, noTextTransform}) => {
 };
 
 export {Title};
+export type {TitleProps};
