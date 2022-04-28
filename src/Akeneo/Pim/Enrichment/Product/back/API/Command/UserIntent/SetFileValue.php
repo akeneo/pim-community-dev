@@ -16,9 +16,9 @@ final class SetFileValue implements ValueUserIntent
         private string $attributeCode,
         private ?string $channelCode,
         private ?string $localeCode,
-        private string $value
+        private string $filePath
     ) {
-        Assert::stringNotEmpty($this->value);
+        Assert::stringNotEmpty($this->filePath);
     }
 
     public function attributeCode(): string
@@ -38,6 +38,6 @@ final class SetFileValue implements ValueUserIntent
 
     public function value(): string
     {
-        return $this->value;
+        return $this->filePath;
     }
 }
