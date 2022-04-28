@@ -21,7 +21,11 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
             return new JsonResponse([]);
         }
 
-        $emails = \json_decode($request->get('emails'));
+        try {
+            $emails = \json_decode($urlEncodedEmails, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException) {
+            return new JsonResponse([]);
+        }
 
         return new JsonResponse(
             ($this->supplierContributorsBelongToAnotherSupplier)(

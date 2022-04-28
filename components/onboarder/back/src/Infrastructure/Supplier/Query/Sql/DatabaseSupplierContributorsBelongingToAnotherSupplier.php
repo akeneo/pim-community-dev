@@ -9,11 +9,8 @@ use Doctrine\DBAL\Connection;
 
 final class DatabaseSupplierContributorsBelongingToAnotherSupplier implements SupplierContributorsBelongingToAnotherSupplier
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private Connection $connection)
     {
-        $this->connection = $connection;
     }
 
     public function __invoke(string $supplierIdentifier, array $emails): array

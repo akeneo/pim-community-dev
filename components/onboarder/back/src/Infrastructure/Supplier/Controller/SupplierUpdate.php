@@ -27,7 +27,7 @@ final class SupplierUpdate
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
-        $availableContributorEmails = $this->filterEmailsBelongingToAnotherSupplier($identifier, $requestContent['contributors']);
+        $availableContributorEmails = $this->filterContributorEmailsBelongingToAnotherSupplier($identifier, $requestContent['contributors']);
 
         try {
             ($this->updateSupplierHandler)(
@@ -51,13 +51,13 @@ final class SupplierUpdate
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-    private function filterEmailsBelongingToAnotherSupplier(string $identifier, array $contributors): array
+    private function filterContributorEmailsBelongingToAnotherSupplier(string $identifier, array $contributorEmails): array
     {
         $contributorsBelongingToAnotherSupplier = ($this->supplierContributorsBelongToAnotherSupplier)(
             $identifier,
-            $contributors,
+            $contributorEmails,
         );
 
-        return array_diff($contributors, $contributorsBelongingToAnotherSupplier);
+        return array_diff($contributorEmails, $contributorsBelongingToAnotherSupplier);
     }
 }
