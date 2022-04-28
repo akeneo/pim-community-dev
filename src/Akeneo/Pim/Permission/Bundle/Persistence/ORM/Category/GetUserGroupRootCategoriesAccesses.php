@@ -90,9 +90,9 @@ SQL;
         if (false !== $row && null !== $row['default_permissions']) {
             $defaultPermissions = \json_decode($row['default_permissions'], true);
 
-            $permissions['own']['all'] = $defaultPermissions['category_own'] ?: false;
-            $permissions['edit']['all'] = $defaultPermissions['category_edit'] ?: false;
-            $permissions['view']['all'] = $defaultPermissions['category_view'] ?: false;
+            $permissions['own']['all'] = $defaultPermissions['category_own'] ?? false;
+            $permissions['edit']['all'] = $defaultPermissions['category_edit'] ?? false;
+            $permissions['view']['all'] = $defaultPermissions['category_view'] ?? false;
         }
     }
 
