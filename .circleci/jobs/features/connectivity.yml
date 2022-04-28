@@ -1,7 +1,7 @@
 executor-machine: &executor-machine 'ubuntu-2004:202111-02'
 
 jobs:
-    test_front_connectivity:
+    test_front_lint_connectivity:
         machine:
             image: *executor-machine
             docker_layer_caching: true
@@ -20,14 +20,28 @@ jobs:
             -   run:
                     name: Lint front
                     command: make connectivity-connection-lint-front
+
+    test_front_unit_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
             -   run:
                     name: Unit front
                     command: make connectivity-connection-unit-front
-            -   run:
-                    name: Type checking front
-                    command: make javascript-dev-strict
 
-    test_back_connectivity:
+    test_back_unit_connectivity:
         machine:
             image: *executor-machine
             docker_layer_caching: true
@@ -49,9 +63,20 @@ jobs:
             -   run:
                     name: Unit back
                     command: make connectivity-connection-unit-back
+
+    test_back_integration_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
             -   run:
                     name: Pull docker images
-                    command: docker-compose pull fpm mysql elasticsearch object-storage pubsub-emulator
+                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
             -   run:
                     name: Start containers
                     command: |
@@ -59,17 +84,41 @@ jobs:
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
-                    command: APP_ENV=test make database
+                    command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: Integration back
                     command: CI=false make connectivity-connection-integration-back
+            -   store_test_results:
+                    path: var/tests/phpunit
+
+    test_back_e2e_connectivity:
+        machine:
+            image: *executor-machine
+            docker_layer_caching: true
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Pull docker images
+                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: End to end back
                     command: CI=false make connectivity-connection-e2e-back
             -   store_test_results:
                     path: var/tests/phpunit
 
-    test_marketplace_activate_e2e:
+    test_back_behat_connectivity:
         machine:
             image: *executor-machine
         steps:

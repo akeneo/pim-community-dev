@@ -61,8 +61,10 @@ connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-lint-back:
+ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+endif
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
 		--level=8 \
@@ -121,8 +123,10 @@ connectivity-connection-unit-front:
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) tsc --noEmit --strict
 	$(_PERMISSION_FORM_YARN_RUN) eslint
 	$(_PERMISSION_FORM_YARN_RUN) prettier --check
+	$(_PERMISSION_FORM_YARN_RUN) tsc --noEmit --strict
 
 # Development
 

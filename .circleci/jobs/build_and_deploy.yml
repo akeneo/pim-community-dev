@@ -107,10 +107,105 @@ jobs:
             - run:
                   name: Remove MySQL port translation (see BH-664)
                   command: yq delete --inplace docker-compose.yml services.mysql.ports
+            - run:
+                  name: Copy docker-compose.override.yml.dist
+                  command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
+                    name: Setup tests results folder and log folder
+                    command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
             - persist_to_workspace:
                   root: ~/
                   paths:
                       - project
+
+    install_ce_back_dependencies:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Creating cache key for back dependencies
+                    command: cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+            -   restore_cache:
+                    name: Restore cache - back dependencies
+                    keys:
+                        - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
+                    name: Install back dependencies
+                    command: make vendor
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/vendor
+
+    install_ce_front_dependencies:
+        parameters:
+            path_to_front_packages:
+                type: string
+                default: front-packages
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Creating cache key for front dependencies
+                    command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+            -   restore_cache:
+                    name: Restore cache - front dependencies
+                    keys:
+                        - frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
+            -   run:
+                    name: Create hash for front packages
+                    command: |
+                        find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+                        find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash
+            -   restore_cache:
+                    name: Restore cache - front library DSM
+                    key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
+            -   restore_cache:
+                    name: Restore cache - front library Shared
+                    key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
+                    name: Install front dependencies
+                    command: make node_modules
+            -   run:
+                    name: Build front libraries
+                    command: |
+                        docker-compose run -u node --rm node yarn dsm:build
+                        docker-compose run -u node --rm node yarn shared:build
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/node_modules
+                        - project/front-packages/akeneo-design-system/lib
+                        - project/front-packages/shared/lib
 
     build_dev:
         parameters:
