@@ -22,7 +22,6 @@ use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -30,13 +29,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ImportSupplierTasklet implements TaskletInterface
 {
-    private const CLEAR_FREQUENCY = 100;
 
     private ItemReaderInterface $reader;
     private ValidatorInterface $validator;
     private CreateSupplierHandler $createSupplierHandler;
     private UpdateSupplierHandler $updateSupplierHandler;
-    private EntityManagerClearerInterface $unitOfWorkAndRepositoriesClearer;
     private SupplierExists $supplierExists;
     private JobRepositoryInterface $jobRepository;
     private EventDispatcherInterface $eventDispatcher;
@@ -48,7 +45,6 @@ final class ImportSupplierTasklet implements TaskletInterface
         ValidatorInterface $validator,
         CreateSupplierHandler $createSupplierHandler,
         UpdateSupplierHandler $updateSupplierHandler,
-        EntityManagerClearerInterface $unitOfWorkAndRepositoriesClearer,
         SupplierExists $supplierExists,
         JobRepositoryInterface $jobRepository,
         EventDispatcherInterface $eventDispatcher,
@@ -58,7 +54,6 @@ final class ImportSupplierTasklet implements TaskletInterface
         $this->validator = $validator;
         $this->createSupplierHandler = $createSupplierHandler;
         $this->updateSupplierHandler = $updateSupplierHandler;
-        $this->unitOfWorkAndRepositoriesClearer = $unitOfWorkAndRepositoriesClearer;
         $this->supplierExists = $supplierExists;
         $this->jobRepository = $jobRepository;
         $this->eventDispatcher = $eventDispatcher;
@@ -73,8 +68,6 @@ final class ImportSupplierTasklet implements TaskletInterface
         if ($this->reader instanceof StepExecutionAwareInterface) {
             $this->reader->setStepExecution($this->stepExecution);
         }
-
-        $itemsProcessed = 0;
 
         while (true) {
             try {
@@ -96,14 +89,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
                 continue;
             }
-
-            $itemsProcessed++;
-            if (0 === $itemsProcessed % static::CLEAR_FREQUENCY) {
-                $this->unitOfWorkAndRepositoriesClearer->clear();
-            }
         }
-
-        $this->unitOfWorkAndRepositoriesClearer->clear();
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
