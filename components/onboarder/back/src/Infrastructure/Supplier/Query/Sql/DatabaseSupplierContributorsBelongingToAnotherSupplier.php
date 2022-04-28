@@ -37,13 +37,13 @@ final class DatabaseSupplierContributorsBelongingToAnotherSupplier implements Su
             ],
             [
                 'supplierIdentifier' => \PDO::PARAM_STR,
-                'emails' => Connection::PARAM_STR_ARRAY
-            ]
+                'emails' => Connection::PARAM_STR_ARRAY,
+            ],
         );
 
         return array_map(
             fn (array $supplierContributor) => $supplierContributor['email'],
-            $statement->fetchAllAssociative()
+            $statement->fetchAllAssociative(),
         );
     }
 }

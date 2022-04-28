@@ -23,7 +23,7 @@ final class DatabaseSupplierContributorsBelongingToAnotherSupplierIntegration ex
                 'contributor1@example.com',
                 'contributor3@example.com',
                 'contributor2@example.com',
-            ])
+            ]),
         );
     }
 
@@ -39,7 +39,7 @@ final class DatabaseSupplierContributorsBelongingToAnotherSupplierIntegration ex
             $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [
                 'contributor3@example.com',
                 'contributor4@example.com',
-            ])
+            ]),
         );
     }
 
@@ -51,7 +51,7 @@ final class DatabaseSupplierContributorsBelongingToAnotherSupplierIntegration ex
         $this->createContributor('contributor2@example.com');
 
         $this->assertEmpty(
-            $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', [])
+            $this->get(SupplierContributorsBelongingToAnotherSupplier::class)('36fc4dbf-43cb-4246-8966-56ca111d859d', []),
         );
     }
 

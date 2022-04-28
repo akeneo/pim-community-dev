@@ -23,7 +23,7 @@ final class UniqueContributorEmailValidator extends ConstraintValidator
         }
 
         $contributorEmails = ($this->supplierContributorsBelongingToAnotherSupplier)($supplier->identifier, [$value]);
-        if(count($contributorEmails) > 0) {
+        if (count($contributorEmails) > 0) {
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ emailAddress }}', $contributorEmails[0])
                 ->addViolation();

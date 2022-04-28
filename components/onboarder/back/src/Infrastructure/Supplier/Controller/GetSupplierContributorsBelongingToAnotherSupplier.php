@@ -27,7 +27,7 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
             ($this->supplierContributorsBelongToAnotherSupplier)(
                 $supplierIdentifier,
                 $emails,
-            )
+            ),
         );
     }
 }
