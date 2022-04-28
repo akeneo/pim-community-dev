@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
@@ -34,9 +34,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CreateAppWithAuthorizationHandlerIntegration extends TestCase
+class CreateConnectedAppWithAuthorizationHandlerIntegration extends TestCase
 {
-    private CreateAppWithAuthorizationHandler $handler;
+    private CreateConnectedAppWithAuthorizationHandler $handler;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private ClientManagerInterface $clientManager;
     private UserManager $userManager;
@@ -57,7 +57,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
-        $this->handler = $this->get(CreateAppWithAuthorizationHandler::class);
+        $this->handler = $this->get(CreateConnectedAppWithAuthorizationHandler::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->userManager = $this->get('pim_user.manager');
@@ -160,7 +160,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
      */
     public function test_it_throws_when_the_command_is_not_valid(string $clientId, $expectedMessage)
     {
-        $command = new CreateAppWithAuthorizationCommand($clientId);
+        $command = new CreateConnectedAppWithAuthorizationCommand($clientId);
 
         $this->expectException(InvalidAppAuthorizationRequestException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -174,7 +174,7 @@ class CreateAppWithAuthorizationHandlerIntegration extends TestCase
 
         $this->addAppAuthorization($appId);
 
-        $this->handler->handle(new CreateAppWithAuthorizationCommand($appId));
+        $this->handler->handle(new CreateConnectedAppWithAuthorizationCommand($appId));
 
         $foundApp = $this->findOneConnectedAppByIdQuery->execute($appId);
         Assert::assertNotNull($foundApp, 'No persisted app found');

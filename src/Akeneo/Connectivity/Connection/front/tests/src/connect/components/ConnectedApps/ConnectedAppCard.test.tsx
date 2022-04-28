@@ -33,6 +33,7 @@ test('The connected app card renders', async () => {
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -78,6 +79,7 @@ test('The Manage App button is disabled when the user doesnt have the permission
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -119,6 +121,7 @@ test('The Open App button is disabled when the user doesnt have the permission t
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -160,6 +163,7 @@ test('The Open App and Manage App buttons are enabled for test app when the user
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -174,7 +178,10 @@ test('The Open App and Manage App buttons are enabled for test app when the user
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
     );
-    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.toHaveAttribute(
+        'href',
+        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=connectionCodeA'
+    );
     openAppButton.not.toHaveAttribute('disabled');
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 
@@ -204,6 +211,7 @@ test('The connected app card displays removed user as author when author is null
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -234,6 +242,7 @@ test('The connected app card displays app illustration when logo is null', async
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -261,6 +270,7 @@ test('The connected app card displays a warning when it is not listed on the app
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: false,
     };
@@ -288,6 +298,7 @@ test('The pending App card renders', async () => {
         activate_url: 'http://www.example.com/activate',
         is_test_app: false,
         is_pending: true,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     };
@@ -310,7 +321,10 @@ test('The pending App card renders', async () => {
     const openAppButton = expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')
     );
-    openAppButton.toHaveAttribute('href', 'http://www.example.com/activate');
+    openAppButton.toHaveAttribute(
+        'href',
+        '#akeneo_connectivity_connection_connect_connected_apps_open?connectionCode=connectionCodeA'
+    );
     openAppButton.not.toHaveAttribute('disabled');
     openAppButton.not.toHaveAttribute('aria-disabled', 'true');
 
@@ -327,4 +341,38 @@ test('The pending App card renders', async () => {
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryByAltText('App A')).toBeInTheDocument();
     expect(AppIllustration).toHaveBeenCalled();
+});
+
+test('The connected app card displays a warning when it has a outdated scopes flag', async () => {
+    const item: ConnectedApp = {
+        id: '0dfce574-2238-4b13-b8cc-8d257ce7645b',
+        name: 'App A',
+        scopes: ['scope A1'],
+        connection_code: 'connectionCodeA',
+        logo: 'http://www.example.test/path/to/logo/a',
+        author: 'author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['category A1', 'category A2'],
+        certified: false,
+        partner: 'partner A',
+        activate_url: 'http://www.example.com/activate',
+        is_test_app: false,
+        is_pending: false,
+        has_outdated_scopes: true,
+        is_loaded: true,
+        is_listed_on_the_appstore: true,
+    };
+
+    renderWithProviders(<ConnectedAppCard item={item} />);
+    await waitFor(() => screen.getByText('App A'));
+
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.list.card.new_access_authorization_required'
+        )
+    ).toBeInTheDocument();
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.list.card.open_app')).toHaveStyle(
+        'background-color: rgb(249, 181, 63)'
+    );
 });

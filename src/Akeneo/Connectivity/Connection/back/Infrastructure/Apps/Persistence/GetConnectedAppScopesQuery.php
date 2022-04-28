@@ -28,6 +28,6 @@ SQL;
             'id' => $appId,
         ]);
 
-        return '' !== $scopes ? \json_decode($scopes) : [];
+        return !empty($scopes) ? \json_decode($scopes) : [];
     }
 }

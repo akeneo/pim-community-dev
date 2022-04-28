@@ -83,6 +83,7 @@ class GetConnectedAppActionEndToEnd extends WebTestCase
             'partner' => 'partner A',
             'is_test_app' => false,
             'is_pending' => false,
+            'has_outdated_scopes' => false,
         ];
 
         $this->client->request(

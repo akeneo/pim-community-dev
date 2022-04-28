@@ -27,7 +27,8 @@ class ConnectedAppSpec extends ObjectBehavior
             true,
             'Akeneo partner',
             true,
-            false
+            false,
+            true,
         );
     }
 
@@ -86,6 +87,11 @@ class ConnectedAppSpec extends ObjectBehavior
         $this->getPartner()->shouldBe('Akeneo partner');
     }
 
+    public function it_returns_the_outdated_scopes_status(): void
+    {
+        $this->hasOutdatedScopes()->shouldBe(true);
+    }
+
     public function it_could_be_pending(): void
     {
         $this->beConstructedWith(
@@ -120,6 +126,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'partner' => 'Akeneo partner',
             'is_test_app' => true,
             'is_pending' => false,
+            'has_outdated_scopes' => true,
         ]);
     }
 
@@ -151,6 +158,7 @@ class ConnectedAppSpec extends ObjectBehavior
             'partner' => 'Akeneo partner',
             'is_test_app' => false,
             'is_pending' => false,
+            'has_outdated_scopes' => false,
         ]);
     }
 
@@ -178,6 +186,39 @@ class ConnectedAppSpec extends ObjectBehavior
             'partner' => 'Akeneo Premium Partner',
             'is_test_app' => true,
             'is_pending' => false,
+            'has_outdated_scopes' => true,
+        ]);
+    }
+
+    public function it_has_not_outdated_scopes_by_default(): void
+    {
+        $this->beConstructedWith(
+            '4028c158-d620-4903-9859-958b66a059e2',
+            'Example App',
+            ['Scope1', 'Scope2'],
+            'someConnectionCode',
+            'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
+            'Akeneo',
+            'app_123456abcdef',
+            ['E-commerce', 'print'],
+            true,
+            'Akeneo partner',
+        );
+
+        $this->normalize()->shouldBe([
+            'id' => '4028c158-d620-4903-9859-958b66a059e2',
+            'name' => 'Example App',
+            'scopes' => ['Scope1', 'Scope2'],
+            'connection_code' => 'someConnectionCode',
+            'logo' => 'https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/shopify-connector-logo-1200x.png?itok=mASOVlwC',
+            'author' => 'Akeneo',
+            'user_group_name' => 'app_123456abcdef',
+            'categories' => ['E-commerce', 'print'],
+            'certified' => true,
+            'partner' => 'Akeneo partner',
+            'is_test_app' => false,
+            'is_pending' => false,
+            'has_outdated_scopes' => false,
         ]);
     }
 }

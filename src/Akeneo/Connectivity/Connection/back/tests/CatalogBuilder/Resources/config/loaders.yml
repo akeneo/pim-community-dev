@@ -77,6 +77,7 @@ services:
             - '@pim_user.updater.group'
             - '@validator'
             - '@pim_user.saver.group'
+            - '@database_connection'
 
     akeneo_connectivity.connection.fixtures.enrichment.user_role_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader'
@@ -85,6 +86,7 @@ services:
             - '@pim_user.updater.role'
             - '@validator'
             - '@pim_user.saver.role'
+            - '@database_connection'
 
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
@@ -122,3 +124,18 @@ services:
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader:
         arguments:
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_group_loader'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.repository.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'

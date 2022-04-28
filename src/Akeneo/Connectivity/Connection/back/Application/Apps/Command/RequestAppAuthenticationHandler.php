@@ -44,7 +44,7 @@ class RequestAppAuthenticationHandler
         $userId = $command->getPimUserId();
         $appId = $command->getAppId();
 
-        // If openid scope isn't requested, clear all the user consentend scopes & skip the authentication.
+        // If openid scope isn't requested, clear all the user consented scopes & skip the authentication.
         if (false === $command->getRequestedAuthenticationScopes()->hasScope(AuthenticationScope::SCOPE_OPENID)) {
             $this->createUserConsentQuery->execute(
                 $userId,
@@ -90,6 +90,9 @@ class RequestAppAuthenticationHandler
         }
 
         // Throws if there is one or more new scopes that need consent.
-        throw new UserConsentRequiredException($command->getAppId(), $command->getPimUserId(), $newScopesRequiringConsent);
+        throw new UserConsentRequiredException(
+            $command->getAppId(),
+            $command->getPimUserId(),
+        );
     }
 }

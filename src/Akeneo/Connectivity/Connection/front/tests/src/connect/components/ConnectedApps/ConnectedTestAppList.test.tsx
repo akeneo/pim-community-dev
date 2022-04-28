@@ -39,6 +39,7 @@ const connectedTestApps = [
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
     },
     {
         id: 'test_id_b',
@@ -54,6 +55,7 @@ const connectedTestApps = [
         activate_url: 'http://www.example.com/activate',
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
     },
 ];
 

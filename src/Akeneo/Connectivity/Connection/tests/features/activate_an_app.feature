@@ -43,7 +43,7 @@ Feature: Activate an OAuth2 client application in the PIM
     And I click on the consent checkbox
     And I click on the button "Allow and next"
     And I see "View, edit and delete products and product models"
-    And I click on the button "Allow and finish"
+    And I click on the button "Confirm"
     Then I have the connected app "App prototype"
     And my connected app has the following ACLs:
       | name                   | enabled |
