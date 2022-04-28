@@ -29,38 +29,11 @@ class ReadColumnsValidator extends ConstraintValidator
             return;
         }
 
-        $requiredParams = [
-            'file_key',
-            'file_structure',
-        ];
-
-        $missingParams = array_filter($requiredParams, fn ($param) => null === $value->get($param));
-
-        if (count($missingParams) > 0) {
-            $this->context->buildViolation(
-                ReadColumns::MISSING_QUERY_PARAMS,
-                [
-                    '{{ missing_params }}' => implode(', ', $missingParams),
-                ],
-            )->addViolation();
-
-            return;
-        }
-
-        $requestParams = [
-            'file_key' => $value->get('file_key'),
-            'file_structure' => $value->get('file_structure'),
-        ];
-
         $validator = $this->context->getValidator()->inContext($this->context);
-        $validator->atPath('[params]')->validate($requestParams, new Collection([
+        $validator->validate($value->request->all(), new Collection([
             'fields' => [
-                'file_key' => [
-                    new FileKey(),
-                ],
-                'file_structure' => [
-                    new IsValidFileStructure(),
-                ],
+                'file_key' => new FileKey(),
+                'file_structure' => new IsValidFileStructure(),
             ],
         ]));
 
@@ -71,7 +44,7 @@ class ReadColumnsValidator extends ConstraintValidator
         $fileStructure = $value->get('file_structure');
         $reader = $this->xlsxFileReaderFactory->create($value->get('file_key'));
         $headerRow = $reader->readRow($fileStructure['sheet_name'], $fileStructure['header_row']);
-        $headerRow = array_slice($headerRow, $fileStructure['first_column']);
+        $headerRow = $this->truncateHeaderToFirstColumn($headerRow, $fileStructure['first_column']);
 
         $this->validateLessThan500Column($headerRow);
         $this->validateNoEmptyHeader($headerRow);
@@ -84,7 +57,7 @@ class ReadColumnsValidator extends ConstraintValidator
             [
                 'min' => 1,
                 'max' => self::MAX_COLUMN_COUNT,
-                'minMessage' => ReadColumns::AT_lEAST_ONE_COLUMN,
+                'minMessage' => ReadColumns::AT_LEAST_ONE_COLUMN,
                 'maxMessage' => ReadColumns::MAX_COUNT_REACHED,
             ],
         ));
@@ -94,10 +67,15 @@ class ReadColumnsValidator extends ConstraintValidator
     {
         foreach ($headerRow as $cell) {
             if (empty($cell)) {
-                $this->context->buildViolation(ReadColumns::EMPTY_HEADER)->addViolation();
+                $this->context->addViolation(ReadColumns::EMPTY_HEADER);
 
                 return;
             }
         }
+    }
+
+    private function truncateHeaderToFirstColumn(array $headerRow, int $firstColumn): array
+    {
+        return array_slice($headerRow, $firstColumn);
     }
 }

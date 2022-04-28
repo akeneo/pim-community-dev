@@ -25,7 +25,7 @@ class CellsFormatter
         return array_map(fn ($cell) => $this->formatCell($cell), $cells);
     }
 
-    public function formatCell(mixed $cell): string
+    private function formatCell(mixed $cell): string
     {
         switch (true) {
             case $cell instanceof \DateTime:
