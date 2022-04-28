@@ -56,8 +56,11 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
     return child;
   });
 
+  if (!recommendations || 0 === recommendations.length) {
+    return null;
+  }
+
   return (
-    recommendations.length > 0 && (
       <div className="AknSubsection AxisEvaluationContainer">
         <AxisHeader evaluation={evaluation} axis={axis} />
 
@@ -66,7 +69,6 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
 
         {recommendations}
       </div>
-    )
   );
 };
 
