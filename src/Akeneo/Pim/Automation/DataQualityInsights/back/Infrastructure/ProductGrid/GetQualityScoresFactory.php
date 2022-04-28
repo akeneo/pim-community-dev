@@ -9,6 +9,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -23,13 +26,21 @@ class GetQualityScoresFactory
     ) {
     }
 
-    public function __invoke(ProductEntityIdCollection $productIdCollection, string $type): array
+    public function __invoke(ProductEntityIdCollection $entityIdCollection, string $type): array
     {
-        $scoresByIds = match ($type) {
-            'product' => $this->getProductScoresQuery->byProductUuidCollection($productIdCollection),
-            'product_model' => $this->getProductModelScoresQuery->byProductModelIdCollection($productIdCollection),
-            default => throw new \InvalidArgumentException(sprintf('Invalid type %s', $type))
-        };
+
+        switch ($type) {
+            case 'product':
+                Assert::isInstanceOf($entityIdCollection, ProductUuidCollection::class);
+                $scoresByIds =  $this->getProductScoresQuery->byProductUuidCollection($entityIdCollection);
+                break;
+            case 'product_model':
+                Assert::isInstanceOf($entityIdCollection, ProductModelIdCollection::class);
+                $scoresByIds = $this->getProductModelScoresQuery->byProductModelIdCollection($entityIdCollection);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Invalid type %s', $type));
+        }
 
         return array_map(fn (Read\Scores $scores) => ($this->getScoresByCriteria)($scores), $scoresByIds);
     }
