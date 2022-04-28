@@ -47,7 +47,7 @@ SQL;
                 'product_uuid' => $productId->toBytes(),
             ],
             [
-                'product_id' => \PDO::PARAM_STR,
+                'product_uuid' => \PDO::PARAM_STR,
             ]
         );
 
