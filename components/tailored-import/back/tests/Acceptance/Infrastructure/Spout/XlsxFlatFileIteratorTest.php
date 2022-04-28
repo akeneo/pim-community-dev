@@ -93,7 +93,7 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function it_returns_the_headers_even_with_empty_trailing_header()
+    public function it_returns_the_headers_even_with_empty_trailing_header(): void
     {
         $flatFileIterator = $this->getFlatFileIterator(
             headerLine: 1,

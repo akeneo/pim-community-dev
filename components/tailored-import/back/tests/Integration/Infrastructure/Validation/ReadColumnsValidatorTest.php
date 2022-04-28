@@ -89,7 +89,7 @@ class ReadColumnsValidatorTest extends AbstractValidationTest
         ];
     }
 
-    public function invalidRequest()
+    public function invalidRequest(): array
     {
         $fileKey = $this->uploadFile();
 

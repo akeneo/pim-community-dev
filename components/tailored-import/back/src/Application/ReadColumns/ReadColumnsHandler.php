@@ -39,7 +39,7 @@ class ReadColumnsHandler
         ));
     }
 
-    private function fileHeaderToColumn(int $index, string $headerCell, $firstColumnIndex): Column
+    private function fileHeaderToColumn(int $index, string $headerCell, int $firstColumnIndex): Column
     {
         return Column::create(
             $this->uuidGenerator->generate(),
