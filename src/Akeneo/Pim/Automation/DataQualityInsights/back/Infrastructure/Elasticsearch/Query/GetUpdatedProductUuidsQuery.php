@@ -10,9 +10,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -26,8 +23,7 @@ class GetUpdatedProductUuidsQuery implements GetUpdatedProductUuidsQueryInterfac
     public function __construct(
         private Client                          $esClient,
         private string                          $documentType,
-        private ProductEntityIdFactoryInterface $idFactory,
-        private Connection $connection
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -108,9 +104,6 @@ class GetUpdatedProductUuidsQuery implements GetUpdatedProductUuidsQueryInterfac
             ? self::PRODUCT_MODEL_IDENTIFIER_PREFIX
             : self::PRODUCT_IDENTIFIER_PREFIX;
         $productId =  \str_replace($identifierPrexis, '', $productData['_source']['id']);
-        if (Uuid::isValid($productId)) {
-            $productId = $this->getProductIdFromUuid(Uuid::fromString($productId));
-        }
 
         return (string) $productId;
     }
@@ -122,14 +115,5 @@ class GetUpdatedProductUuidsQuery implements GetUpdatedProductUuidsQueryInterfac
         ]);
 
         return $count['count'] ?? 0;
-    }
-
-    private function getProductIdFromUuid(UuidInterface $productUuid): int
-    {
-        $id = $this->connection
-            ->executeQuery('SELECT id FROM pim_catalog_product WHERE uuid = ?', [$productUuid->getBytes()])
-            ->fetchOne();
-
-        return $id ? (int) $id : 0;
     }
 }
