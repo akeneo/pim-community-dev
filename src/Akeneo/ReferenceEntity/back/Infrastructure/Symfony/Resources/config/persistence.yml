@@ -442,9 +442,9 @@ services:
 
     # Structure query functions
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\ChannelExists
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheChannelExists

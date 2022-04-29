@@ -494,9 +494,9 @@ services:
 
     # Structure query functions
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\ChannelExists
         arguments:
-            - '@database_connection'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
