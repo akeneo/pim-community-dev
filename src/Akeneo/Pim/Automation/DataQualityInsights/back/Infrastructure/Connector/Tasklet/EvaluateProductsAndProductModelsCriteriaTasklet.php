@@ -7,10 +7,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tas
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsToEvaluateQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelIdsToEvaluateQuery;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductUuidsToEvaluateQuery;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -21,8 +22,8 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private ?StepExecution $stepExecution;
 
     public function __construct(
-        private GetProductUuidsToEvaluateQuery $getProductUuidsToEvaluateQuery,
-        private GetProductModelIdsToEvaluateQuery $getProductModelsIdsToEvaluateQuery,
+        private GetEntityIdsToEvaluateQueryInterface $getProductUuidsToEvaluateQuery,
+        private GetEntityIdsToEvaluateQueryInterface $getProductModelsIdsToEvaluateQuery,
         private EvaluateProducts $evaluateProducts,
         private EvaluateProductModels $evaluateProductModels,
         private int $limitPerLoop = 1000,
@@ -85,7 +86,9 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     private function evaluatePendingProductCriteria(): int
     {
         $evaluationCount = 0;
+
         foreach ($this->getProductUuidsToEvaluateQuery->execute($this->limitPerLoop, $this->bulkSize) as $productUuidCollection) {
+            Assert::isInstanceOf($productUuidCollection, ProductUuidCollection::class);
             ($this->evaluateProducts)($productUuidCollection);
 
             $evaluationCount += count($productUuidCollection);
@@ -99,6 +102,7 @@ final class EvaluateProductsAndProductModelsCriteriaTasklet implements TaskletIn
     {
         $evaluationCount = 0;
         foreach ($this->getProductModelsIdsToEvaluateQuery->execute($this->limitPerLoop, $this->bulkSize) as $productModelIdCollection) {
+            Assert::isInstanceOf($productModelIdCollection, ProductModelIdCollection::class);
             ($this->evaluateProductModels)($productModelIdCollection);
 
             $evaluationCount += count($productModelIdCollection);
