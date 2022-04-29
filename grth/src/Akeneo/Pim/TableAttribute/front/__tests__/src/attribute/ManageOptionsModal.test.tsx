@@ -103,6 +103,8 @@ describe('ManageOptionsModal', () => {
     expect(screen.getByText('pim_table_attribute.validations.column_code_must_be_filled')).toBeInTheDocument();
     fireEvent.change(getCodeInput('new'), {target: {value: 'pepper'}});
     expect(screen.getByText('pim_table_attribute.validations.duplicated_select_code')).toBeInTheDocument();
+    fireEvent.change(getCodeInput('new'), {target: {value: 'SALT'}});
+    expect(screen.getAllByText('pim_table_attribute.validations.duplicated_select_code')).toHaveLength(2);
   });
 
   it('should autofill the code', async () => {

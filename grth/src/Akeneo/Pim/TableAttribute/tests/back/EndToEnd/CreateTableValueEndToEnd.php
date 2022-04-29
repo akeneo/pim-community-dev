@@ -72,7 +72,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
         Assert::assertNotNull($productFromDb);
         $value = $productFromDb->getValue('nutrition');
         Assert::assertInstanceOf(TableValue::class, $value);
-        $expectedData = [['foo' => 'BAR']];
+        $expectedData = [['foo' => 'bar']];
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 

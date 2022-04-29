@@ -78,8 +78,8 @@ SQL;
         if (false !== $row && null !== $row['default_permissions']) {
             $defaultPermissions = \json_decode($row['default_permissions'], true);
 
-            $permissions['edit']['all'] = $defaultPermissions['attribute_group_edit'] ?: false;
-            $permissions['view']['all'] = $defaultPermissions['attribute_group_view'] ?: false;
+            $permissions['edit']['all'] = $defaultPermissions['attribute_group_edit'] ?? false;
+            $permissions['view']['all'] = $defaultPermissions['attribute_group_view'] ?? false;
         }
     }
 

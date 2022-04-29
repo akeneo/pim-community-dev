@@ -103,9 +103,13 @@ pimee_published_product:
 
 pim_versioning:
     resource: "@AkeneoPimProductRevertBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: restore_product
 
 pim_catalog_rule:
     resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
+    defaults:
+        _feature: product_rules
 
 pim_tailored_export:
     resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
