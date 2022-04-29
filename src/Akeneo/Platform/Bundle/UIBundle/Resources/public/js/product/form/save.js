@@ -35,7 +35,7 @@ define([
      */
     save: function (options) {
       var product = $.extend(true, {}, this.getFormData());
-      var productUuid = product.meta.uuid;
+      var productUuid = product.meta.id;
 
       delete product.meta;
 

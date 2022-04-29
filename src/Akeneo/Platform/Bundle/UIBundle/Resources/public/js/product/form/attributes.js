@@ -13,9 +13,9 @@ define(['routing', 'pim/form/common/attributes', 'jquery'], function (Routing, A
      * {@inheritdoc}
      */
     generateRemoveAttributeUrl: function (attribute) {
-      if (this.getFormData().meta.uuid) {
+      if (Number.isInteger(this.getFormData().meta.id)) {
         return Routing.generate(this.config.removeAttributeRoute, {
-          uuid: this.getFormData().meta.uuid,
+          uuid: this.getFormData().meta.id,
           attributeId: attribute.meta.id,
         });
       }
