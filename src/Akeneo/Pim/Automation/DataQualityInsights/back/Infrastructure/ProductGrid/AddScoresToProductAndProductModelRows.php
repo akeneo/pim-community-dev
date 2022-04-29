@@ -41,9 +41,9 @@ class AddScoresToProductAndProductModelRows
 
         $productIds = [];
         foreach ($rows as $row) {
-            $technicalId = $row->technicalId();
-            $entityId = $this->idFactory->create($technicalId);
-            $productIds[] = (string) $entityId;
+            if ($type === $row->documentType()) {
+                $productIds[] = (string) $row->technicalId();
+            }
         }
 
         $productIdCollection = $this->idFactory->createCollection($productIds);
@@ -55,7 +55,7 @@ class AddScoresToProductAndProductModelRows
 
         $enrichedRows = [];
         foreach ($rows as $row) {
-            $scoreValue = $this->retrieveScore($row->technicalId(), $scores, $channel, $locale);
+            $scoreValue = $this->retrieveScore((string) $row->technicalId(), $scores, $channel, $locale);
             $property = new AdditionalProperty('data_quality_insights_score', $scoreValue);
             $enrichedRows[] = $row->addAdditionalProperty($property);
         }

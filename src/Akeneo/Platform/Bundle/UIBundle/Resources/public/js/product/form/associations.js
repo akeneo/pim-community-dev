@@ -85,7 +85,7 @@ define([
           name: this.config.datagridName,
           getInitialParams: function (associationType) {
             let params = {
-              product: this.getFormData().meta.uuid,
+              product: this.getFormData().meta.uuid || this.getFormData().meta.id,
             };
             params[this.datagrids.products.paramName] = this.datagrids.products.getParamValue(associationType);
             params.dataLocale = UserContext.get('catalogLocale');
