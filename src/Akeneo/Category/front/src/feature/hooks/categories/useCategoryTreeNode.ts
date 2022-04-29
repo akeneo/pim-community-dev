@@ -9,7 +9,7 @@ import {
   TreeNode,
 } from '../../models';
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
-import {useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {useFetch, useRoute, useRouter} from '@akeneo-pim-community/shared';
 import {moveCategory} from '../../infrastructure/savers';
 import {arrayUnique, useBooleanState} from 'akeneo-design-system';
 
@@ -21,6 +21,7 @@ type Move = {
 };
 
 const useCategoryTreeNode = (id: number) => {
+  const router = useRouter();
   const {nodes, setNodes, ...rest} = useContext(CategoryTreeContext);
   const [move, setMove] = useState<Move | null>(null);
   const node = useMemo(() => findOneByIdentifier(nodes, id), [id, nodes]);
@@ -151,7 +152,7 @@ const useCategoryTreeNode = (id: number) => {
       setNodes(newNodesList);
 
       // Call to backend to persist the movement
-      const persistSuccess = await moveCategory({
+      const persistSuccess = await moveCategory(router, {
         identifier,
         parentId: target.position === 'in' ? target.identifier : target.parentId,
         previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),

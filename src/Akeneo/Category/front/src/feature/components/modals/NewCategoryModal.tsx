@@ -1,6 +1,6 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {NotificationLevel, TextField, useNotify, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {NotificationLevel, TextField, useNotify, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {createCategory, ValidationErrors} from '../../infrastructure/savers';
 
@@ -11,6 +11,7 @@ type NewCategoryModalProps = {
 };
 
 const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, parentCode}) => {
+  const router = useRouter();
   const translate = useTranslate();
   const [newCategoryCode, setNewCategoryCode] = useState('');
   const [newCategoryLabel, setNewCategoryLabel] = useState('');
@@ -23,7 +24,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
 
   const createNewCategoryTree = async () => {
     if (newCategoryCode.trim() !== '') {
-      const errors = await createCategory(newCategoryCode, parentCode, locale, newCategoryLabel);
+      const errors = await createCategory(router, newCategoryCode, parentCode, locale, newCategoryLabel);
       if (Object.keys(errors).length > 0) {
         setValidationErrors(errors);
         notify(

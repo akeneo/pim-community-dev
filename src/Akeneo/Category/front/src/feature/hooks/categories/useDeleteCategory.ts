@@ -1,7 +1,8 @@
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRoute, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {deleteCategory} from '../../infrastructure/removers';
 
 const MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE = 100;
+
 
 type CategoryToDelete = {
   identifier: number;
@@ -10,6 +11,7 @@ type CategoryToDelete = {
 };
 
 const useDeleteCategory = () => {
+  const router = useRouter();
   const translate = useTranslate();
   const notify = useNotify();
 
@@ -31,7 +33,7 @@ const useDeleteCategory = () => {
   };
 
   const handleDeleteCategory = async (categoryToDelete: CategoryToDelete) => {
-    const response = await deleteCategory(categoryToDelete.identifier);
+    const response = await deleteCategory(router, categoryToDelete.identifier);
     response.ok && categoryToDelete.onDelete();
 
     const message = response.ok
@@ -50,4 +52,5 @@ const useDeleteCategory = () => {
   };
 };
 
-export {useDeleteCategory, CategoryToDelete};
+export type { CategoryToDelete };
+export {useDeleteCategory};

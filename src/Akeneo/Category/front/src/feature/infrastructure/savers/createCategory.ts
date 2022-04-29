@@ -1,6 +1,4 @@
-import {LocaleCode} from '@akeneo-pim-community/shared';
-
-const Routing = require('routing');
+import {LocaleCode, Router} from '@akeneo-pim-community/shared';
 
 const ROUTE_NAME = 'pim_enrich_categorytree_create';
 
@@ -17,6 +15,7 @@ type Category = {
 };
 
 const createCategory = async (
+  router: Router,
   code: string,
   parent?: string,
   locale?: LocaleCode,
@@ -36,7 +35,7 @@ const createCategory = async (
     };
   }
 
-  const response = await fetch(Routing.generate(ROUTE_NAME), {
+  const response = await fetch(router.generate(ROUTE_NAME), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -52,4 +51,8 @@ const createCategory = async (
   return {};
 };
 
-export {createCategory, ValidationErrors};
+export type {ValidationErrors};
+
+export {
+  createCategory,
+};

@@ -1,6 +1,6 @@
 import {useCallback, useContext, useEffect, useState} from 'react';
 import {saveEditCategoryForm} from '../../infrastructure/savers';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {EditCategoryForm, useCategory} from './useCategory';
 import {EditCategoryContext} from '../../components';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../../helpers';
@@ -8,6 +8,7 @@ import {Category} from '../../models';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
+  const router = useRouter();
   const notify = useNotify();
   const translate = useTranslate();
   const [categoryData, loadCategory, categoryLoadingStatus] = useCategory(categoryId);
@@ -103,7 +104,7 @@ const useEditCategoryForm = (categoryId: number) => {
       return;
     }
 
-    const response = await saveEditCategoryForm(categoryData.category.id, editedFormData);
+    const response = await saveEditCategoryForm(router, categoryData.category.id, editedFormData);
 
     if (response.success) {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));

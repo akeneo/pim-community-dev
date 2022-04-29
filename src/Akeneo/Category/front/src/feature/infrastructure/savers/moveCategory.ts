@@ -1,4 +1,4 @@
-const Routing = require('routing');
+import { Router } from "@akeneo-pim-community/shared";
 
 type MovedCategory = {
   identifier: number;
@@ -6,8 +6,8 @@ type MovedCategory = {
   previousCategoryId: number | null;
 };
 
-const moveCategory = async (movedCategory: MovedCategory): Promise<boolean> => {
-  const url = Routing.generate('pim_enrich_categorytree_movenode', {
+const moveCategory = async (router: Router,movedCategory: MovedCategory): Promise<boolean> => {
+  const url = router.generate('pim_enrich_categorytree_movenode', {
     id: movedCategory.identifier.toString(),
     parent: movedCategory.parentId.toString(),
     prev_sibling: movedCategory.previousCategoryId ? movedCategory.previousCategoryId.toString() : '',
