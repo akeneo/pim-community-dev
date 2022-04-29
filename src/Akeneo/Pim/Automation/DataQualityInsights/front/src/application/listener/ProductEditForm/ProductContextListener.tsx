@@ -74,7 +74,7 @@ const ProductContextListener: FunctionComponent<ProductContextListenerProps> = (
       })();
 
       (async () => {
-        const data = await productFetcher(product.meta.id as number);
+        const data = await productFetcher(product.meta.id as string);
         dispatchAction(initializeProductAction(data));
         setProductHasBeenSaved(false);
       })();
