@@ -36,6 +36,7 @@ class DatabaseHelper
         $this->resetTables();
         $this->insertDefaultLocales();
         $this->insertDefaultCategories();
+        $this->insertDefaultCurrencies();
         $this->insertDefaultChannels();
         $this->insertUsers();
         $this->insertImages();
@@ -60,6 +61,7 @@ class DatabaseHelper
             DELETE FROM oro_user_access_group;
             DELETE FROM pim_catalog_channel;
             DELETE FROM pim_catalog_category;
+            DELETE FROM pim_catalog_currency;
             DELETE FROM pim_catalog_locale;
             DELETE FROM akeneo_file_storage_file_info;
 
@@ -91,6 +93,16 @@ SQL;
         $this->sqlConnection->executeQuery($resetCategory);
     }
 
+    private function insertDefaultCurrencies(): void
+    {
+        $resetCurrency = <<<SQL
+        INSERT INTO `pim_catalog_currency` (`id`, `code`, `is_activated`)
+        VALUES
+            (1, 'EUR', 1);
+SQL;
+        $this->sqlConnection->executeQuery($resetCurrency);
+    }
+
     private function insertDefaultChannels(): void
     {
         $resetChannel = <<<SQL
@@ -99,6 +111,12 @@ SQL;
             (1, 1, 'mobile', 'a:0:{}'),
             (2, 1, 'print', 'a:0:{}'),
             (3, 1, 'ecommerce', 'a:0:{}');
+
+        INSERT INTO `pim_catalog_channel_currency` (`channel_id`, `currency_id`)
+        VALUES
+            (1, 1),
+            (2, 1),
+            (3, 1);
 
         INSERT INTO `pim_catalog_channel_locale` (`channel_id`, `locale_id`)
         VALUES
