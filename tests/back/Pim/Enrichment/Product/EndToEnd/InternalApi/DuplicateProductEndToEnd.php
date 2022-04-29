@@ -23,6 +23,8 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('duplicate_product');
+
         $this->router = $this->get('router');
 
         $adminUser = $this->get('pim_user.repository.user')->findOneByIdentifier('admin');

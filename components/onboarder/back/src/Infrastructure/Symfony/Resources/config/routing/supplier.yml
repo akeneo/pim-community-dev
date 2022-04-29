@@ -45,3 +45,10 @@ onboarder_serenity_supplier_update:
     requirements:
         identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
     methods: [PUT]
+
+onboarder_serenity_supplier_download_import_template:
+    path: /download-import-template
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate
+        _feature: onboarder_serenity_supplier
+    methods: [GET]

@@ -21,6 +21,7 @@ extensions:
         parent: pim-product-model-edit-form-attributes
         targetZone: self
         position: 110
+        feature: product_rules
 
     pim-product-model-edit-form-send-for-approval:
         module: pimee/product-edit-form/send-for-approval

@@ -7,3 +7,4 @@ extensions:
         config:
             fieldName: is_read_only
             label: pim_enrich.entity.attribute.property.is_read_only
+        feature: read_only_product_attribute

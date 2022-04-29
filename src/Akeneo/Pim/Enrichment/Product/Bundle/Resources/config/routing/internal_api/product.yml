@@ -1,4 +1,8 @@
 pimee_enrich_product_rest_duplicate:
     path: /rest/{id}/duplicate
-    defaults: { _controller: pimee_enrich.controller.duplicate_product:duplicateProductAction, _format: json}
+    defaults:
+        _controller: pimee_enrich.controller.duplicate_product:duplicateProductAction
+        _format: json
+        _feature: duplicate_product
     methods: [POST]
+

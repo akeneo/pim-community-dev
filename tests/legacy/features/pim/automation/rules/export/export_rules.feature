@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: Export rules
   In order to be able to access and modify rules outside PIM
   As an administrator
