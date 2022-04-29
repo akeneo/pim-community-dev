@@ -63,9 +63,6 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@pim_catalog.elasticsearch.indexer.product'
 
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidRemoveTempConstraintsAndIndexes:
-        parent: base_uuid_migration_step
-
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCommand:
         arguments:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidCreateIndexes'
@@ -77,7 +74,6 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidRemoveTempConstraintsAndIndexes'
             - '@monolog.logger'
             - '@database_connection'
         tags:
