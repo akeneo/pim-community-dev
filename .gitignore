@@ -45,3 +45,8 @@ front-packages/akeneo-design-system/lib
 /.env.local
 /.env.local.php
 /.env.*.local
+
+docker/sftp_server/root/*
+!docker/sftp_server/root/greg/.gitkeep
+!docker/sftp_server/root/julia/.gitkeep
+!docker/sftp_server/root/peter/.gitkeep

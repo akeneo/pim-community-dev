@@ -128,11 +128,21 @@ services:
 
   sftp_server:
     image: 'atmoz/sftp:debian'
-    command: 'ziggy:ziggy:::pim'
     ports:
       - '2222:22'
     volumes:
-      - './var/sftp_server:/home/ziggy/pim'
+      # host ssh keys (required to freeze server fingerprint)
+      - './docker/sftp_server/keys/host/ssh_host_ed25519_key:/etc/ssh/ssh_host_ed25519_key:ro' # fingerprint = 35:79:0e:da:86:97:44:5c:f7:b2:93:95:5e:7c:df:33
+      - './docker/sftp_server/keys/host/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key:ro' # fingerprint = 0e:29:42:80:61:aa:c2:c5:3b:2c:57:32:1a:69:e0:ce
+      # config file (set up users)
+      - './docker/sftp_server/users.conf:/etc/sftp/users.conf:ro'
+      # mount users public keys
+      - './docker/sftp_server/keys/users/peter.pub:/home/peter/.ssh/keys/id_rsa.pub:ro'
+      - './docker/sftp_server/keys/users/greg.pub:/home/greg/.ssh/keys/id_rsa.pub:ro' # passphrase = secret
+      # mount volumes for root directories
+      - './docker/sftp_server/root/julia:/home/julia/pim'
+      - './docker/sftp_server/root/peter:/home/peter/pim' # chown -R 1001:100 ./docker/sftp_server/root/peter
+      - './docker/sftp_server/root/greg:/home/greg/pim' # chown -R 1002:100 ./docker/sftp_server/root/greg
     networks:
       - 'pim'
 

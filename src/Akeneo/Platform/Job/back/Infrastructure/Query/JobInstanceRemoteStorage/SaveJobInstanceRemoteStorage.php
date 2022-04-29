@@ -23,16 +23,18 @@ INSERT INTO akeneo_batch_job_instance_remote_storage (
     port,
     root,
     username,
-    login
+    login,
+    fingerprint
 )
-VALUES (:job_instance_code, :host, :port, :root, :username, :login)
+VALUES (:job_instance_code, :host, :port, :root, :username, :login, :fingerprint)
 ON DUPLICATE KEY UPDATE 
     job_instance_code = :job_instance_code,
     host = :host,
     port = :port,
     root = :root,
     username = :username,
-    login = :login
+    login = :login,
+    fingerprint = :fingerprint
 SQL;
 
         $this->connection->executeQuery(

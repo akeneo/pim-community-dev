@@ -49,10 +49,11 @@ SQL;
 CREATE TABLE akeneo_batch_job_instance_remote_storage (
     job_instance_code VARCHAR(255) NOT NULL,
     host VARCHAR(255) NOT NULL,
-    port INTEGER DEFAULT 22,
+    port INTEGER NOT NULL DEFAULT 22,
     root VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL,
     login JSON NOT NULL,
+    fingerprint VARCHAR(255) DEFAULT NULL,
     PRIMARY KEY (job_instance_code)
 );
 SQL;

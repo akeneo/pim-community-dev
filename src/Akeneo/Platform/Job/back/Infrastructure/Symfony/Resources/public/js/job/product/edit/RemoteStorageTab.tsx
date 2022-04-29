@@ -14,7 +14,7 @@ type RemoteStoragePasswordLogin = {
 type RemoteStoragePrivateKeyLogin = {
   type: 'private_key';
   private_key: string;
-  passphrase: string;
+  passphrase: string | null;
 };
 
 type RemoteStorageLogin = RemoteStoragePasswordLogin | RemoteStoragePrivateKeyLogin;
@@ -27,6 +27,7 @@ type RemoteStorage = {
   port: number;
   root: string;
   username: string;
+  fingerprint: string | null;
   login: RemoteStorageLogin;
 };
 
@@ -38,7 +39,7 @@ const getDefaultRemoteStoragePasswordLogin = (): RemoteStoragePasswordLogin => (
 const getDefaultRemoteStoragePrivateKeyLogin = (): RemoteStoragePrivateKeyLogin => ({
   type: 'private_key',
   private_key: '',
-  passphrase: '',
+  passphrase: null,
 });
 
 const getDefaultRemoteStorage = (): Omit<RemoteStorage, 'job_instance_code'> => ({
@@ -46,6 +47,7 @@ const getDefaultRemoteStorage = (): Omit<RemoteStorage, 'job_instance_code'> => 
   port: 22,
   root: '',
   username: '',
+  fingerprint: null,
   login: getDefaultRemoteStoragePasswordLogin(),
 });
 
@@ -133,6 +135,15 @@ const RemoteStorageTab = ({jobInstanceCode}: RemoteStorageTabProps) => {
         value={remoteStorage.username}
         onChange={(username: string) => setRemoteStorage(remoteStorage => ({...remoteStorage, username}))}
       />
+      <Field label="Fingerprint">
+        <TextAreaInput
+          value={remoteStorage.fingerprint || ''}
+          onChange={(fingerprint: string) => {
+            const fingerprintValue = fingerprint.length > 0 ? fingerprint : null;
+            setRemoteStorage(remoteStorage => ({...remoteStorage, fingerprint: fingerprintValue}));
+          }}
+        />
+      </Field>
       <Field label="Login type">
         <SelectInput
           value={remoteStorage.login.type}
@@ -168,8 +179,11 @@ const RemoteStorageTab = ({jobInstanceCode}: RemoteStorageTabProps) => {
           <TextField
             label="Passphrase"
             type="password"
-            value={remoteStorage.login.passphrase}
-            onChange={(passphrase: string) => setRemoteStorage(remoteStorage => ({...remoteStorage, login: {...remoteStorage.login, passphrase}}))}
+            value={remoteStorage.login.passphrase || ''}
+            onChange={(passphrase: string) => {
+              const passphraseValue = passphrase.length > 0 ? passphrase : null;
+              setRemoteStorage(remoteStorage => ({...remoteStorage, login: {...remoteStorage.login, passphrase: passphraseValue}}));
+            }}
           />
         </>
       )}

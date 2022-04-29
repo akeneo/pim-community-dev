@@ -19,6 +19,10 @@ class SftpConnectionProviderFactory
                 null,
                 null,
                 $normalizedJobInstanceRemoteStorage['port'],
+                false,
+                10,
+                4,
+                $normalizedJobInstanceRemoteStorage['fingerprint'],
             ),
             JobInstanceRemoteStorage::PRIVATE_KEY_LOGIN_TYPE => new SftpConnectionProvider(
                 $normalizedJobInstanceRemoteStorage['host'],
@@ -27,6 +31,10 @@ class SftpConnectionProviderFactory
                 $normalizedJobInstanceRemoteStorage['login']['private_key'],
                 $normalizedJobInstanceRemoteStorage['login']['passphrase'],
                 $normalizedJobInstanceRemoteStorage['port'],
+                false,
+                10,
+                4,
+                $normalizedJobInstanceRemoteStorage['fingerprint'],
             ),
             default => throw new \InvalidArgumentException(sprintf('Unknown login type "%s"', $normalizedJobInstanceRemoteStorage['type'])),
         };

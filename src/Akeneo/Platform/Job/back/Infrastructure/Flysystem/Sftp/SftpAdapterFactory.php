@@ -12,7 +12,7 @@ class SftpAdapterFactory
 
         return new SftpAdapter(
             $sftpConnectionProvider,
-            $jobInstanceRemoteStorage->normalize()['root'],
+            $jobInstanceRemoteStorage->getRoot(),
         );
     }
 }

@@ -25,6 +25,7 @@ class JobInstanceRemoteStorage
         private string $root,
         private string $username,
         private array $login,
+        private ?string $fingerprint
     ) {
     }
 
@@ -36,6 +37,7 @@ class JobInstanceRemoteStorage
             $jobInstanceRemoteStorage['root'],
             $jobInstanceRemoteStorage['username'],
             is_array($jobInstanceRemoteStorage['login']) ? $jobInstanceRemoteStorage['login'] : json_decode($jobInstanceRemoteStorage['login'], true),
+            $jobInstanceRemoteStorage['fingerprint']
         );
     }
 
@@ -47,6 +49,12 @@ class JobInstanceRemoteStorage
             'root' => $this->root,
             'username' => $this->username,
             'login' => $this->login,
+            'fingerprint' => $this->fingerprint,
         ];
+    }
+
+    public function getRoot(): string
+    {
+        return $this->root;
     }
 }
