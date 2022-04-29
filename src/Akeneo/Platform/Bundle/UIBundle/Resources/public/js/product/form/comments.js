@@ -91,7 +91,7 @@ define([
     loadData: function () {
       return $.get(
         Routing.generate('pim_enrich_product_comments_rest_get', {
-          uuid: this.getFormData().meta.uuid,
+          uuid: this.getFormData().meta.id,
         })
       );
     },
@@ -130,7 +130,7 @@ define([
     saveComment: function () {
       $.ajax({
         type: 'POST',
-        url: Routing.generate('pim_enrich_product_comments_rest_post', {uuid: this.getFormData().meta.uuid}),
+        url: Routing.generate('pim_enrich_product_comments_rest_post', {uuid: this.getFormData().meta..id}),
         contentType: 'application/json',
         data: JSON.stringify({body: this.$('.comment-create textarea').val()}),
       })
@@ -192,7 +192,7 @@ define([
       $.ajax({
         type: 'POST',
         url: Routing.generate('pim_enrich_product_comment_reply_rest_post', {
-          uuid: this.getFormData().meta.uuid,
+          uuid: this.getFormData().meta.id,
           commentId: $thread.data('comment-id'),
         }),
         contentType: 'application/json',
