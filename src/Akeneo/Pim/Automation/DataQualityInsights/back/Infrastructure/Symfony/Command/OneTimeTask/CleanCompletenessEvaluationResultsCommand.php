@@ -98,7 +98,7 @@ ORDER BY product_uuid ASC
 LIMIT $limit;
 SQL;
 
-        $lastProductUuidAsBytes = '-1';
+        $lastProductUuidAsBytes = '';
 
         do {
             $results = $this->dbConnection->executeQuery(
