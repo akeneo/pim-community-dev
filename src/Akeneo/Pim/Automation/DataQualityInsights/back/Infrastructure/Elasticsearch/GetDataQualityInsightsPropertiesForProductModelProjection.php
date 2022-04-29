@@ -6,10 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductModelIdsFromProductModelCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductModelProjectionInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -21,7 +22,7 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
         private GetProductModelScoresQueryInterface $getProductModelScoresQuery,
         private GetProductModelIdsFromProductModelCodesQueryInterface $getProductModelIdsFromProductModelCodesQuery,
         private ComputeProductsKeyIndicators $getProductsKeyIndicators,
-        private ProductModelIdFactory $idFactory
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -35,9 +36,10 @@ final class GetDataQualityInsightsPropertiesForProductModelProjection implements
     {
         $productModelCodesIds = $this->getProductModelIdsFromProductModelCodesQuery->execute($productModelCodes);
 
-        $productIdCollection = $this->idFactory->createCollection(array_map(fn ($id) => (string) $id, array_values($productModelCodesIds)));
-        $productModelScores = $this->getProductModelScoresQuery->byProductModelIdCollection($productIdCollection);
-        $productModelKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
+        $productModelIdCollection = $this->idFactory->createCollection(array_map(fn ($id) => (string) $id, array_values($productModelCodesIds)));
+        Assert::isInstanceOf($productModelIdCollection, ProductModelIdCollection::class);
+        $productModelScores = $this->getProductModelScoresQuery->byProductModelIdCollection($productModelIdCollection);
+        $productModelKeyIndicators = $this->getProductsKeyIndicators->compute($productModelIdCollection);
 
         $additionalProperties = [];
         foreach ($productModelCodesIds as $productModelCode => $productId) {
