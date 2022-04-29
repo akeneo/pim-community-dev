@@ -157,7 +157,7 @@ define([
       return $.getJSON(
         Routing.generate(this.config.itemCategoryTreeRoute, {
           id: this.getFormData().meta.id,
-          uuid: this.getFormData().meta.uuid,
+          uuid: this.getFormData().meta.id,
           // Passing the locale as request parameter will force to refresh the current user locale in session
           // @see \Akeneo\UserManagement\Bundle\Context\UserContext::getCurrentLocale
           dataLocale: UserContext.get('catalogLocale'),

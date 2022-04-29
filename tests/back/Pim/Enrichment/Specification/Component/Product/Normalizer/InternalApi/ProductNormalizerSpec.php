@@ -225,7 +225,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
-                    'uuid' => '57700274-9b48-4857-b17d-a7da106cd150',
+                    'id'                => '57700274-9b48-4857-b17d-a7da106cd150',
                     'created'           => 'normalized_create_version',
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
@@ -425,7 +425,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'parent_associations' => null,
                 'meta'       => [
                     'form'              => 'product-edit-form',
-                    'uuid' => '57700274-9b48-4857-b17d-a7da106cd150',
+                    'id'                => '57700274-9b48-4857-b17d-a7da106cd150',
                     'created'           => 'normalized_create_version',
                     'updated'           => 'normalized_update_version',
                     'model_type'        => 'product',
