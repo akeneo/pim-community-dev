@@ -15,8 +15,7 @@ export default interface Product {
 }
 
 interface Meta {
-  uuid?: string;
-  id?: string;
+  id: string | null;
   label: {
     [locale: string]: string;
   };
