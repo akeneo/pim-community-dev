@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\Job\Infrastructure\Flysystem\Sftp;
 
 use Akeneo\Platform\Job\Infrastructure\Query\JobInstanceRemoteStorage\JobInstanceRemoteStorage;
-use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 
 class SftpConnectionProviderFactory
 {
