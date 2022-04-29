@@ -2,6 +2,8 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes'
         tags:
             - { name: 'akeneo.pim.enrichment.factory.product_value' }
 

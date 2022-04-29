@@ -40,8 +40,3 @@ elasticsearch:
     resources:
       requests:
         memory: "512Mi"
-
-# Connectors
-connectors:
-  bigcommerce:
-    challengePapoActivation: false

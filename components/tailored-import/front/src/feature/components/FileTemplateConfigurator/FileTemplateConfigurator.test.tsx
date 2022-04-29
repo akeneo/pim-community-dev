@@ -80,7 +80,31 @@ test('it dispatch an event when header row change', async () => {
   const input = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_row');
 
   fireEvent.change(input, {target: {value: '2'}});
-  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, header_row: 2});
+  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, header_row: 2, first_product_row: 3});
+});
+
+test('it keeps the initial product row value when product row is > header row + 1', async () => {
+  const handleFileStructureChange = jest.fn();
+
+  await renderWithProviders(
+    <FileTemplateConfigurator
+      fileTemplateInformation={{
+        sheet_names: ['currentTestSheet', 'anotherTestSheet'],
+        rows: [['sku', 'name', 'description']],
+        column_count: 3,
+      }}
+      fileStructure={fileStructure}
+      onFileStructureChange={handleFileStructureChange}
+      onSheetChange={jest.fn()}
+      validationErrors={[]}
+    />
+  );
+
+  const inputHeaderRow = screen.getByLabelText('akeneo.tailored_import.file_structure.modal.header_row');
+
+  fileStructure.first_product_row = 5;
+  fireEvent.change(inputHeaderRow, {target: {value: '2'}});
+  expect(handleFileStructureChange).toBeCalledWith({...fileStructure, header_row: 2, first_product_row: 5});
 });
 
 test('it dispatch event when first product row change', async () => {

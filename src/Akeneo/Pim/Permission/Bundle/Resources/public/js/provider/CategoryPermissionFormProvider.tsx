@@ -157,7 +157,8 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
   renderForm: (
     onPermissionsChange,
     initialState: CategoryPermissionState | undefined = defaultState,
-    readOnly: boolean = false
+    readOnly: boolean = false,
+    onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
 
@@ -170,51 +171,57 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
         <SectionTitle>
           <H3>{translate('pim_permissions.widget.entity.category.label')}</H3>
         </SectionTitle>
-        {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
-          <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
-        ) : (
-          <Helper level="warning">
-            {translate('pim_permissions.widget.entity.not_granted_warning', {
-              permission: translate('pimee_enrich.acl.category.edit_permissions'),
-            })}
-          </Helper>
+        {!onlyDisplayViewPermissions && (
+          <>
+            {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
+              <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
+            ) : (
+              <Helper level="warning">
+                {translate('pim_permissions.widget.entity.not_granted_warning', {
+                  permission: translate('pimee_enrich.acl.category.edit_permissions'),
+                })}
+              </Helper>
+            )}
+
+            <Label>{translate('pim_permissions.widget.level.own')}</Label>
+            <PermissionFormWidget
+              selection={state.own.identifiers}
+              onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
+              onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
+              disabled={state.own.all}
+              readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+              allByDefaultIsSelected={state.own.all}
+              onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
+              onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
+              onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
+              ajax={{
+                ajaxUrl: categoriesAjaxUrl,
+                processAjaxResponse: processCategories,
+                fetchByIdentifiers: fetchCategoriesByIdentifiers,
+                buildQueryParams: buildQueryParams,
+              }}
+            />
+            <Label>{translate('pim_permissions.widget.level.edit')}</Label>
+            <PermissionFormWidget
+              selection={state.edit.identifiers}
+              onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
+              onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
+              disabled={state.edit.all}
+              readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+              allByDefaultIsSelected={state.edit.all}
+              onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
+              onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
+              onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
+              ajax={{
+                ajaxUrl: categoriesAjaxUrl,
+                processAjaxResponse: processCategories,
+                fetchByIdentifiers: fetchCategoriesByIdentifiers,
+                buildQueryParams: buildQueryParams,
+              }}
+            />
+          </>
         )}
-        <Label>{translate('pim_permissions.widget.level.own')}</Label>
-        <PermissionFormWidget
-          selection={state.own.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
-          disabled={state.own.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
-          allByDefaultIsSelected={state.own.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_OWN})}
-          ajax={{
-            ajaxUrl: categoriesAjaxUrl,
-            processAjaxResponse: processCategories,
-            fetchByIdentifiers: fetchCategoriesByIdentifiers,
-            buildQueryParams: buildQueryParams,
-          }}
-        />
-        <Label>{translate('pim_permissions.widget.level.edit')}</Label>
-        <PermissionFormWidget
-          selection={state.edit.identifiers}
-          onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
-          onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
-          disabled={state.edit.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
-          allByDefaultIsSelected={state.edit.all}
-          onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
-          onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
-          onClear={() => dispatch({type: PermissionFormReducer.Actions.CLEAR_EDIT})}
-          ajax={{
-            ajaxUrl: categoriesAjaxUrl,
-            processAjaxResponse: processCategories,
-            fetchByIdentifiers: fetchCategoriesByIdentifiers,
-            buildQueryParams: buildQueryParams,
-          }}
-        />
+
         <Label>{translate('pim_permissions.widget.level.view')}</Label>
         <PermissionFormWidget
           selection={state.view.identifiers}

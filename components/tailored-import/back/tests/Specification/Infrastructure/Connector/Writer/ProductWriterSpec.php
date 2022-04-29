@@ -7,7 +7,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Infrastructure\Connector\RowPayload;
@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -33,8 +34,19 @@ class ProductWriterSpec extends ObjectBehavior
 
     private RowPayload $rowPayload;
 
-    public function let(MessageBusInterface $messageBus, StepExecution $stepExecution)
-    {
+    public function let(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        EventDispatcher $eventDispatcher
+    ) {
+        $stepExecution->getSummaryInfo('item_position', 0)->willReturn(4);
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(1);
+        $stepExecution->getSummaryInfo('process', 0)->willReturn(2);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
+        $stepExecution->getSummaryInfo('skipped_no_diff', 0)->willReturn(0);
+
+        $stepExecution->incrementSummaryInfo('skipped_no_diff', 0)->shouldBeCalled();
+
         $this->rowPayload = new RowPayload(
             new Row([
                 '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'ref1',
@@ -43,7 +55,7 @@ class ProductWriterSpec extends ObjectBehavior
             ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
             0
         );
-        $this->beConstructedWith($messageBus);
+        $this->beConstructedWith($messageBus, $eventDispatcher);
         $this->setStepExecution($stepExecution);
     }
 
@@ -70,6 +82,8 @@ class ProductWriterSpec extends ObjectBehavior
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+
         $this->write([$this->rowPayload]);
     }
 
@@ -88,6 +102,8 @@ class ProductWriterSpec extends ObjectBehavior
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $messageBus->dispatch($upsertProductCommand)->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
         $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+
         $this->write([$this->rowPayload]);
     }
 
@@ -147,6 +163,7 @@ class ProductWriterSpec extends ObjectBehavior
             ->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])))
             ->shouldBeCalledOnce();
         $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
 
         $this->write([$this->rowPayload]);
     }

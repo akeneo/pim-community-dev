@@ -95,7 +95,7 @@ pim:
   daemons:
     job-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume --quiet ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
+      pimCommand: "messenger:consume -vv ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
       replicas: 2
       trapped: true
       resources:
@@ -155,7 +155,7 @@ pim:
           memory: "30Mi"
   elasticsearch:
     settings:
-      totalFieldsLimit: 10000
+      totalFieldsLimit: 50000
       maxChunkSizeCharacters: 100000000
   dqi:
     settings:
@@ -377,12 +377,6 @@ onboarder:
 # Free Trial
 free_trial:
   enabled: false
-
-# Connectors
-connectors:
-  bigcommerce:
-    enabled: false
-    challengePapoActivation: true
 
 mysql:
   image:

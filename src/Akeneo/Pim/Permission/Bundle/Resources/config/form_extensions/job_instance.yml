@@ -127,7 +127,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-edit-tabs
         targetZone: container
         aclResourceId: pimee_importexport_export_profile_edit_permissions
-        position: 115
+        position: 125
         config:
             title: pim_common.permissions
             entity: job_instance

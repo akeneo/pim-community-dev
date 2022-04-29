@@ -5,12 +5,12 @@ set -e
 
 log_as_monolog() {
     currentDate=$(date +"%G-%m-%d %T.%N")
-    logWithMessage=$(printf '{"channel": "queue-daemon-wrapper","context": {"message": "%s"},"datetime": {"date": "%s","timezone": "Etc/UTC","timezone_type": "3"},"level": "250","level_name": "NOTICE"}' "$1" "${currentDate}")
+    logWithMessage=$(printf '{"channel": "queue-daemon-wrapper","context": {"message": "%s"},"datetime": {"date": "%s","timezone": "Etc/UTC","timezone_type": "3"},"level": "250","level_name": "INFO"}' "$1" "${currentDate}")
     echo "${logWithMessage}" >&2
 }
 
 catch() {
-    log_as_monolog 'Waiting with grace for wrapped process to finish.'
+    log_as_monolog "Waiting with grace for wrapped process $pid to finish."
     kill -TERM $pid
     wait $pid
     log_as_monolog 'Wrapped process finished. Ended with grace.'
