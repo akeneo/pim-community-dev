@@ -265,6 +265,7 @@ akeneo_connectivity_connected_app | certified | NO | tinyint(1) |
 akeneo_connectivity_connected_app | connection_code | NO | varchar(100) | MUL
 akeneo_connectivity_connected_app | scopes | NO | json |
 akeneo_connectivity_connected_app | user_group_name | NO | varchar(255) | MUL
+akeneo_connectivity_connected_app | has_outdated_scopes | NO | tinyint |
 akeneo_connectivity_connection | client_id | NO | int | UNI
 akeneo_connectivity_connection | user_id | NO | int | MUL
 akeneo_connectivity_connection | code | NO | varchar(100) | PRI

@@ -1,4 +1,4 @@
-@javascript
+@javascript @read-only-product_attribute-feature-enabled
 Feature: Display available field options
   In order to create a read only attribute
   As a product manager

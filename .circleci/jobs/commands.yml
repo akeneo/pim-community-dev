@@ -66,50 +66,6 @@ commands:
                       sha1sum -c /tmp/checksum
                       sudo chmod +x /usr/local/bin/yq
 
-    connector_bigcommerce_checkout_steps:
-        description: "Checkout big commerce connector repository"
-        steps:
-            - run:
-                  name: BIG COMMERCE CONNECTOR - Ensure to use the ssh key of akeneo-circle-ci account
-                  command: |
-                      ssh-add -D
-                      ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
-            - when:
-                  condition:
-                      not:
-                          equal: [master, << pipeline.git.branch >>]
-                  steps:
-                      - run:
-                            name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
-                            command: |
-                                if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
-                                  CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
-                                else
-                                  CONNECTOR_BC_BRANCH=master
-                                fi
-                                echo ${CONNECTOR_BC_BRANCH}
-                                echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
-            - when:
-                  condition:
-                      equal: [master, << pipeline.git.branch >>]
-                  steps:
-                      - run:
-                            name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
-                            command: |
-                                CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-
-                                echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
-            - run:
-                  name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
-                  command: |
-                      mkdir -p tmp
-                      echo ${CONNECTOR_BC_BRANCH}
-                      git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
-                      cd tmp/build-connector
-                      echo ${CONNECTOR_BC_BRANCH} > back/VERSION
-                      pwd
-                      echo `git rev-parse --short HEAD`
-
     change_pim_onboarder_branch_steps:
         description: "Change Onboarder dependency if same branch exists"
         steps:
@@ -125,9 +81,7 @@ commands:
                                     -H 'Accept: application/vnd.github.v3.raw' \
                                     --output /dev/null --silent --head --fail \
                                     -L https://api.github.com/repos/akeneo/pim-onboarder/contents/README.md?ref=${CIRCLE_BRANCH} && \
-                                    ONBOARDER_BRANCH="dev-${CIRCLE_BRANCH}" || ONBOARDER_BRANCH="dev-master"
-                                    echo "Update Onboarder dependencie to branch ${ONBOARDER_BRANCH}"
-                                    sed -i "s#akeneo/pim-onboarder\": \"^5.0.0#akeneo/pim-onboarder\": \"${ONBOARDER_BRANCH}#" composer.json
+                                    sed -i "s#akeneo/pim-onboarder\": \"^7.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || true
 
     show_datadog_logs_links:
       description: "Show datadog usefulls links for given PFID"

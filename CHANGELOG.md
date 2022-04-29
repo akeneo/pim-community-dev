@@ -36,6 +36,10 @@
 - PIM-10394: Fix dictionary lookup to properly match uppercase
 - PIM-10399: Fix media link internal value on initialValue change
 - PIM-10402: Allow clearing a table measurement cell from the PEF
+- PIM-10377: Change Elastic Search field Limit for everyone
+- PIM-10384: Fix cannot build EE standard due to "can't resolve '@akeneo-pim-enterprise/onboarder'" error
+- PIM-10417: Increase ImageMagick disk resource
+- PIM-10408: Fix bad product version when importing a product table value with wrong option case
 
 ## Improvements
 

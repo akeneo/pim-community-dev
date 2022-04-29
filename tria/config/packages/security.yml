@@ -50,6 +50,13 @@ security:
             pattern:                        ^/connect/apps/v1/openid/public-key
             security:                       false
 
+        app_scopes_update:
+            pattern:                        ^/connect/apps/v1/scopes/update
+            fos_oauth:                      true
+            stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       pim_user_api
+
         api_index:
             pattern:                        ^/api/rest/v1$
             security:                       false

@@ -289,16 +289,6 @@ resource "local_file" "helm_pim_config" {
           }
         }
       }
-
-      bigcommerce_connector = {
-        enabled      = local.type != "tria" ? true : false
-        topic        = local.type != "tria" ? google_pubsub_topic.connector_bigcommerce[0].name : "fakeValue"
-        subscription = local.type != "tria" ? google_pubsub_subscription.connector_bigcommerce[0].name : "fakeValue"
-        akeneo_connect = {
-          bot_password      = local.type != "tria" ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_password[0].secret_data : "fakeValue"
-          bot_client_secret = local.type != "tria" ? data.google_secret_manager_secret_version.bigcommerce_connector_akeneo_connect_bot_client_secret[0].secret_data : "fakeValue"
-        }
-      }
     }
   )
   filename = "./tf-helm-pim-values.yaml"
