@@ -41,7 +41,7 @@ akeneo_data_quality_insights_dashboard_quality_score_evolution:
     methods: [GET]
 
 akeneo_data_quality_insights_product_evaluation:
-    path: /data-quality-insights/product-evaluation/{productId}
+    path: /data-quality-insights/product-evaluation/{productUuid}
     defaults:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductEvaluationController
         _feature: data_quality_insights
@@ -55,7 +55,7 @@ akeneo_data_quality_insights_evaluate_product:
     methods: [POST]
 
 akeneo_data_quality_insights_product_model_evaluation:
-    path: /data-quality-insights/product-model-evaluation/{productId}
+    path: /data-quality-insights/product-model-evaluation/{productModelId}
     defaults:
         _controller: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelEvaluationController
         _feature: data_quality_insights

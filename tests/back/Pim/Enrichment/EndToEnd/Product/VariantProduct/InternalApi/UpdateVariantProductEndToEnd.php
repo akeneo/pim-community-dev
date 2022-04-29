@@ -39,7 +39,7 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
 
         $this->client->request(
             'POST',
-            sprintf('/enrich/product/rest/%s', $product->getId()),
+            sprintf('/enrich/product/rest/%s', (string) $product->getUuid()),
             [],
             [],
             [

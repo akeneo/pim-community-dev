@@ -73,7 +73,7 @@ final class Row
 
     public static function fromProductModel(
         string $code,
-        string $familyCode,
+        ?string $familyCode,
         \DateTimeInterface $created,
         \DateTimeInterface $updated,
         string $label,

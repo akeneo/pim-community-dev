@@ -15,19 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetProductModelEvaluationController
 {
-    /** @var GetProductEvaluation */
-    private $getProductModelEvaluation;
-
-    public function __construct(GetProductEvaluation $getProductModelEvaluation)
+    public function __construct(private GetProductEvaluation $getEntityEvaluation)
     {
-        $this->getProductModelEvaluation = $getProductModelEvaluation;
     }
 
-    public function __invoke(string $productId): Response
+    public function __invoke(string $productModelId): Response
     {
         try {
-            $evaluation = $this->getProductModelEvaluation->get(
-                ProductModelId::fromString($productId)
+            $evaluation = $this->getEntityEvaluation->get(
+                ProductModelId::fromString($productModelId)
             );
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([
