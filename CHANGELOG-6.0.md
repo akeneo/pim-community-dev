@@ -1,7 +1,9 @@
 # 6.0.x
 
 ## Bug fixes
+
 - PIM-10405: [Backport PIM-10399] Fix media link internal value on initialValue change
+- PIM-10422: [Backport PIM-9688] Fix case of first letter in asset title of the asset edit page
 
 # 6.0.25 (2022-04-14)
 
