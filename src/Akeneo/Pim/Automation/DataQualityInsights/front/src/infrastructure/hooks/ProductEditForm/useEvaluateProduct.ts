@@ -10,7 +10,10 @@ const useEvaluateProduct = (productOrProductModel: Product) => {
       throw Error('Product uuid or product model id is not defined');
     }
 
-    if ('product_model' !== productOrProductModel.meta.model_type && 'product' !== productOrProductModel.meta.model_type) {
+    if (
+      'product_model' !== productOrProductModel.meta.model_type &&
+      'product' !== productOrProductModel.meta.model_type
+    ) {
       throw Error('Invalid product type');
     }
 
