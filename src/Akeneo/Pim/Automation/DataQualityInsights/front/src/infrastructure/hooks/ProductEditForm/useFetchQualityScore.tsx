@@ -52,7 +52,7 @@ const defaultGetRetryDelay: RetryDelayCalculator = retry => retry * retry * RETR
 
 export const sleep = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));
 
-async function loadQualityScore(type: ProductType, id: number): Promise<InnerFetcherOutcome> {
+async function loadQualityScore(type: ProductType, id: string): Promise<InnerFetcherOutcome> {
   let fetchedPayload: FetchQualityscorePlayload = {evaluations_available: false};
   try {
     fetchedPayload = await fetchQualityScore(type, id);
@@ -74,7 +74,7 @@ type HooksReturn = {
 
 const useFetchQualityScore = (
   type: ProductType,
-  id: number | null,
+  id: string | null,
   getRetryDelay: RetryDelayCalculator = defaultGetRetryDelay
 ): HooksReturn => {
   const [scoresFetchingOutcome, setScoresFetchingOutcome] = useState<QualityScoresFetchingOutcome>(initialOutcome);
