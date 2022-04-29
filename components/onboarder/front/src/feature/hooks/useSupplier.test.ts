@@ -113,11 +113,7 @@ test('it renders an error notification if the saving of the supplier failed', as
     await act(async () => setSupplier(updatedSupplier));
     await act(async () => saveSupplier());
 
-    expect(notify).toHaveBeenNthCalledWith(
-        1,
-        NotificationLevel.ERROR,
-        'onboarder.supplier.supplier_edit.update_error'
-    );
+    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.update_error');
     const [, , , , validationErrors] = result.current;
     expect(validationErrors).toStrictEqual(backendValidationErrors);
 });
@@ -131,7 +127,11 @@ test('it renders an error notification if the loading of the supplier failed', a
     await renderHookWithProviders(() => useSupplier('id1'));
 
     await waitFor(() => {
-        expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.loading_error');
+        expect(notify).toHaveBeenNthCalledWith(
+            1,
+            NotificationLevel.ERROR,
+            'onboarder.supplier.supplier_edit.loading_error'
+        );
     });
 });
 
