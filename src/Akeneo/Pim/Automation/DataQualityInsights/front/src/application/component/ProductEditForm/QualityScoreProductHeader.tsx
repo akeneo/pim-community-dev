@@ -14,7 +14,7 @@ import {ProductType} from '../../../domain/Product.interface';
 import {QualityScorePending} from '../QualityScorePending';
 
 type StateExtract = {
-  id: number | null;
+  id: string | null;
   type: ProductType;
   isProductEvaluating: boolean;
 };
