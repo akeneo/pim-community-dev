@@ -89,6 +89,7 @@ const MicroFrontendDependenciesProvider = ({
     setElement: () => view,
     render: () => {},
     remove: () => {},
+    setData: () => {},
   };
 
   useEffect(() => {

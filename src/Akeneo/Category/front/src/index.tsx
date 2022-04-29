@@ -8,12 +8,10 @@ import translations from './translations.json';
 import {CategoriesApp} from "./feature/CategoriesApp";
 
 ReactDOM.render(
-  <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
         <CategoriesApp setCanLeavePage={() => true}/>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+,  document.getElementById('root')
 );

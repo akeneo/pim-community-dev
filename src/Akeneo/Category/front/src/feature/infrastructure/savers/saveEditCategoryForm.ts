@@ -1,7 +1,7 @@
+import { Router } from '@akeneo-pim-community/shared';
 import {EditCategoryForm} from '../../hooks';
 import {Category} from '../../models';
 
-const Routing = require('routing');
 
 type EditCategoryResponse = {
   success: boolean;
@@ -9,7 +9,7 @@ type EditCategoryResponse = {
   category: Category;
 };
 
-const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
+const saveEditCategoryForm = async (router: Router, categoryId: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
   const params = new URLSearchParams();
   params.append(formData._token.fullName, formData._token.value);
   for (const [locale, changedLabel] of Object.entries(formData.label)) {
@@ -26,7 +26,7 @@ const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryFo
     formData.permissions.own.value.map(value => params.append(permissions.own.fullName, value));
   }
 
-  const response = await fetch(Routing.generate('pim_enrich_categorytree_edit', {id: categoryId}), {
+  const response = await fetch(router.generate('pim_enrich_categorytree_edit', {id: categoryId}), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

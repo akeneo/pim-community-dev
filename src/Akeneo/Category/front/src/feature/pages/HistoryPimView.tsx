@@ -1,12 +1,5 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {useIsMounted, useViewBuilder} from '@akeneo-pim-community/shared';
-
-type View = {
-  setElement: (element: HTMLElement | null) => View;
-  render: () => void;
-  remove: () => void;
-  setData: (data: any, options?: {silent?: boolean}) => void;
-};
+import {useIsMounted, useViewBuilder, View} from '@akeneo-pim-community/shared';
 
 type Props = {
   viewName: string;

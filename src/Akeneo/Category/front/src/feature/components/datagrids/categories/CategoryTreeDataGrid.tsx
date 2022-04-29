@@ -53,7 +53,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const deleteCategoryTree = async () => {
     if (categoryTreeToDelete) {
-      const response = await deleteCategory(categoryTreeToDelete.id);
+      const response = await deleteCategory(router, categoryTreeToDelete.id);
       response.ok && refreshCategoryTrees();
       const message = response.ok
         ? 'pim_enrich.entity.category.category_tree_deletion.success'
