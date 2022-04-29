@@ -84,7 +84,7 @@ SQL
 
         $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productCriteriaRegistry->getAllCriterionCodes());
 
-        $lastProductUuidAsBytes = '-1';
+        $lastProductUuidAsBytes = '';
         while ($productUuids = $this->getProductUuidsFrom($lastProductUuidAsBytes)) {
             $values = implode(', ', $this->buildProductCriteriaEvaluationsValues($productUuids, $criteria));
             $query = <<<SQL
