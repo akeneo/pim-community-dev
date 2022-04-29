@@ -6,10 +6,11 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\GetAdditionalPropertiesForProductProjectionInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -21,7 +22,7 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
         private GetProductScoresQueryInterface $getProductScoresQuery,
         private GetProductUuidsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
         private ComputeProductsKeyIndicators $getProductsKeyIndicators,
-        private ProductUuidFactory $idFactory
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
@@ -36,6 +37,7 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
         $productIdentifierIds = $this->getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers);
 
         $productIdCollection = $this->idFactory->createCollection(array_map(fn ($productId) => (string) $productId, array_values($productIdentifierIds)));
+        Assert::isInstanceOf($productIdCollection, ProductUuidCollection::class);
         $productScores = $this->getProductScoresQuery->byProductUuidCollection($productIdCollection);
         $productKeyIndicators = $this->getProductsKeyIndicators->compute($productIdCollection);
 

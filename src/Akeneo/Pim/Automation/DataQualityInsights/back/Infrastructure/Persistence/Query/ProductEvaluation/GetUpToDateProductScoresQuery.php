@@ -6,8 +6,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +18,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidColl
 class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
 {
     public function __construct(
-        private HasUpToDateProductEvaluationQuery $hasUpToDateEvaluationQuery,
+        private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         private GetProductScoresQueryInterface $getProductScoresQuery
     ) {
     }
@@ -34,6 +36,12 @@ class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
     {
         $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection);
 
-        return is_null($upToDateProducts) ? [] : $this->getProductScoresQuery->byProductUuidCollection($upToDateProducts);
+        if (is_null($upToDateProducts)) {
+            return [];
+        }
+
+        Assert::isInstanceOf($upToDateProducts, ProductUuidCollection::class);
+
+        return $this->getProductScoresQuery->byProductUuidCollection($upToDateProducts);
     }
 }
