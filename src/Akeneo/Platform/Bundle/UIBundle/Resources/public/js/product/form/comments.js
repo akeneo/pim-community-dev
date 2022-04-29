@@ -130,7 +130,7 @@ define([
     saveComment: function () {
       $.ajax({
         type: 'POST',
-        url: Routing.generate('pim_enrich_product_comments_rest_post', {uuid: this.getFormData().meta..id}),
+        url: Routing.generate('pim_enrich_product_comments_rest_post', {uuid: this.getFormData().meta.id}),
         contentType: 'application/json',
         data: JSON.stringify({body: this.$('.comment-create textarea').val()}),
       })
