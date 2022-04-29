@@ -535,7 +535,7 @@ config:
     pim/controller/dashboard:              pimui/js/controller/dashboard.tsx
     pim/controller/settings:               pimui/js/controller/settings.tsx
     pim/controller/system-index:           pimui/js/controller/system-index.tsx
-    pim/controller/categories/index:       akeneopimstructure/js/controller/CategoriesSettings
+    pim/controller/categories/index:       akeneocategory/js/controller/CategoriesSettings
 
     pim/init:                           pimui/js/pim-init
     pim/asynctab:                       pimui/js/pim-async-tab

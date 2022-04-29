@@ -5,13 +5,13 @@ import {pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
-import {FakePIM} from './FakePIM';
+import {CategoriesApp} from "./feature/CategoriesApp";
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations as Translations}>
-        <FakePIM />
+        <CategoriesApp setCanLeavePage={() => true}/>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,
