@@ -28,7 +28,7 @@ final class GetProductUuidsToEvaluateQuery implements GetEntityIdsToEvaluateQuer
     public function execute(int $limit, int $bulkSize): \Generator
     {
         $sql = <<<SQL
-SELECT DISTINCT p.id
+SELECT DISTINCT BIN_TO_UUID(p.uuid) AS uuid
 FROM pim_data_quality_insights_product_criteria_evaluation e
     JOIN pim_catalog_product p ON p.uuid = e.product_uuid
 WHERE e.status = :status
@@ -37,18 +37,18 @@ SQL;
 
         $stmt = $this->db->executeQuery($sql, ['status' => CriterionEvaluationStatus::PENDING], ['status' => \PDO::PARAM_STR]);
 
-        $productIds = [];
-        while ($productId = $stmt->fetchOne()) {
-            $productIds[] = $productId;
+        $productUuids = [];
+        while ($productUuid = $stmt->fetchOne()) {
+            $productUuids[] = $productUuid;
 
-            if (count($productIds) >= $bulkSize) {
-                yield $this->idFactory->createCollection($productIds);
-                $productIds = [];
+            if (count($productUuids) >= $bulkSize) {
+                yield $this->idFactory->createCollection($productUuids);
+                $productUuids = [];
             }
         }
 
-        if (!empty($productIds)) {
-            yield $this->idFactory->createCollection($productIds);
+        if (!empty($productUuids)) {
+            yield $this->idFactory->createCollection($productUuids);
         }
     }
 }
