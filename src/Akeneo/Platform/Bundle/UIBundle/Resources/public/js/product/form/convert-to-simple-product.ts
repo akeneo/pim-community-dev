@@ -51,7 +51,7 @@ class ConvertToSimpleProduct extends BaseView {
 
         fetch(
           Routing.generate(this.config.url, {
-            uuid: this.getFormData().meta.uuid,
+            uuid: this.getFormData().meta.id,
           }),
           {
             headers: {

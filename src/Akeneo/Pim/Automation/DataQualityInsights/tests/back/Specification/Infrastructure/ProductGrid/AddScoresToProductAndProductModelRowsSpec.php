@@ -18,7 +18,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Ramsey\Uuid\Uuid;
 
 class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 {
@@ -58,11 +57,18 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
             'en_US'
         );
 
-        $uuid1 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
-        $uuid2 = 'ac930366-36f2-4ad9-9a9f-de94c913d8ca';
-        $rows = [$this->makeProductOrProductModelRow($uuid1), $this->makeProductOrProductModelRow($uuid2)];
+        $productUuid1 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $productUuid2 = 'ac930366-36f2-4ad9-9a9f-de94c913d8ca';
+        $productModel1 = 42;
+        $productModel2 = 69;
+        $rows = [
+            $this->makeProductRow($productUuid1),
+            $this->makeProductRow($productUuid2),
+            $this->makeProductModelRow($productModel1),
+            $this->makeProductModelRow($productModel2),
+        ];
 
-        $idFactory->createCollection([$uuid1, $uuid2])->willReturn($productIdCollection);
+        $idFactory->createCollection([$productUuid1, $productUuid2])->willReturn($productIdCollection);
 
         $scores = [
             (new ChannelLocaleRateCollection())
@@ -89,7 +95,14 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeProductOrProductModelRow('1'), $this->makeProductOrProductModelRow('4')];
+        $productUuid1 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $productUuid2 = 'ac930366-36f2-4ad9-9a9f-de94c913d8ca';
+        $rows = [
+            $this->makeProductRow($productUuid1),
+            $this->makeProductRow($productUuid2),
+            $this->makeProductModelRow(1),
+            $this->makeProductModelRow(4),
+        ];
 
         $idFactory->createCollection(['1', '4'])->willReturn($productIdCollection);
 
@@ -101,25 +114,40 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
         $getQualityScoresFactory->__invoke(Argument::any(), 'product_model')->willReturn($scores);
 
-
         $this->__invoke($queryParameters, $rows, 'product_model')->shouldHaveScoreProperties();
     }
 
-    private function makeProductOrProductModelRow(string $technicalId): Row
+    private function makeProductRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            sprintf('product_or_product_model_%s', $technicalId), // identifier
-            null, // family
-            [], // groupCodes
-            true, // $enabled,
-            new \DateTime(), // created
-            new \DateTime(), // updated
-            sprintf('Label of %s', $technicalId), // label
-            null, // image
-            null, // completeness,
-            $technicalId, //technicalId,
-            null, // parentCode,
-            new WriteValueCollection() // values,
+            sprintf('product_or_product_model_%s', $technicalId),
+            null,
+            [],
+            true,
+            new \DateTime(),
+            new \DateTime(),
+            sprintf('Label of %s', $technicalId),
+            null,
+            null,
+            $technicalId,
+            null,
+            new WriteValueCollection()
+        );
+    }
+
+    private function makeProductModelRow(int $technicalId): Row
+    {
+        return Row::fromProductModel(
+            sprintf('product_or_product_model_%s', $technicalId),
+            null,
+            new \DateTime(),
+            new \DateTime(),
+            sprintf('Label of %s', $technicalId),
+            null,
+            $technicalId,
+            [],
+            null,
+            new WriteValueCollection()
         );
     }
 
