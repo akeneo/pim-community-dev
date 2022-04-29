@@ -77,11 +77,11 @@ class GetProductUuidsToEvaluateQueryIntegration extends DataQualityInsightsTestC
 
     private function givenAProductWithEvaluationDone(): void
     {
-        $productId = $this->createProductWithoutEvaluations('product_with_evaluations_done')->getId();
+        $productUuid = $this->createProductWithoutEvaluations('product_with_evaluations_done')->getUuid();
 
         $evaluationDone = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            ProductUuid::fromString($productId),
+            ProductUuid::fromUuid($productUuid),
             CriterionEvaluationStatus::pending()
         );
 
