@@ -41,7 +41,6 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
-            - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetUpdatedProductUuidsQuery
@@ -49,7 +48,6 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
-            - '@database_connection'
 
     akeneo.pim.automation.data_quality_insights.infrastructure.elasticsearch.query.get_product_key_indicators_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query\GetProductKeyIndicatorsQuery
