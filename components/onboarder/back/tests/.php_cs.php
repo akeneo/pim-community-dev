@@ -8,7 +8,9 @@ return (new PhpCsFixer\Config())
             'ordered_imports' => true, // Ordering use statements.
             'no_unused_imports' => true, // Unused use statements must be removed.
             'yoda_style' => [
-                'always_move_variable' => true, // Whether variables should always be on non assignable side when applying Yoda style.
+                'equal' => true,
+                'identical' => true,
+                'less_and_greater' => true,
             ],
             'protected_to_private' => true, // Converts protected variables and methods to private where possible.
             'cast_spaces' => true, // A single space should be between cast and variable.
