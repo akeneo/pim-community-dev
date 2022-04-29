@@ -31,6 +31,8 @@ onboarder:
                     content: Sorry about this inconvenience, please try again in a few moments.
             dropdown:
                 export_suppliers: Export suppliers
+                download_template: Download template
+                import_suppliers: Import suppliers
             columns:
                 supplier: Supplier
                 number_of_contributors: Number of contributors
@@ -75,3 +77,5 @@ onboarder:
 pim_title:
     onboarder_serenity_supplier_list: Suppliers
     onboarder_serenity_supplier_edit: Edit a supplier
+
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity Supplier import in XLSX
