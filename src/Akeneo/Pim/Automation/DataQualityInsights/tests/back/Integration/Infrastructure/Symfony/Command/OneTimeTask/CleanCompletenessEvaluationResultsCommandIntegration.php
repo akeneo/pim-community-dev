@@ -116,28 +116,28 @@ final class CleanCompletenessEvaluationResultsCommandIntegration extends DataQua
     private function assertDirtyProductHasBeenCleaned(UuidInterface $productUuid): void
     {
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(3), 'The completeness of non required attributes should have been cleaned for the dirty product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(3), 'The completeness of non required attributes should have been cleaned for the dirty product');
 
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(2), 'The completeness of required attributes should have been cleaned for the dirty product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(2), 'The completeness of required attributes should have been cleaned for the dirty product');
     }
 
     private function assertAnotherDirtyProductHasBeenCleaned(UuidInterface $productUuid): void
     {
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(1), 'The completeness of non required attributes should have been cleaned for the another dirty product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(1), 'The completeness of non required attributes should have been cleaned for the another dirty product');
 
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(0), 'The completeness of required attributes should have been cleaned for the another dirty product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(0), 'The completeness of required attributes should have been cleaned for the another dirty product');
     }
 
     private function assertCleanProductHasNoChanges(UuidInterface $productUuid): void
     {
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(5), 'The completeness of non required attributes should not have been changed for the clean product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(5), 'The completeness of non required attributes should not have been changed for the clean product');
 
         $result = $this->getProductCriterionResult($productUuid, EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE);
-        $this->assertEquals($result, $this->buildCleanResult(1), 'The completeness of required attributes should not have been changed for the clean product');
+        $this->assertEqualsCanonicalizing($result, $this->buildCleanResult(1), 'The completeness of required attributes should not have been changed for the clean product');
     }
 
     private function buildDirtyResult(array $attributeList): array
