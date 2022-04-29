@@ -25,7 +25,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     {
         $supplierRepository = $this->get(Repository::class);
 
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 1; 60 >= $i; $i++) {
             $supplierRepository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
@@ -64,7 +64,7 @@ final class DatabaseGetSupplierListIntegration extends SqlIntegrationTestCase
     {
         $supplierRepository = $this->get(Repository::class);
 
-        for ($i = 1; $i <= 110; $i++) {
+        for ($i = 1; 110 >= $i; $i++) {
             $supplierRepository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),

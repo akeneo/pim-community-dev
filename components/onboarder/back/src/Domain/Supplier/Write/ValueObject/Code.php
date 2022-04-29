@@ -14,7 +14,7 @@ final class Code
             throw new \InvalidArgumentException('The supplier code cannot be empty.');
         }
 
-        if (strlen($code) > self::MAX_LENGTH) {
+        if (self::MAX_LENGTH < strlen($code)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The supplier code is too long. It should have %d characters or less.',
