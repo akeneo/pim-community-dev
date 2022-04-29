@@ -15,7 +15,7 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     use MigrateToUuidTrait;
     use StatusAwareTrait;
 
-    private const INDEX_NAME = 'product_uuid';
+    private const DEFAULT_INDEX_NAME = 'product_uuid';
 
     public function __construct(
         private Connection $connection,
@@ -41,8 +41,9 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
     public function getMissingCount(): int
     {
         $count = 0;
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
                 $count++;
             }
         }
@@ -55,16 +56,21 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         $logContext = $context->logContext;
 
         $updatedItems = 0;
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
             $logContext->addContext('substep', $tableName);
-            if ($this->tableExists($tableName) && !$this->indexExists($tableName, self::INDEX_NAME)) {
-                $this->logger->notice(sprintf('Will add %s', $tableName), $logContext->toArray());
+            $indexName = $tableProperties[self::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName) && !$this->indexExists($tableName, $indexName)) {
+                $this->logger->notice(sprintf('Will add index for %s', $tableName), $logContext->toArray());
                 if (!$context->dryRun()) {
                     $this->addIndexOnUuid(
                         $tableName,
-                        $columnNames[self::UUID_COLUMN_INDEX]
+                        $tableProperties[self::UUID_COLUMN_INDEX],
+                        $indexName
                     );
-                    $this->logger->notice('Substep done', $logContext->toArray(['updated_items_count' => $updatedItems+=1]));
+                    $this->logger->notice(
+                        \sprintf('Substep done: indexes added for %s', $tableName),
+                        $logContext->toArray(['updated_items_count' => ++$updatedItems])
+                    );
                 }
             }
         }
@@ -72,36 +78,38 @@ class MigrateToUuidCreateIndexes implements MigrateToUuidStep
         return true;
     }
 
-    private function addIndexOnUuid(string $tableName, string $uuidColumName): void
+    private function addIndexOnUuid(string $tableName, string $uuidColumName, string $indexName): void
     {
         $addUuidColumnAndIndexOnUuidSql = <<<SQL
-            ALTER TABLE `{table_name}`
-                ADD INDEX `{index_name}` (`{uuid_column_name}`),
-                    ALGORITHM=INPLACE,
-                    LOCK=NONE;
+            ALTER TABLE `{table_name}` ADD {unique} INDEX `{index_name}` (`{uuid_column_name}`),
+                ALGORITHM=INPLACE,
+                LOCK=NONE;
         SQL;
 
         $addUuidColumnAndIndexOnUuidQuery = \strtr(
             $addUuidColumnAndIndexOnUuidSql,
             [
+                '{unique}' => $tableName === 'pimee_workflow_published_product' ? 'UNIQUE' : '',
                 '{table_name}' => $tableName,
                 '{uuid_column_name}' => $uuidColumName,
-                '{index_name}' => self::INDEX_NAME,
+                '{index_name}' => $indexName,
             ]
         );
 
         $this->connection->executeQuery($addUuidColumnAndIndexOnUuidQuery);
 
-        if ('pim_versioning_version' === $tableName) {
-            // TODO CPM-581: remove this index once the pim_versioning_version is fully migrated
-            $this->connection->executeQuery(
+        if (\in_array($tableName, ['pim_versioning_version', 'pim_comment_comment']) &&
+            !$this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')
+        ) {
+            $this->connection->executeQuery(\strtr(
                 <<<SQL
-                ALTER TABLE `pim_versioning_version`
+                ALTER TABLE `{tableName}`
                 ADD INDEX `migrate_to_uuid_temp_index_to_delete` (`resource_name`, `resource_uuid`, `resource_id`),
                 ALGORITHM=INPLACE,
                 LOCK=NONE;
-                SQL
-            );
+                SQL,
+                ['{tableName}' => $tableName]
+            ));
         }
     }
 }

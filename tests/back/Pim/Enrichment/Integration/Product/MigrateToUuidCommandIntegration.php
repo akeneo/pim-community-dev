@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddTriggers;
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidStep;
+use Akeneo\Pim\Enrichment\Component\Comment\Model\Comment;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use AkeneoTest\Pim\Enrichment\Integration\Product\UuidMigration\AbstractMigrateToUuidTestCase;
+use Doctrine\Common\Util\ClassUtils;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -19,6 +22,8 @@ use Ramsey\Uuid\UuidInterface;
 // Whole class to delete ?
 final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCase
 {
+    private UserInterface $adminUser;
+
     /** @test */
     public function it_migrates_the_database_to_use_uuid(): void
     {
@@ -32,6 +37,10 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->assertJsonHaveUuid();
         $this->assertTriggersExistAndWork();
         $this->assertProductsAreReindexed();
+        $this->assertColumnsAreNullable();
+
+        // check that the migration can be launched twice without error
+        $this->launchMigrationCommand();
     }
 
     private function assertTheIndexesDoNotExist(): void
@@ -42,13 +51,14 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             ARRAY_FILTER_USE_KEY
         );
 
-        foreach ($tables as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach ($tables as $tableName => $tableProperties) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertFalse(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index exists in the "%s" table',
-                        'product_uuid',
+                        $indexName,
                         $tableName
                     )
                 );
@@ -58,13 +68,14 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertTheIndexesExist(): void
     {
-        foreach (MigrateToUuidStep::TABLES as $tableName => $columnNames) {
-            if ($this->tableExists($tableName)) {
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
+            $indexName = $tableProperties[MigrateToUuidStep::UUID_COLUMN_INDEX_NAME_INDEX];
+            if (null !== $indexName && $this->tableExists($tableName)) {
                 Assert::assertTrue(
-                    $this->indexExists($tableName, 'product_uuid'),
+                    $this->indexExists($tableName, $indexName),
                     \sprintf(
                         'The "%s" index does not exist in the "%s" table',
-                        'product_uuid',
+                        $indexName,
                         $tableName
                     )
                 );
@@ -83,7 +94,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
 
     private function assertJsonHaveUuid(): void
     {
-        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid, quantified_associations FROM pim_catalog_product';
+        $query = 'SELECT BIN_TO_UUID(uuid) AS uuid, quantified_associations FROM pim_catalog_product ORDER BY id ASC';
 
         $result = $this->connection->fetchAllAssociative($query);
 
@@ -192,7 +203,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             )->fetchFirstColumn()
         );
         // pim_data_quality_insights_product_score
-        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInts([$newProductId]));
+        ($this->get(EvaluateProducts::class))(ProductUuidCollection::fromInts([$newProductId]));
         Assert::assertSame(
             [$newProductUuid],
             $this->connection->executeQuery(
@@ -267,7 +278,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
             )->fetchFirstColumn()
         );
         // pim_data_quality_insights_product_score
-        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($newProductId));
+        ($this->get(EvaluateProducts::class))(ProductUuidCollection::fromInt($newProductId));
         Assert::assertSame(
             [$newProductUuid],
             $this->connection->executeQuery(
@@ -297,6 +308,16 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                 'SELECT DISTINCT BIN_TO_UUID(product_uuid) FROM pim_catalog_association_product_model_to_product'
             )->fetchFirstColumn()
         );
+
+        // pim_comment_comment
+        $comment = $this->createComment($product);
+        Assert::assertSame(
+            $this->getProductUuid('new_product'),
+            $this->connection->executeQuery(
+                'SELECT BIN_TO_UUID(resource_uuid) FROM pim_comment_comment WHERE id = ?',
+                [$comment->getId()]
+            )->fetchOne()
+        );
     }
 
     private function assertProductsAreReindexed(): void
@@ -314,6 +335,19 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
                     ['identifier' => $identifier, 'uuid' => $matches['uuid']]
                 )
             );
+        }
+    }
+
+    private function assertColumnsAreNullable(): void
+    {
+        $tableWithNullableColumnsList = [
+            'pim_versioning_version' => ['resource_id'],
+        ];
+
+        foreach ($tableWithNullableColumnsList as $tableName => $columns) {
+            foreach ($columns as $columnName) {
+                Assert::assertTrue($this->isColumnNullable($tableName, $columnName));
+            }
         }
     }
 
@@ -342,16 +376,35 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         return $esProducts;
     }
 
+    private function isColumnNullable(string $tableName, string $columnName): bool {
+        $schema = $this->connection->getDatabase();
+        $sql = <<<SQL
+            SELECT IS_NULLABLE
+            FROM information_schema.columns
+            WHERE table_schema=:schema
+              AND table_name=:tableName
+              AND column_name=:columnName;
+        SQL;
+
+        $result = $this->connection->fetchOne($sql, [
+            'schema' => $schema,
+            'tableName' => $tableName,
+            'columnName' => $columnName
+        ]);
+
+        return $result !== 'NO';
+    }
+
     private function loadFixtures(): void
     {
-        $adminUser = $this->createAdminUser();
+        $this->adminUser = $this->createAdminUser();
 
         $this->createQuantifiedAssociationType('SOIREEFOOD10');
 
         foreach (range(1, 10) as $i) {
             $this->get('pim_enrich.product.message_bus')->dispatch(
                 new UpsertProductCommand(
-                    userId: $adminUser->getId(),
+                    userId: $this->adminUser->getId(),
                     productIdentifier: 'identifier' . $i
                 )
             );
@@ -374,7 +427,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         // test product only in ES index
         $this->get('pim_enrich.product.message_bus')->dispatch(
             new UpsertProductCommand(
-                userId: $adminUser->getId(),
+                userId: $this->adminUser->getId(),
                 productIdentifier: 'identifier_removed',
             )
         );
@@ -422,5 +475,19 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         );
         $this->connection->executeQuery('DELETE FROM pim_catalog_product WHERE identifier = "identifier_removed"');
         Assert::assertContains('identifier_removed', $this->getIndexedProducts());
+    }
+
+    private function createComment(ProductInterface $product): Comment
+    {
+        $comment = new Comment();
+        $comment->setAuthor($this->adminUser);
+        $comment->setCreatedAt(new \DateTime());
+        $comment->setRepliedAt(new \DateTime());
+        $comment->setBody('pouet');
+        $comment->setResourceName(ClassUtils::getClass($product));
+        $comment->setResourceId($product->getId());
+        $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
+
+        return $comment;
     }
 }

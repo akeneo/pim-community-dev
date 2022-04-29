@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,22 +13,16 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 final class ProductEvaluation
 {
-    private ProductId $productId;
-
-    private ChannelLocaleRateCollection $scores;
-
-    private CriterionEvaluationCollection $criteriaEvaluations;
-
-    public function __construct(ProductId $productId, ChannelLocaleRateCollection $scores, CriterionEvaluationCollection $criteriaEvaluations)
-    {
-        $this->productId = $productId;
-        $this->scores = $scores;
-        $this->criteriaEvaluations = $criteriaEvaluations;
+    public function __construct(
+        private ProductUuid                   $productUuid,
+        private ChannelLocaleRateCollection   $scores,
+        private CriterionEvaluationCollection $criteriaEvaluations
+    ) {
     }
 
-    public function getProductId(): ProductId
+    public function getProductUuid(): ProductUuid
     {
-        return $this->productId;
+        return $this->productUuid;
     }
 
     public function getScores(): ChannelLocaleRateCollection

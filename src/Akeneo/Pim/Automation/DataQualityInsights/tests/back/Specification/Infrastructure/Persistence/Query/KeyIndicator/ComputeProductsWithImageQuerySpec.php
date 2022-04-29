@@ -7,8 +7,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -24,11 +24,15 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
 
     public function it_computes_products_with_image_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
-        $productIds = ProductIdCollection::fromInts([13,42,999]);
+        $uuid13 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $uuid42 = 'df470d52-7723-4890-85a0-e79be625e2ed';
+        $uuid99 = 'fef37e64-a963-47a9-b087-2cc67968f0a2';
+
+        $productUuids = ProductUuidCollection::fromStrings([$uuid13, $uuid42, $uuid99]);
         $criterionCode = new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE);
 
-        $getEvaluationRatesByProductAndCriterionQuery->execute($productIds, $criterionCode)->willReturn([
-            13 => [
+        $getEvaluationRatesByProductAndCriterionQuery->execute($productUuids, $criterionCode)->willReturn([
+            $uuid13 => [
                 'ecommerce' => [
                     'en_US' => 100,
                 ],
@@ -36,7 +40,7 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
                     'en_US' => 0,
                 ],
             ],
-            42 => [
+            $uuid42 => [
                 'ecommerce' => [
                     'en_US' => 0,
                     'fr_FR' => 100,
@@ -44,8 +48,8 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
             ],
         ]);
 
-        $this->compute($productIds)->shouldBeLike([
-            13 => [
+        $this->compute($productUuids)->shouldBeLike([
+            $uuid13 => [
                 'ecommerce' => [
                     'en_US' => true,
                 ],
@@ -53,7 +57,7 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
                     'en_US' => false,
                 ],
             ],
-            42 => [
+            $uuid42 => [
                 'ecommerce' => [
                     'en_US' => false,
                     'fr_FR' => true,

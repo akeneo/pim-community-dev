@@ -20,10 +20,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -44,8 +45,8 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         $calculateRequiredAttributesCompleteness,
         $calculateNonRequiredAttributesCompleteness
     ): void {
-        $productId = new ProductId(42);
-        $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithCompleteness($productId);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithCompleteness($productUuid);
 
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $channelCodeMobile = new ChannelCode('mobile');
@@ -63,8 +64,8 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         $nonRequiredAttributesCompletenessResult = new CompletenessCalculationResult();
         $nonRequiredAttributesCompletenessResult->addMissingAttributes($channelCodeEcommerce, $localeCodeEn, ['title', 'meta_title']);
 
-        $calculateRequiredAttributesCompleteness->calculate($productId)->willReturn($requiredAttributesCompletenessResult);
-        $calculateNonRequiredAttributesCompleteness->calculate($productId)->willReturn($nonRequiredAttributesCompletenessResult);
+        $calculateRequiredAttributesCompleteness->calculate($productUuid)->willReturn($requiredAttributesCompletenessResult);
+        $calculateNonRequiredAttributesCompleteness->calculate($productUuid)->willReturn($nonRequiredAttributesCompletenessResult);
 
         $completedCriteriaEvaluations = $this->__invoke($criteriaEvaluations);
         $completedCriteriaEvaluations->count()->shouldBe($criteriaEvaluations->count());
@@ -85,7 +86,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
             ]
         ]);
 
-        $completedRequiredCompletenessEvaluation->getProductId()->shouldBe($productId);
+        $completedRequiredCompletenessEvaluation->getProductId()->shouldBe($productUuid);
         $completedRequiredCompletenessEvaluation->getStatus()->shouldBe($requiredCompletenessEvaluation->getStatus());
         $completedRequiredCompletenessEvaluation->getEvaluatedAt()->shouldBe($requiredCompletenessEvaluation->getEvaluatedAt());
 
@@ -114,8 +115,8 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         CalculateProductCompletenessInterface $calculateRequiredAttributesCompleteness,
         CalculateProductCompletenessInterface $calculateNonRequiredAttributesCompleteness
     ): void {
-        $productId = new ProductId(42);
-        $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithoutCompleteness($productId);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $criteriaEvaluations = $this->givenProductCriteriaEvaluationsWithoutCompleteness($productUuid);
 
         $localesByChannelQuery->getChannelLocaleCollection()->shouldNotBeCalled();
         $calculateRequiredAttributesCompleteness->calculate(Argument::any())->shouldNotBeCalled();
@@ -124,7 +125,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         $this->__invoke($criteriaEvaluations)->shouldReturn($criteriaEvaluations);
     }
 
-    private function givenProductCriteriaEvaluationsWithCompleteness(ProductId $productId): CriterionEvaluationCollection
+    private function givenProductCriteriaEvaluationsWithCompleteness(ProductUuid $productId): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $channelCodeMobile = new ChannelCode('mobile');
@@ -191,7 +192,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         );
     }
 
-    private function givenProductCriteriaEvaluationsWithoutCompleteness(ProductId $productId): CriterionEvaluationCollection
+    private function givenProductCriteriaEvaluationsWithoutCompleteness(ProductUuid $productId): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $channelCodeMobile = new ChannelCode('mobile');
@@ -228,7 +229,7 @@ class CompleteEvaluationWithImprovableAttributesSpec extends ObjectBehavior
         );
     }
 
-    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
+    private function generateCriterionEvaluation(ProductUuid $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
     {
         return new CriterionEvaluation(
             new CriterionCode($code),

@@ -7,13 +7,13 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CompleteEvaluationWithImprovableAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -40,14 +40,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 class GetProductEvaluation
 {
     public function __construct(
-        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        private CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
-        private CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        private GetLocalesByChannelQueryInterface              $getLocalesByChannelQuery,
+        private CriteriaEvaluationRegistry                     $criteriaEvaluationRegistry,
+        private CompleteEvaluationWithImprovableAttributes     $completeEvaluationWithImprovableAttributes
     ) {
     }
 
-    public function get(ProductId $productId): array
+    public function get(ProductUuid $productId): array
     {
         $criteriaEvaluations = $this->getCriteriaEvaluationsByProductIdQuery->execute($productId);
         $criteriaEvaluations = ($this->completeEvaluationWithImprovableAttributes)($criteriaEvaluations);

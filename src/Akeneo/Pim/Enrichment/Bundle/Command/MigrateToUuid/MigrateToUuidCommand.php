@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\Utils\LogContext;
+use Akeneo\Platform\Job\Domain\Model\Status;
 use Doctrine\DBAL\Connection;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
@@ -19,6 +20,9 @@ class MigrateToUuidCommand extends Command
     use MigrateToUuidTrait;
 
     protected static $defaultName = 'pim:product:migrate-to-uuid';
+    private static $DQI_JOB_NAME = 'data_quality_insights_evaluations';
+    private static $WAIT_TIME_IN_SECONDS = 30;
+
     /** @var array<MigrateToUuidStep> */
     private array $steps;
 
@@ -28,9 +32,11 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidFillProductUuid,
         MigrateToUuidStep $migrateToUuidFillForeignUuid,
         MigrateToUuidStep $migrateToUuidFillJson,
+        MigrateToUuidStep $migrateToUuidSetNotNullableUuidColumns,
+        MigrateToUuidStep $migrateToUuidAddConstraints,
         MigrateToUuidStep $migrateToUuidReindexElasticsearch,
-        private Connection $connection,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private Connection $connection
     ) {
         parent::__construct();
         $this->steps = [
@@ -39,6 +45,8 @@ class MigrateToUuidCommand extends Command
             $migrateToUuidFillProductUuid,
             $migrateToUuidFillForeignUuid,
             $migrateToUuidFillJson,
+            $migrateToUuidSetNotNullableUuidColumns,
+            $migrateToUuidAddConstraints,
             $migrateToUuidReindexElasticsearch,
         ];
     }
@@ -61,24 +69,41 @@ class MigrateToUuidCommand extends Command
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
+        if (!$this->shouldBeExecuted()) {
+            $this->logger->notice('No step should be executed. Skip the migration.');
+
+            return self::SUCCESS;
+        }
+
+        while ($this->hasDQIJobStarted()) {
+            $this->logger->notice(sprintf(
+                'There is a "%s" job in progress. Wait for %d secondes before retry migration start...',
+                self::$DQI_JOB_NAME,
+                self::$WAIT_TIME_IN_SECONDS
+            ));
+
+            sleep(self::$WAIT_TIME_IN_SECONDS);
+        }
+
+        $this->start();
         $startMigrationTime = \time();
         $this->logger->notice('Migration start');
 
-        foreach ($this->steps as $step) {
-            $logContext = new LogContext($step);
-            $context->logContext = $logContext;
+        try {
+            foreach ($this->steps as $step) {
+                $logContext = new LogContext($step);
+                $context->logContext = $logContext;
 
-            if ($withStats) {
-                $missingCount = $step->getMissingCount();
-                $logContext->addContext('total_missing_items_count', $missingCount);
-                $this->logger->notice('Missing items', $logContext->toArray());
-            } else {
-                $logContext->addContext('total_missing_items_count', null);
-            }
+                if ($withStats) {
+                    $missingCount = $step->getMissingCount();
+                    $logContext->addContext('total_missing_items_count', $missingCount);
+                    $this->logger->notice('Missing items', $logContext->toArray());
+                } else {
+                    $logContext->addContext('total_missing_items_count', null);
+                }
 
-            if ($step->shouldBeExecuted()) {
                 $step->setStatusInProgress();
-                $this->logger->notice('Start add missing items', $logContext->toArray());
+                $this->logger->notice(\sprintf('Starting step %s', $step->getName()), $logContext->toArray());
                 if (!$step->addMissing($context)) {
                     $step->setStatusInError();
                     $this->logger->error('An item can not be migrated. Step stopped.', $logContext->toArray());
@@ -87,20 +112,69 @@ class MigrateToUuidCommand extends Command
                 }
                 $step->setStatusDone();
                 $this->logger->notice(
-                    \sprintf('Step done in %0.2f seconds', $step->getDuration()),
-                    $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
-                );
-            } else {
-                $step->setStatusSkipped();
-                $this->logger->notice(
-                    'No items to migrate. Step skipped.',
+                    \sprintf('Step done in %0.2f seconds (%s)', $step->getDuration(), $step->getName()),
                     $logContext->toArray(['migration_duration_in_second' => time() - $startMigrationTime])
                 );
             }
+
+            $this->logger->notice('Migration done!', ['migration_duration_in_second' => time() - $startMigrationTime]);
+        } finally {
+            $this->stop();
         }
 
-        $this->logger->notice('Migration done!', ['migration_duration_in_second' => time() - $startMigrationTime]);
-
         return Command::SUCCESS;
+    }
+
+    private function start()
+    {
+        $this->connection->executeQuery(<<<SQL
+            INSERT INTO `pim_one_time_task` (`code`, `status`, `start_time`, `values`) 
+            VALUES (:code, :status, NOW(), :values)
+            ON DUPLICATE KEY UPDATE status='started', start_time=NOW();
+        SQL, [
+            'code' => self::$defaultName,
+            'status' => 'started',
+            'values' => \json_encode((object) []),
+        ]);
+    }
+
+    private function stop()
+    {
+        $this->connection->executeQuery(<<<SQL
+            DELETE FROM `pim_one_time_task` WHERE code=:code
+        SQL, [
+            'code' => self::$defaultName
+        ]);
+    }
+
+    private function hasDQIJobStarted(): bool
+    {
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT 1
+                FROM akeneo_batch_job_execution abje
+                    INNER JOIN akeneo_batch_job_instance abji 
+                        ON abje.job_instance_id = abji.id
+                WHERE abji.code=:code
+                  AND abje.status=:status
+                LIMIT 1
+            ) AS missing
+        SQL;
+
+        return (bool) $this->connection->fetchOne($sql, [
+            ':code' => self::$DQI_JOB_NAME,
+            ':status' => Status::IN_PROGRESS,
+        ]);
+    }
+
+    private function shouldBeExecuted(): bool
+    {
+        foreach ($this->steps as $step) {
+            if ($step->shouldBeExecuted()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

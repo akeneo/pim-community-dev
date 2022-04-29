@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -17,18 +18,20 @@ use Doctrine\DBAL\Connection;
 final class GetProductModelScoresQuery implements GetProductModelScoresQueryInterface
 {
     public function __construct(
-        private Connection $dbConnection
+        private Connection $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
     }
 
-    public function byProductModelId(ProductId $productId): ChannelLocaleRateCollection
+    public function byProductModelId(ProductModelId $productModelId): ChannelLocaleRateCollection
     {
-        $productScores = $this->byProductModelIds(ProductIdCollection::fromProductId($productId));
+        $productModelIdCollection = $this->idFactory->createCollection([(string) $productModelId]);
+        $productScores = $this->byProductModelIdCollection($productModelIdCollection);
 
-        return $productScores[$productId->toInt()] ?? new ChannelLocaleRateCollection();
+        return $productScores[(string)$productModelId] ?? new ChannelLocaleRateCollection();
     }
 
-    public function byProductModelIds(ProductIdCollection $productModelIds): array
+    public function byProductModelIdCollection(ProductEntityIdCollection $productModelIds): array
     {
         if ($productModelIds->isEmpty()) {
             return [];
@@ -41,14 +44,13 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['productModelIds' => $productModelIds->toArrayInt()],
+            ['productModelIds' => $productModelIds->toArrayString()],
             ['productModelIds' => Connection::PARAM_INT_ARRAY]
         );
 
         $productsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productModelId = \intval($row['product_model_id']);
-            $productsScores[$productModelId] = $this->hydrateScores($row['scores']);
+            $productsScores[$row['product_model_id']] = $this->hydrateScores($row['scores']);
         }
 
         return $productsScores;

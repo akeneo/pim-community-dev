@@ -73,7 +73,7 @@ class ProductCategoryController
      */
     protected function findProductOr404(string $uuid)
     {
-        $product = $this->productRepository->find($uuid);
+        $product = $this->productRepository->find($id);
 
         if (!$product) {
             throw new NotFoundHttpException(

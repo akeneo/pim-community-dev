@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluat
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -35,7 +35,9 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_a_list_of_products($getEvaluationResultsByProductsAndCriterionQuery)
     {
-        $productIds = ProductIdCollection::fromInts([42, 56]);
+        $uuid42 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $uuid56 = 'df470d52-7723-4890-85a0-e79be625e2ed';
+        $productIds = ProductUuidCollection::fromStrings([$uuid42, $uuid56]);
 
         $requiredAttributesResultDataProduct42 = [
             'total_number_of_attributes' => [
@@ -122,7 +124,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
         ];
 
         $expectedResults = [
-            42 => [
+            $uuid42 => [
                 'ecommerce' => [
                     'en_US' => true,
                     'fr_FR' => true,
@@ -131,7 +133,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
                     'en_US' => false
                 ]
             ],
-            56 => [
+            $uuid56 => [
                 'ecommerce' => [
                     'en_US' => true,
                     'fr_FR' => false,
@@ -146,12 +148,12 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid42 => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $requiredAttributesResultDataProduct42
             ),
-            56 => new CriterionEvaluationResult(
+            $uuid56 => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $requiredAttributesResultDataProduct56
@@ -162,12 +164,12 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid42 => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $nonRequiredAttributesResultDataProduct42
             ),
-            56 => new CriterionEvaluationResult(
+            $uuid56 => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $nonRequiredAttributesResultDataProduct56
@@ -179,7 +181,8 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_does_not_compute_products_without_evaluations($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(33);
+        $uuid = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $productIds = ProductUuidCollection::fromString($uuid);
 
         $getEvaluationResultsByProductsAndCriterionQuery->execute(
             $productIds,
@@ -192,7 +195,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
         )->willReturn([]);
 
         $this->compute($productIds)->shouldReturn([
-            33 => [
+            $uuid => [
                 'ecommerce' => [
                     'en_US' => null,
                     'fr_FR' => null,
@@ -206,7 +209,8 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_products_with_only_required_attributes($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(42);
+        $uuid = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $productIds = ProductUuidCollection::fromString($uuid);
 
         $requiredAttributesResultDataProduct = [
             'total_number_of_attributes' => [
@@ -233,7 +237,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $requiredAttributesResultDataProduct
@@ -244,7 +248,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 []
@@ -252,7 +256,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
         ]);
 
         $this->compute($productIds)->shouldReturn([
-            42 => [
+            $uuid => [
                 'ecommerce' => [
                     'en_US' => true,
                     'fr_FR' => false,
@@ -266,7 +270,8 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
 
     public function it_computes_enrichment_status_for_products_without_required_attributes($getEvaluationResultsByProductsAndCriterionQuery): void
     {
-        $productIds = ProductIdCollection::fromInt(42);
+        $uuid = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $productIds = ProductUuidCollection::fromString($uuid);
 
         $nonRequiredAttributesResultDataProduct = [
             'total_number_of_attributes' => [
@@ -293,7 +298,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 []
@@ -304,7 +309,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
             $productIds,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE)
         )->willReturn([
-            42 => new CriterionEvaluationResult(
+            $uuid => new CriterionEvaluationResult(
                 new ChannelLocaleRateCollection(),
                 new CriterionEvaluationResultStatusCollection(),
                 $nonRequiredAttributesResultDataProduct
@@ -312,7 +317,7 @@ final class ComputeProductsEnrichmentStatusQuerySpec extends ObjectBehavior
         ]);
 
         $this->compute($productIds)->shouldReturn([
-            42 => [
+            $uuid => [
                 'ecommerce' => [
                     'en_US' => true,
                     'fr_FR' => false,

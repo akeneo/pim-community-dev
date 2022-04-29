@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
 /**
@@ -46,27 +46,30 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
         $expectedProductsEnrichmentStatus += $this->givenProductWithoutEvaluationResults();
         $this->givenNotInvolvedProduct();
 
-        $productIds = array_keys($expectedProductsEnrichmentStatus);
+        $productUuids = array_keys($expectedProductsEnrichmentStatus);
 
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection(array_map(fn($productUuid) => (string) $productUuid, $productUuids));
         $productsEnrichmentStatus = $this->get('akeneo.pim.automation.data_quality_insights.query.compute_products_enrichment_status_query')
-            ->compute(ProductIdCollection::fromInts($productIds));
+            ->compute($productUuidCollection);
 
         $this->assertEquals($expectedProductsEnrichmentStatus, $productsEnrichmentStatus);
     }
 
     private function givenProductSampleA(): array
     {
-        $productId = $this->createProduct('sample_A', [
+        $productUuid = $this->createProduct('sample_A', [
             'family' => 'family_with_3_attributes',
             'values' => [
                 'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'description' => [['scope' => 'mobile', 'locale' => null, 'data' => 'Sample A']],
             ]
-        ])->getId();
+        ])->getUuid()->toString();
 
-        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($productId));
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
 
-        $expectedEnrichmentStatus = [$productId => [
+        ($this->get(EvaluateProducts::class))($productUuidCollection);
+
+        $expectedEnrichmentStatus = [$productUuid => [
             'ecommerce' => [
                 'en_US' => false,
                 'fr_FR' => false,
@@ -81,18 +84,19 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenProductSampleB(): array
     {
-        $productId = $this->createProduct('sample_B', [
+        $productUuid = $this->createProduct('sample_B', [
             'family' => 'family_with_5_attributes',
             'values' => [
                 'name' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'title' => [['scope' => null, 'locale' => null, 'data' => 'Sample A']],
                 'description' => [['scope' => 'ecommerce', 'locale' => null, 'data' => 'Sample A']],
             ]
-        ])->getId();
+        ])->getUuid()->toString();
 
-        ($this->get(EvaluateProducts::class))(ProductIdCollection::fromInt($productId));
+        $productIdCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuid]);
+        ($this->get(EvaluateProducts::class))($productIdCollection);
 
-        $expectedEnrichmentStatus = [$productId => [
+        $expectedEnrichmentStatus = [$productUuid => [
             'ecommerce' => [
                 'en_US' => true,
                 'fr_FR' => true,
@@ -112,12 +116,12 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenProductWithoutEvaluations(): array
     {
-        $productWithoutEvaluationsId = $this->createProductWithoutEvaluations(
+        $productWithoutEvaluationsUuid = $this->createProductWithoutEvaluations(
             'product_without_evaluations',
             ['family' => 'family_with_5_attributes']
-        )->getId();
+        )->getUuid()->toString();
 
-        return [$productWithoutEvaluationsId => [
+        return [$productWithoutEvaluationsUuid => [
             'ecommerce' => [
                 'en_US' => null,
                 'fr_FR' => null,
@@ -146,7 +150,7 @@ SQL,
             ['productUuid' => $product->getUuid()->getBytes()]
         );
 
-        return [$product->getId() => [
+        return [$product->getUuid()->toString() => [
             'ecommerce' => [
                 'en_US' => null,
                 'fr_FR' => null,

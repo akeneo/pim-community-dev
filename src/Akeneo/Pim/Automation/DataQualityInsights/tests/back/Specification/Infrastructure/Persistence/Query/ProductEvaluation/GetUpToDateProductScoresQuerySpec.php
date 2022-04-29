@@ -9,11 +9,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +23,7 @@ use Prophecy\Argument;
 final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
 {
     public function let(
-        HasUpToDateEvaluationQueryInterface  $hasUpToDateEvaluationQuery,
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
         GetProductScoresQueryInterface $getProductScoresQuery
     )
     {
@@ -30,45 +31,43 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_the_product_scores_if_the_evaluation_of_the_product_is_up_to_date(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
     )
     {
-        $productId = new ProductId(42);
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
         $productScores = (new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(80));
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(true);
-        $getProductScoresQuery->byProductId($productId)->willReturn($productScores);
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(true);
+        $getProductScoresQuery->byProductUuid($productUuid)->willReturn($productScores);
 
-        $this->byProductId($productId)->shouldReturn($productScores);
+        $this->byProductUuid($productUuid)->shouldReturn($productScores);
     }
 
     public function it_returns_empty_scores_if_the_evaluation_of_the_product_is_outdated(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
-    )
-    {
-        $productId = new ProductId(42);
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
+    ) {
+        $productUuid = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
 
-        $hasUpToDateEvaluationQuery->forProductId($productId)->willReturn(false);
-        $getProductScoresQuery->byProductId($productId)->shouldNotBeCalled();
+        $hasUpToDateEvaluationQuery->forEntityId($productUuid)->willReturn(false);
+        $getProductScoresQuery->byProductUuid($productUuid)->shouldNotBeCalled();
 
-        $this->byProductId($productId)->shouldBeLike(new ChannelLocaleRateCollection());
+        $this->byProductUuid($productUuid)->shouldBeLike(new ChannelLocaleRateCollection());
     }
 
     public function it_returns_the_product_scores_only_for_up_to_date_products(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
-    )
-    {
-        $productIdA = new ProductId(42);
-        $productIdB = new ProductId(123);
-        $productIdC = new ProductId(456);
-        $productIdCollection = ProductIdCollection::fromProductIds([$productIdA, $productIdB, $productIdC]);
-        $upToDateProductIdCollection = ProductIdCollection::fromProductIds([$productIdA, $productIdB]);
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
+    ) {
+        $productUuidA = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productUuidB = ProductUuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2');
+        $productUuidC = ProductUuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee');
+        $productUuidCollection = ProductUuidCollection::fromProductUuids([$productUuidA, $productUuidB, $productUuidC]);
+        $upToDateProductUuidCollection = ProductUuidCollection::fromProductUuids([$productUuidA, $productUuidB]);
         $productsScores = [
             42 => (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100)),
@@ -76,22 +75,24 @@ final class GetUpToDateProductScoresQuerySpec extends ObjectBehavior
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(45)),
         ];
 
-        $hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection)->willReturn($upToDateProductIdCollection);
-        $getProductScoresQuery->byProductIds($upToDateProductIdCollection)->willReturn($productsScores);
+        $hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection)->willReturn($upToDateProductUuidCollection);
+        $getProductScoresQuery->byProductUuidCollection($upToDateProductUuidCollection)->willReturn($productsScores);
 
-        $this->byProductIds($productIdCollection)->shouldReturn($productsScores);
+        $this->byProductUuidCollection($productUuidCollection)->shouldReturn($productsScores);
     }
 
     public function it_returns_empty_array_if_there_are_no_up_to_date_products(
-        $hasUpToDateEvaluationQuery,
-        $getProductScoresQuery
-    )
-    {
-        $products = ProductIdCollection::fromInts([42, 123]);
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductScoresQueryInterface $getProductScoresQuery
+    ) {
+        $products = ProductUuidCollection::fromStrings([
+            'df470d52-7723-4890-85a0-e79be625e2ed',
+            'fef37e64-a963-47a9-b087-2cc67968f0a2'
+        ]);
 
-        $hasUpToDateEvaluationQuery->forProductIdCollection($products)->willReturn(null);
-        $getProductScoresQuery->byProductIds(Argument::any())->shouldNotBeCalled();
+        $hasUpToDateEvaluationQuery->forEntityIdCollection($products)->willReturn(null);
+        $getProductScoresQuery->byProductUuidCollection(Argument::any())->shouldNotBeCalled();
 
-        $this->byProductIds($products)->shouldReturn([]);
+        $this->byProductUuidCollection($products)->shouldReturn([]);
     }
 }

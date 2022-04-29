@@ -7,8 +7,9 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\W
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -30,8 +31,8 @@ final class CriterionEvaluationCollectionSpec extends ObjectBehavior
     {
         $this->count()->shouldReturn(0);
 
-        $criterionEvaluation1 = new Write\CriterionEvaluation(new CriterionCode('completeness'), new ProductId(42), CriterionEvaluationStatus::pending());
-        $criterionEvaluation2 = new Write\CriterionEvaluation(new CriterionCode('completion'), new ProductId(42), CriterionEvaluationStatus::pending());
+        $criterionEvaluation1 = new Write\CriterionEvaluation(new CriterionCode('completeness'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
+        $criterionEvaluation2 = new Write\CriterionEvaluation(new CriterionCode('completion'), ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed')), CriterionEvaluationStatus::pending());
         $this->add($criterionEvaluation1)->add($criterionEvaluation2);
 
         $this->count()->shouldReturn(2);

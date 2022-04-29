@@ -35,6 +35,11 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     public function shouldBeExecuted(): bool
     {
+        if ($this->indexExists('pim_versioning_version', 'migrate_to_uuid_temp_index_to_delete')
+            || $this->indexExists('pim_comment_comment', 'migrate_to_uuid_temp_index_to_delete')
+        ) {
+            return true;
+        }
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX], $columnNames[self::ID_COLUMN_INDEX])) {
                 return true;
@@ -58,22 +63,43 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         $logContext = $context->logContext;
-        $processedItems = 0;
+
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            $processedItems = 0;
             $logContext->addContext('substep', $tableName);
             while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+                $this->logger->notice(
+                    \sprintf('Fill foreign uuids for table %s', $tableName),
+                    $logContext->toArray()
+                );
                 if (!$context->dryRun()) {
-                    $processedItems += self::BATCH_SIZE;
-                    $this->logger->notice('Foreign uuids in table under process', $logContext->toArray());
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $processedItems += self::BATCH_SIZE;
                     $this->logger->notice(
-                        'Substep done',
+                        \sprintf('Processed rows: %d', $processedItems),
                         $logContext->toArray(['processed_foreign_uuids_count' => $processedItems])
                     );
                 } else {
                     $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
                     break;
                 }
+            }
+        }
+
+        // TODO CPM-610: Keep this indexes
+        foreach (['pim_versioning_version', 'pim_comment_comment'] as $tableName) {
+            if ($this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')) {
+                $this->connection->executeQuery(
+                    <<<SQL
+                    ALTER TABLE {tableName}
+                    DROP INDEX migrate_to_uuid_temp_index_to_delete;
+                    SQL,
+                    ['{tableName}' => $tableName]
+                );
+                $this->logger->notice(
+                    "Temporary index dropped on table $tableName",
+                    $logContext->toArray()
+                );
             }
         }
 
@@ -118,7 +144,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             '{table_name}' => $tableName,
             '{column_name}' => $uuidColumnName,
             '{id_column_name}' => $idColumnName,
-            '{extra_condition}' => $tableName === 'pim_versioning_version'
+            '{extra_condition}' => \in_array($tableName, ['pim_versioning_version', 'pim_comment_comment'])
                 ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
                 : '',
         ]);
@@ -149,7 +175,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             '{table_name}' => $tableName,
             '{uuid_column_name}' => $uuidColumnName,
             '{id_column_name}' => $idColumnName,
-            '{extra_condition}' => ($tableName === 'pim_versioning_version') ?
+            '{extra_condition}' => \in_array($tableName, ['pim_versioning_version', 'pim_comment_comment']) ?
                 ' AND resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"' :
                 ''
         ]);
@@ -171,17 +197,17 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             WHERE t.{id_column_name}=p.id
                 AND t.{id_column_name}=b.{id_column_name}
         SQL;
-        if ('pim_versioning_version' === $tableName) {
+        if (\in_array($tableName, ['pim_versioning_version', 'pim_comment_comment'])) {
             $sql = <<<SQL
                 WITH batched_id AS (
                     SELECT v.id, p.uuid
-                    FROM pim_versioning_version v, pim_catalog_product p
+                    FROM {table_name} v, pim_catalog_product p
                     WHERE resource_name = "Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"
                     AND resource_uuid IS NULL
                     AND p.id = CAST(v.resource_id AS UNSIGNED)
                     LIMIT {limit}
                 )
-                UPDATE pim_versioning_version v, batched_id b
+                UPDATE {table_name} v, batched_id b
                 SET v.resource_uuid = b.uuid
                 WHERE v.id = b.id
             SQL;

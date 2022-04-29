@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: 'Pour en savoir plus sur les autorisations liées aux apps, consultez notre article: {{ link }}.'
             information_link_anchor: Article sur le Help Center
             no_scope: Aucune autorisation spécifique n'a été demandée.
+          authentication:
+            information_link_anchor: Article sur le Help Center
           pending: Cette app n'est pas connectée à votre PIM. Ouvrir l'app devrait résoudre le problème de connexion. Si le problème persiste, veuillez contacter le support de l'app.
         error_monitoring:
           error: Oups, quelque chose a mal tourné !

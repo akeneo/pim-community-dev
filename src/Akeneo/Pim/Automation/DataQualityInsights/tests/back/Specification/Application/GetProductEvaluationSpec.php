@@ -15,16 +15,17 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluation;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -33,10 +34,10 @@ use PhpSpec\ObjectBehavior;
 class GetProductEvaluationSpec extends ObjectBehavior
 {
     public function let(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
-        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
-        CompleteEvaluationWithImprovableAttributes $completeEvaluationWithImprovableAttributes
+        GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsByProductIdQuery,
+        GetLocalesByChannelQueryInterface              $getLocalesByChannelQuery,
+        CriteriaEvaluationRegistry                     $criteriaEvaluationRegistry,
+        CompleteEvaluationWithImprovableAttributes     $completeEvaluationWithImprovableAttributes
     ) {
         $this->beConstructedWith(
             $getCriteriaEvaluationsByProductIdQuery,
@@ -52,7 +53,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         $getLocalesByChannelQuery,
         $completeEvaluationWithImprovableAttributes
     ) {
-        $productId = new ProductId(2000);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
 
         $getLocalesByChannelQuery->getChannelLocaleCollection()->willReturn(new ChannelLocaleCollection([
             'ecommerce' => ['en_US', 'fr_FR'],
@@ -65,12 +66,12 @@ class GetProductEvaluationSpec extends ObjectBehavior
             new CriterionCode('consistency_spelling'),
         ]);
 
-        $criteriaEvaluations = $this->givenProductCriteriaEvaluations($productId);
-        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
+        $criteriaEvaluations = $this->givenProductCriteriaEvaluations($productUuid);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->willReturn($criteriaEvaluations);
         $completedCriteriaEvaluations = $this->givenCompletedCriteriaEvaluations($criteriaEvaluations);
         $completeEvaluationWithImprovableAttributes->__invoke($criteriaEvaluations)->willReturn($completedCriteriaEvaluations);
 
-        $this->get($productId)->shouldBeLike($this->getExpectedProductEvaluation());
+        $this->get($productUuid)->shouldBeLike($this->getExpectedProductEvaluation());
     }
 
     public function it_handle_deprecated_improvable_attribute_structure(
@@ -88,9 +89,9 @@ class GetProductEvaluationSpec extends ObjectBehavior
             new CriterionCode('consistency_textarea_lowercase_words'),
         ]);
 
-        $productId = new ProductId(39);
-        $criteriaEvaluations = $this->givenDeprecatedCriteriaEvaluations($productId);
-        $getCriteriaEvaluationsByProductIdQuery->execute($productId)->willReturn($criteriaEvaluations);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
+        $criteriaEvaluations = $this->givenDeprecatedCriteriaEvaluations($productUuid);
+        $getCriteriaEvaluationsByProductIdQuery->execute($productUuid)->willReturn($criteriaEvaluations);
         $completeEvaluationWithImprovableAttributes->__invoke($criteriaEvaluations)->willReturn($criteriaEvaluations);
 
         $expectedEvaluation = [
@@ -118,10 +119,10 @@ class GetProductEvaluationSpec extends ObjectBehavior
             ],
         ];
 
-        $this->get($productId)->shouldBeLike($expectedEvaluation);
+        $this->get($productUuid)->shouldBeLike($expectedEvaluation);
     }
 
-    private function generateCriterionEvaluation(ProductId $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
+    private function generateCriterionEvaluation(ProductUuid $productId, string $code, string $status, ChannelLocaleRateCollection $resultRates, CriterionEvaluationResultStatusCollection $resultStatusCollection, array $resultData)
     {
         return new CriterionEvaluation(
             new CriterionCode($code),
@@ -132,7 +133,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         );
     }
 
-    private function givenProductCriteriaEvaluations(ProductId $productId): CriterionEvaluationCollection
+    private function givenProductCriteriaEvaluations(ProductUuid $productId): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $channelCodeMobile = new ChannelCode('mobile');
@@ -333,7 +334,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
         ];
     }
 
-    private function givenDeprecatedCriteriaEvaluations(ProductId $productId): CriterionEvaluationCollection
+    private function givenDeprecatedCriteriaEvaluations(ProductUuid $productUuid): CriterionEvaluationCollection
     {
         $channelCodeEcommerce = new ChannelCode('ecommerce');
         $localeCodeEn = new LocaleCode('en_US');
@@ -354,7 +355,7 @@ class GetProductEvaluationSpec extends ObjectBehavior
 
         return (new CriterionEvaluationCollection())
             ->add($this->generateCriterionEvaluation(
-                $productId,
+                $productUuid,
                 'consistency_textarea_lowercase_words',
                 CriterionEvaluationStatus::DONE,
                 $lowercaseWordsRates,

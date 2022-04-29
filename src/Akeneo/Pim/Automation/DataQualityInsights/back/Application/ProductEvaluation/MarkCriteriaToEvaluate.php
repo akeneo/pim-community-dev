@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,19 +13,19 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
  */
 final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
 {
-    /** @var GetUpdatedProductIdsQueryInterface */
+    /** @var GetUpdatedProductUuidsQueryInterface */
     private $getUpdatedProductIdsQuery;
 
-    /** @var GetProductIdsImpactedByAttributeGroupActivationQueryInterface */
+    /** @var GetEntityIdsImpactedByAttributeGroupActivationQueryInterface */
     private $getProductIdsImpactedByAttributeGroupActivationQuery;
 
     /** @var CreateCriteriaEvaluations */
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
-        GetUpdatedProductIdsQueryInterface $getUpdatedProductIdsQuery,
-        GetProductIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations
+        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductIdsQuery,
+        GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
+        CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
         $this->getUpdatedProductIdsQuery = $getUpdatedProductIdsQuery;
         $this->getProductIdsImpactedByAttributeGroupActivationQuery = $getProductIdsImpactedByAttributeGroupActivationQuery;

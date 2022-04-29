@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -43,12 +46,13 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
 
         $this->givenANotInvolvedProduct();
 
-        $productIds = array_keys($expectedEvaluationRates);
-        $productIds[] = 12345; // Unknown product
-        $productIds = ProductIdCollection::fromInts($productIds);
+        $productUuids = array_keys($expectedEvaluationRates);
+        $productUuids[] = Uuid::uuid4()->toString(); // Unknown product
+
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection($productUuids);
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductsAndCriterionQuery::class)
-            ->execute($productIds, new CriterionCode('spelling'));
+            ->execute($productUuidCollection, new CriterionCode('spelling'));
 
         $this->assertEquals($expectedEvaluationRates, $evaluationRates);
     }
@@ -77,9 +81,9 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
             ]
         ]);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($product->getUuid(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$product->getUuid()->toString() => $expectedRates];
     }
 
     private function givenSampleB(): array
@@ -97,9 +101,9 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
         ];
         $evaluationResults['spelling'] = $this->buildEvaluationResult($expectedRates);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($product->getUuid(), $evaluationResults);
 
-        return [$product->getId() => $expectedRates];
+        return [$product->getUuid()->toString() => $expectedRates];
     }
 
     private function givenANotInvolvedProduct(): void
@@ -116,7 +120,7 @@ final class GetEvaluationRatesByProductsAndCriterionQueryIntegration extends Dat
             ]
         ]);
 
-        $this->saveEvaluationResults($product->getId(), $evaluationResults);
+        $this->saveEvaluationResults($product->getUuid(), $evaluationResults);
     }
 
     private function givenAProductNotEvaluatedYet(string $criterionCode): array
@@ -133,18 +137,18 @@ SQL,
             ]
         );
 
-        return [$product->getId() => []];
+        return [$product->getUuid()->toString() => []];
     }
 
-    private function saveEvaluationResults(int $productId, array $evaluationResults): void
+    private function saveEvaluationResults(UuidInterface $productUuid, array $evaluationResults): void
     {
-        $productId = new ProductId($productId);
+        $productUuid = ProductUuid::fromUuid($productUuid);
         $evaluations = new Write\CriterionEvaluationCollection();
 
         foreach ($evaluationResults as $criterion => $evaluationResult) {
             $evaluation = new Write\CriterionEvaluation(
                 new CriterionCode($criterion),
-                $productId,
+                $productUuid,
                 CriterionEvaluationStatus::done()
             );
             $evaluation->end($evaluationResult);

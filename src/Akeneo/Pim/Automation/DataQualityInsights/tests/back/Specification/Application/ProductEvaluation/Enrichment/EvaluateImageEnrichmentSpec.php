@@ -7,11 +7,12 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateImageEnrichment;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Utils\CatalogProvider;
 use Akeneo\Pim\Automation\DataQualityInsights\tests\back\Specification\Utils\EvaluationProvider;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class EvaluateImageEnrichmentSpec extends ObjectBehavior
 {
@@ -25,11 +26,11 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ): void
     {
-        $productId = new ProductId(1234);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
             CriterionEvaluationStatus::DONE,
-            $productId->toInt()
+            Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         );
         $imageAttribute = CatalogProvider::anAttribute('an_image_attribute', AttributeTypes::IMAGE);
         $secondImageAttribute = CatalogProvider::anAttribute('a_second_image_attribute', AttributeTypes::IMAGE);
@@ -71,7 +72,7 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         ]);
 
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn($channelsWithLocales);
-        $completenessCalculator->calculate($productId)->willReturn($completenessResult);
+        $completenessCalculator->calculate($productUuid)->willReturn($completenessResult);
 
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedResult);
     }
@@ -81,11 +82,11 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         GetLocalesByChannelQueryInterface $localesByChannelQuery
     ): void
     {
-        $productId = new ProductId(1234);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = EvaluationProvider::aWritableCriterionEvaluation(
             EvaluateImageEnrichment::CRITERION_CODE,
             CriterionEvaluationStatus::DONE,
-            $productId->toInt()
+            Uuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed')
         );
        $textAttribute = CatalogProvider::anAttribute('a_text_attribute');
         $productValues = CatalogProvider::aListOfProductValues([
@@ -115,7 +116,7 @@ class EvaluateImageEnrichmentSpec extends ObjectBehavior
         ]);
 
         $localesByChannelQuery->getChannelLocaleCollection()->willReturn($channelsWithLocales);
-        $completenessCalculator->calculate($productId)->willReturn($completenessResult);
+        $completenessCalculator->calculate($productUuid)->willReturn($completenessResult);
 
         $this->evaluate($criterionEvaluation, $productValues)->shouldBeLike($expectedResult);
     }

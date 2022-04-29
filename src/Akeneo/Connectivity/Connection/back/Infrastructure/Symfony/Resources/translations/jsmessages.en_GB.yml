@@ -148,6 +148,8 @@ akeneo_connectivity.connection:
             information: 'To know more about app authorizations, check out our {{ link }}.'
             information_link_anchor: Help Center article
             no_scope: No specific authorizations have been requested.
+          authentication:
+            information_link_anchor: Help Center article
         error_monitoring:
           error: Oups, something went wrong!
           helper:

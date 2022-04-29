@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluati
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,5 +17,5 @@ interface GetEvaluationResultsByProductsAndCriterionQueryInterface
     /**
      * @return array<int, ?CriterionEvaluationResult>
      */
-    public function execute(ProductIdCollection $productIdCollection, CriterionCode $criterionCode): array;
+    public function execute(ProductEntityIdCollection $entityIdCollection, CriterionCode $criterionCode): array;
 }

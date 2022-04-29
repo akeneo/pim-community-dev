@@ -12,7 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProd
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +23,7 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     private const GOOD_ENRICHMENT_RATIO = 80;
 
     public function __construct(
-        private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
+        private GetLocalesByChannelQueryInterface                        $getLocalesByChannelQuery,
         private GetEvaluationResultsByProductsAndCriterionQueryInterface $getEvaluationResultsByProductsAndCriterionQuery,
     ) {
     }
@@ -36,13 +36,13 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     /**
      * {@inheritdoc}
      */
-    public function compute(ProductIdCollection $productIdCollection): array
+    public function compute(ProductEntityIdCollection $entityIdCollection): array
     {
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
-        $productsEvaluationResults = $this->getProductsCompletenessResults($productIdCollection);
+        $productsEvaluationResults = $this->getProductsCompletenessResults($entityIdCollection);
         $productsEnrichmentStatus = [];
-        foreach ($productIdCollection->toArrayInt() as $productId) {
-            $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluationResults[$productId], $channelsLocales);
+        foreach ($entityIdCollection->toArrayString() as $entityId) {
+            $productsEnrichmentStatus[$entityId] = $this->computeForChannelsLocales($productsEvaluationResults[$entityId], $channelsLocales);
         }
 
         return $productsEnrichmentStatus;
@@ -68,8 +68,8 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     private function computeEnrichmentStatus(
         ?CriterionEvaluationResult $nonRequiredAttributesEvaluationResult,
         ?CriterionEvaluationResult $requiredAttributesEvaluationResult,
-        string $channel,
-        string $locale
+        string                     $channel,
+        string                     $locale
     ): ?bool {
         $nonRequiredAttributesEvaluation = null !== $nonRequiredAttributesEvaluationResult ? $nonRequiredAttributesEvaluationResult->getData() : [];
         $requiredAttributesEvaluationData = null !== $requiredAttributesEvaluationResult ? $requiredAttributesEvaluationResult->getData() : [];
@@ -92,19 +92,19 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return $enrichmentRatio >= self::GOOD_ENRICHMENT_RATIO;
     }
 
-    private function getProductsCompletenessResults(ProductIdCollection $productIds): array
+    private function getProductsCompletenessResults(ProductEntityIdCollection $entityIds): array
     {
         $requiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
-            $productIds,
+            $entityIds,
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
         );
         $nonRequiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
-            $productIds,
+            $entityIds,
             new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE),
         );
 
         $productsEvaluations = [];
-        foreach ($productIds->toArrayInt() as $productId) {
+        foreach ($entityIds->toArrayString() as $productId) {
             $productsEvaluations[$productId] = [
                 EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => $requiredAttributesEvaluations[$productId] ?? null,
                 EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => $nonRequiredAttributesEvaluations[$productId] ?? null,

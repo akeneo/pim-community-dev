@@ -6,6 +6,8 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\R
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\DeadlockException;
@@ -32,7 +34,7 @@ class CriterionEvaluationRepository
 INSERT INTO pim_data_quality_insights_product_criteria_evaluation
     (product_uuid, criterion_code, status)
 SELECT uuid, :%s, :%s
-FROM pim_catalog_product WHERE id = :%s
+FROM pim_catalog_product WHERE uuid = :%s
 ON DUPLICATE KEY UPDATE status = :%s;
 SQL;
 
@@ -55,13 +57,14 @@ SQL;
         $queryFormat = <<<SQL
 UPDATE pim_data_quality_insights_product_criteria_evaluation e, pim_catalog_product p
 SET e.evaluated_at = :%s, e.status = :%s, e.result = :%s
-WHERE p.id = :%s AND p.uuid = e.product_uuid AND criterion_code = :%s;
+WHERE p.uuid = :%s AND p.uuid = e.product_uuid AND criterion_code = :%s;
 SQL;
         $this->updateFromSqlQueryFormat($queryFormat, $criteriaEvaluations);
     }
 
     public function updateCriterionEvaluationsForProductModels(Write\CriterionEvaluationCollection $criteriaEvaluations): void
     {
+        // Note: the name of the column is still product_id even if we manipulate product_model ids.
         $queryFormat = <<<SQL
 UPDATE pim_data_quality_insights_product_model_criteria_evaluation
 SET evaluated_at = :%s, status = :%s, result = :%s
@@ -86,11 +89,17 @@ SQL;
 
             $queries[] = sprintf($queryFormat, $criterionCode, $status, $productId, $status);
 
-            $queryParametersValues[$criterionCode] = strval($criterionEvaluation->getCriterionCode());
-            $queryParametersValues[$productId] = $criterionEvaluation->getProductId()->toInt();
+            $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
 
-            $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            $entityId = $criterionEvaluation->getEntityId();
+            if ($entityId instanceof ProductUuid) {
+                $queryParametersValues[$productId] = $entityId->toBytes();
+                $queryParametersTypes[$productId] = \PDO::PARAM_STR;
+            } else {
+                $queryParametersValues[$productId] = $entityId->toInt();
+                $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            }
         }
 
         $query = implode("\n", $queries);
@@ -162,13 +171,19 @@ SQL;
 
             $queries[] = sprintf($sqlQueryFormat, $evaluatedAt, $status, $result, $productId, $criterionCode);
 
-            $queryParametersValues[$criterionCode] = strval($criterionEvaluation->getCriterionCode());
-            $queryParametersValues[$productId] = $criterionEvaluation->getProductId()->toInt();
+            $queryParametersValues[$criterionCode] = (string)$criterionEvaluation->getCriterionCode();
             $queryParametersValues[$evaluatedAt] = $this->formatDate($criterionEvaluation->getEvaluatedAt());
             $queryParametersValues[$status] = $criterionEvaluation->getStatus();
             $queryParametersValues[$result] = $this->formatCriterionEvaluationResult($criterionEvaluation->getResult());
 
-            $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            $entityId = $criterionEvaluation->getEntityId();
+            if ($entityId instanceof ProductUuid) {
+                $queryParametersValues[$productId] = $entityId->toBytes();
+                $queryParametersTypes[$productId] = \PDO::PARAM_STR;
+            } elseif ($entityId instanceof ProductModelId) {
+                $queryParametersValues[$productId] = $entityId->toInt();
+                $queryParametersTypes[$productId] = \PDO::PARAM_INT;
+            }
         }
 
         $this->dbConnection->executeQuery(implode("\n", $queries), $queryParametersValues, $queryParametersTypes);

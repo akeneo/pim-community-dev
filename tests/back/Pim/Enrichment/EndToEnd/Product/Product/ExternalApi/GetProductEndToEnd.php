@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
@@ -210,7 +210,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         ]);
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
-            ProductIdCollection::fromInt($product->getId())
+            ProductUuidCollection::fromString($product->getUuid()->toString())
         );
 
         $client = $this->createAuthenticatedClient();
@@ -316,14 +316,6 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
         $client->request('GET', 'api/rest/v1/products/product');
         $response = $client->getResponse();
-
-        $logger = self::$container->get('monolog.logger.pim_api_acl');
-        assert($logger instanceof TestLogger);
-
-        $this->assertTrue(
-            $logger->hasWarning('User "admin" with roles ROLE_ADMINISTRATOR is not granted "pim_api_product_list"'),
-            'Expected warning not found in the logs.'
-        );
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
     }

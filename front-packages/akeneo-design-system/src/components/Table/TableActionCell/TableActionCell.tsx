@@ -1,13 +1,18 @@
 import styled from 'styled-components';
-import {TableCell} from '../TableCell/TableCell';
 import React, {ReactNode, Ref, SyntheticEvent} from 'react';
 import {Button, ButtonProps, IconButton} from '../../';
+import {getColor} from '../../../theme';
 
-const TableActionCellContainer = styled(TableCell)`
-  // Only display buttons on row hover
-  > div {
-    opacity: 0;
-  }
+const TableActionCellContainer = styled.td`
+  color: ${getColor('grey', 140)};
+  border-bottom: 1px solid ${getColor('grey', 60)};
+  padding: 0 10px;
+  max-width: 15vw;
+  min-width: 0;
+`;
+
+const InnerTableActionCellContainer = styled.div`
+  opacity: 0;
 `;
 
 type ActionCellProps = {
@@ -34,7 +39,7 @@ const TableActionCell = React.forwardRef<HTMLTableCellElement, ActionCellProps>(
 
     return (
       <TableActionCellContainer ref={forwardedRef} {...rest}>
-        {decoratedChildren}
+        <InnerTableActionCellContainer>{decoratedChildren}</InnerTableActionCellContainer>
       </TableActionCellContainer>
     );
   }

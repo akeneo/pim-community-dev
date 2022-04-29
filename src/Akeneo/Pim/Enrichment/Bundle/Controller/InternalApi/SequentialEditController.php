@@ -29,7 +29,8 @@ class SequentialEditController
         protected MassActionParametersParser $parameterParser,
         protected GridFilterAdapterInterface $filterAdapter,
         protected ProductQueryBuilderFactoryInterface $pqbFactory,
-        protected UserContext $userContext
+        protected UserContext $userContext,
+        private Connection $connection
     ) {
     }
 
@@ -55,6 +56,29 @@ class SequentialEditController
         while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
             $products[] = IdEncoder::decode($cursor->current());
             $cursor->next();
+        }
+
+        // @todo CPM-579: Clean this once we use uuids in the datagrid (and in the pef)
+        $uuids = \array_map(
+            fn (array $entityInfo): string => Uuid::fromString($entityInfo['id'])->getBytes(),
+            \array_filter(
+                $products,
+                fn (array $entityInfo): bool =>
+                    IdEncoder::PRODUCT_TYPE === $entityInfo['type'] && Uuid::isValid((string) $entityInfo['id'])
+            )
+        );
+
+        // TODO Rebase, this should be deleted.
+        $ids = $this->connection->executeQuery(
+            'SELECT BIN_TO_UUID(uuid) as uuid, id from pim_catalog_product WHERE uuid IN (:uuids)',
+            ['uuids' => $uuids],
+            ['uuids' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllKeyValue();
+
+        foreach ($products as $index => $entityInfo) {
+            if (IdEncoder::PRODUCT_TYPE === $entityInfo['type'] && isset($ids[$entityInfo['id']])) {
+                $products[$index]['id'] = (int) $ids[$entityInfo['id']];
+            }
         }
 
         return new JsonResponse(['entities' => $products, 'total' => $cursor->count()]);

@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Doctrine\DBAL\Connection;
@@ -43,18 +43,18 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
     {
         $this->assertCountProductCriterionEvaluations(0);
         $product = $this->createProduct('ziggy');
-        $productId = new ProductId($product->getId());
+        $productUuid = ProductUuid::fromUuid($product->getUuid());
         $this->deleteAllProductCriterionEvaluations();
 
         $criteria = (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                $productId,
+                $productUuid,
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                $productId,
+                $productUuid,
                 CriterionEvaluationStatus::pending()
         ));
 
@@ -77,28 +77,28 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
 
     public function test_it_updates_the_status_of_a_criterion_evaluation_instead_of_creating_it_when_it_already_exists()
     {
-        $productIdWithExistingEvaluation = new ProductId($this->createProduct('product_with_evaluation')->getId());
-        $productIdWithoutEvaluation = new ProductId($this->createProduct('product_without_evaluation')->getId());
+        $productUuidWithExistingEvaluation = ProductUuid::fromUuid($this->createProduct('product_with_evaluation')->getUuid());
+        $productUuidWithoutEvaluation = ProductUuid::fromUuid($this->createProduct('product_without_evaluation')->getUuid());
         $criterionCode = new CriterionCode('completeness');
         $this->deleteAllProductCriterionEvaluations();
 
-        $existingEvaluation = $this->givenAnExistingCriterionEvaluation($criterionCode, $productIdWithExistingEvaluation);
+        $existingEvaluation = $this->givenAnExistingCriterionEvaluation($criterionCode, $productUuidWithExistingEvaluation);
 
         $this->productCriterionEvaluationRepository->create((new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 $criterionCode,
-                $productIdWithExistingEvaluation,
+                $productUuidWithExistingEvaluation,
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 $criterionCode,
-                $productIdWithoutEvaluation,
+                $productUuidWithoutEvaluation,
                 CriterionEvaluationStatus::pending()
             )));
 
         $this->assertCountProductCriterionEvaluations(2);
 
-        $updatedEvaluation = $this->findCriterionEvaluation($productIdWithExistingEvaluation, $criterionCode);
+        $updatedEvaluation = $this->findCriterionEvaluation($productUuidWithExistingEvaluation, $criterionCode);
         $this->assertSame($existingEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT), $updatedEvaluation->getEvaluatedAt()->format(Clock::TIME_FORMAT));
         $this->assertSame(CriterionEvaluationStatus::PENDING, strval($updatedEvaluation->getStatus()));
         $this->assertNotNull($updatedEvaluation->getResult());
@@ -109,16 +109,16 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->createAttribute('description');
         $this->createChannel('mobile', ['locales' => ['en_US']]);
 
-        $productId = new ProductId($this->createProduct('ziggy')->getId());
+        $productUuid = ProductUuid::fromUuid($this->createProduct('ziggy')->getUuid());
 
         $criterionEvaluationA = new Write\CriterionEvaluation(
             new CriterionCode('completeness'),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
         $criterionEvaluationB = new Write\CriterionEvaluation(
             new CriterionCode('spelling'),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
         $criteriaEvaluationCollection = $this->buildCollection();
@@ -147,8 +147,8 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
                 ->add($criterionEvaluationB)
         );
 
-        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getProductId(), $criterionEvaluationA->getCriterionCode());
-        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getProductId(), $criterionEvaluationB->getCriterionCode());
+        $updatedCriterionEvaluationA = $this->findCriterionEvaluation($criterionEvaluationA->getEntityId(), $criterionEvaluationA->getCriterionCode());
+        $updatedCriterionEvaluationB = $this->findCriterionEvaluation($criterionEvaluationB->getEntityId(), $criterionEvaluationB->getCriterionCode());
 
         $this->assertCriterionEvaluationEquals($criterionEvaluationA, $updatedCriterionEvaluationA);
         $this->assertCriterionEvaluationEquals($criterionEvaluationB, $updatedCriterionEvaluationB);
@@ -159,12 +159,12 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         return (new Write\CriterionEvaluationCollection)
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completeness'),
-                new ProductId($this->createProduct('a_product')->getId()),
+                ProductUuid::fromUuid($this->createProduct('a_product')->getUuid()),
                 CriterionEvaluationStatus::pending()
             ))
             ->add(new Write\CriterionEvaluation(
                 new CriterionCode('completion'),
-                new ProductId($this->createProduct('another_product')->getId()),
+                ProductUuid::fromUuid($this->createProduct('another_product')->getUuid()),
                 CriterionEvaluationStatus::pending()
             ));
     }
@@ -176,7 +176,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         return $stmt->fetchAllAssociative();
     }
 
-    private function findCriterionEvaluation(ProductId $productId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
+    private function findCriterionEvaluation(ProductUuid $productId, CriterionCode $criterionCode): ?Read\CriterionEvaluation
     {
         $evaluations = $this->get('akeneo.pim.automation.data_quality_insights.query.get_product_criteria_evaluations')
             ->execute($productId);
@@ -197,7 +197,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
     private function assertCriterionEvaluationEquals(Write\CriterionEvaluation $expectedCriterionEvaluation, Read\CriterionEvaluation $criterionEvaluation): void
     {
         $this->assertEquals($expectedCriterionEvaluation->getCriterionCode(), $criterionEvaluation->getCriterionCode());
-        $this->assertEquals($expectedCriterionEvaluation->getProductId(), $criterionEvaluation->getProductId());
+        $this->assertEquals($expectedCriterionEvaluation->getEntityId(), $criterionEvaluation->getProductId());
         $this->assertEvaluatedAtEquals($expectedCriterionEvaluation->getEvaluatedAt(), $criterionEvaluation->getEvaluatedAt());
         $this->assertEquals($expectedCriterionEvaluation->getStatus(), $criterionEvaluation->getStatus());
         $this->assertEquals($expectedCriterionEvaluation->getResult()->getRates()->toArrayInt(), $criterionEvaluation->getResult()->getRates()->toArrayInt());
@@ -205,7 +205,7 @@ final class ProductCriterionEvaluationRepositoryIntegration extends DataQualityI
         $this->assertEquals($expectedCriterionEvaluation->getResult()->getDataToArray(), $criterionEvaluation->getResult()->getData());
     }
 
-    private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductId $productId): Write\CriterionEvaluation
+    private function givenAnExistingCriterionEvaluation(CriterionCode $criterionCode, ProductUuid $productId): Write\CriterionEvaluation
     {
         $evaluation = new Write\CriterionEvaluation(
             $criterionCode,

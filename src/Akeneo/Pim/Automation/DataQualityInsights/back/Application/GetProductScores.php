@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -24,9 +24,17 @@ final class GetProductScores
         $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
     }
 
-    public function get(ProductId $productId): array
+    /**
+     * Eventually returns all quality scores by channel and locale.
+     * @return array{'evaluations_available':false} | array{'evaluations_available': true, 'scores': array }
+     */
+    public function get(ProductUuid $productId): array
     {
-        $productScores = $this->getProductScoresQuery->byProductId($productId);
+        $productScores = $this->getProductScoresQuery->byProductUuid($productId);
+
+        if ($productScores->isEmpty()) {
+            return ["evaluations_available" => false];
+        }
 
         $formattedProductScores = [];
         foreach ($this->getLocalesByChannelQuery->getChannelLocaleCollection() as $channelCode => $locales) {
@@ -37,6 +45,6 @@ final class GetProductScores
             }
         }
 
-        return $formattedProductScores;
+        return ["evaluations_available" => true, "scores" => $formattedProductScores];
     }
 }

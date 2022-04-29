@@ -7,7 +7,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductModelScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Event\ProductModelsEvaluated;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,7 +30,7 @@ class EvaluateProductModelsSpec extends ObjectBehavior
 
     public function it_evaluates_product_models($evaluatePendingProductModelCriteria, $consolidateProductScores, $eventDispatcher): void
     {
-        $productModelIdCollection = ProductIdCollection::fromInts([1, 2]);
+        $productModelIdCollection = ProductModelIdCollection::fromStrings(['123', '321']);
         $evaluatePendingProductModelCriteria->evaluateAllCriteria($productModelIdCollection)->shouldBeCalled();
         $consolidateProductScores->consolidate($productModelIdCollection)->shouldBeCalled();
         $eventDispatcher->dispatch(Argument::that(static function ($event) use ($productModelIdCollection) {

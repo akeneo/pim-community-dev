@@ -96,6 +96,15 @@ YAML;
         )->shouldReturn('0.000100000000');
     }
 
+    public function it_returns_zero_when_value_is_not_numeric()
+    {
+        $this->setFamily('Weight');
+        $this->convertBaseToStandard(
+            'KILOGRAM',
+            '1.900.000'
+        )->shouldReturn('0');
+    }
+
     public function it_converts_a_standard_value_to_a_final_unit()
     {
         $this->setFamily('Weight');

@@ -14,9 +14,10 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 final class EvaluateCompletenessSpec extends ObjectBehavior
 {
@@ -34,10 +35,10 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
             'print' => ['en_US', 'fr_FR'],
         ]));
 
-        $productId = new ProductId(1);
+        $productUuid = ProductUuid::fromString(('df470d52-7723-4890-85a0-e79be625e2ed'));
         $criterionEvaluation = new Write\CriterionEvaluation(
             new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE),
-            $productId,
+            $productUuid,
             CriterionEvaluationStatus::pending()
         );
 
@@ -46,7 +47,7 @@ final class EvaluateCompletenessSpec extends ObjectBehavior
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $completenessCalculator->calculate($productId)->willReturn((new Write\CompletenessCalculationResult())
+        $completenessCalculator->calculate($productUuid)->willReturn((new Write\CompletenessCalculationResult())
             ->addRate($channelMobile, $localeEn, new Rate(100))
             ->addRate($channelMobile, $localeFr, new Rate(85))
             ->addMissingAttributes($channelMobile, $localeFr, ['name', 'weight'])

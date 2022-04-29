@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Comma
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -90,21 +91,20 @@ SQL
         $progressBar->start();
 
         $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productCriteriaRegistry->getCriterionCodes());
-        $statusPending = CriterionEvaluationStatus::PENDING;
 
-        $lastProductId = 0;
-        while ($productIds = $this->getProductIdsFrom($lastProductId)) {
-            $values = implode(', ', $this->buildCriteriaEvaluationsValues($productIds, $criteria));
+        $lastProductUuidAsBytes = '';
+        while ($productUuids = $this->getProductUuidsFrom($lastProductUuidAsBytes)) {
+            $values = implode(', ', $this->buildProductCriteriaEvaluationsValues($productUuids, $criteria));
             $query = <<<SQL
-INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_id, criterion_code, status) 
+INSERT INTO pim_data_quality_insights_product_criteria_evaluation (product_uuid, criterion_code, status) 
 VALUES $values
 ON DUPLICATE KEY UPDATE status = :statusPending;
 SQL;
             $this->dbConnection->executeQuery($query, ['statusPending' => CriterionEvaluationStatus::PENDING]);
 
-            $progressBar->advance(count($productIds));
+            $progressBar->advance(count($productUuids));
 
-            $lastProductId = intval(end($productIds));
+            $lastProductUuidAsBytes = Uuid::fromString(end($productUuids))->getBytes();
         }
 
         $progressBar->clear();
@@ -136,7 +136,7 @@ SQL
 
         $lastProductModelId = 0;
         while ($productModelIds = $this->getProductModelIdsFrom($lastProductModelId)) {
-            $values = implode(', ', $this->buildCriteriaEvaluationsValues($productModelIds, $criteria));
+            $values = implode(', ', $this->buildProductModelCriteriaEvaluationsValues($productModelIds, $criteria));
             $query = <<<SQL
 INSERT INTO pim_data_quality_insights_product_model_criteria_evaluation (product_id, criterion_code, status) 
 VALUES $values
@@ -153,28 +153,40 @@ SQL;
         $io->success('All the product models evaluations have been initialized.');
     }
 
-    private function buildCriteriaEvaluationsValues(array $productIds, array $criteria): array
+    private function buildProductCriteriaEvaluationsValues(array $productUuids, array $criteria): array
     {
         $values = [];
-        foreach ($productIds as $productId) {
+        foreach ($productUuids as $productUuid) {
             foreach ($criteria as $criterion) {
-                $values[] = sprintf("(%d, '%s', '%s')", $productId, $criterion, CriterionEvaluationStatus::PENDING);
+                $values[] = sprintf("(UUID_TO_BIN('%s'), '%s', '%s')", $productUuid, $criterion, CriterionEvaluationStatus::PENDING);
             }
         }
 
         return $values;
     }
 
-    private function getProductIdsFrom(int $productId): array
+    private function buildProductModelCriteriaEvaluationsValues(array $productModelIds, array $criteria): array
+    {
+        $values = [];
+        foreach ($productModelIds as $productModelId) {
+            foreach ($criteria as $criterion) {
+                $values[] = sprintf("(%d, '%s', '%s')", $productModelId, $criterion, CriterionEvaluationStatus::PENDING);
+            }
+        }
+
+        return $values;
+    }
+
+    private function getProductUuidsFrom(string $productUuidAsByes): array
     {
         $query = <<<SQL
-SELECT id FROM pim_catalog_product WHERE id > :lastId ORDER BY id ASC LIMIT :limit;
+SELECT BIN_TO_UUID(uuid) FROM pim_catalog_product WHERE uuid > :lastUuid ORDER BY uuid ASC LIMIT :limit;
 SQL;
 
         return $this->dbConnection->executeQuery(
             $query,
-            ['lastId' => $productId, 'limit' => self::BATCH_SIZE],
-            ['lastId' => \PDO::PARAM_INT, 'limit' => \PDO::PARAM_INT]
+            ['lastUuid' => $productUuidAsByes, 'limit' => self::BATCH_SIZE],
+            ['lastUuid' => \PDO::PARAM_STR, 'limit' => \PDO::PARAM_INT]
         )->fetchFirstColumn();
     }
 

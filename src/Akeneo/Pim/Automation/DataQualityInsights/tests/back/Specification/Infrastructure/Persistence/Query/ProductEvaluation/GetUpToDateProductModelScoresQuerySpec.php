@@ -9,7 +9,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -28,30 +29,28 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
     }
 
     public function it_returns_the_product_model_scores_if_evaluation_for_product_id_is_up_to_date(
-        $hasUpToDateEvaluationQuery,
-        $getProductModelScoresQuery
-    )
-    {
-        $productModelId = new ProductId(42);
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery
+    ) {
+        $productModelId = new ProductModelId(42);
 
         $scores = (new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('fr_FR'), new Rate(80));
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(true);
         $getProductModelScoresQuery->byProductModelId($productModelId)->willReturn($scores);
 
         $this->byProductModelId($productModelId)->shouldReturn($scores);
     }
 
     public function it_returns_empty_scores_if_evaluation_for_product_id_is_outdated(
-        $hasUpToDateEvaluationQuery,
-        $getProductModelScoresQuery
-    )
-    {
-        $productModelId = new ProductId(42);
+        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        GetProductModelScoresQueryInterface $getProductModelScoresQuery
+    ) {
+        $productModelId = new ProductModelId(42);
 
-        $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
+        $hasUpToDateEvaluationQuery->forEntityId($productModelId)->willReturn(false);
         $getProductModelScoresQuery->byProductModelId($productModelId)->shouldNotBeCalled();
 
         $this->byProductModelId($productModelId)->shouldBeLike(new ChannelLocaleRateCollection());

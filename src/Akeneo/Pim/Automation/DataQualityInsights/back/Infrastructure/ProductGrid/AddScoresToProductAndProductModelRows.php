@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\AdditionalProperty;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,8 +18,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
  */
 class AddScoresToProductAndProductModelRows
 {
-    public function __construct(private GetQualityScoresFactory $getQualityScoresFactory)
-    {
+    public function __construct(
+        private GetQualityScoresFactory         $getQualityScoresFactory,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
     /**
@@ -28,8 +30,8 @@ class AddScoresToProductAndProductModelRows
      */
     public function __invoke(
         FetchProductAndProductModelRowsParameters $fetchProductAndProductModelRowsParameters,
-        array $rows,
-        string $type
+        array                                     $rows,
+        string                                    $type
     ): array {
         if (empty($rows)) {
             return [];
@@ -39,10 +41,11 @@ class AddScoresToProductAndProductModelRows
         foreach ($rows as $row) {
             // TODO Get this back once CPM-576 is merged
 //            $productIds[] = new ProductId($row->technicalId());
-            $productIds[] = new ProductId(1);
+            $productIds[] = ProductUuid::fromUuid(Uuid::uuid4());
         }
+        $productIdCollection = $this->idFactory->createCollection($productIds);
 
-        $scores = ($this->getQualityScoresFactory)(ProductIdCollection::fromProductIds($productIds), $type);
+        $scores = ($this->getQualityScoresFactory)($productIdCollection, $type);
 
         $channel = new ChannelCode($fetchProductAndProductModelRowsParameters->channelCode());
         $locale = new LocaleCode($fetchProductAndProductModelRowsParameters->localeCode());
@@ -58,7 +61,7 @@ class AddScoresToProductAndProductModelRows
         return $enrichedRows;
     }
 
-    private function retrieveScore(int $technicalId, array $scores, ChannelCode $channel, LocaleCode $locale): string
+    private function retrieveScore(string $technicalId, array $scores, ChannelCode $channel, LocaleCode $locale): string
     {
         if (isset($scores[$technicalId])) {
             $score = $scores[$technicalId]->getByChannelAndLocale($channel, $locale);

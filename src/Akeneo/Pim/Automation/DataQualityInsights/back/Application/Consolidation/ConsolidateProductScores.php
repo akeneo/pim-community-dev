@@ -6,9 +6,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByEntityIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -17,14 +17,14 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
 class ConsolidateProductScores
 {
     public function __construct(
-        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
-        private ComputeScores                                   $computeScores,
-        private ProductScoreRepositoryInterface                 $productScoreRepository,
-        private Clock                                           $clock
+        private GetCriteriaEvaluationsByEntityIdQueryInterface $getCriteriaEvaluationsQuery,
+        private ComputeScores                                  $computeScores,
+        private ProductScoreRepositoryInterface                $productScoreRepository,
+        private Clock                                          $clock
     ) {
     }
 
-    public function consolidate(ProductIdCollection $productIdCollection): void
+    public function consolidate(ProductEntityIdCollection $productIdCollection): void
     {
         $productsScores = [];
         foreach ($productIdCollection as $productId) {

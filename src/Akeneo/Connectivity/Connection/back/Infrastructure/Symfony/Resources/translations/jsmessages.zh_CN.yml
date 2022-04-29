@@ -153,6 +153,8 @@ akeneo_connectivity.connection:
             information: '要了解更多有关应用授权的信息，请查阅我们的 {{ link }}。'
             information_link_anchor: 帮助中心文章
             no_scope: 未请求特定的授权。
+          authentication:
+            information_link_anchor: 帮助中心文章
           pending: 该应用未连接到您的 PIM。打开应用后应该会修复该连接问题。如果该问题仍然存在，请联系应用支持人员。
         error_monitoring:
           error: 哎呀，出错了!

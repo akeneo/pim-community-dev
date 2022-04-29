@@ -5,30 +5,26 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 
 /**
+ * Warning, this class is misnamed, because it contains Product or ProductModel scores
+ *
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 final class ProductScores
 {
-    private ProductId $productId;
-
-    private \DateTimeImmutable $evaluatedAt;
-
-    private ChannelLocaleRateCollection $scores;
-
-    public function __construct(ProductId $productId, \DateTimeImmutable $evaluatedAt, ChannelLocaleRateCollection $scores)
-    {
-        $this->productId = $productId;
-        $this->evaluatedAt = $evaluatedAt;
-        $this->scores = $scores;
+    public function __construct(
+        private ProductEntityIdInterface    $entityId,
+        private \DateTimeImmutable          $evaluatedAt,
+        private ChannelLocaleRateCollection $scores
+    ) {
     }
 
-    public function getProductId(): ProductId
+    public function getEntityId(): ProductEntityIdInterface
     {
-        return $this->productId;
+        return $this->entityId;
     }
 
     public function getEvaluatedAt(): \DateTimeImmutable

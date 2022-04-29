@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\GetQualityScoresFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
@@ -22,12 +23,16 @@ use Ramsey\Uuid\Uuid;
 class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 {
     public function let(
-        GetQualityScoresFactory $getQualityScoresFactory
-    ){
-        $this->beConstructedWith($getQualityScoresFactory);
+        GetQualityScoresFactory         $getQualityScoresFactory,
+        ProductEntityIdFactoryInterface $idFactory
+    )
+    {
+        $this->beConstructedWith($getQualityScoresFactory, $idFactory);
     }
 
-    public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
+    public function it_returns_no_rows_when_given_no_rows(
+        ProductQueryBuilderInterface $productQueryBuilder
+    )
     {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
@@ -41,8 +46,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
     public function it_returns_product_row_with_additional_property_DQI_score(
         ProductQueryBuilderInterface $productQueryBuilder,
-        $getQualityScoresFactory
-    ){
+        GetQualityScoresFactory $getQualityScoresFactory,
+        ProductEntityIdFactoryInterface $idFactory,
+        ProductEntityIdCollection $productIdCollection
+    )
+    {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -50,7 +58,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeRow(1), $this->makeRow(4)];
+        $uuid1 = '54162e35-ff81-48f1-96d5-5febd3f00fd5';
+        $uuid2 = 'ac930366-36f2-4ad9-9a9f-de94c913d8ca';
+        $rows = [$this->makeProductOrProductModelRow($uuid1), $this->makeProductOrProductModelRow($uuid2)];
+
+        $idFactory->createCollection([$uuid1, $uuid2])->willReturn($productIdCollection);
 
         $scores = [
             (new ChannelLocaleRateCollection())
@@ -65,8 +77,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
     public function it_returns_product_model_row_with_additional_property_DQI_score(
         ProductQueryBuilderInterface $productQueryBuilder,
-                                     $getQualityScoresFactory
-    ){
+                                     $getQualityScoresFactory,
+                                     $idFactory,
+        ProductEntityIdCollection    $productIdCollection
+    )
+    {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -74,7 +89,9 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
             'en_US'
         );
 
-        $rows = [$this->makeRow(1), $this->makeRow(4)];
+        $rows = [$this->makeProductOrProductModelRow('1'), $this->makeProductOrProductModelRow('4')];
+
+        $idFactory->createCollection(['1', '4'])->willReturn($productIdCollection);
 
         $scores = [
             (new ChannelLocaleRateCollection())
@@ -84,22 +101,23 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
         $getQualityScoresFactory->__invoke(Argument::any(), 'product_model')->willReturn($scores);
 
+
         $this->__invoke($queryParameters, $rows, 'product_model')->shouldHaveScoreProperties();
     }
 
-    private function makeRow(int $id): Row
+    private function makeProductOrProductModelRow(string $technicalId): Row
     {
         return Row::fromProduct(
-            strval($id), // identifier
+            sprintf('product_or_product_model_%s', $technicalId), // identifier
             null, // family
             [], // groupCodes
             true, // $enabled,
             new \DateTime(), // created
             new \DateTime(), // updated
-            strval($id), // label
+            sprintf('Label of %s', $technicalId), // label
             null, // image
             null, // completeness,
-            Uuid::uuid4()->toString(), //technicalId,
+            $technicalId, //technicalId,
             null, // parentCode,
             new WriteValueCollection() // values,
         );

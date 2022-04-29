@@ -8,7 +8,8 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateColl
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductModelScoreRepository;
@@ -31,14 +32,14 @@ final class ProductModelScoreRepositoryIntegration extends DataQualityInsightsTe
         $localeFr = new LocaleCode('fr_FR');
 
         $productModelScoreA = new ProductScores(
-            new ProductId($productModelIdA),
+            new ProductModelId($productModelIdA),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(89))
                 ->addRate($channelMobile, $localeFr, new Rate(42))
         );
         $productModelScoreB = new ProductScores(
-            new ProductId($productModelIdB),
+            new ProductModelId($productModelIdB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
@@ -54,7 +55,7 @@ final class ProductModelScoreRepositoryIntegration extends DataQualityInsightsTe
         $this->assertProductModelScoreExists($productModelScoreB);
 
         $updatedProductModelScoreA = new ProductScores(
-            new ProductId($productModelIdA),
+            new ProductModelId($productModelIdA),
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
@@ -85,7 +86,7 @@ SELECT * FROM pim_data_quality_insights_product_model_score
 WHERE product_model_id = :productModelId AND evaluated_at = :evaluatedAt;
 SQL,
             [
-                'productModelId' => $expectedProductModelScore->getProductId()->toInt(),
+                'productModelId' => $expectedProductModelScore->getEntityId()->toInt(),
                 'evaluatedAt' => $expectedProductModelScore->getEvaluatedAt()->format('Y-m-d'),
             ]
         )->fetchAssociative();

@@ -47,6 +47,12 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson:
         parent: base_uuid_migration_step
 
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns:
+        parent: base_uuid_migration_step
+
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints:
+        parent: base_uuid_migration_step
+
     Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch:
         arguments:
             - '@database_connection'
@@ -61,8 +67,10 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillProductUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillForeignUuid'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidFillJson'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidSetNotNullableUuidColumns'
+            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidAddConstraints'
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
-            - '@database_connection'
             - '@monolog.logger'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }

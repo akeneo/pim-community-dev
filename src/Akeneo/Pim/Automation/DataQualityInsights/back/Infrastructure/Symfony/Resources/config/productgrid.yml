@@ -12,13 +12,13 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductModelScoreProperty:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_and_product_model_rows'
+            - '@akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_model_rows'
         tags:
           - { name: akeneo.pim.enrichment.product.grid.add_additional_product_model_properties }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddProductScoreProperty:
         arguments:
-            - '@akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_and_product_model_rows'
+            - '@akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_rows'
         tags:
             - { name: akeneo.pim.enrichment.product.grid.add_additional_product_properties }
 
@@ -28,10 +28,17 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
 
-    akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_and_product_model_rows:
+    akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_rows:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.product_grid.get_quality_scores_factory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
+
+    akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_model_rows:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows
+        arguments:
+            - '@akeneo.pim.automation.data_quality_insights.product_grid.get_quality_scores_factory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\QualityScoreSorter:
         arguments:

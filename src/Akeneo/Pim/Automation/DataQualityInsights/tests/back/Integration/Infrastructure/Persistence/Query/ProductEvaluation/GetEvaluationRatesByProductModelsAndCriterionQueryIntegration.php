@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductModelsAndCriterionQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
@@ -33,7 +33,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
         $this->createMinimalFamilyAndFamilyVariant('a_family', 'a_family_variant');
     }
 
-    public function test_it_gives_the_evaluation_rates_of_a_given_product_model_and_criterion()
+    public function testItGivesTheEvaluationRatesOfAGivenProductModelAndCriterion()
     {
         $this->createChannel('ecommerce', ['locales' => ['en_US', 'fr_FR']]);
         $this->createChannel('mobile', ['locales' => ['en_US']]);
@@ -47,7 +47,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
 
         $productModelIds = array_keys($expectedEvaluationRates);
         $productModelIds[] = 12345; // Unknown product
-        $productIdCollection = ProductIdCollection::fromInts($productModelIds);
+        $productIdCollection = $this->get(ProductModelIdFactory::class)->createCollection(array_map(fn ($id) => (string) $id, $productModelIds));
 
         $evaluationRates = $this->get(GetEvaluationRatesByProductModelsAndCriterionQuery::class)
             ->execute($productIdCollection, new CriterionCode('spelling'));
@@ -66,7 +66,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
             ],
             'mobile' => [
                 'en_US' => 76,
-            ]
+            ],
         ];
         $evaluationResults['spelling'] = $this->buildEvaluationResult($expectedRates);
         $evaluationResults['whatever'] = $this->buildEvaluationResult([
@@ -76,7 +76,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
             ],
             'mobile' => [
                 'en_US' => 42,
-            ]
+            ],
         ]);
 
         $this->saveEvaluationResults($productModel->getId(), $evaluationResults);
@@ -95,7 +95,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
             ],
             'mobile' => [
                 'en_US' => 0,
-            ]
+            ],
         ];
         $evaluationResults['spelling'] = $this->buildEvaluationResult($expectedRates);
 
@@ -115,7 +115,7 @@ final class GetEvaluationRatesByProductModelsAndCriterionQueryIntegration extend
             ],
             'mobile' => [
                 'en_US' => 47,
-            ]
+            ],
         ]);
 
         $this->saveEvaluationResults($productModel->getId(), $evaluationResults);
@@ -138,15 +138,15 @@ SQL,
         return [$productModelId => []];
     }
 
-    private function saveEvaluationResults(int $productModelId, array $evaluationResults): void
+    private function saveEvaluationResults(int $productModelIdAsInt, array $evaluationResults): void
     {
-        $productId = new ProductId($productModelId);
+        $productModelId = new ProductModelId($productModelIdAsInt);
         $evaluations = new Write\CriterionEvaluationCollection();
 
         foreach ($evaluationResults as $criterion => $evaluationResult) {
             $evaluation = new Write\CriterionEvaluation(
                 new CriterionCode($criterion),
-                $productId,
+                $productModelId,
                 CriterionEvaluationStatus::done()
             );
             $evaluation->end($evaluationResult);

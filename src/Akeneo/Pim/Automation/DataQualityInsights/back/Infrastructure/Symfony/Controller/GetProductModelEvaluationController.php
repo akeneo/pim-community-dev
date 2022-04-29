@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductEvaluation;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,7 +27,7 @@ class GetProductModelEvaluationController
     {
         try {
             $evaluation = $this->getProductModelEvaluation->get(
-                new ProductId(intval($productId))
+                ProductUuid::fromString($productId)
             );
         } catch (\InvalidArgumentException $exception) {
             return new JsonResponse([

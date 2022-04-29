@@ -4,6 +4,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher\RunUniqueProcessJob'
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@database_connection'
         tags:
             - { name: 'console.command' }
 
@@ -69,5 +70,18 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\CleanCompletenessEvaluationResultsCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\back\Infrastructure\Symfony\Command\OneTimeTask\CleanProductScoresCommand:
+        arguments:
+            - '@database_connection'
         tags:
             - { name: 'console.command' }

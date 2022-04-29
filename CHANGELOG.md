@@ -20,8 +20,13 @@
 - PIM-10336: Fix product Export edition in error if no locale selected
 - PIM-10345: Fix issue when importing product model with an attribute constituted of only digits
 - PIM-10334: Fix error on the clean-removed-attributes
+- PIM-10350: Updating a product with an attribute option code in a simple or a multi select and a different code case than the original one is well handled.
 - PIM-10362: Fix attribute type "number" gets modified in history when import with same value
 - PIM-10372: Fix letter case issue when importing channels
+- PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
+- PIM-10398: Fix category validator to prevent break-lines
+- PIM-10409: Allow creating a measurement value with case insensitive unit code
+- PIM-10411: Fix non numeric metric value in imports
 
 ## Improvements
 

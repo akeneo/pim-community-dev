@@ -5,61 +5,67 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductUuidsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends ObjectBehavior
 {
     public function let(
-        GetProductScoresQueryInterface                    $getProductScoresQuery,
-        GetProductIdsFromProductIdentifiersQueryInterface $getProductIdsFromProductIdentifiersQuery,
-        ComputeProductsKeyIndicators                      $computeProductsKeyIndicators
+        GetProductScoresQueryInterface                      $getProductScoresQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductUuidsFromProductIdentifiersQuery,
+        ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface                     $idFactory
     ) {
-        $this->beConstructedWith($getProductScoresQuery, $getProductIdsFromProductIdentifiersQuery, $computeProductsKeyIndicators);
+        $this->beConstructedWith($getProductScoresQuery, $getProductUuidsFromProductIdentifiersQuery, $computeProductsKeyIndicators, $idFactory);
     }
 
     public function it_returns_additional_properties_from_product_identifiers(
-        $getProductScoresQuery,
-        $getProductIdsFromProductIdentifiersQuery,
-        $computeProductsKeyIndicators
+        GetProductScoresQueryInterface                      $getProductScoresQuery,
+        GetProductUuidsFromProductIdentifiersQueryInterface $getProductUuidsFromProductIdentifiersQuery,
+        ComputeProductsKeyIndicators                        $computeProductsKeyIndicators,
+        ProductEntityIdFactoryInterface                     $idFactory
     ) {
-        $productId42 = new ProductId(42);
-        $productId123 = new ProductId(123);
-        $productId456 = new ProductId(456);
+        $productUuid42 = ProductUuid::fromString('df470d52-7723-4890-85a0-e79be625e2ed');
+        $productUuid123 = ProductUuid::fromString('fef37e64-a963-47a9-b087-2cc67968f0a2');
+        $productUuid456 = ProductUuid::fromString('6d125b99-d971-41d9-a264-b020cd486aee');
         $productIds = [
-            'product_1' => $productId42,
-            'product_2' => $productId123,
-            'product_without_rates' => $productId456,
+            'product_1' => $productUuid42,
+            'product_2' => $productUuid123,
+            'product_without_rates' => $productUuid456,
         ];
         $productIdentifiers = [
             'product_1', 'product_2', 'product_without_rates'
         ];
+        $productUuidCollection = ProductUuidCollection::fromProductUuids([$productUuid42, $productUuid123, $productUuid456]);
 
-        $getProductIdsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
+        $getProductUuidsFromProductIdentifiersQuery->execute($productIdentifiers)->willReturn($productIds);
+        $idFactory->createCollection(['df470d52-7723-4890-85a0-e79be625e2ed', 'fef37e64-a963-47a9-b087-2cc67968f0a2', '6d125b99-d971-41d9-a264-b020cd486aee'])->willReturn($productUuidCollection);
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
         $localeFr = new LocaleCode('fr_FR');
 
-        $getProductScoresQuery->byProductIds(ProductIdCollection::fromProductIds([$productId42, $productId123, $productId456]))->willReturn([
-            42 => (new ChannelLocaleRateCollection)
+        $getProductScoresQuery->byProductUuidCollection($productUuidCollection)->willReturn([
+            'df470d52-7723-4890-85a0-e79be625e2ed' => (new ChannelLocaleRateCollection)
                 ->addRate($channelMobile, $localeEn, new Rate(81))
                 ->addRate($channelMobile, $localeFr, new Rate(30))
                 ->addRate($channelEcommerce, $localeEn, new Rate(73)),
-            123 => (new ChannelLocaleRateCollection)
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => (new ChannelLocaleRateCollection)
                 ->addRate($channelMobile, $localeEn, new Rate(66)),
         ]);
 
         $productsKeyIndicators = [
-            42 => [
+            'df470d52-7723-4890-85a0-e79be625e2ed' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -77,7 +83,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                     ],
                 ],
             ],
-            123 => [
+            'fef37e64-a963-47a9-b087-2cc67968f0a2' => [
                 'ecommerce' => [
                     'en_US' => [
                         'good_enrichment' => true,
@@ -97,7 +103,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
             ],
         ];
 
-        $computeProductsKeyIndicators->compute(ProductIdCollection::fromProductIds($productIds))->willReturn($productsKeyIndicators);
+        $computeProductsKeyIndicators->compute($productUuidCollection)->willReturn($productsKeyIndicators);
 
         $this->fromProductIdentifiers($productIdentifiers)->shouldReturn([
             'product_1' => [
@@ -111,7 +117,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 3,
                         ],
                     ],
-                    'key_indicators' => $productsKeyIndicators[42]
+                    'key_indicators' => $productsKeyIndicators['df470d52-7723-4890-85a0-e79be625e2ed']
                 ],
             ],
             'product_2' => [
@@ -121,7 +127,7 @@ final class GetDataQualityInsightsPropertiesForProductProjectionSpec extends Obj
                             'en_US' => 4,
                         ],
                     ],
-                    'key_indicators' => $productsKeyIndicators[123]
+                    'key_indicators' => $productsKeyIndicators['fef37e64-a963-47a9-b087-2cc67968f0a2']
                 ],
             ],
             'product_without_rates' => [

@@ -7,8 +7,9 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,31 +17,31 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollec
  */
 class GetUpToDateProductScoresQuery implements GetProductScoresQueryInterface
 {
-    private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery;
-
-    private GetProductScoresQueryInterface $getProductScoresQuery;
-
     public function __construct(
-        HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
-        GetProductScoresQueryInterface      $getProductScoresQuery
+        private HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
+        private GetProductScoresQueryInterface $getProductScoresQuery
     ) {
-        $this->hasUpToDateEvaluationQuery = $hasUpToDateEvaluationQuery;
-        $this->getProductScoresQuery = $getProductScoresQuery;
     }
 
-    public function byProductId(ProductId $productId): ChannelLocaleRateCollection
+    public function byProductUuid(ProductUuid $productUuid): ChannelLocaleRateCollection
     {
-        if ($this->hasUpToDateEvaluationQuery->forProductId($productId)) {
-            return $this->getProductScoresQuery->byProductId($productId);
+        if ($this->hasUpToDateEvaluationQuery->forEntityId($productUuid)) {
+            return $this->getProductScoresQuery->byProductUuid($productUuid);
         }
 
         return new ChannelLocaleRateCollection();
     }
 
-    public function byProductIds(ProductIdCollection $productIdCollection): array
+    public function byProductUuidCollection(ProductUuidCollection $productUuidCollection): array
     {
-        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forProductIdCollection($productIdCollection);
+        $upToDateProducts = $this->hasUpToDateEvaluationQuery->forEntityIdCollection($productUuidCollection);
 
-        return is_null($upToDateProducts) ? [] : $this->getProductScoresQuery->byProductIds($upToDateProducts);
+        if (is_null($upToDateProducts)) {
+            return [];
+        }
+
+        Assert::isInstanceOf($upToDateProducts, ProductUuidCollection::class);
+
+        return $this->getProductScoresQuery->byProductUuidCollection($upToDateProducts);
     }
 }

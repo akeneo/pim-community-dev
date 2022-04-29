@@ -10,7 +10,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
             - '@logger'
-            - '@database_connection'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductUuidFactory'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -19,6 +19,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.feature'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
         tags:
             - { name: kernel.event_subscriber }
 
