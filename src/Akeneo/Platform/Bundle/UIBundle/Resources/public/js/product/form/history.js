@@ -115,11 +115,7 @@ define([
       const entity = this.getFormData();
 
       if (entity.meta) {
-        if ('product' === entity.meta.model_type) {
-          this.getHistoryFetcher(entity).clear(entity.meta.uuid);
-        } else {
-          this.getHistoryFetcher(entity).clear(entity.meta.id);
-        }
+        this.getHistoryFetcher(entity).clear(entity.meta.id);
       }
 
       this.render();
@@ -132,12 +128,6 @@ define([
      */
     getVersions: function () {
       const entity = this.getFormData();
-
-      if ('product' === entity.meta.model_type) {
-        return this.getHistoryFetcher(entity)
-          .fetch(entity.meta.uuid, {entityId: entity.meta.uuid})
-          .then(this.addAttributesLabelToVersions.bind(this));
-      }
 
       return this.getHistoryFetcher(entity)
         .fetch(entity.meta.id, {entityId: entity.meta.id})

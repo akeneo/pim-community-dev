@@ -43,7 +43,7 @@ define(['underscore', 'pim/form', 'pim/template/product/download-pdf', 'routing'
       this.$el.attr(
         'href',
         Routing.generate('pim_pdf_generator_download_product_pdf', {
-          uuid: this.getFormData().meta.uuid,
+          uuid: this.getFormData().meta.id,
           dataLocale: UserContext.get('catalogLocale'),
           dataScope: UserContext.get('catalogScope'),
         })
