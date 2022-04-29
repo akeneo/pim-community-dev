@@ -498,11 +498,6 @@ services:
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
-    akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
-
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:

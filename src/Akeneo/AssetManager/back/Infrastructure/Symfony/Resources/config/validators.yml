@@ -174,7 +174,7 @@ services:
     akeneo_assetmanager.infrastructure.validation.asset.edit_value_command:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\EditValueCommandValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
         tags:
@@ -261,7 +261,7 @@ services:
     akeneo_assetmanager.validator.asset_family.product_link_rules.channel_and_locale_validator:
         class: Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\ChannelAndLocaleValidator
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
             - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
 
     akeneo_assetmanager.validator.asset_family.product_link_rules.extrapolated_attribute_validator:

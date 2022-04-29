@@ -176,7 +176,7 @@ services:
     akeneo_referenceentity.infrastructure.validation.record.edit_value_command:
         class: Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditValueCommandValidator
         arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
             - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
             - '@akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers'
         tags:

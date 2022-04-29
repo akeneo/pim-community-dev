@@ -446,11 +446,6 @@ services:
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
-    akeneo_referenceentity.infrastructure.persistence.cache.query.channel_exists:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.channel_exists'
-
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:
