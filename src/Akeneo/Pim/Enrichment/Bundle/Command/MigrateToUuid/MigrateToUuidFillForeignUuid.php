@@ -86,23 +86,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
             }
         }
 
-        // TODO CPM-610: Keep this indexes
-        foreach (['pim_versioning_version', 'pim_comment_comment'] as $tableName) {
-            if ($this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')) {
-                $this->connection->executeQuery(
-                    <<<SQL
-                    ALTER TABLE {tableName}
-                    DROP INDEX migrate_to_uuid_temp_index_to_delete;
-                    SQL,
-                    ['{tableName}' => $tableName]
-                );
-                $this->logger->notice(
-                    "Temporary index dropped on table $tableName",
-                    $logContext->toArray()
-                );
-            }
-        }
-
         return true;
     }
 
