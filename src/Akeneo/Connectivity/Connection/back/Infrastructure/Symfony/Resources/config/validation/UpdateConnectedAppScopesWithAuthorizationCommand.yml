@@ -1,6 +1,4 @@
-Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand:
-    constraints:
-        -   Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReached: ~
+Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationCommand:
     properties:
         clientId:
             -   NotBlank:

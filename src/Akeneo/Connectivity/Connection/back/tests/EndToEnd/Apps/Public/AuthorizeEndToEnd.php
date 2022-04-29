@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps\Public;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
@@ -31,7 +31,7 @@ class AuthorizeEndToEnd extends WebTestCase
     private ClientProvider $clientProvider;
     private SessionInterface $session;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
-    private CreateAppWithAuthorizationHandler $createAppWithAuthorizationHandler;
+    private CreateConnectedAppWithAuthorizationHandler $createConnectedAppWithAuthorizationHandler;
 
     protected function setUp(): void
     {
@@ -42,7 +42,7 @@ class AuthorizeEndToEnd extends WebTestCase
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->session = $this->get('session');
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
-        $this->createAppWithAuthorizationHandler = $this->get(CreateAppWithAuthorizationHandler::class);
+        $this->createConnectedAppWithAuthorizationHandler = $this->get(CreateConnectedAppWithAuthorizationHandler::class);
         $this->loadAppsFixtures();
     }
 
@@ -123,7 +123,7 @@ class AuthorizeEndToEnd extends WebTestCase
             'write_catalog_structure delete_products read_association_types',
             'http://anyurl.test'
         ));
-        $this->createAppWithAuthorizationHandler->handle(new CreateAppWithAuthorizationCommand(
+        $this->createConnectedAppWithAuthorizationHandler->handle(new CreateConnectedAppWithAuthorizationCommand(
             '90741597-54c5-48a1-98da-a68e7ee0a715'
         ));
         $this->authenticateAsAdmin();

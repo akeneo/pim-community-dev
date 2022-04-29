@@ -22,15 +22,16 @@ const Connect = styled.h3`
 type Props = {
     appName: string;
     scopeMessages: ScopeMessage[];
+    oldScopeMessages?: ScopeMessage[] | null;
 };
 
-export const Authorizations: FC<Props> = ({appName, scopeMessages}) => {
+export const Authorizations: FC<Props> = ({appName, scopeMessages, oldScopeMessages}) => {
     const translate = useTranslate();
 
     return (
         <InfoContainer>
             <Connect>{translate('akeneo_connectivity.connection.connect.apps.title')}</Connect>
-            <ScopeListContainer appName={appName} scopeMessages={scopeMessages} />
+            <ScopeListContainer appName={appName} scopeMessages={scopeMessages} oldScopeMessages={oldScopeMessages} />
         </InfoContainer>
     );
 };

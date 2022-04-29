@@ -1,33 +1,23 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useHistory} from 'react-router';
-import {App} from '../../../model/app';
 import {NotificationLevel, useNotify} from '../../../shared/notify';
 import {useTranslate} from '../../../shared/translate';
 import {useConfirmAuthentication} from '../../hooks/use-confirm-authentication';
-import {useFetchApps} from '../../hooks/use-fetch-apps';
 import {Authentication} from './steps/Authentication/Authentication';
 import {WizardModal} from './WizardModal';
-
-const useFetchApp = (clientId: string) => {
-    const fetchApps = useFetchApps();
-
-    const [app, setApp] = useState<App | null>(null);
-    useEffect(() => {
-        fetchApps().then(apps => setApp(apps.apps.find(app => app.id === clientId) || null));
-    }, [fetchApps, clientId]);
-
-    return app;
-};
+import {useFetchAppWizardData} from '../../hooks/use-fetch-app-wizard-data';
+import {AppWizardData} from '../../../model/Apps/wizard-data';
 
 type Props = {
     clientId: string;
-    newAuthenticationScopes: Array<'email' | 'profile'>;
 };
 
-export const AuthenticationModal: FC<Props> = ({clientId, newAuthenticationScopes}) => {
+export const AuthenticationModal: FC<Props> = ({clientId}) => {
     const translate = useTranslate();
     const notify = useNotify();
     const history = useHistory();
+    const [wizardData, setWizardData] = useState<AppWizardData | null>(null);
+    const fetchWizardData = useFetchAppWizardData(clientId);
     const [scopesConsentGiven, setScopesConsent] = useState<boolean>(false);
 
     const confirmAuthentication = useConfirmAuthentication(clientId);
@@ -49,30 +39,34 @@ export const AuthenticationModal: FC<Props> = ({clientId, newAuthenticationScope
 
     const handleClose = () => history.push('/connect/connected-apps');
 
-    const app = useFetchApp(clientId);
-    if (!app) {
+    useEffect(() => {
+        fetchWizardData().then(setWizardData);
+    }, [fetchWizardData]);
+
+    if (!wizardData) {
         return null;
     }
 
     return (
         <WizardModal
-            appLogo={app.logo}
-            appName={app.name}
+            appLogo={wizardData.appLogo}
+            appName={wizardData.appName}
             onConfirm={handleConfirm}
             onClose={handleClose}
             maxAllowedStep={!scopesConsentGiven ? 'authentication' : null}
             steps={[
                 {
                     name: 'authentication',
-                    action: 'confirm',
+                    requires_explicit_approval: true,
                 },
             ]}
         >
             {() => (
                 <Authentication
-                    appName={app.name}
-                    scopes={newAuthenticationScopes}
-                    appUrl={app.url}
+                    appName={wizardData.appName}
+                    scopes={wizardData.authenticationScopes}
+                    oldScopes={wizardData.oldAuthenticationScopes}
+                    appUrl={wizardData.appUrl}
                     scopesConsentGiven={scopesConsentGiven}
                     setScopesConsent={setScopesConsent}
                 />

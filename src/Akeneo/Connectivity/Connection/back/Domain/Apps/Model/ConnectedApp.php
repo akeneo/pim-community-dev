@@ -27,6 +27,7 @@ final class ConnectedApp
         private ?string $partner = null,
         private bool $isTestApp = false,
         private bool $isPending = false,
+        private bool $hasOutdatedScopes = false,
     ) {
     }
 
@@ -96,6 +97,11 @@ final class ConnectedApp
         return $this->isPending;
     }
 
+    public function hasOutdatedScopes(): bool
+    {
+        return $this->hasOutdatedScopes;
+    }
+
     /**
      * @return array{
      *  id: string,
@@ -107,7 +113,10 @@ final class ConnectedApp
      *  user_group_name: string,
      *  categories: array<string>,
      *  certified: bool,
-     *  partner: string|null
+     *  partner: string|null,
+     *  is_test_app: bool,
+     *  is_pending: bool,
+     *  has_outdated_scopes: bool
      * }
      */
     public function normalize(): array
@@ -125,6 +134,7 @@ final class ConnectedApp
             'partner' => $this->partner,
             'is_test_app' => $this->isTestApp,
             'is_pending' => $this->isPending,
+            'has_outdated_scopes' => $this->hasOutdatedScopes,
         ];
     }
 
@@ -152,6 +162,7 @@ final class ConnectedApp
             $partner,
             $this->isTestApp,
             $this->isPending,
+            $this->hasOutdatedScopes,
         );
     }
 }

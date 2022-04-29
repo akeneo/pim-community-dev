@@ -29,6 +29,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
@@ -973,6 +974,39 @@ final class UpsertProductIntegration extends TestCase
 
         $this->updateProduct(new RemoveAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2']));
         $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot3']);
+    }
+
+
+    /** @test */
+    public function it_creates_and_updates_a_product_with_a_file_value(): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        // create product 'identifier'
+        $aFilePath = $this->getFileInfoKey($this->getFixturePath('akeneo.pdf'));
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetFileValue('a_file', null, null, $aFilePath)]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals($aFilePath, $product->getValue('a_file')->getData()->getKey());
+
+        // update product 'identifier'
+        $anotherFilePath = $this->getFileInfoKey($this->getFixturePath('akeneo.txt'));
+        $this->updateProduct(
+            new SetFileValue('a_file', null, null, $anotherFilePath)
+        );
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals($anotherFilePath, $product->getValue('a_file')->getData()->getKey());
     }
 
     private function loadAssetFixtures(): void
