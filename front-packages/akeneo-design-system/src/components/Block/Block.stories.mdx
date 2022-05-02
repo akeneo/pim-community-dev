@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
 import {Block} from './Block';
@@ -41,15 +42,13 @@ Use this playground to test the block component
 <Canvas>
   <Story name="With Actions">
     {args => {
+      const [isOpen, setOpen] = useState(false);
       return (
         <>
-          <Block {...args}>
-            Block without action
-          </Block>
+          <Block {...args} isOpen={isOpen} onCollapse={setOpen}>Block without action</Block>
           <Block
-            {...args}
+            {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
             actions={<>
-              <IconButton level="tertiary" ghost="borderless" size="small" key="collapse" icon={<ArrowDownIcon />} title='Collapse' onClick={action('Collapse block')} />
               <IconButton level="tertiary" ghost="borderless" size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
             </>}
           >
