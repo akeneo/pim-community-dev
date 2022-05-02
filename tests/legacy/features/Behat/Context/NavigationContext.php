@@ -298,8 +298,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      *
      * @throws \Context\Spin\TimeoutException
      *
-     * @Given /^I edit the "([^"]*)" ((?!user)\w+)$/
-     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)\w+) page$/
+     * @Given /^I edit the "([^"]*)" ((?!user)(?!product)\w+)$/
+     * @Given /^I am on the "([^"]*)" ((?!channel)(?!family)(?!attribute)(?!user)(?!product)\w+) page$/
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
@@ -310,6 +310,33 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
 
         $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['id' => $entity->getId()]);
+
+        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
+        $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
+        $result        = $expectedUrl === $actualUrl;
+
+        return true === $result;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @throws \Context\Spin\TimeoutException
+     *
+     * @Given /^I edit the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product page$/
+     */
+    public function iAmOnTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+
+        $this->openPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
+
+        $expectedFullUrl = $this->getPage(sprintf('%s edit', $page))->getUrl(['uuid' => $entity->getUuid()->toString()]);
 
         $actualFullUrl = $this->getSession()->getCurrentUrl();
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
