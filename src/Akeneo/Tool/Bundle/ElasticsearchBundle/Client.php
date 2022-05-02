@@ -136,9 +136,13 @@ class Client
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
-            $estimatedAddedSize = strlen(json_encode(array_merge([$action, $document], $extraActions)));
+            $estimatedAddedSize = strlen(json_encode(
+                array_merge([$action, $document], $extraActions),
+                JSON_PRESERVE_ZERO_FRACTION + JSON_INVALID_UTF8_SUBSTITUTE
+            ));
             if ($paramsComputedSize + $estimatedAddedSize >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
+                $paramsComputedSize = 0;
                 $params = [];
             }
 
@@ -146,7 +150,7 @@ class Client
             $params['body'][] = $document;
             $params['body'] = array_merge($params['body'], $extraActions);
 
-            $paramsComputedSize = strlen(json_encode($params));
+            $paramsComputedSize += $estimatedAddedSize;
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
