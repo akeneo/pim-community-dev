@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 use Webmozart\Assert\Assert;
 
-class BooleanValue implements ValueInterface
+final class BooleanValue implements ValueInterface
 {
     public function __construct(
         private bool $value,

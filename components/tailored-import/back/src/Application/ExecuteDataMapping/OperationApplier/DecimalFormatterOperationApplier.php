@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-class DecimalFormatterOperationApplier implements OperationApplierInterface
+final class DecimalFormatterOperationApplier implements OperationApplierInterface
 {
     private const DEFAULT_DECIMAL_SEPARATOR = '.';
 

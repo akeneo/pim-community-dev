@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 use Webmozart\Assert\Assert;
 
-class StringValue implements ValueInterface
+final class StringValue implements ValueInterface
 {
     public function __construct(
         private string $value,

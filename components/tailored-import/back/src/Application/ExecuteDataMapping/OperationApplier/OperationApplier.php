@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-class OperationApplier
+final class OperationApplier
 {
     /**
      * @param OperationApplierInterface[] $operationAppliers
