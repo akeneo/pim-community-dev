@@ -12,7 +12,7 @@ services:
   akeneo.tailored_import.handler.read_columns:
     class: Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler
     arguments:
-      - '@akeneo.tailored_import.query.filesystem.read_file_headers'
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
       - '@akeneo.tailored_import.ramsey.uuid_generator'
 
   akeneo.tailored_import.handler.execute_data_mapping:

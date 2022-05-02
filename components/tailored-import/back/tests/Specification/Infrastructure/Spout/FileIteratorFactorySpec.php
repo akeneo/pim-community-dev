@@ -15,20 +15,22 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Spout;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\File\FileStructure;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\RowCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileIterator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FileIteratorFactorySpec extends ObjectBehavior
 {
-    public function let(CellsFormatter $cellsFormatter)
+    public function let(CellsFormatter $cellsFormatter, RowCleaner $rowCleaner)
     {
-        $this->beConstructedWith($cellsFormatter);
+        $this->beConstructedWith($cellsFormatter, $rowCleaner);
     }
 
-    public function it_create_an_xlsx_file_iterator(CellsFormatter $cellsFormatter)
+    public function it_create_an_xlsx_file_iterator(CellsFormatter $cellsFormatter, RowCleaner $rowCleaner)
     {
-        $cellsFormatter->formatCell(Argument::any())->willReturn('placeholder');
+        $cellsFormatter->formatCells(Argument::any())->willReturn([]);
+        $rowCleaner->removeTrailingEmptyColumns([])->willReturn([]);
 
         $filePath = 'components/tailored-import/back/tests/Common/simple_import.xlsx';
         $fileStructure = FileStructure::createFromNormalized([

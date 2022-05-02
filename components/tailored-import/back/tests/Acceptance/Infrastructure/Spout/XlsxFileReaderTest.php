@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\Infrastructure\Spout;
 use Akeneo\Platform\TailoredImport\Domain\Exception\FileNotFoundException;
 use Akeneo\Platform\TailoredImport\Domain\Exception\SheetNotFoundException;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\CellsFormatter;
+use Akeneo\Platform\TailoredImport\Infrastructure\Spout\RowCleaner;
 use Akeneo\Platform\TailoredImport\Infrastructure\Spout\XlsxFileReader;
 use Akeneo\Platform\TailoredImport\Test\Acceptance\AcceptanceTestCase;
 
@@ -140,14 +141,62 @@ class XlsxFileReaderTest extends AcceptanceTestCase
     {
         $xlsxFileReader = $this->getFileReader();
         $actualSheetNames = $xlsxFileReader->getSheetNames();
-        $expectedSheetNames = ['Products', 'Empty lines and columns', 'Empty sheet', 'Out of bound value', 'Two lines'];
+        $expectedSheetNames = [
+            'Products',
+            'Empty lines and columns',
+            'Empty sheet',
+            'Out of bound value',
+            'Empty header',
+            'Two lines',
+            'Trailing empty header',
+            'More than 500 cols',
+        ];
 
         $this->assertEquals($expectedSheetNames, $actualSheetNames);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_trailing_empty_columns(): void
+    {
+        $xlsxFileReader = $this->getFileReader();
+        $rows = $xlsxFileReader->readRows('Trailing empty header', 1, 4);
+
+        $this->assertEquals(
+            [
+                ['Sku', 'Name', 'Price', 'Enabled', 'Release date', 'Price with tax'],
+                ['ref1','Produit 1', '12', 'TRUE', '3/22/2022', '14.4'],
+                ['ref2','Produit 2', '13.87','FALSE','5/23/2022', ''],
+                ['ref3','Produit 3', '16','TRUE','10/5/2015','19.2'],
+            ],
+            $rows
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_reads_a_single_row(): void
+    {
+        $xlsxFileReader = $this->getFileReader();
+
+        $row = $xlsxFileReader->readRow('Trailing empty header', 3);
+        $this->assertEquals(
+            ['ref2','Produit 2', '13.87','FALSE','5/23/2022'],
+            $row
+        );
+
+        $row = $xlsxFileReader->readRow('Trailing empty header', 2);
+        $this->assertEquals(
+            ['ref1','Produit 1', '12','TRUE','3/22/2022', '14.4'],
+            $row
+        );
     }
 
     private function getFileReader(
         string $filePath = __DIR__.'/../../../Common/simple_import.xlsx'
     ): XlsxFileReader {
-        return new XlsxFileReader($filePath, new CellsFormatter());
+        return new XlsxFileReader($filePath, new CellsFormatter(), new RowCleaner());
     }
 }

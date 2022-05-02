@@ -81,7 +81,8 @@ akeneo.tailored_import:
   validation:
     missing_query_params: "Following params is missing from the query: {{ missing_params }}"
     columns:
-      max_count_reached: Your file must not contain more than {{ limit }} columns.
+      max_count_reached: Your sheet must not contain more than {{ limit }} columns.
+      at_least_one_required: Your header must contain at least {{ limit }} columns.
       uuid:
         should_be_unique: This column UUID already exists, please enter a new one.
       index:
@@ -125,6 +126,7 @@ akeneo.tailored_import:
     file_structure:
       first_product_row_should_be_after_header_row: First product row should be after the header row.
       unique_identifier_column_should_be_after_first_column_message: Unique identifier column should be at least the first column.
+      header_row_should_not_contain_empty_cell: Header row should not contain empty cells.
     file_preview:
       empty_sheet:
         title: This sheet is empty.
