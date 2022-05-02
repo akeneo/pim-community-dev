@@ -56,7 +56,7 @@ const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierPr
         });
 
         if (!response.ok) {
-            if (response.status === 409) {
+            if (409 === response.status) {
                 notify(
                     NotificationLevel.ERROR,
                     translate('onboarder.supplier.supplier_create.error.supplier_already_exists', {supplierCode: code})

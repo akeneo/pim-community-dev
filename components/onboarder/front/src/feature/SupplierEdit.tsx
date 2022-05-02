@@ -18,7 +18,7 @@ const SupplierEdit = () => {
     const handleSupplierLabelChange = useCallback(
         (newLabel: string) => {
             handleSupplierChanges(supplier => {
-                if (supplier === null) return null;
+                if (null === supplier) return null;
 
                 return {...supplier, label: newLabel};
             });
@@ -29,7 +29,7 @@ const SupplierEdit = () => {
     const handleSupplierContributorsChange = useCallback(
         (newContributors: ContributorEmail[]) => {
             handleSupplierChanges(supplier => {
-                if (supplier === null) return null;
+                if (null === supplier) return null;
 
                 return {...supplier, contributors: newContributors};
             });
@@ -37,7 +37,7 @@ const SupplierEdit = () => {
         [handleSupplierChanges]
     );
 
-    if (supplier === null) {
+    if (null === supplier) {
         return null;
     }
 
