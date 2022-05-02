@@ -861,6 +861,24 @@
         }
     },
     {
+        "code": "Bitcoin",
+        "labels": {},
+        "standard_unit_code": "SATOSHI",
+        "units": {
+            "SATOSHI": {
+                "code": "SATOSHI",
+                "labels": {},
+                "convert_from_standard": [
+                    {
+                        "operator": "mul",
+                        "value": "1"
+                    }
+                ],
+                "symbol": "satoshi"
+            }
+        }
+    },
+    {
         "code": "Brightness",
         "labels": {
             "de_DE": "Helligkeit",
