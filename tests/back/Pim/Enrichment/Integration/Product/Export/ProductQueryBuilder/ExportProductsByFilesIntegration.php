@@ -2,7 +2,7 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsByFilesIntegration extends AbstractExportTestCase
@@ -13,13 +13,11 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
     protected function loadFixtures() : void
     {
         $this->createProduct('product_1', [
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png')))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png')))
         ]);
 
         $this->createProduct('product_2', [
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png')))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.png')))
         ]);
     }
 

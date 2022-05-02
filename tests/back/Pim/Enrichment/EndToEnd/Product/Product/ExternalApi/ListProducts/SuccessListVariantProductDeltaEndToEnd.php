@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
@@ -264,14 +265,9 @@ JSON;
         ]);
         $this->createProduct('product2', [
             new SetCategories(['categoryB']),
-            // TODO : use SetImageValue when ready
-            /**'values'     => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'zh_CN', 'scope' => null]
-                ]
-            ]*/
+            new SetImageValue('a_localizable_image', null, 'en_US',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'zh_CN',  $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
         $this->createProductModel(
             [

@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
@@ -44,8 +45,7 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->loadFixtures(
             'a_file',
             ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt')), 'scope' => null, 'locale' => null],
-            // TODO use SetFileValue when ready
-            new SetTextValue('a_file', null, null, 'coucou')
+            new SetFileValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt')))
         );
         $this->assert('a_file');
     }

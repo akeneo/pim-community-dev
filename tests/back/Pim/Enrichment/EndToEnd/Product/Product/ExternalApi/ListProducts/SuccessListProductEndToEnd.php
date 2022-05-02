@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -40,10 +40,9 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         $path = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         $this->createProduct('localizable', [
             new SetCategories(['categoryB']),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('a_localizable_image', null, 'en_US', $path),
-            new SetTextValue('a_localizable_image', null, 'fr_FR', $path),
-            new SetTextValue('a_localizable_image', null, 'zh_CN', $path),
+            new SetImageValue('a_localizable_image', null, 'en_US', $path),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $path),
+            new SetImageValue('a_localizable_image', null, 'zh_CN', $path),
         ]);
 
         // scopable, categorized in 1 tree (master)

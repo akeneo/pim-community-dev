@@ -5,7 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -30,14 +30,12 @@ class MediaFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('akeneo', [
             new SetFamily('a_family'),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')))
         ]);
 
         $this->createProduct('ziggy', [
             new SetFamily('a_family'),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('ziggy.png')))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('ziggy.png')))
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

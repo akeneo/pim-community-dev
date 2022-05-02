@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -30,18 +31,14 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new setImageValue('a_scopable_image', 'ecommerce', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new setImageValue('a_scopable_image', 'tablet', null, $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

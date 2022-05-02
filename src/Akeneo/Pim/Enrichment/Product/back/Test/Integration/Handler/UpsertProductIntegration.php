@@ -275,9 +275,8 @@ final class UpsertProductIntegration extends TestCase
     {
         // create product with values from every type of attribute
         $this->createProduct('complex_product', 'familyA', [
-            new SetDateValue('a_date', null, null, '2010-10-10'),
-            // TODO : use SetFileValue when ready
-            new SetTextValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
+            new SetDateValue('a_date', null, null, new \DateTime('2010-10-10')),
+            new SetFileValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
             new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
             new SetMultiSelectValue('a_multi_select', null,null, ['optionA']),
             new SetNumberValue('a_number_float', null,null, '3.14'),
@@ -289,8 +288,7 @@ final class UpsertProductIntegration extends TestCase
             new SetTextValue('a_text', null,null, 'foo'),
             new SetTextareaValue('a_text_area', null,null, self::TEXT_AREA_VALUE),
             new SetBooleanValue('a_yes_no', null,null, true),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null,null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('an_image', null,null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $product = $this->productRepository->findOneByIdentifier('complex_product');

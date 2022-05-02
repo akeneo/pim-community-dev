@@ -47,21 +47,6 @@ class IndexingProductIntegration extends TestCase
         $indexedProductModelBaz = $this->esProductAndProductModelClient->get('product_' . $productBazId);
         $this->assertTrue($indexedProductModelBaz['found']);
     }
-
-    // TODO: is it used?
-    /*public function testIndexingProductOnUnitarySave()
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('bat');
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('bat');
-
-        $productInProductAndProductModelIndex = $this->esProductAndProductModelClient->get(
-            'product_' . $product->getId()
-        );
-        $this->assertTrue($productInProductAndProductModelIndex['found']);
-    }*/
-
     /**
      * {@inheritdoc}
      */

@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
@@ -17,8 +17,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_localizable_media';
         $parameters = [
-            // TODO: use SetImageValue when ready
-            new SetTextValue(
+            new SetImageValue(
                 'a_scopable_image',
                 'tablet',
                 null,
@@ -55,8 +54,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_scopable_media';
         $parameters = [
-            // TODO: use SetImageValue when ready
-            new SetTextValue(
+            new SetImageValue(
                 'a_localizable_image',
                 null,
                 'fr_FR',
@@ -93,8 +91,7 @@ class MediaAttributeCopierIntegration extends AbstractCopierTestCase
     {
         $sku = 'test_scopable_localizable_media';
         $parameters = [
-            // TODO: use SetImageValue when ready
-            new SetTextValue('an_image', null, null, $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'))
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'))
         ];
 
         $product = $this->createProduct($sku, $parameters);

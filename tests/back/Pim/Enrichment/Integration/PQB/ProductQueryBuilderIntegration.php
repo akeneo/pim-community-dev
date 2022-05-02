@@ -5,6 +5,8 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 
@@ -128,12 +130,14 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
             'complex_product_1',
             [
                 new SetFamily('familyA'),
-                // TODO: use SetFileValue when ready
-                new SetTextValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
-                // TODO: use SetImageValue when ready
-                new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-                // TODO: use SetImageValue when ready
-                new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetFileValue(
+                    'a_file',
+                    null,
+                    null,
+                    $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))
+                ),
+                new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+                new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetTextValue('a_regexp', null, null, '\w+ .*'),
                 // TODO: use SetPriceValue when ready
                 'a_scopable_price'                   => [

@@ -49,12 +49,6 @@ abstract class AbstractProductWithQuantifiedAssociationsTestCase extends Abstrac
         return array_merge_recursive($data, $changes);
     }
 
-    // TODO : is it used?
-    /*protected function getProductSaver(): SaverInterface
-    {
-        return self::$container->get('pim_catalog.saver.product');
-    }*/
-
     protected function getProductUpdater(): ObjectUpdaterInterface
     {
         return self::$container->get('pim_catalog.updater.product');

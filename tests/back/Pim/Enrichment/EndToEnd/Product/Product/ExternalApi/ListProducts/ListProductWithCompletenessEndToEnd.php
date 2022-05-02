@@ -7,9 +7,10 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
@@ -41,16 +42,14 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         $this->createProduct('product_complete_en_locale', [
             new SetFamily('familyA1'),
             new SetCategories(['categoryA', 'master', 'master_china']),
-            // TODO use SetImageValue when ready
-            new SetTextValue(
+            new SetImageValue(
                 'a_localizable_image',
                 null,
                 null,
                 $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
             ),
             new SetDateValue('a_date', null, null, new \DateTime('2016-06-28')),
-            // TODO: use SetFileValue when ready
-            new SetTextValue(
+            new SetFileValue(
                 'a_file',
                 null,
                 null,
@@ -62,8 +61,12 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
         $this->createProduct('product_incomplete', [
             new SetFamily('familyA'),
             new SetCategories(['categoryA', 'master', 'master_china']),
-            // TODO: use SetFileValue when ready
-            new SetTextValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt')))
+            new SetFileValue(
+                'a_file',
+                null,
+                null,
+                $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))
+            )
         ]);
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();

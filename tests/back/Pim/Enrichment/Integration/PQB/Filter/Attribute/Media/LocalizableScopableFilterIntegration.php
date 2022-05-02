@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -31,24 +32,17 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'ecommerce', 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'tablet', 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'ecommerce', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'tablet', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_scopable_image', 'tablet', 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_scopable_image', 'tablet', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'ecommerce', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'tablet', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            // TODO: use setImageValue when ready
-            new SetTextValue('a_localizable_scopable_image', 'ecommerce', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_scopable_image', 'tablet', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
             'family' => 'a_family',
         ]);
 

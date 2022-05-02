@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\Integration\Configuration;
@@ -63,8 +63,7 @@ class ProductModelImagesFromCodesIntegration extends TestCase
             new SetFamily('familyA'),
             new ChangeParent('parent'),
             new SetBooleanValue('yesno', null, null, true),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('123', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('123', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $productModelImagesFromCodes = $this->get('akeneo.pim.enrichment.product.grid.query.product_model_images_from_codes');

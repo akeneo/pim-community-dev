@@ -5,6 +5,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Media;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -31,18 +32,14 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            // TODO: use SetImageValue when ready
-            new SetTextValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);
