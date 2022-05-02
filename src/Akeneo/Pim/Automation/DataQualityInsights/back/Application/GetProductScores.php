@@ -28,9 +28,9 @@ final class GetProductScores
      * Eventually returns all quality scores by channel and locale.
      * @return array{'evaluations_available':false} | array{'evaluations_available': true, 'scores': array }
      */
-    public function get(ProductUuid $productId): array
+    public function get(ProductUuid $productUuid): array
     {
-        $productScores = $this->getProductScoresQuery->byProductUuid($productId);
+        $productScores = $this->getProductScoresQuery->byProductUuid($productUuid);
 
         if ($productScores->isEmpty()) {
             return ["evaluations_available" => false];

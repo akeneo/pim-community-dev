@@ -18,7 +18,12 @@ export type Payload =
     };
 
 const fetchQualityScore = async (type: ProductType, id: string): Promise<Payload> => {
-  const response = await fetch(Routing.generate(ROUTE_NAMES[type], {productId: id}));
+  let response;
+  if (type === 'product') {
+    response = await fetch(Routing.generate(ROUTE_NAMES['product'], {productUuid: id}));
+  } else {
+    response = await fetch(Routing.generate(ROUTE_NAMES['product_model'], {productId: id}));
+  }
   return response.json();
 };
 
