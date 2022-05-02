@@ -33,6 +33,6 @@ Feature: Onboarder Serenity - Suppliers management - validate a supplier
     Given a supplier with code "supplier2" and label "Supplier1" and "3" contributors
     When I update the supplier "supplier1" contributors with "email1@example.com;email2@example.com"
     Then I should have the following validation errors:
-      | path                 | message                                                                                                  |
-      | contributorEmails[0] | onboarder.supplier.supplier_edit.contributors_form.notification.contributor_email_already_exists.content |
-      | contributorEmails[1] | onboarder.supplier.supplier_edit.contributors_form.notification.contributor_email_already_exists.content |
+      | path                 | message                                                                                                                                                 |
+      | contributorEmails[0] | This mail is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience. |
+      | contributorEmails[1] | This mail is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience. |

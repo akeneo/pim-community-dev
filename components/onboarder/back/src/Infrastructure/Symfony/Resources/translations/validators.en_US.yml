@@ -1,0 +1,4 @@
+onboarder:
+    supplier:
+        contributor:
+            email_already_exists: This email is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience.
