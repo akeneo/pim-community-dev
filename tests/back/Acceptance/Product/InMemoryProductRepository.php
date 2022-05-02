@@ -12,6 +12,8 @@ use Akeneo\Tool\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 class InMemoryProductRepository implements
     IdentifiableObjectRepositoryInterface,
@@ -86,7 +88,24 @@ class InMemoryProductRepository implements
 
     public function findOneBy(array $criteria)
     {
-        throw new NotImplementedException(__METHOD__);
+        Assert::count($criteria, 1);
+        $criteriaKey = \current(\array_keys($criteria));
+        $criteriaValue = \current($criteria);
+        if ($criteriaValue instanceof UuidInterface) {
+            $criteriaValue = $criteriaValue->toString();
+        }
+
+        foreach ($this->products as $product) {
+            $productValue = 'uuid' === $criteriaKey ? $product->getUuid() : $product->getId();
+            if ($productValue instanceof UuidInterface) {
+                $productValue = $productValue->toString();
+            }
+            if ($productValue === $criteriaValue) {
+                return $product;
+            }
+        }
+
+        return null;
     }
 
     public function getClassName()

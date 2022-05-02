@@ -12,6 +12,7 @@ use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior
 {
@@ -105,7 +106,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
         $this->shouldThrow(NotImplementedException::class)->during('getAvailableAttributeIdsToExport', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getProductsByGroup', [new Group(), 10]);
@@ -162,5 +162,20 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products->shouldBeArray();
         $products->shouldHaveCount(1);
         $products->shouldHaveKeyWithValue('A', $productA);
+    }
+
+    function it_finds_one_product_by_criteria()
+    {
+        $productA = new Product();
+        $productA->setIdentifier('A');
+        $this->save($productA);
+
+        $productB = new Product();
+        $productA->setIdentifier('B');
+        $this->save($productB);
+
+        $this->findOneBy(['uuid' => $productA->getUuid()])->shouldBe($productA);
+        $this->findOneBy(['uuid' => $productB->getUuid()])->shouldBe($productB);
+        $this->findOneBy(['uuid' => Uuid::uuid4()])->shouldBeNull();
     }
 }
