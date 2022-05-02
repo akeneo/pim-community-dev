@@ -35,11 +35,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
 
     public function shouldBeExecuted(): bool
     {
-        if ($this->indexExists('pim_versioning_version', 'migrate_to_uuid_temp_index_to_delete')
-            || $this->indexExists('pim_comment_comment', 'migrate_to_uuid_temp_index_to_delete')
-        ) {
-            return true;
-        }
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             if ($this->shouldBeExecutedForTable($tableName, $columnNames[self::UUID_COLUMN_INDEX], $columnNames[self::ID_COLUMN_INDEX])) {
                 return true;
@@ -67,11 +62,13 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
             $processedItems = 0;
             $logContext->addContext('substep', $tableName);
+
+            $this->logger->notice(
+                \sprintf('Fill foreign uuids for table %s', $tableName),
+                $logContext->toArray()
+            );
+
             while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
-                $this->logger->notice(
-                    \sprintf('Fill foreign uuids for table %s', $tableName),
-                    $logContext->toArray()
-                );
                 if (!$context->dryRun()) {
                     $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
                     $processedItems += self::BATCH_SIZE;
@@ -83,23 +80,6 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                     $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
                     break;
                 }
-            }
-        }
-
-        // TODO CPM-610: Keep this indexes
-        foreach (['pim_versioning_version', 'pim_comment_comment'] as $tableName) {
-            if ($this->indexExists($tableName, 'migrate_to_uuid_temp_index_to_delete')) {
-                $this->connection->executeQuery(
-                    <<<SQL
-                    ALTER TABLE {tableName}
-                    DROP INDEX migrate_to_uuid_temp_index_to_delete;
-                    SQL,
-                    ['{tableName}' => $tableName]
-                );
-                $this->logger->notice(
-                    "Temporary index dropped on table $tableName",
-                    $logContext->toArray()
-                );
             }
         }
 
