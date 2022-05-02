@@ -37,6 +37,21 @@ Use this playground to test the block component
 
 <ArgsTable story="Standard" />
 
+## Without Actions
+
+<Canvas>
+  <Story name="Without Actions">
+    {args => {
+      return (
+        <>
+          <Block {...args}>Block without action</Block>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
 ## With Actions
 
 <Canvas>
@@ -45,7 +60,6 @@ Use this playground to test the block component
       const [isOpen, setOpen] = useState(false);
       return (
         <>
-          <Block {...args} isOpen={isOpen} onCollapse={setOpen}>Block without action</Block>
           <Block
             {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
             actions={<>

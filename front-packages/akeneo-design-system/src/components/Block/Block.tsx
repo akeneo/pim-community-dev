@@ -1,9 +1,9 @@
-import React, {cloneElement, isValidElement, ReactNode, Ref, useEffect, useRef, useState} from 'react';
+import React, {isValidElement, ReactNode, Ref, useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
 import {ArrowDownIcon, ArrowUpIcon, IconProps} from '../../icons';
-import {IconButton, IconButtonProps} from '../IconButton/IconButton';
+import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
@@ -27,16 +27,6 @@ type BlockProps = Override<
      * Define what element is describing this button for accessibility purposes. Expect a DOM node id.
      */
     ariaDescribedBy?: string;
-
-    // /**
-    //  * Block is open.
-    //  */
-    // open?: boolean;
-
-    // /**
-    //  * Block is collapsable.
-    //  */
-    // isCollapsable?: boolean;
 
     /**
      * Children of the button.
@@ -130,10 +120,6 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
     {actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, isOpen, onCollapse, children, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
-    // isCollapsable = true;
-    // const [isOpen, setIsOpen] = useState(open);
-    // const handleCollapse = () => setIsOpen(!isOpen);
-
     const [contentHeight, setContentHeight] = useState<number>(0);
     const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -191,16 +177,18 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             {actions}
           </ActionsContainer>
         </BlockTitle>
-        <BlockContent
-          ref={contentRef}
-          isCollapsable={isCollapsable}
-          $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
-          $height={true === isOpen ? contentHeight : 0}
-          shouldAnimate={shouldAnimate}
-          aria-hidden={!isOpen}
-        >
-          <div>Example content</div>
-        </BlockContent>
+        {isCollapsable ? (
+          <BlockContent
+            ref={contentRef}
+            isCollapsable={isCollapsable}
+            $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+            $height={true === isOpen ? contentHeight : 0}
+            shouldAnimate={shouldAnimate}
+            aria-hidden={!isOpen}
+          >
+            <div>Example content</div>
+          </BlockContent>
+        ) : null}
       </Container>
     );
   }
