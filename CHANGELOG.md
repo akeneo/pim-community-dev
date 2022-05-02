@@ -32,6 +32,7 @@
 - PIM-10377: Change Elastic Search field Limit for everyone
 - PIM-10251: Fix locale on API call
 - PIM-10418: Simple and multi select values not showing if not imported with the correct letter case
+- PIM-10416: Fix letter case issue when importing families
 
 ## Improvements
 
