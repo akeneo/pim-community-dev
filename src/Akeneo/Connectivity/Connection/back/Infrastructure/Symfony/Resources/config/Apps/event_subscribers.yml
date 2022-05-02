@@ -11,3 +11,7 @@ services:
             - '@akeneo_connectivity.connection.app_developer_mode.feature'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\GroupAllIsRemovedFromUsersUsedByAppsOnUpdateEventSubscriber:
+        tags:
+            - { name: kernel.event_subscriber }

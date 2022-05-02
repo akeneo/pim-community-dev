@@ -40,6 +40,7 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminación de la aplicación
   akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicación de prueba
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicación de prueba
+  akeneo_connectivity_connection_connect_connected_apps_open: Abrir aplicación
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -196,7 +197,6 @@ akeneo_connectivity.connection:
           previous: Anterior
           next: Siguiente
           allow_and_next: Permitir y siguiente
-          allow_and_finish: Permitir y finalizar
         progress:
           authentication: Autenticación
           authorizations: Autorizaciones
@@ -556,3 +556,6 @@ pim_permissions:
       edit: Editar
       view: Visualizar
     all: Todo
+pim_notification:
+  connected_app_authorizations:
+    button_label: Abrir aplicación

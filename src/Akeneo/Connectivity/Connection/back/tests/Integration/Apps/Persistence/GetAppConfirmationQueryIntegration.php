@@ -12,8 +12,8 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetAppConfirmationQuery;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
-use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -51,11 +51,11 @@ class GetAppConfirmationQueryIntegration extends TestCase
     {
         $group = $this->createUserGroup->execute('userGroup_' . $appPublicId);
 
-        $user = $this->createUser->execute(
+        $userId = $this->createUser->execute(
             'username_' . $appPublicId,
             'firstname_' . $appPublicId,
-            'lastname_' . $appPublicId,
-            [$group->getName()]
+            [$group->getName()],
+            ['ROLE_USER'],
         );
 
         $client = $this->clientProvider->findOrCreateClient(
@@ -76,7 +76,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
             'Connector_' . $appPublicId,
             FlowType::OTHER,
             $client->getId(),
-            $user->id()
+            $userId,
         );
 
         $this->createConnectedAppQuery->execute(

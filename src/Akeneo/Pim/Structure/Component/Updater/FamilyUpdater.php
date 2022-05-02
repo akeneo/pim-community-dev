@@ -35,24 +35,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $familyRepository;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var AttributeRequirementFactory */
-    protected $attrRequiFactory;
-
-    /** @var AttributeRequirementRepositoryInterface */
-    protected $requirementRepo;
-
-    /** @var TranslatableUpdater */
-    protected $translatableUpdater;
-
     /**
      * @param IdentifiableObjectRepositoryInterface   $familyRepository
      * @param AttributeRepositoryInterface            $attributeRepository
@@ -60,22 +42,18 @@ class FamilyUpdater implements ObjectUpdaterInterface
      * @param AttributeRequirementFactory             $attrRequiFactory
      * @param AttributeRequirementRepositoryInterface $requirementRepo
      * @param TranslatableUpdater                     $translatableUpdater
+     * @param IdentifiableObjectRepositoryInterface   $localeRepository
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $familyRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ChannelRepositoryInterface $channelRepository,
-        AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepositoryInterface $requirementRepo,
-        TranslatableUpdater $translatableUpdater
+        protected IdentifiableObjectRepositoryInterface $familyRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected ChannelRepositoryInterface $channelRepository,
+        protected AttributeRequirementFactory $attrRequiFactory,
+        protected AttributeRequirementRepositoryInterface $requirementRepo,
+        protected TranslatableUpdater $translatableUpdater,
+        protected IdentifiableObjectRepositoryInterface $localeRepository,
     ) {
         $this->accessor = PropertyAccess::createPropertyAccessor();
-        $this->familyRepository = $familyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->channelRepository = $channelRepository;
-        $this->attrRequiFactory = $attrRequiFactory;
-        $this->requirementRepo = $requirementRepo;
-        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -191,7 +169,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     {
         switch ($field) {
             case 'labels':
-                $this->translatableUpdater->update($family, $data);
+                $this->setLabels($family, $data);
                 break;
             case 'attribute_requirements':
                 $this->setAttributeRequirements($family, $data);
@@ -208,6 +186,24 @@ class FamilyUpdater implements ObjectUpdaterInterface
             default:
                 $this->setValue($family, $field, $data);
         }
+    }
+
+    /**
+     * set labels on a family, ensuring correct case of locale codes.
+     * @param array $localizedLabels
+     */
+    private function setLabels(FamilyInterface $family, array $localizedLabels): void
+    {
+        // using known locale code when found (modulo case-insensitive comparison)
+        // leaving unknown locale code as is for the moment (Jira PIM-10372, )
+        $normalizedLocalizedLabels = [];
+        foreach ($localizedLabels as $localeCode => $label) {
+            $knownLocale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $normalizedLocalCode = null === $knownLocale ? $localeCode : $knownLocale->getCode();
+            $normalizedLocalizedLabels[$normalizedLocalCode] = $label;
+        };
+
+        $this->translatableUpdater->update($family, $normalizedLocalizedLabels);
     }
 
     /**

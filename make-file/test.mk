@@ -27,7 +27,6 @@ lint-back:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run -u www-data --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) communication-channel-lint-back
@@ -36,6 +35,8 @@ lint-back:
 	$(MAKE) job-lint-back
 	$(MAKE) enrichment-product-lint-back
 	$(MAKE) channel-lint-back
+	# Cache was created with debug enabled, removing it allows a faster one to be created for upcoming tests
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 
 .PHONY: lint-front
 lint-front:
