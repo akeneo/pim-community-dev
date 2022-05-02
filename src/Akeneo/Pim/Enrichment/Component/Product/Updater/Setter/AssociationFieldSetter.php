@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetAssociatedProductIdentifiers;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetProductReferenceFromIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -39,6 +41,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
         TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
         MissingAssociationAdder $missingAssociationAdder,
         AssociationTypeRepositoryInterface $associationTypeRepository,
+        private GetAssociatedProductIdentifiers $getAssociatedProductIdentifiers,
+        private GetProductReferenceFromIdentifier $getProductReferenceFromIdentifier,
         array $supportedFields
     ) {
         $this->productRepository = $productRepository;
@@ -105,16 +109,31 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
     }
 
+    private function getAssociatedProductIdentifiers(
+        EntityWithAssociationsInterface $owner,
+        AssociationTypeInterface $associationType,
+    ): array {
+        // @todo ProductModelInterface
+        if ($owner instanceof ProductInterface) {
+            return $this->getAssociatedProductIdentifiers->execute($owner, $associationType);
+        }
+
+        return $owner->getAssociatedProducts($associationType->getCode())->map(fn (ProductInterface $associatedProduct) => $associatedProduct->getIdentifier());
+    }
+
     private function updateAssociatedProducts(
         EntityWithAssociationsInterface $owner,
         AssociationTypeInterface $associationType,
         array $productsIdentifiers
     ): void {
         $productsIdentifiers = array_unique($productsIdentifiers);
-        foreach ($owner->getAssociatedProducts($associationType->getCode()) as $associatedProduct) {
-            $index = array_search($associatedProduct->getIdentifier(), $productsIdentifiers);
+        $associatedProductIdentifiers = $this->getAssociatedProductIdentifiers($owner, $associationType);
+
+        foreach ($associatedProductIdentifiers as $associatedProductIdentifier) {
+            $index = array_search($associatedProductIdentifier, $productsIdentifiers);
 
             if (false === $index) {
+                $associatedProduct = $this->getProductReferenceFromIdentifier->execute($associatedProductIdentifier);
                 $this->removeAssociatedProduct($owner, $associatedProduct, $associationType);
             } else {
                 unset($productsIdentifiers[$index]);
@@ -122,28 +141,31 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
 
         foreach ($productsIdentifiers as $productIdentifier) {
-            $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if (null === $associatedProduct) {
-                throw InvalidPropertyException::validEntityCodeExpected(
-                    'associations',
-                    'product identifier',
-                    'The product does not exist',
-                    static::class,
-                    $productIdentifier
-                );
-            }
-            $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
+            $this->addAssociatedProduct($owner, $productIdentifier, $associationType);
         }
     }
 
     private function addAssociatedProduct(
         EntityWithAssociationsInterface $owner,
-        ProductInterface $associatedProduct,
+        string $associatedProductIdentifier,
         AssociationTypeInterface $associationType
     ): void {
-        $owner->addAssociatedProduct($associatedProduct, $associationType->getCode());
+        $associatedProductReference = $this->getProductReferenceFromIdentifier->execute($associatedProductIdentifier);
+
+        if (null === $associatedProductReference) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'associations',
+                'product identifier',
+                'The product does not exist',
+                static::class,
+                $associatedProductIdentifier
+            );
+        }
+
+        $owner->addAssociatedProduct($associatedProductReference, $associationType->getCode());
 
         if ($associationType->isTwoWay()) {
+            $associatedProduct = $this->productRepository->findOneByIdentifier($associatedProductIdentifier);
             $this->twoWayAssociationUpdater->createInversedAssociation(
                 $owner,
                 $associationType->getCode(),

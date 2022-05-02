@@ -156,6 +156,18 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.get_associated_product_identifiers:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetAssociatedProductIdentifiers'
+        arguments:
+            - '@database_connection'
+
+    akeneo.pim.enrichment.product.query.get_product_reference_from_identifier:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetProductReferenceFromIdentifier'
+        arguments:
+            - '@database_connection'
+            - '@doctrine'
+            - '%pim_catalog.entity.product.class%'
+
     akeneo.pim.enrichment.product.query.get_product_model_associations_by_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\Association\GetProductModelAssociationsByProductIdentifiers'
         arguments:

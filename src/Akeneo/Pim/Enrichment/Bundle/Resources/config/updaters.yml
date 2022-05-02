@@ -195,6 +195,8 @@ services:
             - '@pim_catalog.association.two_way_association_updater'
             - '@pim_catalog.association.missing_association_adder'
             - '@pim_catalog.repository.association_type'
+            - '@akeneo.pim.enrichment.product.query.get_associated_product_identifiers'
+            - '@akeneo.pim.enrichment.product.query.get_product_reference_from_identifier'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
