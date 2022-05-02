@@ -25,6 +25,7 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->loadAppsFixtures();
+        $this->get('feature_flags')->enable('marketplace_activate');
     }
 
     protected function getConfiguration(): Configuration

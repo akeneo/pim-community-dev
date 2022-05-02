@@ -18,6 +18,7 @@ akeneo_connectivity_connection_open_apps:
     group_name: oro_config_system
     enabled_at_creation: false
     order: -10
+    feature: marketplace_activate
 
 akeneo_connectivity_connection_manage_test_apps:
     type: action

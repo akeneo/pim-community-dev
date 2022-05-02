@@ -32,6 +32,8 @@ class FindAllUsernamesWithAclQueryIntegration extends TestCase
         $this->query = $this->get(FindAllUsernamesWithAclQuery::class);
         $this->userLoader = $this->get(UserLoader::class);
         $this->aclLoader = $this->get(AclLoader::class);
+
+        $this->get('feature_flags')->enable('marketplace_activate');
     }
 
     public function test_it_returns_all_usernames_given_the_acl(): void
