@@ -63,7 +63,7 @@ Use this playground to test the block component
           <Block
             {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
             actions={<>
-              <IconButton level="tertiary" ghost="borderless" size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
+              <IconButton level="danger" ghost size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
             </>}
           >
             Block with actions

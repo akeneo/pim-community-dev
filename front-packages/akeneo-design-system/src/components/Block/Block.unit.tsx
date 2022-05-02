@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {PlusIcon, CloseIcon, ArrowDownIcon} from '../../icons';
+import {PlusIcon, CloseIcon, EditIcon} from '../../icons';
 
 test('it renders without actions', () => {
   render(<Block>My block</Block>);
@@ -10,9 +10,9 @@ test('it renders without actions', () => {
   expect(screen.getByText('My block')).toBeInTheDocument();
 });
 
-test('it renders action passed by props', () => {
+test('it renders actions passed by props', () => {
   const onRemove = jest.fn();
-  const onCollapse = jest.fn();
+  const onEdit = jest.fn();
 
   render(
     <Block
@@ -22,10 +22,10 @@ test('it renders action passed by props', () => {
             level="tertiary"
             ghost="borderless"
             size="small"
-            key="collapse"
-            icon={<ArrowDownIcon />}
-            title="Collapse"
-            onClick={onCollapse}
+            key="edit"
+            icon={<EditIcon />}
+            title="Edit"
+            onClick={onEdit}
           />
           <IconButton
             level="tertiary"
@@ -43,13 +43,29 @@ test('it renders action passed by props', () => {
     </Block>
   );
 
+  const editIconButton = screen.getByTitle('Edit');
+  fireEvent.click(editIconButton);
+  expect(onEdit).toBeCalled();
+
   const removeIconButton = screen.getByTitle('Remove');
   fireEvent.click(removeIconButton);
   expect(onRemove).toBeCalled();
+});
+
+test('it supports collapsing', () => {
+  const onCollapse = jest.fn();
+  const isOpen = false;
+
+  render(
+    <Block isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+      My block
+    </Block>
+  );
 
   const collapseIconButton = screen.getByTitle('Collapse');
   fireEvent.click(collapseIconButton);
   expect(onCollapse).toBeCalled();
+  expect(screen.getByText('Example content')).toBeInTheDocument();
 });
 
 test('Block supports forwardRef', () => {

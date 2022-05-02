@@ -60,8 +60,10 @@ type BlockProps = Override<
 const ANIMATION_DURATION = 100;
 
 const ActionsContainer = styled.div`
-  display: none;
+  display: flex;
   align-items: center;
+  column-gap: 10px;
+  justify-content: space-between;
 `;
 
 const BlockTitle = styled.div`
@@ -109,9 +111,6 @@ const Container = styled.div<AkeneoThemedProps>`
 
   &:hover {
     background-color: ${getColor('grey', 20)};
-    ${ActionsContainer} {
-      display: flex;
-    }
   }
 `;
 
@@ -164,17 +163,17 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
           })}
 
           <ActionsContainer>
-            {isCollapsable ? (
+            {actions}
+            {!isCollapsable ? null : (
               <IconButton
                 icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
                 title="Collapse"
                 level="tertiary"
-                ghost="borderless"
+                ghost
                 size="small"
                 onClick={handleCollapse}
               />
-            ) : null}
-            {actions}
+            )}
           </ActionsContainer>
         </BlockTitle>
         {isCollapsable ? (
