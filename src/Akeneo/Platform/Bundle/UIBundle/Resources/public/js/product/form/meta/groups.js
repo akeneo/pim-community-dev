@@ -174,7 +174,7 @@ define([
                 'a[data-product-id]',
                 function visitProduct(event) {
                   this.groupModal.close();
-                  router.redirectToRoute('pim_enrich_product_edit', {id: event.currentTarget.dataset.productId});
+                  router.redirectToRoute('pim_enrich_product_edit', {uuid: event.currentTarget.dataset.productId});
                 }.bind(this)
               );
             }.bind(this)
