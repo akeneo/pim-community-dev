@@ -1038,14 +1038,12 @@ final class UpsertProductIntegration extends TestCase
 
         // create product 'identifier'
         $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.png'));
-
-        $this->createProduct(
-            'identifier',
-            'other',
-            [
-                'an_image' => [['scope' => null, 'locale' => null, 'data' => $anImagePath]],
-            ]
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
         );
+        $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
 
@@ -1073,7 +1071,7 @@ final class UpsertProductIntegration extends TestCase
         $this->expectException(LegacyViolationsException::class);
         $this->expectExceptionMessage('The txt file extension is not allowed for the an_image attribute. Allowed extensions are jpg, gif, png.');
 
-        // create product 'identifier' with wrong image format
+        // create product 'identifier'
         $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.txt'));
         $command = new UpsertProductCommand(
             userId: $this->getUserId('admin'),
