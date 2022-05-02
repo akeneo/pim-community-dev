@@ -25,7 +25,6 @@ class Comment implements CommentInterface
     /** @var string */
     protected $resourceId;
 
-    /** @var UuidInterface */
     protected UuidInterface $resourceUuid;
 
     /** @var UserInterface */
@@ -201,17 +200,15 @@ class Comment implements CommentInterface
     /**
      * {@inheritdoc}
      */
-    public function setResourceUuid($resourceUuid)
+    public function setResourceUuid(UuidInterface $resourceUuid): void
     {
         $this->resourceUuid = $resourceUuid;
-
-        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getResourceUuid()
+    public function getResourceUuid(): ?UuidInterface
     {
         return $this->resourceUuid;
     }

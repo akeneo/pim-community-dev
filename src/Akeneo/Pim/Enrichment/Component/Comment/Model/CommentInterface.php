@@ -33,17 +33,9 @@ interface CommentInterface
      */
     public function getResourceId();
 
-    /**
-     * @param UuidInterface $resourceUuid
-     *
-     * @return CommentInterface
-     */
-    public function setResourceUuid($resourceUuid);
+    public function setResourceUuid(UuidInterface $resourceUuid): void;
 
-    /**
-     * @return UuidInterface
-     */
-    public function getResourceUuid();
+    public function getResourceUuid(): ?UuidInterface;
 
     /**
      * @param string $resourceName

@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalize
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -78,7 +79,7 @@ class CommentNormalizerSpec extends ObjectBehavior
         $comment->getId()->willReturn(1);
         $comment->getResourceName()->willReturn('Product');
         $comment->getResourceId()->willReturn('100');
-        $comment->getResourceUuid()->willReturn('b7d38dc6-5166-46c5-ae7f-2643d8ef4edc');
+        $comment->getResourceUuid()->willReturn(Uuid::fromString('b7d38dc6-5166-46c5-ae7f-2643d8ef4edc'));
         $comment->getAuthor()->willReturn($author);
         $comment->getBody()->willReturn('Body of the comment');
         $comment->getCreatedAt()->willReturn($dateTime);
@@ -129,7 +130,7 @@ class CommentNormalizerSpec extends ObjectBehavior
         $comment->getId()->willReturn(42);
         $comment->getResourceName()->willReturn('Product');
         $comment->getResourceId()->willReturn('100');
-        $comment->getResourceUuid()->willReturn('b7d38dc6-5166-46c5-ae7f-2643d8ef4edc');
+        $comment->getResourceUuid()->willReturn(Uuid::fromString('b7d38dc6-5166-46c5-ae7f-2643d8ef4edc'));
         $comment->getAuthor()->willReturn(null);
         $comment->getBody()->willReturn('Lorem ipsum dolor sit amet');
         $comment->getCreatedAt()->willReturn($dateTime);
