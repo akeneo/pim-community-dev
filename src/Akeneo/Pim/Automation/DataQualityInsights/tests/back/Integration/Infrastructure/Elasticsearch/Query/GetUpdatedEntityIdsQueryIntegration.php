@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Elasticsearch\Query;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
@@ -20,7 +20,7 @@ use Ramsey\Uuid\Uuid;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetUpdatedProductUuidsQueryIntegration extends TestCase
+final class GetUpdatedEntityIdsQueryIntegration extends TestCase
 {
     private Connection $db;
 
@@ -38,7 +38,7 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
 
     public function test_it_returns_all_updated_product_ids()
     {
-        /** @var GetUpdatedProductUuidsQueryInterface $getUpdatedProductIdsQuery */
+        /** @var GetUpdatedEntityIdsQueryInterface $getUpdatedProductIdsQuery */
         $getUpdatedProductIdsQuery = $this->get('akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_ids_query');
 
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
@@ -73,7 +73,7 @@ final class GetUpdatedProductUuidsQueryIntegration extends TestCase
 
     public function test_it_returns_all_updated_product_model_ids()
     {
-        /** @var GetUpdatedProductUuidsQueryInterface $getUpdatedProductIdsQuery */
+        /** @var GetUpdatedEntityIdsQueryInterface $getUpdatedProductIdsQuery */
         $getUpdatedProductModelIdsQuery = $this->get('akeneo.pim.automation.data_quality_insights.elasticsearch.get_updated_product_model_ids_query');
 
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');

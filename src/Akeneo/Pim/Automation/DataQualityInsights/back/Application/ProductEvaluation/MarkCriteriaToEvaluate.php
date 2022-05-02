@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedEntityIdsQueryInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Get
  */
 final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
 {
-    /** @var GetUpdatedProductUuidsQueryInterface */
+    /** @var GetUpdatedEntityIdsQueryInterface */
     private $getUpdatedProductIdsQuery;
 
     /** @var GetEntityIdsImpactedByAttributeGroupActivationQueryInterface */
@@ -23,7 +23,7 @@ final class MarkCriteriaToEvaluate implements MarkCriteriaToEvaluateInterface
     private $createProductsCriteriaEvaluations;
 
     public function __construct(
-        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductIdsQuery,
+        GetUpdatedEntityIdsQueryInterface                            $getUpdatedProductIdsQuery,
         GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
         CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
