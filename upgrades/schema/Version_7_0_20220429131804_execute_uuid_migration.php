@@ -26,7 +26,6 @@ final class Version_7_0_20220429131804_execute_uuid_migration extends AbstractMi
 
         $input = new ArrayInput([
             'command' => 'pim:product:migrate-to-uuid',
-            '--with-stats' => true,
         ]);
 
         $application->run($input, new NullOutput());
