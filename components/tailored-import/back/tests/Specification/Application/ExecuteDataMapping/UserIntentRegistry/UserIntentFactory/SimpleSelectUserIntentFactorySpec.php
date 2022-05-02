@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\SimpleSelectUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
@@ -35,7 +36,7 @@ class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_text');
-        $value = '';
+        $value = new StringValue('f');
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_simpleselect"'))
             ->during('create', [$attributeTarget, $value]);
@@ -56,7 +57,7 @@ class SimpleSelectUserIntentFactorySpec extends ObjectBehavior
             'a_value'
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+        $this->create($attributeTarget, new StringValue('a_value'))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_simpleselect(

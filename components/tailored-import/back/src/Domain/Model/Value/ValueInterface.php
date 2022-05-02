@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
+namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
-interface OperationInterface
+interface ValueInterface
 {
-    public function normalize(): array;
+    public function getValue(): mixed;
 }

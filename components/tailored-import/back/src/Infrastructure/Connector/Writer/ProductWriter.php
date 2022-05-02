@@ -99,7 +99,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         $columns = $rowPayload->getColumnCollection()->getIterator();
         /** @var Column $column */
         foreach ($columns as $column) {
-            $formattedCells[$column->getLabel()] = $rowPayload->getRow()->getCellData($column->getUuid());
+            $formattedCells[$column->getLabel()] = $rowPayload->getRow()->getCellData($column->getUuid())->getValue();
         }
 
         return $formattedCells;

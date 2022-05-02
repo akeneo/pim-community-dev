@@ -90,6 +90,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             'locale' => null,
             'action_if_not_empty' => 'set',
             'action_if_empty' => 'skip',
+            'source_configuration' => null,
         ], $indexedAttributes)->willReturn($nameTarget);
 
         $targetHydrator->hydrate([
@@ -99,6 +100,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             'locale' => 'fr_FR',
             'action_if_not_empty' => 'set',
             'action_if_empty' => 'skip',
+            'source_configuration' => null,
         ], $indexedAttributes)->willReturn($descriptionTarget);
 
         $emptyOperationCollection = OperationCollection::create([]);
@@ -106,11 +108,8 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             new CleanHTMLTagsOperation(),
         ]);
 
-        $operationCollectionHydrator->hydrate([])
-            ->willReturn($emptyOperationCollection);
-        $operationCollectionHydrator->hydrate([[
-            'type' => CleanHTMLTagsOperation::TYPE,
-        ]])->willReturn($operationCollection);
+        $operationCollectionHydrator->hydrate($nameTarget->normalize(), [])->willReturn($emptyOperationCollection);
+        $operationCollectionHydrator->hydrate($descriptionTarget->normalize(), [['type' => CleanHTMLTagsOperation::TYPE]])->willReturn($operationCollection);
 
         $this->hydrate(
             [
@@ -123,6 +122,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
+                        'source_configuration' => [],
                     ],
                     'sources' => ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                     'operations' => [],
@@ -137,6 +137,7 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
                         'locale' => 'fr_FR',
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
+                        'source_configuration' => [],
                     ],
                     'sources' => ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                     'operations' => [

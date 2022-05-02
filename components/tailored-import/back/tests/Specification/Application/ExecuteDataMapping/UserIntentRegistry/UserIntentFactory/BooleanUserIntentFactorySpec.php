@@ -17,6 +17,8 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\BooleanUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class BooleanUserIntentFactorySpec extends ObjectBehavior
@@ -35,7 +37,7 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_text');
-        $value = '';
+        $value = new BooleanValue(true);
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_boolean"'))
             ->during('create', [$attributeTarget, $value]);
@@ -45,19 +47,9 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_boolean');
-        $value = ['18'];
+        $value = new StringValue('18');
 
-        $this->shouldThrow(new \InvalidArgumentException('BooleanUserIntentFactory only supports string value'))
-            ->during('create', [$attributeTarget, $value]);
-    }
-
-    public function it_throws_an_exception_when_value_is_different_than_0_and_1(
-        AttributeTarget $attributeTarget
-    ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_boolean');
-        $value = '2';
-
-        $this->shouldThrow(new \InvalidArgumentException('BooleanUserIntentFactory only supports "1" or "0"'))
+        $this->shouldThrow(new \InvalidArgumentException(sprintf('BooleanUserIntentFactory only supports Boolean value, %s given', StringValue::class)))
             ->during('create', [$attributeTarget, $value]);
     }
 
@@ -76,7 +68,7 @@ class BooleanUserIntentFactorySpec extends ObjectBehavior
             true
         );
 
-        $this->create($attributeTarget, '1')->shouldBeLike($expected);
+        $this->create($attributeTarget, new BooleanValue(true))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_boolean(

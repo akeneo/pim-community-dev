@@ -19,20 +19,22 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"');
         }
 
-        if (\is_string($value)) {
-            $value = [$value];
+        if (!$value instanceof ArrayValue) {
+            throw new \InvalidArgumentException('MultiSelectUserIntentFactory only supports Array value');
         }
 
         return match ($target->getActionIfNotEmpty()) {
@@ -40,13 +42,13 @@ final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
                 $target->getCode(),
                 $target->getChannel(),
                 $target->getLocale(),
-                $value,
+                $value->getValue(),
             ),
             TargetInterface::ACTION_SET => new SetMultiSelectValue(
                 $target->getCode(),
                 $target->getChannel(),
                 $target->getLocale(),
-                $value,
+                $value->getValue(),
             ),
             default => throw new \LogicException('Unknown action if not empty'),
         };

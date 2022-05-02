@@ -17,7 +17,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MeasurementUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementUserIntentFactorySpec extends ObjectBehavior
@@ -36,7 +36,7 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_text');
-        $value = '';
+        $value = new NumberValue('1');
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"'))
             ->during('create', [$attributeTarget, $value]);
@@ -45,13 +45,11 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
     public function it_creates_a_set_measurement_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $measurementSourceConfiguration = new MeasurementSourceConfiguration('METER', '.');
-
         $attributeTarget->getType()->willReturn('pim_catalog_metric');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
-        $attributeTarget->getSourceConfiguration()->willReturn($measurementSourceConfiguration);
+        $attributeTarget->getSourceConfiguration()->willReturn(['unit' => 'METER', 'decimal_separator' => '.']);
 
         $expected = new SetMeasurementValue(
             'an_attribute_code',
@@ -61,7 +59,7 @@ class MeasurementUserIntentFactorySpec extends ObjectBehavior
             'METER',
         );
 
-        $this->create($attributeTarget, '123.5')->shouldBeLike($expected);
+        $this->create($attributeTarget, new NumberValue('123.5'))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_metric(

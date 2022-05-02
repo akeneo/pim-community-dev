@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validat
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
+use Symfony\Component\Validator\Constraints\Type;
 
 class AttributeTargetValidatorTest extends AbstractValidationTest
 {
@@ -52,6 +53,9 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => null,
                     'type' => 'attribute',
+                    'source_configuration' => [],
+                    'action_if_not_empty' => null,
+                    'action_if_empty' => null
                 ],
             ],
             'a scopable attribute target' => [
@@ -60,6 +64,9 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => null,
                     'type' => 'attribute',
+                    'source_configuration' => [],
+                    'action_if_not_empty' => null,
+                    'action_if_empty' => null
                 ],
             ],
             'a localizable attribute target' => [
@@ -69,6 +76,9 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => 'en_US',
                     'type' => 'attribute',
+                    'source_configuration' => [],
+                    'action_if_not_empty' => null,
+                    'action_if_empty' => null
                 ],
             ],
             'a localizable and scopable attribute target' => [
@@ -77,6 +87,9 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'type' => 'attribute',
+                    'source_configuration' => [],
+                    'action_if_not_empty' => null,
+                    'action_if_empty' => null
                 ],
             ],
         ];

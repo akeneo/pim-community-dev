@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
 use PhpSpec\ObjectBehavior;
 
 class MultiSelectUserIntentFactorySpec extends ObjectBehavior
@@ -36,13 +37,13 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_textarea');
-        $value = '';
+        $value = new ArrayValue(['f']);
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"'))
             ->during('create', [$attributeTarget, $value]);
     }
 
-    public function it_create_a_set_multi_select_value_object(
+    public function it_creates_a_set_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
@@ -58,10 +59,10 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
             ['a_value']
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+        $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
-    public function it_create_an_add_multi_select_value_object(
+    public function it_creates_an_add_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
         $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
@@ -77,7 +78,7 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
             ['a_value']
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+        $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_multiselect(

@@ -14,9 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingHandler;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
+use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AttributeTestCase extends KernelTestCase
@@ -48,5 +52,31 @@ abstract class AttributeTestCase extends KernelTestCase
     protected function getExecuteDataMappingHandler(): ExecuteDataMappingHandler
     {
         return self::getContainer()->get('akeneo.tailored_import.handler.execute_data_mapping');
+    }
+
+    protected function getExecuteDataMappingQuery(array $row, string $uuid, array $dataMappings): ExecuteDataMappingQuery
+    {
+        $operationCollectionHydrator = new OperationCollectionHydrator();
+        $dataMappings = \array_map(
+            static fn (DataMapping $dataMapping) => $dataMapping::create(
+                $dataMapping->getUuid(),
+                $dataMapping->getTarget(),
+                $dataMapping->getSources(),
+                $operationCollectionHydrator->hydrateAttribute(
+                    $dataMapping->getTarget()->normalize(),
+                    $dataMapping->getOperations()->normalize(),
+                ),
+                $dataMapping->getSampleData()
+            ),
+            $dataMappings
+        );
+
+        return new ExecuteDataMappingQuery(
+            new Row($row),
+            DataMappingCollection::create([
+                $this->createIdentifierDataMapping($uuid),
+                ...$dataMappings,
+            ]),
+        );
     }
 }

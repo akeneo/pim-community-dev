@@ -18,27 +18,29 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class NumberUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_number"');
         }
 
-        if (!\is_string($value)) {
-            throw new \InvalidArgumentException('NumberUserIntentFactory only supports string value');
+        if (!$value instanceof NumberValue) {
+            throw new \InvalidArgumentException(sprintf('NumberUserIntentFactory only supports Number value, %s given', $value::class));
         }
 
         return new SetNumberValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            $value,
+            $value->getValue(),
         );
     }
 

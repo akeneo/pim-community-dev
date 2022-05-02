@@ -17,35 +17,31 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"');
         }
 
-        if (!\is_string($value)) {
-            throw new \InvalidArgumentException('MeasurementUserIntentFactory only supports string value');
-        }
-
-        $sourceConfiguration = $target->getSourceConfiguration();
-        if (!$sourceConfiguration instanceof MeasurementSourceConfiguration) {
-            throw new \InvalidArgumentException('The target source configuration must be a MeasurementSourceConfiguration');
+        if (!$value instanceof NumberValue) {
+            throw new \InvalidArgumentException(sprintf('MeasurementUserIntentFactory only supports Number value, %s given', $value::class));
         }
 
         return new SetMeasurementValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            $value,
-            $sourceConfiguration->getUnit(),
+            $value->getValue(),
+            $target->getSourceConfiguration()['unit'],
         );
     }
 

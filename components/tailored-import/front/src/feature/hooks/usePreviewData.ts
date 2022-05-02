@@ -19,6 +19,7 @@ const usePreviewData = (dataMapping: DataMapping) => {
         body: JSON.stringify({
           sample_data: dataMapping.sample_data,
           operations: dataMapping.operations,
+          target: dataMapping.target,
         }),
       });
 
@@ -38,7 +39,7 @@ const usePreviewData = (dataMapping: DataMapping) => {
 
     setIsLoading(true);
     void fetchPreviewData();
-  }, [route, dataMapping.sample_data, dataMapping.operations]);
+  }, [route, dataMapping.sample_data, dataMapping.operations, dataMapping.target]);
 
   return [isLoading, previewData, hasError] as const;
 };

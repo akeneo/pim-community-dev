@@ -20,4 +20,6 @@ interface TargetInterface
     public function getActionIfNotEmpty(): string;
 
     public function getActionIfEmpty(): string;
+
+    public function normalize(): array;
 }

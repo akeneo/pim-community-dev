@@ -15,13 +15,9 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
-use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\MeasurementSourceConfiguration;
 use PHPUnit\Framework\Assert;
 
 final class HandleMeasurementTest extends AttributeTestCase
@@ -34,14 +30,7 @@ final class HandleMeasurementTest extends AttributeTestCase
         array $dataMappings,
         UpsertProductCommand $expected,
     ): void {
-        $executeDataMappingQuery = new ExecuteDataMappingQuery(
-            new Row($row),
-            DataMappingCollection::create([
-                $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
-                ...$dataMappings,
-            ]),
-        );
-
+        $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
         Assert::assertEquals($expected, $upsertProductCommand);
@@ -67,7 +56,10 @@ final class HandleMeasurementTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new MeasurementSourceConfiguration('METER', '.'),
+                            [
+                                'unit' => 'METER',
+                                'decimal_separator' => '.',
+                            ],
                         ),
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -82,7 +74,10 @@ final class HandleMeasurementTest extends AttributeTestCase
                             'fr_FR',
                             'set',
                             'skip',
-                            new MeasurementSourceConfiguration('GRAM', ',')
+                            [
+                                'unit' => 'GRAM',
+                                'decimal_separator' => ',',
+                            ],
                         ),
                         ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([]),
@@ -97,7 +92,10 @@ final class HandleMeasurementTest extends AttributeTestCase
                             null,
                             'set',
                             'skip',
-                            new MeasurementSourceConfiguration('HERTZ', '.')
+                            [
+                                'unit' => 'HERTZ',
+                                'decimal_separator' => ',',
+                            ],
                         ),
                         ['25621f5a-504f-4893-8f0c-da684dfa84f7'],
                         OperationCollection::create([]),

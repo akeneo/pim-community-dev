@@ -18,27 +18,29 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class TextUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_text"');
         }
 
-        if (!\is_string($value)) {
-            throw new \InvalidArgumentException('TextUserIntentFactory only supports string value');
+        if (!$value instanceof StringValue) {
+            throw new \InvalidArgumentException('TextUserIntentFactory only supports String value');
         }
 
         return new SetTextValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            $value,
+            $value->getValue(),
         );
     }
 

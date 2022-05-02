@@ -10,6 +10,8 @@ namespace Akeneo\Platform\TailoredImport\Application\SampleData\GeneratePreviewD
  */
 final class GeneratePreviewDataQuery
 {
+    public array $target;
+
     public array $sampleData;
 
     public array $operations;

@@ -23,6 +23,11 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
     public function test_it_launch_operation_on_each_sample_data(): void
     {
         $query = new GeneratePreviewDataQuery();
+        $query->target = [
+            'code' => 'name',
+            'type' => 'attribute',
+            'source_configuration' => null,
+        ];
         $query->operations = [['type' => 'clean_html_tags']];
         $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
@@ -33,6 +38,11 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
     public function test_it_does_nothing_when_there_is_no_operations(): void
     {
         $query = new GeneratePreviewDataQuery();
+        $query->target = [
+            'code' => 'name',
+            'type' => 'attribute',
+            'source_configuration' => null,
+        ];
         $query->operations = [];
         $query->sampleData = ['<b>product1</b>', '<i>product2</i>', 'product3'];
 
@@ -43,6 +53,11 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
     public function test_it_does_nothing_when_there_is_no_sample_data(): void
     {
         $query = new GeneratePreviewDataQuery();
+        $query->target = [
+            'code' => 'name',
+            'type' => 'attribute',
+            'source_configuration' => null,
+        ];
         $query->operations = [['type' => 'clean_html_tags']];
         $query->sampleData = [];
 

@@ -6,10 +6,12 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Attribute\GetIdentifierAttributeCodeInterface;
 
 /**
@@ -22,7 +24,6 @@ class ExecuteDataMappingHandler
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
         private UserIntentAggregatorInterface $userIntentAggregator,
-        private SourceConfigurationApplier $sourceConfigurationApplier,
         private GetIdentifierAttributeCodeInterface $getIdentifierAttributeCode,
     ) {
     }
@@ -44,22 +45,22 @@ class ExecuteDataMappingHandler
                 continue;
             }
 
+            /** @var array<ValueInterface> $processedValues */
             $processedValues = [];
             foreach ($sources as $source) {
                 $value = $row->getCellData($source);
-
-                if ($target instanceof AttributeTarget && null !== $target->getSourceConfiguration()) {
-                    $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
-                }
-
                 $processedValues[] = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
             }
 
             $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
-            $userIntents[] = $userIntentFactory->create(
-                $target,
-                1 === \count($sources) ? $processedValues[0] : $processedValues,
-            );
+            $value = $this->flattenValues($processedValues);
+
+            if (!$value instanceof NullValue) {
+                $userIntents[] = $userIntentFactory->create(
+                    $target,
+                    $this->flattenValues($processedValues),
+                );
+            }
         }
 
         if (null === $productIdentifier) {
@@ -70,8 +71,23 @@ class ExecuteDataMappingHandler
 
         return UpsertProductCommand::createFromCollection(
             1,
-            $productIdentifier,
+            $productIdentifier->getValue(),
             $userIntents,
         );
+    }
+
+    public function flattenValues(array $processedValues): ValueInterface
+    {
+        if (1 === \count($processedValues)) {
+            return $processedValues[0];
+        }
+
+        $value = array_reduce(
+            $processedValues,
+            static fn ($reducedValue, $processedValue) => array_merge($reducedValue, $processedValue->getValue()),
+            [],
+        );
+
+        return new ArrayValue($value);
     }
 }

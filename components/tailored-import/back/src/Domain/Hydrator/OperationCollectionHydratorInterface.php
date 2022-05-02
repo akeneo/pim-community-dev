@@ -17,5 +17,9 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 
 interface OperationCollectionHydratorInterface
 {
-    public function hydrate(array $normalizedOperations): OperationCollection;
+    public function hydrate(array $normalizedTarget, array $normalizedOperations): OperationCollection;
+
+    public function hydrateAttribute(array $normalizedTarget, array $normalizedOperations): OperationCollection;
+
+    public function hydrateProperty(string $propertyCode, array $normalizedOperations): OperationCollection;
 }

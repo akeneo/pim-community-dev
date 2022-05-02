@@ -46,4 +46,13 @@ final class PropertyTarget implements TargetInterface
     {
         return $this->actionIfEmpty;
     }
+
+    public function normalize(): array
+    {
+        return [
+            'code' => $this->code,
+            'action_if_not_empty' => $this->actionIfNotEmpty,
+            'action_if_empty' => $this->actionIfEmpty,
+        ];
+    }
 }
