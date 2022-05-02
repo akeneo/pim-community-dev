@@ -378,7 +378,7 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I wait to be on the "([^"]*)" (\w+) page$/
+     * @Given /^I wait to be on the "([^"]*)" ((?!product)\w+) page$/
      */
     public function iWaitForTheEntityEditPage($identifier, $page)
     {
@@ -386,6 +386,22 @@ class NavigationContext extends PimContext implements PageObjectAware
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->setCurrentPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+
+        $this->wait();
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I wait to be on the "([^"]*)" product page$/
+     */
+    public function iWaitForTheProductEditPage($identifier)
+    {
+        $page   = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->setCurrentPage(sprintf('%s edit', $page), ['uuid' => $entity->getUuid()->toString()]);
 
         $this->wait();
     }
