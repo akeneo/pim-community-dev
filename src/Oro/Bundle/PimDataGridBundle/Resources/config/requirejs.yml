@@ -7,6 +7,7 @@ config:
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             confirmLabel: pim_enrich.entity.product_model.module.delete.confirm_for_products_and_product_models
+            buttonText: pim_common.delete
         pim/fetcher-registry:
             fetchers:
                 datagrid-view:
