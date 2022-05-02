@@ -539,9 +539,9 @@ class StepExecution
      *
      * @return mixed
      */
-    public function getSummaryInfo($key)
+    public function getSummaryInfo($key, mixed $defaultValue = '')
     {
-        return isset($this->summary[$key]) ? $this->summary[$key] : '';
+        return isset($this->summary[$key]) ? $this->summary[$key] : $defaultValue;
     }
 
     /**
