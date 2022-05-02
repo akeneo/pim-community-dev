@@ -2,88 +2,107 @@ akeneo_referenceentity_reference_entity_create:
     type: action
     label: akeneo_referenceentity.acl.reference_entity.create
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_reference_entity_edit:
     type: action
     label: akeneo_referenceentity.acl.reference_entity.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_reference_entity_delete:
     type: action
     label: akeneo_referenceentity.acl.reference_entity.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_reference_entity_manage_permission:
     type: action
     label: akeneo_referenceentity.acl.reference_entity.manage_permission
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_record_create:
     type: action
     label: akeneo_referenceentity.acl.record.create
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_record_edit:
     type: action
     label: akeneo_referenceentity.acl.record.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_record_list_product:
     type: action
     label: akeneo_referenceentity.acl.record.list_product
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_record_delete:
     type: action
     label: akeneo_referenceentity.acl.record.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_attribute_create:
     type: action
     label: akeneo_referenceentity.acl.attribute.create
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_attribute_delete:
     type: action
     label: akeneo_referenceentity.acl.attribute.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_attribute_edit:
     type: action
     label: akeneo_referenceentity.acl.attribute.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_option_edit:
     type: action
     label: akeneo_referenceentity.acl.option.edit
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 akeneo_referenceentity_option_delete:
     type: action
     label: akeneo_referenceentity.acl.option.delete
     group_name: akeneo_referenceentity.acl_group.reference_entity
+    feature: reference_entity
 
 pim_api_reference_entity_edit:
     type: action
     label: pim_api.acl.reference_entity.create
     group_name: pim_api.acl_group.reference_entity
+    feature: reference_entity
 
 pim_api_reference_entity_list:
     type: action
     label: pim_api.acl.reference_entity.list
     group_name: pim_api.acl_group.reference_entity
+    feature: reference_entity
 
 pim_api_reference_entity_record_edit:
     type: action
     label: pim_api.acl.record.create
     group_name: pim_api.acl_group.reference_entity
+    feature: reference_entity
 
 pim_api_reference_entity_record_list:
     type: action
     label: pim_api.acl.record.list
     group_name: pim_api.acl_group.reference_entity
+    feature: reference_entity
 
 pim_api_record_remove:
     type: action
     label: pim_api.acl.record.remove
     group_name: pim_api.acl_group.reference_entity
+    feature: reference_entity
+
