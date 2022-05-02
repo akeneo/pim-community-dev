@@ -118,7 +118,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
             return $this->getAssociatedProductIdentifiers->execute($owner, $associationType);
         }
 
-        return $owner->getAssociatedProducts($associationType->getCode())->map(fn (ProductInterface $associatedProduct) => $associatedProduct->getIdentifier());
+        return $owner->getAssociatedProducts($associationType->getCode())
+            ->map(fn (ProductInterface $associatedProduct) => $associatedProduct->getIdentifier())
+            ->toArray();
     }
 
     private function updateAssociatedProducts(
