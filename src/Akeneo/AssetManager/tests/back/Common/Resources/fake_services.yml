@@ -195,7 +195,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels:
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels
 
     akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:

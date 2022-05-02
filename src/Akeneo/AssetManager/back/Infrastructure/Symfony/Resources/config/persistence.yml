@@ -508,15 +508,10 @@ services:
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
 
-    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels
         arguments:
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
-
-    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
-        arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
