@@ -14,9 +14,9 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\CreateConnectedAppQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
@@ -113,11 +113,11 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
     {
         $group = $this->createUserGroup->execute('userGroup_'.$appPublicId);
 
-        $user = $this->createUser->execute(
+        $userId = $this->createUser->execute(
             'username_'.$appPublicId,
             'firstname_'.$appPublicId,
-            'lastname_'.$appPublicId,
-            [$group->getName()]
+            [$group->getName()],
+            ['ROLE_USER'],
         );
 
         $client = $this->clientProvider->findOrCreateClient(
@@ -138,7 +138,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
             'Connector_'.$appPublicId,
             FlowType::OTHER,
             $client->getId(),
-            $user->id()
+            $userId,
         );
 
         $this->createConnectedAppQuery->execute(

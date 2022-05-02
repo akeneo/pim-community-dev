@@ -54,3 +54,10 @@ services:
             - '@pim_user.repository.role'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
             - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'

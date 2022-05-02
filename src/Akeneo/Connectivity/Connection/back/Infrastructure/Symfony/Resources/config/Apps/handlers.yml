@@ -4,7 +4,7 @@ services:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
