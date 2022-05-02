@@ -40,6 +40,7 @@ define([
       const isProductModel = this.isProductModel();
       const label = this.model.get('label');
       const canRemoveAssociation = this.canRemoveAssociation();
+      const id = this.model.id.replace(/product-model-|product-/g, '');
 
       return {
         useLayerStyle: isProductModel,
@@ -49,7 +50,7 @@ define([
         canRemoveAssociation,
         redirectUrl: router.generate(
           this.isProductModel() ? 'pim_enrich_product_model_edit' : 'pim_enrich_product_edit',
-          {id: this.model.id.replace(/product-model-|product-/g, '')}
+          this.isProductModel() ? {id} : {uuid: id}
         ),
       };
     },
