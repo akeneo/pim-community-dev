@@ -4,8 +4,7 @@ workflows:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - ready_to_test_tailored_import?:
-          name: "Start tailored import?"
+      - start_tailored_import?:
           type: approval
           filters:
             branches:
@@ -14,17 +13,14 @@ workflows:
                 - /RAC-.*/
       - checkout:
           requires:
-            - "Start tailored import?"
+            - "start_tailored_import?"
       - build_srnt_dev:
-          name: "Build dev"
           requires:
             - checkout
       - test_helm_generated_k8s_files:
-          name: "🤷 ça bouine"
           requires:
             - checkout
       - deploy_pr_environment?:
-          name: "Deploy PR environment?"
           type: approval
           filters:
             branches:
@@ -32,44 +28,29 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - build_srnt_prod:
-          name: "Build prod"
           requires:
-            - "🤷 ça bouine"
-            - "Deploy PR environment?"
+            - "test_helm_generated_k8s_files"
+            - "deploy_pr_environment?"
       - deploy_pr_environment:
-          name: "Deploy PR environment"
           requires:
-            - "Build prod"
-      - delete_pr_environment?:
-          name: "Delete PR environment?"
-          type: approval
-          requires:
-            - "Deploy PR environment"
-      - delete_pr_environment:
-          name: "Delete PR environment"
-          requires:
-            - "Delete PR environment?"
+            - "build_srnt_prod"
       - test_front_tailored_import:
-          name: "Tailored import front test"
           requires:
-            - "Build dev"
+            - "build_srnt_dev"
       - test_back_tailored_import:
-          name: "Tailored import back test"
           requires:
-            - "Build dev"
+            - "build_srnt_dev"
       - pull_request_success:
-          name: "PR Success"
           requires:
-            - "Tailored import front test"
-            - "Tailored import back test"
+            - "test_front_tailored_import"
+            - "test_back_tailored_import"
 
   raccoon_job_automation_pull_request:
     when:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - ready_to_test_job_automation?:
-          name: "Start job automation?"
+      - start_job_automation?:
           type: approval
           filters:
             branches:
@@ -78,17 +59,14 @@ workflows:
                 - /RAC-.*/
       - checkout:
           requires:
-            - "Start job automation?"
+            - "start_job_automation?"
       - build_srnt_dev:
-          name: "Build dev"
           requires:
             - checkout
       - test_helm_generated_k8s_files:
-          name: "🤷 ça bouine"
           requires:
             - checkout
       - deploy_pr_environment?:
-          name: "Deploy PR environment?"
           type: approval
           filters:
             branches:
@@ -96,33 +74,19 @@ workflows:
                 - /RAB-.*/
                 - /RAC-.*/
       - build_srnt_prod:
-          name: "Build prod"
           requires:
-            - "🤷 ça bouine"
-            - "Deploy PR environment?"
+            - "test_helm_generated_k8s_files"
+            - "deploy_pr_environment?"
       - deploy_pr_environment:
-          name: "Deploy PR environment"
           requires:
-            - "Build prod"
-      - delete_pr_environment?:
-          name: "Delete PR environment?"
-          type: approval
-          requires:
-            - "Deploy PR environment"
-      - delete_pr_environment:
-          name: "Delete PR environment"
-          requires:
-            - "Delete PR environment?"
+            - "build_srnt_prod"
       - test_front_job_automation:
-          name: "Job automation front test"
           requires:
-            - "Build dev"
+            - "build_srnt_dev"
       - test_back_job_automation:
-          name: "Job automation back test"
           requires:
-            - "Build dev"
+            - "build_srnt_dev"
       - pull_request_success:
-          name: "PR Success"
           requires:
-            - "Job automation front test"
-            - "Job automation back test"
+            - "test_front_job_automation"
+            - "test_back_job_automation"
