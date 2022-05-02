@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-10419: [Backport] PIM-10350: Fix simple and multi select filtering and comparison
+
 # 5.0.93 (2022-05-03)
 
 # 5.0.92 (2022-04-28)

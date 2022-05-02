@@ -35,16 +35,26 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['MiChel', 'sardou'],
+                                    'en_US' => ['micHEL', 'sardou'],
                                 ],
                                 'tablet' => [
                                     'en_US' => ['jean', 'claude', 'van', 'damm'],
-                                    'fr_FR' => ['des', 'fraises'],
-
+                                    'fr_FR' => ['des', 'Fraises'],
                                 ],
                             ]
-                        ]
-                    ]
+                        ],
+                        [
+                            'identifier' => 'product_C',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['MIChel', 'sardou'],
+                                ],
+                                'tablet' => [
+                                    '<all_locales>' => ['des', 'FRAISES', 'JEAN', 'TOUrloupe'],
+                                ],
+                            ]
+                        ],
+                    ],
                 ],
                 AttributeTypes::TEXTAREA => [
                     'a_description' => [
@@ -61,22 +71,27 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
             ]
         );
 
-        $optionCodes = [
-            'a_multi_select' => [
-                'MiChel',
-                'sardou',
-                'jean',
-                'claude',
-                'van',
-                'damm',
-                'des',
-                'fraises'
-            ]
+        $optionCodes =  [
+            'a_multi_select' =>
+                [
+                    'micHEL',
+                    'sardou',
+                    'jean',
+                    'claude',
+                    'van',
+                    'damm',
+                    'des',
+                    'Fraises',
+                    'MIChel',
+                    'FRAISES',
+                    'JEAN',
+                    'TOUrloupe',
+                ],
         ];
 
         $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
             [
-                'a_multi_select' => ['michel', 'fraises']
+                'a_multi_select' => ['michel', 'fraises', 'tourlOUPE'],
             ]
         );
 
@@ -90,16 +105,26 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 'ecommerce' => [
-                                    'en_US' => ['michel'],
+                                    'en_US' => ['micHEL'],
                                 ],
                                 'tablet' => [
                                     'en_US' => [],
-                                    'fr_FR' => ['fraises'],
-
+                                    'fr_FR' => ['Fraises'],
+                                ],
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_C',
+                            'values' => [
+                                'ecommerce' => [
+                                    'en_US' => ['MIChel'],
+                                ],
+                                'tablet' => [
+                                    '<all_locales>' => ['FRAISES', 'TOUrloupe'],
                                 ],
                             ]
-                        ]
-                    ]
+                        ],
+                    ],
                 ],
             ]
         );

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
-use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentSimpleSelectValuesFilter;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
 use PhpSpec\ObjectBehavior;
 
@@ -47,7 +46,15 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                                     'en_US' => 'option_tata'
                                 ],
                             ]
+                        ],
+                        [
+                        'identifier' => 'product_C',
+                        'values' => [
+                            '<all_channels>' => [
+                                '<all_locales>' => 'OPTION_toto'
+                            ],
                         ]
+                    ],
                     ]
                 ],
                 AttributeTypes::TEXTAREA => [
@@ -69,6 +76,7 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
             'a_select' => [
                 'option_ToTo',
                 'option_tata',
+                'OPTION_toto',
             ]
         ];
 
@@ -88,9 +96,9 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                             'identifier' => 'product_A',
                             'values' => [
                                 '<all_channels>' => [
-                                    '<all_locales>' => 'option_toto'
+                                    '<all_locales>' => 'option_ToTo'
                                 ],
-                            ]
+                            ],
                         ],
                         [
                             'identifier' => 'product_B',
@@ -98,9 +106,17 @@ final class NonExistentSimpleSelectValuesFilterSpec extends ObjectBehavior
                                 'ecommerce' => [
                                     'en_US' => ''
                                 ],
-                            ]
-                        ]
-                    ]
+                            ],
+                        ],
+                        [
+                            'identifier' => 'product_C',
+                            'values' => [
+                                '<all_channels>' => [
+                                    '<all_locales>' => 'OPTION_toto'
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ]
         );
