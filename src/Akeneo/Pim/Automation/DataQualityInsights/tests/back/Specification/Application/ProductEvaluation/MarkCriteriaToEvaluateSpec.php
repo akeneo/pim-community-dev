@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Pr
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEntityIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductUuidsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedEntityIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuidCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -17,7 +17,7 @@ use PhpSpec\ObjectBehavior;
 final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
 {
     public function let(
-        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductUuidsQuery,
+        GetUpdatedEntityIdsQueryInterface                            $getUpdatedProductUuidsQuery,
         GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
         CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
@@ -29,7 +29,7 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
     }
 
     public function it_marks_criteria_to_evaluate_for_updates_since_a_given_date(
-        GetUpdatedProductUuidsQueryInterface                         $getUpdatedProductUuidsQuery,
+        GetUpdatedEntityIdsQueryInterface                            $getUpdatedProductUuidsQuery,
         GetEntityIdsImpactedByAttributeGroupActivationQueryInterface $getProductIdsImpactedByAttributeGroupActivationQuery,
         CreateCriteriaEvaluations                                    $createProductsCriteriaEvaluations
     ) {
