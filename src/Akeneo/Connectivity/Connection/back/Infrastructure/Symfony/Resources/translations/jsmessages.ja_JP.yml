@@ -40,6 +40,7 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps_delete: アプリの削除
   akeneo_connectivity_connection_connect_marketplace_test_app_create: テストアプリを作成
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: テストアプリを削除
+  akeneo_connectivity_connection_connect_connected_apps_open: アプリを開く
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -196,7 +197,6 @@ akeneo_connectivity.connection:
           previous: 前へ
           next: 次へ
           allow_and_next: 許可して次へ
-          allow_and_finish: 許可して終了
         progress:
           authentication: 認証
           authorizations: 承認
@@ -556,3 +556,6 @@ pim_permissions:
       edit: 編集
       view: 表示
     all: すべて
+pim_notification:
+  connected_app_authorizations:
+    button_label: アプリを開く

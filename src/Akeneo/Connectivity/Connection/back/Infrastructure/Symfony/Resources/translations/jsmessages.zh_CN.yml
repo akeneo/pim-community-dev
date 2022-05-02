@@ -40,6 +40,7 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps_delete: 删除应用
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 创建测试应用
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: 删除测试应用
+  akeneo_connectivity_connection_connect_connected_apps_open: 打开应用
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -196,7 +197,6 @@ akeneo_connectivity.connection:
           previous: 上一步
           next: 下一步
           allow_and_next: 允许并进入下一步
-          allow_and_finish: 允许并完成
         progress:
           authentication: 验证
           authorizations: 授权
@@ -556,3 +556,6 @@ pim_permissions:
       edit: 编辑
       view: 查看
     all: 所有
+pim_notification:
+  connected_app_authorizations:
+    button_label: 打开应用
