@@ -456,15 +456,10 @@ services:
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
 
-    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_per_channels:
+        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels
         arguments:
-            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels'
-
-    akeneo.referencentity.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
-        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
-        arguments:
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
