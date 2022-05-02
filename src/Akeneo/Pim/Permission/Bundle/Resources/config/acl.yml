@@ -3,27 +3,32 @@ pimee_enrich_locale_edit_permissions:
     type: action
     label: pimee_enrich.acl.locale.edit_permissions
     group_name: pim_enrich.acl_group.locale
+    feature: permission
 
 # Category
 pimee_enrich_category_edit_permissions:
     type: action
     label: pimee_enrich.acl.category.edit_permissions
     group_name: pim_enrich.acl_group.category
+    feature: permission
 
 # Attribute group
 pimee_enrich_attribute_group_edit_permissions:
     type: action
     label: pimee_enrich.acl.attribute_group.edit_permissions
     group_name: pim_enrich.acl_group.attribute_group
+    feature: permission
 
 # Export
 pimee_importexport_export_profile_edit_permissions:
     type: action
     label: pimee_importexport.acl.export_profile.edit_permissions
     group_name: pim_importexport.acl_group.export
+    feature: permission
 
 # Import
 pimee_importexport_import_profile_edit_permissions:
     type: action
     label: pimee_importexport.acl.import_profile.edit_permissions
     group_name: pim_importexport.acl_group.import
+    feature: permission
