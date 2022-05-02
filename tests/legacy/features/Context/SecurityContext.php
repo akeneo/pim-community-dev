@@ -446,7 +446,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('POST', $url, [], [
@@ -469,7 +469,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
             ]);
 
         $this->doCall('DELETE', $url);
@@ -493,7 +493,7 @@ class SecurityContext extends PimContext
         $url = $this
             ->getService('router')
             ->generate($routeName, [
-                'id' => $product->getId(),
+                'uuid' => $product->getUuid()->toString(),
                 'attributeId' => $attribute->getId(),
             ]);
 
