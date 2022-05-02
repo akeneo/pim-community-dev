@@ -107,18 +107,9 @@ jobs:
             - run:
                   name: Remove MySQL port translation (see BH-664)
                   command: yq delete --inplace docker-compose.yml services.mysql.ports
-            - run:
-                  name: Copy docker-compose.override.yml.dist
-                  command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
             -   run:
-                    name: Setup tests results folder and log folder
+                    name: Setup missing directories
                     command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
-            -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
-                    name: Change permissions on project dir
-                    command: sudo chmod -R 777 ../project
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -131,6 +122,12 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
                     name: Creating cache key for back dependencies
                     command: cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
             -   restore_cache:
@@ -140,12 +137,6 @@ jobs:
             -   run:
                     name: Pull docker image for php
                     command: docker-compose pull php
-            -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
-                    name: Change permissions on project dir
-                    command: sudo chmod -R 777 ../project
             -   run:
                     name: Install back dependencies
                     command: make vendor
@@ -164,6 +155,12 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
             -   run:
                     name: Creating cache key for front dependencies
                     command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
@@ -186,12 +183,6 @@ jobs:
             -   run:
                     name: Pull docker image for node
                     command: docker-compose pull node
-            -   run:
-                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project
-            -   run:
-                    name: Change permissions on project dir
-                    command: sudo chmod -R 777 ../project
             -   run:
                     name: Install front dependencies
                     command: make node_modules

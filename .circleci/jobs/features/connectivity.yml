@@ -72,6 +72,9 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project
             -   run:
@@ -99,6 +102,9 @@ jobs:
             -   attach_workspace:
                     at: ~/
             -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project
             -   run:
@@ -124,6 +130,9 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
             -   run:
                     name: Change owner on project dir in order to archive the project into the workspace
                     command: sudo chown -R 1000:1000 ../project
