@@ -193,7 +193,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
             )}
           </PageHeader.Actions>
           <PageHeader.State>{form.isDirty && <UnsavedChanges />}</PageHeader.State>
-          <PageHeader.Title>{label}</PageHeader.Title>
+          <PageHeader.Title noTextTransform={label === `[${asset.code}]`}>{label}</PageHeader.Title>
           <PageHeader.Content>
             <ContextSwitchers>
               <ChannelSwitcher
