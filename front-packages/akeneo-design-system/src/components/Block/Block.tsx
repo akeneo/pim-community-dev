@@ -35,7 +35,7 @@ type BlockProps = Override<
   } & (
     | {
         /**
-         * Whether or not the Preview is open.
+         * Whether or not the Block is open.
          */
         isOpen: boolean;
 
