@@ -228,8 +228,7 @@ class ProductCommentController
      * @param string $uuid the product uuid
      *
      * @return ProductInterface
-     *@throws NotFoundHttpException
-     *
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($uuid)
     {
@@ -237,7 +236,7 @@ class ProductCommentController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $uuid)
+                sprintf('Product with uuid %s could not be found.', (string) $uuid)
             );
         }
 
