@@ -13,15 +13,24 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
+use Webmozart\Assert\Assert;
+
 final class SplitOperation implements OperationInterface
 {
     public const TYPE = 'split';
 
+    /**
+     * @param non-empty-string $separator
+     */
     public function __construct(
         private string $separator,
     ) {
+        Assert::stringNotEmpty($this->separator);
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getSeparator(): string
     {
         return $this->separator;
