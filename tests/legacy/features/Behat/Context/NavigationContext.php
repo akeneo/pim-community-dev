@@ -410,8 +410,8 @@ class NavigationContext extends PimContext implements PageObjectAware
      * @param string $identifier
      * @param string $page
      *
-     * @Given /^I show the "([^"]*)" ([\w ]+)$/
-     * @Given /^I am on the "([^"]*)" ([\w ]+) show page$/
+     * @Given /^I show the "([^"]*)" ((?!product)[\w ]+)$/
+     * @Given /^I am on the "([^"]*)" ((?!product)[\w ]+) show page$/
      */
     public function iAmOnTheEntityShowPage($identifier, $page)
     {
@@ -421,6 +421,21 @@ class NavigationContext extends PimContext implements PageObjectAware
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" product$/
+     * @Given /^I am on the "([^"]*)" product show page$/
+     */
+    public function iAmOnTheProductShowPage($identifier)
+    {
+        $page = 'Product';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s show', $page), ['uuid' => $entity->getUuid()->toString()]);
     }
 
     /**

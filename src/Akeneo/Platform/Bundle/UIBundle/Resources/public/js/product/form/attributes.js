@@ -15,13 +15,13 @@ define(['routing', 'pim/form/common/attributes', 'jquery'], function (Routing, A
     generateRemoveAttributeUrl: function (attribute) {
       if (Number.isInteger(this.getFormData().meta.id)) {
         return Routing.generate(this.config.removeAttributeRoute, {
-          uuid: this.getFormData().meta.id,
+          id: this.getFormData().meta.id,
           attributeId: attribute.meta.id,
         });
       }
 
       return Routing.generate(this.config.removeAttributeRoute, {
-        id: this.getFormData().meta.id,
+        uuid: this.getFormData().meta.id,
         attributeId: attribute.meta.id,
       });
     },
