@@ -61,6 +61,7 @@ onboarder:
             error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
             unknown_error: An error occured while updating the supplier.
+            delete_label: Delete this supplier
 
 pim_title:
     onboarder_serenity_supplier_list: Suppliers
