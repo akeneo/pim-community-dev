@@ -195,7 +195,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamilyAndCodes
