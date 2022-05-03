@@ -14,7 +14,8 @@ type StorageFormProps = {
 const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: StorageFormProps) => {
   const translate = useTranslate();
 
-  const handleTypeChange = (type: string) => isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type));
+  const handleTypeChange = (type: string) =>
+    isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type));
 
   const StorageConfigurator = getStorageConfigurator(storage.type);
 
