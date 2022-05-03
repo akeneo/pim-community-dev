@@ -54,6 +54,7 @@ extensions:
                 content: pim_common.confirm_deletion
                 success: pim_enrich.entity.group_type.flash.delete.success
                 fail: pim_enrich.entity.group_type.flash.delete.fail
+                buttonText: pim_common.delete
             redirect: pim_enrich_grouptype_index
 
     pim-group-type-edit-form-save-buttons:
