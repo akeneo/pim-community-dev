@@ -23,11 +23,13 @@ class BooleanNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_a_true_value()
     {
-        $this->normalize(ScalarValue::value('my_boolean_attribute', true), 'en_US')->shouldReturn('1');
+        $this->normalize(ScalarValue::value('my_boolean_attribute', true), 'en_US')->shouldReturn('Yes');
+        $this->normalize(ScalarValue::value('my_boolean_attribute', true), 'fr_FR')->shouldReturn('Oui');
     }
 
     function it_normalizes_a_false_value()
     {
-        $this->normalize(ScalarValue::value('my_boolean_attribute', false), 'en_US')->shouldReturn('0');
+        $this->normalize(ScalarValue::value('my_boolean_attribute', false), 'en_US')->shouldReturn('No');
+        $this->normalize(ScalarValue::value('my_boolean_attribute', false), 'fr_FR')->shouldReturn('Non');
     }
 }

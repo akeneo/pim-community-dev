@@ -113,6 +113,8 @@ services:
 
     pim_enrich.normalizer.entity_with_family_variant.boolean.label.normalizer:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\BooleanNormalizer'
+        arguments:
+            - '@pim_enrich.connector.flat_translators.attribute_value.boolean'
         tags:
             - { name: pim_axis_value_label_normalizer }
 

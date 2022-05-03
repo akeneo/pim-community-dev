@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\BooleanTranslator;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Webmozart\Assert\Assert;
 
 /**
  * @author    Mathias METAYER <mathias.metayer@akeneo.com>
@@ -14,9 +16,15 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class BooleanNormalizer implements AxisValueLabelsNormalizer
 {
+    public function __construct(
+        private BooleanTranslator $translator
+    ) {
+    }
+
     public function normalize(ValueInterface $value, string $locale): string
     {
-        return true === $value->getData() ? '1' : '0';
+        $formattedValue = (true === $value->getData()) ? '1' : '0';
+        return $this->translator->translate('', [], [$formattedValue], $locale)[0];
     }
 
     public function supports(string $attributeType): bool
