@@ -144,6 +144,7 @@ class ProductNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         $normalizedProduct['meta'] = [
             'form' => $this->formProvider->getForm($product),
             'id' => $product->getUuid()->toString(),
+            'uuid' => $product->getUuid()->toString(),
             'created' => $created,
             'updated' => $updated,
             'model_type' => 'product',
