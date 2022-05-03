@@ -30,7 +30,7 @@ Use this playground to test the block component
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Block {...args} />;
+      return <Block {...args} title="My block"/>;
     }}
   </Story>
 </Canvas>
@@ -44,7 +44,7 @@ Use this playground to test the block component
     {args => {
       return (
         <>
-          <Block {...args}>Block without action</Block>
+          <Block {...args} title="Block without action" />
         </>
       );
     }}
@@ -61,13 +61,11 @@ Use this playground to test the block component
       return (
         <>
           <Block
-            {...args} isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
+            {...args} title="Block with actions" isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
             actions={<>
               <IconButton level="danger" ghost size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
             </>}
-          >
-            Block with actions
-          </Block>
+          />
         </>
       );
     }}
