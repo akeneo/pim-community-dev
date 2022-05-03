@@ -13,25 +13,34 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class DecimalFormatterOperation implements OperationInterface
-{
-    public const TYPE = 'decimal_formatter';
+use Webmozart\Assert\Assert;
 
+final class SplitOperation implements OperationInterface
+{
+    public const TYPE = 'split';
+
+    /**
+     * @param non-empty-string $separator
+     */
     public function __construct(
-        private string $decimalSeparator,
+        private string $separator,
     ) {
+        Assert::stringNotEmpty($this->separator);
     }
 
-    public function getDecimalSeparator(): string
+    /**
+     * @return non-empty-string
+     */
+    public function getSeparator(): string
     {
-        return $this->decimalSeparator;
+        return $this->separator;
     }
 
     public function normalize(): array
     {
         return [
             'type' => self::TYPE,
-            'decimal_separator' => $this->decimalSeparator,
+            'separator' => $this->separator,
         ];
     }
 }

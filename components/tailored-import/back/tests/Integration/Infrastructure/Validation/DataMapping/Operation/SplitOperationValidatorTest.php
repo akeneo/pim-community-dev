@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\DataMapping\Operation;
 
-use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
 
-final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
+final class SplitOperationValidatorTest extends AbstractValidationTest
 {
     /**
      * @dataProvider validOperation
      */
     public function test_it_does_not_build_violations_when_operation_is_valid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new CleanHTMLTagsOperation());
+        $violations = $this->getValidator()->validate($value, new SplitOperation());
 
         $this->assertNoViolation($violations);
     }
@@ -37,7 +37,7 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value
     ): void {
-        $violations = $this->getValidator()->validate($value, new CleanHTMLTagsOperation());
+        $violations = $this->getValidator()->validate($value, new SplitOperation());
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
@@ -45,9 +45,10 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
     public function validOperation(): array
     {
         return [
-            'a valid clean html tag operation' => [
+            'a valid split operation' => [
                 [
-                    'type' => 'clean_html_tags',
+                    'type' => 'split',
+                    'separator' => ';',
                 ],
             ],
         ];
@@ -56,11 +57,12 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
     public function invalidOperation(): array
     {
         return [
-            'an invalid clean html tags' => [
-                'This value should be equal to "clean_html_tags".',
+            'an invalid split' => [
+                'This value should be equal to "split".',
                 '[type]',
                 [
                     'type' => 'invalid_operation',
+                    'separator' => ';',
                 ],
             ],
         ];

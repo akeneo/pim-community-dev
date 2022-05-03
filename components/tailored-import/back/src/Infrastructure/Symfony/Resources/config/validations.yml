@@ -12,6 +12,7 @@ parameters:
 
   akeneo.tailored_import.validation.operation_constraints:
     clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
+    split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
@@ -53,6 +54,12 @@ services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\OperationsValidator:
     arguments:
       - '%akeneo.tailored_import.validation.operation_constraints%'
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperationValidator:
+    arguments:
+      - [ ',', ';', '|' ]
     tags:
       - { name: validator.constraint_validator }
 

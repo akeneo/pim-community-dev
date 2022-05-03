@@ -11,12 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
-final class NullValue implements ValueInterface
+final class SplitOperation extends OperationConstraint
 {
-    public function getValue(): mixed
-    {
-        return null;
-    }
 }

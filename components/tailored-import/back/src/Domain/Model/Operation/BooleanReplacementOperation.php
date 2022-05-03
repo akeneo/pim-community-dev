@@ -2,13 +2,18 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-class BooleanReplacementOperation implements OperationInterface
+final class BooleanReplacementOperation implements OperationInterface
 {
     public const TYPE = 'boolean_replacement';
 
@@ -26,7 +31,7 @@ class BooleanReplacementOperation implements OperationInterface
     {
         return [
             'type' => self::TYPE,
-            'patterns' => $this->mapping,
+            'mapping' => $this->mapping,
         ];
     }
 }

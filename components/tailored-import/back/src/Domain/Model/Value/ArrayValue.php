@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Value;
 
 use Webmozart\Assert\Assert;
 
-class ArrayValue implements ValueInterface
+final class ArrayValue implements ValueInterface
 {
     public function __construct(
         private array $value,
