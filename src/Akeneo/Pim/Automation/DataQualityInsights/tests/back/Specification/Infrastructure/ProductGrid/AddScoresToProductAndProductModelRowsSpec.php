@@ -139,7 +139,7 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
     {
         return Row::fromProductModel(
             sprintf('product_or_product_model_%s', $technicalId),
-            null,
+            'accessories',
             new \DateTime(),
             new \DateTime(),
             sprintf('Label of %s', $technicalId),
