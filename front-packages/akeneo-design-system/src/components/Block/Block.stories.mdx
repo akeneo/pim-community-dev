@@ -9,10 +9,12 @@ import {CloseIcon, ArrowDownIcon, MoreIcon} from '../../icons';
   title="Components/Block"
   component={Block}
   argTypes={{
+    title: {control: {type: 'text'}},
     children: {control: {type: 'text'}},
   }}
   args={{
-    children: 'I am a block',
+    title: 'I am a block',
+    children: 'I am the block content',
   }}
 />
 
@@ -30,7 +32,7 @@ Use this playground to test the block component
 <Canvas>
   <Story name="Standard">
     {args => {
-      return <Block {...args} title="My block"/>;
+      return <Block {...args} />;
     }}
   </Story>
 </Canvas>

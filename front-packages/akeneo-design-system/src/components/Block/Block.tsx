@@ -34,7 +34,7 @@ type BlockProps = Override<
     ariaDescribedBy?: string;
 
     /**
-     * Children of the button.
+     * Children of the block.
      */
     children?: ReactNode;
   } & (
