@@ -1,3 +1,5 @@
+type JobType = 'import' | 'export';
+
 type LocalStorage = {
   type: 'local';
   file_path: string;
@@ -26,17 +28,17 @@ const isValidStorageType = (storageType: string): storageType is StorageType => 
   return STORAGE_TYPES.includes(storageType);
 };
 
-const getDefaultStorage = (storageType: StorageType): Storage => {
+const getDefaultStorage = (jobType: JobType, storageType: StorageType): Storage => {
   switch (storageType) {
     case 'local':
       return {
         type: 'local',
-        file_path: '',
+        file_path: `${jobType}_%job_label%_%datetime%.xlsx`,
       };
     case 'sftp':
       return {
         type: 'sftp',
-        file_path: '',
+        file_path: `${jobType}_%job_label%_%datetime%.xlsx`,
         host: '',
         port: 22,
         username: '',
@@ -51,6 +53,6 @@ const getDefaultStorage = (storageType: StorageType): Storage => {
   }
 };
 
-export type {Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
+export type {JobType, Storage, StorageType, LocalStorage, SftpStorage, NoneStorage};
 
 export {getDefaultStorage, isValidStorageType, STORAGE_TYPES};

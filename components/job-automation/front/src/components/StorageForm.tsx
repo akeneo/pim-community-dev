@@ -1,19 +1,20 @@
 import React from 'react';
 import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
 import {Section, useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES} from './model';
+import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES, JobType} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
+  jobType: JobType;
   storage: Storage;
   validationErrors: ValidationError[];
   onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({storage, validationErrors, onStorageChange}: StorageFormProps) => {
+const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: StorageFormProps) => {
   const translate = useTranslate();
 
-  const handleTypeChange = (type: string) => isValidStorageType(type) && onStorageChange(getDefaultStorage(type));
+  const handleTypeChange = (type: string) => isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type));
 
   const StorageConfigurator = getStorageConfigurator(storage.type);
 

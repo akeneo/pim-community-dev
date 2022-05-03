@@ -6,6 +6,7 @@ extensions:
         targetZone: properties
         config:
             tabCode: pim-job-instance-properties
+            jobType: import
         feature: job_automation_remote_storage
 
     pim-job-instance-xlsx-product-export-edit-properties-storage:
@@ -15,6 +16,7 @@ extensions:
         targetZone: properties
         config:
             tabCode: pim-job-instance-properties
+            jobType: export
         feature: job_automation_remote_storage
 
     pim-job-instance-xlsx-tailored-product-import-edit-properties-storage:
@@ -24,6 +26,7 @@ extensions:
         targetZone: properties
         config:
             tabCode: pim-job-instance-properties
+            jobType: import
         feature: job_automation_remote_storage
 
     pim-job-instance-xlsx-tailored-product-export-edit-properties-storage:
@@ -33,4 +36,5 @@ extensions:
         targetZone: properties
         config:
             tabCode: pim-job-instance-properties
+            jobType: export
         feature: job_automation_remote_storage
