@@ -40,7 +40,7 @@ final class SplitOperationValidator extends ConstraintValidator
             ->validate($value, new Collection([
                 'fields' => [
                     'type' => new EqualTo(['value' => SplitOperation::TYPE]),
-                    'separator' => new Choice($this->availableSeparators)
+                    'separator' => new Choice($this->availableSeparators),
                 ],
             ]));
     }
