@@ -84,14 +84,3 @@ test('Block supports ...rest props', () => {
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
-
-// test('it renders children with icon', () => {
-//   render(
-//     <Block title="My block">
-//       <PlusIcon data-testid="children-icon" /> <Icon></Icon>
-//     </Block>
-//   );
-
-//   expect(screen.getByText('My block')).toBeInTheDocument();
-//   expect(screen.getByTestId('children-icon')).toBeInTheDocument();
-// });
