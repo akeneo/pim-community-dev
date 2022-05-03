@@ -1,13 +1,18 @@
-import React, {isValidElement, ReactNode, Ref, useEffect, useRef, useState} from 'react';
+import React, {ReactNode, Ref, useEffect, useRef, useState} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {ArrowDownIcon, ArrowUpIcon, IconProps} from '../../icons';
+import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
 import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
   {
+    /**
+     * Title of the block.
+     */
+    title: string;
+
     /**
      * Add an action that will be displayed on the right of the block.
      */
@@ -116,7 +121,7 @@ const Container = styled.div<AkeneoThemedProps>`
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, isOpen, onCollapse, children, ...rest}: BlockProps,
+    {title, actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, isOpen, onCollapse, children, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const [contentHeight, setContentHeight] = useState<number>(0);
@@ -154,13 +159,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
         {...rest}
       >
         <BlockTitle>
-          {React.Children.map(children, child => {
-            if (isValidElement<IconProps>(child)) {
-              return React.cloneElement(child, {size: child.props.size ?? 18});
-            }
-
-            return child;
-          })}
+          {title}
 
           <ActionsContainer>
             {actions}
@@ -176,7 +175,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             )}
           </ActionsContainer>
         </BlockTitle>
-        {isCollapsable ? (
+        {!isCollapsable ? null : (
           <BlockContent
             ref={contentRef}
             isCollapsable={isCollapsable}
@@ -185,9 +184,9 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             shouldAnimate={shouldAnimate}
             aria-hidden={!isOpen}
           >
-            <div>Example content</div>
+            {children}
           </BlockContent>
-        ) : null}
+        )}
       </Container>
     );
   }
