@@ -21,7 +21,7 @@ class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
 {
     public function it_supports_clean_html_tags_operation(): void
     {
-        $this->supports(new CleanHTMLTagsOperation(), '<h1>test</h1>')->shouldReturn(true);
+        $this->supports(new CleanHTMLTagsOperation())->shouldReturn(true);
     }
 
     public function it_applies_clean_html_tags_operation(): void

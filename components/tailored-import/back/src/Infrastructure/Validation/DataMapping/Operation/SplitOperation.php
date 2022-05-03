@@ -11,14 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
+namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
-final class CleanHTMLTagsOperation implements OperationInterface
+final class SplitOperation extends OperationConstraint
 {
-    public const TYPE = 'clean_html_tags';
-
-    public function normalize(): array
-    {
-        return ['type' => self::TYPE];
-    }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-class DecimalFormatterOperation implements OperationInterface
+final class DecimalFormatterOperation implements OperationInterface
 {
     public const TYPE = 'decimal_formatter';
 

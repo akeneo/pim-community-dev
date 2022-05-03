@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 

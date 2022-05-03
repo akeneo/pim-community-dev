@@ -56,6 +56,12 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperationValidator:
+    arguments:
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
     arguments:
       - [',', '.', '٫‎']

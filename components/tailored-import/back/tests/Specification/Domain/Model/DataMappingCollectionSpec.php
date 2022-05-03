@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
@@ -9,10 +18,6 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PhpSpec\ObjectBehavior;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class DataMappingCollectionSpec extends ObjectBehavior
 {
     public function it_can_be_initialized()
