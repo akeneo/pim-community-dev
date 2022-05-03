@@ -1,5 +1,7 @@
 CATALOGS_PATH ?= components/catalogs
 
+# TESTS BACK
+
 .PHONY: catalogs-lint-back
 catalogs-lint-back:
 ifneq ($(CI),true)
@@ -35,6 +37,8 @@ catalogs-integration-back:
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
 
+# TESTS FRONT
+
 .PHONY: catalogs-lint-front
 catalogs-lint-front:
 	cat <<- EOF | $(NODE_RUN) sh
@@ -48,4 +52,13 @@ catalogs-unit-front:
 	cat <<- EOF | $(NODE_RUN) sh
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --clearCache
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --ci --coverage
+	@<<- EOF
+
+# UTILS
+
+.PHONY: catalogs-lint-front_fix
+catalogs-lint-front_fix:
+	cat <<- EOF | $(NODE_RUN) sh
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint --fix
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --write
 	@<<- EOF

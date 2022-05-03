@@ -7,11 +7,11 @@ import {Dummy} from './Dummy';
 jest.unmock('./Dummy');
 
 test('it renders section without error', () => {
-  render(
-    <ThemeProvider theme={pimTheme}>
-      <Dummy label="foo"/>
-    </ThemeProvider>
-  );
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <Dummy label='foo' />
+        </ThemeProvider>
+    );
 
-  expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('foo')).toBeInTheDocument();
 });
