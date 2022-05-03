@@ -18,7 +18,10 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
+use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 
 class SqlFindAssetLabelsByIdentifiersTest extends SqlIntegrationTestCase
 {
@@ -34,7 +37,18 @@ class SqlFindAssetLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_assetmanager.infrastructure.persistence.query.find_asset_labels_by_identifiers');
+        $mockedFindLocalesQuery = $this->createMock(FindLocales::class);
+        $mockedFindLocalesQuery->method('findAllActivated')->willReturn([
+            new Locale('fr_FR', true),
+            new Locale('en_US', true),
+            new Locale('de_DE', true)
+        ]);
+
+        $this->query = new SqlFindAssetLabelsByIdentifiers(
+            $this->get('database_connection'),
+            $mockedFindLocalesQuery
+        );
+
         $this->resetDB();
         $this->loadAssetFamilyAndAssets();
     }
