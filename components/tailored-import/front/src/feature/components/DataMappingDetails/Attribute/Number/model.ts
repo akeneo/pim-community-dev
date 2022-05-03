@@ -11,6 +11,7 @@ type NumberTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
+  attribute_type: string;
   source_configuration: NumberSourceConfiguration;
   action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
@@ -23,6 +24,7 @@ const getDefaultNumberTarget = (
 ): NumberTarget => ({
   code: attribute.code,
   type: 'attribute',
+  attribute_type: attribute.type,
   locale,
   channel,
   source_configuration: getDefaultNumberSourceConfiguration(),
@@ -35,6 +37,7 @@ const isNumberSourceConfiguration = (sourceConfiguration: any): sourceConfigurat
 
 const isNumberTarget = (target: Target): target is NumberTarget =>
   'attribute' === target.type &&
+  'pim_catalog_number' === target.attribute_type &&
   null !== target.source_configuration &&
   isNumberSourceConfiguration(target.source_configuration);
 

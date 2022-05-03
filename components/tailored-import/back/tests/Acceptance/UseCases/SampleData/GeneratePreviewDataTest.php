@@ -26,6 +26,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
         $query->target = [
             'code' => 'name',
             'type' => 'attribute',
+            'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
         $query->operations = [['type' => 'clean_html_tags']];
@@ -41,6 +42,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
         $query->target = [
             'code' => 'name',
             'type' => 'attribute',
+            'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
         $query->operations = [];
@@ -56,6 +58,7 @@ class GeneratePreviewDataTest extends AcceptanceTestCase
         $query->target = [
             'code' => 'name',
             'type' => 'attribute',
+            'attribute_type' => 'pim_catalog_text',
             'source_configuration' => null,
         ];
         $query->operations = [['type' => 'clean_html_tags']];

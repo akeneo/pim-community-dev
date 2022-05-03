@@ -17,6 +17,8 @@ interface TargetInterface
 
     public function getCode(): string;
 
+    public function getType(): string;
+
     public function getActionIfNotEmpty(): string;
 
     public function getActionIfEmpty(): string;

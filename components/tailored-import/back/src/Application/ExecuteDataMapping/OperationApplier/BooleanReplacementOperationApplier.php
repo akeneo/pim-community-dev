@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
@@ -25,11 +26,11 @@ final class BooleanReplacementOperationApplier implements OperationApplierInterf
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
         if (!$operation instanceof BooleanReplacementOperation) {
-            throw new \InvalidArgumentException(sprintf('Expecting %s, "%s" given', BooleanReplacementOperation::class, $operation::class));
+            throw new UnexpectedValueException($operation, BooleanReplacementOperation::class, self::class);
         }
 
         if (!$value instanceof StringValue) {
-            throw new \InvalidArgumentException(sprintf('Boolean replacement Operation only supports String value, "%s" given', $value::class));
+            throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
         if (!array_key_exists($value->getValue(), $operation->getMapping())) {

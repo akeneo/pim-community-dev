@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToArrayOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
@@ -23,7 +24,7 @@ final class ConvertToArrayOperationApplier implements OperationApplierInterface
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
         if (!$operation instanceof ConvertToArrayOperation) {
-            throw new \InvalidArgumentException(sprintf('Expecting %s, %s given', ConvertToArrayOperation::class, $operation::class));
+            throw new UnexpectedValueException($operation, ConvertToArrayOperation::class, self::class);
         }
 
         if ($value instanceof ArrayValue) {

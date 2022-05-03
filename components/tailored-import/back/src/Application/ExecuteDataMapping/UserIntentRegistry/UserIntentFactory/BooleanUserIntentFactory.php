@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -33,7 +34,7 @@ final class BooleanUserIntentFactory implements UserIntentFactoryInterface
         }
 
         if (!$value instanceof BooleanValue) {
-            throw new \InvalidArgumentException(sprintf('BooleanUserIntentFactory only supports Boolean value, %s given', $value::class));
+            throw new UnexpectedValueException($value, BooleanValue::class, self::class);
         }
 
         return new SetBooleanValue(
@@ -46,6 +47,6 @@ final class BooleanUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_boolean' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_boolean' === $target->getAttributeType();
     }
 }

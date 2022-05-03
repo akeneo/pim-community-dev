@@ -53,6 +53,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => null,
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_identifier',
                     'source_configuration' => [],
                     'action_if_not_empty' => null,
                     'action_if_empty' => null
@@ -64,6 +65,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => null,
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_image',
                     'source_configuration' => [],
                     'action_if_not_empty' => null,
                     'action_if_empty' => null
@@ -76,6 +78,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => null,
                     'locale' => 'en_US',
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_image',
                     'source_configuration' => [],
                     'action_if_not_empty' => null,
                     'action_if_empty' => null
@@ -87,6 +90,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => 'en_US',
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_textarea',
                     'source_configuration' => [],
                     'action_if_not_empty' => null,
                     'action_if_empty' => null
@@ -116,6 +120,7 @@ class AttributeTargetValidatorTest extends AbstractValidationTest
                     'channel' => 'ecommerce',
                     'locale' => null,
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_textarea',
                 ],
             ],
         ];

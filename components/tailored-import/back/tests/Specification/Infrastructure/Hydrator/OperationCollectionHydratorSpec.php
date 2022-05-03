@@ -21,15 +21,17 @@ use PhpSpec\ObjectBehavior;
 
 class OperationCollectionHydratorSpec extends ObjectBehavior
 {
-    public function it_hydrates_an_operation_collection(
-        AttributeTarget $target,
-    ): void {
+    public function it_hydrates_an_operation_collection(): void
+    {
         $expected = OperationCollection::create([
             new CleanHTMLTagsOperation(),
         ]);
 
-        $this->hydrateAttribute(
-            ['type' => 'pim_catalog_text'],
+        $this->hydrate(
+            [
+                'type' => 'attribute',
+                'attribute_type' => 'pim_catalog_text',
+            ],
             [
                 [
                     'type' => CleanHTMLTagsOperation::TYPE,
@@ -39,13 +41,15 @@ class OperationCollectionHydratorSpec extends ObjectBehavior
         )->shouldBeLike($expected);
     }
 
-    public function it_throws_when_operation_is_not_supported(
-        AttributeTarget $target,
-    ): void {
+    public function it_throws_when_operation_is_not_supported(): void
+    {
         $this->shouldThrow(\InvalidArgumentException::class)->during(
-            'hydrateAttribute',
+            'hydrate',
             [
-                ['type' => 'pim_catalog_text'],
+                [
+                    'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_text',
+                ],
                 [
                     ['type' => 'unknown_operation'],
                 ],

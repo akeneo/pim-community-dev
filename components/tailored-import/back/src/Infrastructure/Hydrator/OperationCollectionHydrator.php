@@ -17,7 +17,8 @@ use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorIn
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToArrayOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\DecimalFormatterOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
@@ -29,19 +30,19 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         return match ($normalizedTarget['type']) {
             AttributeTarget::TYPE => $this->hydrateAttribute($normalizedTarget, $normalizedOperations),
             PropertyTarget::TYPE => $this->hydrateProperty($normalizedTarget['code'], $normalizedOperations),
-            default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" target type', $normalizedTarget['type'])),
+            default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Target type', $normalizedTarget['type'])),
         };
     }
 
-    public function hydrateAttribute(array $normalizedTarget, array $normalizedOperations): OperationCollection
+    private function hydrateAttribute(array $normalizedTarget, array $normalizedOperations): OperationCollection
     {
-        $requiredOperations = $this->getRequiredOperations($normalizedTarget);
+        $requiredOperations = $this->getAttributeRequiredOperations($normalizedTarget);
         $configuredOperations = $this->getConfiguredOperations($normalizedOperations);
 
         return OperationCollection::create(array_merge($requiredOperations, $configuredOperations));
     }
 
-    public function hydrateProperty(string $propertyCode, array $normalizedOperations): OperationCollection
+    private function hydrateProperty(string $propertyCode, array $normalizedOperations): OperationCollection
     {
         // TODO
         return OperationCollection::create([]);
@@ -58,9 +59,9 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         );
     }
 
-    private function getRequiredOperations(array $normalizedTarget): array
+    private function getAttributeRequiredOperations(array $normalizedTarget): array
     {
-        return match ($normalizedTarget['type']) {
+        return match ($normalizedTarget['attribute_type']) {
             'pim_catalog_boolean' => $this->getBooleanRequiredOperations(),
             'pim_catalog_metric' => $this->getMeasurementRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_number' => $this->getNumberRequiredOperations($normalizedTarget['source_configuration']),
@@ -89,14 +90,17 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     private function getMeasurementRequiredOperations(array $sourceConfiguration): array
     {
         return [
-            new DecimalFormatterOperation($sourceConfiguration['decimal_separator']),
+            new ConvertToMeasurementOperation(
+                $sourceConfiguration['decimal_separator'],
+                $sourceConfiguration['unit'],
+            ),
         ];
     }
 
     private function getNumberRequiredOperations(array $sourceConfiguration): array
     {
         return [
-            new DecimalFormatterOperation($sourceConfiguration['decimal_separator']),
+            new ConvertToNumberOperation($sourceConfiguration['decimal_separator']),
         ];
     }
 }

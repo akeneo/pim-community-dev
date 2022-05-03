@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -33,7 +34,7 @@ final class TextUserIntentFactory implements UserIntentFactoryInterface
         }
 
         if (!$value instanceof StringValue) {
-            throw new \InvalidArgumentException('TextUserIntentFactory only supports String value');
+            throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
         return new SetTextValue(
@@ -46,6 +47,6 @@ final class TextUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_text' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_text' === $target->getAttributeType();
     }
 }

@@ -27,18 +27,13 @@ class DataMappingCollectionHydrator
     public function hydrate(array $normalizedDataMappingCollection, array $indexedAttributes): DataMappingCollection
     {
         $dataMappingCollection = array_map(
-            function (array $dataMapping) use ($indexedAttributes) {
-                $target = $this->targetHydrator->hydrate($dataMapping['target'], $indexedAttributes);
-                $operationCollection = $this->operationCollectionHydrator->hydrate($target->normalize(), $dataMapping['operations']);
-
-                return DataMapping::create(
-                    $dataMapping['uuid'],
-                    $target,
-                    $dataMapping['sources'],
-                    $operationCollection,
-                    $dataMapping['sample_data'],
-                );
-            },
+            fn (array $dataMapping) => DataMapping::create(
+                $dataMapping['uuid'],
+                $this->targetHydrator->hydrate($dataMapping['target'], $indexedAttributes),
+                $dataMapping['sources'],
+                $this->operationCollectionHydrator->hydrate($dataMapping['target'], $dataMapping['operations']),
+                $dataMapping['sample_data'],
+            ),
             $normalizedDataMappingCollection,
         );
 

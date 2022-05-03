@@ -50,6 +50,7 @@ test('it creates a default data mapping', () => {
       source_configuration: null,
       locale: null,
       type: 'attribute',
+      attribute_type: 'pim_catalog_identifier',
     },
   });
 });
@@ -80,6 +81,7 @@ test('it creates a default data mapping with sample data', () => {
       source_configuration: null,
       locale: null,
       type: 'attribute',
+      attribute_type: 'pim_catalog_identifier',
     },
   });
 });
@@ -98,6 +100,7 @@ test('it creates an attribute data mapping', () => {
       source_configuration: null,
       locale: null,
       type: 'attribute',
+      attribute_type: 'pim_catalog_text',
     },
   });
 });
@@ -126,6 +129,7 @@ test('it creates a localizable & locale-specific attribute data mapping', () => 
       source_configuration: null,
       locale: 'fr_FR',
       type: 'attribute',
+      attribute_type: attribute.type,
     },
   });
 });
@@ -158,24 +162,14 @@ test('it adds a source to data mapping', () => {
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',
+      attribute_type: 'pim_catalog_text',
       source_configuration: null,
     },
   };
 
   expect(addSourceToDataMapping(dataMapping, {uuid: 'columnUuid', index: 0, label: 'identifier'})).toEqual({
-    uuid: mockUuid,
-    operations: [],
-    sample_data: [],
+    ...dataMapping,
     sources: ['columnUuid'],
-    target: {
-      action_if_not_empty: 'set',
-      channel: null,
-      code: 'description',
-      action_if_empty: 'skip',
-      locale: null,
-      type: 'attribute',
-      source_configuration: null,
-    },
   });
 });
 
@@ -190,6 +184,7 @@ test('it updates a data mapping', () => {
         action_if_not_empty: 'set',
         channel: null,
         code: 'sku',
+        attribute_type: 'pim_catalog_identifier',
         action_if_empty: 'skip',
         locale: null,
         type: 'attribute',
@@ -205,6 +200,7 @@ test('it updates a data mapping', () => {
         action_if_not_empty: 'set',
         channel: null,
         code: 'description',
+        attribute_type: 'pim_catalog_text',
         action_if_empty: 'clear',
         locale: null,
         type: 'attribute',
@@ -222,6 +218,7 @@ test('it updates a data mapping', () => {
       action_if_not_empty: 'set',
       channel: null,
       code: 'description',
+      attribute_type: 'pim_catalog_text',
       action_if_empty: 'skip',
       locale: null,
       type: 'attribute',

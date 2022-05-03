@@ -5,6 +5,7 @@ test('it returns true if it is a boolean target', () => {
   const booleanTarget: BooleanTarget = {
     code: 'response_time',
     type: 'attribute',
+    attribute_type: 'pim_catalog_boolean',
     locale: null,
     channel: null,
     source_configuration: null,
@@ -19,6 +20,7 @@ test('it returns false if it is not a boolean target', () => {
   const numberTarget: NumberTarget = {
     code: 'name',
     type: 'attribute',
+    attribute_type: 'pim_catalog_number',
     locale: null,
     channel: null,
     source_configuration: {decimal_separator: ','},

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\DecimalFormatterOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use PhpSpec\ObjectBehavior;
 
-class DecimalFormatterOperationSpec extends ObjectBehavior
+class ConvertToNumberOperationSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -26,7 +26,7 @@ class DecimalFormatterOperationSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(DecimalFormatterOperation::class);
+        $this->shouldHaveType(ConvertToNumberOperation::class);
     }
 
     public function it_implements_operation_interface()
@@ -42,7 +42,7 @@ class DecimalFormatterOperationSpec extends ObjectBehavior
     public function it_normalize_operation()
     {
         $this->normalize()->shouldReturn([
-            'type' => 'decimal_formatter',
+            'type' => 'convert_to_number',
             'decimal_separator' => ',',
         ]);
     }

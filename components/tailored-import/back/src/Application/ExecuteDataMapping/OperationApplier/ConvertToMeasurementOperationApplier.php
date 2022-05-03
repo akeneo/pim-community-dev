@@ -13,31 +13,35 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\DecimalFormatterOperation;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-final class DecimalFormatterOperationApplier implements OperationApplierInterface
+class ConvertToMeasurementOperationApplier implements OperationApplierInterface
 {
     private const DEFAULT_DECIMAL_SEPARATOR = '.';
 
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
-        if (!$operation instanceof DecimalFormatterOperation) {
-            throw new \InvalidArgumentException(sprintf('Expecting %s, %s given', DecimalFormatterOperation::class, $operation::class));
+        if (!$operation instanceof ConvertToMeasurementOperation) {
+            throw new UnexpectedValueException($operation, ConvertToMeasurementOperation::class, self::class);
         }
 
         if (!$value instanceof StringValue) {
-            throw new \InvalidArgumentException(sprintf('Decimal Formatter Operation only supports String value, "%s" given', $value::class));
+            throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
-        return new NumberValue(str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()));
+        return new MeasurementValue(
+            str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
+            $operation->getUnit(),
+        );
     }
 
     public function supports(OperationInterface $operation): bool
     {
-        return $operation instanceof DecimalFormatterOperation;
+        return $operation instanceof ConvertToMeasurementOperation;
     }
 }

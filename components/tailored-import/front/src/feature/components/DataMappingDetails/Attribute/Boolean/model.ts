@@ -6,6 +6,7 @@ type BooleanTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
+  attribute_type: string;
   source_configuration: null;
   action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
@@ -18,6 +19,7 @@ const getDefaultBooleanTarget = (
 ): BooleanTarget => ({
   code: attribute.code,
   type: 'attribute',
+  attribute_type: attribute.type,
   locale,
   channel,
   source_configuration: null,
@@ -26,7 +28,9 @@ const getDefaultBooleanTarget = (
 });
 
 const isBooleanTarget = (target: Target): target is BooleanTarget =>
-  'attribute' === target.type && null === target.source_configuration;
+  'attribute' === target.type &&
+  'pim_catalog_boolean' === target.attribute_type &&
+  null === target.source_configuration;
 
 export type {BooleanTarget};
 export {getDefaultBooleanTarget, isBooleanTarget};

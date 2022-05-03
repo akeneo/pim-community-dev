@@ -35,7 +35,7 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
     public function it_throws_an_exception_when_target_type_is_invalid(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_text');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_text');
         $value = new StringValue('d');
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_textarea"'))
@@ -45,7 +45,7 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
     public function it_create_a_set_textarea_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_textarea');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getChannel()->willReturn(null);
         $attributeTarget->getLocale()->willReturn(null);
@@ -63,7 +63,7 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
     public function it_supports_target_attribute_type_catalog_textarea(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_textarea');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
 
         $this->supports($attributeTarget)->shouldReturn(true);
     }
@@ -71,7 +71,7 @@ class TextareaUserIntentFactorySpec extends ObjectBehavior
     public function it_does_not_support_others_target_attribute_type(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
 
         $this->supports($attributeTarget)->shouldReturn(false);
     }

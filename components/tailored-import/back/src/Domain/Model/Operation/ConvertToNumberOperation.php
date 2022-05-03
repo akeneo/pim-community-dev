@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class DecimalFormatterOperation implements OperationInterface
+final class ConvertToNumberOperation implements OperationInterface
 {
-    public const TYPE = 'decimal_formatter';
+    public const TYPE = 'convert_to_number';
 
     public function __construct(
         private string $decimalSeparator,

@@ -40,6 +40,7 @@ final class AttributeTargetValidator extends ConstraintValidator
                     'locale' => new Type('string'),
                     'channel' => new Type('string'),
                     'type' => new EqualTo('attribute'),
+                    'attribute_type' => new Type('string'),
                     'source_configuration' => new Type('array'),
                     'action_if_not_empty' => new Type('string'),
                     'action_if_empty' => new Type('string'),

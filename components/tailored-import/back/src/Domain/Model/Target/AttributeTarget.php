@@ -16,7 +16,7 @@ class AttributeTarget implements TargetInterface
 
     private function __construct(
         private string $code,
-        private string $type,
+        private string $attributeType,
         private ?string $channel,
         private ?string $locale,
         private string $actionIfNotEmpty,
@@ -24,7 +24,7 @@ class AttributeTarget implements TargetInterface
         private ?array $sourceConfiguration,
     ) {
         Assert::stringNotEmpty($this->code);
-        Assert::stringNotEmpty($this->type);
+        Assert::stringNotEmpty($this->attributeType);
         Assert::notSame($this->channel, '');
         Assert::notSame($this->locale, '');
         Assert::inArray($this->actionIfNotEmpty, [TargetInterface::ACTION_ADD, TargetInterface::ACTION_SET]);
@@ -33,14 +33,14 @@ class AttributeTarget implements TargetInterface
 
     public static function create(
         string $code,
-        string $type,
+        string $attributeType,
         ?string $channel,
         ?string $locale,
         string $actionIfNotEmpty,
         string $actionIfEmpty,
         ?array $sourceConfiguration,
     ): self {
-        return new self($code, $type, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty, $sourceConfiguration);
+        return new self($code, $attributeType, $channel, $locale, $actionIfNotEmpty, $actionIfEmpty, $sourceConfiguration);
     }
 
     public function getCode(): string
@@ -50,7 +50,12 @@ class AttributeTarget implements TargetInterface
 
     public function getType(): string
     {
-        return $this->type;
+        return self::TYPE;
+    }
+
+    public function getAttributeType(): string
+    {
+        return $this->attributeType;
     }
 
     public function getChannel(): ?string
@@ -82,7 +87,8 @@ class AttributeTarget implements TargetInterface
     {
         return [
             'code' => $this->code,
-            'type' => $this->type,
+            'type' => self::TYPE,
+            'attribute_type' => $this->attributeType,
             'channel' => $this->channel,
             'locale' => $this->locale,
             'action_if_not_empty' => $this->actionIfNotEmpty,

@@ -64,6 +64,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
                             'channel' => null,
                             'locale' => null,
                             'action_if_not_empty' => 'set',
@@ -108,6 +109,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -130,6 +132,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
                             'channel' => null,
                             'locale' => null,
                             'action_if_not_empty' => 'set',
@@ -191,6 +194,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
                             'channel' => null,
                             'locale' => null,
                             'action_if_not_empty' => 'set',
@@ -208,6 +212,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'sku',
                             'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_identifier',
                             'channel' => null,
                             'locale' => null,
                             'action_if_not_empty' => 'set',
@@ -234,6 +239,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                         'target' => [
                             'code' => 'a_localized_and_scopable_text_area',
                             'type' => 'attribute',
+                            'attribute_type' => 'pim_catalog_textarea',
                             'channel' => 'ecommerce',
                             'locale' => 'en_US',
                             'action_if_not_empty' => 'set',
@@ -273,7 +279,7 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc63',
             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
-             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
+            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc03',
             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc66',
             '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc65',
         ];

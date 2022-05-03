@@ -37,6 +37,11 @@ final class PropertyTarget implements TargetInterface
         return $this->code;
     }
 
+    public function getType(): string
+    {
+        return self::TYPE;
+    }
+
     public function getActionIfNotEmpty(): string
     {
         return $this->actionIfNotEmpty;
@@ -51,6 +56,7 @@ final class PropertyTarget implements TargetInterface
     {
         return [
             'code' => $this->code,
+            'type' => self::TYPE,
             'action_if_not_empty' => $this->actionIfNotEmpty,
             'action_if_empty' => $this->actionIfEmpty,
         ];

@@ -31,7 +31,7 @@ class AttributeTargetSpec extends ObjectBehavior
         ]);
 
         $this->getCode()->shouldReturn('test_code');
-        $this->getType()->shouldReturn('pim_catalog_text');
+        $this->getAttributeType()->shouldReturn('pim_catalog_text');
         $this->getChannel()->shouldReturn('web');
         $this->getLocale()->shouldReturn('fr_FR');
         $this->getActionIfNotEmpty()->shouldReturn('set');

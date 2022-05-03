@@ -62,7 +62,7 @@ abstract class AttributeTestCase extends KernelTestCase
                 $dataMapping->getUuid(),
                 $dataMapping->getTarget(),
                 $dataMapping->getSources(),
-                $operationCollectionHydrator->hydrateAttribute(
+                $operationCollectionHydrator->hydrate(
                     $dataMapping->getTarget()->normalize(),
                     $dataMapping->getOperations()->normalize(),
                 ),

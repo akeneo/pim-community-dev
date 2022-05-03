@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
@@ -33,7 +34,7 @@ final class NumberUserIntentFactory implements UserIntentFactoryInterface
         }
 
         if (!$value instanceof NumberValue) {
-            throw new \InvalidArgumentException(sprintf('NumberUserIntentFactory only supports Number value, %s given', $value::class));
+            throw new UnexpectedValueException($value, NumberValue::class, self::class);
         }
 
         return new SetNumberValue(
@@ -46,6 +47,6 @@ final class NumberUserIntentFactory implements UserIntentFactoryInterface
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_number' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_number' === $target->getAttributeType();
     }
 }

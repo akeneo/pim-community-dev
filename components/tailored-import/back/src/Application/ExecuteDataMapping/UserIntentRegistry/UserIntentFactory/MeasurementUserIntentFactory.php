@@ -15,10 +15,11 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
-use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\MeasurementValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
@@ -32,8 +33,8 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_metric"');
         }
 
-        if (!$value instanceof NumberValue) {
-            throw new \InvalidArgumentException(sprintf('MeasurementUserIntentFactory only supports Number value, %s given', $value::class));
+        if (!$value instanceof MeasurementValue) {
+            throw new UnexpectedValueException($value, MeasurementValue::class, self::class);
         }
 
         return new SetMeasurementValue(
@@ -41,12 +42,12 @@ final class MeasurementUserIntentFactory implements UserIntentFactoryInterface
             $target->getChannel(),
             $target->getLocale(),
             $value->getValue(),
-            $target->getSourceConfiguration()['unit'],
+            $value->getUnit(),
         );
     }
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_metric' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_metric' === $target->getAttributeType();
     }
 }

@@ -46,6 +46,7 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                 'target' => [
                     'code' => 'name',
                     'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_text',
                     'locale' => null,
                     'channel' => null,
                     'source_configuration' => [],
