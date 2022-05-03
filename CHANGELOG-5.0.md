@@ -6,11 +6,11 @@
 
 # 5.0.93 (2022-05-03)
 
-# 5.0.92 (2022-04-28)
-
 ## Bug fixes
 
 - PIM-10424: [Backport] Increase product grid filters limit display in user settings
+
+# 5.0.92 (2022-04-28)
 
 # 5.0.91 (2022-04-13)
 
