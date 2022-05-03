@@ -23,12 +23,15 @@ integration-back: #Doc: launch PHPUnit integration tests for job automation
 acceptance-back: #Doc: launch PHPUnit acceptance tests for job automation
 	APP_ENV=test_fake $(PHP_RUN) vendor/bin/phpunit -c components/job-automation/back/tests/phpunit-ee.xml --testsuite JobAutomation_Acceptance_Test $(O)
 
+.PHONY: lint-front
 lint-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation lint:check
 
+.PHONY: lint-fix-front
 lint-fix-front:
-    $(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation lint:fix
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation lint:fix
 
+.PHONY: unit-front
 unit-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/job-automation test:unit:run
 

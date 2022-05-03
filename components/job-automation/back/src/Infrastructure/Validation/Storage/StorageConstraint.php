@@ -1,13 +1,11 @@
 <?php
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation;
+namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage;
 
 use Symfony\Component\Validator\Constraint;
 
-class Storage extends Constraint
+abstract class StorageConstraint extends Constraint
 {
-    public const UNAVAILABLE_TYPE = 'akeneo.job_automation.validation.storage.unavailable_type';
-
     public function __construct(
         /** @var string[] */
         private array $filePathSupportedFileExtensions,
