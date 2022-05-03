@@ -11,7 +11,7 @@ const CategoriesIndex: FC = () => {
   const {trees, loadingStatus, loadTrees} = useCategoryTreeList();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
   const {isGranted} = useSecurity();
-
+ 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
 
   useEffect(() => {

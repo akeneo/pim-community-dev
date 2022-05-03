@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
-import {Dummy} from './feature/Dummy';
+import {useDependenciesContext} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
   display: flex;
@@ -26,15 +26,30 @@ const Page = styled.div`
   padding: 40px;
 `;
 
-const FakePIM = () => {
+const FakePIM = ({children}) => {
+  const deps = useDependenciesContext();
+
+  useEffect(() => {
+    deps.router = {
+      ...deps.router,
+
+      redirect: fragment => {
+        const normalizedFragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
+        window.location.hash = normalizedFragment; // fires hashchange event which HashRouter listens to
+      },
+
+      redirectToRoute: function (route, routeParams, options) {
+        return deps.router.redirect(deps.router.generate(route, routeParams), options);
+      },
+    } as typeof deps.router;
+  }, [deps.router]);
+
   return (
     <Container>
       <Menu>
         <AkeneoIcon size={36} />
       </Menu>
-      <Page>
-        <Dummy />
-      </Page>
+      <Page>{children}</Page>
     </Container>
   );
 };
