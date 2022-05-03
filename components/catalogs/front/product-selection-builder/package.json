@@ -1,5 +1,5 @@
 {
-    "name": "@akeneo-pim-community/permission-form",
+    "name": "@akeneo-pim-community/product-selection-builder",
     "version": "1.0.0",
     "license": "OSL-3.0",
     "main": "src/index.ts",
