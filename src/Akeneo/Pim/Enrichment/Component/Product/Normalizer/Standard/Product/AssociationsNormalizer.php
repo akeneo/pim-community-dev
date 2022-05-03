@@ -96,6 +96,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
                     foreach ($association->getProducts() as $product) {
                         $data[$code]['products'][] = $product->getReference();
                     }
+                    sort($data[$code]['products']);
                 } elseif ($associationAwareEntity instanceof ProductInterface) {
                     $data[$code]['products'] = array_merge($data[$code]['products'], $this->getAssociatedProductCodeByProduct->getCodes(
                         $associationAwareEntity->getUuid(),
