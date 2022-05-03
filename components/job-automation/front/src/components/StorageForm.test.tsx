@@ -10,7 +10,9 @@ test('it renders the storage form', () => {
     type: 'none',
   };
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+  );
 
   expect(screen.getByText('akeneo.automation.storage.connection.none')).toBeInTheDocument();
 });
@@ -23,7 +25,9 @@ test('it triggers onStorageChange callback when storage configurator onStorageCh
 
   const onStorageChange = jest.fn();
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
 
   const file_pathInput = screen.getByLabelText('akeneo.automation.storage.file_path.label');
   userEvent.type(file_pathInput, 'x');
@@ -39,7 +43,9 @@ test('it does not render the storage form configurator if storage is none', () =
     type: 'none',
   };
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+  );
 
   expect(screen.queryByText('akeneo.automation.storage.file_path.label')).not.toBeInTheDocument();
 });
@@ -50,7 +56,9 @@ test('it renders the storage form configurator if storage is local', () => {
     file_path: '',
   };
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+  );
 
   expect(screen.getByText('akeneo.automation.storage.file_path.label')).toBeInTheDocument();
   expect(screen.queryByText('akeneo.automation.storage.host.label')).not.toBeInTheDocument();
@@ -66,7 +74,9 @@ test('it renders the storage form configurator if storage is sftp', () => {
     password: '',
   };
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+  );
 
   expect(screen.getByText('akeneo.automation.storage.file_path.label')).toBeInTheDocument();
   expect(screen.getByText('akeneo.automation.storage.host.label')).toBeInTheDocument();
@@ -79,14 +89,16 @@ test('it can select a local storage', () => {
 
   const onStorageChange = jest.fn();
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByText('akeneo.automation.storage.connection.local'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'local',
-    file_path: '',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
   });
 });
 
@@ -97,14 +109,16 @@ test('it can select a sftp storage', () => {
 
   const onStorageChange = jest.fn();
 
-  renderWithProviders(<StorageForm storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />);
+  renderWithProviders(
+    <StorageForm jobType="export" storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByText('akeneo.automation.storage.connection.sftp'));
 
   expect(onStorageChange).toBeCalledWith({
     type: 'sftp',
-    file_path: '',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
     host: '',
     port: 22,
     username: '',
@@ -136,7 +150,7 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <StorageForm storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
+    <StorageForm jobType="export" storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
   );
 
   expect(screen.getByText('error.key.a_type_error')).toBeInTheDocument();
