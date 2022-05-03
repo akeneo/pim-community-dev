@@ -137,7 +137,10 @@ final class MultiSelectValidatorTest extends AbstractValidationTest
                     ],
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [],
-                    'sample_data' => [],
+                    'sample_data' => [
+                        'type' => 'split',
+                        'separator' => ',',
+                    ],
                 ]
             ],
         ];

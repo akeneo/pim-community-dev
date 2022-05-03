@@ -49,7 +49,7 @@ class BooleanReplacementOperationSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'type' => 'boolean_replacement',
-            'patterns' => [
+            'mapping' => [
                 'yes' => true,
                 'no' => false,
             ],

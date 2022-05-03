@@ -31,7 +31,7 @@ final class BooleanReplacementOperation implements OperationInterface
     {
         return [
             'type' => self::TYPE,
-            'patterns' => $this->mapping,
+            'mapping' => $this->mapping,
         ];
     }
 }
