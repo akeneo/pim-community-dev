@@ -81,9 +81,9 @@ class SecurityContext extends PimContext
 
         $comments = $this
             ->getService('pim_comment.repository.comment')
-            ->getComments(
+            ->getCommentsByUuid(
                 ClassUtils::getClass($product),
-                $product->getId()
+                $product->getUuid()
             );
 
         $lastComment = end($comments);
