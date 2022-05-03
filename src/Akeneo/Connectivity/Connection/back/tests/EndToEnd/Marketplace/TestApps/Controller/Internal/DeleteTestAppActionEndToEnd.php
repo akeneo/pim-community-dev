@@ -6,6 +6,7 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace\TestApps\Con
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
@@ -13,14 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DeleteTestAppActionEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagTestApp;
+    private FilePersistedFeatureFlags $featureFlags;
     private Connection $connection;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->featureFlagTestApp = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
+        $this->featureFlags = $this->get('feature_flags');
         $this->connection = $this->get('database_connection');
     }
 
@@ -53,7 +54,7 @@ class DeleteTestAppActionEndToEnd extends WebTestCase
 
     private function createTestApp(): string
     {
-        $this->featureFlagTestApp->enable();
+        $this->featureFlags->enable('app_developer_mode');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 

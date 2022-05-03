@@ -6,17 +6,18 @@ namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Marketplace\TestApps;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateTestAppActionEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagTestApp;
+    private FilePersistedFeatureFlags $featureFlags;
 
     public function test_it_creates_test_app(): void
     {
-        $this->featureFlagTestApp->enable();
+        $this->featureFlags->enable('app_developer_mode');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_test_apps');
 
@@ -51,7 +52,7 @@ class CreateTestAppActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->featureFlagTestApp = $this->get('akeneo_connectivity.connection.app_developer_mode.feature');
+        $this->featureFlags = $this->get('feature_flags');
     }
 
     protected function getConfiguration(): Configuration

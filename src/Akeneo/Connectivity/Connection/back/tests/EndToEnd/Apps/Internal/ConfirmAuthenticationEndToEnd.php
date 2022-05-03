@@ -17,8 +17,8 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationS
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use FOS\OAuthServerBundle\Model\ClientInterface;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
@@ -32,7 +32,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class ConfirmAuthenticationEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private PropertyAccessor $propertyAccessor;
     private ClientManagerInterface $clientManager;
@@ -48,9 +48,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        $this->featureFlagMarketplaceActivate = $this->get(
-            'akeneo_connectivity.connection.marketplace_activate.feature'
-        );
+        $this->featureFlags = $this->get('feature_flags');
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
@@ -76,7 +74,7 @@ class ConfirmAuthenticationEndToEnd extends WebTestCase
             AuthenticationScope::SCOPE_PROFILE,
         ]);
 
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
 
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');

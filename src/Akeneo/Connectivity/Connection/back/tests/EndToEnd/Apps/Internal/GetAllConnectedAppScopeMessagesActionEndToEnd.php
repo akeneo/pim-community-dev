@@ -10,6 +10,8 @@ use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectedAppLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserGroupLoader;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,13 +22,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetAllConnectedAppScopeMessagesActionEndToEnd extends WebTestCase
 {
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
     }
 
     protected function getConfiguration(): Configuration
@@ -36,7 +38,7 @@ class GetAllConnectedAppScopeMessagesActionEndToEnd extends WebTestCase
 
     public function test_it_gets_all_connected_app_scope_messages(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
 

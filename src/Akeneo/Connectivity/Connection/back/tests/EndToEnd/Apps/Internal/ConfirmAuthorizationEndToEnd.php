@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ConfirmAuthorizationEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
     private ClientProvider $clientProvider;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
 
@@ -33,9 +34,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
-        $this->featureFlagMarketplaceActivate = $this->get(
-            'akeneo_connectivity.connection.marketplace_activate.feature'
-        );
+        $this->featureFlags = $this->get('feature_flags');
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->loadAppsFixtures();
@@ -48,7 +47,9 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
     public function test_it_throws_not_found_exception_with_feature_flag_disabled(): void
     {
-        $this->featureFlagMarketplaceActivate->disable();
+        // feature is directly injected in some services instead of being used through the registry, hence its deactivation in both services
+        $this->get('akeneo_connectivity.connection.marketplace_activate.feature')->disable();
+        $this->featureFlags->disable('marketplace_activate');
         $this->authenticateAsAdmin();
 
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
@@ -64,7 +65,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
     public function test_it_redirects_on_missing_xmlhttprequest_header(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
 
@@ -84,7 +85,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
 
     public function test_it_returns_json_with_error_on_missing_id(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
 
@@ -110,7 +111,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
     {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));
@@ -150,7 +151,7 @@ class ConfirmAuthorizationEndToEnd extends WebTestCase
     {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));

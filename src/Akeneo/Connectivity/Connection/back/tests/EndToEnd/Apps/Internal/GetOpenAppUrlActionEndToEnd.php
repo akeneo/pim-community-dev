@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,17 +31,16 @@ class GetOpenAppUrlActionEndToEnd extends WebTestCase
     {
         parent::setUp();
 
-        /** @var FakeFeatureFlag $featureFlagMarketplaceActivate */
-        $featureFlagMarketplaceActivate = $this->get(
-            'akeneo_connectivity.connection.marketplace_activate.feature'
-        );
+        /** @var FilePersistedFeatureFlags $featureFlags */
+        $featureFlags = $this->get('feature_flags');
+        $featureFlags->enable('marketplace_activate');
+
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
         $this->connectedAppLoader = $this->get('akeneo_connectivity.connection.fixtures.connected_app_loader');
         $this->connection = $this->get('database_connection');
 
         $this->authenticateAsAdmin();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
-        $featureFlagMarketplaceActivate->enable();
         $this->loadAppsFixtures();
     }
 
