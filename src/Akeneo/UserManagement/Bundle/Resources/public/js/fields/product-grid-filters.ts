@@ -69,7 +69,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
     if (values.length > 0) {
       $.ajax({
         url: this.choiceUrl,
-        data: {identifiers: strValues},
+        data: {identifiers: strValues, options: {limit: 100}},
         type: this.choiceVerb,
       }).then(response => {
         let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]>Object.values(response).filter(
