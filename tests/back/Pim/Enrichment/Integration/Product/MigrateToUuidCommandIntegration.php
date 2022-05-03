@@ -25,7 +25,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
     private UserInterface $adminUser;
 
     /**
-     * TODO Put this back
+     * TODO Put this back @CPM-619
      */
     public function it_migrates_the_database_to_use_uuid(): void
     {
