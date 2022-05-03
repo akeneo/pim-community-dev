@@ -2,7 +2,7 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {CloseIcon, EditIcon} from '../../icons';
+import {CloseIcon, EditIcon, PlusIcon} from '../../icons';
 
 test('it renders without actions', () => {
   render(<Block title="I am a block" />);
@@ -83,4 +83,19 @@ test('Block supports ...rest props', () => {
   render(<Block title="My block" data-testid="my_value" />);
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
+test('it renders children with icon', () => {
+  const onCollapse = jest.fn();
+  const isOpen = false;
+
+  render(
+    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+      <PlusIcon data-testid="children-icon" />
+      Icon
+    </Block>
+  );
+
+  expect(screen.getByText('Icon')).toBeInTheDocument();
+  expect(screen.getByTestId('children-icon')).toBeInTheDocument();
 });
