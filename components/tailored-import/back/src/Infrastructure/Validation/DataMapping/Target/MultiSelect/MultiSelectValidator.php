@@ -50,7 +50,7 @@ final class MultiSelectValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(true, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                'operations' => new Operations(['split']),
                 'sample_data' => new SampleData(),
             ],
         ]));

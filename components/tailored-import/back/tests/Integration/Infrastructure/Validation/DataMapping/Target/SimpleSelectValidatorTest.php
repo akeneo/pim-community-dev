@@ -103,6 +103,28 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
+            'a valid text data mapping with split operation' => [
+                [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
+                        'code' => 'a_simple_select',
+                        'type' => 'attribute',
+                        'channel' => null,
+                        'locale' => null,
+                        'action_if_not_empty' => 'set',
+                        'action_if_empty' => 'skip',
+                        'source_configuration' => null,
+                    ],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
+                        [
+                            'type' => 'split',
+                            'separator' => ',',
+                        ]
+                    ],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
+                ]
+            ],
         ];
     }
 

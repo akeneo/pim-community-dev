@@ -48,7 +48,7 @@ final class SimpleSelectValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                'operations' => new Operations(['split']),
                 'sample_data' => new SampleData(),
             ],
         ]));
