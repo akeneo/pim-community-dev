@@ -34,3 +34,18 @@ catalogs-integration-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
+
+.PHONY: catalogs-lint-front
+catalogs-lint-front:
+	cat <<- EOF | $(NODE_RUN) sh
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --check
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ tsc --noEmit --strict
+	@<<- EOF
+
+.PHONY: catalogs-unit-front
+catalogs-unit-front:
+	cat <<- EOF | $(NODE_RUN) sh
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --clearCache
+		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --ci --coverage
+	@<<- EOF

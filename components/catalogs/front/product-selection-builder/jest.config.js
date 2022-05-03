@@ -6,14 +6,26 @@ module.exports = {
         },
     },
     moduleDirectories: [
-        '<rootDir>/../../../../../../node_modules/',
-        '<rootDir>/../../../../../../public/bundles/',
+        '<rootDir>/../../../../node_modules/',
     ],
-    setupFiles: [
-        './tests/jquery.ts',
+    setupFilesAfterEnv: [
+        '<rootDir>/tests/setup.ts',
+    ],
+    automock: true,
+    unmockedModulePathPatterns: [
+        // Core libraries for running the tests
+        'react',
+        'styled-components',
+        '@testing-library',
+        // Components of the DSM are not exposed individually, it's a nightmare to mock
+        'akeneo-design-system',
+        // The following libraries should be mocked but this is not an easy task
+        'draft-js',
+        'react-draft-wysiwyg',
+        'html-to-draftjs',
     ],
     moduleNameMapper: {
-        '\\.(svg|css)$': '<rootDir>/tests/file-mock.ts',
+        '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
     },
     collectCoverageFrom: [
       '<rootDir>/src/**/*.{ts,tsx}',

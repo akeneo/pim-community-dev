@@ -13,8 +13,7 @@
     ],
     "ignorePatterns": [
         "**/*.test.ts",
-        "**/*.test.tsx",
-        "src/dependencies/**"
+        "**/*.test.tsx"
     ],
     "rules": {
         "@typescript-eslint/camelcase": "off",

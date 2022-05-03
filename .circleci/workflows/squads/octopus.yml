@@ -32,37 +32,57 @@ workflows:
                       - install_back_dependencies
                       - install_front_dependencies
             - test_front_unit_connectivity:
-                  name: test_front_unit
+                  name: test_cxp_front_unit
                   requires:
                       - install_front_dependencies
             - test_front_lint_connectivity:
-                  name: test_front_lint
+                  name: test_cxp_front_lint
                   requires:
                       - install_front_dependencies
             - test_back_unit_connectivity:
-                  name: test_back_unit
+                  name: test_cxp_back_unit
                   requires:
                       - install_back_dependencies
             - test_back_integration_connectivity:
-                  name: test_back_integration
+                  name: test_cxp_back_integration
                   requires:
                       - install_back_dependencies
             - test_back_e2e_connectivity:
-                  name: test_back_e2e
+                  name: test_cxp_back_e2e
                   requires:
                       - install_back_dependencies
             - test_back_behat_connectivity:
-                  name: test_back_behat
+                  name: test_cxp_back_behat
                   requires:
                       - build
+            - test_front_unit_catalogs:
+                  name: test_cat_front_unit
+                  requires:
+                      - install_front_dependencies
+            - test_front_lint_catalogs:
+                  name: test_cat_front_lint
+                  requires:
+                      - install_front_dependencies
+            - test_back_unit_catalogs:
+                  name: test_cat_back_unit
+                  requires:
+                      - install_back_dependencies
+            - test_back_integration_catalogs:
+                  name: test_cat_back_integration
+                  requires:
+                      - install_back_dependencies
             - pull_request_success:
                   requires:
-                      - test_front_lint
-                      - test_front_unit
-                      - test_back_unit
-                      - test_back_integration
-                      - test_back_e2e
-                      - test_back_behat
+                      - test_cxp_front_lint
+                      - test_cxp_front_unit
+                      - test_cxp_back_unit
+                      - test_cxp_back_integration
+                      - test_cxp_back_e2e
+                      - test_cxp_back_behat
+                      - test_cat_front_unit
+                      - test_cat_front_lint
+                      - test_cat_back_unit
+                      - test_cat_back_integration
 
     octopus_weekly_code_quality:
         when:
