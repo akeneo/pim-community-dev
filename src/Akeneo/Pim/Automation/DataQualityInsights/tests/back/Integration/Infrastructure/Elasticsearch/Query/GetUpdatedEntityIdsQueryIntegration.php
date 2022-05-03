@@ -133,12 +133,12 @@ final class GetUpdatedEntityIdsQueryIntegration extends TestCase
     private function updateProductAt(ProductInterface $product, \DateTimeImmutable $updatedAt)
     {
         $query = <<<SQL
-UPDATE pim_catalog_product SET updated = :updated WHERE id = :product_id;
+UPDATE pim_catalog_product SET updated = :updated WHERE uuid = :product_uuid;
 SQL;
 
         $this->db->executeQuery($query, [
             'updated' => $updatedAt->format('Y-m-d H:i:s'),
-            'product_id' => $product->getId(),
+            'product_uuid' => $product->getUuid()->getBytes(),
         ]);
 
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($product->getIdentifier());
