@@ -24,9 +24,7 @@ class FindActivatedLocalesByIdentifiersSpec extends ObjectBehavior
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized(['fr_FR', 'en_US']);
         $expectedIdentifiers = LocaleIdentifierCollection::fromNormalized(['fr_FR']);
 
-        $result = $this->find($localeIdentifiers);
-
-        $result->shouldBeLike($expectedIdentifiers);
+        $this->find($localeIdentifiers)->shouldBeLike($expectedIdentifiers);
     }
 
     public function it_is_case_insensitive()
