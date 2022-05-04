@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Integration\Persistence\Sql\Record;
 
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
 use Akeneo\ReferenceEntity\Domain\Model\LocaleIdentifier;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Record;
@@ -17,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
+use Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByIdentifiers;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 
 class SqlFindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
@@ -37,7 +40,18 @@ class SqlFindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers');
+        $mockedFindLocalesQuery = $this->createMock(FindLocales::class);
+        $mockedFindLocalesQuery->method('findAllActivated')->willReturn([
+            new Locale('fr_FR', true),
+            new Locale('en_US', true),
+            new Locale('de_DE', true)
+        ]);
+
+        $this->query = new SqlFindRecordLabelsByIdentifiers(
+            $this->get('database_connection'),
+            $mockedFindLocalesQuery
+        );
+
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
