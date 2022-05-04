@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Akeneo\Catalogs\:
+        resource: '../../../../'
+        exclude:
+            - '../../../Symfony/'
