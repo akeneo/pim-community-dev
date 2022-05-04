@@ -13,18 +13,30 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 abstract class IntegrationTestCase extends WebTestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+        static::bootKernel(['environment' => 'test', 'debug' => false]);
+
+        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->purge();
+    }
+
     protected function setUp(): void
     {
         parent::setUp();
         static::bootKernel(['environment' => 'test', 'debug' => false]);
 
-        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->purge();
-
         self::getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function loadMinimalCatalog(): void
+    protected function purgeData(): void
+    {
+        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->purge();
+    }
+
+    protected function purgeDataAndLoadMinimalCatalog(): void
     {
         $catalog = self::getContainer()->get('akeneo_integration_tests.catalogs');
         $configuration = $catalog->useMinimalCatalog();
