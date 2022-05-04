@@ -19,19 +19,22 @@ const CleanHTMLTagsOperationBlock = ({operation, onRemove}: OperationBlockProps)
 
   return (
     <Block
-      action={<IconButton title={translate('pim_common.remove')} icon={<CloseIcon />} onClick={openDeleteModal} />}
-    >
-      {isDeleteModalOpen && (
-        <DeleteModal
-          title={translate('akeneo.tailored_import.data_mapping.operations.title')}
-          onConfirm={() => onRemove(operation.type)}
-          onCancel={closeDeleteModal}
-        >
-          {translate('akeneo.tailored_import.data_mapping.operations.remove')}
-        </DeleteModal>
-      )}
-      {translate(`akeneo.tailored_import.data_mapping.operations.${operation.type}`)}
-    </Block>
+      title={translate(`akeneo.tailored_import.data_mapping.operations.${operation.type}`)}
+      actions={
+        <>
+          <IconButton title={translate('pim_common.remove')} icon={<CloseIcon />} onClick={openDeleteModal} />
+          {isDeleteModalOpen && (
+            <DeleteModal
+              title={translate('akeneo.tailored_import.data_mapping.operations.title')}
+              onConfirm={() => onRemove(operation.type)}
+              onCancel={closeDeleteModal}
+            >
+              {translate('akeneo.tailored_import.data_mapping.operations.remove')}
+            </DeleteModal>
+          )}
+        </>
+      }
+    />
   );
 };
 
