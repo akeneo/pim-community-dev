@@ -12,28 +12,57 @@ workflows:
                 equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
             - checkout_ce:
+                  name: checkout
                   filters:
                       branches:
                           only:
                               - /^(CXP|OCT)-.*/
+            - install_ce_front_dependencies:
+                  name: install_front_dependencies
+                  requires:
+                      - checkout
+            - install_ce_back_dependencies:
+                  name: install_back_dependencies
+                  requires:
+                      - checkout
             - build_dev:
-                  name: build_dev_ce
+                  name: build
                   is_ee_built: false
                   requires:
-                      - checkout_ce
-            - test_front_connectivity:
+                      - install_back_dependencies
+                      - install_front_dependencies
+            - test_front_unit_connectivity:
+                  name: test_front_unit
                   requires:
-                      - build_dev_ce
-            - test_back_connectivity:
+                      - install_front_dependencies
+            - test_front_lint_connectivity:
+                  name: test_front_lint
                   requires:
-                      - build_dev_ce
-            - test_marketplace_activate_e2e:
+                      - install_front_dependencies
+            - test_back_unit_connectivity:
+                  name: test_back_unit
                   requires:
-                      - build_dev_ce
+                      - install_back_dependencies
+            - test_back_integration_connectivity:
+                  name: test_back_integration
+                  requires:
+                      - install_back_dependencies
+            - test_back_e2e_connectivity:
+                  name: test_back_e2e
+                  requires:
+                      - install_back_dependencies
+            - test_back_behat_connectivity:
+                  name: test_back_behat
+                  requires:
+                      - build
             - pull_request_success:
                   requires:
-                      - test_front_connectivity
-                      - test_back_connectivity
+                      - test_front_lint
+                      - test_front_unit
+                      - test_back_unit
+                      - test_back_integration
+                      - test_back_e2e
+                      - test_back_behat
 
     octopus_weekly_code_quality:
         when:

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\tests\back\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
@@ -32,18 +33,22 @@ final class GetProductModelScoresByCodesQueryIntegration extends DataQualityInsi
         $productModelC = $this->createProductModel('product_model_C', 'family_V_1');
         $productModelD = $this->createProductModel('product_model_D','family_V_1');
 
+        $productModelIdA = $this->get(ProductModelIdFactory::class)->create((string)$productModelA->getId());
+        $productModelIdB = $this->get(ProductModelIdFactory::class)->create((string)$productModelB->getId());
+        $productModelIdC = $this->get(ProductModelIdFactory::class)->create((string)$productModelC->getId());
+
         $this->resetProductModelsScores();
 
         $productModelsScores = [
             'product_model_A_scores' => new ProductScores(
-                new ProductId($productModelA->getId()),
+                $productModelIdA,
                 new \DateTimeImmutable('2020-01-07'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(76))
                     ->addRate($channelMobile, $localeFr, new Rate(67))
             ),
             'product_model_B_scores' => new ProductScores(
-                new ProductId($productModelB->getId()),
+                $productModelIdB,
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
@@ -51,7 +56,7 @@ final class GetProductModelScoresByCodesQueryIntegration extends DataQualityInsi
             ),
 
             'other_product_model_scores' => new ProductScores(
-                new ProductId($productModelC->getId()),
+                $productModelIdC,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(87))

@@ -22,6 +22,11 @@ final class ClientMigration implements ClientMigrationInterface
         $this->client = $clientBuilder->setHosts($hosts)->build();
     }
 
+    public function aliasExist(string $indexAlias): bool
+    {
+        return $this->client->indices()->existsAlias(['name' => $indexAlias]);
+    }
+
     public function getIndexNameFromAlias(string $indexAlias): array
     {
         $aliases = $this->client->indices()->getAlias(['name' => $indexAlias]);
@@ -101,6 +106,48 @@ final class ClientMigration implements ClientMigrationInterface
                                 'alias' => $newIndexAlias,
                                 'index' => $newIndexName,
                             ]
+                        ],
+                    ]
+                ]
+            ])
+        );
+    }
+
+    public function createAlias(string $indexAlias, string $indexName): void
+    {
+        $this->assertResponseIsAcknowledged(
+            $this->client->indices()->updateAliases([
+                'body' => [
+                    'actions' => [
+                        [
+                            'add' => [
+                                'alias' => $indexAlias,
+                                'index' => $indexName,
+                            ],
+                        ],
+                    ],
+                ]
+            ])
+        );
+    }
+
+    public function renameAlias(string $oldIndexAlias, string $newIndexAlias, string $indexName): void
+    {
+        $this->assertResponseIsAcknowledged(
+            $this->client->indices()->updateAliases([
+                'body' => [
+                    'actions' => [
+                        [
+                            'add' => [
+                                'alias' => $newIndexAlias,
+                                'index' => $indexName,
+                            ],
+                        ],
+                        [
+                            'remove' => [
+                                'alias' => $oldIndexAlias,
+                                'index' => $indexName,
+                            ],
                         ],
                     ]
                 ]

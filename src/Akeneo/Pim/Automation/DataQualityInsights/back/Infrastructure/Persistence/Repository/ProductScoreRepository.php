@@ -53,7 +53,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
             return sprintf(
                 "(%d, '%s', '%s')",
-                $productScore->getProductId()->toInt(),
+                (int) (string) $productScore->getProductId(),
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates())
             );

@@ -10,6 +10,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\Has
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use PhpSpec\ObjectBehavior;
 
@@ -32,7 +33,7 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
         $getProductModelScoresQuery
     )
     {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
 
         $scores = (new ChannelLocaleRateCollection())
             ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(100))
@@ -49,7 +50,7 @@ class GetUpToDateProductModelScoresQuerySpec extends ObjectBehavior
         $getProductModelScoresQuery
     )
     {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
         $getProductModelScoresQuery->byProductModelId($productModelId)->shouldNotBeCalled();

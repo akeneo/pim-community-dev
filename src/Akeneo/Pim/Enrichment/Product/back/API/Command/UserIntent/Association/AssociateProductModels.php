@@ -7,6 +7,8 @@ namespace Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association;
 use Webmozart\Assert\Assert;
 
 /**
+ * The former associated product models that are not defined in this object will stay associated.
+ *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */

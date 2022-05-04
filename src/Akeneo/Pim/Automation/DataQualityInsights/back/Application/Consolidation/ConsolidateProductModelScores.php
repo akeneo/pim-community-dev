@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductModelScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,7 +24,7 @@ class ConsolidateProductModelScores
     ) {
     }
 
-    public function consolidate(ProductIdCollection $productModelIdCollection): void
+    public function consolidate(ProductEntityIdCollection $productModelIdCollection): void
     {
         $productModelScores = [];
         foreach ($productModelIdCollection as $productModelId) {

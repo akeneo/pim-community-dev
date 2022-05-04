@@ -37,15 +37,30 @@ const Helper = styled.div`
     width: 280px;
 `;
 
+const ScopeListTitle = styled.h3`
+    color: ${getColor('grey', 140)};
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+`;
+
 type Props = {
     appName: string;
     appUrl: string | null;
     scopes: Array<'email' | 'profile'>;
+    oldScopes?: Array<'email' | 'profile'> | null;
     scopesConsentGiven: boolean;
     setScopesConsent: (newValue: boolean) => void;
 };
 
-export const Authentication: FC<Props> = ({appName, appUrl, scopes, scopesConsentGiven, setScopesConsent}) => {
+export const Authentication: FC<Props> = ({
+    appName,
+    appUrl,
+    scopes,
+    oldScopes,
+    scopesConsentGiven,
+    setScopesConsent,
+}) => {
     const translate = useTranslate();
 
     return (
@@ -65,7 +80,15 @@ export const Authentication: FC<Props> = ({appName, appUrl, scopes, scopesConsen
                 </p>
             </Helper>
             <UserAvatar />
-            <ConsentList scopes={scopes} />
+            <ConsentList scopes={scopes} highlightMode={oldScopes ? 'new' : null} />
+            {oldScopes && oldScopes.length > 0 && (
+                <>
+                    <ScopeListTitle>
+                        {translate('akeneo_connectivity.connection.connect.apps.wizard.authorize.is_allowed_to')}
+                    </ScopeListTitle>
+                    <ConsentList scopes={oldScopes} highlightMode={'old'} />
+                </>
+            )}
             <ConsentCheckbox isChecked={scopesConsentGiven} onChange={setScopesConsent} appUrl={appUrl} />
         </InfoContainer>
     );

@@ -5,7 +5,11 @@ parameters:
 services:
     pim_user.manager:
         class: 'Akeneo\UserManagement\Bundle\Manager\UserManager'
-        arguments: ['%pim_user.entity.user.class%', "@doctrine.orm.entity_manager", "@security.encoder_factory"]
+        arguments:
+            - '%pim_user.entity.user.class%'
+            - "@doctrine.orm.entity_manager"
+            - "@security.encoder_factory"
+            - "@pim_user.saver.user"
 
     pim_user.security.login:
         class: 'Akeneo\UserManagement\Bundle\EventListener\LoginSubscriber'

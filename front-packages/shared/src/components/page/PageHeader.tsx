@@ -1,6 +1,16 @@
 import React, {Children, cloneElement, FC, isValidElement, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
-import {Actions, Breadcrumb, Illustration, IllustrationProps, State, Title, UserActions, Content} from './header';
+import {
+  Actions,
+  Breadcrumb,
+  Illustration,
+  IllustrationProps,
+  State,
+  Title,
+  TitleProps,
+  UserActions,
+  Content,
+} from './header';
 
 const Header = styled.header`
   position: sticky;
@@ -105,7 +115,7 @@ interface PageHeaderInterface extends FC<PageHeaderProps> {
   Breadcrumb: FC;
   Illustration: FC<IllustrationProps>;
   UserActions: FC;
-  Title: FC;
+  Title: FC<TitleProps>;
   State: FC;
   Content: FC;
 }

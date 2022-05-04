@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEnrichment;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEnrichment\GetProductRawValuesQuery;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -169,7 +170,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->saveAll([$product]);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     private function createVariantProduct(string $identifier, array $data): ProductId
@@ -178,7 +179,7 @@ class GetProductRawValuesQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     private function createProductModel(array $data): ProductModelInterface

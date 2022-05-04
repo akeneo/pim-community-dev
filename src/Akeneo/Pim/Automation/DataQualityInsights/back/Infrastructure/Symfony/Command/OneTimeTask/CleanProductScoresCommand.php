@@ -19,10 +19,10 @@ final class CleanProductScoresCommand extends Command
 {
     use OneTimeTaskCommandTrait;
 
-    private const BULK_SIZE = 1000;
-
     protected static $defaultName = 'pim:data-quality-insights:clean-product-scores';
     protected static $defaultDescription = 'Clean product scores in order to have one score per product id.';
+
+    private int $bulkSize = 1000;
 
     public function __construct(
         private Connection $dbConnection
@@ -32,7 +32,7 @@ final class CleanProductScoresCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', self::BULK_SIZE));
+        $this->addOption('bulk-size', 's', InputOption::VALUE_REQUIRED, sprintf('Bulk size (%d by default)', $this->bulkSize));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -86,7 +86,7 @@ SQL;
             $query,
             [
                 'lastProductId' => $lastProductId,
-                'bulkSize' => self::BULK_SIZE,
+                'bulkSize' => $this->bulkSize,
             ],
             [
                 'lastProductId' => \PDO::PARAM_INT,

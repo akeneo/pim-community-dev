@@ -17,6 +17,7 @@ test('it displays both profile & email scopes', () => {
             exact: false,
         })
     ).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).not.toBeInTheDocument();
 });
 
 test('it displays only the profile scope', () => {
@@ -32,6 +33,7 @@ test('it displays only the profile scope', () => {
             exact: false,
         })
     ).not.toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).not.toBeInTheDocument();
 });
 
 test('it displays only the email scope', () => {
@@ -47,4 +49,11 @@ test('it displays only the email scope', () => {
             exact: false,
         })
     ).toBeInTheDocument();
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).not.toBeInTheDocument();
+});
+
+test('it displays the NEW badge', () => {
+    renderWithProviders(<ConsentList scopes={['email']} highlightMode={'new'} />);
+
+    expect(screen.queryByText('akeneo_connectivity.connection.connect.apps.scope.new')).toBeInTheDocument();
 });

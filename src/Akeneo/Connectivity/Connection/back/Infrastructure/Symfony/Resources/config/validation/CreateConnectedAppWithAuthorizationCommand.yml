@@ -1,0 +1,11 @@
+Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationCommand:
+    constraints:
+        -   Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\IsConnectionsNumberLimitReached: ~
+    properties:
+        clientId:
+            -   NotBlank:
+                    message: akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank
+            -   Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustBeValid:
+                    message: akeneo_connectivity.connection.connect.apps.constraint.client_id.must_be_valid
+            -   Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustHaveOngoingAuthorization:
+                    message: akeneo_connectivity.connection.connect.apps.constraint.client_id.must_have_ongoing_authorization

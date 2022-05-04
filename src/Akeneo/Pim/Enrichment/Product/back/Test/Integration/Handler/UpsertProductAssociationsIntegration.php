@@ -269,7 +269,39 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         Assert::assertSame(['other_associated_group_code'], $this->getAssociatedGroupIdentifiers($updatedProduct));
     }
 
-    private function createGroup(string $groupCode): GroupInterface
+    /** @test */
+    public function it_associates_two_way_association_on_product(): void
+    {
+        $this->createTwoWayAssociationType('TWO_WAY');
+        $this->createProduct('my_product', []);
+        $this->createProduct('my_associated_product', []);
+        $this->createProductModel('product_model1', 'color_variant_accessories', []);
+        $this->createGroup('group1');
+
+        $command = UpsertProductCommand::createFromCollection($this->getUserId('peter'), 'my_product', [
+            new AssociateProducts('TWO_WAY', ['my_associated_product']),
+            new AssociateProductModels('TWO_WAY', ['product_model1']),
+            new AssociateGroups('TWO_WAY', ['group1'])
+        ]);
+        $this->messageBus->dispatch($command);
+
+        $myProduct = $this->productRepository->findOneByIdentifier('my_product');
+        $myAssociatedProduct = $this->productRepository->findOneByIdentifier('my_associated_product');
+        $myProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('product_model1');
+
+        Assert::assertEqualsCanonicalizing(['my_associated_product'], $this->getAssociatedProductIdentifiers($myProduct, 'TWO_WAY'));
+        Assert::assertEqualsCanonicalizing(['my_product'], $this->getAssociatedProductIdentifiers($myAssociatedProduct, 'TWO_WAY'));
+        Assert::assertEqualsCanonicalizing(['product_model1'], $this->getAssociatedProductModelIdentifiers($myProduct, 'TWO_WAY'));
+        Assert::assertEqualsCanonicalizing(
+            ['my_product'],
+            $myProductModel->getAssociatedProducts('TWO_WAY')
+                ?->map(fn (ProductInterface $product): string => $product->getIdentifier())
+                ?->toArray() ?? []
+        );
+        Assert::assertEqualsCanonicalizing(['group1'], $this->getAssociatedGroupIdentifiers($myProduct, 'TWO_WAY'));
+    }
+
+    private function createGroup(string $groupCode): void
     {
         $group = $this->get('pim_catalog.factory.group')->createGroup('RELATED');
         $this->get('pim_catalog.updater.group')->update($group, [
@@ -282,16 +314,14 @@ class UpsertProductAssociationsIntegration extends EnrichmentProductTestCase
         }
 
         $this->get('pim_catalog.saver.group')->save($group);
-
-        return $group;
     }
 
     /**
      * @return array<string>
      */
-    private function getAssociatedGroupIdentifiers(ProductInterface $product): array
+    private function getAssociatedGroupIdentifiers(ProductInterface $product, string $associationType = 'X_SELL'): array
     {
-        return $product->getAssociatedGroups('X_SELL')
+        return $product->getAssociatedGroups($associationType)
                 ?->map(fn (GroupInterface $group): string => (string) $group->getCode())
                 ?->toArray() ?? [];
     }

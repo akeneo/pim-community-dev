@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeNormalizer;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -12,9 +13,9 @@ use Prophecy\Argument;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
-    function let(TranslationNormalizer $transNormalizer, DateTimeNormalizer $dateTimeNormalizer)
+    function let(TranslationNormalizer $transNormalizer, DateTimeNormalizer $dateTimeNormalizer, FeatureFlags $featureFlags)
     {
-        $this->beConstructedWith($transNormalizer, $dateTimeNormalizer, ['auto_option_sorting']);
+        $this->beConstructedWith($transNormalizer, $dateTimeNormalizer, $featureFlags);
     }
 
     function it_is_initializable()
@@ -37,9 +38,11 @@ class AttributeNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_an_empty_attribute(
         $transNormalizer,
+        FeatureFlags $featureFlags,
         AttributeInterface $attribute,
         AttributeGroupInterface $attributeGroup
     ) {
+        $featureFlags->isEnabled('read_only_product_attribute')->willThrow(new \InvalidArgumentException());
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
 
         $attribute->getType()->willReturn('Yes/No');
@@ -69,6 +72,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMinimumInputLength()->willReturn(null);
         $attribute->getSortOrder()->willReturn(0);
         $attribute->getProperty('auto_option_sorting')->willReturn(null);
+        $attribute->getProperty('default_value')->willReturn(null);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines', 'fr_FR' => 'les indications']);
 
         $this->normalize($attribute)->shouldReturn(
@@ -101,6 +105,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'labels'                 => [],
                 'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
                 'auto_option_sorting'    => null,
+                'default_value'           => null,
             ]
         );
     }
@@ -110,8 +115,11 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $transNormalizer,
         $dateTimeNormalizer,
         AttributeInterface $attribute,
+        FeatureFlags $featureFlags,
         AttributeGroupInterface $attributeGroup
     ) {
+        $featureFlags->isEnabled('read_only_product_attribute')->willReturn(true);
+
         $transNormalizer->normalize(Argument::cetera())->willReturn([]);
 
         $dateMin = new \DateTime('2015-05-23 15:55:50');
@@ -144,6 +152,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMinimumInputLength()->willReturn(2);
         $attribute->getSortOrder()->willReturn(4);
         $attribute->getProperty('auto_option_sorting')->willReturn(true);
+        $attribute->getProperty('default_value')->willReturn('default');
+        $attribute->getProperty('is_read_only')->willReturn(true);
         $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines']);
 
         $dateTimeNormalizer->normalize($dateMin)->willReturn('2015-05-23T15:55:50+01:00');
@@ -179,6 +189,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'labels'                 => [],
                 'guidelines'             => ['en_US' => 'the guidelines'],
                 'auto_option_sorting'    => true,
+                'default_value'          => 'default',
+                'is_read_only'           => true,
             ]
         );
     }

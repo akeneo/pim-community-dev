@@ -51,6 +51,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'partner' => null,
             'certified' => false,
             'is_pending' => false,
+            'has_outdated_scopes' => false,
         ];
         $connectedApp = $this->query->execute('connected_app');
 
@@ -78,6 +79,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'is_test_app' => true,
             'is_pending' => false,
             'scopes' => ['read_products'],
+            'has_outdated_scopes' => false,
         ];
         $testApp = $this->query->execute('connected_test_app');
 
@@ -106,6 +108,7 @@ class FindOneConnectedAppByConnectionCodeQueryIntegration extends TestCase
             'partner' => null,
             'is_test_app' => false,
             'is_pending' => true,
+            'has_outdated_scopes' => false,
         ];
         $pendingApp = $this->query->execute('pending_app');
 

@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -30,7 +31,7 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
     ) {
     }
 
-    public function __invoke(ProductIdCollection $productIdCollection): void
+    public function __invoke(ProductEntityIdCollection $productIdCollection): void
     {
         switch ($this->documentType) {
             case ProductModelInterface::class:
@@ -49,12 +50,11 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
 
         $params = [];
         foreach ($productIdCollection->toArray() as $productId) {
-            $productId = $productId->toInt();
-            if (!array_key_exists($productId, $scores)) {
+            if (!array_key_exists((string) $productId, $scores)) {
                 continue;
             }
-            $qualityScores = $scores[$productId];
-            $keyIndicators = $computedKeyIndicators[$productId] ?? [];
+            $qualityScores = $scores[(string) $productId];
+            $keyIndicators = $computedKeyIndicators[(string) $productId] ?? [];
 
             $params[$identifierPrefix . $productId] = [
                 'script' => [
@@ -69,8 +69,8 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
 
         $this->esClient->bulkUpdate(
             array_map(
-                fn ($productId) => $identifierPrefix . (string) $productId,
-                $productIdCollection->toArrayInt()
+                fn ($productId) => $identifierPrefix . $productId,
+                $productIdCollection->toArrayString()
             ),
             $params
         );

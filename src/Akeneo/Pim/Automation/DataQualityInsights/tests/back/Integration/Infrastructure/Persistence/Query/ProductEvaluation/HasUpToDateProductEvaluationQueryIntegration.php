@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\HasUpToDateProductEvaluationQuery;
@@ -80,6 +81,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $outdatedProductVariantId = $this->givenAProductVariantWithAnOutdatedEvaluationComparedToItsParent($today);
         $this->givenAProductWithAnUpToDateEvaluation($today);
 
+
         $productIdsWithUpToDateEvaluation = $this->query->forProductIdCollection(ProductIdCollection::fromProductIds(
             [$outdatedProductId, $outdatedProductVariantId, $expectedProductIdA, $expectedProductIdB]
         ));
@@ -93,8 +95,9 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
     {
         $today = new \DateTimeImmutable('2020-03-02 11:34:27');
         $outdatedProductId = $this->givenAnUpdatedProductWithAnOutdatedEvaluation($today);
+        $productIdCollection = $this->get(ProductIdFactory::class)->createCollection([(string)$outdatedProductId]);
 
-        $this->assertNull($this->query->forProductIdCollection(ProductIdCollection::fromProductId($outdatedProductId)));
+        $this->assertNull($this->query->forProductIdCollection($productIdCollection));
     }
 
     private function createProduct(): ProductId
@@ -105,7 +108,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     private function createProductVariant(string $parentCode): ProductId
@@ -118,7 +121,7 @@ final class HasUpToDateProductEvaluationQueryIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, ['parent' => $parentCode]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        return new ProductId((int) $product->getId());
+        return $this->get(ProductIdFactory::class)->create((string)$product->getId());
     }
 
     private function givenAProductWithAnUpToDateEvaluation(\DateTimeImmutable $today): ProductId

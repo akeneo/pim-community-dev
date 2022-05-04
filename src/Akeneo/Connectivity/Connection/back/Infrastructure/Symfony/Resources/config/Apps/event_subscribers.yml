@@ -5,9 +5,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\AclPrivilegesEventSubscriber:
-        arguments:
-            - '@akeneo_connectivity.connection.marketplace_activate.feature'
-            - '@akeneo_connectivity.connection.app_developer_mode.feature'
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\EventSubscriber\GroupAllIsRemovedFromUsersUsedByAppsOnUpdateEventSubscriber:
         tags:
             - { name: kernel.event_subscriber }

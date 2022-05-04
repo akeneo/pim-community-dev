@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
@@ -20,7 +21,7 @@ class GetQualityScoresFactory
     ) {
     }
 
-    public function __invoke(ProductIdCollection $productIdCollection, string $type): array
+    public function __invoke(ProductEntityIdCollection $productIdCollection, string $type): array
     {
         switch ($type) {
             case 'product':

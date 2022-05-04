@@ -59,6 +59,7 @@ test('The connected app authorizations renders with scopes', async () => {
         partner: null,
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);
@@ -104,6 +105,7 @@ test('The connected app authorizations renders without scopes', async () => {
         partner: null,
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);

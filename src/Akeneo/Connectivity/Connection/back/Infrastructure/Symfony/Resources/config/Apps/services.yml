@@ -38,3 +38,26 @@ services:
             - '@pim_user.updater.group'
             - '@pim_user.saver.group'
             - '@validator'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindAllUsernamesWithAclQuery'
+            - '@pim_notification.notifier'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\UpdateConnectedAppRoleWithScopes:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\GetConnectedAppRoleIdentifierQuery'
+            - '@pim_user.repository.role'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@pim_user.saver.role_with_permissions'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'

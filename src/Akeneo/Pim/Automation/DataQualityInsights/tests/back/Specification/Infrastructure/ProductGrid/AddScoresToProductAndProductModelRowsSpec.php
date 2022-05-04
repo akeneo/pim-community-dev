@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\GetQualityScoresFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Grid\Query\FetchProductAndProductModelRowsParameters;
@@ -21,12 +22,16 @@ use Prophecy\Argument;
 class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 {
     public function let(
-        GetQualityScoresFactory $getQualityScoresFactory
-    ){
-        $this->beConstructedWith($getQualityScoresFactory);
+        GetQualityScoresFactory         $getQualityScoresFactory,
+        ProductEntityIdFactoryInterface $idFactory
+    )
+    {
+        $this->beConstructedWith($getQualityScoresFactory, $idFactory);
     }
 
-    public function it_returns_no_rows_when_given_no_rows(ProductQueryBuilderInterface $productQueryBuilder)
+    public function it_returns_no_rows_when_given_no_rows(
+        ProductQueryBuilderInterface $productQueryBuilder
+    )
     {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
@@ -40,8 +45,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
     public function it_returns_product_row_with_additional_property_DQI_score(
         ProductQueryBuilderInterface $productQueryBuilder,
-        $getQualityScoresFactory
-    ){
+                                     $getQualityScoresFactory,
+                                     $idFactory,
+        ProductEntityIdCollection    $productIdCollection
+    )
+    {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -50,6 +58,8 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
         );
 
         $rows = [$this->makeRow(1), $this->makeRow(4)];
+
+        $idFactory->createCollection(['1', '4'])->willReturn($productIdCollection);
 
         $scores = [
             (new ChannelLocaleRateCollection())
@@ -64,8 +74,11 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
     public function it_returns_product_model_row_with_additional_property_DQI_score(
         ProductQueryBuilderInterface $productQueryBuilder,
-                                     $getQualityScoresFactory
-    ){
+                                     $getQualityScoresFactory,
+                                     $idFactory,
+        ProductEntityIdCollection    $productIdCollection
+    )
+    {
         $queryParameters = new FetchProductAndProductModelRowsParameters(
             $productQueryBuilder->getWrappedObject(),
             [],
@@ -75,6 +88,8 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
 
         $rows = [$this->makeRow(1), $this->makeRow(4)];
 
+        $idFactory->createCollection(['1', '4'])->willReturn($productIdCollection);
+
         $scores = [
             (new ChannelLocaleRateCollection())
                 ->addRate(new ChannelCode('ecommerce'), new LocaleCode('en_US'), new Rate(96))
@@ -82,6 +97,7 @@ class AddScoresToProductAndProductModelRowsSpec extends ObjectBehavior
         ];
 
         $getQualityScoresFactory->__invoke(Argument::any(), 'product_model')->willReturn($scores);
+
 
         $this->__invoke($queryParameters, $rows, 'product_model')->shouldHaveScoreProperties();
     }

@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastruct
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -90,7 +91,7 @@ final class GetUpdatedProductIdsQueryIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $productIds = iterator_to_array($getUpdatedProductModelIdsQuery->since($today->modify('+1 HOUR'), 3));
-        $productIds = array_map(fn (ProductIdCollection $collection) => $collection->toArray(), $productIds);
+        $productIds = array_map(fn (ProductModelIdCollection $collection) => $collection->toArray(), $productIds);
 
         $this->assertCount(2, $productIds);
         $this->assertCount(3, $productIds[0]);

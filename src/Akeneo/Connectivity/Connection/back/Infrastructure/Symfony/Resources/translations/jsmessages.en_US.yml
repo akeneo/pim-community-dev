@@ -42,6 +42,7 @@ pim_title:
     akeneo_connectivity_connection_connect_connected_apps_delete: App delete
     akeneo_connectivity_connection_connect_marketplace_test_app_create: Create a test app
     akeneo_connectivity_connection_connect_marketplace_test_app_delete: Delete test app
+    akeneo_connectivity_connection_connect_connected_apps_open: Open App
 akeneo_connectivity.connection:
     connect:
         marketplace:
@@ -135,6 +136,7 @@ akeneo_connectivity.connection:
                     link: Check out our Help Center for more information.
                 card:
                     developed_by: 'Developed by {{ author }}'
+                    new_access_authorization_required: New access authorization required.
                     not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
@@ -187,6 +189,9 @@ akeneo_connectivity.connection:
                 flash:
                     success: App successfully deleted.
                     error: Sorry, an error occured while deleting the app.
+            open:
+                flash:
+                    error: Sorry, an error occurred while opening the App.
         apps:
             loader:
                 message: Loading ...
@@ -201,7 +206,6 @@ akeneo_connectivity.connection:
                     previous: Previous
                     next: Next
                     allow_and_next: Allow and next
-                    allow_and_finish: Allow and finish
                 progress:
                     authentication: Authentication
                     authorizations: Authorizations
@@ -227,6 +231,7 @@ akeneo_connectivity.connection:
                     no_scope: No specific authorizations have been requested.
                     helper: To know more about app authorization,
                     helper_link: check out our Help Center article.
+                    is_allowed_to: 'Is already allowed to:'
                 flash:
                     success: App successfully configured.
                     error: Sorry, an error occurred while connecting the App.
@@ -254,6 +259,7 @@ akeneo_connectivity.connection:
                     reference_entity_record: reference entity records
                     asset_families: asset families
                     assets: assets
+                new: NEW
             error:
                 sub_text: Please contact the app developer or Akeneo support
                 app_not_found: The client_id does not match any existing app.
@@ -566,3 +572,9 @@ pim_permissions:
             edit: Edit
             view: View
         all: All
+
+pim_notification:
+    types:
+        connected_app_authorizations: Connected App authorizations
+    connected_app_authorizations:
+        button_label: Open App
