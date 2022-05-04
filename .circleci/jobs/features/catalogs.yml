@@ -51,13 +51,13 @@ jobs:
             -   run:
                     name: Start containers
                     command: |
-                        APP_ENV=test_onprem C='fpm mysql elasticsearch' make up
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
-                    command: APP_ENV=test_onprem O="--withoutFixtures" make database
+                    command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: Integration back
-                    command: APP_ENV=test_onprem make catalogs-integration-back
+                    command: APP_ENV=test make catalogs-integration-back
             -   store_test_results:
                     path: var/tests/phpunit
