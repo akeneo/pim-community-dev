@@ -55,6 +55,7 @@ extensions:
             title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
+        feature: permission
 
     pim-job-instance-xlsx-tailored-product-import-edit-global:
         module: akeneotailoredimport/js/job/product/edit/global-settings
