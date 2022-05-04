@@ -39,7 +39,7 @@ class ApiContext implements Context
                 server: [
                     'Content-Type' => 'application/json',
                 ],
-                content: json_encode([
+                content: \json_encode([
                     'name' => 'My first catalog',
                 ]),
             )
