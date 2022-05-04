@@ -25,7 +25,10 @@ onboarder:
             no_supplier: There are no suppliers yet.
             search_by_supplier: Search by Supplier
             no_search_result: There are no suppliers matching this search.
-            error: An error occured while loading the supplier list.
+            notification:
+                error:
+                    title: We are not able to display the supplier list.
+                    content: Sorry about this inconvenience, please try again in a few moments.
             dropdown:
                 export_suppliers: Export suppliers
                 download_template: Download template
@@ -58,6 +61,10 @@ onboarder:
                     email: Email address
                 no_contributor: There are no contributors yet.
                 result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+                notification:
+                    email_error:
+                        title: We were not able to add this contributor.
+                        content: "The email {{ emailAddress }} is invalid : {{ message }}"
             error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
             unknown_error: An error occured while updating the supplier.
