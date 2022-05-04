@@ -40,7 +40,7 @@ class ApiContext implements Context
                     'Content-Type' => 'application/json',
                 ],
                 content: \json_encode([
-                    'name' => 'My first catalog',
+                    'name' => 'Store US',
                 ]),
             )
         );
