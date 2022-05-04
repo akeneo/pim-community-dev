@@ -1,2 +1,3 @@
 pimee_catalog_rule.acl_group.rule:
     order: 130
+    feature: product_rules

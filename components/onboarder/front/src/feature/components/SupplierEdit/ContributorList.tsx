@@ -23,7 +23,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
         {supplierIdentifier, emails: JSON.stringify(contributors)}
     );
 
-    const displayInvalidContributorEmailsWarning = newContributors.filter(email => !isValidEmail(email)).length > 0;
+    const displayInvalidContributorEmailsWarning = 0 < newContributors.filter(email => !isValidEmail(email)).length;
 
     const onChangeNewContributors = (newContributors: string[]) => {
         setNewContributors(newContributors);
@@ -32,7 +32,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
     const handleNewContributorsAdd = () => {
         const validContributorEmails = newContributors
             .filter(contributorEmail => isValidEmail(contributorEmail))
-            .filter(contributorEmail => contributorEmail.length <= 255);
+            .filter(contributorEmail => 255 >= contributorEmail.length);
 
         setNewContributors([]);
 
@@ -48,7 +48,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
     };
 
     useEffect(() => {
-        if (contributors.length === 0) {
+        if (0 === contributors.length) {
             return;
         }
         (async () => {
@@ -96,7 +96,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         </Search.ResultCount>
                     </Search>
 
-                    {contributorsBelongingToAnotherSupplier.length > 0 && (
+                    {0 < contributorsBelongingToAnotherSupplier.length && (
                         <StyledHelper level={'warning'}>
                             {translate(
                                 'onboarder.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning'
@@ -104,7 +104,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         </StyledHelper>
                     )}
 
-                    <Table hasWarnedRows={contributorsBelongingToAnotherSupplier.length > 0}>
+                    <Table hasWarnedRows={0 < contributorsBelongingToAnotherSupplier.length}>
                         <Table.Header>
                             <Table.HeaderCell>
                                 {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}

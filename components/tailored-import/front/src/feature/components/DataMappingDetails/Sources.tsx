@@ -57,17 +57,18 @@ const Sources = ({sources, columns, validationErrors, isMultiSource, onSourcesCh
 
           return (
             <Block
+              title={column ? generateColumnName(column.index, column.label) : ''}
               key={`${uuid}${index}`}
-              action={
-                <IconButton
-                  icon={<CloseIcon />}
-                  onClick={() => handleRemoveSource(uuid)}
-                  title={translate('pim_common.remove')}
-                />
+              actions={
+                <>
+                  <IconButton
+                    icon={<CloseIcon />}
+                    onClick={() => handleRemoveSource(uuid)}
+                    title={translate('pim_common.remove')}
+                  />
+                </>
               }
-            >
-              {column ? generateColumnName(column.index, column.label) : ''}
-            </Block>
+            />
           );
         })}
         {canAddSource ? (
