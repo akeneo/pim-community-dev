@@ -3,9 +3,13 @@ pim_enrich.product:
     upsert:
       unknown_user: 'Der Benutzer "{{ user_id }}" existiert nicht'
       category_no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
+      should_keep_one_owned_category: Sie sollten Ihr Produkt mindestens einer Kategorie zuweisen, in der Sie eine eigene Rechte haben
       locale_no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata. Bitte kontaktieren Sie Ihren Administrator.
       attribute_group_no_access_to_attributes: Sie haben keinen Zugriff auf das {{ attributeCode }} -Attribut dieses Artikels. Bitte kontaktieren Sie Ihren Administrator.
       product_identifier_empty: Der Produkt-Bezeichner benötigt eine nicht leere Zeichenkette
+      duplicated_user_intents: Der Wert für das Attribut {{ attributeCode }} wird mehrfach aktualisiert
+      family_code_empty: Der Familien-Code erfordert eine nicht leere Zeichenkette
+      category_does_not_exist: '{1}Die "{{ categoryCodes }}" Kategorie existiert nicht|]1, Inf[ Die "{{ categoryCodes }}" Kategorien existieren nicht'
       set_value:
         no_channel_code_provided_for_scopable_attribute: 'Das {{ attributeCode }} -Attribut benötigt einen Kanal'
         channel_code_provided_for_non_scopable_attribute: 'Das {{ attributeCode }} -Attribut benötigt keinen Kanal, "{{ channelCode }}" wurde erkannt'
