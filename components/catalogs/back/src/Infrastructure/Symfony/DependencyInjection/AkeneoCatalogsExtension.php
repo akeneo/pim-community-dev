@@ -15,6 +15,9 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class AkeneoCatalogsExtension extends Extension
 {
+    /**
+     * @param array<array-key, mixed> $configs
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

@@ -32,6 +32,8 @@ $rules = [
             'Akeneo\Catalogs\Domain',
             'Akeneo\Catalogs\Application',
             'Akeneo\Catalogs\Infrastructure',
+
+            'Symfony\Component',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 ];
