@@ -2,47 +2,100 @@ import React from 'react';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {PlusIcon, CloseIcon} from '../../icons';
+import {CloseIcon, EditIcon, PlusIcon} from '../../icons';
 
 test('it renders without actions', () => {
-  render(<Block>My block</Block>);
+  render(<Block title="I am a block" />);
 
-  expect(screen.getByText('My block')).toBeInTheDocument();
+  expect(screen.getByText('I am a block')).toBeInTheDocument();
 });
 
-test('it renders action passed by props', () => {
+test('it renders actions passed by props', () => {
   const onRemove = jest.fn();
+  const onEdit = jest.fn();
 
   render(
-    <Block action={<IconButton key="delete" icon={<CloseIcon />} onClick={onRemove} title="Remove" />}>My block</Block>
+    <Block
+      title="My block"
+      actions={
+        <>
+          <IconButton
+            level="tertiary"
+            ghost="borderless"
+            size="small"
+            key="edit"
+            icon={<EditIcon />}
+            title="Edit"
+            onClick={onEdit}
+          />
+          <IconButton
+            level="tertiary"
+            ghost="borderless"
+            size="small"
+            key="remove"
+            icon={<CloseIcon />}
+            title="Remove"
+            onClick={onRemove}
+          />
+        </>
+      }
+    />
   );
+
+  const editIconButton = screen.getByTitle('Edit');
+  fireEvent.click(editIconButton);
+  expect(onEdit).toBeCalled();
 
   const removeIconButton = screen.getByTitle('Remove');
   fireEvent.click(removeIconButton);
   expect(onRemove).toBeCalled();
 });
 
+test('it supports collapsing', () => {
+  const onCollapse = jest.fn();
+  const isOpen = false;
+  jest.useFakeTimers();
+
+  render(
+    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+      I am a block
+    </Block>
+  );
+
+  const collapseIconButton = screen.getByTitle('Collapse');
+  fireEvent.click(collapseIconButton);
+
+  jest.runAllTimers();
+
+  expect(onCollapse).toBeCalled();
+  expect(screen.getByText('I am a block')).toBeInTheDocument();
+});
+
 test('Block supports forwardRef', () => {
   const ref = {current: null};
 
-  render(<Block ref={ref}>My block</Block>);
+  render(<Block title="My block" ref={ref} />);
 
   expect(ref.current).not.toBe(null);
 });
 
 test('Block supports ...rest props', () => {
-  render(<Block data-testid="my_value">My block</Block>);
+  render(<Block title="My block" data-testid="my_value" />);
 
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
 test('it renders children with icon', () => {
+  const onCollapse = jest.fn();
+  const isOpen = false;
+
   render(
-    <Block>
-      <PlusIcon data-testid="children-icon" /> My block
+    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+      <PlusIcon data-testid="children-icon" />
+      Icon
     </Block>
   );
 
-  expect(screen.getByText('My block')).toBeInTheDocument();
+  expect(screen.getByText('Icon')).toBeInTheDocument();
   expect(screen.getByTestId('children-icon')).toBeInTheDocument();
 });

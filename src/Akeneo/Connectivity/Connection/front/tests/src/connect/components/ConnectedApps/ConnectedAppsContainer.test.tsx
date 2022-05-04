@@ -53,6 +53,7 @@ const connectedApps = [
         partner: null,
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     },
@@ -69,6 +70,7 @@ const connectedApps = [
         partner: null,
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     },
@@ -85,6 +87,7 @@ const connectedApps = [
         partner: null,
         is_test_app: true,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     },
@@ -101,6 +104,7 @@ const connectedApps = [
         partner: null,
         is_test_app: false,
         is_pending: false,
+        has_outdated_scopes: false,
         is_loaded: true,
         is_listed_on_the_appstore: true,
     },
@@ -175,6 +179,7 @@ test('The connected apps list renders a warning where at least one connected app
             partner: null,
             is_test_app: false,
             is_pending: false,
+            has_outdated_scopes: false,
             is_loaded: true,
             is_listed_on_the_appstore: false,
         },
@@ -190,7 +195,7 @@ test('The connected apps list renders a warning where at least one connected app
 });
 
 test('The connected apps list renders with pending apps', async () => {
-    const pendingApp = {
+    const pendingApp: ConnectedApp = {
         id: 'pending_app_id',
         name: 'Pending App',
         scopes: [],
@@ -203,6 +208,7 @@ test('The connected apps list renders with pending apps', async () => {
         partner: null,
         is_test_app: false,
         is_pending: true,
+        has_outdated_scopes: false,
     };
     renderWithProviders(<ConnectedAppsContainer allConnectedApps={[...connectedApps, pendingApp]} />);
     await waitFor(() => screen.getByText('Helper mock'));

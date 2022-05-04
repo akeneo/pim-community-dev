@@ -109,6 +109,7 @@ const connectedApp = {
     partner: null,
     is_test_app: false,
     is_pending: false,
+    has_outdated_scopes: true,
 };
 
 test('The connected app container renders without permissions tab', async () => {

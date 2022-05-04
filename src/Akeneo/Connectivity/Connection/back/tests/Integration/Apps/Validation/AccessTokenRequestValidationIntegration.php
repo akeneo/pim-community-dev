@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 {
     private ValidatorInterface $validator;
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FeatureFlags $featureFlags;
     private ClientProvider $clientProvider;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
     private string $clientId;
@@ -123,7 +124,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->validator = $this->get('validator');
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientId = '90741597-54c5-48a1-98da-a68e7ee0a715';
@@ -140,7 +141,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     {
         $appId = '90741597-54c5-48a1-98da-a68e7ee0a715';
 
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp($appId));

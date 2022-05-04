@@ -59,6 +59,11 @@ akeneo_connectivity_connection_apps_rest_refresh:
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\RefreshConnectedAppAction
     methods: [POST]
 
+akeneo_connectivity_connection_apps_rest_get_open_app_url:
+    path: '/rest/apps/connected-apps/{connectionCode}/open-app-url'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Internal\GetOpenAppUrlAction
+    methods: [GET]
+
 # Public API
 akeneo_connectivity_connection_connect_apps_v1_authorize:
     path: '/connect/apps/v1/authorize'
@@ -74,6 +79,11 @@ akeneo_connectivity_connection_connect_apps_v1_openid_public_key:
     path: '/connect/apps/v1/openid/public-key'
     controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\GetOpenIdPublicKeyAction
     methods: [ GET ]
+
+akeneo_connectivity_connection_connect_apps_v1_scopes_update:
+    path: '/connect/apps/v1/scopes/update'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\Public\FlagConnectedAppWithOutdatedScopesAction
+    methods: [ POST ]
 
 # Front API
 ## Apps
@@ -97,5 +107,10 @@ akeneo_connectivity_connection_connect_connected_apps_edit:
 
 akeneo_connectivity_connection_connect_connected_apps_delete:
     path: '/connect/connected-apps/{connectionCode}/delete'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_open:
+    path: '/connect/connected-apps/{connectionCode}/open'
     requirements:
         connectionCode: '[a-zA-Z0-9_-]+'

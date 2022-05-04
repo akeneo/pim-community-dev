@@ -14,18 +14,11 @@ export const AppAuthenticatePage: FC = () => {
     const query = useQuery();
 
     const clientId = query.get('client_id');
-    const newAuthenticationScopes = query.get('new_authentication_scopes')?.split(',');
 
-    if (!clientId || !newAuthenticationScopes) {
+    if (!clientId) {
         history.push('/connect/app-store');
-
         return null;
     }
 
-    return (
-        <AuthenticationModal
-            clientId={clientId}
-            newAuthenticationScopes={newAuthenticationScopes as Array<'email' | 'profile'>}
-        />
-    );
+    return <AuthenticationModal clientId={clientId} />;
 };

@@ -23,6 +23,7 @@
 - PIM-10350: Updating a product with an attribute option code in a simple or a multi select and a different code case than the original one is well handled.
 - PIM-10362: Fix attribute type "number" gets modified in history when import with same value
 - PIM-10372: Fix letter case issue when importing channels
+- PIM-10396: Fix DQI "Enrichment" suggestion does not take into account Table attribute
 - PIM-10389: Export channel currencies for a non-scopable price attribute instead of all enabled currencies
 - PIM-10398: Fix category validator to prevent break-lines
 - PIM-10409: Allow creating a measurement value with case insensitive unit code
@@ -30,7 +31,10 @@
 - PIM-10413: Patch connections routes order
 - PIM-10377: Change Elastic Search field Limit for everyone
 - PIM-10251: Fix locale on API call
-
+- PIM-10421: Add missing translation key for delete button
+- PIM-10418: Simple and multi select values not showing if not imported with the correct letter case
+- PIM-10426: Fix empty array should be normalized as empty JSON object in Measurement Family API
+- PIM-10416: Fix letter case issue when importing families
 
 ## Improvements
 

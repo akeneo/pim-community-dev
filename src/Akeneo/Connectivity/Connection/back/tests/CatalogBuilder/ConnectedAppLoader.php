@@ -145,7 +145,7 @@ SQL;
 
         $this->OAuthStorage->createAuthCode($code, $client, $user, '', null);
         if (!$isPending) {
-            $this->OAuthStorage->createAccessToken($code, $client, $user, null);
+            $this->OAuthStorage->createAccessToken($code, $client, $user, null, \implode(' ', $scopes));
         }
         $this->OAuthStorage->createRefreshToken($code, $client, $user, null);
 

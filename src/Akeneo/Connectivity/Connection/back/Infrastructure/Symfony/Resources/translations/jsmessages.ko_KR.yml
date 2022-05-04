@@ -40,6 +40,7 @@ pim_title:
   akeneo_connectivity_connection_connect_connected_apps_delete: 앱 삭제
   akeneo_connectivity_connection_connect_marketplace_test_app_create: 테스트 앱 만들기
   akeneo_connectivity_connection_connect_marketplace_test_app_delete: 테스트 앱 삭제
+  akeneo_connectivity_connection_connect_connected_apps_open: 앱 열기
 akeneo_connectivity.connection:
   connect:
     marketplace:
@@ -196,7 +197,6 @@ akeneo_connectivity.connection:
           previous: 이전
           next: 다음
           allow_and_next: 허용 후 다음
-          allow_and_finish: 허용 후 완료
         progress:
           authentication: 권한 부여
           authorizations: 권한 부여
@@ -556,3 +556,6 @@ pim_permissions:
       edit: 편집
       view: 보기
     all: 모두
+pim_notification:
+  connected_app_authorizations:
+    button_label: 앱 열기

@@ -1,15 +1,22 @@
 services:
-    Akeneo\Connectivity\Connection\Application\Apps\Command\CreateAppWithAuthorizationHandler:
+    Akeneo\Connectivity\Connection\Application\Apps\Command\CreateConnectedAppWithAuthorizationHandler:
         arguments:
             - '@validator'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\UpdateConnectedAppScopesWithAuthorizationHandler:
+        arguments:
+            - '@validator'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppScopesQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\UpdateConnectedAppRoleWithScopes'
 
     Akeneo\Connectivity\Connection\Application\Apps\Command\ConsentAppAuthenticationHandler:
         arguments:
@@ -54,3 +61,10 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\UpdateConnectedAppDescriptionQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\FindOneConnectedAppByIdQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Persistence\GetAppQuery'
+
+    Akeneo\Connectivity\Connection\Application\Apps\Command\FlagAppContainingOutdatedScopesHandler:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
