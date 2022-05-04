@@ -104,7 +104,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                         </StyledHelper>
                     )}
 
-                    <Table hasWarnedRows={0 < contributorsBelongingToAnotherSupplier.length}>
+                    <Table hasWarningRows={0 < contributorsBelongingToAnotherSupplier.length}>
                         <Table.Header>
                             <Table.HeaderCell>
                                 {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
@@ -116,7 +116,9 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
                                 <Table.Row
                                     key={email}
                                     data-testid={email}
-                                    hasWarning={contributorsBelongingToAnotherSupplier.includes(email)}
+                                    {...(contributorsBelongingToAnotherSupplier.includes(email)
+                                        ? {level: 'warning'}
+                                        : {})}
                                 >
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
