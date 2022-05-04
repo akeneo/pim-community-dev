@@ -45,7 +45,7 @@ const useSupplier = (identifier: string) => {
             const errors: ValidationError[] = await response.json();
             setValidationErrors(errors);
             const emailErrors = filterErrors(errors, 'contributorEmails');
-            if (emailErrors.length > 0) {
+            if (0 < emailErrors.length) {
                 emailErrors.forEach(error =>
                     notify(
                         NotificationLevel.ERROR,
