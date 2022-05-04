@@ -26,16 +26,14 @@ catalogs-coupling-back:
 		$(CATALOGS_PATH)/back/src
 
 .PHONY: catalogs-unit-back
-catalogs-unit-back: APP_ENV ?= test
 catalogs-unit-back:
-	${PHP_RUN} vendor/bin/phpunit -c . \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
 		--testsuite Catalogs_Unit \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml
 
 .PHONY: catalogs-integration-back
-catalogs-integration-back: APP_ENV ?= test
 catalogs-integration-back:
-	${PHP_RUN} vendor/bin/phpunit -c . \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
 
