@@ -27,9 +27,9 @@ final class SqlFindChannels implements FindChannels
         $sql = <<<SQL
             SELECT 
                 c.code AS channelCode, 
-                JSON_OBJECTAGG(l.id, l.code) AS localeCodes,
+                JSON_REMOVE(JSON_OBJECTAGG(IFNULL(l.id, 'NO_LOCALE'), l.code), '$.NO_LOCALE') AS localeCodes,
                 JSON_REMOVE(JSON_OBJECTAGG(IFNULL(ct.locale, 'NO_LABEL'), ct.label), '$.NO_LABEL') AS labels,
-                JSON_OBJECTAGG(cur.id, cur.code) AS activatedCurrencies
+                JSON_REMOVE(JSON_OBJECTAGG(IFNULL(cur.id, 'NO_CURRENCY'), cur.code), '$.NO_CURRENCY') AS activatedCurrencies
             FROM pim_catalog_channel c
             LEFT JOIN pim_catalog_channel_locale cl 
                 ON c.id = cl.channel_id
