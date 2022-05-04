@@ -476,14 +476,14 @@ If you want your `Table.Header` to stay on top when scrolling in the Table, just
   </Story>
 </Canvas>
 
-## Warnable rows
+## Table with warning rows
 
 <Canvas>
-    <Story name="Warnable rows">
+    <Story name="Warning rows">
         {args => {
             return (
                 <Scrollable height={250}>
-                    <Table hasWarnedRows={true}>
+                    <Table hasWarningRows={true}>
                         <Table.Header sticky={0}>
                             <Table.HeaderCell>Name</Table.HeaderCell>
                             <Table.HeaderCell>Family</Table.HeaderCell>
@@ -493,7 +493,7 @@ If you want your `Table.Header` to stay on top when scrolling in the Table, just
                             <Table.HeaderCell>Actions</Table.HeaderCell>
                         </Table.Header>
                         <Table.Body>
-                            <Table.Row hasWarning={true}>
+                            <Table.Row level="warning">
                                 <Table.Cell rowTitle={args.displayRowTitle}>Giant panda</Table.Cell>
                                 <Table.Cell>Ursidae</Table.Cell>
                                 <Table.Cell>Carnivora</Table.Cell>
@@ -507,7 +507,7 @@ If you want your `Table.Header` to stay on top when scrolling in the Table, just
                                     </Button>
                                 </Table.ActionCell>
                             </Table.Row>
-                            <Table.Row hasWarning={false}>
+                            <Table.Row>
                                 <Table.Cell rowTitle={args.displayRowTitle}>Red panda</Table.Cell>
                                 <Table.Cell>Ailuridae</Table.Cell>
                                 <Table.Cell>Carnivora</Table.Cell>

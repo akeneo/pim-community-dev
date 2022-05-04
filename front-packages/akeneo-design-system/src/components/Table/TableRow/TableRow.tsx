@@ -17,10 +17,12 @@ import {TableCell} from '../TableCell/TableCell';
 import {RowIcon, DangerIcon} from '../../../icons';
 import {PlaceholderPosition, usePlaceholderPosition} from '../../../hooks/usePlaceholderPosition';
 
+type Level = 'warning';
+
 const RowContainer = styled.tr<
   {
     isSelected: boolean;
-    hasWarning: boolean;
+    level: Level;
     isClickable: boolean;
     isDragAndDroppable: boolean;
     placeholderPosition: PlaceholderPosition;
@@ -75,8 +77,8 @@ const RowContainer = styled.tr<
     opacity: 1;
   }
 
-  ${({hasWarning}) =>
-    hasWarning &&
+  ${({level}) =>
+    level === 'warning' &&
     css`
       > td {
         background-color: ${getColor('yellow', 10)};
@@ -132,7 +134,7 @@ type TableRowProps = Override<
     /**
      * Define if the row has a warning
      */
-    hasWarning?: boolean;
+    level?: Level;
 
     /**
      * Function called when the user clicks on the row
@@ -161,7 +163,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     {
       rowIndex = 0,
       isSelected,
-      hasWarning,
+      level,
       onSelectToggle,
       onClick,
       draggable,
@@ -175,7 +177,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
     const [placeholderPosition, placeholderDragEnter, placeholderDragLeave, placeholderDragEnd] =
       usePlaceholderPosition(rowIndex);
 
-    const {isSelectable, displayCheckbox, isDragAndDroppable, hasWarnedRows} = useContext(TableContext);
+    const {isSelectable, displayCheckbox, isDragAndDroppable, hasWarningRows} = useContext(TableContext);
     if (isSelectable && (undefined === isSelected || undefined === onSelectToggle)) {
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
@@ -204,7 +206,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         ref={forwardedRef}
         isClickable={undefined !== onClick}
         isSelected={!!isSelected}
-        hasWarning={hasWarning}
+        level={level}
         isDragAndDroppable={isDragAndDroppable}
         onClick={onClick}
         placeholderPosition={isDragAndDroppable ? placeholderPosition : 'none'}
@@ -235,7 +237,7 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
             <RowIcon size={16} />
           </HandleCell>
         )}
-        {hasWarnedRows && <TableCell>{hasWarning && <WarningIcon size={16} />}</TableCell>}
+        {hasWarningRows && <TableCell>{level === 'warning' && <WarningIcon size={16} />}</TableCell>}
         {children}
       </RowContainer>
     );

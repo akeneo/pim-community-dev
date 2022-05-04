@@ -2,7 +2,7 @@ import {createContext} from 'react';
 
 type TableContextType = {
   isSelectable: boolean;
-  hasWarnedRows: boolean;
+  hasWarningRows: boolean;
   displayCheckbox: boolean;
   isDragAndDroppable: boolean;
   onReorder: ((reorderedIndices: number[]) => void) | undefined;
@@ -10,7 +10,7 @@ type TableContextType = {
 
 const TableContext = createContext<TableContextType>({
   isSelectable: false,
-  hasWarnedRows: false,
+  hasWarningRows: false,
   displayCheckbox: false,
   isDragAndDroppable: false,
   onReorder: undefined,
