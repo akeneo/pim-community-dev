@@ -7,4 +7,5 @@ extensions:
         config:
             title: pim_menu.item.sso
             to: authentication_sso_configuration_edit
+        feature: sso_configuration
 

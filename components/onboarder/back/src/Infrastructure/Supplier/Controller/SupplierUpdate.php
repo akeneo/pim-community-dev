@@ -36,10 +36,11 @@ final class SupplierUpdate
                 $errors[] = [
                     'propertyPath' => $violation->getPropertyPath(),
                     'message' => $violation->getMessage(),
+                    'invalidValue' => $violation->getInvalidValue(),
                 ];
             }
 
-            return new JsonResponse(['errors' => $errors], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return new JsonResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (SupplierDoesNotExist $e) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }

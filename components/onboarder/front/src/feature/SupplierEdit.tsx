@@ -22,13 +22,14 @@ const SupplierEdit = () => {
     const translate = useTranslate();
     const [isCurrent, switchTo] = useTabBar('configuration');
     const {supplierIdentifier} = useParams<{supplierIdentifier: string}>();
-    const [supplier, handleSupplierChanges, supplierHasChanges, saveSupplier] = useSupplier(supplierIdentifier);
+    const [supplier, handleSupplierChanges, supplierHasChanges, saveSupplier, validationErrors] =
+        useSupplier(supplierIdentifier);
     const history = useHistory();
 
     const handleSupplierLabelChange = useCallback(
         (newLabel: string) => {
             handleSupplierChanges(supplier => {
-                if (supplier === null) return null;
+                if (null === supplier) return null;
 
                 return {...supplier, label: newLabel};
             });
@@ -39,7 +40,7 @@ const SupplierEdit = () => {
     const handleSupplierContributorsChange = useCallback(
         (newContributors: ContributorEmail[]) => {
             handleSupplierChanges(supplier => {
-                if (supplier === null) return null;
+                if (null === supplier) return null;
 
                 return {...supplier, contributors: newContributors};
             });
@@ -47,7 +48,7 @@ const SupplierEdit = () => {
         [handleSupplierChanges]
     );
 
-    if (supplier === null) {
+    if (null === supplier) {
         return null;
     }
 
@@ -91,7 +92,11 @@ const SupplierEdit = () => {
                     </TabBar.Tab>
                 </TabBar>
                 {isCurrent('configuration') && (
-                    <Configuration supplier={supplier} setLabel={handleSupplierLabelChange} />
+                    <Configuration
+                        supplier={supplier}
+                        setLabel={handleSupplierLabelChange}
+                        validationErrors={validationErrors}
+                    />
                 )}
                 {isCurrent('contributors') && (
                     <ContributorList
