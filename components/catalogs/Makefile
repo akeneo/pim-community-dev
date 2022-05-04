@@ -37,6 +37,10 @@ catalogs-integration-back:
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
 
+.PHONY: catalogs-acceptance-back
+catalogs-acceptance-back:
+	APP_ENV=test ${PHP_RUN} vendor/bin/behat --config $(CATALOGS_PATH)/back/behat.yml
+
 # TESTS FRONT
 
 .PHONY: catalogs-lint-front

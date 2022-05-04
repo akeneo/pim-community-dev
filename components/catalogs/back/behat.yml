@@ -1,0 +1,20 @@
+default:
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: 'config/bootstrap.php'
+            kernel:
+                path: src/Kernel.php
+                class: Kernel
+                environment: test
+                debug: false
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    symfony: ~
+
+    suites:
+        acceptance:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - Akeneo\Catalogs\Test\Acceptance\ApiContext

@@ -59,5 +59,8 @@ jobs:
             -   run:
                     name: Integration back
                     command: APP_ENV=test make catalogs-integration-back
+            -   run:
+                    name: Acceptance back
+                    command: APP_ENV=test make catalogs-acceptance-back
             -   store_test_results:
                     path: var/tests/phpunit
