@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocalePermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -31,20 +32,11 @@ use Symfony\Component\Form\FormEvents;
  */
 class LocalePermissionsSubscriber implements EventSubscriberInterface
 {
-    /** @var LocaleAccessManager */
-    protected $accessManager;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /**
-     * @param LocaleAccessManager $accessManager
-     * @param SecurityFacade      $securityFacade
-     */
-    public function __construct(LocaleAccessManager $accessManager, SecurityFacade $securityFacade)
-    {
-        $this->accessManager = $accessManager;
-        $this->securityFacade = $securityFacade;
+    public function __construct(
+        private LocaleAccessManager $accessManager,
+        private SecurityFacade $securityFacade,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
     /**
