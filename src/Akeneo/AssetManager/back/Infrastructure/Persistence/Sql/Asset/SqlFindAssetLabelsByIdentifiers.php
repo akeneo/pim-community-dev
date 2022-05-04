@@ -47,9 +47,7 @@ FROM
     akeneo_asset_manager_asset a
     JOIN akeneo_asset_manager_asset_family af ON a.asset_family_identifier = af.identifier
 WHERE 
-    a.identifier IN (:assetIdentifiers)
-GROUP BY 
-    identifier;
+    a.identifier IN (:assetIdentifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
