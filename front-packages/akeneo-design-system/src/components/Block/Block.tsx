@@ -1,17 +1,22 @@
-import React, {cloneElement, isValidElement, ReactNode, Ref} from 'react';
-import styled from 'styled-components';
+import React, {ReactNode, Ref, useEffect, useRef, useState} from 'react';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Override} from '../../shared';
-import {IconProps} from '../../icons';
-import {IconButton, IconButtonProps} from '../IconButton/IconButton';
+import {ArrowDownIcon, ArrowUpIcon} from '../../icons';
+import {IconButton} from '../IconButton/IconButton';
 
 type BlockProps = Override<
   Override<React.ButtonHTMLAttributes<HTMLButtonElement>, React.AnchorHTMLAttributes<HTMLAnchorElement>>,
   {
     /**
+     * Title of the block.
+     */
+    title: string;
+
+    /**
      * Add an action that will be displayed on the right of the block.
      */
-    action?: ReactNode;
+    actions?: ReactNode;
 
     /**
      * Accessibility label to describe shortly the button.
@@ -29,27 +34,78 @@ type BlockProps = Override<
     ariaDescribedBy?: string;
 
     /**
-     * Children of the button.
+     * Children of the block.
      */
     children?: ReactNode;
-  }
+  } & (
+    | {
+        /**
+         * Whether or not the Block is open.
+         */
+        isOpen: boolean;
+
+        /**
+         * Label of the collapse button.
+         */
+        collapseButtonLabel: string;
+
+        /**
+         * Handler called when the collapse button is clicked.
+         */
+        onCollapse: (isOpen: boolean) => void;
+      }
+    | {
+        isOpen?: undefined;
+        collapseButtonLabel?: undefined;
+        onCollapse?: undefined;
+      }
+  )
 >;
 
+const ANIMATION_DURATION = 100;
+
 const ActionsContainer = styled.div`
-  display: none;
+  display: flex;
   align-items: center;
+  column-gap: 10px;
+  justify-content: space-between;
+`;
+
+const BlockTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 24px;
+`;
+
+const BlockContent = styled.div<
+  {isCollapsable: boolean; $height: number; $overflow: string; shouldAnimate: boolean} & AkeneoThemedProps
+>`
+  overflow-wrap: break-word;
+  white-space: break-spaces;
+  color: ${getColor('grey', 140)};
+  margin-top: ${({$height, isCollapsable}) => (0 === $height && isCollapsable ? 0 : 5)}px;
+  ${({isCollapsable, $height, $overflow, shouldAnimate}) =>
+    isCollapsable &&
+    css`
+      max-height: ${$height}px;
+      overflow: ${$overflow};
+      ${shouldAnimate &&
+      css`
+        transition: all ${ANIMATION_DURATION}ms ease-in-out;
+        transition-property: max-height, margin-top;
+      `}
+    `}
 `;
 
 const Container = styled.div<AkeneoThemedProps>`
   box-sizing: border-box;
-  padding: 0 20px;
+  padding: 10px 15px;
   border-style: solid;
   border-width: 1px;
   border-radius: 2px;
-  height: 50px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   font-family: inherit;
   font-size: ${getFontSize('default')};
   font-weight: 400;
@@ -60,17 +116,40 @@ const Container = styled.div<AkeneoThemedProps>`
 
   &:hover {
     background-color: ${getColor('grey', 20)};
-    ${ActionsContainer} {
-      display: flex;
-    }
   }
 `;
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {action, ariaDescribedBy, ariaLabel, ariaLabelledBy, children, ...rest}: BlockProps,
+    {title, actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, isOpen, onCollapse, children, ...rest}: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
+    const [contentHeight, setContentHeight] = useState<number>(0);
+    const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    const isCollapsable = undefined !== onCollapse && undefined !== isOpen;
+
+    const handleCollapse = () => onCollapse?.(!isOpen);
+
+    useEffect(() => {
+      if (!isCollapsable) return;
+
+      setContentHeight(contentHeight => {
+        const scrollHeight = contentRef.current?.scrollHeight ?? 0;
+
+        return 0 === scrollHeight ? contentHeight : scrollHeight;
+      });
+
+      const shouldAnimateTimeoutId = window.setTimeout(() => {
+        setShouldAnimate(true);
+      }, ANIMATION_DURATION);
+
+      return () => {
+        window.clearTimeout(shouldAnimateTimeoutId);
+      };
+    }, [children]);
+
     return (
       <Container
         aria-describedby={ariaDescribedBy}
@@ -79,24 +158,35 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
         ref={forwardedRef}
         {...rest}
       >
-        <div>
-          {React.Children.map(children, child => {
-            if (isValidElement<IconProps>(child)) {
-              return React.cloneElement(child, {size: child.props.size ?? 18});
-            }
+        <BlockTitle>
+          {title}
 
-            return child;
-          })}
-        </div>
-        <ActionsContainer>
-          {isValidElement<IconButtonProps>(action) && action.type === IconButton
-            ? cloneElement(action, {
-                level: 'tertiary',
-                ghost: 'borderless',
-                size: 'small',
-              })
-            : action}
-        </ActionsContainer>
+          <ActionsContainer>
+            {actions}
+            {!isCollapsable ? null : (
+              <IconButton
+                icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                title="Collapse"
+                level="tertiary"
+                ghost
+                size="small"
+                onClick={handleCollapse}
+              />
+            )}
+          </ActionsContainer>
+        </BlockTitle>
+        {!isCollapsable ? null : (
+          <BlockContent
+            ref={contentRef}
+            isCollapsable={isCollapsable}
+            $overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+            $height={true === isOpen ? contentHeight : 0}
+            shouldAnimate={shouldAnimate}
+            aria-hidden={!isOpen}
+          >
+            {children}
+          </BlockContent>
+        )}
       </Container>
     );
   }
