@@ -1,5 +1,5 @@
-DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_ENV=test php
-DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run -u www-data --rm -e APP_ENV=test_fake php
+DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
+DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
 .PHONY: lint-back
 lint-back: #Doc: Run PHPStan and PHPCSFixer for Onboarder Serenity

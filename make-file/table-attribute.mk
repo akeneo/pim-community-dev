@@ -3,7 +3,7 @@ include make-file/test.mk
 
 .PHONY: table-attribute-unit-back
 table-attribute-unit-back:
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist $(O)"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist $(O)"
 
 .PHONY: table-attribute-acceptance-back
 table-attribute-acceptance-back: var/tests/behat/table-attribute
