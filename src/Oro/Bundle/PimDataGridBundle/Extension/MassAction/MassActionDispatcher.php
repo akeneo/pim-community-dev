@@ -162,13 +162,11 @@ class MassActionDispatcher
             }
         }
 
-        $datasource = $datagrid->getDatasource();
-        if (in_array($parameters['gridName'], $this->supportedGridNames)) {
-            $qb = $datasource->getProductQueryBuilder();
+        if (!in_array($parameters['gridName'], $this->supportedGridNames)) {
+            $datasource = $datagrid->getDatasource();
+            $repository = $datasource->getMassActionRepository();
+            $repository->applyMassActionParameters($qb, $inset, $values);
         }
-
-        $repository = $datasource->getMassActionRepository();
-        $repository->applyMassActionParameters($qb, $inset, $values);
 
         $preparedParams = [
             'datagrid'   => $datagrid,
