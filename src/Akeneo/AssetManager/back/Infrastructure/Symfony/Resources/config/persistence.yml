@@ -493,10 +493,13 @@ services:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
     # Structure query functions
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
+        alias: '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\ChannelExists
         arguments:
-            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
@@ -511,13 +514,13 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels
         arguments:
-            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
 
     akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
         arguments:
             - '@database_connection'
-            -
+
     akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
         arguments:
