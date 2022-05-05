@@ -34,6 +34,8 @@ return [
         NunoMaduro\PhpInsights\Domain\Insights\ForbiddenTraits::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff::class,
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
+        SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class,
 
         /**
          * Should we discuss?

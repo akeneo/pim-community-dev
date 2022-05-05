@@ -120,4 +120,56 @@ class ApiContext implements Context
         Assert::assertArrayHasKey('id', $payload);
         Assert::assertArrayHasKey('name', $payload);
     }
+
+    /**
+     * @Given existing catalogs
+     */
+    public function existingCatalogs()
+    {
+        $query = $this->container->get(UpsertCatalogQuery::class);
+
+        $query->execute(
+            Catalog::fromSerialized([
+                'id' => 'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+                'name' => 'Store US',
+            ])
+        );
+        $query->execute(
+            Catalog::fromSerialized([
+                'id' => 'd68b8b7c-74e2-43de-9444-838c5b420f07',
+                'name' => 'Store FR',
+            ])
+        );
+    }
+
+    /**
+     * @When the external application retrieves all catalogs using the API
+     */
+    public function theExternalApplicationRetrievesAllCatalogsUsingTheApi()
+    {
+        $client = $this->authentication->getAuthenticatedClient([
+            'read_catalogs',
+        ]);
+
+        $client->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs',
+        );
+
+        $this->response = $client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should contain all catalogs details
+     */
+    public function theResponseShouldContainAllCatalogsDetails()
+    {
+        $payload = \json_decode($this->response->getContent(), true);
+        $items = $payload['_embedded']['items'];
+
+        Assert::assertIsArray($items);
+        Assert::assertCount(2, $items);
+    }
 }

@@ -37,6 +37,7 @@ $rules = [
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform',
+            'Akeneo\Tool\Component\Api',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',

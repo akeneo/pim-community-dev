@@ -24,8 +24,12 @@ services:
 
     Akeneo\Catalogs\Infrastructure\Messenger\CommandBus:
         arguments:
-            - '@catalogs.command.bus'
+            $messageBus: '@catalogs.command.bus'
 
     Akeneo\Catalogs\Infrastructure\Messenger\QueryBus:
         arguments:
-            - '@catalogs.query.bus'
+            $messageBus: '@catalogs.query.bus'
+
+    Akeneo\Catalogs\Infrastructure\Controller\Public\ListCatalogAction:
+        arguments:
+            $paginator: '@pim_api.pagination.offset_hal_paginator'

@@ -14,3 +14,9 @@ Feature:
     Given an existing catalog
     When the external application retrieves the catalog using the API
     Then the response should contain the catalog details
+
+  @database
+  Scenario: Get all catalogs
+    Given existing catalogs
+    When the external application retrieves all catalogs using the API
+    Then the response should contain all catalogs details
