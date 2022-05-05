@@ -2,18 +2,19 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer;
 
-use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\BooleanTranslator;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\AxisValueLabelsNormalizer\AxisValueLabelsNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Component\Localization\LabelTranslatorInterface;
 use PhpSpec\ObjectBehavior;
 
 class BooleanNormalizerSpec extends ObjectBehavior
 {
     function let(
-        BooleanTranslator $booleanTranslator
+        LabelTranslatorInterface $labelTranslator
     ) {
-        $this->beConstructedWith($booleanTranslator);
+        $this->beConstructedWith($labelTranslator);
     }
 
     function it_is_an_axis_value_labels_normalizer()
@@ -29,16 +30,24 @@ class BooleanNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_true_value(
-        BooleanTranslator $booleanTranslator
+        LabelTranslatorInterface $labelTranslator
     ) {
-        $booleanTranslator->translate('', [], ['1'], 'en_US')->shouldBeCalled()->willReturn(['Yes']);
+        $labelTranslator->translate(
+            'pim_common.yes',
+            'en_US',
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'yes')
+        )->willReturn('Yes');
         $this->normalize(ScalarValue::value('my_boolean_attribute', true), 'en_US')->shouldReturn('Yes');
     }
 
     function it_normalizes_a_false_value(
-        BooleanTranslator $booleanTranslator
+        LabelTranslatorInterface $labelTranslator
     ) {
-        $booleanTranslator->translate('', [], ['0'], 'en_US')->shouldBeCalled()->willReturn(['No']);
+        $labelTranslator->translate(
+            'pim_common.no',
+            'en_US',
+            sprintf(FlatTranslatorInterface::FALLBACK_PATTERN, 'no')
+        )->willReturn('No');
         $this->normalize(ScalarValue::value('my_boolean_attribute', false), 'en_US')->shouldReturn('No');
     }
 }
