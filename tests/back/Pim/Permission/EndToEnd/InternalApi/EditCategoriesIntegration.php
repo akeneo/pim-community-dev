@@ -21,6 +21,7 @@ final class EditCategoriesIntegration extends WebTestCase
      */
     public function test_the_user_can_only_apply_permissions_on_default_type_user_group(): void
     {
+        $this->get('feature_flags')->enable('permission');
         $this->authenticateAsAdmin();
         $id = $this->connection->fetchOne('SELECT id FROM pim_catalog_category WHERE code = "master"');
         $this->client->request(

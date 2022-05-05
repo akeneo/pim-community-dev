@@ -162,8 +162,8 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
-    const permissionFeatureFlagIsEnabled = useFeatureFlags().isEnabled('permission');
-    const canEditPermission = securityContext.isGranted('pimee_enrich_category_edit_permissions') && permissionFeatureFlagIsEnabled;
+    const canEditPermission =
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && useFeatureFlags().isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -278,7 +278,10 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     );
   },
   save: async (userGroup: string, state: CategoryPermissionState) => {
-    if (!useFeatureFlags().isEnabled('permission')) {
+    const canEditPermission =
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && useFeatureFlags().isEnabled('permission');
+
+    if (!canEditPermission) {
       return Promise.resolve();
     }
 

@@ -31,6 +31,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * Subscriber responsible for setting default permissions on creation for attribute groups, job instances,
  * product categories and locales.
  *
+ * By default, users have permission on all new entities, because they are put in the "All" group. It means that a new entity
+ * will be automatically visible/editable in Gowth Edition.
+ *
+ * However, an App is in a user group that *is not* part of the "All" group. In this case, the permission
+ * is defined by the default permission configured in the dedicated App user group.
+ *
+ * In Growth Edition, App user group has default permission set at true for all type of permissions. This way, a new entity is automatically visible by the App.
+ *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
 class AddDefaultPermissionsSubscriber implements EventSubscriberInterface

@@ -118,7 +118,8 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      */
     protected function isApplicable(FormEvent $event)
     {
-        return null !== $event->getData()
+        return $this->featureFlags->isEnabled('permission')
+            && null !== $event->getData()
             && null !== $event->getData()->getId()
             && $this->securityFacade->isGranted('pimee_enrich_locale_edit_permissions');
     }

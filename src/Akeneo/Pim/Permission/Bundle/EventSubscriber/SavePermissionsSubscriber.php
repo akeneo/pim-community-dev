@@ -15,6 +15,7 @@ use Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager;
 use Akeneo\Pim\Permission\Bundle\Manager\JobProfileAccessManager;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -36,28 +37,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class SavePermissionsSubscriber implements EventSubscriberInterface
 {
-    /** @var EntityRepository */
-    private $userGroupRepository;
-
-    /** @var AttributeGroupAccessManager */
-    private $attributeGroupAccessManager;
-
-    /** @var JobProfileAccessManager */
-    private $jobInstanceAccessManager;
-
-    /**
-     * @param EntityRepository            $userGroupRepository
-     * @param AttributeGroupAccessManager $attributeGroupAccessManager
-     * @param JobProfileAccessManager     $jobInstanceAccessManager
-     */
     public function __construct(
-        EntityRepository $userGroupRepository,
-        AttributeGroupAccessManager $attributeGroupAccessManager,
-        JobProfileAccessManager $jobInstanceAccessManager
+        private EntityRepository $userGroupRepository,
+        private AttributeGroupAccessManager $attributeGroupAccessManager,
+        private JobProfileAccessManager $jobInstanceAccessManager,
+        private FeatureFlags $featureFlags
     ) {
-        $this->userGroupRepository = $userGroupRepository;
-        $this->attributeGroupAccessManager = $attributeGroupAccessManager;
-        $this->jobInstanceAccessManager = $jobInstanceAccessManager;
     }
 
     /**
@@ -77,6 +62,10 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
      */
     public function saveAttributeGroupPermissions(GenericEvent $event)
     {
+        if (!$this->featureFlags->isEnabled('permission')) {
+            return;
+        }
+
         $attributeGroup = $event->getSubject();
         if (!$attributeGroup instanceof AttributeGroupInterface || !$event->hasArgument('data')) {
             return;
@@ -122,6 +111,10 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
      */
     public function saveJobInstancePermissions(GenericEvent $event)
     {
+        if (!$this->featureFlags->isEnabled('permission')) {
+            return;
+        }
+
         $jobInstance = $event->getSubject();
         if (!$jobInstance instanceof JobInstance || !$event->hasArgument('data')) {
             return;

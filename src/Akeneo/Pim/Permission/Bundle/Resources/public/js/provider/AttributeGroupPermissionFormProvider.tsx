@@ -10,6 +10,7 @@ import {
   PermissionSectionSummary,
   LevelSummaryField,
 } from '@akeneo-pim-community/permission-form';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -155,6 +156,9 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
     onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(AttributeGroupPermissionReducer, initialState);
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') &&
+      useFeatureFlags().isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -167,7 +171,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
         </SectionTitle>
         {!onlyDisplayViewPermissions && (
           <>
-            {securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') ? (
+            {canEditPermissions ? (
               <Helper level="info">{translate('pim_permissions.widget.entity.attribute_group.help')}</Helper>
             ) : (
               <Helper level="warning">
@@ -182,7 +186,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
               onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
               onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
               disabled={state.edit.all}
-              readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') || readOnly}
+              readOnly={!canEditPermissions || readOnly}
               allByDefaultIsSelected={state.edit.all}
               onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
               onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -202,7 +206,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') || readOnly}
+          readOnly={!canEditPermissions || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
@@ -244,7 +248,11 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
     );
   },
   save: async (userGroup: string, state: AttributeGroupPermissionState) => {
-    if (false === securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions')) {
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') &&
+      useFeatureFlags().isEnabled('permission');
+
+    if (!canEditPermissions) {
       return Promise.resolve();
     }
 

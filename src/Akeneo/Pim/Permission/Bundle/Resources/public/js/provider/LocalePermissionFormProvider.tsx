@@ -74,8 +74,8 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
   ) => {
     const [state, dispatch] = useReducer(LocalePermissionReducer, initialState);
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
-    const permissionFeatureFlagIsEnabled = useFeatureFlags().isEnabled('permission');
-    const canEditPermissions = securityContext.isGranted('pimee_enrich_locale_edit_permissions') && permissionFeatureFlagIsEnabled;
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && useFeatureFlags().isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -164,7 +164,10 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
     );
   },
   save: async (userGroup: string, state: LocalePermissionState) => {
-    if (false === securityContext.isGranted('pimee_enrich_locale_edit_permissions') || !useFeatureFlags().isEnabled('permission')) {
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && useFeatureFlags().isEnabled('permission');
+
+    if (!canEditPermissions) {
       return Promise.resolve();
     }
 
