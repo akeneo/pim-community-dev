@@ -25,7 +25,7 @@ test('it renders a searchable list of contributors', () => {
     contributors.map(contributorEmail => expect(screen.getByText(contributorEmail)).toBeInTheDocument());
 });
 
-test('it allows new contributors to be added without duplicates', async () => {
+test('it allows new contributors to be added without duplicates', () => {
     let defaultContributors: ContributorEmail[] = [];
     const setContributors = (newContributors: ContributorEmail[]) => {
         defaultContributors = newContributors;
@@ -40,7 +40,7 @@ test('it allows new contributors to be added without duplicates', async () => {
     contributors.map(contributorEmail => expect(screen.queryAllByText(contributorEmail)).toHaveLength(1));
 });
 
-test('it excludes invalid emails', async () => {
+test('it excludes invalid emails', () => {
     let defaultContributors: ContributorEmail[] = [];
     const setContributors = (newContributors: ContributorEmail[]) => {
         defaultContributors = newContributors;
@@ -61,4 +61,18 @@ test('it excludes invalid emails', async () => {
     invalidContributorEmails.map(invalidContributorEmail =>
         expect(screen.queryByText(invalidContributorEmail)).not.toBeInTheDocument()
     );
+});
+
+test('it displays a warning helper if a contributor email is not valid', () => {
+    let defaultContributors: ContributorEmail[] = [];
+    const setContributors = (newContributors: ContributorEmail[]) => {
+        defaultContributors = newContributors;
+    };
+    renderWithProviders(<ContributorList contributors={defaultContributors} setContributors={setContributors} />);
+
+    userEvent.type(screen.getByTestId('tag-input'), 'invalidemail'.concat('{space}'));
+
+    expect(
+        screen.getByText('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')
+    ).toBeInTheDocument();
 });

@@ -84,11 +84,6 @@ test('it renders an error notification if the saving of the supplier failed', as
             message: 'This value is too long. It should have 3 characters or less.',
             invalidValue: 'Jean Michel',
         },
-        {
-            propertyPath: 'contributorEmails[3]',
-            message: 'This value is not a valid email address.',
-            invalidValue: 'invalidEmail',
-        },
     ];
 
     //Loading => OK
@@ -118,12 +113,7 @@ test('it renders an error notification if the saving of the supplier failed', as
     await act(async () => setSupplier(updatedSupplier));
     await act(async () => saveSupplier());
 
-    expect(notify).toHaveBeenNthCalledWith(
-        1,
-        NotificationLevel.ERROR,
-        'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.title',
-        'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.content'
-    );
+    expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.update_error');
     const [, , , , validationErrors] = result.current;
     expect(validationErrors).toStrictEqual(backendValidationErrors);
 });
@@ -137,7 +127,11 @@ test('it renders an error notification if the loading of the supplier failed', a
     await renderHookWithProviders(() => useSupplier('id1'));
 
     await waitFor(() => {
-        expect(notify).toHaveBeenNthCalledWith(1, NotificationLevel.ERROR, 'onboarder.supplier.supplier_edit.error');
+        expect(notify).toHaveBeenNthCalledWith(
+            1,
+            NotificationLevel.ERROR,
+            'onboarder.supplier.supplier_edit.loading_error'
+        );
     });
 });
 

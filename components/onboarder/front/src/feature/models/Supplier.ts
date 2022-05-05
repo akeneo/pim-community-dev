@@ -1,6 +1,6 @@
 export const LABEL_AND_CODE_MAX_LENGTH = 200;
 
-export const isValidEmail = (email: string) => {
+export const isValidEmail = (email: string): boolean => {
     const emailRegex = /\S+@\S+\.\S+/;
     return emailRegex.test(email);
 };

@@ -1,4 +1,4 @@
-Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier:
+Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier:
   properties:
     label:
       - NotBlank:

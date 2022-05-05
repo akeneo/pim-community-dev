@@ -21,6 +21,14 @@ const Menu = styled.div`
     color: ${getColor('brand', 100)};
 `;
 
+const style = `
+ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+`;
+
 const Page = styled.div`
     flex: 1;
 `;
@@ -28,6 +36,7 @@ const Page = styled.div`
 const FakePIM = () => {
     return (
         <Container>
+            <style>{style}</style>
             <Menu>
                 <AkeneoIcon size={36} />
             </Menu>

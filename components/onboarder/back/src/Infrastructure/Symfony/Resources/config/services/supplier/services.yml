@@ -57,6 +57,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\Sql\DatabaseSupplierContributorsBelongingToAnotherSupplier
+        arguments:
+            - '@database_connection'
+
     # Controllers
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\SupplierList:
         public: true
@@ -89,6 +94,12 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+
+    Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier:
+        public: true
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
         public: true
@@ -161,3 +172,10 @@ services:
             -   onboarder_serenity_xlsx_supplier_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form }
+
+    # Validators
+    Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmailValidator:
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+        tags:
+            - { name: validator.constraint_validator }

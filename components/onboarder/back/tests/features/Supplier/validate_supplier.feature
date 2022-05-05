@@ -27,3 +27,12 @@ Feature: Onboarder Serenity - Suppliers management - validate a supplier
     Then I should have the following validation errors:
       | path                 | message                                                        |
       | contributorEmails[0] | This value is too long. It should have 255 characters or less. |
+
+  Scenario: Edit a supplier contributor with a contributor email already belonging to another supplier
+    Given a supplier with code "supplier1" and label "Supplier1"
+    Given a supplier with code "supplier2" and label "Supplier1" and "3" contributors
+    When I update the supplier "supplier1" contributors with "email1@example.com;email2@example.com"
+    Then I should have the following validation errors:
+      | path                 | message                                                                                                                                                 |
+      | contributorEmails[0] | This email is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience. |
+      | contributorEmails[1] | This email is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience. |
