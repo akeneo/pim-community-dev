@@ -93,7 +93,7 @@ class ExecuteDataMappingHandler
             $processedValues,
             static function (array $reducedValue, ValueInterface $processedValue) {
                 if ($processedValue instanceof ArrayValue) {
-                    return array_merge($reducedValue, $processedValue->getValue());
+                    return [...$reducedValue, ...$processedValue->getValue()];
                 } else {
                     return [...$reducedValue, $processedValue->getValue()];
                 }
