@@ -7,6 +7,10 @@ Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
             columns:
                 - resource_name
                 - resource_id
+        resource_name_resource_uuid_idx:
+            columns:
+                - resource_name
+                - resource_uuid
     fields:
         id:
             type: integer
@@ -20,6 +24,7 @@ Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
             type: string
             column: resource_id
             length: 24
+            nullable: true
         body:
             type: text
         createdAt:
@@ -28,6 +33,10 @@ Akeneo\Pim\Enrichment\Component\Comment\Model\Comment:
         repliedAt:
             type: datetime
             column: replied_at
+        resourceUuid:
+            type: uuid_binary
+            column: resource_uuid
+            nullable: true
     oneToMany:
         children:
             targetEntity: Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface

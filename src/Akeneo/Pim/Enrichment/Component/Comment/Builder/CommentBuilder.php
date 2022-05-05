@@ -4,6 +4,7 @@ namespace Akeneo\Pim\Enrichment\Component\Comment\Builder;
 
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentSubjectInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -50,7 +51,12 @@ class CommentBuilder
         /** @var CommentInterface $comment */
         $comment = new $this->className();
         $comment->setResourceName(ClassUtils::getClass($subject));
-        $comment->setResourceId($subject->getId());
+
+        if ($subject instanceof ProductInterface) {
+            $comment->setResourceUuid($subject->getUuid());
+        } else {
+            $comment->setResourceId($subject->getId());
+        }
         $comment->setAuthor($user);
         $comment->setCreatedAt($now);
         $comment->setRepliedAt($now);
@@ -92,6 +98,7 @@ class CommentBuilder
         $reply = new $this->className();
         $reply->setResourceName($comment->getResourceName());
         $reply->setResourceId($comment->getResourceId());
+        $reply->setResourceUuid($comment->getResourceUuid());
         $reply->setAuthor($user);
         $reply->setCreatedAt($now);
         $reply->setRepliedAt($now);
