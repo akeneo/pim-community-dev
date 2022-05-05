@@ -25,7 +25,6 @@ use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 
 class ExportFileToStorageSubscriber
 {
-
     public function __construct(
         private JobRegistry $jobRegistry,
         private ResolveTransferServiceAndUploadHandler $resolveTransferServiceAndUploadHandler,
@@ -47,14 +46,12 @@ class ExportFileToStorageSubscriber
         }
 
         $jobParameters = $jobExecution->getJobInstance()->getRawParameters();
-        if (array_key_exists('storage', $jobParameters)) {
+        if (!array_key_exists('storage', $jobParameters)) {
             return;
         }
 
-        $writtenFiles = $this->getWrittenFiles($jobExecution);
-
         $command = new ResolveTransferServiceAndUploadCommand();
-        $command->writtenFilesInfo = $writtenFiles;
+        $command->writtenFilesInfo = $this->getWrittenFiles($jobExecution);;
         $command->storageInformation = $jobParameters['storage'];
 
         $this->resolveTransferServiceAndUploadHandler->handle($command);
