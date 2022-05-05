@@ -18,9 +18,9 @@ endif
 
 DOCKER_COMPOSE_BIN = docker-compose
 DOCKER_COMPOSE = $(DOCKER_COMPOSE_BIN) $(COMPOSER_TARGET)
-NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
+NODE_RUN = $(DOCKER_COMPOSE) run --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
-PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
+PHP_RUN = $(DOCKER_COMPOSE) run --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
 
 DATABASE_CATALOG_MINIMAL_PATH ?= src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
@@ -63,12 +63,12 @@ dsm: #Doc: install & build the DSM front package
 
 .PHONY: assets
 assets: #Doc: clean & reinstall assets
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
+	$(DOCKER_COMPOSE) run --rm php rm -rf public/bundles public/js
 	$(PHP_RUN) bin/console pim:installer:assets --symlink --clean
 
 .PHONY: css
 css: #Doc: build PIM CSS
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/css
+	$(DOCKER_COMPOSE) run --rm php rm -rf public/css
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
@@ -112,7 +112,7 @@ var/cache/dev: #Doc: create Sf cache in DEV environement
 
 .PHONY: cache
 cache: #Doc: clean, generate & warm the Sf cache up
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache
 	$(PHP_RUN) bin/console cache:warmup
 
 $(PIM_SRC_PATH)/composer.lock: $(PIM_SRC_PATH)/composer.json #Doc: launch composer update

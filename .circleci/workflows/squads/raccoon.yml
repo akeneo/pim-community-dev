@@ -34,6 +34,13 @@ workflows:
       - deploy_pr_environment:
           requires:
             - "build_srnt_prod"
+          post-steps:
+            - slack/notify:
+                message: "<@felix.couprie> <https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                webhook: ${RACCOON_SLACK_WEBHOOK}
+                include_project_field: false
+                include_job_number_field: false
+                include_visit_job_action: false
       - test_front_tailored_import:
           requires:
             - "build_srnt_dev"
@@ -80,6 +87,13 @@ workflows:
       - deploy_pr_environment:
           requires:
             - "build_srnt_prod"
+          post-steps:
+            - slack/notify:
+                message: "<@felix.couprie> <https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                webhook: ${RACCOON_SLACK_WEBHOOK}
+                include_project_field: false
+                include_job_number_field: false
+                include_visit_job_action: false
       - test_front_job_automation:
           requires:
             - "build_srnt_dev"

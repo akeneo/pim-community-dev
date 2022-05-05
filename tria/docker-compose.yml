@@ -18,6 +18,7 @@ services:
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
       - '../grth:/srv/grth'
     working_dir: '/srv/pim'
+    user: 'www-data'
     command: 'php'
     init: true
     networks:

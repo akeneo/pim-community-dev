@@ -1,0 +1,67 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: Proveedores
+    supplier_create:
+      modal:
+        title: Proveedor
+        code:
+          label: Código
+        label:
+          label: Etiqueta
+      create_button:
+        label: Cree su primer proveedor
+      notification:
+        title: Se ha creado el proveedor.
+        content: Ahora puede editarlo en la sección de gestión de proveedores.
+      error:
+        unknown_error: Se ha producido un error al crear el proveedor.
+        supplier_already_exists: 'Ya existe un proveedor con código «{{ supplierCode }}».'
+    supplier_list:
+      menu_item: Proveedores
+      title: "]-Inf, 1]{{ count }} proveedor|]1, Inf[{{ count }} proveedores"
+      no_supplier: Aún no hay proveedores.
+      search_by_supplier: Buscar por Proveedor
+      no_search_result: No hay proveedores que coincidan con esta búsqueda.
+      error: Se ha producido un error al cargar la lista de proveedores.
+      dropdown:
+        export_suppliers: Exportar proveedores
+        download_template: Descargar plantilla
+        import_suppliers: Importar proveedores
+      columns:
+        supplier: Proveedor
+        number_of_contributors: Número de colaboradores
+        actions: Acciones
+    supplier_delete:
+      sucess_message: El proveedor ha sido eliminado correctamente
+      modal:
+        title: Proveedor
+        confirmation_question: '¿Realmente quiere eliminar a este proveedor?'
+        warning: Al eliminar este proveedor, se perderá cualquier enriquecimiento no guardado.
+        unknown_error: Se ha producido un error al eliminar el proveedor.
+    supplier_edit:
+      tabs:
+        configuration: Configuración
+        contributors: Colaboradores
+        product_files: Archivos de producto
+      configuration_form:
+        code: Código
+        label: Etiqueta de proveedor (requerido)
+      contributors_form:
+        info: 'Añade colaboradores para darles acceso a Akeneo Onboarder. Puede rellenar una lista de direcciones con separadores: espacio, coma, punto y salto de línea.'
+        add_contributors: Añadir colaboradores
+        add_button: Añadir
+        search_by_email_address: Buscar por dirección de email
+        columns:
+          email: Dirección de correo electrónico
+        no_contributor: No hay colaboradores todavía.
+        result_counter: '{0} Ningún resultado |{1} {{ count }} resultado|]1,Inf] {{ count }} resultados'
+      error: Se ha producido un error al cargar el proveedor.
+      success_message: El proveedor se ha actualizado correctamente.
+      unknown_error: Se ha producido un error al actualizar el proveedor.
+pim_title:
+  onboarder_serenity_supplier_list: Proveedores
+  onboarder_serenity_supplier_edit: Editar un proveedor
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Importar Proveedor de Onboarder Serenity en XLSX
