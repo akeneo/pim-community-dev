@@ -172,4 +172,43 @@ class ApiContext implements Context
         Assert::assertIsArray($items);
         Assert::assertCount(2, $items);
     }
+
+    /**
+     * @When the external application updates a catalog using the API
+     */
+    public function theExternalApplicationUpdatesACatalogUsingTheApi()
+    {
+        $client = $this->authentication->getAuthenticatedClient([
+            'write_catalogs',
+        ]);
+
+        $client->request(
+            method: 'PATCH',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: \json_encode([
+                'name' => 'Store US [NEW]',
+            ]),
+        );
+
+        $this->response = $client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog should be updated in the PIM
+     */
+    public function theCatalogShouldBeUpdatedInThePim()
+    {
+        $payload = \json_decode($this->response->getContent(), true);
+
+        $catalog = $this->container->get(FindOneCatalogByIdQueryInterface::class)
+            ->execute($payload['id']);
+
+        Assert::assertNotNull($catalog);
+        Assert::assertEquals('Store US [NEW]', $catalog->getName());
+    }
 }

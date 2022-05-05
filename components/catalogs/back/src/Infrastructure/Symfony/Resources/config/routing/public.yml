@@ -3,6 +3,11 @@ akeneo_catalogs_public_create_catalog:
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\CreateCatalogAction
     methods: [ POST ]
 
+akeneo_catalogs_public_update_catalog:
+    path: '/api/rest/v1/catalogs/{id}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateCatalogAction
+    methods: [ PATCH ]
+
 akeneo_catalogs_public_get_catalog:
     path: '/api/rest/v1/catalogs/{id}'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetCatalogAction
