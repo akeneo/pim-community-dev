@@ -211,4 +211,42 @@ class ApiContext implements Context
         Assert::assertNotNull($catalog);
         Assert::assertEquals('Store US [NEW]', $catalog->getName());
     }
+
+    /**
+     * @When the external application deletes a catalog using the API
+     */
+    public function theExternalApplicationDeletesACatalogUsingTheApi()
+    {
+        $client = $this->authentication->getAuthenticatedClient([
+            'write_catalogs',
+        ]);
+
+        $client->request(
+            method: 'DELETE',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+        );
+
+        $this->response = $client->getResponse();
+
+        Assert::assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should be empty
+     */
+    public function theResponseShouldBeEmpty()
+    {
+        Assert::assertEmpty($this->response->getContent());
+    }
+
+    /**
+     * @Then the catalog should be removed from the PIM
+     */
+    public function theCatalogShouldBeRemovedFromThePim()
+    {
+        $catalog = $this->container->get(FindOneCatalogByIdQueryInterface::class)
+            ->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
+
+        Assert::assertNull($catalog);
+    }
 }
