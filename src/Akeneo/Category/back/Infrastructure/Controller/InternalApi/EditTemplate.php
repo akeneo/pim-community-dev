@@ -2,7 +2,6 @@
 
 namespace Akeneo\Category\Infrastructure\Controller\InternalApi;
 
-use Akeneo\ReferenceEntity\Application\ReferenceEntity\EditReferenceEntity\EditReferenceEntityCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,15 +25,15 @@ class EditTemplate
 
         //($this->editReferenceEntityHandler)($command);
         $template = json_decode($request->getContent(), true);
+        /*
+                template['attributes'] = [
+                    [code=> 'a_text_value', 'type' => 'text']
+                ]
+                    TextAttribute::createText(
 
-        template['attributes'] = [
-            [code=> 'a_text_value', 'type' => 'text']
-        ]
-            TextAttribute::createText(
+                    )
 
-            )
-
-
+        */
         return new JsonResponse($template);
     }
 }
