@@ -33,6 +33,9 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository
 
     # Query functions
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
+        class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindChannels
+
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyItems
 
