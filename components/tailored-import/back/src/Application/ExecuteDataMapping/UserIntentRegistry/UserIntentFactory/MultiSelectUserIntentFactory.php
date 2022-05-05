@@ -21,6 +21,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegi
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
@@ -34,8 +35,14 @@ final class MultiSelectUserIntentFactory implements UserIntentFactoryInterface
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"');
         }
 
-        if (!$value instanceof ArrayValue) {
-            throw new UnexpectedValueException($value, ArrayValue::class, self::class);
+        if (!$value instanceof ArrayValue
+            && !$value instanceof StringValue
+        ) {
+            throw new UnexpectedValueException($value, [ArrayValue::class, StringValue::class], self::class);
+        }
+
+        if ($value instanceof StringValue) {
+            $value = new ArrayValue([$value->getValue()]);
         }
 
         return match ($target->getActionIfNotEmpty()) {

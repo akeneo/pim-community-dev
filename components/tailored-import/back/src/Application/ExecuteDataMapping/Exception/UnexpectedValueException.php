@@ -6,8 +6,17 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exceptio
 
 class UnexpectedValueException extends \InvalidArgumentException
 {
-    public function __construct(mixed $value, string $expectedType, string $subject)
+    public function __construct(mixed $value, string|array $expectedTypes, string $subject)
     {
-        parent::__construct(sprintf('%s only accepts "%s", "%s" given', $subject, $expectedType, get_debug_type($value)));
+        if (is_string($expectedTypes)) {
+            $expectedTypes = [$expectedTypes];
+        }
+
+        parent::__construct(sprintf(
+            '%s only accepts "%s", "%s" given',
+            $subject,
+            implode(', ', $expectedTypes),
+            get_debug_type($value),
+        ));
     }
 }

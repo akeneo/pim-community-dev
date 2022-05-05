@@ -20,7 +20,6 @@ services:
     arguments:
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
-      - '@akeneo.tailored_import.user_intent_aggregator'
       - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
 
   akeneo.tailored_import.handler.get_file_template_information_handler:
@@ -48,6 +47,3 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
     arguments:
       - !tagged_iterator akeneo.tailored_import.user_intent_factory
-
-  akeneo.tailored_import.user_intent_aggregator:
-    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregator

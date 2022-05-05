@@ -19,10 +19,6 @@ services:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
 
-  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToArrayOperationApplier:
-    tags:
-      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
-
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SplitOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
