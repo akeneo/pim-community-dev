@@ -1,0 +1,65 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: Lieferanten
+    supplier_create:
+      modal:
+        title: Lieferant
+        code:
+          label: Code
+        label:
+          label: Label
+      create_button:
+        label: Erstelle deinen ersten Lieferanten
+      notification:
+        title: Der Lieferant wurde erstellt.
+        content: Sie können es nun in der Lieferantenverwaltung bearbeiten.
+      error:
+        unknown_error: Beim Erstellen des Lieferanten ist ein Fehler aufgetreten.
+        supplier_already_exists: 'Ein Lieferant mit dem Code "{{ supplierCode }}" existiert bereits.'
+    supplier_list:
+      menu_item: Lieferanten
+      title: "]-Inf, 1]{{ count }} Lieferant|]1, Inf[{{ count }} Lieferanten"
+      no_supplier: Es sind noch keine Lieferanten vorhanden.
+      search_by_supplier: Suche nach Lieferanten
+      no_search_result: Es gibt keine Lieferanten, die dieser Suche entsprechen.
+      error: Beim Laden der Lieferantenliste ist ein Fehler aufgetreten.
+      dropdown:
+        export_suppliers: Lieferanten exportieren
+        download_template: Vorlage herunterladen
+        import_suppliers: Lieferanten importieren
+      columns:
+        supplier: Lieferant
+        number_of_contributors: Anzahl der Mitwirkenden
+        actions: Aktionen
+    supplier_delete:
+      sucess_message: Der Lieferant wurde erfolgreich gelöscht
+      modal:
+        title: Lieferant
+        confirmation_question: Sind Sie sicher, dass Sie diesen Lieferanten löschen möchten?
+        warning: Durch das Löschen dieses Lieferanten geht jede nicht gespeicherte Anreicherung verloren.
+        unknown_error: Beim Löschen des Lieferanten ist ein Fehler aufgetreten.
+    supplier_edit:
+      tabs:
+        configuration: Konfiguration
+        contributors: Mitwirkende
+        product_files: Produktdateien
+      configuration_form:
+        code: Code
+        label: Lieferantenbezeichnung (erforderlich)
+      contributors_form:
+        info: 'Fügen Sie Mitwirkende hinzu, um ihnen den Zugriff auf Akeneo Onboarder zu ermöglichen. Sie können eine Adressliste mit Trennzeichen ausfüllen: Leerzeichen, Komma, Semikolon & Zeilenumbrüche.'
+        add_button: Hinzufügen
+        search_by_email_address: Nach E-Mail-Adresse suchen
+        columns:
+          email: E‐Mail‐Adresse
+        result_counter: '{0} Kein Ergebnis|{1} {{ count }} Ergebnis|]1,Inf] {{ count }} Ergebnisse'
+      error: Beim Laden des Lieferanten ist ein Fehler aufgetreten.
+      success_message: Der Lieferant wurde erfolgreich aktualisiert.
+      unknown_error: Beim Aktualisieren des Lieferanten ist ein Fehler aufgetreten.
+pim_title:
+  onboarder_serenity_supplier_list: Lieferanten
+  onboarder_serenity_supplier_edit: Lieferanten bearbeiten
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity Lieferanten Import in XLSX

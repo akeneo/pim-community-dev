@@ -28,6 +28,7 @@ onboarder:
       error: Une erreur est survenue lors du chargement de la liste des fournisseurs.
       dropdown:
         export_suppliers: Exporter les fournisseurs
+        download_template: Téléchargez le modèle
         import_suppliers: Import fournisseurs
       columns:
         supplier: Fournisseur
