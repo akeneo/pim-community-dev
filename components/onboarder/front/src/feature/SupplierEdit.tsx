@@ -1,5 +1,14 @@
 import React, {useCallback} from 'react';
-import {Breadcrumb, Button, TabBar, useTabBar} from 'akeneo-design-system';
+import {
+    Breadcrumb,
+    Button,
+    Dropdown,
+    IconButton,
+    MoreIcon,
+    TabBar,
+    useBooleanState,
+    useTabBar,
+} from 'akeneo-design-system';
 import {PageContent, PageHeader, PimView, UnsavedChanges, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Configuration} from './components/SupplierEdit/Configuration';
@@ -7,6 +16,7 @@ import {useSupplier} from './hooks';
 import {useHistory, useParams} from 'react-router';
 import {ContributorList} from './components/SupplierEdit/ContributorList';
 import {ContributorEmail} from './models';
+import {DeleteSupplier} from './components/DeleteSupplier';
 
 const SupplierEdit = () => {
     const translate = useTranslate();
@@ -61,6 +71,7 @@ const SupplierEdit = () => {
                     />
                 </PageHeader.UserActions>
                 <PageHeader.Actions>
+                    <SecondaryActions supplierIdentifier={supplierIdentifier} />
                     <Button level={'primary'} onClick={saveSupplier}>
                         {translate('pim_common.save')}
                     </Button>
@@ -95,6 +106,60 @@ const SupplierEdit = () => {
                 )}
             </StyledPageContent>
         </Container>
+    );
+};
+
+type SecondaryActionsProps = {
+    supplierIdentifier: string;
+};
+
+const SecondaryActions = ({supplierIdentifier}: SecondaryActionsProps) => {
+    const translate = useTranslate();
+    const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
+    const [isModalOpen, openModal, closeModal] = useBooleanState(false);
+    const history = useHistory();
+
+    const onSupplierDeleted = () => {
+        closeModal();
+        history.push('/');
+    };
+
+    return (
+        <>
+            <Dropdown>
+                <IconButton
+                    title={translate('pim_common.other_actions')}
+                    icon={<MoreIcon />}
+                    level="tertiary"
+                    ghost="borderless"
+                    onClick={openDropdown}
+                />
+                {isDropdownOpen && (
+                    <Dropdown.Overlay onClose={closeDropdown}>
+                        <Dropdown.Header>
+                            <Dropdown.Title>{translate('pim_common.other_actions')}</Dropdown.Title>
+                        </Dropdown.Header>
+                        <Dropdown.ItemCollection>
+                            <Dropdown.Item
+                                onClick={() => {
+                                    openModal();
+                                    closeDropdown();
+                                }}
+                            >
+                                {translate('onboarder.supplier.supplier_edit.delete_label')}
+                            </Dropdown.Item>
+                        </Dropdown.ItemCollection>
+                    </Dropdown.Overlay>
+                )}
+            </Dropdown>
+            {isModalOpen && (
+                <DeleteSupplier
+                    identifier={supplierIdentifier}
+                    onSupplierDeleted={onSupplierDeleted}
+                    onCloseModal={closeModal}
+                />
+            )}
+        </>
     );
 };
 
