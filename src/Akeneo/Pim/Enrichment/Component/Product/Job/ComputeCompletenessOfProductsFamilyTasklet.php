@@ -29,6 +29,8 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
 {
     private const BATCH_SIZE = 100;
 
+    private StepExecution $stepExecution;
+
     public function __construct(
         private IdentifiableObjectRepositoryInterface $familyRepository,
         private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,

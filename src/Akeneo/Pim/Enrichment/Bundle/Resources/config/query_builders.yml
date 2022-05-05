@@ -59,7 +59,7 @@ parameters:
 services:
     # Disclaimer: use this factory only for read purpose. For write purpose, it could bring some problems (see PIM-10232).
     # For write, use "pim_catalog.query.product_identifier_query_builder_factory" instead
-    pim_catalog.query.product_query_builder_factory:
+    pim_catalog.query.product_query_builder_factory_for_reading_purpose:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'

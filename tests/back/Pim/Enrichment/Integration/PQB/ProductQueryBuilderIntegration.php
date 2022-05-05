@@ -80,7 +80,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
 
     public function testAddAnAttributeFilterIsCaseInsensitive(): void
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
         $pqb->addFilter('A_FILE', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_IMAGE', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
@@ -198,7 +198,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
 
     protected function createPQBWithoutFamilyFilter(): ProductQueryBuilderInterface
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
         $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
@@ -220,7 +220,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
 
     protected function createPQBWithoutaLocalizedAndScopableTextAreaFilter(): ProductQueryBuilderInterface
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
         $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
@@ -237,7 +237,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
 
     protected function createPQBWithoutACategoriesFilter(): ProductQueryBuilderInterface
     {
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter(
             'a_scopable_price',
             Operators::IS_EMPTY,

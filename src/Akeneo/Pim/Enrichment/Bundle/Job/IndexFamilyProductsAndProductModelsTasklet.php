@@ -71,7 +71,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
             return;
         }
 
-        $productIdentifiers = $this->getProductsForFamilies($familyCodes);
+        $productIdentifiers = $this->getProductIdentifiersForFamilies($familyCodes);
         $productModels = $this->getProductModelsForFamilies($familyCodes);
 
         $this->stepExecution->setTotalItems($productIdentifiers->count() + $productModels->count());
@@ -134,7 +134,7 @@ final class IndexFamilyProductsAndProductModelsTasklet implements TaskletInterfa
     /**
      * @param string[] $familyCodes
      */
-    private function getProductsForFamilies(array $familyCodes): CursorInterface
+    private function getProductIdentifiersForFamilies(array $familyCodes): CursorInterface
     {
         $productQueryBuilder = $this->productQueryBuilderFactory->create();
         $productQueryBuilder->addFilter('family', Operators::IN_LIST, $familyCodes);
