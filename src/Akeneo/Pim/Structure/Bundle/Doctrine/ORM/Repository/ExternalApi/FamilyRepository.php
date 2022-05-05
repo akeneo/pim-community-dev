@@ -6,13 +6,14 @@ namespace Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsNotUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Query\InternalApi\GetFamilyIdsUsedByProductsQueryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
+use Akeneo\Pim\Structure\Component\Validator\Constraints\Type;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -22,11 +23,12 @@ use Symfony\Component\Validator\Validation;
 class FamilyRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
     public function __construct(
-        EntityManager $entityManager,
-        $className,
+        protected EntityManager $entityManager,
+        protected string $className,
         protected FamilyRepositoryInterface $familyRepository,
         protected GetFamilyIdsUsedByProductsQueryInterface $getFamilyIdsUsedByProductsQuery,
-        protected GetFamilyIdsNotUsedByProductsQueryInterface $getFamilyIdsNotUsedByProductsQuery
+        protected GetFamilyIdsNotUsedByProductsQueryInterface $getFamilyIdsNotUsedByProductsQuery,
+        private ValidatorInterface $validator
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
     }
@@ -131,7 +133,6 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
             return;
         }
 
-        $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
                 new Assert\Collection([
@@ -140,9 +141,9 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                         'message' => 'In order to search on family codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
-                        new Assert\Type([
+                        new Type([
                             'type' => 'array',
-                            'message' => 'In order to search on family codes you must send an array of family codes as value, {{ type }} given.'
+                            'message' => 'In order to search on family codes you must send an array of family codes as value, {{ givenType }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -185,7 +186,7 @@ class FamilyRepository extends EntityRepository implements ApiResourceRepository
                     $property
                 ));
             }
-            $violations = $validator->validate($searchFilter, $constraints[$property]);
+            $violations = $this->validator->validate($searchFilter, $constraints[$property]);
             foreach ($violations as $violation) {
                 $exceptionMessages[] = $violation->getMessage();
             }
