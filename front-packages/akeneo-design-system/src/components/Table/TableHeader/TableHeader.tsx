@@ -20,7 +20,7 @@ const SelectColumn = styled.th`
   width: 40px;
 `;
 const HasWarningColumn = styled.th`
-  width: 40px;
+  width: 20px;
   background: linear-gradient(to top, ${getColor('grey', 120)} 1px, ${getColor('white')} 0px);
 `;
 const OrderColumn = styled.th`

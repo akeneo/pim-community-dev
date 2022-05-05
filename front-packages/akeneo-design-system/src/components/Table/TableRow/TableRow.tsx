@@ -81,6 +81,9 @@ const RowContainer = styled.tr<
     level === 'warning' &&
     css`
       > td {
+        :first-child {
+          padding: 0 0 0 5px;
+        }
         background-color: ${getColor('yellow', 10)};
       }
     `};
