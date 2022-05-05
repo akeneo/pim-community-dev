@@ -1,0 +1,4 @@
+services:
+    # TODO: make alias specific to Assets
+    Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels:
+        class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindChannels
