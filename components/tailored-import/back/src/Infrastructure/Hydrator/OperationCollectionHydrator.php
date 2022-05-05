@@ -16,10 +16,10 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToArrayOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
 
@@ -53,6 +53,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
         return \array_map(
             static fn (array $normalizedOperation) => match ($normalizedOperation['type']) {
                 CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
+                SplitOperation::TYPE => new SplitOperation($normalizedOperation['separator']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,
@@ -65,16 +66,8 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
             'pim_catalog_boolean' => $this->getBooleanRequiredOperations(),
             'pim_catalog_metric' => $this->getMeasurementRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_number' => $this->getNumberRequiredOperations($normalizedTarget['source_configuration']),
-            'pim_catalog_multiselect' => $this->getMultiSelectRequiredOperations(),
             default => [],
         };
-    }
-
-    private function getMultiSelectRequiredOperations(): array
-    {
-        return [
-            new ConvertToArrayOperation(),
-        ];
     }
 
     private function getBooleanRequiredOperations(): array
