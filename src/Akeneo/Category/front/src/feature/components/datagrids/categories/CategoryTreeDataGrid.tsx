@@ -64,6 +64,10 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
+  const followEditTemplate = useCallback((tree: CategoryTreeModel) => {
+    router.redirect(`/enrich/product-category-tree/${tree.id}/template/default`);
+  }, [router]);
+
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
       notify(
@@ -155,6 +159,12 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         {translate('pim_common.delete')}
                       </Button>
                     )}
+                    <Button
+                      level="primary"
+                      size={'small'}
+                      onClick={() => followEditTemplate(tree)}>
+                      Edit template
+                    </Button>
                   </TableActionCell>
                 </Table.Row>
               ))}

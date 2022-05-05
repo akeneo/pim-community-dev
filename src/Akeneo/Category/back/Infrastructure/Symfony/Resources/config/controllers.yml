@@ -66,3 +66,6 @@ services:
             - { related_entity: product, form_type: 'Akeneo\Category\Infrastructure\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]
+
+    Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplate: ~
+    Akeneo\Category\Infrastructure\Controller\InternalApi\EditTemplate: ~

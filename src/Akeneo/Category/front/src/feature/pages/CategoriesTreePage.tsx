@@ -1,6 +1,6 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from 'react-router';
-import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState} from 'akeneo-design-system';
+import {Breadcrumb, SkeletonPlaceholder, SectionTitle, useBooleanState, Button} from 'akeneo-design-system';
 import {
   FullScreenError,
   PageContent,
@@ -15,6 +15,7 @@ import {
 import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../hooks';
 import {CategoryTree} from '../components/tree';
 import {NewCategoryModal, DeleteCategoryModal} from '../components/modals';
+import {CategoryTreeModel} from "../models";
 
 type Params = {
   treeId: string;
@@ -63,6 +64,9 @@ const CategoriesTreePage: FC = () => {
     }
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
   };
+  const followEditTemplate = useCallback(() => {
+    router.redirect(`/enrich/product-category-tree/${treeId}/template/default`);
+  }, [router, treeId]);
 
   const addCategory = (parentCode: string, onCreate: () => void) => {
     setCategoryToCreate({parentCode, onCreate});
@@ -128,6 +132,12 @@ const CategoriesTreePage: FC = () => {
             viewName="pim-menu-user-navigation"
             className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
           />
+          <Button
+            level="primary"
+            size={'small'}
+            onClick={followEditTemplate}>
+            Edit template
+          </Button>
         </PageHeader.UserActions>
         <PageHeader.Title>{tree?.label ?? treeId}</PageHeader.Title>
       </PageHeader>
