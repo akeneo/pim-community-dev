@@ -14,21 +14,11 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class JobExecutionEvent extends Event implements EventInterface
 {
-    /** @var JobExecution */
-    protected $jobExecution;
-
-    /**
-     * @param JobExecution $jobExecution
-     */
-    public function __construct(JobExecution $jobExecution)
+    public function __construct(protected JobExecution $jobExecution)
     {
-        $this->jobExecution = $jobExecution;
     }
 
-    /**
-     * @return JobExecution
-     */
-    public function getJobExecution()
+    public function getJobExecution(): JobExecution
     {
         return $this->jobExecution;
     }
