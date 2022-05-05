@@ -56,16 +56,6 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
         );
-        // To ensure that it doesn't crash when saving an unknown product
-        $unknownProductScore = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0)),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-        );
         // To ensure that it doesn't crash when saving a unknown product
         $unknownProductScore = new ProductScores(
             new ProductId($productIdB),
@@ -85,7 +75,7 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         $this->assertProductScoreExists($productScoreB);
     }
 
-    public function test_it_purges_scores_older_than_a_given_date(): void
+    public function it_purges_scores_older_than_a_given_date(): void
     {
         $productIdA = $this->createProduct('product_A')->getId();
         $productIdB = $this->createProduct('product_B')->getId();
