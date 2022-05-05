@@ -20,7 +20,7 @@ PIM_CONTEXT=onboarder-serenity make unit-front
 
 Watch the Onboarder Serenity unit front tests:
 ```
-docker-compose -f ./docker-compose.yml -f ./docker-compose.override.yml run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn --cwd=components/onboarder/front test:unit:watch
+docker-compose -f ./docker-compose.yml -f ./docker-compose.override.yml run --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node yarn --cwd=components/onboarder/front test:unit:watch
 ```
 
 # Integration tests

@@ -68,7 +68,7 @@ When creating a new context Makefile dedicated to testing, please add a `include
 
 When working on a PR that involves a branch on both CE & EE, here is a command to makes composer to install the right CE branch:
 
-    docker-compose run -u www-data --rm php php -d memory_limit=4G /usr/local/bin/composer require akeneo/pim-community-dev:dev-<BRANCH_NAME>
+    docker-compose run --rm php php -d memory_limit=4G /usr/local/bin/composer require akeneo/pim-community-dev:dev-<BRANCH_NAME>
 
 
 

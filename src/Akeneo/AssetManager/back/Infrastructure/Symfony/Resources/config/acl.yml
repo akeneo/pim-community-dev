@@ -2,108 +2,130 @@ akeneo_assetmanager_asset_family_create:
     type: action
     label: akeneo_assetmanager.acl.asset_family.create
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_edit:
     type: action
     label: akeneo_assetmanager.acl.asset_family.edit
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_manage_transformation:
     type: action
     label: akeneo_assetmanager.acl.asset_family.manage_transformation
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_manage_product_link_rule:
     type: action
     label: akeneo_assetmanager.acl.asset_family.manage_product_link_rule
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_execute_product_link_rule:
     type: action
     label: akeneo_assetmanager.acl.asset_family.execute_product_link_rule
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_execute_naming_conventions:
     type: action
     label: akeneo_assetmanager.acl.asset_family.execute_naming_conventions
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_delete:
     type: action
     label: akeneo_assetmanager.acl.asset_family.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_family_manage_permission:
     type: action
     label: akeneo_assetmanager.acl.asset_family.manage_permission
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_create:
     type: action
     label: akeneo_assetmanager.acl.asset.create
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_edit:
     type: action
     label: akeneo_assetmanager.acl.asset.edit
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_list_product:
     type: action
     label: akeneo_assetmanager.acl.asset.list_product
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_asset_delete:
     type: action
     label: akeneo_assetmanager.acl.asset.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_attribute_create:
     type: action
     label: akeneo_assetmanager.acl.attribute.create
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_attribute_delete:
     type: action
     label: akeneo_assetmanager.acl.attribute.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_attribute_edit:
     type: action
     label: akeneo_assetmanager.acl.attribute.edit
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_option_edit:
     type: action
     label: akeneo_assetmanager.acl.option.edit
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 akeneo_assetmanager_option_delete:
     type: action
     label: akeneo_assetmanager.acl.option.delete
     group_name: akeneo_assetmanager.acl_group.asset_manager
+    feature: asset_manager
 
 pim_api_asset_family_edit:
     type: action
     label: pim_api.acl.asset_family.create
     group_name: pim_api.acl_group.asset
+    feature: asset_manager
 
 pim_api_asset_family_list:
     type: action
     label: pim_api.acl.asset_family.list
     group_name: pim_api.acl_group.asset
+    feature: asset_manager
 
 pim_api_asset_edit:
     type: action
     label: pim_api.acl.asset.create
     group_name: pim_api.acl_group.asset
+    feature: asset_manager
 
 pim_api_asset_list:
     type: action
     label: pim_api.acl.asset.list
     group_name: pim_api.acl_group.asset
+    feature: asset_manager
 
 pim_api_asset_remove:
     type: action
     label: pim_api.acl.asset.remove
     group_name: pim_api.acl_group.asset
+    feature: asset_manager

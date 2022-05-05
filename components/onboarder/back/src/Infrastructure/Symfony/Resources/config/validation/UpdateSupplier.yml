@@ -6,6 +6,7 @@ Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier:
       - Length:
           max: 200
     contributorEmails:
+      - Unique: ~
       - All:
           - Email: ~
           - Length:
