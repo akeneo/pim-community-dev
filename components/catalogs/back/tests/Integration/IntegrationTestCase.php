@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration;
 
+use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -13,15 +15,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 abstract class IntegrationTestCase extends WebTestCase
 {
-    public static function setUpBeforeClass(): void
-    {
-        parent::setUpBeforeClass();
-        static::bootKernel(['environment' => 'test', 'debug' => false]);
-
-        $fixturesLoader = self::getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->purge();
-    }
-
     protected function setUp(): void
     {
         parent::setUp();
@@ -60,5 +53,22 @@ abstract class IntegrationTestCase extends WebTestCase
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
+    }
+
+    protected function getAuthenticatedClient(array $scopes = []): KernelBrowser
+    {
+        $connectedAppFactory = self::getContainer()->get(ConnectedAppFactory::class);
+        $connectedApp = $connectedAppFactory->createFakeConnectedAppWithValidToken(
+            '11231759-a867-44b6-a36d-3ed7aeead51a',
+            'shopifi',
+            $scopes,
+        );
+
+        /** @var KernelBrowser $client */
+        $client = self::getContainer()->get(KernelBrowser::class);
+
+        $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+
+        return $client;
     }
 }

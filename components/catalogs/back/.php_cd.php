@@ -34,6 +34,12 @@ $rules = [
             'Akeneo\Catalogs\Infrastructure',
 
             'Symfony\Component',
+            'Doctrine\DBAL',
+            'Ramsey\Uuid\Uuid',
+            'Akeneo\Platform',
+
+            // @todo remove
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 ];

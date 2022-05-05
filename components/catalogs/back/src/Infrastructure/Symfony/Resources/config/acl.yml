@@ -1,0 +1,14 @@
+pim_api_catalog_list:
+    type: action
+    label: akeneo_catalogs.acl.catalog_list
+    group_name: oro_config_system
+
+pim_api_catalog_edit:
+    type: action
+    label: akeneo_catalogs.acl.catalog_edit
+    group_name: oro_config_system
+
+pim_api_catalog_remove:
+    type: action
+    label: akeneo_catalogs.acl.catalog_remove
+    group_name: oro_config_system

@@ -49,7 +49,7 @@ return [
             'maxLinesLength' => 150, // default is 20
         ],
         NunoMaduro\PhpInsights\Domain\Insights\CyclomaticComplexityIsHigh::class => [
-            'maxComplexity' => 20, // default is 5
+            'maxComplexity' => 10, // default is 5
         ],
     ],
     'requirements' => [

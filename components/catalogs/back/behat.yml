@@ -17,4 +17,6 @@ default:
             paths:
                 - '%paths.base%/../features'
             contexts:
+                - Akeneo\Catalogs\Test\Acceptance\DatabaseContext
+                - Akeneo\Catalogs\Test\Acceptance\AuthenticationContext
                 - Akeneo\Catalogs\Test\Acceptance\ApiContext

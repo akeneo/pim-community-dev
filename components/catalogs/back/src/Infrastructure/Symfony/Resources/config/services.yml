@@ -3,7 +3,29 @@ services:
         autowire: true
         autoconfigure: true
 
+    _instanceof:
+        Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:
+            tags: [ 'pim_api.security.scope_mapper' ]
+
     Akeneo\Catalogs\:
         resource: '../../../../'
         exclude:
             - '../../../Symfony/'
+            - '../../../../Domain/'
+            - '../../../../Application/Exception'
+
+    Akeneo\Catalogs\Application\CommandHandler\:
+        resource: '../../../../Application/CommandHandler/'
+        tags: [ 'messenger.message_handler' ]
+
+    Akeneo\Catalogs\Application\QueryHandler\:
+        resource: '../../../../Application/QueryHandler/'
+        tags: [ 'messenger.message_handler' ]
+
+    Akeneo\Catalogs\Infrastructure\Messenger\CommandBus:
+        arguments:
+            - '@catalogs.command.bus'
+
+    Akeneo\Catalogs\Infrastructure\Messenger\QueryBus:
+        arguments:
+            - '@catalogs.query.bus'

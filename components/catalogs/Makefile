@@ -1,5 +1,13 @@
 CATALOGS_PATH ?= components/catalogs
 
+ifeq ($(CI),true)
+	BEHAT_ARGS += --no-snippets --no-interaction
+	PHPINSIGHTS_ARGS += --summary
+endif
+ifneq ($(CI),true)
+	PSALM_ARGS += --show-info=true
+endif
+
 # TESTS BACK
 
 .PHONY: catalogs-lint-back
@@ -14,8 +22,8 @@ endif
 		--configuration $(CATALOGS_PATH)/back/phpstan.neon \
 		--level=8 \
 		$(CATALOGS_PATH)/back/src
-	$(PHP_RUN) vendor/bin/psalm -c $(CATALOGS_PATH)/back/psalm.xml
-	$(PHP_RUN) vendor/bin/phpinsights analyse --summary --no-interaction \
+	$(PHP_RUN) vendor/bin/psalm $(PSALM_ARGS) -c $(CATALOGS_PATH)/back/psalm.xml
+	$(PHP_RUN) vendor/bin/phpinsights analyse $(PHPINSIGHTS_ARGS) --no-interaction \
 		--config-path=$(CATALOGS_PATH)/back/phpinsights.php \
 		$(CATALOGS_PATH)/back/src/
 
@@ -34,12 +42,33 @@ catalogs-unit-back:
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
-		--testsuite Catalogs_Integration \
-		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml
+		--testsuite Catalogs_Integration
 
 .PHONY: catalogs-acceptance-back
 catalogs-acceptance-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/behat --config $(CATALOGS_PATH)/back/behat.yml
+
+.PHONY: catalogs-coverage-back
+catalogs-coverage-back:
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+		--testsuite Catalogs_Unit \
+		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml \
+		--coverage-php coverage/Catalogs/Back/Global/unit.cov \
+		--coverage-html coverage/Catalogs/Back/Unit/ \
+		--coverage-filter $(CATALOGS_PATH)/back/src/
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+		--testsuite Catalogs_Integration \
+		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml \
+		--coverage-php coverage/Catalogs/Back/Global/integration.cov \
+		--coverage-html coverage/Catalogs/Back/Integration/ \
+		--coverage-filter $(CATALOGS_PATH)/back/src/
+
+	# download phpcov binary
+	$(DOCKER_COMPOSE) run -u www-data -w /srv/pim/var --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
+	# Merge code coverages
+	${PHP_RUN} -d memory_limit=-1 var/phpcov.phar merge \
+		--html coverage/Catalogs/Back/Global/ \
+		coverage/Catalogs/Back/Global/
 
 # TESTS FRONT
 

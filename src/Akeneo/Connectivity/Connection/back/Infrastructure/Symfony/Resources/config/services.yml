@@ -52,3 +52,15 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher: ~
 
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~
+
+    Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory:
+        arguments:
+            - '@fos_oauth_server.storage'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\AppRoleWithScopesFactory'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUser'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
+            - '@database_connection'
+            - '@pim_user.repository.user'
