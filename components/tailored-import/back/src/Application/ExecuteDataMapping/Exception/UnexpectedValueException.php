@@ -16,7 +16,7 @@ class UnexpectedValueException extends \InvalidArgumentException
             '%s only accepts "%s", "%s" given',
             $subject,
             implode(', ', $expectedTypes),
-            get_debug_type($value)
+            get_debug_type($value),
         ));
     }
 }

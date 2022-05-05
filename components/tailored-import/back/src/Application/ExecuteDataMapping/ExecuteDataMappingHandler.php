@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
-use Akeneo\AssetManager\Domain\Model\Asset\Value\Value;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
@@ -93,7 +92,7 @@ class ExecuteDataMappingHandler
         $value = array_reduce(
             $processedValues,
             static function (array $reducedValue, ValueInterface $processedValue) {
-                if ($processedValue instanceof ArrayValue)  {
+                if ($processedValue instanceof ArrayValue) {
                     return array_merge($reducedValue, $processedValue->getValue());
                 } else {
                     return [...$reducedValue, $processedValue->getValue()];
