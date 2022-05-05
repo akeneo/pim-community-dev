@@ -11,22 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredImport\Application\SampleData\GetSampleData;
+namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-final class GetSampleDataResult
+final class ConvertToArrayOperation implements OperationInterface
 {
-    private function __construct(
-        private array $sampleData,
-    ) {
-    }
-
-    public static function create(array $sampleData): self
-    {
-        return new self($sampleData);
-    }
+    public const TYPE = 'convert_to_array';
 
     public function normalize(): array
     {
-        return $this->sampleData;
+        return [
+            'type' => self::TYPE,
+        ];
     }
 }
