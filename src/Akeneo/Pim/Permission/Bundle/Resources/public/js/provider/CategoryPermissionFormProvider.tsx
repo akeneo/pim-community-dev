@@ -10,6 +10,7 @@ import {
   PermissionSectionSummary,
   LevelSummaryField,
 } from '@akeneo-pim-community/permission-form';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -161,6 +162,8 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     onlyDisplayViewPermissions = false
   ) => {
     const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
+    const permissionFeatureFlagIsEnabled = useFeatureFlags().isEnabled('permission');
+    const canEditPermission = securityContext.isGranted('pimee_enrich_category_edit_permissions') && permissionFeatureFlagIsEnabled;
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -173,7 +176,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
         </SectionTitle>
         {!onlyDisplayViewPermissions && (
           <>
-            {securityContext.isGranted('pimee_enrich_category_edit_permissions') ? (
+            {canEditPermission ? (
               <Helper level="info">{translate('pim_permissions.widget.entity.category.help')}</Helper>
             ) : (
               <Helper level="warning">
@@ -189,7 +192,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
               onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_OWN, identifier: code})}
               onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_OWN, identifier: code})}
               disabled={state.own.all}
-              readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+              readOnly={!canEditPermission || readOnly}
               allByDefaultIsSelected={state.own.all}
               onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_OWN})}
               onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_OWN})}
@@ -207,7 +210,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
               onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
               onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
               disabled={state.edit.all}
-              readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+              readOnly={!canEditPermission || readOnly}
               allByDefaultIsSelected={state.edit.all}
               onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
               onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -228,7 +231,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_category_edit_permissions') || readOnly}
+          readOnly={!canEditPermission || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
@@ -275,7 +278,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
     );
   },
   save: async (userGroup: string, state: CategoryPermissionState) => {
-    if (!securityContext.isGranted('pimee_enrich_category_edit_permissions')) {
+    if (!useFeatureFlags().isEnabled('permission')) {
       return Promise.resolve();
     }
 

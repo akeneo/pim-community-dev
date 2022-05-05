@@ -160,7 +160,6 @@ services:
             - '@oro_security.security_facade'
             - '@validator'
             - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
-            - '@feature_flags'
 
     Akeneo\Pim\Permission\Bundle\Controller\InternalApi\GetUserGroupCategoriesPermissionsAction:
         public: true

@@ -55,7 +55,6 @@ class AkeneoPimPermissionExtension extends Extension
         $loader->load('renderers.yml');
         $loader->load('context.yml');
         $loader->load('view_elements/attribute_group.yml');
-        $loader->load('view_elements/category.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('steps.yml');
         $loader->load('job_constraints.yml');
