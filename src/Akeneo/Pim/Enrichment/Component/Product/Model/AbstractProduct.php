@@ -86,6 +86,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getId()
     {
+        throw new \Exception('getId() should not be called');
         return $this->id;
     }
 
@@ -94,6 +95,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function setId($id)
     {
+        throw new \Exception('setId() should not be called');
         $this->id = $id;
 
         return $this;
