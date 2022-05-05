@@ -19,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInte
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
-use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -31,40 +30,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class GrantedCategoryProductsCounter implements CategoryItemsCounterInterface
 {
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
-
-    /** @var CategoryRepositoryInterface */
-    private $categoryRepository;
-
-    /** @var CategoryAccessRepository */
-    private $categoryAccessRepo;
-
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param CategoryRepositoryInterface         $categoryRepository
-     * @param CategoryAccessRepository            $categoryAccessRepo
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param TokenStorageInterface               $tokenStorage
-     */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryAccessRepository $categoryAccessRepo,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage
+        private ProductQueryBuilderFactoryInterface $pqbFactory,
+        private CategoryAccessRepository $categoryAccessRepo,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private TokenStorageInterface $tokenStorage
     ) {
-        $this->pqbFactory = $pqbFactory;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**

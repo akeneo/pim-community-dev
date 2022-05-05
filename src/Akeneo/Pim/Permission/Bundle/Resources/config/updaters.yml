@@ -114,7 +114,6 @@ services:
         arguments:
             - '@pim_catalog.repository.group_type'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.product_query_builder_factory_without_permission'
 
     # CE overrides
     pim_catalog.updater.adder.association_field:
