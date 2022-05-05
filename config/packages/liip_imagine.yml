@@ -10,49 +10,51 @@ liip_imagine:
                 visibility:         private
     filter_sets:
         cache: ~
+
         avatar_med:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [58, 58], mode: outbound }
-                strip:        ~
 
         preview:
             quality:          95
             format:           jpg
             filters:
+                icc_strip: ~
                 background:
                     color: "#ffffff"
-                strip:        ~
 
         thumbnail:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [320, 320], mode: inset }
-                strip:        ~
                 auto_rotate: ~
 
         thumbnail_small:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 auto_rotate: ~
                 thumbnail:    { size: [280, 280], mode: inset }
-                strip:        ~
+
         dropdown_select_picture:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [28, 28], mode: outbound }
-                strip:        ~
 
         pdf_thumbnail:
             quality:          95
             format:           png
             filters:
+                icc_strip: ~
                 downscale: { max: [320, 240] }
-                strip:        ~
 
         am_url_image_preview:
             cache: asset_manager_flysystem_cache
@@ -60,6 +62,7 @@ liip_imagine:
             format:           jpg
             data_loader:      stream_data_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [1000, 1000], mode: inset }
                 background:
                     color: "#ffffff"
@@ -70,6 +73,7 @@ liip_imagine:
             format:           jpg
             data_loader:      stream_data_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:
                     color: "#ffffff"
@@ -80,6 +84,7 @@ liip_imagine:
             format:           jpg
             data_loader:      stream_data_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [128, 128], mode: inset }
                 background:
                     color: "#ffffff"
@@ -90,6 +95,7 @@ liip_imagine:
             format:           jpg
             data_loader:      flysystem_asset_manager_data_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [1000, 1000], mode: inset }
                 background:
                     color: "#ffffff"
@@ -100,6 +106,7 @@ liip_imagine:
             format:           jpg
             data_loader:      flysystem_asset_manager_data_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:
                     color: "#ffffff"
@@ -110,6 +117,7 @@ liip_imagine:
             format:           jpg
             data_loader:      stream_pdf_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [1000, 1000], mode: inset }
                 background:
                     color: "#ffffff"
@@ -120,6 +128,7 @@ liip_imagine:
             format:           jpg
             data_loader:      stream_pdf_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:
                     color: "#ffffff"
@@ -130,6 +139,7 @@ liip_imagine:
             format:           jpg
             data_loader:      flysystem_pdf_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [1000, 1000], mode: inset }
                 background:
                     color: "#ffffff"
@@ -140,6 +150,7 @@ liip_imagine:
             format:           jpg
             data_loader:      flysystem_pdf_loader
             filters:
+                icc_strip: ~
                 thumbnail:    { size: [320, 320], mode: inset }
                 background:
                     color: "#ffffff"
