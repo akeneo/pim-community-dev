@@ -96,7 +96,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
@@ -162,7 +162,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
@@ -228,7 +228,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'name' => 'Catalog Manager',
             ],
         ];
-        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS)
+        $categoryAccessRepo->getGrantedUserGroupsForEntityWithValues($product, Attributes::OWN_PRODUCTS, true)
                            ->willReturn($ownerGroups);
         $chainedNormalizer->normalize($ownerGroups, 'internal_api', [])->willReturn($ownerGroups);
 
