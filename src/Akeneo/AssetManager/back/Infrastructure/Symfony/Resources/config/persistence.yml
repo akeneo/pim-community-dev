@@ -494,7 +494,7 @@ services:
 
     # Structure query functions
     akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
-        alias: '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+        alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels
 
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\ChannelExists

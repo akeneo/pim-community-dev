@@ -442,7 +442,7 @@ services:
 
     # Structure query functions
     akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels:
-        alias: '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
+        alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels
 
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\ChannelExists
