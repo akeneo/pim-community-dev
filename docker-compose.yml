@@ -42,7 +42,7 @@ services:
       - 'pim'
 
   node:
-    image: 'akeneo/node:12'
+    image: 'akeneo/node:14'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
       CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
