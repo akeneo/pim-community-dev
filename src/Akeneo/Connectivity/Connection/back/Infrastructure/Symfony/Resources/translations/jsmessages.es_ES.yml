@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: Eche un vistazo a nuestro Centro de ayuda para más información.
         card:
           developed_by: 'Desarrollado por {{ author }}'
+          new_access_authorization_required: Se requiere una nueva autorización de acceso.
           not_listed_on_the_appstore: La aplicación ya no aparece en la App Store de Akeneo. Póngase en contacto con el servicio de asistencia de la aplicación.
           manage_app: Administrar aplicación
           open_app: Abrir aplicación
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: Artículo del Centro de ayuda
             no_scope: No se han solicitado autorizaciones específicas.
           authentication:
+            title: autenticación
+            information: 'Para saber más sobre la autentificación de aplicaciones, consulte nuestro {{ link }}.'
             information_link_anchor: Artículo del Centro de ayuda
+            openid_only: Esta aplicación utiliza la autenticación de Akeneo App sin utilizar sus datos personales.
           pending: Esta aplicación no está conectada a su PIM. Al abrir la aplicación debería solucionarse el problema de conexión. Si persiste, póngase en contacto con el servicio de asistencia de la aplicación.
         error_monitoring:
           error: '¡Vaya, algo salió mal!'
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: Aplicación eliminada correctamente.
           error: Ha ocurrido un error durante la eliminación de la aplicación.
+      open:
+        flash:
+          error: Lo sentimos, se ha producido un error al abrir la aplicación.
     apps:
       loader:
         message: Cargando...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: No se han solicitado autorizaciones específicas.
           helper: Para saber más sobre la autorización de aplicaciones,
           helper_link: consulte nuestro artículo del Centro de ayuda.
+          is_allowed_to: 'Ya está permitido:'
         flash:
           success: Aplicación configurada con éxito.
           error: Lo sentimos, se ha producido un error al conectar la aplicación.
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: registros de entidad de referencia
           asset_families: familias de activos
           assets: activos
+        new: NUEVO
       error:
         sub_text: Póngase en contacto con el desarrollador de la aplicación o con el servicio de asistencia de Akeneo
         app_not_found: El client_id no coincide con ninguna aplicación existente.
@@ -557,5 +566,7 @@ pim_permissions:
       view: Visualizar
     all: Todo
 pim_notification:
+  types:
+    connected_app_authorizations: Autorizaciones de la aplicación conectada
   connected_app_authorizations:
     button_label: Abrir aplicación
