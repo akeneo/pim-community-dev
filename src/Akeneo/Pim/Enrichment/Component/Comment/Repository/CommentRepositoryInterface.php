@@ -2,6 +2,9 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Comment\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
+use Ramsey\Uuid\UuidInterface;
+
 /**
  * Comment repository interface
  *
@@ -19,7 +22,12 @@ interface CommentRepositoryInterface
      * @param string     $resourceName
      * @param int|string $resourceId
      *
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface[]
+     * @return CommentInterface[]
      */
     public function getComments($resourceName, $resourceId);
+
+    /**
+     * @return CommentInterface[]
+     */
+    public function getCommentsByUuid(string $resourceName, UuidInterface $resourceUuid): array;
 }

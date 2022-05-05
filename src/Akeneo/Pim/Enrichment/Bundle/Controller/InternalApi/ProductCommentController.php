@@ -110,9 +110,9 @@ class ProductCommentController
     public function getAction($uuid)
     {
         $product = $this->findProductOr404($uuid);
-        $comments = $this->commentRepository->getComments(
+        $comments = $this->commentRepository->getCommentsByUuid(
             ClassUtils::getClass($product),
-            $product->getId()
+            $product->getUuid()
         );
 
         $comments = $this->normalizer->normalize($comments, 'standard');
@@ -132,13 +132,8 @@ class ProductCommentController
 
     /**
      * Create a comment on a product
-     *
-     * @param Request $request
-     * @param string  $uuid
-     *
-     * @return Response
      */
-    public function postAction(Request $request, $uuid)
+    public function postAction(Request $request, string $uuid): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -172,13 +167,9 @@ class ProductCommentController
     /**
      * Reply to a product comment
      *
-     * @param Request $request
-     * @param string  $uuid
-     * @param string  $commentId
-     *
-     * @return Response
+     * @param string $commentId
      */
-    public function postReplyAction(Request $request, string $uuid, $commentId)
+    public function postReplyAction(Request $request, string $uuid, $commentId): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -225,18 +216,15 @@ class ProductCommentController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param string $uuid the product uuid
-     *
-     * @return ProductInterface
      * @throws NotFoundHttpException
      */
-    protected function findProductOr404($uuid)
+    protected function findProductOr404(string $uuid): ProductInterface
     {
         $product = $this->productRepository->find($uuid);
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with uuid %s could not be found.', (string) $uuid)
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 

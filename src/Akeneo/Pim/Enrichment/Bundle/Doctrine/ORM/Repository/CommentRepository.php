@@ -2,8 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface;
 use Akeneo\Pim\Enrichment\Component\Comment\Repository\CommentRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Ramsey\Uuid\UuidInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Comment repository
@@ -20,8 +23,21 @@ class CommentRepository extends EntityRepository implements CommentRepositoryInt
      */
     public function getComments($resourceName, $resourceId)
     {
+        Assert::notNull($resourceId);
+
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'parent' => null],
+            ['createdAt'  => 'desc']
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCommentsByUuid(string $resourceName, UuidInterface $resourceUuid): array
+    {
+        return $this->findBy(
+            ['resourceUuid' => $resourceUuid, 'resourceName' => $resourceName, 'parent' => null],
             ['createdAt'  => 'desc']
         );
     }
