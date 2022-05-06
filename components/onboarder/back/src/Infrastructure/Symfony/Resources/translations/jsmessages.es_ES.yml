@@ -25,7 +25,6 @@ onboarder:
       no_supplier: Aún no hay proveedores.
       search_by_supplier: Buscar por Proveedor
       no_search_result: No hay proveedores que coincidan con esta búsqueda.
-      error: Se ha producido un error al cargar la lista de proveedores.
       dropdown:
         export_suppliers: Exportar proveedores
         download_template: Descargar plantilla
