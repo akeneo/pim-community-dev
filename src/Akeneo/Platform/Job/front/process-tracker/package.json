@@ -42,7 +42,7 @@
     "@types/react-dom": "^16.9.12",
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.1",
-    "prettier": "^2.1.1"
+    "prettier": "^2.6.2"
   },
   "proxy": "http://localhost:8080",
   "main": "lib/index.js",
