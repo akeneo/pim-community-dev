@@ -122,7 +122,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
         $errors = $this->validator->validate($command);
 
-        if ($errors->count() > 0) {
+        if (0 < $errors->count()) {
             $this->skipItemWithConstraintViolations($supplierData, $errors);
         }
 
@@ -141,7 +141,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
         $errors = $this->validator->validate($command);
 
-        if ($errors->count() > 0) {
+        if (0 < $errors->count()) {
             $this->skipItemWithConstraintViolations($supplierData, $errors);
         }
 

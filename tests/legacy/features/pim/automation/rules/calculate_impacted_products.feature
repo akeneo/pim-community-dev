@@ -1,4 +1,4 @@
-@javascript
+@javascript @product-rules-feature-enabled
 Feature: Manage permissions to calculate impacted product by a rule
   In order to allow to calculate impacted products
   As an administrator

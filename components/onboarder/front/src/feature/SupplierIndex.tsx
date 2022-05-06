@@ -61,7 +61,7 @@ const SupplierIndex = () => {
     const [suppliers, totalSuppliers, refreshSuppliers] = useSuppliers(debouncedSearchValue, page);
 
     useEffect(() => {
-        totalSuppliers > 0 && setPage(1);
+        0 < totalSuppliers && setPage(1);
     }, [totalSuppliers]);
 
     return (

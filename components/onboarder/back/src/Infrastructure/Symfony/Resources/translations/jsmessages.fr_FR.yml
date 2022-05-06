@@ -25,9 +25,9 @@ onboarder:
       no_supplier: Il n'y a pas encore de fournisseurs.
       search_by_supplier: Rechercher par fournisseur
       no_search_result: Il n'y a aucun fournisseur correspondant à cette recherche.
-      error: Une erreur est survenue lors du chargement de la liste des fournisseurs.
       dropdown:
         export_suppliers: Exporter les fournisseurs
+        download_template: Téléchargez le modèle
         import_suppliers: Import fournisseurs
       columns:
         supplier: Fournisseur

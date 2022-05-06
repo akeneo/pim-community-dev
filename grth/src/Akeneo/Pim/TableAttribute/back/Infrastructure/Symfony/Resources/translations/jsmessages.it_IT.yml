@@ -256,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: Importazione valori di tabella prodotti in XLSX
   csv_product_model_table_values_import.label: Importazione valori di tabella modelli prodotto in CSV
   xlsx_product_model_table_values_import.label: Importazione valori di tabella modelli prodotto in XLSX
+  default_steps.clean: Rimozione dei valori opzioni della tabella non esistenti
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: Rimuovi i valori opzioni della tabella non esistenti da prodotti e modelli di prodotto

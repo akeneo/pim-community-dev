@@ -1,6 +1,16 @@
-import React from 'react';
-import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks/useSuppliers';
-import {CityIllustration, EditIcon, Pagination, pimTheme, Table, Search} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {SupplierRow, SUPPLIERS_PER_PAGE} from '../hooks';
+import {
+    CityIllustration,
+    DeleteIcon,
+    EditIcon,
+    getColor,
+    Pagination,
+    pimTheme,
+    Table,
+    Search,
+    useBooleanState,
+} from 'akeneo-design-system';
 import {NoDataSection, NoDataText, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {EmptySupplierList} from './EmptySupplierList';
@@ -28,9 +38,17 @@ const SupplierList = ({
 }: SupplierListProps) => {
     const translate = useTranslate();
     const history = useHistory();
+    const [isModalOpen, openModal, closeModal] = useBooleanState(false);
+    const [supplierIdentifierToDelete, setSupplierIdentifierToDelete] = useState<string>('');
 
     const goToSupplier = (identifier: string) => {
         history.push(`/${identifier}`);
+    };
+
+    const handleOpenModal = (event: any, supplierIdentifier: string) => {
+        event.stopPropagation();
+        setSupplierIdentifierToDelete(supplierIdentifier);
+        openModal();
     };
 
     return (
@@ -80,9 +98,10 @@ const SupplierList = ({
                                     <Table.Cell>{supplier.contributorsCount}</Table.Cell>
                                     <Table.ActionCell>
                                         <StyledEditIcon color={pimTheme.color.grey100} />
-                                        <DeleteSupplier
-                                            identifier={supplier.identifier}
-                                            onSupplierDeleted={onSupplierDeleted}
+                                        <StyledDeleteIcon
+                                            color={pimTheme.color.grey100}
+                                            title={translate('pim_common.delete')}
+                                            onClick={(event: any) => handleOpenModal(event, supplier.identifier)}
                                         />
                                     </Table.ActionCell>
                                 </Table.Row>
@@ -90,6 +109,16 @@ const SupplierList = ({
                         </Table.Body>
                     </Table>
                 </>
+            )}
+            {isModalOpen && (
+                <DeleteSupplier
+                    identifier={supplierIdentifierToDelete}
+                    onSupplierDeleted={() => {
+                        closeModal();
+                        onSupplierDeleted();
+                    }}
+                    onCloseModal={closeModal}
+                />
             )}
         </>
     );
@@ -113,6 +142,11 @@ const StyledNoDataSection = styled(NoDataSection)`
     align-items: center;
     flex: 1;
     margin-top: 0;
+`;
+
+const StyledDeleteIcon = styled(DeleteIcon)`
+    cursor: pointer;
+    color: ${getColor('grey100')};
 `;
 
 export {SupplierList};

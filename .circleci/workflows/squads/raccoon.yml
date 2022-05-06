@@ -4,7 +4,7 @@ workflows:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - ready_to_test_tailored_import?:
+      - start_tailored_import?:
           type: approval
           filters:
             branches:
@@ -13,27 +13,51 @@ workflows:
                 - /RAC-.*/
       - checkout:
           requires:
-            - ready_to_test_tailored_import?
+            - "start_tailored_import?"
       - build_srnt_dev:
           requires:
             - checkout
+      - test_helm_generated_k8s_files:
+          requires:
+            - checkout
+      - deploy_pr_environment?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - build_srnt_prod:
+          requires:
+            - "test_helm_generated_k8s_files"
+            - "deploy_pr_environment?"
+      - deploy_pr_environment:
+          requires:
+            - "build_srnt_prod"
+          post-steps:
+            - slack/notify:
+                message: "<@felix.couprie> <https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                webhook: ${RACCOON_SLACK_WEBHOOK}
+                include_project_field: false
+                include_job_number_field: false
+                include_visit_job_action: false
       - test_front_tailored_import:
           requires:
-            - build_srnt_dev
+            - "build_srnt_dev"
       - test_back_tailored_import:
           requires:
-            - build_srnt_dev
+            - "build_srnt_dev"
       - pull_request_success:
           requires:
-            - test_front_tailored_import
-            - test_back_tailored_import
+            - "test_front_tailored_import"
+            - "test_back_tailored_import"
 
   raccoon_job_automation_pull_request:
     when:
       not:
         equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - ready_to_test_job_automation?:
+      - start_job_automation?:
           type: approval
           filters:
             branches:
@@ -42,17 +66,41 @@ workflows:
                 - /RAC-.*/
       - checkout:
           requires:
-            - ready_to_test_job_automation?
+            - "start_job_automation?"
       - build_srnt_dev:
           requires:
             - checkout
+      - test_helm_generated_k8s_files:
+          requires:
+            - checkout
+      - deploy_pr_environment?:
+          type: approval
+          filters:
+            branches:
+              only:
+                - /RAB-.*/
+                - /RAC-.*/
+      - build_srnt_prod:
+          requires:
+            - "test_helm_generated_k8s_files"
+            - "deploy_pr_environment?"
+      - deploy_pr_environment:
+          requires:
+            - "build_srnt_prod"
+          post-steps:
+            - slack/notify:
+                message: "<@felix.couprie> <https://akeneo.atlassian.net/browse/${CIRCLE_BRANCH}|${CIRCLE_BRANCH}> has been deployed here https://${INSTANCE_NAME}.dev.cloud.akeneo.com"
+                webhook: ${RACCOON_SLACK_WEBHOOK}
+                include_project_field: false
+                include_job_number_field: false
+                include_visit_job_action: false
       - test_front_job_automation:
           requires:
-            - build_srnt_dev
+            - "build_srnt_dev"
       - test_back_job_automation:
           requires:
-            - build_srnt_dev
+            - "build_srnt_dev"
       - pull_request_success:
           requires:
-            - test_front_job_automation
-            - test_back_job_automation
+            - "test_front_job_automation"
+            - "test_back_job_automation"

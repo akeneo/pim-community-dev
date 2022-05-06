@@ -21,7 +21,7 @@ export BLACKFIRE_CLIENT_TOKEN=client_token
 export BLACKFIRE_SERVER_ID=server_id
 export BLACKFIRE_SERVER_TOKEN=server_token
 
-docker-compose run -u www-data --rm php blackfire run vendor/bin/phpunit -c phpunit.xml.dist tests/back/Pim/Enrichment/EndToEnd/Category/ExternalApi/CreateCategoryEndToEnd.php --filter testHttpHeadersInResponseWhenACategoryIsCreated
+docker-compose run --rm php blackfire run vendor/bin/phpunit -c phpunit.xml.dist tests/back/Pim/Enrichment/EndToEnd/Category/ExternalApi/CreateCategoryEndToEnd.php --filter testHttpHeadersInResponseWhenACategoryIsCreated
 ```
 
 ## Profiling HTTP request
@@ -34,7 +34,7 @@ export BLACKFIRE_CLIENT_TOKEN=client_token
 export BLACKFIRE_SERVER_ID=server_id
 export BLACKFIRE_SERVER_TOKEN=server_token
 
-docker-compose run -u www-data --rm php blackfire curl 'http://httpd/user/login'
+docker-compose run --rm php blackfire curl 'http://httpd/user/login'
 ```
 
 Do note that we replaced `localhost` by `httpd` as we are inside the docker.

@@ -33,8 +33,6 @@ return [
     Akeneo\Channel\Bundle\AkeneoLegacyChannelBundle::class => ['all' => true],
     Akeneo\Channel\Locale\Infrastructure\Symfony\AkeneoLocaleBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Bundle\AkeneoPimEnrichmentBundle::class => ['all' => true],
-    Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
-    Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
     Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\ClassificationBundle\AkeneoClassificationBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\AnalyticsBundle\PimAnalyticsBundle::class => ['all' => true],

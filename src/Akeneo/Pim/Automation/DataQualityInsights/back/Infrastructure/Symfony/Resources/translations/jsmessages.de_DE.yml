@@ -40,6 +40,8 @@ akeneo_data_quality_insights:
       aria_label: "Rechtschreibvorschläge für: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes: '{1}1 Attribut|]1, 200[{{ count }} Attribute|[200, Inf[mehr als {{ count }} Attribute'
+      attributes_to_work_on: 'Du hast <improvable_attributes_count_link/> um daran zu arbeiten.'
       list:
         has_image:
           no_data: Ihre Asset-Sammlungen und Bild-Attribute scheinen leer zu sein. Sie sollten Bilder für diesen Schlüsselindikator hochladen, um die Qualität Ihrer Produkte hervorzuheben.

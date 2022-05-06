@@ -39,8 +39,7 @@ services:
     pimee_enrich.doctrine.counter.category_product:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\ORM\Category\Query\GrantedCategoryProductsCounter'
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory_without_permission'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
             - '@security.token_storage'

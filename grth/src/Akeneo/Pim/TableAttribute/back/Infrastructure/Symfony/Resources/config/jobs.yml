@@ -362,7 +362,7 @@ services:
     pim_table_attribute.reader.database.product.table_values:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_query_builder_factory_for_reading_purpose'
 
     pim_table_attribute.reader.database.product_model.table_values:
         class: Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\TableValuesReader

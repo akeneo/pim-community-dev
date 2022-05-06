@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import React, {useEffect, useState} from 'react';
+import {useRoute, useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {DeleteIcon, Field, Helper, Search, Table, TagInput, Button} from 'akeneo-design-system';
 import {ContributorEmail, isValidEmail} from '../../models';
@@ -7,31 +7,55 @@ import {useFilteredContributors} from '../../hooks';
 import {EmptyContributorList} from '../EmptyContributorList';
 
 type Props = {
+    supplierIdentifier: string;
     contributors: ContributorEmail[];
     setContributors: (value: ContributorEmail[]) => void;
 };
 
-const ContributorList = ({contributors, setContributors}: Props) => {
+const ContributorList = ({supplierIdentifier, contributors, setContributors}: Props) => {
     const translate = useTranslate();
     const [searchValue, setSearchValue] = useState('');
     const [newContributors, setNewContributors] = useState<string[]>([]);
     const filteredContributors = useFilteredContributors(contributors, searchValue);
+    const [contributorsBelongingToAnotherSupplier, setContributorsBelongingToAnotherSupplier] = useState<string[]>([]);
+    const getContributorsBelongingToAnotherSupplierRoute = useRoute(
+        'onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier',
+        {supplierIdentifier, emails: JSON.stringify(contributors)}
+    );
+
+    const displayInvalidContributorEmailsWarning = 0 < newContributors.filter(email => !isValidEmail(email)).length;
 
     const onChangeNewContributors = (newContributors: string[]) => {
         setNewContributors(newContributors);
     };
 
     const handleNewContributorsAdd = () => {
-        setContributors([
-            ...contributors,
-            ...newContributors.filter(contributorEmail => isValidEmail(contributorEmail)),
-        ]);
+        const validContributorEmails = newContributors
+            .filter(contributorEmail => isValidEmail(contributorEmail))
+            .filter(contributorEmail => 255 >= contributorEmail.length);
+
         setNewContributors([]);
+
+        const updatedContributors = Array.from(new Set([...contributors, ...validContributorEmails]));
+        if (JSON.stringify(updatedContributors) !== JSON.stringify(contributors)) {
+            setContributors(updatedContributors);
+            return;
+        }
     };
 
     const removeContributor = (emailToRemove: ContributorEmail) => {
         setContributors(contributors.filter(email => email !== emailToRemove));
     };
+
+    useEffect(() => {
+        if (0 === contributors.length) {
+            return;
+        }
+        (async () => {
+            const response = await fetch(getContributorsBelongingToAnotherSupplierRoute, {method: 'GET'});
+            setContributorsBelongingToAnotherSupplier(await response.json());
+        })();
+    }, [contributors, getContributorsBelongingToAnotherSupplierRoute]);
 
     return (
         <TabContainer>
@@ -46,6 +70,11 @@ const ContributorList = ({contributors, setContributors}: Props) => {
                         {translate('onboarder.supplier.supplier_edit.contributors_form.add_button')}
                     </Button>
                 </FieldContent>
+                {displayInvalidContributorEmailsWarning && (
+                    <Helper level="warning">
+                        {translate('onboarder.supplier.supplier_edit.contributors_form.invalid_emails_warning')}
+                    </Helper>
+                )}
             </Field>
 
             {0 === filteredContributors.length && '' === searchValue && <EmptyContributorList />}
@@ -67,7 +96,15 @@ const ContributorList = ({contributors, setContributors}: Props) => {
                         </Search.ResultCount>
                     </Search>
 
-                    <Table>
+                    {0 < contributorsBelongingToAnotherSupplier.length && (
+                        <StyledHelper level={'warning'}>
+                            {translate(
+                                'onboarder.supplier.supplier_edit.contributors_form.emails_belonging_to_other_suppliers_warning'
+                            )}
+                        </StyledHelper>
+                    )}
+
+                    <Table hasWarningRows={0 < contributorsBelongingToAnotherSupplier.length}>
                         <Table.Header>
                             <Table.HeaderCell>
                                 {translate('onboarder.supplier.supplier_edit.contributors_form.columns.email')}
@@ -76,7 +113,13 @@ const ContributorList = ({contributors, setContributors}: Props) => {
                         </Table.Header>
                         <Table.Body>
                             {filteredContributors.map(email => (
-                                <Table.Row key={email} data-testid={email}>
+                                <Table.Row
+                                    key={email}
+                                    data-testid={email}
+                                    {...(contributorsBelongingToAnotherSupplier.includes(email)
+                                        ? {level: 'warning'}
+                                        : {})}
+                                >
                                     <Table.Cell>{email}</Table.Cell>
                                     <DeleteCell>
                                         <DeleteIcon onClick={() => removeContributor(email)} />
@@ -110,6 +153,10 @@ const FieldContent = styled.div`
 const TagInputContainer = styled.div`
     margin-right: 10px;
     width: 460px;
+`;
+
+const StyledHelper = styled(Helper)`
+    margin: 0;
 `;
 
 export {ContributorList};

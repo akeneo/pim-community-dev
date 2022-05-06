@@ -32,6 +32,7 @@ class Version_6_0_20211026142400_add_asset_manager_web_api_acl_Integration exten
     {
         parent::setUp();
         $this->aclManager = $this->get('oro_security.acl.manager');
+        $this->get('feature_flags')->enable('asset_manager');
     }
 
     protected function getConfiguration(): Configuration

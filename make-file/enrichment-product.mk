@@ -3,7 +3,7 @@ include make-file/test.mk
 
 .PHONY: enrichment-product-unit-back
 enrichment-product-unit-back:
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run --config=src/Akeneo/Pim/Enrichment/Product/back/Test/phpspec.yml $(O)"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run --config=src/Akeneo/Pim/Enrichment/Product/back/Test/phpspec.yml $(O)"
 
 .PHONY: enrichment-product-integration-back
 enrichment-product-integration-back:
