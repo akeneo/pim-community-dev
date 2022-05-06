@@ -95,3 +95,7 @@ catalogs-lint-front_fix:
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint --fix
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --write
 	@<<- EOF
+
+.PHONY: catalogs-lint-back_fix
+catalogs-lint-back_fix:
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=$(CATALOGS_PATH)/back/.php_cs.php

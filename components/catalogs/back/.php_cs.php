@@ -10,6 +10,10 @@ $rules['native_function_invocation'] = [
     'strict' => false,
 ];
 
+$rules['php_unit_method_casing'] = [
+    'case' => 'camel_case',
+];
+
 $config
     ->setRiskyAllowed(true)
     ->setRules($rules)
