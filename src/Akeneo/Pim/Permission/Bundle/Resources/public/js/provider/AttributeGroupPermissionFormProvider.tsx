@@ -217,7 +217,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
       </>
     );
   },
-  renderSummary: (state: AttributeGroupPermissionState) => {
+  renderSummary: (state: AttributeGroupPermissionState, onlyDisplayViewPermissions = false) => {
     const [summaries, setSummaries] = useState<SummaryLabels>({
       edit: '',
       view: '',
@@ -234,9 +234,11 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
 
     return (
       <PermissionSectionSummary label={'pim_permissions.widget.entity.attribute_group.label'}>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
-          {summaries.edit}
-        </LevelSummaryField>
+        {!onlyDisplayViewPermissions && (
+          <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
+            {summaries.edit}
+          </LevelSummaryField>
+        )}
         <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
           {summaries.view}
         </LevelSummaryField>

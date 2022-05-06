@@ -133,7 +133,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
       </>
     );
   },
-  renderSummary: (state: LocalePermissionState) => {
+  renderSummary: (state: LocalePermissionState, onlyDisplayViewPermissions = false) => {
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
 
     useEffect(() => {
@@ -151,9 +151,11 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
 
     return (
       <PermissionSectionSummary label={'pim_permissions.widget.entity.locale.label'}>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
-          {state.edit.all ? translate('pim_permissions.widget.all') : getLocales(state.edit.identifiers)}
-        </LevelSummaryField>
+        {!onlyDisplayViewPermissions && (
+          <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
+            {state.edit.all ? translate('pim_permissions.widget.all') : getLocales(state.edit.identifiers)}
+          </LevelSummaryField>
+        )}
         <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
           {state.view.all ? translate('pim_permissions.widget.all') : getLocales(state.view.identifiers)}
         </LevelSummaryField>
