@@ -21,7 +21,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_scores_by_product_ids()
+    public function test_it_returns_the_latest_scores_by_product_ids()
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -35,18 +35,32 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->resetProductsScores();
 
         $productsScores = [
-            'product_A_scores' => new ProductScores(
+            'product_A_latest_scores' => new ProductScores(
                 new ProductId($productIdA),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(96))
                     ->addRate($channelMobile, $localeFr, new Rate(36))
             ),
-            'product_B_scores' => new ProductScores(
+            'product_A_previous_scores' => new ProductScores(
+                new ProductId($productIdA),
+                new \DateTimeImmutable('2020-01-07'),
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(76))
+                    ->addRate($channelMobile, $localeFr, new Rate(67))
+            ),
+            'product_B_latest_scores' => new ProductScores(
                 new ProductId($productIdB),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(100))
+                    ->addRate($channelMobile, $localeFr, new Rate(95))
+            ),
+            'product_B_previous_scores' => new ProductScores(
+                new ProductId($productIdB),
+                new \DateTimeImmutable('2020-01-08'),
+                (new ChannelLocaleRateCollection())
+                    ->addRate($channelMobile, $localeEn, new Rate(81))
                     ->addRate($channelMobile, $localeFr, new Rate(95))
             ),
             'other_product_scores' => new ProductScores(
@@ -61,8 +75,8 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
         $expectedProductsScores = [
-            $productIdA => $productsScores['product_A_scores']->getScores(),
-            $productIdB => $productsScores['product_B_scores']->getScores(),
+            $productIdA => $productsScores['product_A_latest_scores']->getScores(),
+            $productIdB => $productsScores['product_B_latest_scores']->getScores(),
         ];
 
         $productModelIdCollection = $this->get(ProductModelIdFactory::class)->createCollection([(string)$productIdA, (string)$productIdB, (string)$productIdD]);

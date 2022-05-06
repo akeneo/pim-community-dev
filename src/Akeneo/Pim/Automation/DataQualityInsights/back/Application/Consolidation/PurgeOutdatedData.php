@@ -19,14 +19,22 @@ final class PurgeOutdatedData
     public const CONSOLIDATION_RETENTION_MONTHS = 15;
     public const CONSOLIDATION_RETENTION_YEARS = 3;
 
+    private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
+
+    private ProductScoreRepositoryInterface $productScoreRepository;
+
     public function __construct(
-        private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
+        ProductScoreRepositoryInterface $productScoreRepository
     ) {
+        $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
+        $this->productScoreRepository = $productScoreRepository;
     }
 
     public function purgeAllFrom(\DateTimeImmutable $date)
     {
         $this->purgeDashboardProjectionRatesFrom($date);
+        $this->purgeProductScoresFrom($date);
     }
 
     private function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
@@ -54,5 +62,11 @@ final class PurgeOutdatedData
             );
 
         $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);
+    }
+
+    private function purgeProductScoresFrom(\DateTimeImmutable $date): void
+    {
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
+        $this->productScoreRepository->purgeUntil($purgeDate);
     }
 }
