@@ -1,3 +1,6 @@
 services:
     akeneo.tailored_import.query.attribute.get_identifier_attribute_code:
         class: Akeneo\Platform\TailoredImport\Test\Acceptance\FakeServices\Attribute\InMemoryGetIdentifierAttributeCode
+
+    akeneo.tailored_import.ramsey.uuid_generator:
+        class: Akeneo\Platform\TailoredImport\Test\Acceptance\FakeServices\Ramsey\InMemoryUuidGenerator

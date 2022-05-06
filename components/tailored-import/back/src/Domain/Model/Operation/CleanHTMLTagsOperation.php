@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
-class CleanHTMLTagsOperation implements OperationInterface
+final class CleanHTMLTagsOperation implements OperationInterface
 {
     public const TYPE = 'clean_html_tags';
+
+    public function normalize(): array
+    {
+        return ['type' => self::TYPE];
+    }
 }

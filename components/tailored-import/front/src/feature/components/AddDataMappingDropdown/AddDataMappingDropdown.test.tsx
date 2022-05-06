@@ -76,6 +76,7 @@ test('it adds data mapping with attribute target', async () => {
     target: {
       code: 'name',
       type: 'attribute',
+      attribute_type: 'pim_catalog_text',
       action_if_not_empty: 'set',
       action_if_empty: 'skip',
       channel: null,

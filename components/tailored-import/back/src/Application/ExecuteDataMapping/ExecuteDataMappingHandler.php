@@ -2,27 +2,33 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregatorInterface;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 use Akeneo\Platform\TailoredImport\Domain\Query\Attribute\GetIdentifierAttributeCodeInterface;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class ExecuteDataMappingHandler
 {
     public function __construct(
         private OperationApplier $operationApplier,
         private UserIntentRegistry $userIntentRegistry,
-        private UserIntentAggregatorInterface $userIntentAggregator,
-        private SourceConfigurationApplier $sourceConfigurationApplier,
         private GetIdentifierAttributeCodeInterface $getIdentifierAttributeCode,
     ) {
     }
@@ -44,34 +50,57 @@ class ExecuteDataMappingHandler
                 continue;
             }
 
-            $processedValues = [];
-            foreach ($sources as $source) {
-                $value = $row->getCellData($source);
+            $value = $this->applyOperations($row, $sources, $dataMapping->getOperations());
 
-                if ($target instanceof AttributeTarget && null !== $target->getSourceConfiguration()) {
-                    $value = $this->sourceConfigurationApplier->apply($target->getSourceConfiguration(), $value);
-                }
-
-                $processedValues[] = $this->operationApplier->applyOperations($dataMapping->getOperations(), $value);
+            if (!$value instanceof NullValue) {
+                $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
+                $userIntents[] = $userIntentFactory->create(
+                    $target,
+                    $value,
+                );
             }
-
-            $userIntentFactory = $this->userIntentRegistry->getUserIntentFactory($target);
-            $userIntents[] = $userIntentFactory->create(
-                $target,
-                1 === \count($sources) ? $processedValues[0] : $processedValues,
-            );
         }
 
         if (null === $productIdentifier) {
             throw new \LogicException('Missing data mapping targeting the identifier attribute');
         }
 
-        $userIntents = $this->userIntentAggregator->aggregateByTarget($userIntents);
-
         return UpsertProductCommand::createFromCollection(
             1,
-            $productIdentifier,
+            $productIdentifier->getValue(),
             $userIntents,
         );
+    }
+
+    private function applyOperations(Row $row, array $sources, OperationCollection $operations): ValueInterface
+    {
+        $processedValues = [];
+        foreach ($sources as $source) {
+            $value = $row->getCellData($source);
+            $processedValues[] = $this->operationApplier->applyOperations($operations, $value);
+        }
+
+        return $this->flattenValues($processedValues);
+    }
+
+    private function flattenValues(array $processedValues): ValueInterface
+    {
+        if (1 === \count($processedValues)) {
+            return $processedValues[0];
+        }
+
+        $value = array_reduce(
+            $processedValues,
+            static function (array $reducedValue, ValueInterface $processedValue) {
+                if ($processedValue instanceof ArrayValue) {
+                    return [...$reducedValue, ...$processedValue->getValue()];
+                } else {
+                    return [...$reducedValue, $processedValue->getValue()];
+                }
+            },
+            [],
+        );
+
+        return new ArrayValue($value);
     }
 }

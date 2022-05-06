@@ -58,6 +58,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -75,6 +76,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -92,6 +94,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -117,6 +120,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -136,6 +140,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'add',
@@ -155,6 +160,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -178,6 +184,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -197,6 +204,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
@@ -216,6 +224,7 @@ final class SimpleSelectValidatorTest extends AbstractValidationTest
                     'target' => [
                         'code' => 'a_simple_select',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_simpleselect',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',

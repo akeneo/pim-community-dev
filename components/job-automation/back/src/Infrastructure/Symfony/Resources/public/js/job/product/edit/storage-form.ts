@@ -1,13 +1,47 @@
 import BaseView = require('pimui/js/view/base');
+import {ValidationError, formatParameters, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageForm, StorageFormProps, Storage} from '@akeneo-pim-enterprise/job-automation';
 
-class StorageFormController extends BaseView {
-  public config: any;
+type StorageFormControllerConfig = {tabCode?: string, jobType: 'import' | 'export'};
 
-  constructor(options: {config: any}) {
+class StorageFormController extends BaseView {
+  public config: StorageFormControllerConfig;
+  private validationErrors: ValidationError[] = [];
+
+  constructor(options: {config: StorageFormControllerConfig}) {
     super(options);
 
     this.config = {...this.config, ...options.config};
+  }
+
+  configure() {
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-errors');
+      this.setValidationErrors([]);
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
+      const errors = formatParameters(filterErrors(event.response.normalized_errors, '[storage]'));
+      this.setValidationErrors(errors);
+
+      if (errors.length > 0) {
+        this.getRoot().trigger('pim_enrich:form:form-tabs:add-errors', {
+          tabCode: this.getTabCode(),
+          errors,
+        });
+      }
+    });
+
+    return BaseView.prototype.configure.apply(this, arguments);
+  }
+
+  setValidationErrors(validationErrors: ValidationError[]) {
+    this.validationErrors = validationErrors;
+    this.render();
+  }
+
+  getTabCode(): string {
+    return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
   setStorage(storage: Storage): void {
@@ -36,7 +70,9 @@ class StorageFormController extends BaseView {
 
     const props: StorageFormProps = {
       storage: formData.configuration.storage ?? this.getDefaultStorage(),
-      onChange: this.setStorage.bind(this),
+      jobType: this.config.jobType,
+      validationErrors: this.validationErrors,
+      onStorageChange: this.setStorage.bind(this),
     };
 
     this.renderReact<StorageFormProps>(StorageForm, props, this.el);

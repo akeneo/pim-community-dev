@@ -28,6 +28,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
     public function __construct(
         private string $filePath,
         private CellsFormatter $cellsFormatter,
+        private RowCleaner $rowCleaner,
     ) {
         $this->fileReader = $this->openFile();
     }
@@ -53,7 +54,14 @@ class XlsxFileReader implements XlsxFileReaderInterface
         return $fileReader;
     }
 
-    public function readRows(?string $sheetName, int $start, ?int $length = null): array
+    public function readRow(?string $sheetName, int $lineNumber): array
+    {
+        $rows = $this->readRows($sheetName, $lineNumber, 1);
+
+        return empty($rows) ? [] : current($rows);
+    }
+
+    public function readRows(?string $sheetName, int $start, int $length): array
     {
         $rows = [];
         $sheet = $this->selectSheet($sheetName);
@@ -64,23 +72,24 @@ class XlsxFileReader implements XlsxFileReaderInterface
                 $rows[] = $this->cellsFormatter->formatCells($row->toArray());
             }
 
-            if (null !== $length && $index + 1 === $start + $length) {
+            if ($index + 1 === $start + $length) {
                 break;
             }
         }
 
         $rows = $this->removeTrailingEmptyRows($rows);
+        $rows = $this->removeTrailingEmptyColumns($rows);
 
         return $this->padRowsToTheLongestRow($rows);
     }
 
-    public function readColumnsValues(?string $sheetName, int $productLine, array $columnIndices): array
+    public function readColumnsValues(?string $sheetName, int $productLine, array $columnIndices, int $length): array
     {
-        $rows = $this->readRows($sheetName, $productLine);
+        $rows = $this->readRows($sheetName, $productLine, $length);
 
         $rowsByColumnIndex = [];
         foreach ($columnIndices as $columnIndex) {
-            $rowsByColumnIndex[$columnIndex] = \array_map(static fn (array $row) => $row[$columnIndex], $rows);
+            $rowsByColumnIndex[$columnIndex] = \array_map(static fn (array $row) => $row[$columnIndex] ?? '', $rows);
         }
 
         return $rowsByColumnIndex;
@@ -126,10 +135,7 @@ class XlsxFileReader implements XlsxFileReaderInterface
 
         $maxCellPerRow = count(max($rows));
 
-        return array_map(
-            static fn (array $row) => array_pad($row, $maxCellPerRow, ''),
-            $rows,
-        );
+        return array_map(fn (array $row) => $this->rowCleaner->padRowToLength($row, $maxCellPerRow), $rows);
     }
 
     private function removeTrailingEmptyRows(array $rows): array
@@ -144,5 +150,10 @@ class XlsxFileReader implements XlsxFileReaderInterface
         }
 
         return array_reverse($reversedRows);
+    }
+
+    private function removeTrailingEmptyColumns(array $rows): array
+    {
+        return array_map(fn (array $row) => $this->rowCleaner->removeTrailingEmptyColumns($row), $rows);
     }
 }

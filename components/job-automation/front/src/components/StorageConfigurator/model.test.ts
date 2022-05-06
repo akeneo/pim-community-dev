@@ -5,15 +5,16 @@ import {SftpStorageConfigurator} from './SftpStorageConfigurator';
 
 const localStorage: LocalStorage = {
   type: 'local',
-  filePath: '/tmp/test.xlsx',
+  file_path: '/tmp/test.xlsx',
 };
 
 const sftpStorage: SftpStorage = {
   type: 'sftp',
-  host: 'sftp://localhost',
+  host: 'example.com',
+  port: 22,
   username: 'test',
   password: 'test',
-  filePath: '/tmp/test.xlsx',
+  file_path: '/tmp/test.xlsx',
 };
 
 test('it says if a storage is a local storage', () => {

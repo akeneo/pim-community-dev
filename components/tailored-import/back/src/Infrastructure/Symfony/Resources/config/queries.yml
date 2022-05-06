@@ -10,7 +10,7 @@ parameters:
 #        - 'akeneo_reference_entity_collection'
 #        - 'akeneo_reference_entity'
 #        - 'pim_catalog_asset_collection'
-#        - 'pim_catalog_boolean'
+        - 'pim_catalog_boolean'
 #        - 'pim_catalog_date'
 #        - 'pim_catalog_file'
 #        - 'pim_catalog_image'
@@ -50,12 +50,6 @@ services:
         arguments:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-
-    akeneo.tailored_import.query.filesystem.read_file_headers:
-        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Filesystem\ReadFileHeaders
-        arguments:
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo.tailored_import.spout.file_reader.factory'
 
     akeneo.tailored_import.query.find_system_targets:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets

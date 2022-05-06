@@ -20,11 +20,6 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 
 class TargetHydrator
 {
-    public function __construct(
-        private SourceConfigurationHydrator $sourceConfigurationHydrator,
-    ) {
-    }
-
     public function hydrate(array $normalizedTarget, array $indexedAttributes): TargetInterface
     {
         return match ($normalizedTarget['type']) {
@@ -41,11 +36,6 @@ class TargetHydrator
             throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $normalizedTarget['code']));
         }
 
-        $sourceConfiguration = $this->sourceConfigurationHydrator->hydrate(
-            $normalizedTarget['source_configuration'] ?? null,
-            $attribute->type(),
-        );
-
         return AttributeTarget::create(
             $normalizedTarget['code'],
             $attribute->type(),
@@ -53,7 +43,7 @@ class TargetHydrator
             $normalizedTarget['locale'],
             $normalizedTarget['action_if_not_empty'],
             $normalizedTarget['action_if_empty'],
-            $sourceConfiguration,
+            $normalizedTarget['source_configuration'] ?? null,
         );
     }
 

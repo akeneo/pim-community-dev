@@ -13,6 +13,7 @@ test('it returns true if it is a measurement target', () => {
     },
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
+    attribute_type: 'pim_catalog_metric',
   };
 
   expect(isMeasurementTarget(measurementTarget)).toBe(true);
@@ -27,6 +28,7 @@ test('it returns false if it is not a measurement target', () => {
     source_configuration: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
+    attribute_type: 'pim_catalog_text',
   };
 
   expect(isMeasurementTarget(textTarget)).toBe(false);
@@ -57,6 +59,7 @@ test('it returns a default measurement target', () => {
     },
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
+    attribute_type: 'pim_catalog_metric',
   };
 
   expect(getDefaultMeasurementTarget(attribute, null, null)).toEqual(measurementTarget);

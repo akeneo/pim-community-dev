@@ -1,18 +1,21 @@
 import React from 'react';
-import {SectionTitle, Field, SelectInput} from 'akeneo-design-system';
-import {Section, useTranslate} from '@akeneo-pim-community/shared';
-import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES} from './model';
+import {SectionTitle, Field, SelectInput, Helper} from 'akeneo-design-system';
+import {Section, useTranslate, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
+import {Storage, isValidStorageType, getDefaultStorage, STORAGE_TYPES, JobType} from './model';
 import {getStorageConfigurator} from './StorageConfigurator';
 
 type StorageFormProps = {
+  jobType: JobType;
   storage: Storage;
-  onChange: (storage: Storage) => void;
+  validationErrors: ValidationError[];
+  onStorageChange: (storage: Storage) => void;
 };
 
-const StorageForm = ({storage, onChange}: StorageFormProps) => {
+const StorageForm = ({jobType, storage, validationErrors, onStorageChange}: StorageFormProps) => {
   const translate = useTranslate();
 
-  const handleTypeChange = (type: string) => isValidStorageType(type) && onChange(getDefaultStorage(type));
+  const handleTypeChange = (type: string) =>
+    isValidStorageType(type) && onStorageChange(getDefaultStorage(jobType, type));
 
   const StorageConfigurator = getStorageConfigurator(storage.type);
 
@@ -35,8 +38,15 @@ const StorageForm = ({storage, onChange}: StorageFormProps) => {
             </SelectInput.Option>
           ))}
         </SelectInput>
+        {filterErrors(validationErrors, '[type]').map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
       </Field>
-      {null !== StorageConfigurator && <StorageConfigurator storage={storage} onChange={onChange} />}
+      {null !== StorageConfigurator && (
+        <StorageConfigurator storage={storage} validationErrors={validationErrors} onStorageChange={onStorageChange} />
+      )}
     </Section>
   );
 };

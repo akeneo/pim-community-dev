@@ -54,53 +54,56 @@ final class BooleanValidatorTest extends AbstractValidationTest
         return [
             'a valid boolean data mapping' => [
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null,
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => [],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
                 ]
             ],
             'a valid data mapping with clear value' => [
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
                         'source_configuration' => null,
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => [],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
                 ]
             ],
             'a valid boolean data mapping with sample data' => [
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null,
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['1', 'sample_2', 'sample_3'],
                 ]
             ]
         ];
@@ -113,118 +116,124 @@ final class BooleanValidatorTest extends AbstractValidationTest
                 'This is not a valid UUID.',
                 '[uuid]',
                 [
-                    "uuid" => "an_invalid_uuid",
-                    "target" => [
+                    'uuid' => 'an_invalid_uuid',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'a boolean data mapping does not handle add action if not empty' => [
                 'This value should be equal to "set".',
                 '[target][action_if_not_empty]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'add',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'a boolean data mapping with an unsupported operation' => [
                 'akeneo.tailored_import.validation.operations.operation_type_does_not_exist',
                 '[operations][0][type]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
                         [
-                            "type" => "unknown_operation"
+                            'type' => 'unknown_operation'
                         ],
                     ],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'a boolean data mapping should have a source' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[sources]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => [],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => [],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'a boolean data mapping cannot have multiple sources' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[sources]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'a boolean data mapping with an invalid sample data' => [
                 'This value should be of type string.',
                 '[sample_data][0]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'a_boolean',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_boolean',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => [12],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [12],
                 ]
             ],
         ];

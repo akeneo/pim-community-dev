@@ -30,7 +30,7 @@ const MAX_SOURCE_COUNT_FOR_COLLECTION_TARGETS = 4;
 type DataMappingType = 'attribute' | 'property';
 
 const createDefaultDataMapping = (attribute: Attribute, identifierColumn: Column | null, sampleData: SampleData[]) => {
-  const defaultDataMapping: DataMapping = {
+  const defaultDataMapping: AttributeDataMapping = {
     uuid: uuid(),
     target: createAttributeTarget(attribute, null, null),
     sources: [],

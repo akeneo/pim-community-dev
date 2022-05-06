@@ -5,11 +5,13 @@ import {
   getDefaultMeasurementTarget,
   getDefaultSimpleSelectTarget,
   getDefaultMultiSelectTarget,
+  getDefaultBooleanTarget,
   NumberTarget,
   MeasurementTarget,
   TextTarget,
   SimpleSelectTarget,
   MultiSelectTarget,
+  BooleanTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, DataMapping} from './DataMapping';
@@ -17,7 +19,13 @@ import {AttributeDataMapping, DataMapping} from './DataMapping';
 type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
-type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget | SimpleSelectTarget | MultiSelectTarget;
+type AttributeTarget =
+  | NumberTarget
+  | TextTarget
+  | MeasurementTarget
+  | SimpleSelectTarget
+  | MultiSelectTarget
+  | BooleanTarget;
 
 type PropertyTarget = {
   code: string;
@@ -46,6 +54,8 @@ const createAttributeTarget = (
       return getDefaultSimpleSelectTarget(attribute, channel, locale);
     case 'pim_catalog_multiselect':
       return getDefaultMultiSelectTarget(attribute, channel, locale);
+    case 'pim_catalog_boolean':
+      return getDefaultBooleanTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }

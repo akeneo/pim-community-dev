@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData;
 
+use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operations;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\SampleData;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,6 +45,7 @@ class GeneratePreviewDataValidator extends ConstraintValidator
         $this->context->getValidator()->inContext($this->context)->validate($value->request->all(), new Collection([
             'sample_data' => new SampleData(),
             'operations' => new Operations($this->operationTypes),
+            'target' => new AttributeTarget(),
         ]));
     }
 }

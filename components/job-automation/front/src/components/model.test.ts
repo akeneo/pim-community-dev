@@ -8,23 +8,24 @@ test('it says if a storage type is valid', () => {
 });
 
 test('it returns the default local storage', () => {
-  expect(getDefaultStorage('local')).toEqual({
+  expect(getDefaultStorage('export', 'local')).toEqual({
     type: 'local',
-    filePath: '',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
   });
 
-  expect(getDefaultStorage('sftp')).toEqual({
+  expect(getDefaultStorage('export', 'sftp')).toEqual({
     type: 'sftp',
-    filePath: '',
+    file_path: 'export_%job_label%_%datetime%.xlsx',
     host: '',
+    port: 22,
     username: '',
     password: '',
   });
 
-  expect(getDefaultStorage('none')).toEqual({
+  expect(getDefaultStorage('export', 'none')).toEqual({
     type: 'none',
   });
 
   // @ts-expect-error invalid storage type
-  expect(() => getDefaultStorage('invalid')).toThrowError('Unknown storage type: invalid');
+  expect(() => getDefaultStorage('export', 'invalid')).toThrowError('Unknown storage type: invalid');
 });

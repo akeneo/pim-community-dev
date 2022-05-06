@@ -42,8 +42,15 @@ const FileTemplateConfigurator = ({
   const firstColumnErrors = filterErrors(validationErrors, '[first_column]');
   const uniqueIdentifierColumnErrors = filterErrors(validationErrors, '[unique_identifier_column]');
 
-  const handleHeaderRowChange = (firstRow: string) => {
-    onFileStructureChange({...fileStructure, header_row: parseInt(firstRow)});
+  const handleHeaderRowChange = (newHeaderRow: string) => {
+    onFileStructureChange({
+      ...fileStructure,
+      header_row: parseInt(newHeaderRow),
+      first_product_row:
+        parseInt(newHeaderRow) >= fileStructure.first_product_row
+          ? parseInt(newHeaderRow) + 1
+          : fileStructure.first_product_row,
+    });
   };
 
   const handleFirstProductRowChange = (firstProductRow: string) => {

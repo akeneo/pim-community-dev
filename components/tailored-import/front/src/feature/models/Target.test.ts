@@ -17,6 +17,7 @@ test('it can create an attribute target', () => {
     code: 'name',
     action_if_empty: 'skip',
     type: 'attribute',
+    attribute_type: 'pim_catalog_text',
     channel: null,
     locale: null,
     source_configuration: null,
@@ -25,6 +26,7 @@ test('it can create an attribute target', () => {
   expect(createAttributeTarget(getAttribute('name'), 'ecommerce', null)).toEqual({
     action_if_not_empty: 'set',
     code: 'name',
+    attribute_type: 'pim_catalog_text',
     action_if_empty: 'skip',
     type: 'attribute',
     channel: 'ecommerce',
@@ -37,6 +39,7 @@ test('it can create an attribute target', () => {
     code: 'name',
     action_if_empty: 'skip',
     type: 'attribute',
+    attribute_type: 'pim_catalog_text',
     channel: null,
     locale: 'fr_FR',
     source_configuration: null,
@@ -47,6 +50,7 @@ test('it can create an attribute target', () => {
     code: 'name',
     action_if_empty: 'skip',
     type: 'attribute',
+    attribute_type: 'pim_catalog_text',
     channel: 'mobile',
     locale: 'fr_FR',
     source_configuration: null,
@@ -67,6 +71,7 @@ test('it can tell if a Target is an attribute target', () => {
     isAttributeTarget({
       code: 'name',
       type: 'attribute',
+      attribute_type: 'pim_catalog_text',
       action_if_not_empty: 'set',
       action_if_empty: 'skip',
       channel: null,
@@ -111,6 +116,7 @@ test('it can tell if a Target is a property target', () => {
     isPropertyTarget({
       code: 'name',
       type: 'attribute',
+      attribute_type: 'pim_catalog_text',
       action_if_not_empty: 'set',
       action_if_empty: 'skip',
       channel: null,

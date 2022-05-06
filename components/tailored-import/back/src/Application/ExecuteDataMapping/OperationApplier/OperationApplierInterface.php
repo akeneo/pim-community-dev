@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 interface OperationApplierInterface
 {
-    public function applyOperation(OperationInterface $operation, string $value): string;
+    public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface;
 
     public function supports(OperationInterface $operation): bool;
 }

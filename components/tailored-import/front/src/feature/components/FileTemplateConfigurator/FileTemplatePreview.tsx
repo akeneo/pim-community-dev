@@ -32,6 +32,7 @@ const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTempl
   return (
     <TableInput>
       <TableInput.Header>
+        <TableInput.HeaderCell>{isNaN(fileStructure.header_row) ? 0 : fileStructure.header_row}</TableInput.HeaderCell>
         {headerCells.map((headerCell, index) => (
           <TableInput.HeaderCell key={index}>{headerCell}</TableInput.HeaderCell>
         ))}
@@ -39,6 +40,11 @@ const FileTemplatePreview = ({fileTemplateInformation, fileStructure}: FileTempl
       <TableInput.Body>
         {productRows.map((row, rowIndex) => (
           <TableInput.Row key={rowIndex}>
+            <TableInput.Cell>
+              <TableInput.CellContent>
+                {isNaN(fileStructure.first_product_row) ? 0 + rowIndex : fileStructure.first_product_row + rowIndex}
+              </TableInput.CellContent>
+            </TableInput.Cell>
             {row.map((cell, cellIndex) => (
               <TableInput.Cell key={cellIndex}>
                 <TableInput.CellContent

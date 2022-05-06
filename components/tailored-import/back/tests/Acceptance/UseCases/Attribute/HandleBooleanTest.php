@@ -15,11 +15,8 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
-use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -33,14 +30,7 @@ final class HandleBooleanTest extends AttributeTestCase
         array $dataMappings,
         UpsertProductCommand $expected,
     ): void {
-        $executeDataMappingQuery = new ExecuteDataMappingQuery(
-            new Row($row),
-            DataMappingCollection::create([
-                $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
-                ...$dataMappings,
-            ]),
-        );
-
+        $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
         Assert::assertEquals($expected, $upsertProductCommand);
