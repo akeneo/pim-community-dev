@@ -741,7 +741,7 @@ pim_data_quality_insights_product_model_score | product_model_id | NO | int | PR
 pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
 pim_data_quality_insights_product_model_score | scores | NO | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
-pim_data_quality_insights_product_score | evaluated_at | NO | date | MUL
+pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
 pim_data_quality_insights_product_score | product_uuid | YES | binary(16) |
 pim_datagrid_view | id | NO | int | PRI
@@ -1245,7 +1245,7 @@ INDEX | pim_data_quality_insights_product_model_criteria_evaluation | PRIMARY | 
 INDEX | pim_data_quality_insights_product_model_criteria_evaluation | status_index | status
 INDEX | pim_data_quality_insights_product_model_score | PRIMARY | product_model_id
 INDEX | pim_data_quality_insights_product_score | evaluated_at_index | evaluated_at
-INDEX | pim_data_quality_insights_product_score | PRIMARY | product_id
+INDEX | pim_data_quality_insights_product_score | PRIMARY | product_id, evaluated_at
 INDEX | pim_datagrid_view | IDX_B56B38F17E3C61F9 | owner_id
 INDEX | pim_datagrid_view | PRIMARY | id
 INDEX | pim_index_migration | migration_index | index_alias, hash
