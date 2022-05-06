@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Prophecy\Argument;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -60,8 +61,8 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn($productInDatabase);
 
-        $productInDatabase->getId()->willReturn(40);
-        $product->getId()->willReturn(64);
+        $productInDatabase->getUuid()->willReturn(Uuid::uuid4());
+        $product->getUuid()->willReturn(Uuid::uuid4());
 
         $context->buildViolation(Argument::type('string'), Argument::type('array'))
             ->willReturn($constraintViolationBuilder);
