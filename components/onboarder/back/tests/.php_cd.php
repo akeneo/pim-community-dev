@@ -62,7 +62,6 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
             'Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
-            'Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',

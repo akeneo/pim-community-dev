@@ -136,7 +136,6 @@ services:
             - '@validator'
             - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler'
             - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
-            - '@pim_connector.doctrine.cache_clearer'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
