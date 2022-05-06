@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: Sistema
+      save_ok: Configuración guardada correctamente
+      save_error: Lo sentimos, no se pudo guardar la configuración ({{ reason }})
       group:
         localization:
-          title: Localización
-          system_locale: Idioma
+          title: Ajuste de página de acceso
+          fields:
+            system_locale:
+              label: Idioma
         notification:
-          title: Notificaciones
-          system_notification: Notificaciones de nuevas versiones
+          title: Notificaciones de nueva versión
+          helper: Si se activa, recibirá una notificación cuando haya una nueva versión disponible para usted.
+          fields:
+            enabler:
+              label: Habilitado
         loading_message:
-          title: Cargando mensajes
-          label: Activar los mensajes de carga
-        loading_messages:
-          label: Mensajes de carga disponibles
+          title: Mensajes de carga personalizados
+          helper: Entretenga a sus usuarios con mensajes personalizados para las pantallas de carga.
+          placeholder: Escriba su propio mensaje para que aparezca en la pantalla de carga
+          fields:
+            enabler:
+              label: Activar los mensajes de carga
+            messages:
+              label: Añada sus propios mensajes de carga
 pim_ui:
   flash:
     unsaved_changes: 'Tiene cambios sin guardar, ¿está seguro que desea salir?'

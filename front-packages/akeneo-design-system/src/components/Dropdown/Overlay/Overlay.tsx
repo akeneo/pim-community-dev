@@ -1,6 +1,6 @@
 import React, {ReactNode, useRef, useState, useEffect, RefObject} from 'react';
 import {createPortal} from 'react-dom';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {
   HorizontalPosition,
@@ -14,25 +14,39 @@ import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
 
 const BORDER_SHADOW_OFFSET = 2;
 
+const getWidthProperties = ({fixedWidth}: {fixedWidth: number | null} & AkeneoThemedProps) => {
+  if (null !== fixedWidth) {
+    return css`
+      width: ${fixedWidth}px;
+    `;
+  }
+
+  return css`
+    min-width: 150px;
+    max-width: 400px;
+  `;
+};
+
 const Container = styled.div<
   {
     visible: boolean;
     top: number;
     left: number;
+    fixedWidth: number | null;
   } & AkeneoThemedProps
 >`
   ${CommonStyle}
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 10px 0;
-  max-width: 400px;
-  min-width: 150px;
   position: fixed;
   opacity: ${({visible}) => (visible ? 1 : 0)};
   transition: opacity 0.15s ease-in-out;
   z-index: 1901;
   top: ${({top}) => top}px;
   left: ${({left}) => left}px;
+
+  ${getWidthProperties}
 `;
 
 type OverlayProps = Override<
@@ -52,6 +66,11 @@ type OverlayProps = Override<
      * When dropdown is open, it will keep the opener element displayed.
      */
     dropdownOpenerVisible?: boolean;
+
+    /**
+     * When dropdown is open, it will take the full width of parent element.
+     */
+    fullWidth?: boolean;
 
     /**
      * What to do on overlay closing.
@@ -111,6 +130,7 @@ const Overlay = ({
   verticalPosition,
   horizontalPosition,
   dropdownOpenerVisible = false,
+  fullWidth = false,
   parentRef,
   onClose,
   children,
@@ -151,10 +171,19 @@ const Overlay = ({
 
   const [top, left] = overlayPosition;
 
+  const parentWidth = parentRef?.current?.getBoundingClientRect()?.width ?? null;
+
   return createPortal(
     <>
       <Backdrop data-testid="backdrop" onClick={onClose} />
-      <Container ref={overlayRef} visible={visible} top={top} left={left} {...rest}>
+      <Container
+        ref={overlayRef}
+        visible={visible}
+        top={top}
+        left={left}
+        fixedWidth={fullWidth ? parentWidth : null}
+        {...rest}
+      >
         {children}
       </Container>
     </>,

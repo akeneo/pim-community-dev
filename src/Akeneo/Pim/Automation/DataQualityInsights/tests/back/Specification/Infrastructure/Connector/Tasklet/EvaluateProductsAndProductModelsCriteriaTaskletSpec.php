@@ -5,6 +5,8 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -32,20 +34,20 @@ class EvaluateProductsAndProductModelsCriteriaTaskletSpec extends ObjectBehavior
         $stepExecution = new StepExecution('name', new JobExecution());
         $this->setStepExecution($stepExecution);
 
-        $productIds = [[1, 2], [3]];
+        $productIds = [ProductIdCollection::fromStrings(['1', '2']), ProductIdCollection::fromStrings(['3'])];
         $getProductIdsToEvaluateQuery->execute(1000, 2)->willReturn(new \ArrayIterator($productIds));
-        $evaluateProducts->__invoke([1, 2])->shouldBeCalled();
-        $evaluateProducts->__invoke([3])->shouldBeCalled();
+        $evaluateProducts->__invoke($productIds[0])->shouldBeCalled();
+        $evaluateProducts->__invoke($productIds[1])->shouldBeCalled();
 
-        $productModelIds = [[4, 5], [6, 7]];
+        $productModelIds = [ProductModelIdCollection::fromStrings(['4', '5']), ProductModelIdCollection::fromStrings(['6', '7'])];
         $getProductModelsIdsToEvaluateQuery->execute(1000, 2)->willReturn(new \ArrayIterator($productModelIds));
-        $evaluateProductModels->__invoke([4, 5])->shouldBeCalled();
-        $evaluateProductModels->__invoke([6, 7])->shouldBeCalled();
+        $evaluateProductModels->__invoke($productModelIds[0])->shouldBeCalled();
+        $evaluateProductModels->__invoke($productModelIds[1])->shouldBeCalled();
 
         $this->execute();
-        $result = $stepExecution->getTrackingData();
-        Assert::same($result['evaluations']['products']['count'], 3);
-        Assert::same($result['evaluations']['product_models']['count'], 4);
+
+        $evaluationSummary = $stepExecution->getSummaryInfo('evaluations');
+        Assert::same($evaluationSummary['products']['count'], 3);
+        Assert::same($evaluationSummary['product_models']['count'], 4);
     }
 }
-

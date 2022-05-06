@@ -30,7 +30,7 @@ pim_enrich:
 pim_user.profile:
   caption: 首先，请告诉我们您的主要使命是什么，以便我们帮助您专注于最相关的内容。
   why_is_it_needed: 为什么我们需要此信息？
-  save_button: 保存并访问商城
+  save_button: 保存并访问 App Store
   selector:
     placeholder: 选择一个选项
     not_found: 未找到结果

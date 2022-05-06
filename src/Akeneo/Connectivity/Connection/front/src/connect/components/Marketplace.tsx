@@ -14,7 +14,7 @@ import {useFeatureFlags} from '../../shared/feature-flags';
 import {useConnectionsLimitReached} from '../../shared/hooks/use-connections-limit-reached';
 import {TestAppList} from './TestApp/TestAppList';
 import {useSecurity} from '../../shared/security';
-import {useDeveloperMode} from '../hooks/use-developer-mode';
+import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -44,7 +44,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
-    const isDeveloperModeEnabled = useDeveloperMode();
+    const isDeveloperModeEnabled = useAppDeveloperMode();
     const security = useSecurity();
     const isManageAppsAuthorized = security.isGranted('akeneo_connectivity_connection_manage_apps');
     const isLimitReached = useConnectionsLimitReached();
@@ -60,7 +60,8 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     key={1}
                     id={app.id}
                     isConnected={app.connected}
-                    isDisabled={!isManageAppsAuthorized || false !== isLimitReached}
+                    isPending={app.isPending}
+                    isDisabled={!isManageAppsAuthorized || isLimitReached}
                 />,
             ]}
         />
@@ -88,7 +89,7 @@ export const Marketplace: FC<Props> = ({extensions, apps, testApps}) => {
                     )}
                     emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
                     warningMessage={
-                        false === isLimitReached
+                        !isLimitReached
                             ? null
                             : translate(
                                   'akeneo_connectivity.connection.connection.constraint.connections_number_limit_reached'

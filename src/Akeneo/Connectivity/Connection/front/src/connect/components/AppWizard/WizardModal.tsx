@@ -1,8 +1,9 @@
 import {AppIllustration, Button, Modal, ProgressIndicator} from 'akeneo-design-system';
-import React from 'react';
+import React, {FC} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '../../../shared/translate';
 import {useStepProgress} from './useStepProgress';
+import getStepConfirmationLabel from './getStepConfirmationLabel';
 
 const Content = styled.div`
     display: grid;
@@ -28,9 +29,9 @@ const ProgressIndicatorContainer = styled(ProgressIndicator)`
     bottom: 20px;
 `;
 
-type Step = {
+export type Step = {
     name: 'authentication' | 'authorizations' | 'permissions' | 'summary';
-    action: 'next' | 'allow_and_next' | 'confirm' | 'allow_and_finish';
+    requires_explicit_approval: boolean;
 };
 
 type Props = {
@@ -40,12 +41,23 @@ type Props = {
     onClose: () => void;
     onConfirm: () => void;
     steps: Array<Step>;
+    maxAllowedStep?: Step['name'] | null;
 };
 
-export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, steps}: Props) => {
+export const WizardModal: FC<Props> = ({
+    appLogo,
+    appName,
+    children,
+    onClose,
+    onConfirm,
+    steps,
+    maxAllowedStep = null,
+}) => {
     const translate = useTranslate();
 
-    const {current, isFirst, isLast: isLast, next, previous} = useStepProgress(steps);
+    const {current, isFirst, isLast, next, previous} = useStepProgress(steps);
+
+    const confirmLabel = getStepConfirmationLabel(current, isFirst, isLast);
 
     const isSingleStepWizard = steps.length === 1;
 
@@ -61,8 +73,8 @@ export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, ste
                             {translate('akeneo_connectivity.connection.connect.apps.wizard.action.previous')}
                         </Button>
                     )}
-                    <Button onClick={isLast ? onConfirm : next}>
-                        {translate(`akeneo_connectivity.connection.connect.apps.wizard.action.${current.action}`)}
+                    <Button onClick={isLast ? onConfirm : next} disabled={current.name === maxAllowedStep}>
+                        {translate(confirmLabel)}
                     </Button>
                 </Modal.TopRightButtons>
             )}
@@ -89,8 +101,8 @@ export const WizardModal = ({appLogo, appName, children, onClose, onConfirm, ste
                     <Button level={'tertiary'} onClick={onClose}>
                         {translate('akeneo_connectivity.connection.connect.apps.wizard.action.cancel')}
                     </Button>
-                    <Button onClick={onConfirm}>
-                        {translate('akeneo_connectivity.connection.connect.apps.wizard.action.confirm')}
+                    <Button onClick={onConfirm} disabled={current.name === maxAllowedStep}>
+                        {translate(confirmLabel)}
                     </Button>
                 </Modal.BottomButtons>
             )}

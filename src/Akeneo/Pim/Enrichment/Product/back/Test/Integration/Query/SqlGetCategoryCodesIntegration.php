@@ -2,17 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Query;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Query\SqlGetCategoryCodes;
@@ -35,7 +29,7 @@ final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
     public function it_returns_category_codes_for_products()
     {
         $this->createProduct('product_without_category', []);
-        $this->createProduct('product_with_categories', ['categories' => ['suppliers', 'print']]);
+        $this->createProduct('product_with_categories', [new SetCategories(['suppliers', 'print'])]);
 
         Assert::assertSame([], $this->sqlGetCategoryCodes->fromProductIdentifiers([]));
         Assert::assertSame(
@@ -66,14 +60,14 @@ final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
             'categories' => ['print'],
         ]);
         $this->createProduct('variant_product1', [
-            'parent' => 'root',
-            'categories' => ['suppliers'],
-            'values' => ['main_color' => [['locale' => null, 'scope' => null, 'data' => 'red']]],
+            new ChangeParent('root'),
+            new SetCategories(['suppliers']),
+            new SetSimpleSelectValue('main_color', null, null, 'red')
         ]);
         $this->createProduct('variant_product2', [
-            'parent' => 'root',
-            'categories' => ['suppliers', 'print'],
-            'values' => ['main_color' => [['locale' => null, 'scope' => null, 'data' => 'green']]],
+            new ChangeParent('root'),
+            new SetCategories(['suppliers', 'print']),
+            new SetSimpleSelectValue('main_color', null, null, 'green')
         ]);
 
         Assert::assertEqualsCanonicalizing(

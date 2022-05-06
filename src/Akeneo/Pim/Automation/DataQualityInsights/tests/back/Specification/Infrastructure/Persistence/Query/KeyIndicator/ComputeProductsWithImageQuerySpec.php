@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enri
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -23,10 +24,10 @@ final class ComputeProductsWithImageQuerySpec extends ObjectBehavior
 
     public function it_computes_products_with_image_key_indicator($getEvaluationRatesByProductAndCriterionQuery)
     {
-        $productIds = [new ProductId(13), new ProductId(42), new ProductId(999)];
+        $productIds = ProductIdCollection::fromInts([13,42,999]);
         $criterionCode = new CriterionCode(EvaluateImageEnrichment::CRITERION_CODE);
 
-        $getEvaluationRatesByProductAndCriterionQuery->toArrayInt($productIds, $criterionCode)->willReturn([
+        $getEvaluationRatesByProductAndCriterionQuery->execute($productIds, $criterionCode)->willReturn([
             13 => [
                 'ecommerce' => [
                     'en_US' => 100,

@@ -9,6 +9,8 @@ Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTe
 
         name:
             - Length:
+                  min: 3
+                  minMessage: 'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.min_length'
                   max: 255
                   maxMessage: 'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.max_length'
             - NotBlank:

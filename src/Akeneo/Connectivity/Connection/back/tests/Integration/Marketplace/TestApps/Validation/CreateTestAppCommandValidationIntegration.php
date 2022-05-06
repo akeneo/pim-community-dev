@@ -65,6 +65,23 @@ class CreateTestAppCommandValidationIntegration extends TestCase
         );
     }
 
+    public function test_it_invalidates_a_test_app_with_a_too_short_name(): void
+    {
+        $violations = $this->validator->validate(new CreateTestAppCommand(
+            'ClientID1234',
+            'ab',
+            'http://activate-url.test',
+            'http://callback-url.test',
+            42,
+        ));
+
+        $this->assertHasViolation(
+            $violations,
+            'name',
+            'akeneo_connectivity.connection.connect.marketplace.test_apps.errors.creation.name.min_length',
+        );
+    }
+
     public function test_it_invalidates_a_test_app_if_the_activate_url_is_not_an_url(): void
     {
         $violations = $this->validator->validate(new CreateTestAppCommand(
@@ -230,6 +247,6 @@ class CreateTestAppCommandValidationIntegration extends TestCase
             }
         }
 
-        Assert::assertTrue($violationFound, sprintf('The violation at property path "%s" has not been found.', $propertyPath));
+        Assert::assertTrue($violationFound, \sprintf('The violation at property path "%s" has not been found.', $propertyPath));
     }
 }

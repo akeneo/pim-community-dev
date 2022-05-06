@@ -32,7 +32,7 @@ class GetConnectedAppsIdentifiersQueryIntegration extends TestCase
      */
     protected function getConfiguration(): ?Configuration
     {
-        return null;
+        return $this->catalog->useMinimalCatalog();
     }
 
     public function test_it_fetches_identifiers_of_connected_apps(): void

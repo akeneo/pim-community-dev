@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Transformation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationResultStatus;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultIds;
@@ -145,7 +146,7 @@ final class TransformCriterionEvaluationResultIdsIntegration extends DataQuality
             ]
         ];
 
-        $convertedEvaluationResult = $this->get(TransformCriterionEvaluationResultIds::class)->transformToCodes($evaluationResult);
+        $convertedEvaluationResult = $this->get(TransformCriterionEvaluationResultIds::class)->transformToCodes(new CriterionCode('enrichment_image'), $evaluationResult);
 
         $this->assertEquals($expectedEvaluationResult, $convertedEvaluationResult);
     }

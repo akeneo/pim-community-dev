@@ -52,6 +52,8 @@ pim_analytics:
     nb_media_images_in_products: Nombre d'images dans les produits
     is_demo_catalog: Catalogue de démonstration installé
     nb_active_event_subscription: Nombre de web-hooks activés
+    activated_app_ids: Applications connectées
+    nb_activated_apps: Nombre d'applications connectées
     data_source.tracked: Nombre de connexions de type "source" monitorées
     data_source.untracked: Nombre de connexions de type "source" non monitorées
     data_destination.tracked: Nombre de connexions de type "destination" monitorées

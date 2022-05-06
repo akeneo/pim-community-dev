@@ -26,7 +26,7 @@ final class QualityScoreFilterSpec extends ObjectBehavior
         $queryBuilder->addFilter(
             [
                 'terms' => [
-                   'data_quality_insights.scores.ecommerce.en_US' => [1, 2]
+                    'data_quality_insights.scores.ecommerce.en_US' => [1, 2]
                 ],
             ]
         )->shouldBeCalled();
@@ -39,7 +39,7 @@ final class QualityScoreFilterSpec extends ObjectBehavior
         $queryBuilder->addFilter(
             [
                 'terms' => [
-                   'data_quality_insights.scores.ecommerce.en_US' => [1, 3]
+                    'data_quality_insights.scores.ecommerce.en_US' => [1, 3]
                 ],
             ]
         )->shouldBeCalled();

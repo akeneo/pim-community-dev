@@ -8,7 +8,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductId
+final class ProductId implements ProductEntityIdInterface
 {
     /** @var int */
     private $id;
@@ -22,13 +22,18 @@ final class ProductId
         $this->id = $id;
     }
 
-    public function toInt(): int
+    public static function fromString(string $id): self
     {
-        return $this->id;
+        return new self(intval($id));
     }
 
     public function __toString()
     {
         return strval($this->id);
+    }
+
+    public function toInt(): int
+    {
+        return $this->id;
     }
 }

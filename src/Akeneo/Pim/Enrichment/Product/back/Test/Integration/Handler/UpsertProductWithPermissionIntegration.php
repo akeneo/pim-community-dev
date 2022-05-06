@@ -2,29 +2,31 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\Application\UpsertProductHandler;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\FeatureHelper;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;
 
 final class UpsertProductWithPermissionIntegration extends EnrichmentProductTestCase
 {
-    private UpsertProductHandler $upsertProductHandler;
     private ProductRepositoryInterface $productRepository;
 
     /**
@@ -37,15 +39,14 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
 
         $this->loadEnrichmentProductFunctionalFixtures();
 
-        $this->upsertProductHandler = $this->get(UpsertProductHandler::class);
+        $this->messageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
     /** @test */
     public function it_throws_an_exception_when_user_category_is_not_granted(): void
     {
-        // Creates empty product (use command/handler when we can set a category)
-        $this->createProduct('identifier', ['categories' => ['print']]);
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
 
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
@@ -54,19 +55,31 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $this->expectException(ViolationsException::class);
         $this->expectExceptionMessage('You don\'t have access to products in any tree, please contact your administrator');
 
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_user_locale_is_not_granted(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You don\'t have access to product data in any activated locale, please contact your administrator');
+
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
+            new SetTextValue('name', null, 'en_GB', 'foo'),
+        ]);
+        $this->messageBus->dispatch($command);
     }
 
     /** @test */
     public function it_creates_a_new_uncategorized_product(): void
     {
-        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valuesUserIntent: [
+        $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
-        ($this->upsertProductHandler)($command);
+        $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('new_product');
@@ -75,16 +88,278 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         Assert::assertNotNull($product->getValue('name'));
     }
 
-    private function getUserId(string $username): int
+    /** @test */
+    public function it_creates_a_categorized_product(): void
     {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['print'])
+        );
+        $this->messageBus->dispatch($command);
 
-        return $user->getId();
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+
+        Assert::assertNotNull($product);
+        Assert::assertSame('identifier', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(['print'], $product->getCategoryCodes());
     }
 
-    private function clearDoctrineUoW(): void
+    /** @test */
+    public function it_throws_an_exception_when_creating_a_product_with_non_viewable_category(): void
     {
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "suppliers" category does not exist');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['suppliers'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_updating_a_product_with_non_viewable_category(): void
+    {
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('The "suppliers" category does not exist');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['suppliers'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_creating_a_product_without_owned_category(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage("You should at least keep your product in one category on which you have an own permission");
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['sales'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_there_is_no_more_owned_category_after_update(): void
+    {
+        $this->createProduct('identifier', [new SetCategories(['print'])]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales' category, but is not owner.
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_there_is_no_more_owned_category_after_removing_category(): void
+    {
+        $this->createProduct('identifier', [new SetCategories(['print', 'sales'])]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('You should at least keep your product in one category on which you have an own permission');
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'identifier',
+            categoryUserIntent: new RemoveCategories(['print'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_user_is_not_owner(): void
+    {
+        $this->createProduct('my_product', [new SetCategories(['sales'])]);
+
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage("You don't have access to products in any tree, please contact your administrator");
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'my_product',
+            categoryUserIntent: new SetCategories(['print'])
+        );
+        $this->messageBus->dispatch($command);
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_category_on_update(): void
+    {
+        $this->createProduct('my_product', [new SetCategories(['print', 'suppliers'])]);
+
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('betty'),
+            productIdentifier: 'my_product',
+            categoryUserIntent: new SetCategories(['print', 'sales'])
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+        $product = $this->productRepository->findOneByIdentifier('my_product');
+
+        Assert::assertNotNull($product);
+        Assert::assertSame('my_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(['print', 'sales', 'suppliers'], $product->getCategoryCodes());
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_products_on_replace_products_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProduct('product_non_viewable_by_manager', [new SetCategories(['suppliers'])]);
+        $this->createProduct('product_viewable_by_manager', [
+            new ChangeParent('product_model_non_viewable_by_manager'),
+            new SetCategories(['print', 'sales']),
+            new SetSimpleSelectValue('main_color', null, null, 'green'),
+        ]);
+        $this->createProduct(
+            'my_product',
+            [new AssociateProducts('X_SELL', ['product_viewable_by_manager', 'product_non_viewable_by_manager'])]
+        );
+
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedProducts('X_SELL', ['product_viewable_by_manager'])
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('my_product');
+
+        Assert::assertNotNull($product);
+        Assert::assertSame('my_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(
+            ['product_non_viewable_by_manager', 'product_viewable_by_manager'],
+            $this->getAssociatedProductIdentifiers($product)
+        );
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_product_models_on_replace_product_models_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProductModel('product_model_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['print', 'sales'],
+        ]);
+        $this->createProduct('my_product', [
+            new SetCategories(['print', 'sales']),
+            new AssociateProductModels('X_SELL', ['product_model_non_viewable_by_manager'])
+        ]);
+
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedProductModels('X_SELL', ['product_model_viewable_by_manager'])
+            ]
+        );
+        $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('my_product');
+
+        Assert::assertSame('my_product', $product->getIdentifier());
+        Assert::assertEqualsCanonicalizing(
+            ['product_model_non_viewable_by_manager', 'product_model_viewable_by_manager'],
+            $this->getAssociatedProductModelIdentifiers($product)
+        );
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_products_on_replace_quantified_products_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProduct('product_non_viewable_by_manager', [new SetCategories(['suppliers'])]);
+        $this->createProduct('product_viewable_by_manager', [
+            new ChangeParent('product_model_non_viewable_by_manager'),
+            new SetCategories(['print', 'sales']),
+            new SetSimpleSelectValue('main_color', null, null, 'green'),
+        ]);
+        $this->createProduct(
+            'my_product',
+            [new AssociateQuantifiedProducts('bundle', [
+                new QuantifiedEntity('product_viewable_by_manager', 10),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
+            ])]
+        );
+
+        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [new ReplaceAssociatedQuantifiedProducts('bundle', [
+                new QuantifiedEntity('product_viewable_by_manager', 7),
+            ])]
+        ));
+
+        Assert::assertEqualsCanonicalizing(
+            [
+                new QuantifiedEntity('product_viewable_by_manager', 7),
+                new QuantifiedEntity('product_non_viewable_by_manager', 8),
+            ],
+            $this->getAssociatedQuantifiedProducts('my_product')
+        );
+    }
+
+    /** @test */
+    public function it_merges_non_viewable_associated_product_models_on_replace_quantified_product_models_association(): void
+    {
+        $this->createProductModel('product_model_non_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['suppliers'],
+        ]);
+        $this->createProductModel('product_model_viewable_by_manager', 'color_variant_accessories', [
+            'categories' => ['print', 'sales'],
+        ]);
+        $this->createProduct('my_product', [
+            new SetCategories(['print', 'sales']),
+            new AssociateQuantifiedProductModels('bundle', [
+                new QuantifiedEntity('product_model_non_viewable_by_manager', 10),
+            ]),
+        ]);
+
+        $command = UpsertProductCommand::createFromCollection(
+            $this->getUserId('betty'),
+            'my_product',
+            [
+                new ReplaceAssociatedQuantifiedProductModels('bundle', [
+                    new QuantifiedEntity('product_model_viewable_by_manager', 10),
+                ]),
+            ]
+        );
+        $this->messageBus->dispatch($command);
+
+        Assert::assertEqualsCanonicalizing(
+            [
+                new QuantifiedEntity('product_model_non_viewable_by_manager', 10),
+                new QuantifiedEntity('product_model_viewable_by_manager', 10),
+            ],
+            $this->getAssociatedQuantifiedProductModels('my_product')
+        );
     }
 }

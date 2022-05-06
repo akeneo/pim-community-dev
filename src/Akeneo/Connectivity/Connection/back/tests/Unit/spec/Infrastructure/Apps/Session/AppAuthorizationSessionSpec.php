@@ -32,7 +32,7 @@ class AppAuthorizationSessionSpec extends ObjectBehavior
         ]);
         $session->set(
             '_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715',
-            json_encode($appAuthorization->normalize())
+            \json_encode($appAuthorization->normalize())
         );
 
         $this->initialize($appAuthorization);
@@ -47,7 +47,7 @@ class AppAuthorizationSessionSpec extends ObjectBehavior
             'redirect_uri' => 'http://example.com',
             'state' => 'foo',
         ]);
-        $session->get('_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715')->willReturn(json_encode([
+        $session->get('_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715')->willReturn(\json_encode([
             'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
             'authorization_scope' => 'write_catalog_structure delete_products read_association_types',
             'authentication_scope' => 'openid profile email',

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -18,20 +18,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberInterface
 {
-    private FeatureFlag $dataQualityInsightsFeature;
-
-    private CreateCriteriaEvaluations $createProductsCriteriaEvaluations;
-
-    private LoggerInterface $logger;
-
     public function __construct(
-        FeatureFlag $dataQualityInsightsFeature,
-        CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
-        LoggerInterface $logger,
+        private FeatureFlag                     $dataQualityInsightsFeature,
+        private CreateCriteriaEvaluations       $createProductsCriteriaEvaluations,
+        private LoggerInterface                 $logger,
+        private ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->dataQualityInsightsFeature = $dataQualityInsightsFeature;
-        $this->createProductsCriteriaEvaluations = $createProductsCriteriaEvaluations;
-        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents()
@@ -45,7 +37,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     public function onPostSave(GenericEvent $event): void
     {
         $subject = $event->getSubject();
-        if (! $subject instanceof ProductInterface) {
+        if (!$subject instanceof ProductInterface) {
             return;
         }
 
@@ -53,7 +45,7 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
             return;
         }
 
-        if (! $this->dataQualityInsightsFeature->isEnabled()) {
+        if (!$this->dataQualityInsightsFeature->isEnabled()) {
             return;
         }
 
@@ -63,7 +55,8 @@ final class InitializeEvaluationOfAProductSubscriber implements EventSubscriberI
     private function initializeCriteria(int $productId): void
     {
         try {
-            $this->createProductsCriteriaEvaluations->createAll([new ProductId($productId)]);
+            $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
+            $this->createProductsCriteriaEvaluations->createAll($productIdCollection);
         } catch (\Throwable $e) {
             $this->logger->error(
                 'Unable to create product criteria evaluation',

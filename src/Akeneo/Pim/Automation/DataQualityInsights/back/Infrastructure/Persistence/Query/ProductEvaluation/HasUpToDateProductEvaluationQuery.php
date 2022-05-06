@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,30 +17,23 @@ use Doctrine\DBAL\Connection;
  */
 final class HasUpToDateProductEvaluationQuery implements HasUpToDateEvaluationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
+    public function __construct(private Connection $dbConnection, private ProductEntityIdFactoryInterface $idFactory)
     {
-        $this->dbConnection = $dbConnection;
     }
 
-    public function forProductId(ProductId $productId): bool
+    public function forProductId(ProductEntityIdInterface $productId): bool
     {
-        $upToDateProducts = $this->forProductIds([$productId]);
+        $productIdCollection = $this->idFactory->createCollection([(string)$productId]);
+        $upToDateProducts = $this->forProductIdCollection($productIdCollection);
 
-        return !empty($upToDateProducts);
+        return !is_null($upToDateProducts);
     }
 
-    public function forProductIds(array $productIds): array
+    public function forProductIdCollection(ProductEntityIdCollection $productIdCollection): ?ProductEntityIdCollection
     {
-        if (empty($productIds)) {
-            return [];
+        if ($productIdCollection->isEmpty()) {
+            return null;
         }
-
-        $productIds = array_map(function (ProductId $productId) {
-            return $productId->toInt();
-        }, $productIds);
 
         $query = <<<SQL
 SELECT product.id
@@ -57,18 +53,24 @@ SQL;
 
         $stmt = $this->dbConnection->executeQuery(
             $query,
-            ['product_ids' => $productIds],
+            ['product_ids' => $productIdCollection->toArrayString()],
             ['product_ids' => Connection::PARAM_INT_ARRAY]
         );
 
         $result = $stmt->fetchAllAssociative();
 
         if (!is_array($result)) {
-            return [];
+            return null;
         }
 
-        return array_map(function ($resultRow) {
-            return new ProductId(intval($resultRow['id']));
+        $ids = array_map(function ($resultRow) {
+            return $resultRow['id'];
         }, $result);
+
+        if (empty($ids)) {
+            return null;
+        }
+
+        return $this->idFactory->createCollection($ids);
     }
 }

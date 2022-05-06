@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Security;
 
+use Akeneo\Connectivity\Connection\Application\Apps\Security\ScopeMapperRegistryInterface;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ScopeMapperRegistry
+final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
 {
     /** @var array<string, ScopeMapperInterface> */
     private iterable $scopeMappers = [];
@@ -29,10 +31,10 @@ final class ScopeMapperRegistry
             foreach ($scopeMapper->getScopes() as $scope) {
                 if (\array_key_exists($scope, $this->scopeMappers)) {
                     throw new \InvalidArgumentException(
-                        sprintf(
+                        \sprintf(
                             'The scope "%s" is already supported by the scope mapper "%s".',
                             $scope,
-                            get_class($this->scopeMappers[$scope])
+                            \get_class($this->scopeMappers[$scope])
                         )
                     );
                 }
@@ -97,11 +99,7 @@ final class ScopeMapperRegistry
     {
         \sort($scopeList);
 
-        $fullScopes = $scopeList;
-        foreach ($scopeList as $scope) {
-            \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
-        }
-        $fullScopes = \array_unique($fullScopes);
+        $fullScopes = $this->getExhaustiveScopes($scopeList);
 
         $acls = [];
         foreach ($fullScopes as $scope) {
@@ -121,9 +119,21 @@ final class ScopeMapperRegistry
     private function getScopeMapper(string $scope): ScopeMapperInterface
     {
         if (!\array_key_exists($scope, $this->scopeMappers)) {
-            throw new \LogicException(sprintf('The scope "%s" does not exist.', $scope));
+            throw new \LogicException(\sprintf('The scope "%s" does not exist.', $scope));
         }
 
         return $this->scopeMappers[$scope];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getExhaustiveScopes(array $scopeList): array
+    {
+        $fullScopes = $scopeList;
+        foreach ($scopeList as $scope) {
+            \array_push($fullScopes, ...$this->getScopeMapper($scope)->getLowerHierarchyScopes($scope));
+        }
+        return \array_unique($fullScopes);
     }
 }

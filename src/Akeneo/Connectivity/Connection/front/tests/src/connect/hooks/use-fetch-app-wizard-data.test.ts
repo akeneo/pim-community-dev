@@ -7,7 +7,7 @@ beforeEach(() => {
     fetchMock.resetMocks();
 });
 
-test('it fetchs the wizard data', async () => {
+test('it fetches the wizard data', async () => {
     const expectedData = {
         appName: 'a_name',
         appLogo: 'a_logo',
@@ -18,7 +18,15 @@ test('it fetchs the wizard data', async () => {
                 entities: 'some_entities',
             },
         ],
-        authenticationScopes: ['email', 'profile'],
+        oldScopeMessages: [
+            {
+                icon: 'an_old_icon',
+                type: 'an_old_type',
+                entities: 'some_entities',
+            },
+        ],
+        authenticationScopes: ['email'],
+        oldAuthenticationScopes: ['profile'],
     };
 
     mockFetchResponses({

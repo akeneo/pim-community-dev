@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\ProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetCriteriaEvaluationsByProductIdQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -16,33 +16,20 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class ConsolidateProductScores
 {
-    private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery;
-
-    private ComputeProductScores $computeProductScores;
-
-    private ProductScoreRepositoryInterface $productScoreRepository;
-
-    private Clock $clock;
-
     public function __construct(
-        GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
-        ComputeProductScores $computeProductScores,
-        ProductScoreRepositoryInterface $productScoreRepository,
-        Clock $clock
+        private GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
+        private ComputeScores $computeScores,
+        private ProductScoreRepositoryInterface $productScoreRepository,
+        private Clock $clock
     ) {
-        $this->getCriteriaEvaluationsQuery = $getCriteriaEvaluationsQuery;
-        $this->computeProductScores = $computeProductScores;
-        $this->productScoreRepository = $productScoreRepository;
-        $this->clock = $clock;
     }
 
-    public function consolidate(array $productIds): void
+    public function consolidate(ProductEntityIdCollection $productIdCollection): void
     {
         $productsScores = [];
-        foreach ($productIds as $productId) {
-            $productId = new ProductId($productId);
+        foreach ($productIdCollection as $productId) {
             $criteriaEvaluations = $this->getCriteriaEvaluationsQuery->execute($productId);
-            $scores = $this->computeProductScores->fromCriteriaEvaluations($criteriaEvaluations);
+            $scores = $this->computeScores->fromCriteriaEvaluations($criteriaEvaluations);
             $productsScores[] = new ProductScores($productId, $this->clock->getCurrentTime(), $scores);
         }
 

@@ -361,6 +361,15 @@ SQL
         );
     }
 
+    protected function resetProductModelsScores(): void
+    {
+        $this->get('database_connection')->executeQuery(
+            <<<SQL
+TRUNCATE TABLE pim_data_quality_insights_product_model_score;
+SQL
+        );
+    }
+
     private function formatValidationErrorMessage(string $mainMessage, ConstraintViolationListInterface $errors): string
     {
         $errorMessage = '';

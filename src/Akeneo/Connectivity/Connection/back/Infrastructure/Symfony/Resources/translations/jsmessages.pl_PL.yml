@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Dziennik zdarzeń
     data_flows: Przepływy danych
     connect_connection_settings: Ustawienia połączeń
-    marketplace: Rynek
-    connected_apps: Aplikacje
+    marketplace: Sklep z aplikacjami
+    connected_apps: Połączone aplikacje
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Rynek
-  akeneo_connectivity_connection_connect_marketplace_profile: Rynek
+  akeneo_connectivity_connection_connect_marketplace: Sklep z aplikacjami
+  akeneo_connectivity_connection_connect_marketplace_profile: Sklep z aplikacjami
   akeneo_connectivity_connection_connect_apps_activate: Połącz
   akeneo_connectivity_connection_connect_apps_authorize: Połącz
   akeneo_connectivity_connection_connect_apps_authenticate: Połącz
@@ -35,25 +35,30 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Subskrypcja zdarzeń
   akeneo_connectivity_connection_webhook_event_logs: Dziennik zdarzeń
   akeneo_connectivity_connection_settings_redirect: Połączenia
-  akeneo_connectivity_connection_connect_connected_apps: Aplikacje
+  akeneo_connectivity_connection_connect_connected_apps: Połączone aplikacje
   akeneo_connectivity_connection_connect_connected_apps_edit: Ustawienia aplikacji
   akeneo_connectivity_connection_connect_connected_apps_delete: Usuń aplikację
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Utwórz aplikację testową
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Usuń aplikację testową
+  akeneo_connectivity_connection_connect_connected_apps_open: Otwórz aplikację
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Chcesz połączyć PIM z inną aplikacją? 🤟
-      sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
-      link: Dostęp do rynku
+      sub_title: Zajrzyj do sklepu z aplikacjami, aby sprawdzić, którą aplikację można połączyć z Akeneo PIM.
+      link: Przejdź do sklepu z aplikacjami
       helper:
         title: '{0} Brak aplikacji lub wtyczek kompatybilnych z twoją wersją PIM.|{1} Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}|[2,Inf] Aplikacje lub wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
         title_without_apps: '{0} Brak wtyczek kompatybilnych z twoją wersją PIM.|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
-        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
-        link: Przejdź do rynku internetowego
+        description: To tylko podgląd. Aby uzyskać więcej szczegółów, zajrzyj do sklepu z aplikacjami Akeneo.
+        link: Przejdź do sklepu z aplikacjami Akeneo
       card:
+        developed_by: 'Autor: {{ author }}'
         read_more: czytaj więcej
         more_info: Więcej informacji
         connect: Połącz
         connected: Połączono
+        pending: Oczekiwanie...
       extensions:
         title: Wtyczki
         total: '{0} Brak wtyczek|{1} Liczba wtyczek: 1|[2,Inf] Liczba wtyczek: {{ total }} '
@@ -62,14 +67,53 @@ akeneo_connectivity.connection:
         title: Aplikacje
         total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
         empty: Brak aplikacji kompatybilnych z twoją wersją
-      unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
+      unreachable: Nie możemy nawiązać połączenia ze sklepem z aplikacjami. Spróbuj ponownie później.
       scroll_to_top: Przewiń do początku
       test_apps:
+        title: Moje aplikacje testowe
+        removed_user: Użytkownik usunięty
+        create_a_test_app: Utwórz aplikację testową
         modal:
+          subtitle: Utwórz aplikację testową
+          app_information:
+            title: Informacje o aplikacji
+            description: Jeśli potrzebujesz pomocy, zapoznaj się z naszym artykułem.
+            link: Jak przetestować aplikację przed jej publikacją?
+            fields:
+              name: Nazwa
+              activate_url: Adres URL aktywacji
+              callback_url: Adres URL wywołania zwrotnego
           credentials:
             title: Dane uwierzytelniające
+            warning: Pamiętaj o zapisaniu tych poświadczeń, ponieważ wyświetlamy je tu tylko raz.
+            client_id: Identyfikator klienta
+            client_secret: Sekret klienta
+        errors:
+          page_not_found: Nie znaleziono strony
+          creation:
+            name:
+              min_length: Nazwa aplikacji testowej jest za krótka. Musi składać się z co najmniej 3 znaków.
+              max_length: Nazwa aplikacji testowej jest za długa. Może składać się z maksymalnie 255 znaków.
+              not_blank: Nazwa aplikacji testowej jest wymagana.
+            client_id:
+              max_length: Identyfikator klienta jest za długi. Może składać się z maksymalnie 36 znaków.
+              not_blank: Identyfikator klienta jest wymagany.
+            activate_url:
+              max_length: Adres URL aktywacji jest za długi. Może składać się z maksymalnie 255 znaków.
+              must_be_url: Adres URL aktywacji musi być prawidłowym adresem URL.
+              not_blank: Adres URL aktywacji jest wymagany.
+            callback_url:
+              max_length: Adres URL wywołania zwrotnego jest za długi. Może składać się z maksymalnie 255 znaków.
+              must_be_url: Adres URL wywołania zwrotnego musi być prawidłowym adresem URL.
+              not_blank: Adres URL wywołania zwrotnego jest wymagany.
         delete:
+          subtitle: Aplikacje
           title: Potwierdź usunięcie
+          description: Za chwilę usuniesz aplikację testową z tego PIM.
+          warning: Potwierdzenie spowoduje usunięcie aplikacji testowej ze strony sklepu z aplikacjami i połączonej z nią aplikacji.
+          flash:
+            success: Aplikacja testowa została usunięta z powodzeniem.
+            error: Przepraszamy, w czasie usuwania aplikacji testowej wystąpił błąd.
     connected_apps:
       list:
         apps:
@@ -77,15 +121,23 @@ akeneo_connectivity.connection:
           total: '{0} Brak aplikacji|{1} 1 aplikacja|[2,Inf] Liczba aplikacji: {{ total }}'
           empty: Nie połączono jeszcze żadnych aplikacji.
           check_marketplace: 'Przejdź na stronę {{ marketplaceLink }}, aby przeglądać całą dostępną treść i zainstalować swoją pierwszą aplikację.'
-          marketplace_link_anchor: Rynek
+          marketplace_link_anchor: Sklep z aplikacjami
+          at_least_one_is_not_listed_on_the_appstore: Niektóre z połączonych aplikacji nie są kompatybilne z Twoją wersją PIM lub nie istnieją już w sklepie aplikacji Akeneo. Skontaktuj się z nami, aby uzyskać więcej informacji.
+          pending_apps: Niektóre z Twoich aplikacji nie są połączone z PIM.
+        test_apps:
+          title: Moje aplikacje testowe
+          removed_user: Użytkownik usunięty
         helper:
           title: '[0,1] Twój PIM jest połączony z {{ count }} aplikacją.|[2,Inf] Twój PIM jest połączony z {{ count }} aplikacjami.'
-          description_1: Nowe aplikacje powstają regularnie, więc regularnie zaglądaj na stronę Rynek, aby przekonać się, jak możesz połączyć Twój PIM z innymi aplikacjami.
+          description_1: Nowe aplikacje powstają regularnie, więc regularnie zaglądaj na stronę sklepu z aplikacjami, aby przekonać się, jak możesz połączyć Twój PIM z innymi aplikacjami.
           description_2: Chcesz dowiedzieć się więcej o aplikacjach?
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
+          developed_by: 'Autor: {{ author }}'
+          not_listed_on_the_appstore: Aplikacja nie jest już dostępna w sklepie z aplikacjami Akeneo. Skontaktuj się z pomocą techniczną aplikacji.
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
+          pending: Aplikacja nie jest połączona. Otwarcie aplikacji powinno rozwiązać problem z połączeniem.
         flash:
           error: Przepraszamy, podczas pobierania listy połączonych aplikacji wystąpił błąd.
       edit:
@@ -102,6 +154,9 @@ akeneo_connectivity.connection:
             information: 'Aby dowiedzieć się więcej o autoryzacjach aplikacji, przejdź na stronę {{ link }}.'
             information_link_anchor: Artykuł w Centrum Pomocy
             no_scope: Nie zażądano żadnych określonych autoryzacji.
+          authentication:
+            information_link_anchor: Artykuł w Centrum Pomocy
+          pending: Ta aplikacja nie jest połączona z Twoim PIM. Otwarcie aplikacji powinno rozwiązać problem z połączeniem. Jeżeli problem nadal występuje, skontaktuj się z pomocą techniczną aplikacji.
         error_monitoring:
           error: Ups, coś poszło nie tak!
           helper:
@@ -142,7 +197,6 @@ akeneo_connectivity.connection:
           previous: Poprzednie
           next: Następne
           allow_and_next: Zezwól i przejdź dalej
-          allow_and_finish: Zezwól i zakończ
         progress:
           authentication: Uwierzytelnianie
           authorizations: Autoryzacje
@@ -152,8 +206,16 @@ akeneo_connectivity.connection:
           title: 'Aplikacja {{ app_name }} musi'
           helper: Aby dowiedzieć się więcej o uwierzytelnieniu aplikacji, zapoznaj się z naszym artykułem
           helper_link: Jak połączyć PIM z aplikacjami?
-          scope_profile: Wyświetl swoje imię i nazwisko
-          scope_email: Wyświetl swój adres e-mail
+          scope_profile: 'Wyświetl swoje {{ firstname }} i {{ lastname }}'
+          scope_email: 'Wyświetl swój {{ email }}'
+          consent:
+            label: 'Wyrażam zgodę na obowiązywanie Polityki prywatności i Warunków użytkowania Aplikacji, z którymi można zapoznać się na stronie {{ app_marketplace_page }}.'
+            app_marketplace_page: Strona sklepu z aplikacjami
+            subtext: 'Wyrażasz zgodę na przekierowanie do aplikacji osób trzecich. Akeneo nie ponosi odpowiedzialności za zawartość tej aplikacji. Jeżeli podczas korzystania ze sklepu z aplikacjami Akeneo napotkasz trudności, skontaktuj się z {{ contact_us }}.'
+            contact_us: skontaktuj się z nami
+          firstname: imię
+          lastname: nazwisko
+          email: adres e-mail
         authorize:
           title: 'Aplikacja {{ app_name }} musi'
           no_scope_title: 'Aplikacja {{ app_name }} chciałaby uzyskać dostęp do Twojego PIM.'
@@ -189,6 +251,7 @@ akeneo_connectivity.connection:
           assets: zasoby
       error:
         sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
+        app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
       constraint:
         client_id:
           not_blank: Atrybut client_id jest wymagany.
@@ -217,6 +280,7 @@ akeneo_connectivity.connection:
     user_role_id: Rola
     user_group_id: Grupa
     constraint:
+      connections_number_limit_reached: Osiągnięto limit 50 połaczeń i podłączonych aplikacji.
       code:
         required: Kod połączenia jest wymagany
         invalid: Kod połączenia może zawierać tylko litery, cyfry i podkreślenia.
@@ -245,6 +309,7 @@ akeneo_connectivity.connection:
     message_link: kliknij tutaj.
   create_connection:
     title: Utwórz nowe połączenie
+    description: Możesz podłaczyć maksymalnie 50 podmiotów zewnętrznych lub aplikacji.
     flash:
       success: Połączenie zostało pomyślnie utworzone.
       error: Przepraszamy, wystąpił błąd podczas tworzenia połączenia.
@@ -314,7 +379,7 @@ akeneo_connectivity.connection:
     flash:
       success: Połączenie pomyślnie usunięte.
   helper:
-    title: '{0} Na razie nie masz połączenia z aplikacjami zewnętrznymi.{1} Masz 1 połączenie PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.|]1,Inf] Masz {{ count }} połączeń PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.'
+    title: '{0} Na razie nie masz połączenia z aplikacjami zewnętrznymi.|{1} Masz 1 połączenie PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.|]1,Inf] Masz {{ count }} połączeń PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.'
     description: PIM bez integracji z innymi firmami nie jest bezużyteczny, prawda? Dzięki połączeniom możesz zadeklarować wszystkie przepływy danych, które zostaną przepchnięte i pobrane poza PIM.
     link: Aby dowiedzieć się więcej o Połączeniach, sprawdź tę stronę
   flow_type_helper:
@@ -491,3 +556,6 @@ pim_permissions:
       edit: Edycja
       view: Podgląd
     all: Wszystkie
+pim_notification:
+  connected_app_authorizations:
+    button_label: Otwórz aplikację

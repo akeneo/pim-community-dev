@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\Infrastructure\Persistence\Query\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQuery;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 
@@ -31,20 +32,20 @@ final class GetProductIdsImpactedByAttributeGroupActivationQueryIntegration exte
         $expectedProducts[] = $this->createProduct('expected_product_B', ['family' => 'impacted_family_B']);
         $expectedProducts[] = $this->createProduct('expected_product_C', ['family' => 'impacted_family_B']);
 
+        $expectedProductIds = array_map(function ($product) {
+            return $this->get(ProductIdFactory::class)->create((string)$product->getId());
+        }, $expectedProducts);
+
         $this->createProduct('not_impacted_product', ['family' => 'not_impacted_family']);
 
         $productIds = $this->get(GetProductIdsImpactedByAttributeGroupActivationQuery::class)->updatedSince($updatedSince, 2);
         $productIds = iterator_to_array($productIds);
-
         $this->assertCount(2, $productIds);
         $this->assertCount(2, $productIds[0]);
         $this->assertCount(1, $productIds[1]);
 
-        $expectedProductIds = array_map(function ($product) {
-            return new ProductId($product->getId());
-        }, $expectedProducts);
-
-        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge($productIds[0], $productIds[1]));
+        $productIds = array_map(fn(ProductIdCollection $collection) => $collection->toArray(), $productIds);
+        $this->assertEqualsCanonicalizing($expectedProductIds, array_merge_recursive(...$productIds));
     }
 
     private function createAttributeGroupWithAttributes(string $code, array $attributes, bool $activated, \DateTimeImmutable $activationUpdatedAt): int

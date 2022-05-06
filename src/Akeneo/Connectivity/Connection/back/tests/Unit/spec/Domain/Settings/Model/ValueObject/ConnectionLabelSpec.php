@@ -30,7 +30,7 @@ class ConnectionLabelSpec extends ObjectBehavior
 
     public function it_cannot_contains_a_string_longer_than_100_characters()
     {
-        $this->beConstructedWith(str_repeat('a', 101));
+        $this->beConstructedWith(\str_repeat('a', 101));
         $this->shouldThrow(
             new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_long')
         )->duringInstantiation();

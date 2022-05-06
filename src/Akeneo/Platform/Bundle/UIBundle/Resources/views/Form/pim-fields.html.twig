@@ -179,9 +179,7 @@
         {% if form.parent %}
             {% set combinedError = '' %}
             {% for error in errors %}
-                {% set error = error.messagePluralization is null
-                    ? error.messageTemplate|trans(error.messageParameters, 'validators')
-                    : error.messageTemplate|trans(error.messagePluralization, error.messageParameters, 'validators') %}
+                {% set error = error.messageTemplate|trans(error.messageParameters, 'validators', null, error.messagePluralization) %}
                 {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
             {% endfor %}
             <i class="AknIconButton AknIconButton--important icon-warning-sign validation-tooltip" data-placement="right" data-toggle="tooltip" data-original-title="{{ combinedError|trans }}"></i>

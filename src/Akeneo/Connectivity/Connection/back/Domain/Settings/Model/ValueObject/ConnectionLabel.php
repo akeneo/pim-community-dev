@@ -15,15 +15,15 @@ class ConnectionLabel
 
     public function __construct(string $label)
     {
-        $label = trim($label);
+        $label = \trim($label);
 
         if (empty($label)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.required');
         }
-        if (mb_strlen($label) < 3) {
+        if (\mb_strlen($label) < 3) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_short');
         }
-        if (mb_strlen($label) > 100) {
+        if (\mb_strlen($label) > 100) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.label.too_long');
         }
 

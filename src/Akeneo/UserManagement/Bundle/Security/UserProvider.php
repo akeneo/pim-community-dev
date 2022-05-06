@@ -35,10 +35,12 @@ class UserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         $user = $this->userRepository->findOneByIdentifier($username);
-        if (!$user
-            || $user->isApiUser()
-        ) {
+        if (!$user || $user->isApiUser()) {
             throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+        }
+
+        if (!$user->isEnabled()) {
+            throw new UsernameNotFoundException('User account is disabled.');
         }
 
         return $user;
@@ -55,9 +57,7 @@ class UserProvider implements UserProviderInterface
         }
 
         $reloadedUser = $this->userRepository->find($user->getId());
-        if (null === $reloadedUser
-            || $reloadedUser->isApiUser()
-        ) {
+        if (null === $reloadedUser || $reloadedUser->isApiUser()) {
             throw new UsernameNotFoundException(sprintf('User with id %d not found', $user->getId()));
         }
 

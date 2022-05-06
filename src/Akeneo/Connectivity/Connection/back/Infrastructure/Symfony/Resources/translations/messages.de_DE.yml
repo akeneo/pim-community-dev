@@ -1,3 +1,8 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Verbindungseinstellungen verwalten
   acl.manage_apps: Apps verwalten
+  acl.manage_test_apps: Test-Apps verwalten
+  acl.open_apps: Apps öffnen
+pim_notification:
+  connected_app_authorizations:
+    message: 'Die <strong>%app_name%</strong> App erfordert eine Autorisierungsaktualisierung. Bitte öffnen Sie die App, um fortzufahren.'

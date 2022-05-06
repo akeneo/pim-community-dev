@@ -22,6 +22,7 @@ $rules = [
             // Required for accessing DBAL & ES services:
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',
             'Symfony\Component\DependencyInjection\ContainerInterface',
+            'Symfony\Component\DependencyInjection\ContainerAwareTrait',
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand',
@@ -30,12 +31,13 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
-            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\Query\SaveAsymmetricKeysQuery',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer',
             'Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader',
+            'Akeneo\Tool\Component\Batch\Job',
             'Akeneo\Tool\Component\Batch\Job\BatchStatus',
             'Akeneo\Tool\Component\Batch\Job\ExitStatus',
             'Doctrine\Common\Collections\ArrayCollection',

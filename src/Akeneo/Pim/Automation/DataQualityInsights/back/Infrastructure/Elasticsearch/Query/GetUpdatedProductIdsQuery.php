@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
 /**
@@ -15,22 +17,31 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
 {
-    /** @var Client */
-    private $esClient;
+    private const PRODUCT_IDENTIFIER_PREFIX = 'product_';
+    private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
 
-    public function __construct(Client $esClient)
-    {
-        $this->esClient = $esClient;
+    public function __construct(
+        private Client                          $esClient,
+        private string                          $documentType,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
-    public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function since(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
+        if ($this->documentType !== ProductModelInterface::class && $this->documentType !== ProductInterface::class) {
+            throw new \InvalidArgumentException(sprintf('Invalid type %s', $this->documentType));
+        }
+
         $query = [
             'bool' => [
                 'must' => [
                     [
                         'term' => [
-                            'document_type' => ProductInterface::class
+                            'document_type' => $this->documentType
                         ],
                     ],
                     [
@@ -65,7 +76,7 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
                 $searchAfter = $product['sort'] ?? $searchAfter;
             }
 
-            yield $productIds;
+            yield $this->idFactory->createCollection($productIds);
 
             $returnedProducts += count($productIds);
             $result = $returnedProducts < $totalProducts && $searchAfter !== $previousSearchAfter
@@ -83,15 +94,16 @@ class GetUpdatedProductIdsQuery implements GetUpdatedProductIdsQueryInterface
         return $this->esClient->search($query);
     }
 
-    private function formatProductId(array $productData): ProductId
+    private function formatProductId(array $productData): string
     {
         if (!isset($productData['_source']['id'])) {
             throw new \Exception('No id not found in source when searching updated products');
         }
 
-        $productId =  intval(str_replace('product_', '', $productData['_source']['id']));
-
-        return new ProductId($productId);
+        $identifierPrexis = $this->documentType === ProductModelInterface::class
+            ? self::PRODUCT_MODEL_IDENTIFIER_PREFIX
+            : self::PRODUCT_IDENTIFIER_PREFIX;
+        return (str_replace($identifierPrexis, '', $productData['_source']['id']));
     }
 
     private function countUpdatedProducts(array $query): int

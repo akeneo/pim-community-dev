@@ -36,68 +36,6 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
                 ->addRate($channelMobile, $localeEn, new Rate(96))
                 ->addRate($channelMobile, $localeFr, new Rate(36))
         );
-        $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
-        );
-        $productScoreB = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
-        );
-        // To ensure that it doesn't crash when saving a unknown product
-        $unknownProductScore = new ProductScores(
-            new ProductId($productIdB),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
-        );
-
-        $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $unknownProductScore, $productScoreB]);
-
-        $this->assertCountProductsScores(3);
-        $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
-        $this->assertProductScoreExists($productScoreB);
-    }
-
-    public function test_it_purges_scores_older_than_a_given_date(): void
-    {
-        $productIdA = $this->createProduct('product_A')->getId();
-        $productIdB = $this->createProduct('product_B')->getId();
-
-        $channelMobile = new ChannelCode('mobile');
-        $localeEn = new LocaleCode('en_US');
-        $localeFr = new LocaleCode('fr_FR');
-
-        $productScoreA1 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-18'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
-        );
-        $productScoreA2 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-17'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(79))
-                ->addRate($channelMobile, $localeFr, new Rate(12))
-        );
-        $productScoreA3 = new ProductScores(
-            new ProductId($productIdA),
-            new \DateTimeImmutable('2020-11-16'),
-            (new ChannelLocaleRateCollection())
-                ->addRate($channelMobile, $localeEn, new Rate(89))
-                ->addRate($channelMobile, $localeFr, new Rate(42))
-        );
         $productScoreB = new ProductScores(
             new ProductId($productIdB),
             new \DateTimeImmutable('2020-11-16'),
@@ -107,12 +45,10 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
         );
 
         $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreA2, $productScoreA3, $productScoreB]);
-        $this->get(ProductScoreRepository::class)->purgeUntil(new \DateTimeImmutable('2020-11-17'));
+        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreB]);
 
-        $this->assertCountProductsScores(3);
+        $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
-        $this->assertProductScoreExists($productScoreA2);
         $this->assertProductScoreExists($productScoreB);
     }
 

@@ -28,5 +28,4 @@ class CustomUserCheckerSpec extends ObjectBehavior
         $user->setEnabled(true);
         $this->shouldNotThrow(DisabledException::class)->duringCheckPreAuth($user);
     }
-
 }

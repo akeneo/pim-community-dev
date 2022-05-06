@@ -5,7 +5,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\Query\GetAsymmetricKeysQueryInterface;
+use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetAsymmetricKeysQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\ClockInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\CreateJsonWebToken;
@@ -139,14 +139,14 @@ class CreateJsonWebTokenSpec extends ObjectBehavior
         Assert::assertInstanceOf(\DateTimeInterface::class, $et);
         Assert::assertEquals($expectedEt->format(\DateTimeInterface::ATOM), $et->format(\DateTimeInterface::ATOM));
 
-        if (in_array(AuthenticationScope::SCOPE_PROFILE, $scopes)) {
+        if (\in_array(AuthenticationScope::SCOPE_PROFILE, $scopes)) {
             Assert::assertTrue($token->claims()->has('firstname'));
             Assert::assertTrue($token->claims()->has('lastname'));
             Assert::assertEquals($this->firstname, $token->claims()->get('firstname'));
             Assert::assertEquals($this->lastname, $token->claims()->get('lastname'));
         }
 
-        if (in_array(AuthenticationScope::SCOPE_EMAIL, $scopes)) {
+        if (\in_array(AuthenticationScope::SCOPE_EMAIL, $scopes)) {
             Assert::assertTrue($token->claims()->has('email'));
             Assert::assertEquals($this->email, $token->claims()->get('email'));
         }

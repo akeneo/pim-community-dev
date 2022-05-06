@@ -26,6 +26,7 @@ import fetchProductModelEvaluation from './infrastructure/fetcher/ProductEditFor
 import {AttributeGroupDQIActivation} from './application/component/AttributeGroup/AttributeGroupDQIActivation';
 import {QualityScoreBar} from './application/component/QualityScoreBar';
 import {CONTAINER_ELEMENT_ID as DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID} from './application/component/ProductEditForm/QualityScorePortal';
+import {productEditFormStore} from './infrastructure/store';
 
 export {CriterionEvaluationResult, ProductEvaluation, TimePeriod} from './domain';
 
@@ -33,6 +34,7 @@ export {BackLinkButton} from './application';
 export * from './application/constant';
 
 export {
+  productEditFormStore,
   Rate,
   Dashboard,
   DashboardHelper,
@@ -57,3 +59,5 @@ export {
   DATA_QUALITY_INSIGHTS_PRODUCT_QUALITY_SCORE_CONTAINER_ELEMENT_ID,
   DATA_QUALITY_INSIGHTS_REDIRECT_TO_DQI_TAB,
 };
+
+export * from './application';

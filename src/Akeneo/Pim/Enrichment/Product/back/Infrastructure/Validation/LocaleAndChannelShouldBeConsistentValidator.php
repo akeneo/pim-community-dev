@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Symfony\Component\Validator\Constraint;
@@ -24,7 +24,7 @@ final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValida
     ) {
     }
 
-    public function validate($valueUserIntents, Constraint $constraint)
+    public function validate($valueUserIntents, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, LocaleAndChannelShouldBeConsistent::class);
         Assert::isArray($valueUserIntents);
@@ -155,6 +155,9 @@ final class LocaleAndChannelShouldBeConsistentValidator extends ConstraintValida
         }
     }
 
+    /**
+     * @param array<string, string> $messageParameters
+     */
     private function addViolation(string $message, array $messageParameters = [], ?string $path = null): void
     {
         $builder = $this->context->buildViolation($message, $messageParameters);

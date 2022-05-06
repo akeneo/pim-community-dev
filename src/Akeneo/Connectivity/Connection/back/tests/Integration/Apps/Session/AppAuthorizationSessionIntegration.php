@@ -35,14 +35,14 @@ class AppAuthorizationSessionIntegration extends TestCase
             'authentication_scope' => 'openid profile',
             'redirect_uri' => 'http://shopware.example.com/callback',
             'state' => 'foo',
-        ], json_decode($authorizationInSession, true));
+        ], \json_decode($authorizationInSession, true));
     }
 
     public function test_to_get_an_app_in_session(): void
     {
         $this->session->set(
             '_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715',
-            json_encode([
+            \json_encode([
                 'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'redirect_uri' => 'http://shopware.example.com/callback',
                 'authorization_scope' => 'read_catalog_structure write_products',

@@ -21,21 +21,6 @@ use Doctrine\Common\Util\ClassUtils;
  */
 class ChannelUpdater implements ObjectUpdaterInterface
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var TranslatableUpdater */
-    protected $translatableUpdater;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param IdentifiableObjectRepositoryInterface $localeRepository
@@ -44,17 +29,12 @@ class ChannelUpdater implements ObjectUpdaterInterface
      * @param TranslatableUpdater                   $translatableUpdater
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $categoryRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
-        IdentifiableObjectRepositoryInterface $currencyRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        TranslatableUpdater $translatableUpdater
+        protected IdentifiableObjectRepositoryInterface $categoryRepository,
+        protected IdentifiableObjectRepositoryInterface $localeRepository,
+        protected IdentifiableObjectRepositoryInterface $currencyRepository,
+        protected IdentifiableObjectRepositoryInterface $attributeRepository,
+        protected TranslatableUpdater $translatableUpdater
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->localeRepository = $localeRepository;
-        $this->currencyRepository = $currencyRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->translatableUpdater = $translatableUpdater;
     }
 
     /**
@@ -151,9 +131,28 @@ class ChannelUpdater implements ObjectUpdaterInterface
                 $channel->setConversionUnits($data);
                 break;
             case 'labels':
-                $this->translatableUpdater->update($channel, $data);
+                $this->setLabels($channel, $data);
                 break;
         }
+    }
+
+    /**
+     * set labels on a channel, ensuring correct case of locale codes.
+     * @param ChannelInterface $channel
+     * @param array            $localizedLabels
+     */
+    private function setLabels($channel, $localizedLabels)
+    {
+        // using known locale code when found (modulo case-insensitive comparison)
+        // leaving unknown locale code as is for the moment (Jira PIM-10372)
+        $normalizedLocalizedLabels = [];
+        foreach ($localizedLabels as $localeCode => $label) {
+            $knownLocale = $this->localeRepository->findOneByIdentifier($localeCode);
+            $normalizedLocalCode = null === $knownLocale ? $localeCode : $knownLocale->getCode();
+            $normalizedLocalizedLabels[$normalizedLocalCode] = $label;
+        };
+
+        $this->translatableUpdater->update($channel, $normalizedLocalizedLabels);
     }
 
     /**

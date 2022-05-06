@@ -6,7 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,9 +17,10 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
 {
     public function let(
         GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        ComputeProductsKeyIndicator $goodEnrichment,
-        ComputeProductsKeyIndicator $hasImage
-    ) {
+        ComputeProductsKeyIndicator       $goodEnrichment,
+        ComputeProductsKeyIndicator       $hasImage
+    )
+    {
         $this->beConstructedWith($getLocalesByChannelQuery, [$goodEnrichment, $hasImage]);
     }
 
@@ -27,13 +28,14 @@ final class ComputeProductsKeyIndicatorsSpec extends ObjectBehavior
         $getLocalesByChannelQuery,
         $goodEnrichment,
         $hasImage
-    ) {
+    )
+    {
         $getLocalesByChannelQuery->getArray()->willReturn([
             'ecommerce' => ['en_US', 'fr_FR'],
             'mobile' => ['en_US'],
         ]);
 
-        $productIds = [new ProductId(13), new ProductId(42)];
+        $productIds = ProductIdCollection::fromInts([13, 42]);
 
         $expectedKeyIndicators = [
             13 => [

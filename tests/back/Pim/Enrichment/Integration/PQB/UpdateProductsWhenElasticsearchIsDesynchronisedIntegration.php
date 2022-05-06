@@ -42,7 +42,7 @@ final class UpdateProductsWhenElasticsearchIsDesynchronisedIntegration extends A
         );
 
         $batchSize = $this->getParameter('pim_job_product_batch_size');
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter('enabled', Operators::EQUALS, false);
         $products = $pqb->execute();
 

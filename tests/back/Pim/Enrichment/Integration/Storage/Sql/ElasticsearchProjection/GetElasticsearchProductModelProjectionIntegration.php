@@ -332,12 +332,15 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         unset($actual['updated']);
         unset($actual['entity_updated']);
 
+        // Removing additional properties from other bounded context than Enrichment
+        $actual = array_intersect_key($actual, $expected);
+
         Assert::assertEqualsCanonicalizing($expected, $actual);
     }
 
     private function getProductModelProjectionArray($code): array
     {
-        $productModelProjections = $this->getGetElasticsearchProductModelProjection()->fromProductModelCodes([$code]);
+        $productModelProjections = $this->getElasticsearchProductModelProjection()->fromProductModelCodes([$code]);
         if (!\is_array($productModelProjections)) {
             $productModelProjections = \iterator_to_array($productModelProjections);
         }
@@ -345,7 +348,7 @@ class GetElasticsearchProductModelProjectionIntegration extends TestCase
         return $productModelProjections[$code]->toArray();
     }
 
-    private function getGetElasticsearchProductModelProjection(): GetElasticsearchProductModelProjectionInterface
+    private function getElasticsearchProductModelProjection(): GetElasticsearchProductModelProjectionInterface
     {
         return $this->get('akeneo.pim.enrichment.product.query.get_elasticsearch_product_model_projection');
     }

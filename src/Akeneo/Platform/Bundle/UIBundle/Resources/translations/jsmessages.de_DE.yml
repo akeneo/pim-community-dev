@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: System
+      save_ok: Konfiguration erfolgreich gespeichert
+      save_error: Die Konfiguration konnte nicht gespeichert werden ({{ reason }})
       group:
         localization:
-          title: Lokalisierung
-          system_locale: Sprache
+          title: Einstellungen der Anmeldeseite
+          fields:
+            system_locale:
+              label: Sprache
         notification:
-          title: Benachrichtigungen
-          system_notification: Benachrichtigungen über neue Versionen
+          title: Benachrichtigungen über neue Versionen
+          helper: Wenn aktiviert, erhalten Sie eine Benachrichtigung, wenn eine neue Version für Sie verfügbar ist.
+          fields:
+            enabler:
+              label: Aktiviert
         loading_message:
-          title: Nachrichten werden geladen
-          label: Nachrichten laden aktivieren
-        loading_messages:
-          label: Nachrichten laden aktivieren
+          title: Angepasste Lademeldungen
+          helper: Unterhalten Sie Ihre Benutzer mit angepassten Ladebildschirm-Meldungen.
+          placeholder: Bitte schreiben Sie Ihre eigene Nachricht, die auf Ihrem Ladebildschirm angezeigt werden soll
+          fields:
+            enabler:
+              label: Nachrichten laden aktivieren
+            messages:
+              label: Füge deine eigenen Lademeldungen hinzu
 pim_ui:
   flash:
     unsaved_changes: 'Sie haben ungespeicherte Änderungen, sind Sie sicher, dass Sie gehen wollen?'

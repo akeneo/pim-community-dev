@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, createElement} from 'react';
 import styled from 'styled-components';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
@@ -10,15 +10,15 @@ import * as Illustrations from '../../illustrations';
   title="Components/Placeholder"
   component={Placeholder}
   argTypes={{
-      illustration: {control: {type: 'select'}, options: Object.keys(Illustrations)},
-      title: {control: {type: 'text'}},
-      children: {control: {type: 'text'}}
-    }}
-    args={{
-      illustration: 'UsersIllustration',
-      title: 'Placeholder title',
-      children: 'Placeholder children text'
-    }}
+    illustration: {control: {type: 'select'}, options: Object.keys(Illustrations)},
+    title: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    illustration: 'UsersIllustration',
+    title: 'Placeholder title',
+    children: 'Placeholder children text',
+  }}
 />
 
 # Placeholder
@@ -35,12 +35,21 @@ Placeholder requires a title and an illustration and can contain anything in its
 <Canvas>
   <Story name="Standard">
     {args => {
-      const IllustrationComponent = React.createElement(Illustrations[args.illustration]);
-      return (
-        <Placeholder {...args} illustration={IllustrationComponent}/>
-      );
+      const IllustrationComponent = createElement(Illustrations[args.illustration]);
+      return <Placeholder {...args} illustration={IllustrationComponent} />;
     }}
   </Story>
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## Variation on `size`
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      const IllustrationComponent = createElement(Illustrations.AttributesIllustration);
+      return <Placeholder {...args} title="Large placeholder" illustration={IllustrationComponent} size="large" />;
+    }}
+  </Story>
+</Canvas>

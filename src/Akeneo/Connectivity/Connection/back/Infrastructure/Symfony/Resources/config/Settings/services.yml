@@ -1,0 +1,17 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\CreateClient:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\DeleteClient:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\Client\Fos\FosRegenerateClientSecret:
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
+            - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Settings\FileInfo\DoesImageExistQuery:
+        arguments:
+            - '@database_connection'

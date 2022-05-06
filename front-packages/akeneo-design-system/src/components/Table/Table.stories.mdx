@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {ArgsTable, Canvas, Meta, Story} from '@storybook/addon-docs';
 import {Table} from './Table.tsx';
-import {Badge, Button, Image} from '../../components';
+import {Badge, Button, Image, IconButton} from '../../components';
+import {DeleteIcon} from '../../icons';
 import {rows, sortRows} from './shared-stories-data';
 import {Scrollable} from '../../storybook/PreviewGallery';
 
@@ -30,7 +31,7 @@ import {Scrollable} from '../../storybook/PreviewGallery';
   }}
 />
 
-# Table (Beta)
+# Table
 
 ## Usage
 
@@ -321,6 +322,44 @@ To compare information, for example how many products are completed versus how m
   </Story>
 </Canvas>
 
+## Table with actions
+<Canvas>
+  <Story name="Table with actions">
+    {args => {
+      return (
+        <Table>
+          <Table.Header>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Actions</Table.HeaderCell>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>A biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig value without actions</Table.Cell>
+              <Table.ActionCell />
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>A biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig value with a button action</Table.Cell>
+              <Table.ActionCell>
+                <Button level="primary" ghost>
+                  A button action
+                </Button>
+              </Table.ActionCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>A biiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig value with an icon button action</Table.Cell>
+              <Table.ActionCell>
+                <IconButton level="primary" ghost icon={<DeleteIcon/>}>
+                  A button action
+                </IconButton>
+              </Table.ActionCell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      );
+    }}
+  </Story>
+</Canvas>
+
 ## Complex table
 
 <Canvas>
@@ -435,4 +474,57 @@ If you want your `Table.Header` to stay on top when scrolling in the Table, just
       );
     }}
   </Story>
+</Canvas>
+
+## Table with warning rows
+
+<Canvas>
+    <Story name="Warning rows">
+        {args => {
+            return (
+                <Scrollable height={250}>
+                    <Table hasWarningRows={true}>
+                        <Table.Header sticky={0}>
+                            <Table.HeaderCell>Name</Table.HeaderCell>
+                            <Table.HeaderCell>Family</Table.HeaderCell>
+                            <Table.HeaderCell>Order</Table.HeaderCell>
+                            <Table.HeaderCell>Genus</Table.HeaderCell>
+                            <Table.HeaderCell>Conservation status</Table.HeaderCell>
+                            <Table.HeaderCell>Actions</Table.HeaderCell>
+                        </Table.Header>
+                        <Table.Body>
+                            <Table.Row level="warning">
+                                <Table.Cell rowTitle={args.displayRowTitle}>Giant panda</Table.Cell>
+                                <Table.Cell>Ursidae</Table.Cell>
+                                <Table.Cell>Carnivora</Table.Cell>
+                                <Table.Cell>Ursus</Table.Cell>
+                                <Table.Cell>
+                                    <Badge level="warning">vu</Badge>
+                                </Table.Cell>
+                                <Table.ActionCell>
+                                    <Button level="primary" ghost>
+                                        Button
+                                    </Button>
+                                </Table.ActionCell>
+                            </Table.Row>
+                            <Table.Row>
+                                <Table.Cell rowTitle={args.displayRowTitle}>Red panda</Table.Cell>
+                                <Table.Cell>Ailuridae</Table.Cell>
+                                <Table.Cell>Carnivora</Table.Cell>
+                                <Table.Cell>Ailurus</Table.Cell>
+                                <Table.Cell>
+                                    <Badge level="warning">vu</Badge>
+                                </Table.Cell>
+                                <Table.ActionCell>
+                                    <Button level="primary" ghost>
+                                        Button
+                                    </Button>
+                                </Table.ActionCell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
+                </Scrollable>
+            );
+        }}
+    </Story>
 </Canvas>

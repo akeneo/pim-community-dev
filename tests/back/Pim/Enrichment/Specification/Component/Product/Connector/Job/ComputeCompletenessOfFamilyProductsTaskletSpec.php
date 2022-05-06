@@ -2,9 +2,9 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResult;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessCalculator;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
@@ -76,11 +76,7 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobRepositoryInterface $jobRepository,
         FamilyInterface $familyShoes,
-        FamilyInterface $familyTshirt,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        ProductInterface $product4
+        FamilyInterface $familyTshirt
     ) {
         $productQueryBuilderFactory->create()->willReturn($productQueryBuilder);
 
@@ -88,14 +84,14 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
         $familyShoes->getCode()->willReturn('Shoes');
         $familyTshirt->getCode()->willReturn('Tshirt');
 
-        $product1->getIdentifier()->willReturn('product_shoes_1');
-        $product2->getIdentifier()->willReturn('product_shoes_2');
-        $product3->getIdentifier()->willReturn('product_tshirt_1');
-        $product4->getIdentifier()->willReturn('product_tshirt_2');
-
         $productQueryBuilder->addFilter('family', 'IN', ['Shoes', 'Tshirt'])->shouldBeCalled();
         $productQueryBuilder->execute()->shouldBeCalled()->willReturn(
-            new ProductCursor([$product1->getWrappedObject(), $product2->getWrappedObject(), $product3->getWrappedObject(), $product4->getWrappedObject()]),
+            new IdentifierResultCursor([
+                new IdentifierResult('product_shoes_1', ProductInterface::class),
+                new IdentifierResult('product_shoes_2', ProductInterface::class),
+                new IdentifierResult('product_tshirt_1', ProductInterface::class),
+                new IdentifierResult('product_tshirt_2', ProductInterface::class),
+            ]),
         );
 
         $completenessCalculator->fromProductIdentifiers([
@@ -133,8 +129,8 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
 
         $productQueryBuilder->addFilter('family', 'IN', ['Shoes'])->shouldBeCalled();
         $productQueryBuilder->execute()->shouldBeCalled()->willReturn(
-            new ProductCursor(array_map(function (int $i): ProductInterface {
-                return (new Product())->setIdentifier('product_' . $i);
+            new IdentifierResultCursor(array_map(function (int $i): IdentifierResult {
+                return new IdentifierResult('product_' . $i, ProductInterface::class);
             }, range(1, 1006)))
         );
 
@@ -154,6 +150,6 @@ class ComputeCompletenessOfFamilyProductsTaskletSpec extends ObjectBehavior
     }
 }
 
-class ProductCursor extends \ArrayIterator implements CursorInterface
+class IdentifierResultCursor extends \ArrayIterator implements CursorInterface
 {
 }

@@ -4,6 +4,7 @@ namespace Akeneo\UserManagement\Bundle\Security;
 
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\Security\Core\Exception\DisabledException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -37,6 +38,10 @@ class UserApiProvider implements UserProviderInterface
         $user = $this->userRepository->findOneByIdentifier($username);
         if (!$user) {
             throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+        }
+
+        if (!$user->isEnabled()) {
+            throw new DisabledException('User account is disabled.');
         }
 
         return $user;

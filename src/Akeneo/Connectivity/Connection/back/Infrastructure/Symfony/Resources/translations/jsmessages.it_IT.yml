@@ -16,11 +16,11 @@ pim_menu:
     connection_webhook_event_logs: Registri eventi
     data_flows: Flussi di dati
     connect_connection_settings: Impostazioni di connessione
-    marketplace: Marketplace
-    connected_apps: App
+    marketplace: App Store
+    connected_apps: App connesse
 pim_title:
-  akeneo_connectivity_connection_connect_marketplace: Marketplace
-  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+  akeneo_connectivity_connection_connect_marketplace: App Store
+  akeneo_connectivity_connection_connect_marketplace_profile: App Store
   akeneo_connectivity_connection_connect_apps_activate: Connetti
   akeneo_connectivity_connection_connect_apps_authorize: Connetti
   akeneo_connectivity_connection_connect_apps_authenticate: Connetti
@@ -35,25 +35,30 @@ pim_title:
   akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento
   akeneo_connectivity_connection_webhook_event_logs: Registri eventi
   akeneo_connectivity_connection_settings_redirect: Connessioni
-  akeneo_connectivity_connection_connect_connected_apps: App
+  akeneo_connectivity_connection_connect_connected_apps: App connesse
   akeneo_connectivity_connection_connect_connected_apps_edit: Impostazioni app
   akeneo_connectivity_connection_connect_connected_apps_delete: Eliminazione app
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crea un'app di prova
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Elimina app di prova
+  akeneo_connectivity_connection_connect_connected_apps_open: Apri app
 akeneo_connectivity.connection:
   connect:
     marketplace:
       title: Vuoi connettere il tuo PIM con un'altra applicazione? 🤟
-      sub_title: Controlla il nostro marketplace per vedere quale applicazione può essere connessa con Akeneo PIM.
-      link: Accedi al marketplace
+      sub_title: Controlla il nostro App Store per vedere quale applicazione può essere connessa con Akeneo PIM.
+      link: Accedi all'App Store
       helper:
         title: '{0} Non ci sono app né connettori compatibili con la tua versione di PIM.|{1} C''è {{ count }} app o connettore compatibile con la tua versione di PIM.|[2,Inf] Ci sono {{ count }} app e connettori compatibili con la tua versione di PIM.'
         title_without_apps: '{0} Non ci sono connettori compatibili con la tua versione di PIM. {1} C''è {{ count }} connettore compatibile con la tua versione di PIM. [2,Inf] Ci sono {{ count }} connettori compatibili con la tua versione di PIM.'
-        description: Questa è solo una panoramica. Per maggiori dettagli; ti invitiamo a dare un'occhiata al nostro web marketplace.
-        link: Vai al web marketplace
+        description: Questa è solo una panoramica. Per maggiori dettagli, ti invitiamo a dare un'occhiata all'App Store di Akeneo.
+        link: Vai all'App Store di Akeneo
       card:
+        developed_by: 'Sviluppata da {{ author }}'
         read_more: mostra di più
         more_info: Maggiori info
         connect: Connetti
         connected: Connesso
+        pending: In sospeso...
       extensions:
         title: Connettori
         total: '{0} Nessun connettore<unk>{1} 1 connettore<unk> [2,Inf] {{ total }} connettori'
@@ -62,14 +67,53 @@ akeneo_connectivity.connection:
         title: App
         total: '{0} Nessuna app|{1} 1 app|[2,Inf] {{ total }} app'
         empty: Non ci sono app compatibili con la tua versione
-      unreachable: Non riusciamo a raggiungere il marketplace, torna più tardi.
+      unreachable: Non riusciamo a raggiungere l'App Store, torna più tardi.
       scroll_to_top: Scorri in alto
       test_apps:
+        title: Mie app di prova
+        removed_user: Utente rimosso
+        create_a_test_app: Crea un'app di prova
         modal:
+          subtitle: Crea un'app di prova
+          app_information:
+            title: Informazioni app
+            description: Se hai bisogno di aiuto, consulta il nostro articolo
+            link: Come testare la mia app prima di pubblicarla?
+            fields:
+              name: Nome
+              activate_url: URL di attivazione
+              callback_url: URL di callback
           credentials:
             title: Credenziali
+            warning: Assicurati di salvare le credenziali da qualche parte poiché saranno mostrate qui solo una volta.
+            client_id: ID client
+            client_secret: Chiave privata client
+        errors:
+          page_not_found: Pagina non trovata
+          creation:
+            name:
+              min_length: Il nome dell'app di prova è troppo corto. Deve contenere almeno 3 caratteri.
+              max_length: Il nome dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
+              not_blank: Il nome dell'app di prova è obbligatorio.
+            client_id:
+              max_length: L'ID client dell'app di prova è troppo lungo. Non deve contenere più di 36 caratteri.
+              not_blank: L'ID client è obbligatorio.
+            activate_url:
+              max_length: L'URL di attivazione dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
+              must_be_url: L'URL di attivazione deve essere un URL valido.
+              not_blank: L'URL di attivazione è obbligatorio.
+            callback_url:
+              max_length: L'URL di callback dell'app di prova è troppo lungo. Non deve contenere più di 255 caratteri.
+              must_be_url: L'URL di callback deve essere un URL valido
+              not_blank: L'URL di callback è obbligatorio.
         delete:
+          subtitle: App
           title: Conferma eliminazione
+          description: Stai per eliminare la tua app di prova da questo PIM.
+          warning: Confermando l'eliminazione, eliminerai l'app di prova sulla pagina dell'App Store e la relativa app connessa.
+          flash:
+            success: App di prova eliminata con successo.
+            error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app di prova.
     connected_apps:
       list:
         apps:
@@ -77,15 +121,24 @@ akeneo_connectivity.connection:
           total: '{0} Nessuna app|{1} 1 app|[2,Inf] {{ total }} app'
           empty: Nessuna app ancora connessa
           check_marketplace: 'Controlla {{ marketplaceLink }} per sfogliare tutti i contenuti disponibili e installare la tua prima app.'
-          marketplace_link_anchor: Marketplace
+          marketplace_link_anchor: App Store
+          at_least_one_is_not_listed_on_the_appstore: Alcune delle tue app connesse non sono compatibili con la tua versione PIM o non esistono più nell'App Store di Akeneo. Contattaci per maggiori informazioni.
+          pending_apps: Alcune delle tue app non sono connesse al tuo PIM.
+        test_apps:
+          title: Mie app di prova
+          removed_user: Utente rimosso
         helper:
           title: '[0,1] Il tuo PIM è connesso con {{ count }} app.<unk> [2,Inf] Il tuo PIM è connesso con {{ count }} app.'
-          description_1: Nuove app sono sviluppate regolarmente, quindi rimani sintonizzato e controlla spesso la pagina del nostro Marketplace per scoprire come connettere il tuo PIM.
+          description_1: Nuove app sono sviluppate regolarmente, quindi rimani sintonizzato e controlla spesso la pagina del nostro App Store per scoprire come connettere il tuo PIM.
           description_2: Desideri scoprire di più sulle app?
           link: Consulta il nostro Help Center per ulteriori informazioni.
         card:
+          developed_by: 'Sviluppata da {{ author }}'
+          new_access_authorization_required: Nuova autorizzazione di accesso richiesta
+          not_listed_on_the_appstore: L'app non è più elencata nell'App Store di Akeneo. Contatta il supporto dell'app.
           manage_app: Gestisci app
           open_app: Apri app
+          pending: App non connessa. L'apertura dell'app dovrebbe risolvere il problema di connessione.
         flash:
           error: Spiacenti, si è verificato un errore durante il recupero dell'elenco delle app connesse.
       edit:
@@ -102,6 +155,12 @@ akeneo_connectivity.connection:
             information: 'Per scoprire di più sulle autorizzazioni delle app, consulta il nostro {{ link }}.'
             information_link_anchor: Articolo dell'Help Center
             no_scope: Nessuna autorizzazione specifica richiesta.
+          authentication:
+            title: autenticazione
+            information: 'Per scoprire di più sull''autenticazione dell''app, consulta il nostro {{ link }}.'
+            information_link_anchor: Articolo dell'Help Center
+            openid_only: Questa app utilizza l'autenticazione Akeneo App senza richiedere i tuoi dati personali.
+          pending: Questa app non è connessa al tuo PIM. L'apertura dell'app dovrebbe risolvere il problema di connessione. Se il problema persiste, contatta il supporto dell'app.
         error_monitoring:
           error: Ops, si è verificato un errore!
           helper:
@@ -128,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: App eliminata con successo
           error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app.
+      open:
+        flash:
+          error: Spiacenti, si è verificato un errore durante l'apertura dell'app.
     apps:
       loader:
         message: Caricamento...
@@ -142,7 +204,6 @@ akeneo_connectivity.connection:
           previous: Precedente
           next: Successivo
           allow_and_next: Consenti e avanza
-          allow_and_finish: Consenti e termina
         progress:
           authentication: Autenticazione
           authorizations: Autorizzazioni
@@ -152,14 +213,23 @@ akeneo_connectivity.connection:
           title: '{{ app_name }} deve'
           helper: Per scoprire di più sull'autenticazione dell'app, consulta il nostro articolo
           helper_link: Come connetto il mio PIM con le app?
-          scope_profile: Visualizza il tuo nome e il tuo cognome
-          scope_email: Visualizza il tuo indirizzo e-mail
+          scope_profile: 'Vedi il tuo {{ firstname }} e il tuo {{ lastname }}'
+          scope_email: 'Visualizza il tuo indirizzo {{ email }}'
+          consent:
+            label: 'Accetto l''Informativa sulla privacy e i Termini di utilizzo di questa app, disponibili per la visualizzazione nella {{ app_marketplace_page }}.'
+            app_marketplace_page: Pagina App Store
+            subtext: 'Confermi e accetti di essere reindirizzato verso un''app di terze parti. Akeneo non è responsabile e non può essere ritenuta responsabile del contenuto di questa app. Se hai qualche problema durante la visita all''App Store di Akeneo, {{ contact_us }}.'
+            contact_us: contattaci
+          firstname: nome
+          lastname: cognome
+          email: e-mail
         authorize:
           title: '{{ app_name }} deve'
           no_scope_title: '{{ app_name }} vorrebbe accedere al tuo PIM.'
           no_scope: Nessuna autorizzazione specifica richiesta.
           helper: Per scoprire di più sull'autorizzazione dell'app,
           helper_link: consulta il nostro articolo dell'Help Center.
+          is_allowed_to: 'Già consentito:'
         flash:
           success: App configurata con successo.
           error: Spiacenti, si è verificato un errore durante la connessione dell'app.
@@ -187,8 +257,10 @@ akeneo_connectivity.connection:
           reference_entity_record: registri dell'entità di riferimento
           asset_families: famiglie di asset
           assets: asset
+        new: NOVITÀ
       error:
         sub_text: Contatta lo sviluppatore dell'app o il supporto di Akeneo
+        app_not_found: Il client_id non corrisponde ad alcuna app esistente.
       constraint:
         client_id:
           not_blank: Client_id obbligatorio.
@@ -217,6 +289,7 @@ akeneo_connectivity.connection:
     user_role_id: Ruolo
     user_group_id: Gruppo
     constraint:
+      connections_number_limit_reached: Hai raggiunto il limite di 50 connessioni e app connesse.
       code:
         required: Il codice connessione è obbligatorio.
         invalid: Il codice connessione può contenere solo lettere, numeri e trattini bassi
@@ -245,6 +318,7 @@ akeneo_connectivity.connection:
     message_link: clicca qui.
   create_connection:
     title: Crea una nuova connessione
+    description: Puoi connettere fino a 50 terze parti o app.
     flash:
       success: Connessione creata correttamente.
       error: Si è verificato un errore durante la creazione della connessione.
@@ -314,7 +388,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connessione eliminata correttamente.
   helper:
-    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> ]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
+    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.|{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> |]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
     description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
     link: Per scoprire di più sulle connessioni, consulta questa pagina
   flow_type_helper:
@@ -491,3 +565,8 @@ pim_permissions:
       edit: Modifica
       view: Visualizza
     all: Tutte
+pim_notification:
+  types:
+    connected_app_authorizations: Autorizzazioni app connesse
+  connected_app_authorizations:
+    button_label: Apri app

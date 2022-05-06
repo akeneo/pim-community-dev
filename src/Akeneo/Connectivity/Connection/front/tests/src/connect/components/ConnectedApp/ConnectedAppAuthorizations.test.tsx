@@ -33,6 +33,11 @@ test('The connected app authorizations renders with scopes', async () => {
             type: 'view',
             entities: 'catalog_structure',
         },
+        {
+            icon: 'products',
+            type: 'view',
+            entities: 'products',
+        },
     ];
 
     const fetchConnectedAppScopeMessagesResponses: MockFetchResponses = {
@@ -49,7 +54,7 @@ test('The connected app authorizations renders with scopes', async () => {
     const connectedApp = {
         id: '12345',
         name: 'App A',
-        scopes: ['scope 1'],
+        scopes: ['view_catalog_structure', 'read_products'],
         connection_code: 'some_connection_code',
         logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
         author: 'Author A',
@@ -58,6 +63,8 @@ test('The connected app authorizations renders with scopes', async () => {
         certified: false,
         partner: null,
         is_test_app: false,
+        is_pending: false,
+        has_outdated_scopes: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);
@@ -67,6 +74,70 @@ test('The connected app authorizations renders with scopes', async () => {
         screen.queryByText(
             'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
             {exact: false}
+        )
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_access_to_product_information'
+        )
+    ).not.toBeInTheDocument();
+    expect(ScopeList).toHaveBeenCalledWith(
+        {
+            scopeMessages: scopes,
+            itemFontSize: 'default',
+        },
+        {}
+    );
+});
+
+test('The connected app authorizations renders with an additional helper if there is no product scope', async () => {
+    const scopes = [
+        {
+            icon: 'catalog_structure',
+            type: 'view',
+            entities: 'catalog_structure',
+        },
+    ];
+
+    const fetchConnectedAppScopeMessagesResponses: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_all_connected_app_scope_messages?connectionCode=some_connection_code':
+            {
+                json: scopes,
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppScopeMessagesResponses,
+    });
+
+    const connectedApp = {
+        id: '12345',
+        name: 'App A',
+        scopes: ['view_catalog_structure'],
+        connection_code: 'some_connection_code',
+        logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+        author: 'Author A',
+        user_group_name: 'app_123456abcde',
+        categories: ['e-commerce', 'print'],
+        certified: false,
+        partner: null,
+        is_test_app: false,
+        is_pending: false,
+        has_outdated_scopes: false,
+    };
+
+    renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);
+    await waitFor(() => expect(ScopeList).toHaveBeenCalledTimes(1));
+
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
+            {exact: false}
+        )
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_access_to_product_information'
         )
     ).toBeInTheDocument();
     expect(ScopeList).toHaveBeenCalledWith(
@@ -102,6 +173,8 @@ test('The connected app authorizations renders without scopes', async () => {
         certified: false,
         partner: null,
         is_test_app: false,
+        is_pending: false,
+        has_outdated_scopes: false,
     };
 
     renderWithProviders(<ConnectedAppAuthorizations connectedApp={connectedApp} />);
@@ -113,6 +186,11 @@ test('The connected app authorizations renders without scopes', async () => {
         screen.queryByText(
             'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.information',
             {exact: false}
+        )
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText(
+            'akeneo_connectivity.connection.connect.connected_apps.edit.settings.authorizations.no_access_to_product_information'
         )
     ).toBeInTheDocument();
     expect(ScopeList).not.toHaveBeenCalled();

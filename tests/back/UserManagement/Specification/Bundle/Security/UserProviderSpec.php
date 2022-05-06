@@ -18,8 +18,9 @@ class UserProviderSpec extends ObjectBehavior
 
     function it_loads_a_user_by_its_username(UserRepositoryInterface $userRepository, UserInterface $julia)
     {
-        $userRepository->findOneByIdentifier('julia')->willReturn($julia);
         $julia->isApiUser()->willReturn(false);
+        $julia->isEnabled()->willReturn(true);
+        $userRepository->findOneByIdentifier('julia')->willReturn($julia);
         $this->loadUserByUsername('julia')->shouldReturn($julia);
     }
 
@@ -27,7 +28,16 @@ class UserProviderSpec extends ObjectBehavior
     {
         $userRepository->findOneByIdentifier('jean-pacôme')->willReturn(null);
         $this->shouldThrow(UsernameNotFoundException::class)
-             ->during('loadUserByUsername', ['jean-pacôme']);
+            ->during('loadUserByUsername', ['jean-pacôme']);
+    }
+
+    function it_throws_an_exception_if_user_is_disabled(UserRepositoryInterface $userRepository, UserInterface $disabledGuy)
+    {
+        $disabledGuy->isApiUser()->willReturn(false);
+        $disabledGuy->isEnabled()->willReturn(false);
+        $userRepository->findOneByIdentifier('disabled-guy')->willReturn($disabledGuy);
+        $this->shouldThrow(UsernameNotFoundException::class)
+            ->during('loadUserByUsername', ['disabled-guy']);
     }
 
     function it_refreshes_a_user($userRepository, UserInterface $julia)

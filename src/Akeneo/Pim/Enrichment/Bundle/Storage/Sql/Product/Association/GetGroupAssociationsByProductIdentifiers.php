@@ -59,7 +59,7 @@ FROM (
                            LEFT JOIN pim_catalog_group associated_group ON group_association.group_id = associated_group.id
                   WHERE product.identifier IN (?)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
                          associated_group.code as associated_group_identifier
@@ -71,7 +71,7 @@ FROM (
                            INNER JOIN pim_catalog_group associated_group ON product_model_to_group.group_id = associated_group.id
                   WHERE product.identifier IN (?)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT
                   SELECT product.identifier    as product_identifier,
                          association_type.code as association_type_code,
                          associated_group.code as associated_group_identifier

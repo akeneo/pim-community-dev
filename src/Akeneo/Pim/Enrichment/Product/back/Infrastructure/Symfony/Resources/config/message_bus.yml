@@ -1,0 +1,5 @@
+services:
+    pim_enrich.product.message_bus:
+        class: Akeneo\Pim\Enrichment\Product\API\MessageBus
+        arguments:
+            - !tagged_iterator { tag: 'akeneo.pim.enrichment.product.handler', index_by: 'command' }

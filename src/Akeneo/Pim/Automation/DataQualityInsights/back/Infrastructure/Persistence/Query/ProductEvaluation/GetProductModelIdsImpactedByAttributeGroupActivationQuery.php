@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Result;
 
@@ -16,23 +17,24 @@ use Doctrine\DBAL\Result;
  */
 final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements GetProductIdsImpactedByAttributeGroupActivationQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
-
-    public function __construct(Connection $dbConnection)
-    {
-        $this->dbConnection = $dbConnection;
+    public function __construct(
+        private Connection                      $dbConnection,
+        private ProductEntityIdFactoryInterface $idFactory
+    ) {
     }
 
-    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function updatedSince(\DateTimeImmutable $updatedSince, int $bulkSize): \Generator
     {
         $productModelIds = [];
         $stmtRootProductModels = $this->executeQueryToRetrieveImpactedRootProductModels($updatedSince);
 
         while ($productModelId = $stmtRootProductModels->fetchOne()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield $productModelIds;
+                yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
         }
@@ -40,16 +42,16 @@ final class GetProductModelIdsImpactedByAttributeGroupActivationQuery implements
         $stmtSubProductModels = $this->executeQueryToRetrieveImpactedSubProductModels($updatedSince);
 
         while ($productModelId = $stmtSubProductModels->fetchOne()) {
-            $productModelIds[] = new ProductId(intval($productModelId));
+            $productModelIds[] = $productModelId;
             if (count($productModelIds) >= $bulkSize) {
-                yield $productModelIds;
+                yield $this->idFactory->createCollection($productModelIds);
                 $productModelIds = [];
             }
         }
 
 
         if (!empty($productModelIds)) {
-            yield $productModelIds;
+            yield $this->idFactory->createCollection($productModelIds);
         }
     }
 

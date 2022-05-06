@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -15,21 +16,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserGroupLoader
 {
-    private SimpleFactoryInterface $builder;
-    private ObjectUpdaterInterface $updater;
-    private SaverInterface $saver;
-    private ValidatorInterface $validator;
-
     public function __construct(
-        SimpleFactoryInterface $builder,
-        ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        SaverInterface $saver
+        private SimpleFactoryInterface $builder,
+        private ObjectUpdaterInterface $updater,
+        private ValidatorInterface $validator,
+        private SaverInterface $saver,
+        private Connection $connection,
     ) {
-        $this->builder = $builder;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->validator = $validator;
     }
 
     public function create(array $data = []): void
@@ -43,5 +36,15 @@ class UserGroupLoader
         }
 
         $this->saver->save($group);
+    }
+
+    public function createOnlyNecessary(array $groups = []): void
+    {
+        $existingGroups = $this->connection->fetchFirstColumn('SELECT name FROM oro_access_group');
+        $groupsToCreate = \array_diff($groups, $existingGroups);
+
+        foreach ($groupsToCreate as $groupName) {
+            $this->create(['name' => $groupName]);
+        }
     }
 }

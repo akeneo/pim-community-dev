@@ -18,10 +18,10 @@ class DnsLookup implements DnsLookupInterface
      */
     public function ip(string $host): ?string
     {
-        $ip = gethostbyname($host);
+        $ip = \gethostbyname($host);
 
         $flag = \FILTER_FLAG_IPV4 | \FILTER_FLAG_IPV6;
-        if (!filter_var($ip, \FILTER_VALIDATE_IP, $flag)) {
+        if (!\filter_var($ip, \FILTER_VALIDATE_IP, $flag)) {
             return null;
         }
 

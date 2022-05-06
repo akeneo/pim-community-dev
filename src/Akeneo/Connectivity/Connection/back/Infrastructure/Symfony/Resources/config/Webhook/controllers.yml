@@ -1,0 +1,35 @@
+services:
+    # WEBHOOKS
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\GetWebhookAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Query\GetAConnectionWebhookHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\RegenerateSecretAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\GenerateWebhookSecretHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\CheckWebhookReachabilityAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\CheckWebhookReachabilityHandler'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\Controller\Internal\UpdateWebhookAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler'
+            - '@oro_security.security_facade'
+
+    # EVENTS API DEBUG
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\SearchEventSubscriptionLogsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\SearchEventSubscriptionDebugLogsQuery'
+            - '@oro_security.security_facade'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Controller\Internal\DownloadEventSubscriptionLogsAction:
+        public: true
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\GetAllEventSubscriptionDebugLogsQuery'
+            - '@oro_security.security_facade'

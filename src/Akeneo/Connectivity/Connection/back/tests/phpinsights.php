@@ -86,7 +86,7 @@ return [
          * Should we discuss?
          */
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowEmptySniff::class,
-        // \src/Akeneo/Connectivity/Connection/back/Infrastructure/InternalApi/Controller/EventsApiDebug/SearchEventSubscriptionLogsAction.php:35
+        // SearchEventSubscriptionLogsAction.php:35
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowShortTernaryOperatorSniff::class,
     ],
 

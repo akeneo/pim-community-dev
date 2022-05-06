@@ -5,19 +5,19 @@ services:
     akeneo_connectivity.connection.fixtures.connection_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader'
         arguments:
-            - '@akeneo_connectivity.connection.application.handler.create_connection'
-            - '@akeneo_connectivity.connection.application.handler.update_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Settings\Command\UpdateConnectionHandler'
 
     akeneo_connectivity.connection.fixtures.audit_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditLoader'
         arguments:
             - '@database_connection'
-            - '@akeneo_connectivity.connection.persistence.repository.event_count'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Audit\Persistence\DbalBulkInsertEventCountsQuery'
 
     akeneo_connectivity.connection.fixtures.audit_error_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\AuditErrorLoader'
         arguments:
-            - '@akeneo_connectivity.connection.application.error_management.handler.update_connection_error_count'
+            - '@Akeneo\Connectivity\Connection\Application\ErrorManagement\Command\UpdateConnectionErrorCountHandler'
 
     akeneo_connectivity.connection.fixtures.structure.attribute:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\AttributeLoader'
@@ -77,6 +77,7 @@ services:
             - '@pim_user.updater.group'
             - '@validator'
             - '@pim_user.saver.group'
+            - '@database_connection'
 
     akeneo_connectivity.connection.fixtures.enrichment.user_role_loader:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserRoleLoader'
@@ -85,6 +86,7 @@ services:
             - '@pim_user.updater.role'
             - '@validator'
             - '@pim_user.saver.role'
+            - '@database_connection'
 
     akeneo_connectivity.connection.fixtures.webhook_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader
@@ -94,7 +96,7 @@ services:
     akeneo_connectivity.connection.fixtures.event_subscription_log_loader:
         class: Akeneo\Connectivity\Connection\Tests\CatalogBuilder\EventSubscriptionLogLoader
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Webhook\EventsApiDebug\Persistence\ElasticsearchEventsApiDebugRepository'
 
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\UserConsentLoader:
         arguments:
@@ -111,9 +113,9 @@ services:
             - '@database_connection'
             - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
             - '@fos_oauth_server.storage'
-            - '@akeneo_connectivity.connection.service.apps.client_provider'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\User\CreateUserGroup'
-            - '@akeneo_connectivity.connection.service.user.create_user'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\User\CreateUser'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnection'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@pim_user.repository.user'
@@ -122,3 +124,18 @@ services:
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\PimConfigurationLoader:
         arguments:
             - '@database_connection'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\UserLoader:
+        arguments:
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@pim_user.saver.user'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_group_loader'
+            - '@akeneo_connectivity.connection.fixtures.enrichment.user_role_loader'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader:
+        arguments:
+            - '@oro_security.acl.manager'
+            - '@pim_user.repository.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'

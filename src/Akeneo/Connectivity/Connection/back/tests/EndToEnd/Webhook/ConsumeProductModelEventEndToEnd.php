@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
@@ -65,7 +65,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelCreatedPayload(), $requestContent);
@@ -98,7 +98,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         $this->assertEquals($this->expectedProductModelUpdatedPayload(), $requestContent);
@@ -135,7 +135,7 @@ class ConsumeProductModelEventEndToEnd extends ApiTestCase
 
         /** @var $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
 
         $this->assertEquals($this->expectedProductModelRemovedPayload(), $requestContent);
     }

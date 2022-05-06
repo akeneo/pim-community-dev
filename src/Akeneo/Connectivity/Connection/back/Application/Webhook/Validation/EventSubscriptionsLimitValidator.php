@@ -45,8 +45,8 @@ class EventSubscriptionsLimitValidator extends ConstraintValidator
         }
 
         // Count the number of active event subscriptions but ignore the current one if it is already enabled.
-        $activeEventSubscriptionsCount = count(
-            array_filter(
+        $activeEventSubscriptionsCount = \count(
+            \array_filter(
                 $this->selectActiveWebhooksQuery->execute(),
                 fn (ActiveWebhook $activeEventSubscription) => $activeEventSubscription->connectionCode() !== $eventSubscription->code(),
             ),

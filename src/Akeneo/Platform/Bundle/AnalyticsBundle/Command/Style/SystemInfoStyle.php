@@ -29,9 +29,9 @@ class SystemInfoStyle extends SymfonyStyle
 
         $styleGuide = new TableStyle();
         $styleGuide
-            ->setHorizontalBorderChar('-')
-            ->setVerticalBorderChar('|')
-            ->setCrossingChar('+')
+            ->setHorizontalBorderChars('-', '-')
+            ->setVerticalBorderChars('|', '|')
+            ->setDefaultCrossingChar('+')
             ->setCellHeaderFormat('%s')
         ;
 

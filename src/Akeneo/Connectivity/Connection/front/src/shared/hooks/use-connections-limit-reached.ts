@@ -5,10 +5,10 @@ interface MaxLimitReached {
     limitReached: boolean;
 }
 
-export const useConnectionsLimitReached = (): boolean | null => {
+export const useConnectionsLimitReached = (): boolean => {
     const url = useRoute('akeneo_connectivity_connection_rest_connections_max_limit_reached');
 
-    const [isLimitReached, setLimitReached] = useState<boolean | null>(null);
+    const [isLimitReached, setLimitReached] = useState<boolean>(false);
 
     const fetchCallback = useCallback(async () => {
         const response = await fetch(url, {

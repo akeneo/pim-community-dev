@@ -34,7 +34,7 @@ class HourlyErrorCount
         $this->hourlyInterval = $hourlyInterval;
         if (0 > $errorCount) {
             throw new \InvalidArgumentException(
-                sprintf('The error count must be positive. Negative number "%s" given.', $errorCount)
+                \sprintf('The error count must be positive. Negative number "%s" given.', $errorCount)
             );
         }
         $this->errorCount = $errorCount;

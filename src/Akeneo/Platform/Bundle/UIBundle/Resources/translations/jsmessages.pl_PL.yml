@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: System
+      save_ok: Konfiguracja została zapisana.
+      save_error: Przepraszamy, nie udało się zapisać konfiguracji ({{ reason }}).
       group:
         localization:
-          title: Tłumaczenie
-          system_locale: Język
+          title: Ustawienie strony logowania
+          fields:
+            system_locale:
+              label: Język
         notification:
-          title: Powiadomienia
-          system_notification: Powiadomienia o nowych wersjach
+          title: Powiadomienia o nowej wersji
+          helper: Gdy ta opcja jest włączona, otrzymasz powiadomienie o dostępności nowej wersji.
+          fields:
+            enabler:
+              label: Włączono
         loading_message:
-          title: Wczytuję wiadomości
-          label: Włącz ładowanie wiadomości
-        loading_messages:
-          label: Dostępne ładowanie wiadomości
+          title: Niestandardowe komunikaty dotyczące ładowania
+          helper: Uprzyjemnij użytkownikom korzystanie z aplikacji niestandardowymi komunikatami na ekranach ładowania.
+          placeholder: Napisz własny komunikat, który wyświetli się na ekranie ładowania.
+          fields:
+            enabler:
+              label: Włącz ładowanie wiadomości
+            messages:
+              label: Dodaj własne komunikaty ładowania
 pim_ui:
   flash:
     unsaved_changes: 'Masz niezapisane zmiany, czy na pewno chcesz wyjść?'

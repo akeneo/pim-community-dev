@@ -12,7 +12,10 @@ aliases:
                   username: _json_key  # default username when using a JSON key file to authenticate
                   password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
-executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
+
+orbs:
+  git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
 
 commands:
     set_gcloud_config_dev:
@@ -62,15 +65,12 @@ jobs:
                   fingerprints:
                       - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
             - run:
-                  name: Download EE dev with the SSH key that we added above
+                  name: Clone EE branch if it exists, or master otherwise with the SSH key that we added above
                   command: |
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                      git clone git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
-            - run:
-                  name: Checkout EE branch if it exists, or master otherwise
-                  command: |
+                      ENTREPRISE_BRANCH=$(if [[ -z $(git ls-remote --exit-code --heads git@github.com:akeneo/pim-enterprise-dev.git ${CIRCLE_BRANCH}) ]]; then echo "master"; else echo ${CIRCLE_BRANCH}; fi)
+                      git clone --depth=1 --single-branch --branch $ENTREPRISE_BRANCH git@github.com:akeneo/pim-enterprise-dev.git /home/circleci/project
                       cd /home/circleci/project
-                      git checkout ${CIRCLE_BRANCH} || git checkout master
                       echo "Current commit: $(git rev-parse --short HEAD)"
             - run:
                   name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
@@ -78,7 +78,7 @@ jobs:
                       mkdir -p tmp
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       CONNECTOR_BC_BRANCH=$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags git@github.com:akeneo/bigcommerce-connector.git 'v*' | tail -n1 | cut -d'/' -f3)
-                      git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+                      git clone --depth=1 --single-branch --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
             - run:
                   name: Require proper dev CE branch
                   command: |
@@ -102,15 +102,101 @@ jobs:
         machine:
             image: *executor-machine
         steps:
-            - checkout
+            - git-shallow-clone/checkout
             - install_yq
             - run:
                   name: Remove MySQL port translation (see BH-664)
                   command: yq delete --inplace docker-compose.yml services.mysql.ports
+            -   run:
+                    name: Setup missing directories
+                    command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
             - persist_to_workspace:
                   root: ~/
                   paths:
                       - project
+
+    install_ce_back_dependencies:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
+                    name: Creating cache key for back dependencies
+                    command: cat composer.json > ~/back-dependency.hash && date +%F >> ~/back-dependency.hash
+            -   restore_cache:
+                    name: Restore cache - back dependencies
+                    keys:
+                        - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
+            -   run:
+                    name: Install back dependencies
+                    command: make vendor
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/vendor
+
+    install_ce_front_dependencies:
+        parameters:
+            path_to_front_packages:
+                type: string
+                default: front-packages
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project
+            -   run:
+                    name: Change permissions on project dir
+                    command: sudo chmod -R 777 ../project
+            -   run:
+                    name: Creating cache key for front dependencies
+                    command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
+            -   restore_cache:
+                    name: Restore cache - front dependencies
+                    keys:
+                        - frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
+            -   run:
+                    name: Create hash for front packages
+                    command: |
+                        find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+                        find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
+                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash
+            -   restore_cache:
+                    name: Restore cache - front library DSM
+                    key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
+            -   restore_cache:
+                    name: Restore cache - front library Shared
+                    key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Install front dependencies
+                    command: make node_modules
+            -   run:
+                    name: Build front libraries
+                    command: |
+                        docker-compose run -u node --rm node yarn dsm:build
+                        docker-compose run -u node --rm node yarn shared:build
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/node_modules
+                        - project/front-packages/akeneo-design-system/lib
+                        - project/front-packages/shared/lib
 
     build_dev:
         parameters:
@@ -139,7 +225,7 @@ jobs:
                                 date +%F >> ~/php-docker-image.hash
                       - restore_cache:
                             name: Restore PHP docker image cache
-                            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+                            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
                       - run:
                             name: Build the latest EE Docker images
                             command: |
@@ -148,7 +234,7 @@ jobs:
                                 ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
                       - save_cache:
                             name: Save PHP docker image cache
-                            key: php-docker-image-{{ checksum "~/php-docker-image.hash" }}
+                            key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
                             paths:
                                 - php-pim-image.tar
             - unless:
@@ -170,11 +256,11 @@ jobs:
             - restore_cache:
                   name: Restore cache - yarn and Cypress dependency cache
                   keys:
-                      - frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                      - frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
             - restore_cache:
                   name: Restore cache - composer dependency cache
                   keys:
-                      - backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                      - backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
             - run:
                   name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                   command: |
@@ -206,22 +292,22 @@ jobs:
                   command: sudo chown -R circleci:circleci .
             - restore_cache:
                   name: Restore front package DSM cache
-                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+                  key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
             - restore_cache:
                   name: Restore front package measurement cache
-                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+                  key: front-packages-measurement-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/measurement.hash" }}
             - restore_cache:
                   name: Restore front package Shared cache
-                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+                  key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
             - restore_cache:
                   name: Restore micro frontend Process tracker cache
-                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+                  key: micro-frontend-process-tracker-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/process-tracker.hash" }}
             - restore_cache:
                   name: Restore micro-frontend Catalog Volume Monitoring cache
-                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+                  key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
             - restore_cache:
                   name: Restore micro-frontend Config cache
-                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
             - run:
                   name: Set directories owner to docker
                   command: sudo chown -R 1000:1000 ../project
@@ -238,40 +324,40 @@ jobs:
                   name: Save frontend dependency cache
                   paths:
                       - ~/.cache
-                  key: frontend-dependency-cache-{{ checksum "~/front-dependency.hash" }}
+                  key: frontend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/front-dependency.hash" }}
             - save_cache:
                   name: Save backend dependency cache
                   paths:
                       - ~/.composer
-                  key: backend-dependency-cache-{{ checksum "~/back-dependency.hash" }}
+                  key: backend-dependency-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/back-dependency.hash" }}
             - save_cache:
                   name: Save front package DSM cache
-                  key: front-packages-dsm-{{ checksum "~/akeneo-design-system.hash" }}
+                  key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/akeneo-design-system/
             - save_cache:
                   name: Save front package measurement cache
-                  key: front-packages-measurement-{{ checksum "~/measurement.hash" }}
+                  key: front-packages-measurement-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/measurement.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/measurement/
             - save_cache:
                   name: Save front package Shared cache
-                  key: front-packages-shared-{{ checksum "~/shared.hash" }}
+                  key: front-packages-shared-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/shared.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/shared/
             - save_cache:
                   name: Save micro frontend Process Tracker cache
-                  key: micro-frontend-process-tracker-{{ checksum "~/process-tracker.hash" }}
+                  key: micro-frontend-process-tracker-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/process-tracker.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Job/front/process-tracker
             - save_cache:
                   name: Save micro-frontend Catalog Volume Monitoring cache
-                  key: micro-frontend-catalog-volume-monitoring-{{ checksum "~/catalog-volume-monitoring.hash" }}
+                  key: micro-frontend-catalog-volume-monitoring-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/catalog-volume-monitoring.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
             - save_cache:
                   name: Save micro-frontend Config cache
-                  key: micro-frontend-config-{{ checksum "~/config.hash" }}
+                  key: micro-frontend-config-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/config.hash" }}
                   paths:
                       - << parameters.path_to_front_packages >>/../src/Oro/Bundle/ConfigBundle/front
             - persist_to_workspace:

@@ -6,7 +6,7 @@ namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Webhook;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
-use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHandler;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\MessageHandler\BusinessEventHandler;
 use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
@@ -128,7 +128,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(2, (int) $this->getEventCount('ecommerce'));
@@ -163,7 +163,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
         $requestContent = $this->cleanRequestContent($requestContent);
 
         Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
@@ -201,7 +201,7 @@ class ConsumeProductEventEndToEnd extends ApiTestCase
 
         /** @var Request $request */
         $request = $container[0]['request'];
-        $requestContent = json_decode($request->getBody()->getContents(), true)['events'][0];
+        $requestContent = \json_decode($request->getBody()->getContents(), true)['events'][0];
 
         Assert::assertEquals(1, (int) $this->getEventCount('ecommerce'));
         $this->assertEquals($this->expectedProductRemovedPayload($this->tshirtProduct), $requestContent);

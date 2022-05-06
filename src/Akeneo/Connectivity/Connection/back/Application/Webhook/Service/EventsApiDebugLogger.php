@@ -74,7 +74,7 @@ class EventsApiDebugLogger implements
                 'event_subscription_url' => $url,
                 'status_code' => $statusCode,
                 'headers' => $headers,
-                'events' => array_map(function ($webhookEvent) {
+                'events' => \array_map(function ($webhookEvent) {
                     return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
             ]
@@ -125,7 +125,7 @@ class EventsApiDebugLogger implements
                 'event_subscription_url' => $url,
                 'status_code' => $statusCode,
                 'headers' => $headers,
-                'events' => array_map(function ($webhookEvent) {
+                'events' => \array_map(function ($webhookEvent) {
                     return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $webhookEvents),
             ]
@@ -141,11 +141,11 @@ class EventsApiDebugLogger implements
         $this->repository->persist([
             'timestamp' => $this->clock->now()->getTimestamp(),
             'level' => EventsApiDebugLogLevels::ERROR,
-            'message' => sprintf('The endpoint failed to answer under %d ms.', round($timeout * 1000, 0)),
+            'message' => \sprintf('The endpoint failed to answer under %d ms.', \round($timeout * 1000, 0)),
             'connection_code' => $connectionCode,
             'context' => [
                 'event_subscription_url' => $url,
-                'events' => array_map(function ($webhookEvent) {
+                'events' => \array_map(function ($webhookEvent) {
                     return $this->normalizeEvent($webhookEvent->getPimEvent());
                 }, $events),
             ],

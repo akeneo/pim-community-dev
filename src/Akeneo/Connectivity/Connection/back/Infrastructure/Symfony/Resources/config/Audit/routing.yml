@@ -1,0 +1,31 @@
+# Internal API
+akeneo_connectivity_connection_audit_rest_weekly:
+    path: '/rest/connections/audit/weekly'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyAuditAction
+    methods: [GET]
+    requirements:
+        event_type: '[a-zA-Z_]+'
+
+akeneo_connectivity_connection_audit_rest_weekly_error:
+    path: '/rest/connections/audit/weekly-error'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetWeeklyErrorAuditAction
+    methods: [GET]
+
+akeneo_connectivity_connection_audit_rest_error_count_per_connection:
+    path: '/rest/connections/audit/error-count-per-connection'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Audit\Controller\Internal\GetErrorCountPerConnectionAction
+    methods: [GET]
+    requirements:
+        error_type: '[a-zA-Z_]+'
+
+# Front API
+akeneo_connectivity_connection_audit_index:
+    path: '/connect/data-flows'
+
+akeneo_connectivity_connection_audit_any:
+    path: '/connect/data-flows/{any}'
+    requirements:
+        any: .*
+
+akeneo_connectivity_connection_redirect_audit:
+    path: '/connection/dashboard'

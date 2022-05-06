@@ -7,20 +7,20 @@ namespace Akeneo\Pim\Enrichment\Product\Application;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\LegacyViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\Api\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasCreated;
+use Akeneo\Pim\Enrichment\Product\API\Event\ProductWasUpdated;
+use Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry;
 use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * @experimental
- *
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -31,24 +31,23 @@ final class UpsertProductHandler
         private ProductRepositoryInterface $productRepository,
         private ProductBuilderInterface $productBuilder,
         private SaverInterface $productSaver,
-        private ObjectUpdaterInterface $productUpdater,
-        private ValidatorInterface $productValidator
+        private ValidatorInterface $productValidator,
+        private EventDispatcherInterface $eventDispatcher,
+        private UserIntentApplierRegistry $applierRegistry
     ) {
     }
 
     public function __invoke(UpsertProductCommand $command): void
     {
-        /**
-         * TODO CPM-492: validate permissions is required here.
-         * If we can do that, then the permission are ok for the rest of the code (= use "without permissions" services)
-         */
         $violations = $this->validator->validate($command);
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
         }
 
         $product = $this->productRepository->findOneByIdentifier($command->productIdentifier());
+        $isCreation = false;
         if (null === $product) {
+            $isCreation = true;
             $product = $this->productBuilder->createProduct($command->productIdentifier());
         }
 
@@ -61,45 +60,64 @@ final class UpsertProductHandler
             throw new LegacyViolationsException($violations);
         }
 
+        $isUpdate = $product->isDirty();
         $this->productSaver->save($product);
+
+        if ($isCreation) {
+            $this->eventDispatcher->dispatch(new ProductWasCreated($product->getIdentifier()));
+        } elseif ($isUpdate) {
+            $this->eventDispatcher->dispatch(new ProductWasUpdated($product->getIdentifier()));
+        }
     }
 
-    private function updateProduct(ProductInterface $product, UpsertProductCommand $command)
+    private function updateProduct(ProductInterface $product, UpsertProductCommand $command): void
     {
-        foreach ($command->valuesUserIntent() as $index => $valueUserIntent) {
-            $found = false;
-            try {
-                if ($valueUserIntent instanceof SetTextValue) {
-                    $found = true;
-                    $this->productUpdater->update($product, [
-                        'values' => [
-                            $valueUserIntent->attributeCode() => [
-                                [
-                                    'locale' => $valueUserIntent->localeCode(),
-                                    'scope' => $valueUserIntent->channelCode(),
-                                    'data' => $valueUserIntent->value(),
-                                ],
-                            ],
-                        ],
+        $indexedValueUserIntents = \array_combine(
+            \array_map(
+                fn (mixed $key): string => \sprintf('valueUserIntents[%s]', $key),
+                \array_keys($command->valueUserIntents())
+            ),
+            $command->valueUserIntents()
+        );
+        $userIntents = \array_filter(
+            array_merge(
+                [
+                    'parentUserIntent' => $command->parentUserIntent(),
+                ],
+                $indexedValueUserIntents,
+                [
+                    'enabledUserIntent' => $command->enabledUserIntent(),
+                    'familyUserIntent' => $command->familyUserIntent(),
+                    'categoryUserIntent' => $command->categoryUserIntent(),
+                    'groupUserIntent' => $command->groupUserIntent(),
+                    'associationUserIntents' => $command->associationUserIntents(),
+                    'quantifiedAssociationUserIntents' => $command->quantifiedAssociationUserIntents(),
+                ]
+            ),
+            fn ($userIntent): bool => null !== $userIntent
+        );
+
+        foreach ($userIntents as $propertyPath => $userIntent) {
+            $applier = $this->applierRegistry->getApplier($userIntent);
+            if (null !== $applier) {
+                try {
+                    $applier->apply($userIntent, $product, $command->userId());
+                } catch (PropertyException $e) {
+                    $violations = new ConstraintViolationList([
+                        new ConstraintViolation(
+                            $e->getMessage(),
+                            $e->getMessage(),
+                            [],
+                            $command,
+                            $propertyPath,
+                            $userIntent
+                        ),
                     ]);
+
+                    throw new ViolationsException($violations);
                 }
-            } catch (PropertyException $e) {
-                $violations = new ConstraintViolationList([
-                    new ConstraintViolation(
-                        $e->getMessage(),
-                        $e->getMessage(),
-                        [],
-                        $command,
-                        "valueUserIntent[$index]",
-                        $valueUserIntent
-                    ),
-                ]);
-
-                throw new LegacyViolationsException($violations);
-            }
-
-            if (!$found) {
-                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($valueUserIntent)));
+            } else {
+                throw new \InvalidArgumentException(\sprintf('The "%s" intent cannot be handled.', get_class($userIntent)));
             }
         }
     }

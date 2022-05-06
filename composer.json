@@ -14,6 +14,7 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
@@ -30,6 +31,7 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
+            "Akeneo\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test",
             "Akeneo\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",
@@ -81,7 +83,7 @@
         "friendsofsymfony/jsrouting-bundle": "2.7.0",
         "friendsofsymfony/rest-bundle": "^3.0.5",
         "gedmo/doctrine-extensions": "^3.2.0",
-        "google/cloud-pubsub": "1.29.1",
+        "google/cloud-pubsub": "^1.35.0",
         "guzzlehttp/guzzle": "6.5.5",
         "imagine/imagine": "1.2.4",
         "justinrainbow/json-schema": "^5.2",

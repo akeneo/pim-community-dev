@@ -51,7 +51,7 @@ class Extension
     {
         foreach (self::REQUIRED_KEYS as $key) {
             if (!isset($values[$key])) {
-                throw new \InvalidArgumentException(sprintf('Missing property "%s" in given extension', $key));
+                throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given extension', $key));
             }
         }
 
@@ -75,15 +75,15 @@ class Extension
      */
     public function withAnalytics(array $queryParameters): self
     {
-        $query = http_build_query($queryParameters);
+        $query = \http_build_query($queryParameters);
 
         $values = $this->normalize();
 
         $url = $values['url'];
-        if (parse_url($url, PHP_URL_QUERY)) {
-            $url = sprintf('%s&%s', $url, $query);
+        if (\parse_url($url, PHP_URL_QUERY)) {
+            $url = \sprintf('%s&%s', $url, $query);
         } else {
-            $url = sprintf('%s?%s', $url, $query);
+            $url = \sprintf('%s?%s', $url, $query);
         }
 
         $values['url'] = $url;

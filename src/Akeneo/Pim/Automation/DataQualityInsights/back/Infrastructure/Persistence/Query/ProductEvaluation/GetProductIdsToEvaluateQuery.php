@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsToEvaluateQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -14,14 +16,14 @@ use Doctrine\DBAL\Connection;
  */
 final class GetProductIdsToEvaluateQuery implements GetProductIdsToEvaluateQueryInterface
 {
-    private Connection $db;
-
-    public function __construct(Connection $db)
+    public function __construct(private Connection $db, private ProductEntityIdFactoryInterface $idFactory)
     {
-        $this->db = $db;
     }
 
-    public function execute(int $limit, int $bulkSize): \Iterator
+    /**
+     * @return \Generator<int, ProductEntityIdCollection>
+     */
+    public function execute(int $limit, int $bulkSize): \Generator
     {
         $sql = <<<SQL
 SELECT DISTINCT product_id
@@ -34,16 +36,16 @@ SQL;
 
         $productIds = [];
         while ($productId = $stmt->fetchOne()) {
-            $productIds[] = intval($productId);
+            $productIds[] = $productId;
 
             if (count($productIds) >= $bulkSize) {
-                yield $productIds;
+                yield $this->idFactory->createCollection($productIds);
                 $productIds = [];
             }
         }
 
         if (!empty($productIds)) {
-            yield $productIds;
+            yield $this->idFactory->createCollection($productIds);
         }
     }
 }

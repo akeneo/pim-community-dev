@@ -108,7 +108,7 @@ class ApiErrorCollectionSpec extends ObjectBehavior
         $this->beConstructedWith([new \DateTime()]);
         $this->shouldThrow(
             new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Class "%s" accepts only "%s" in the collection.',
                     ApiErrorCollection::class,
                     ApiErrorInterface::class
@@ -131,7 +131,7 @@ class ApiErrorCollectionSpec extends ObjectBehavior
     {
         return [
             'matchErrorTypes' => function ($types) {
-                return array_keys($types) === ErrorTypes::getAll();
+                return \array_keys($types) === ErrorTypes::getAll();
             },
         ];
     }

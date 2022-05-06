@@ -1,0 +1,45 @@
+# Internal API
+akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url:
+    path: '/rest/marketplace/marketplace-url'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetWebMarketplaceUrlAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_get_all_extensions:
+    path: '/rest/marketplace/extensions'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllExtensionsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_get_all_apps:
+    path: '/rest/marketplace/apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_get_all_test_apps:
+    path: '/rest/marketplace/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Controller\Internal\GetAllTestAppsAction
+    methods: [GET]
+
+akeneo_connectivity_connection_marketplace_rest_test_apps_create:
+    path: '/rest/marketplace/test-apps'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\CreateTestAppAction
+    methods: [POST]
+
+akeneo_connectivity_connection_marketplace_rest_test_apps_delete:
+    path: '/rest/marketplace/test-apps/{testAppId}'
+    controller: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\TestApps\Controller\Internal\DeleteTestAppAction
+    methods: [DELETE]
+
+# Front API
+akeneo_connectivity_connection_connect_marketplace:
+    path: '/connect/app-store'
+
+akeneo_connectivity_connection_connect_marketplace_profile:
+    path: '/connect/app-store/profile'
+
+akeneo_connectivity_connection_connect_marketplace_test_app_create:
+    path: '/connect/app-store/test-apps/create'
+
+akeneo_connectivity_connection_connect_marketplace_test_app_delete:
+    path: '/connect/app-store/test-apps/{testAppId}/delete'
+    requirements:
+        testAppId: '[a-zA-Z0-9_-]+'

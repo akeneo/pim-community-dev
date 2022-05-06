@@ -19,12 +19,12 @@ use PhpSpec\ObjectBehavior;
  */
 final class GetKeyIndicatorsSpec extends ObjectBehavior
 {
-    public function let(GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery)
+    public function let(GetProductKeyIndicatorsQueryInterface $getProductKeyIndicatorsQuery, GetProductKeyIndicatorsQueryInterface $getProductModelKeyIndicatorsQuery)
     {
-        $this->beConstructedWith($getProductKeyIndicatorsQuery, 'good_enrichment', 'has_image');
+        $this->beConstructedWith($getProductKeyIndicatorsQuery, $getProductModelKeyIndicatorsQuery, 'good_enrichment', 'has_image');
     }
 
-    public function it_gives_key_indicators_for_all_products($getProductKeyIndicatorsQuery)
+    public function it_gives_key_indicators_for_all_products_and_product_models($getProductKeyIndicatorsQuery, $getProductModelKeyIndicatorsQuery)
     {
         $channel = new ChannelCode('ecommerce');
         $locale = new LocaleCode('en_US');
@@ -37,21 +37,39 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                 'has_image' => new KeyIndicator($hasImage, 25, 26)
             ]);
 
+        $getProductModelKeyIndicatorsQuery->all($channel, $locale, $goodEnrichment, $hasImage)
+            ->willReturn([
+                'good_enrichment' => new KeyIndicator($goodEnrichment, 23, 52),
+                'has_image' => new KeyIndicator($hasImage, 24, 89)
+            ]);
+
         $this->all($channel, $locale)->shouldBeLike([
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 23,
+                    'totalToImprove' => 52,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 49,
-                'totalGood' => 25,
-                'totalToImprove' => 26,
+                'products' => [
+                    'totalGood' => 25,
+                    'totalToImprove' => 26,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 24,
+                    'totalToImprove' => 89,
+                ]
             ]
         ]);
     }
 
-    public function it_gives_key_indicators_for_a_given_family($getProductKeyIndicatorsQuery)
+    public function it_gives_key_indicators_for_a_given_family($getProductKeyIndicatorsQuery, $getProductModelKeyIndicatorsQuery)
     {
         $family = new FamilyCode('shoes');
         $channel = new ChannelCode('ecommerce');
@@ -64,16 +82,38 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                 'good_enrichment' => new KeyIndicator($goodEnrichment, 15, 60)
             ]);
 
+        $getProductModelKeyIndicatorsQuery->byFamily($channel, $locale, $family, $goodEnrichment, $hasImage)
+            ->willReturn([
+                'good_enrichment' => new KeyIndicator($goodEnrichment, 30, 40)
+            ]);
+
         $this->byFamily($channel, $locale, $family)->shouldBeLike([
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 30,
+                    'totalToImprove' => 40,
+                ]
             ],
+            'has_image' => [
+                'products' => [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ]
+            ]
         ]);
     }
 
-    public function it_gives_key_indicators_for_a_given_category($getProductKeyIndicatorsQuery)
+    public function it_gives_key_indicators_for_a_given_category($getProductKeyIndicatorsQuery, $getProductModelKeyIndicatorsQuery)
     {
         $category = new CategoryCode('shoes');
         $channel = new ChannelCode('ecommerce');
@@ -87,16 +127,34 @@ final class GetKeyIndicatorsSpec extends ObjectBehavior
                 'has_image' => new KeyIndicator($hasImage, 0, 0)
             ]);
 
+        $getProductModelKeyIndicatorsQuery->byCategory($channel, $locale, $category, $goodEnrichment, $hasImage)
+            ->willReturn([
+                'good_enrichment' => new KeyIndicator($goodEnrichment, 45, 65),
+                'has_image' => new KeyIndicator($hasImage, 0, 0)
+            ]);
+
         $this->byCategory($channel, $locale, $category)->shouldBeLike([
             'good_enrichment' => [
-                'ratioGood' => 20,
-                'totalGood' => 15,
-                'totalToImprove' => 60,
+                'products' => [
+                    'totalGood' => 15,
+                    'totalToImprove' => 60,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 45,
+                    'totalToImprove' => 65,
+                ]
             ],
             'has_image' => [
-                'ratioGood' => 0,
-                'totalGood' => 0,
-                'totalToImprove' => 0,
+                'products' => [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ],
+                'product_models' =>
+                [
+                    'totalGood' => 0,
+                    'totalToImprove' => 0,
+                ]
             ]
         ]);
     }

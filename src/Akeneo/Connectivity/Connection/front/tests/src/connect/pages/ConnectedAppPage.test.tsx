@@ -2,14 +2,17 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {screen, waitFor} from '@testing-library/react';
 import fetchMock from 'jest-fetch-mock';
-import {renderWithProviders, historyMock, MockFetchResponses, mockFetchResponses} from '../../../test-utils';
+import {renderWithProviders, historyMock} from '../../../test-utils';
 import {ConnectedAppPage} from '@src/connect/pages/ConnectedAppPage';
 import {ConnectedAppContainer} from '@src/connect/components/ConnectedApp/ConnectedAppContainer';
+import {useConnectedApp} from '@src/connect/hooks/use-connected-app';
+import {ConnectedAppContainerIsLoading} from '@src/connect/components/ConnectedApp/ConnectedAppContainerIsLoading';
 
-jest.mock('@src/shared/feature-flags/use-feature-flags', () => ({
-    ...jest.requireActual('@src/shared/feature-flags/use-feature-flags'),
-    useFeatureFlags: jest.fn().mockReturnValue({isEnabled: () => true}),
-}));
+beforeEach(() => {
+    fetchMock.resetMocks();
+    historyMock.reset();
+    jest.clearAllMocks();
+});
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -20,10 +23,19 @@ jest.mock('@src/connect/components/ConnectedApp/ConnectedAppContainer', () => ({
     ConnectedAppContainer: jest.fn(() => null),
 }));
 
-beforeEach(() => {
-    fetchMock.resetMocks();
-    historyMock.reset();
-    jest.clearAllMocks();
+jest.mock('@src/connect/components/ConnectedApp/ConnectedAppContainerIsLoading', () => ({
+    ConnectedAppContainerIsLoading: jest.fn(() => null),
+}));
+
+jest.mock('@src/connect/hooks/use-connected-app');
+
+test('The connected app page renders with a loading screen', async () => {
+    (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: true, error: null, payload: null}));
+
+    renderWithProviders(<ConnectedAppPage />);
+    await waitFor(() => expect(ConnectedAppContainerIsLoading).toHaveBeenCalledTimes(1));
+
+    expect(ConnectedAppContainer).not.toHaveBeenCalled();
 });
 
 test('The connected app page renders with a connected app', async () => {
@@ -46,15 +58,7 @@ test('The connected app page renders with a connected app', async () => {
         partner: null,
     };
 
-    const fetchConnectedAppResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_apps_rest_get_connected_app?connectionCode=some_connection_code': {
-            json: connectedApp,
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchConnectedAppResponses,
-    });
+    (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: null, payload: connectedApp}));
 
     renderWithProviders(<ConnectedAppPage />);
     await waitFor(() => expect(ConnectedAppContainer).toHaveBeenCalledTimes(1));
@@ -63,16 +67,7 @@ test('The connected app page renders with a connected app', async () => {
 });
 
 test('The connected app page renders with internal api errors', async () => {
-    const fetchConnectedAppResponses: MockFetchResponses = {
-        'akeneo_connectivity_connection_apps_rest_get_connected_app?connectionCode=some_connection_code': {
-            reject: true,
-            json: {},
-        },
-    };
-
-    mockFetchResponses({
-        ...fetchConnectedAppResponses,
-    });
+    (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: 'NOT_FOUND', payload: null}));
 
     renderWithProviders(<ConnectedAppPage />);
     await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found'));
@@ -81,5 +76,16 @@ test('The connected app page renders with internal api errors', async () => {
     expect(
         screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')
     ).toBeInTheDocument();
+    expect(ConnectedAppContainer).not.toHaveBeenCalled();
+});
+
+test('The connected app page renders with wrong ACLs', async () => {
+    (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: 'FORBIDDEN', payload: null}));
+
+    renderWithProviders(<ConnectedAppPage />);
+    await waitFor(() => screen.getByText('error.forbidden'));
+
+    expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
+    expect(screen.queryByText('error.forbidden')).toBeInTheDocument();
     expect(ConnectedAppContainer).not.toHaveBeenCalled();
 });

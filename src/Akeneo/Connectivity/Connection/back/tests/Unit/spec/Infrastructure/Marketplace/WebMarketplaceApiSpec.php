@@ -79,7 +79,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
 
         $webMarketplaceAliases->getEdition()->willReturn('community-edition');
         $webMarketplaceAliases->getVersion()->willReturn('5.0');
-        $stream->getContents()->willReturn(json_encode($expectedResponse));
+        $stream->getContents()->willReturn(\json_encode($expectedResponse));
         $response->getBody()->willReturn($stream);
         $client->request('GET', '/api/1.0/extensions', [
             'query' => [
@@ -113,7 +113,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         ])->willReturn($response);
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
-        $stream->getContents()->willReturn(json_encode(['valid' => true]));
+        $stream->getContents()->willReturn(\json_encode(['valid' => true]));
 
         $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(true);
     }
@@ -135,7 +135,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         ])->willReturn($response);
         $response->getStatusCode()->willReturn(200);
         $response->getBody()->willReturn($stream);
-        $stream->getContents()->willReturn(json_encode(['valid' => false]));
+        $stream->getContents()->willReturn(\json_encode(['valid' => false]));
 
         $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(false);
     }
@@ -157,7 +157,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         ])->willReturn($response);
         $response->getStatusCode()->willReturn(404);
         $response->getBody()->willReturn($stream);
-        $stream->getContents()->willReturn(json_encode(['error' => 'Not found.']));
+        $stream->getContents()->willReturn(\json_encode(['error' => 'Not found.']));
 
         $this->validateCodeChallenge($appId, $codeIdentifier, $codeChallenge)->shouldReturn(false);
     }
@@ -204,7 +204,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
 
         $webMarketplaceAliases->getEdition()->willReturn('community-edition');
         $webMarketplaceAliases->getVersion()->willReturn('5.0');
-        $stream->getContents()->willReturn(json_encode($expectedResponse));
+        $stream->getContents()->willReturn(\json_encode($expectedResponse));
         $response->getBody()->willReturn($stream);
         $client->request('GET', '/api/1.0/extensions', [
             'query' => [

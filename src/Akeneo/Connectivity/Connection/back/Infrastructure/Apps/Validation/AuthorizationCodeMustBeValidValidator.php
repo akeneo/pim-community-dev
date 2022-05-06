@@ -26,7 +26,7 @@ class AuthorizationCodeMustBeValidValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new \InvalidArgumentException('The value to validate must be a string');
         }
         if (!$constraint instanceof AuthorizationCodeMustBeValid) {

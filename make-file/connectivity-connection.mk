@@ -61,8 +61,10 @@ connectivity-connection-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-lint-back:
+ifneq ($(CI),true)
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+endif
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
 		--level=8 \
@@ -78,14 +80,15 @@ connectivity-connection-lint-back_fix:
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 
 connectivity-connection-unit-back:
+ifeq ($(CI),true)
+	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	.circleci/find_non_executed_phpspec.sh
+endif
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 	# Scope Mapper unit tests
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Enrichment/Specification/Component/Security/
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Component/Security/
-
-connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
-	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 
 connectivity-connection-activate-e2e: var/tests/behat/connectivity/connection
 	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature
@@ -108,21 +111,22 @@ connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) connectivity-connection-unit-back
-	$(MAKE) connectivity-connection-acceptance-back
 	$(MAKE) connectivity-connection-integration-back
 	$(MAKE) connectivity-connection-e2e-back
 
 # Tests Front
 
 connectivity-connection-unit-front:
-	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci
-	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) jest --ci ${O}
+	$(_PERMISSION_FORM_YARN_RUN) jest --ci --coverage ${O}
 
 connectivity-connection-lint-front:
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) eslint
 	$(_CONNECTIVITY_CONNECTION_YARN_RUN) prettier --check
+	$(_CONNECTIVITY_CONNECTION_YARN_RUN) tsc --noEmit --strict
 	$(_PERMISSION_FORM_YARN_RUN) eslint
 	$(_PERMISSION_FORM_YARN_RUN) prettier --check
+	$(_PERMISSION_FORM_YARN_RUN) tsc --noEmit --strict
 
 # Development
 
@@ -159,11 +163,7 @@ connectivity-connection-coverage:
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
 
-	# run the backend application acceptance tests on scope connectivity
 	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p var/tests/behat/connectivity/connection
-	XDEBUG_MODE=coverage $(PHP_RUN) -d memory_limit=-1 vendor/bin/behat \
-			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
-			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 	# download phpcov binary
 	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
 	# create a coverage global folder
@@ -172,8 +172,7 @@ connectivity-connection-coverage:
 		mkdir -p coverage/Connectivity/Back/Global/ && \
 		cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov && \
 		cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov && \
-		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov && \
-		cp coverage/Connectivity/Back/Acceptance/coverage.php coverage/Connectivity/Back/Global/Acceptance.cov"
+		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov"
 	# run the command to merge all the code coverage on scope connectivity
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
 		--clover coverage/Connectivity/Back/Global/coverage.cov \
@@ -181,7 +180,10 @@ connectivity-connection-coverage:
 		coverage/Connectivity/Back/Global/
 
 connectivity-connection-insight:
-	$(PHP_RUN) vendor/bin/phpinsights analyse -v --no-interaction -c src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
+	$(PHP_RUN) vendor/bin/phpinsights analyse --summary --no-interaction --config-path=src/Akeneo/Connectivity/Connection/back/tests/phpinsights.php src/Akeneo/Connectivity/Connection/back
 
 connectivity-connection-psalm:
 	$(PHP_RUN) vendor/bin/psalm -c src/Akeneo/Connectivity/Connection/back/tests/psalm.xml
+
+connectivity-connection-unused-coupling-rules:
+	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=src/Akeneo/Connectivity/Connection/back/tests/.php_cd.php src/Akeneo/Connectivity/Connection/back

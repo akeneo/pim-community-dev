@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_job_process_tracker_index: 进程跟踪器
   akeneo_job_process_tracker_details: 进程跟踪器 | 显示作业
 akeneo_job:
   job_status:
@@ -19,7 +20,11 @@ akeneo_job_process_tracker:
     table:
       headers:
         job_name: 作业名称
+        type: 类型
+        started_at: 开始于
+        username: 用户名
         progress: 进度
+        status: 状态
         warning_count: 警告
   type_filter:
     label: 类型

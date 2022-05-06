@@ -7,13 +7,12 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfNonRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Enrichment\EvaluateCompletenessOfRequiredAttributes;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\ProductsWithGoodEnrichment;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\CriterionEvaluationResult;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Channels;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\Locales;
-use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Transformation\TransformCriterionEvaluationResultCodes;
-use Doctrine\DBAL\Connection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -23,24 +22,10 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
 {
     private const GOOD_ENRICHMENT_RATIO = 80;
 
-    private Connection $db;
-
-    private GetLocalesByChannelQueryInterface $getLocalesByChannelQuery;
-
-    private Channels $channels;
-
-    private Locales $locales;
-
     public function __construct(
-        Connection $db,
-        GetLocalesByChannelQueryInterface $getLocalesByChannelQuery,
-        Channels $channels,
-        Locales $locales
+        private GetLocalesByChannelQueryInterface                        $getLocalesByChannelQuery,
+        private GetEvaluationResultsByProductsAndCriterionQueryInterface $getEvaluationResultsByProductsAndCriterionQuery,
     ) {
-        $this->db = $db;
-        $this->getLocalesByChannelQuery = $getLocalesByChannelQuery;
-        $this->channels = $channels;
-        $this->locales = $locales;
     }
 
     public function getName(): string
@@ -48,19 +33,16 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         return ProductsWithGoodEnrichment::CODE;
     }
 
-    public function compute(array $productIds): array
+    /**
+     * {@inheritdoc}
+     */
+    public function compute(ProductEntityIdCollection $productIdCollection): array
     {
-        $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
         $channelsLocales = $this->getLocalesByChannelQuery->getArray();
-        $productsEvaluations = $this->getProductsEvaluations($productIds);
-
+        $productsEvaluationResults = $this->getProductsCompletenessResults($productIdCollection);
         $productsEnrichmentStatus = [];
-        foreach ($productIds as $productId) {
-            if (!isset($productsEvaluations[$productId])) {
-                continue;
-            }
-
-            $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluations[$productId], $channelsLocales);
+        foreach ($productIdCollection->toArrayString() as $productId) {
+            $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluationResults[$productId], $channelsLocales);
         }
 
         return $productsEnrichmentStatus;
@@ -70,63 +52,59 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     {
         $enrichmentStatus = [];
         foreach ($channelsLocales as $channel => $locales) {
-            $channelId = $this->channels->getIdByCode($channel);
-            if (null === $channelId) {
-                continue;
-            }
-
             foreach ($locales as $locale) {
-                $localeId = $this->locales->getIdByCode($locale);
-                if (null === $localeId) {
-                    continue;
-                }
-
-                $enrichmentStatus[$channel][$locale] = $this->computeEnrichmentStatus($evaluations, $channelId, $localeId);
+                $enrichmentStatus[$channel][$locale] = $this->computeEnrichmentStatus(
+                    $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? null,
+                    $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? null,
+                    $channel,
+                    $locale
+                );
             }
         }
 
         return $enrichmentStatus;
     }
 
-    private function computeEnrichmentStatus(array $evaluations, int $channelId, int $localeId): ?bool
-    {
-        $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? [];
-        $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? [];
+    private function computeEnrichmentStatus(
+        ?CriterionEvaluationResult $nonRequiredAttributesEvaluationResult,
+        ?CriterionEvaluationResult $requiredAttributesEvaluationResult,
+        string                     $channel,
+        string                     $locale
+    ): ?bool {
+        $nonRequiredAttributesEvaluation = null !== $nonRequiredAttributesEvaluationResult ? $nonRequiredAttributesEvaluationResult->getData() : [];
+        $requiredAttributesEvaluationData = null !== $requiredAttributesEvaluationResult ? $requiredAttributesEvaluationResult->getData() : [];
 
-        //Handle the products without family (so the completeness couldn't be calculated)
-        if (
-            !isset($nonRequiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId]) ||
-            !isset($requiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId]) ||
-            !isset($nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId]) ||
-            !isset($requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId])
-        ) {
+        $totalNumberOfAttributes =
+            ($nonRequiredAttributesEvaluation['total_number_of_attributes'][$channel][$locale] ?? 0)
+            + ($requiredAttributesEvaluationData['total_number_of_attributes'][$channel][$locale] ?? 0);
+
+        // It can happen when the product has not been evaluated yet, or when all the attributes are deactivated, or when a product doesn't have a family.
+        if (0 === $totalNumberOfAttributes) {
             return null;
         }
 
-        $missingNonRequiredAttributesNumber = $nonRequiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId];
-        $missingRequiredAttributesNumber = $requiredAttributesEvaluation['number_of_improvable_attributes'][$channelId][$localeId];
-        $numberOfNonRequiredAttributes = $nonRequiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
-        $numberOfRequiredAttributes = $requiredAttributesEvaluation['total_number_of_attributes'][$channelId][$localeId];
+        $numberOfMissingAttributes =
+            ($nonRequiredAttributesEvaluation['number_of_improvable_attributes'][$channel][$locale] ?? 0)
+            + ($requiredAttributesEvaluationData['number_of_improvable_attributes'][$channel][$locale] ?? 0);
 
-        return $this->computeEnrichmentRatioStatus($numberOfNonRequiredAttributes + $numberOfRequiredAttributes, $missingNonRequiredAttributesNumber + $missingRequiredAttributesNumber);
+        $enrichmentRatio = ($totalNumberOfAttributes - $numberOfMissingAttributes) / $totalNumberOfAttributes * 100;
+
+        return $enrichmentRatio >= self::GOOD_ENRICHMENT_RATIO;
     }
 
-    private function computeEnrichmentRatioStatus(int $familyNumberOfAttributes, $numberOfMissingAttributes): bool
+    private function getProductsCompletenessResults(ProductEntityIdCollection $productIds): array
     {
-        if ($familyNumberOfAttributes === 0) {
-            return true;
-        }
-
-        return ($familyNumberOfAttributes - $numberOfMissingAttributes) / $familyNumberOfAttributes * 100 >= self::GOOD_ENRICHMENT_RATIO;
-    }
-
-    private function getProductsEvaluations(array $productIds): array
-    {
-        $requiredAttributesEvaluations = $this->getProductsEvaluationsByCriterion(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE, $productIds);
-        $nonRequiredAttributesEvaluations = $this->getProductsEvaluationsByCriterion(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE, $productIds);
+        $requiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
+            $productIds,
+            new CriterionCode(EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE)
+        );
+        $nonRequiredAttributesEvaluations = $this->getEvaluationResultsByProductsAndCriterionQuery->execute(
+            $productIds,
+            new CriterionCode(EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE),
+        );
 
         $productsEvaluations = [];
-        foreach ($productIds as $productId) {
+        foreach ($productIds->toArrayString() as $productId) {
             $productsEvaluations[$productId] = [
                 EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE => $requiredAttributesEvaluations[$productId] ?? null,
                 EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE => $nonRequiredAttributesEvaluations[$productId] ?? null,
@@ -134,44 +112,5 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
         }
 
         return $productsEvaluations;
-    }
-
-    private function getProductsEvaluationsByCriterion(string $criterionCode, array $productIds): array
-    {
-        $query = <<<SQL
-SELECT product_id, result
-FROM pim_data_quality_insights_product_criteria_evaluation
-WHERE product_id IN(:productIds) AND criterion_code = :criterionCode
-SQL;
-
-        $stmt = $this->db->executeQuery(
-            $query,
-            [
-                'productIds' => $productIds,
-                'criterionCode' => $criterionCode,
-            ],
-            [
-                'productIds' => Connection::PARAM_INT_ARRAY,
-            ]
-        );
-
-        $evaluations = [];
-        while ($evaluation = $stmt->fetchAssociative()) {
-            $evaluationResult = isset($evaluation['result']) ? json_decode($evaluation['result'], true) : null;
-            $evaluationResultData = $evaluationResult[TransformCriterionEvaluationResultCodes::PROPERTIES_ID['data']] ?? [];
-
-            $evaluations[$evaluation['product_id']] = [
-                'total_number_of_attributes' => $evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['total_number_of_attributes']] ?? 0,
-            ];
-
-            if (isset($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']])) {
-                $evaluations[$evaluation['product_id']]['number_of_improvable_attributes'] = $evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['number_of_improvable_attributes']];
-            } elseif (isset($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']])) {
-                // The data 'attributes_with_rates' is deprecated, but can still exist because of no migration data. (See PLG-468)
-                $evaluations[$evaluation['product_id']]['number_of_improvable_attributes'] = count($evaluationResultData[TransformCriterionEvaluationResultCodes::DATA_TYPES_ID['attributes_with_rates']]);
-            }
-        }
-
-        return $evaluations;
     }
 }

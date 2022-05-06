@@ -35,6 +35,7 @@ coverage/*
 .phpunit.result.cache
 cypress/videos
 cypress/screenshots
+.nvmrc
 
 # The "lib/" folder must be ignored here to not be taken into account when the DSM is extracted to its own repository.
 # See ".github/actions/extract/entrypoint.sh"

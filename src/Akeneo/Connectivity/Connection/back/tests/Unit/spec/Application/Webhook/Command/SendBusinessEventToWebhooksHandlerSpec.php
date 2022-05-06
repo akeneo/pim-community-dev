@@ -110,7 +110,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(1, $requests);
                         Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
@@ -201,7 +201,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(1, $requests);
                         Assert::assertContainsOnlyInstancesOf(WebhookRequest::class, $requests);
@@ -271,7 +271,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
             ->bulkSend(
                 Argument::that(
                     function (iterable $iterable) {
-                        $requests = iterator_to_array($iterable);
+                        $requests = \iterator_to_array($iterable);
 
                         Assert::assertCount(0, $requests);
 
@@ -312,7 +312,7 @@ class SendBusinessEventToWebhooksHandlerSpec extends ObjectBehavior
         $client->bulkSend(
             Argument::that(
                 function (iterable $iterable) {
-                    iterator_to_array($iterable); // Call the iterator to run the code.
+                    \iterator_to_array($iterable); // Call the iterator to run the code.
 
                     return true;
                 }

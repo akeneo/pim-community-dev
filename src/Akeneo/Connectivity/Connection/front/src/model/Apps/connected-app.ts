@@ -11,4 +11,8 @@ export type ConnectedApp = {
     partner: string | null;
     activate_url?: string;
     is_test_app: boolean;
+    is_pending: boolean;
+    has_outdated_scopes: boolean;
+    is_loaded?: boolean;
+    is_listed_on_the_appstore?: boolean;
 };

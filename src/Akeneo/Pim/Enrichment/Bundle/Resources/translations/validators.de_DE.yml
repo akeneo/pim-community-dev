@@ -115,6 +115,9 @@ pim_catalog:
       association_type_does_not_exist: Dieser Verbindungstyp existiert nicht. Bitte stellen Sie sicher, dass er in der Zwischenzeit nicht gelöscht wurde.
       association_type_is_not_quantified: '"{{ association_type }}" kann nicht für Verbindungen mit Mengen verwendet werden. Bitte wählen Sie einen anderen Verbindungstyp mit Mengen oder verwenden Sie die Eigenschaft "Assoziationen".'
       association_type_should_not_be_quantified: '"{{ association_type }}" kann nur für Verbindungen mit Mengen verwendet werden. Bitte wählen Sie einen anderen Verbindungstyp oder verwenden Sie die Eigenschaft "quantified_associations".'
+    boolean:
+      boolean_value_is_required: Das {{ attribute_code }} -Attribut benötigt einen booleschen Wert (true oder false) als Daten, ein {{ given_type }} wurde erkannt.
+      boolean_value_is_required_in_import: Das {{ attribute_code }} -Attribut benötigt einen booleschen Wert (1 oder 0) als Daten, ein {{ given_type }} wurde erkannt.
 mass_edit:
   edit_common_attributes:
     invalid_values: Es gibt Fehler in der Attribut-Maske

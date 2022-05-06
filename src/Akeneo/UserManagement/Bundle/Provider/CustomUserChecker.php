@@ -3,13 +3,7 @@
 namespace Akeneo\UserManagement\Bundle\Provider;
 
 use Akeneo\UserManagement\Component\Model\User;
-use Symfony\Component\Security\Core\Exception\AccountExpiredException;
-use Symfony\Component\Security\Core\Exception\CredentialsExpiredException;
 use Symfony\Component\Security\Core\Exception\DisabledException;
-use Symfony\Component\Security\Core\Exception\LockedException;
-use Symfony\Component\Security\Core\User\InMemoryUser;
-use Symfony\Component\Security\Core\User\InMemoryUserChecker;
-use Symfony\Component\Security\Core\User\UserChecker;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 

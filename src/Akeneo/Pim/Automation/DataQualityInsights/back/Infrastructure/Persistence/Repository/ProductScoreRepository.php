@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rank;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 use Doctrine\DBAL\Connection;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -45,63 +41,30 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
         $this->dbConnection = $dbConnection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function saveAll(array $productsScores): void
     {
         if (empty($productsScores)) {
             return;
         }
 
-        $queries = '';
-        $queriesParameters = [];
-        $queriesParametersTypes = [];
-
-        /** @var Write\ProductScores $productScore */
-        foreach ($productsScores as $index => $productScore) {
-            Assert::isInstanceOf($productScore, Write\ProductScores::class);
-            $productId = sprintf('productId_%d', $index);
-            $evaluatedAt = sprintf('evaluatedAt_%d', $index);
-            $scores = sprintf('scores_%d', $index);
-
-            $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores)
-VALUES (:$productId, :$evaluatedAt, :$scores)
-ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
-SQL;
-            $queriesParameters[$productId] = $productScore->getProductId()->toInt();
-            $queriesParametersTypes[$productId] = \PDO::PARAM_INT;
-            $queriesParameters[$evaluatedAt] = $productScore->getEvaluatedAt()->format('Y-m-d');
-            $queriesParameters[$scores] = $this->formatScores($productScore->getScores());
-        }
-
-        $this->dbConnection->executeQuery($queries, $queriesParameters, $queriesParametersTypes);
-    }
-
-    public function purgeUntil(\DateTimeImmutable $date): void
-    {
-        $query = <<<SQL
-DELETE old_scores
-FROM pim_data_quality_insights_product_score AS old_scores
-INNER JOIN pim_data_quality_insights_product_score AS younger_scores
-    ON younger_scores.product_id = old_scores.product_id
-    AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.evaluated_at < :purge_date;
-SQL;
+        $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
+            return sprintf(
+                "(%d, '%s', '%s')",
+                (int) (string) $productScore->getProductId(),
+                $productScore->getEvaluatedAt()->format('Y-m-d'),
+                \json_encode($productScore->getScores()->toNormalizedRates())
+            );
+        }, $productsScores));
 
         $this->dbConnection->executeQuery(
-            $query,
-            ['purge_date' => $date->format('Y-m-d')]
+            <<<SQL
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+VALUES $insertValues AS product_score_values
+ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
+SQL
         );
-    }
-
-    private function formatScores(ChannelLocaleRateCollection $scores): string
-    {
-        $formattedScores = $scores->mapWith(function (Rate $score) {
-            return [
-                'rank' => Rank::fromRate($score)->toInt(),
-                'value' => $score->toInt(),
-            ];
-        });
-
-        return json_encode($formattedScores);
     }
 }

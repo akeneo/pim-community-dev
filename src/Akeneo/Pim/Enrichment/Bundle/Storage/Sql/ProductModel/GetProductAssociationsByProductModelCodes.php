@@ -53,7 +53,7 @@ JSON_ARRAYAGG(associated_product_identifier) as associations_by_type
                            LEFT JOIN pim_catalog_product associated_product ON associated_product.id = association_to_product_model.product_id
                   WHERE product_model.code IN (:productModelCodes)
                   AND association_type.is_quantified = false
-                  UNION ALL
+                  UNION DISTINCT 
                   SELECT
                       child_product_model.code as product_model_code,
                       association_type.code as association_type_code,

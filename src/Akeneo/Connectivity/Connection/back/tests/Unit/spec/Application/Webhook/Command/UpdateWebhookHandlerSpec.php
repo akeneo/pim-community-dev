@@ -12,7 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolation
 use Akeneo\Connectivity\Connection\Domain\ValueObject\Url;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Write\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectWebhookSecretQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\ConnectionWebhookRepositoryInterface;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\UpdateConnectionWebhookQueryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -21,12 +21,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UpdateWebhookHandlerSpec extends ObjectBehavior
 {
     public function let(
-        ConnectionWebhookRepositoryInterface $repository,
+        UpdateConnectionWebhookQueryInterface $updateConnectionWebhookQuery,
         ValidatorInterface $validator,
         SelectWebhookSecretQueryInterface $selectWebhookSecretQuery,
         GenerateWebhookSecretHandler $generateWebhookSecretHandler
     ): void {
-        $this->beConstructedWith($repository, $validator, $selectWebhookSecretQuery, $generateWebhookSecretHandler);
+        $this->beConstructedWith(
+            $updateConnectionWebhookQuery,
+            $validator,
+            $selectWebhookSecretQuery,
+            $generateWebhookSecretHandler
+        );
     }
 
     public function it_is_an_update_webhook_handler(): void
@@ -35,7 +40,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
     }
 
     public function it_updates_a_webhook_and_create_a_secret_with_validated_data(
-        $repository,
+        $updateConnectionWebhookQuery,
         $validator,
         $selectWebhookSecretQuery,
         $generateWebhookSecretHandler,
@@ -55,7 +60,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
-        $repository->update(Argument::that($isAValidWriteModel))->shouldBeCalled();
+        $updateConnectionWebhookQuery->execute(Argument::that($isAValidWriteModel))->shouldBeCalled();
 
         $selectWebhookSecretQuery->execute($code)->willReturn(null);
         $generateWebhookSecretHandler
@@ -71,7 +76,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
     }
 
     public function it_updates_a_webhook_with_validated_data(
-        $repository,
+        $updateConnectionWebhookQuery,
         $validator,
         $selectWebhookSecretQuery,
         $generateWebhookSecretHandler,
@@ -91,7 +96,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(0);
-        $repository->update(Argument::that($isAValidWriteModel))->shouldBeCalled();
+        $updateConnectionWebhookQuery->execute(Argument::that($isAValidWriteModel))->shouldBeCalled();
 
         $selectWebhookSecretQuery->execute($code)->willReturn($secret);
         $generateWebhookSecretHandler->handle(Argument::cetera())->shouldNotBeCalled();
@@ -103,7 +108,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
      * If a webhook is enabled, the URL can not be null.
      */
     public function it_does_not_update_a_webhook_with_invalid_data(
-        $repository,
+        $updateConnectionWebhookQuery,
         $validator,
         $generateWebhookSecretHandler,
         ConstraintViolationListInterface $violationList
@@ -120,7 +125,7 @@ class UpdateWebhookHandlerSpec extends ObjectBehavior
 
         $validator->validate(Argument::that($isAValidWriteModel))->shouldBeCalled()->willReturn($violationList);
         $violationList->count()->willReturn(1);
-        $repository->update(Argument::cetera())->shouldNotBeCalled();
+        $updateConnectionWebhookQuery->execute(Argument::cetera())->shouldNotBeCalled();
         $generateWebhookSecretHandler->handle(Argument::cetera())->shouldNotBeCalled();
 
         $this

@@ -4,7 +4,7 @@ import {Section} from '../Section';
 import {useTranslate} from '../../../shared/translate';
 import {TestAppCard} from './TestAppCard';
 import {ActivateAppButton} from '../ActivateAppButton';
-import {useDeveloperMode} from '../../hooks/use-developer-mode';
+import {useAppDeveloperMode} from '../../hooks/use-app-developer-mode';
 
 interface Props {
     testApps: TestApps;
@@ -12,7 +12,7 @@ interface Props {
 
 export const TestAppList: FC<Props> = ({testApps}) => {
     const translate = useTranslate();
-    const isDeveloperModeEnabled = useDeveloperMode();
+    const isDeveloperModeEnabled = useAppDeveloperMode();
 
     if (!isDeveloperModeEnabled || testApps.total <= 0) {
         return null;
@@ -28,6 +28,7 @@ export const TestAppList: FC<Props> = ({testApps}) => {
                     id={testApp.id}
                     isConnected={testApp.connected}
                     isDisabled={!isDeveloperModeEnabled}
+                    isPending={false}
                 />,
             ]}
         />

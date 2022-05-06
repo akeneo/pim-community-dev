@@ -44,7 +44,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
             return;
         }
 
-        $this->validateAccountUnlocked($user);
+        $this->assertAccountIsUnlocked($user);
         if ($this->shouldResetCounter($user)) {
             $this->resetLockingState($user);
         }
@@ -53,6 +53,8 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
             $this->resetLockingState($user);
         } catch (BadCredentialsException $e) {
             $this->incrementFailureCounter($user);
+            $this->assertAccountIsUnlocked($user);
+
             throw $e;
         }
     }
@@ -69,7 +71,7 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
         $this->userManager->updateUser($user);
     }
 
-    private function validateAccountUnlocked(UserInterface $user): void
+    private function assertAccountIsUnlocked(UserInterface $user): void
     {
         if ($this->isCounterReset($user)) {
             return;

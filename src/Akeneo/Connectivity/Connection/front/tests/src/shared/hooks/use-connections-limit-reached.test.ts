@@ -11,7 +11,7 @@ test('it returns true when max connections limit is true ', async () => {
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
 
-    expect(result.current).toBeNull();
+    expect(result.current).toStrictEqual(false);
 
     await waitForNextUpdate();
 
@@ -27,9 +27,9 @@ test('it returns false when max connections limit is false ', async () => {
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
 
-    expect(result.current).toBeNull();
+    expect(result.current).toStrictEqual(false);
 
-    await waitForNextUpdate();
+    await new Promise(setImmediate);
 
     expect(result.current).toStrictEqual(false);
 });
@@ -44,7 +44,7 @@ test('it returns true on fetch error', async () => {
 
     const {result, waitForNextUpdate} = renderHook(() => useConnectionsLimitReached());
 
-    expect(result.current).toBeNull();
+    expect(result.current).toStrictEqual(false);
 
     await waitForNextUpdate();
 

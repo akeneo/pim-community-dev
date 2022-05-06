@@ -76,7 +76,7 @@ class Cursor extends AbstractCursor implements CursorInterface
     /**
      * Get the next items (hydrated from doctrine repository).
      *
-     * PIM-102132: The quick-and-dirty fix here is to always return "pageSize" items (except of course when no more result is found).
+     * PIM-10232: The quick-and-dirty fix here is to always return "pageSize" items (except of course when no more result is found).
      * Before the fix we could return less than the "pageSize" count, when ES and MySQL are de-synchronized (= there
      * is more result in ES than in MySQL).
      * Returning fewer results can cause some UoW issues (c.f. ticket)

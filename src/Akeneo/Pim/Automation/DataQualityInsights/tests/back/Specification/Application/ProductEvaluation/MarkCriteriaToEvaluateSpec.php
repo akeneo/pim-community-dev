@@ -8,6 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crea
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductIdsImpactedByAttributeGroupActivationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetUpdatedProductIdsQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -34,8 +35,8 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations
     ) {
         $updatedSince = new \DateTimeImmutable();
-        $updatedProductIdsBatch1 = [new ProductId(42), new ProductId(123)];
-        $updatedProductIdsBatch2 = [new ProductId(321)];
+        $updatedProductIdsBatch1 = ProductIdCollection::fromInts([42, 123]);
+        $updatedProductIdsBatch2 = ProductIdCollection::fromInt(321);
 
         $getUpdatedProductIdsQuery->since($updatedSince, 2)->willReturn(
             new \ArrayIterator([$updatedProductIdsBatch1, $updatedProductIdsBatch2])
@@ -44,7 +45,7 @@ final class MarkCriteriaToEvaluateSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations->createAll($updatedProductIdsBatch1)->shouldBeCalled();
         $createProductsCriteriaEvaluations->createAll($updatedProductIdsBatch2)->shouldBeCalled();
 
-        $impactedProductIdsBatch = [new ProductId(24), new ProductId(654)];
+        $impactedProductIdsBatch = ProductIdCollection::fromInts([24, 654]);
         $getProductIdsImpactedByAttributeGroupActivationQuery->updatedSince($updatedSince, 2)->willReturn(
             new \ArrayIterator([$impactedProductIdsBatch])
         );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -13,9 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 interface GetPendingCriteriaEvaluationsByProductIdsQueryInterface
 {
     /**
-     * @param int[] $productIds
-     *
      * @return Write\CriterionEvaluationCollection[]
      */
-    public function execute(array $productIds): array;
+    public function execute(ProductEntityIdCollection $productIds): array;
 }

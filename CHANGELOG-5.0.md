@@ -1,5 +1,70 @@
 # 5.0.x
 
+# 5.0.91 (2022-04-13)
+
+# 5.0.90 (2022-04-06)
+
+# 5.0.89 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10374: Revert PIM-10333 + Fix category translations are not displayed in the category tree when locale is not xx_XX
+
+# 5.0.88 (2022-03-23)
+
+# 5.0.87 (2022-03-23)
+
+## Bug fixes
+
+- CPM-562 Fix product grid loading when attribute as image has a numeric code
+- PIM-10364: Fix broken permissions on Associations with Quantity
+
+# 5.0.86 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10335: Fix locale not saved for localizable attribute in product exports
+
+# 5.0.85 (2022-03-17)
+
+## Bug fixes
+
+- PIM-10333: Import category without correct locale should be impossible
+
+# 5.0.84 (2022-03-15)
+
+# 5.0.83 (2022-02-28)
+
+## Bug fixes
+
+- PIM-10296: Fix measurement attributes with value zero not displayed correctly in product grid
+
+# 5.0.82 (2022-02-25)
+
+## Bug fixes
+
+- PIM-10294: Display blocked message when user is actually blocked at 5th attempt and not at 6th
+
+# 5.0.81 (2022-02-25)
+
+## Bug fixes
+
+- PIM-10275: Missing translation key when error occured during association deletion
+
+# 5.0.80 (2022-02-23)
+
+## Bug fixes
+
+- PIM-10288: Fix product associations came duplicated in API
+
+# 5.0.79 (2022-02-21)
+
+# 5.0.78 (2022-02-18)
+
+## Bug fixes
+
+- PIM-10270: Fix insufficient limit when fetching a lot of attribute groups in families settings
+
 # 5.0.77 (2022-02-10)
 
 ## Bug fixes

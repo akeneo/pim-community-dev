@@ -96,6 +96,21 @@ class AppActivateContext extends PimContext
     }
 
     /**
+     * @When I click on the consent checkbox
+     */
+    public function iClickOnTheConsentCheckbox(): void
+    {
+        $checkbox = $this->spin(function () {
+            /** @var Element $page */
+            $page = $this->getCurrentPage();
+
+            return $page->find('css', '[role=checkbox]');
+        }, 'Consent checkbox not found');
+
+        $checkbox->click();
+    }
+
+    /**
      * @When I see :text
      */
     public function iSee($text)

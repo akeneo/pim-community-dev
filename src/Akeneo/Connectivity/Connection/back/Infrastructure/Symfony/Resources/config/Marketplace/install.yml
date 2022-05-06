@@ -1,0 +1,7 @@
+services:
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install\InstallSubscriber:
+        arguments:
+            - '@database_connection'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
+        tags:
+            - {name: kernel.event_subscriber}

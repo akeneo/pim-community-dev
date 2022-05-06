@@ -53,7 +53,7 @@ class GetProductModelAssociationsByProductIdentifiersIntegration extends TestCas
         ]);
 
         $this->givenTheFollowingAssociationFromVariantProductToProductModels($subProductModels['sub_product_model'], [
-            'variant_product_1' => ['PACK' => ['productModelG'], 'UPSELL' => ['productModelE']]
+            'variant_product_1' => ['PACK' => ['productModelG'], 'UPSELL' => ['productModelE'],'X_SELL' => ['productModelF']]
         ]);
 
         $this->givenAssociationTypes(['A_NEW_TYPE']);

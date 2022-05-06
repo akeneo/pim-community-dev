@@ -8,7 +8,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -16,37 +16,26 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
  */
 class CreateCriteriaEvaluations
 {
-    /** @var CriteriaEvaluationRegistry */
-    private $criteriaEvaluationRegistry;
-
-    /** @var CriterionEvaluationRepositoryInterface */
-    private $criterionEvaluationRepository;
-
     public function __construct(
-        CriteriaEvaluationRegistry $criteriaEvaluationRegistry,
-        CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
+        private CriteriaEvaluationRegistry             $criteriaEvaluationRegistry,
+        private CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
-        $this->criteriaEvaluationRegistry = $criteriaEvaluationRegistry;
-        $this->criterionEvaluationRepository = $criterionEvaluationRepository;
     }
 
-    /**
-     * @param ProductId[] $productIds
-     */
-    public function createAll(array $productIds): void
+    public function createAll(ProductEntityIdCollection $productIdCollection): void
     {
-        $this->create($this->criteriaEvaluationRegistry->getCriterionCodes(), $productIds);
+        $this->create($this->criteriaEvaluationRegistry->getCriterionCodes(), $productIdCollection);
     }
 
     /**
      * @param CriterionCode[] $criterionCodes
-     * @param ProductId[] $productIds
+     * @param ProductEntityIdCollection $productIdCollection
      */
-    public function create(array $criterionCodes, array $productIds): void
+    public function create(array $criterionCodes, ProductEntityIdCollection $productIdCollection): void
     {
         $criteria = new Write\CriterionEvaluationCollection();
 
-        foreach ($productIds as $productId) {
+        foreach ($productIdCollection as $productId) {
             foreach ($criterionCodes as $criterionCode) {
                 $criteria->add(new Write\CriterionEvaluation(
                     $criterionCode,

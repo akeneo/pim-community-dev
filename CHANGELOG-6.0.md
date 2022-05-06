@@ -1,7 +1,83 @@
 # 6.0.x
 
+# 6.0.26 (2022-04-29)
+
+# 6.0.25 (2022-04-14)
+
+# 6.0.24 (2022-04-13)
+
 ## Bug fixes
 
+- PIM-10332: [Backport PIM-10331] Fix error when using an association with quantities having an numeric code
+
+# 6.0.23 (2022-04-11)
+
+# 6.0.22 (2022-04-08)
+
+# 6.0.21 (2022-04-06)
+
+## Bug fixes
+
+- PIM-10324: [Backport PIM-10232] Fix "A new entity is found through the relationship" errors in jobs
+- PIM-10385: Fix message "New patch available" is present even if the PIM on the last patch
+
+# 6.0.20 (2022-04-01)
+
+## Bug fixes
+
+- PIM-10323: [Backport PIM-10233] Fix the saved value by an empty wysiwyg
+
+# 6.0.19 (2022-03-28)
+
+- PIM-10369: Fix deprecated migrations present during Standard-Edition upgrade
+
+# 6.0.18 (2022-03-24)
+
+# 6.0.17 (2022-03-24)
+
+# 6.0.16 (2022-03-24)
+
+## Bug fixes
+- PIM-10325: [Backport PIM-10229] Enforce strict samesite policy for session cookies
+- PIM-10321: [Backport PIM-10241] Fix user account disabled can connect regression
+
+# 6.0.15 (2022-03-23)
+
+# 6.0.14 (2022-03-22)
+
+# 6.0.13 (2022-03-18)
+
+# 6.0.12 (2022-03-17)
+
+## Improvement
+- Fix Docker Composer cache
+
+# 6.0.11 (2022-03-16)
+
+# 6.0.10 (2022-03-14)
+
+# 6.0.9 (2022-03-14)
+
+# 6.0.8 (2022-03-11)
+
+## Bug fixes
+- PLG-776: Fix Option page broken issue with small screen when creating a new option
+- PIM-10305: Do not allow disabled user to login
+- PLG-781: Fix migration task related to calculating product quality scores to be independent of the JobExecution implementation
+- RAC-1223: [Backport] RAC-1215: fix error when attributeOption doesn't have label
+- PIM-10308: [Backport PIM-10292] Fix error 500 when role page contain a validation errors
+- PIM-10315: [Backport PIM-10264] Optimize variant product ratio query
+- PIM-10318: [Backport PIM-10259] Add ArPHP library and fix Arabic RTL in PDF Exports
+
+# 6.0.7 (2022-02-25)
+
+# 6.0.6 (2022-02-21)
+
+# 6.0.5 (2022-02-17)
+
+## Bug fixes
+
+- PIM-10287: Fix deprecated methods for Symfony\Component\Console\Helper\TableStyle
 - BH-986: Add missing migration file for standard.
 
 # 6.0.4 (2022-02-10)

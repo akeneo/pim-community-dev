@@ -115,7 +115,9 @@ pim_catalog:
             association_type_does_not_exist: This association type doesn't exist. Please make sure it hasn't been deleted in the meantime.
             association_type_is_not_quantified: '"{{ association_type }}" can’t be used for associations with quantities. Please, choose a different association type with quantities or use the "associations" property.'
             association_type_should_not_be_quantified: '"{{ association_type }}" can only be used for associations with quantities. Please, choose a different association type or use the "quantified_associations" property.'
-
+        boolean:
+            boolean_value_is_required: The {{ attribute_code }} attribute requires a boolean value (true or false) as data, a {{ given_type }} was detected.
+            boolean_value_is_required_in_import: The {{ attribute_code }} attribute requires a boolean value (1 or 0) as data, a {{ given_type }} was detected.
 mass_edit:
     edit_common_attributes:
         invalid_values: There are errors in the attributes form
@@ -124,17 +126,3 @@ pim_datagrid:
     column_configurator:
         label:
             unique_message: The label must be unique
-
-# TODO: move elsewhere?
-pim_enrich.product:
-    validation:
-        upsert:
-            set_value:
-                no_channel_code_provided_for_scopable_attribute: 'The {{ attributeCode }} attribute requires a channel'
-                channel_code_provided_for_non_scopable_attribute: 'The {{ attributeCode }} attribute does not require a channel, "{{ channelCode }}" was detected'
-                no_locale_code_provided_for_localizable_attribute: 'The {{ attributeCode }} attribute requires a locale'
-                locale_code_provided_for_non_localizable_attribute: 'The {{ attributeCode }} attribute does not require a locale, "{{ localeCode }}" was detected'
-                invalid_locale_code_for_locale_specific_attribute: 'The {{ attributeCode }} requires one of the following locales: {{ availableLocales }}; "{{ localeCode }}" was detected'
-                channel_does_not_exist: 'The {{ channelCode }} channel does not exist'
-                locale_is_not_active: 'The {{ localeCode }} locale does not exist or is not active'
-                locale_not_activated_for_channel: 'The {{ localeCode }} locale is not activated for the {{ channelCode }} channel'

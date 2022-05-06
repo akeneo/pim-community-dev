@@ -1,5 +1,5 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
-import {AppIllustration, Breadcrumb, TabBar, useTabBar} from 'akeneo-design-system';
+import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
 import {useRouter} from '../../../shared/router/use-router';
@@ -16,6 +16,7 @@ import {useFetchConnectedAppMonitoringSettings} from '../../hooks/use-fetch-conn
 import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
 import {DeveloperModeTag} from '../DeveloperModeTag';
+import isGrantedOnProduct from '../../is-granted-on-product';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -163,6 +164,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
 
     const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
 
+    const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
+
     return (
         <>
             <PageHeader
@@ -199,7 +202,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     >
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')}
                     </TabBar.Tab>
-                    {null !== providers && providers.length > 0 && (
+                    {null !== providers && providers.length > 0 && isAtLeastGrantedToViewProducts && (
                         <TabBar.Tab
                             isActive={isCurrent(permissionsTabName)}
                             onClick={() => {
@@ -220,7 +223,11 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.error_monitoring')}
                     </TabBar.Tab>
                 </TabBar>
-
+                {isCurrent(settingsTabName) && connectedApp.is_pending && (
+                    <Helper icon={<DangerIcon />} level='warning'>
+                        {translate('akeneo_connectivity.connection.connect.connected_apps.edit.settings.pending')}
+                    </Helper>
+                )}
                 {isCurrent(settingsTabName) && (
                     <ConnectedAppSettings
                         connectedApp={connectedApp}
@@ -229,11 +236,12 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     />
                 )}
 
-                {isCurrent(permissionsTabName) && null !== providers && (
+                {isCurrent(permissionsTabName) && null !== providers && isAtLeastGrantedToViewProducts && (
                     <ConnectedAppPermissions
                         providers={providers}
                         setProviderPermissions={handleSetProviderPermissions}
                         permissions={permissions}
+                        onlyDisplayViewPermissions={!isGrantedOnProduct(connectedApp, 'edit')}
                     />
                 )}
 

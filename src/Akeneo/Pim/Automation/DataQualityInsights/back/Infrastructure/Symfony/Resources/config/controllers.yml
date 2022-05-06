@@ -53,6 +53,11 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductScores'
 
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\GetProductModelQualityScoreController:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetProductModelScores'
+
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\Dashboard\DashboardQualityScoreEvolutionController:
         public: true
         arguments:

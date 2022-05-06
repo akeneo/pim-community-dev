@@ -102,18 +102,29 @@ oro_config:
       tab:
         system:
           title: 系统
+      save_ok: 成功保存配置文件。
+      save_error: 抱歉，无法保存配置文件（{{ reason }}）
       group:
         localization:
-          title: 本地化
-          system_locale: 语言
+          title: 登录页面设置
+          fields:
+            system_locale:
+              label: 语言
         notification:
-          title: 通知
-          system_notification: 新版本通知
+          title: 新版本通知
+          helper: 启用后，有新版本时您会收到通知。
+          fields:
+            enabler:
+              label: 已启用
         loading_message:
-          title: 加载消息
-          label: 启用加载消息
-        loading_messages:
-          label: 可用的加载消息
+          title: 自定义加载消息
+          helper: 为加载屏幕输入自定义消息来取悦用户。
+          placeholder: 请输入您想要在加载屏幕上显示的消息
+          fields:
+            enabler:
+              label: 启用加载消息
+            messages:
+              label: 添加您自己的加载消息
 pim_ui:
   flash:
     unsaved_changes: '您有未保存的修改，确定要离开吗？'

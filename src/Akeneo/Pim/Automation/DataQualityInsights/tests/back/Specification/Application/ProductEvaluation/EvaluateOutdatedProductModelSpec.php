@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProductModels;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductModelIdCollection;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -17,31 +19,38 @@ final class EvaluateOutdatedProductModelSpec extends ObjectBehavior
 {
     public function let(
         HasUpToDateEvaluationQueryInterface $hasUpToDateEvaluationQuery,
-        EvaluateProductModels $evaluateProductModels
+        EvaluateProductModels $evaluateProductModels,
+        ProductEntityIdFactoryInterface $idFactory
     ) {
-        $this->beConstructedWith($hasUpToDateEvaluationQuery, $evaluateProductModels);
+        $this->beConstructedWith($hasUpToDateEvaluationQuery, $evaluateProductModels, $idFactory);
     }
 
     public function it_evaluate_a_product_model_if_it_has_outdated_evaluation(
         $hasUpToDateEvaluationQuery,
-        $evaluateProductModels
+        $evaluateProductModels,
+        $idFactory
     ) {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
+        $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(false);
-        $evaluateProductModels->__invoke([42])->shouldBeCalled();
+        $idFactory->createCollection(['42'])->willReturn($collection);
+        $evaluateProductModels->__invoke($collection)->shouldBeCalled();
 
         $this->__invoke($productModelId);
     }
 
     public function it_does_not_evaluate_a_product_model_with_up_to_date_evaluation(
         $hasUpToDateEvaluationQuery,
-        $evaluateProductModels
+        $evaluateProductModels,
+        $idFactory
     ) {
-        $productModelId = new ProductId(42);
+        $productModelId = new ProductModelId(42);
+        $collection = ProductModelIdCollection::fromStrings(['42']);
 
         $hasUpToDateEvaluationQuery->forProductId($productModelId)->willReturn(true);
-        $evaluateProductModels->__invoke([42])->shouldNotBeCalled();
+        $idFactory->createCollection(['42'])->willReturn($collection);
+        $evaluateProductModels->__invoke($collection)->shouldNotBeCalled();
 
         $this->__invoke($productModelId);
     }
