@@ -312,8 +312,11 @@ class ProductController
             $hasPermissionException = \count(
                 \array_filter(
                     $e->violations(),
-                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION)
-                ) > 0;
+                    fn (
+                        ConstraintViolationInterface $violation
+                    ): bool => $violation->getCode() === (string) ViolationCode::PERMISSION
+                )
+            ) > 0;
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
