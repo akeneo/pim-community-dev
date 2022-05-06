@@ -31,6 +31,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
@@ -976,7 +977,6 @@ final class UpsertProductIntegration extends TestCase
         $this->assertProductHasCorrectValueByAttributeCode('packshot_attr', ['packshot3']);
     }
 
-
     /** @test */
     public function it_creates_and_updates_a_product_with_a_file_value(): void
     {
@@ -1007,6 +1007,80 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEquals($anotherFilePath, $product->getValue('a_file')->getData()->getKey());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_file_extension_is_wrong(): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The png file extension is not allowed for the a_file attribute. Allowed extensions are pdf, doc, docx, txt.');
+
+        // create product 'identifier'
+        $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.png'));
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetFileValue('a_file', null, null, $anImagePath)]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+    }
+
+    /** @test */
+    public function it_creates_and_updates_a_product_with_an_image_value(): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        // create product 'identifier'
+        $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.png'));
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals($anImagePath, $product->getValue('an_image')->getData()->getKey());
+
+        // update product 'identifier'
+        $anotherFilePath = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
+        $this->updateProduct(
+            new SetImageValue('an_image', null, null, $anotherFilePath)
+        );
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals($anotherFilePath, $product->getValue('an_image')->getData()->getKey());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_image_extension_is_wrong(): void
+    {
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The txt file extension is not allowed for the an_image attribute. Allowed extensions are jpg, gif, png.');
+
+        // create product 'identifier'
+        $anImagePath = $this->getFileInfoKey($this->getFixturePath('akeneo.txt'));
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [new SetImageValue('an_image', null, null, $anImagePath)]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
     }
 
     private function loadAssetFixtures(): void

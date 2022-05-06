@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -35,6 +36,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             && !$userIntent instanceof SetSimpleSelectValue
             && !$userIntent instanceof SetIdentifierValue
             && !$userIntent instanceof SetFileValue
+            && !$userIntent instanceof SetImageValue
         ) {
             throw new \InvalidArgumentException('Not expected class');
         }
@@ -61,6 +63,7 @@ final class SetSingleValueApplier implements UserIntentApplier
             SetSimpleSelectValue::class,
             SetIdentifierValue::class,
             SetFileValue::class,
+            SetImageValue::class,
         ];
     }
 }

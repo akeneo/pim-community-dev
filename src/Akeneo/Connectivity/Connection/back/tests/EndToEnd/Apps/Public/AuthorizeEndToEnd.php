@@ -12,8 +12,8 @@ use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class AuthorizeEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
-    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private FilePersistedFeatureFlags $featureFlags;
     private ClientProvider $clientProvider;
     private SessionInterface $session;
     private RequestAppAuthorizationHandler $appAuthorizationHandler;
@@ -38,7 +38,7 @@ class AuthorizeEndToEnd extends WebTestCase
         parent::setUp();
 
         $this->webMarketplaceApi = $this->get(WebMarketplaceApi::class);
-        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->featureFlags = $this->get('feature_flags');
         $this->clientProvider = $this->get(ClientProvider::class);
         $this->session = $this->get('session');
         $this->appAuthorizationHandler = $this->get(RequestAppAuthorizationHandler::class);
@@ -53,7 +53,7 @@ class AuthorizeEndToEnd extends WebTestCase
 
     public function test_it_is_redirected_to_the_error_when_authorizing_an_app_with_invalid_client_id(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
@@ -76,7 +76,7 @@ class AuthorizeEndToEnd extends WebTestCase
 
     public function test_it_is_redirected_to_the_wizard_without_unknown_scopes_when_authorizing_an_app(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
@@ -112,7 +112,7 @@ class AuthorizeEndToEnd extends WebTestCase
 
     public function test_it_is_redirected_to_the_app_when_already_authorized(): void
     {
-        $this->featureFlagMarketplaceActivate->enable();
+        $this->featureFlags->enable('marketplace_activate');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_open_apps');
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));

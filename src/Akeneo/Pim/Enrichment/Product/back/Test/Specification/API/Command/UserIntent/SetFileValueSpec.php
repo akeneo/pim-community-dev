@@ -16,7 +16,7 @@ final class SetFileValueSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/file');
+        $this->beConstructedWith('name', 'ecommerce', 'en_US', '/path/to/file.txt');
     }
 
     function it_is_initializable()
@@ -42,6 +42,6 @@ final class SetFileValueSpec extends ObjectBehavior
 
     function it_returns_the_value()
     {
-        $this->value()->shouldReturn('/path/to/file');
+        $this->value()->shouldReturn('/path/to/file.txt');
     }
 }

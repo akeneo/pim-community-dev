@@ -36,7 +36,7 @@ class UpdateIndexMappingWithoutDowntimeIntegration extends TestCase
         $indexNameBeforeMigration = $this->getIndexNameFromAlias($productAndProductModelIndexAlias);
 
         /** @var ProductQueryBuilderFactory $pqb */
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory');
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose');
         Assert::assertNotNull($indexNameBeforeMigration);
         Assert::assertEquals(1, $pqb->create()->execute()->count());
 

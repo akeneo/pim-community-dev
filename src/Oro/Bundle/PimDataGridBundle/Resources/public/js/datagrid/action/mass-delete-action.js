@@ -81,7 +81,8 @@ define([
         __(this.config.confirmLabel),
         __('pim_common.confirm_deletion'),
         this.doMassDelete.bind(this, data),
-        this.getEntityHint(true)
+        this.getEntityHint(true),
+        this.config.buttonText
       );
 
       return this.confirmModal;

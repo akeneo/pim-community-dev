@@ -4,6 +4,7 @@ namespace spec\Akeneo\Test\Acceptance\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -12,6 +13,7 @@ use Akeneo\Test\Acceptance\Product\InMemoryProductRepository;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 class InMemoryProductRepositorySpec extends ObjectBehavior
 {
@@ -105,7 +107,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
 
     function it_asserts_that_the_other_methods_are_not_implemented_yet()
     {
-        $this->shouldThrow(NotImplementedException::class)->during('findOneBy', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getClassName', []);
         $this->shouldThrow(NotImplementedException::class)->during('getAvailableAttributeIdsToExport', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('getProductsByGroup', [new Group(), 10]);
@@ -162,5 +163,22 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products->shouldBeArray();
         $products->shouldHaveCount(1);
         $products->shouldHaveKeyWithValue('A', $productA);
+    }
+
+    function it_finds_one_product_by_criteria()
+    {
+        $productA = new Product();
+        $productA->setId(1);
+        $productA->setIdentifier('A');
+        $this->save($productA);
+
+        $productB = new Product();
+        $productB->setId(2);
+        $productB->setIdentifier('B');
+        $this->save($productB);
+
+        $this->findOneBy(['id' => 1])->shouldBe($productA);
+        $this->findOneBy(['id' => 2])->shouldBe($productB);
+        $this->findOneBy(['id' => 3])->shouldBeNull();
     }
 }
