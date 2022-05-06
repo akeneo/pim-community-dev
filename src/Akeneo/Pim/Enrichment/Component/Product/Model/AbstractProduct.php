@@ -89,7 +89,7 @@ abstract class AbstractProduct implements ProductInterface
     public function getId()
     {
         throw new \Exception('getId() should not be called');
-        return $this->id;
+        return $this->uuid->toString();
     }
 
     /**
@@ -1096,5 +1096,13 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->created;
     }
 }

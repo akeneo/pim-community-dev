@@ -91,7 +91,7 @@ class ProductAndProductModelWriter implements ItemWriterInterface, StepExecution
      */
     protected function incrementCount(EntityWithFamilyInterface $entity)
     {
-        if (null !== $entity->getCreated()) {
+        if (!$entity->isNew()) {
             $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
