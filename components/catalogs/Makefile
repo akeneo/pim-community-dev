@@ -74,7 +74,7 @@ catalogs-coverage-back:
 
 .PHONY: catalogs-lint-front
 catalogs-lint-front:
-	cat <<- EOF | $(NODE_RUN) sh
+	cat <<- EOF | docker-compose run -u node --rm -T node sh
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --check
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ tsc --noEmit --strict
@@ -82,7 +82,7 @@ catalogs-lint-front:
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front:
-	cat <<- EOF | $(NODE_RUN) sh
+	cat <<- EOF | docker-compose run -u node --rm -T node sh
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --clearCache
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --ci --coverage
 	@<<- EOF
@@ -91,7 +91,7 @@ catalogs-unit-front:
 
 .PHONY: catalogs-lint-front_fix
 catalogs-lint-front_fix:
-	cat <<- EOF | $(NODE_RUN) sh
+	cat <<- EOF | docker-compose run -u node --rm -T node sh
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint --fix
 		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --write
 	@<<- EOF
