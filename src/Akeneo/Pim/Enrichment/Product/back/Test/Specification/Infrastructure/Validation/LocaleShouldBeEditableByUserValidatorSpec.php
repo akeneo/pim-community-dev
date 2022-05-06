@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUser;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator;
 use PhpSpec\ObjectBehavior;
@@ -77,7 +78,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
             ->shouldBeCalledOnce()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->atPath('userId')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());

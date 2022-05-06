@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 use Akeneo\Pim\Enrichment\Category\API\Query\GetOwnedCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -43,7 +44,10 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
         }
 
         if ([] === $this->getOwnedCategories->forUserId($productCategoryCodes, $command->userId())) {
-            $this->context->buildViolation($constraint->message)->atPath('userId')->addViolation();
+            $this->context->buildViolation($constraint->message)
+                ->setCode((string) ViolationCode::PERMISSION)
+                ->atPath('userId')
+                ->addViolation();
         }
     }
 }

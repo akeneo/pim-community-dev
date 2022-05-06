@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ProductIdentifier;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Domain\Query\GetNonViewableCategoryCodes;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\ShouldStayOwnerOfTheProduct;
@@ -88,6 +89,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ;
         $getOwnedCategories->forUserId(['categoryB', 'categoryA'], 10)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(new SetCategories(['categoryB']), $constraint);

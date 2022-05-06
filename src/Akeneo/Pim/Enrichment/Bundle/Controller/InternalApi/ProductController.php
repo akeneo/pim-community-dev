@@ -12,11 +12,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSa
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
 use Akeneo\Pim\Enrichment\Product\API\MessageBus;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -33,7 +35,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -69,7 +70,8 @@ class ProductController
         protected ProductBuilderInterface $variantProductBuilder,
         protected AttributeFilterInterface $productAttributeFilter,
         private Client $productAndProductModelClient,
-        private MessageBus $messageBus
+        private MessageBus $messageBus,
+        private FindIdentifier $findIdentifier
     ) {
     }
 
@@ -296,29 +298,28 @@ class ProductController
             return new RedirectResponse('/');
         }
 
-        $product = $this->findProductOr404($id);
-        if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
-            throw new AccessDeniedHttpException();
-        }
+        $productIdentifier = $this->findProductIdentifierOr404($id);
 
         try {
             $userId = $this->userContext->getUser()?->getId();
             $command = UpsertProductCommand::createFromCollection(
                 $userId,
-                $product->getIdentifier(),
+                $productIdentifier,
                 [new ConvertToSimpleProduct()]
             );
             $this->messageBus->dispatch($command);
         } catch (ViolationsException $e) {
-            $hasUserException = \count(
+            $hasPermissionException = \count(
                 \array_filter(
                     $e->violations(),
-                    fn (ConstraintViolationInterface $violation): bool => $violation->getPropertyPath() === 'userId')
+                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION)
                 ) > 0;
-            if ($hasUserException) {
+            if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
+            $product = $this->findProductOr404($id);
             $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
+
             return new JsonResponse($normalizedViolations, 400);
         }
 
@@ -345,6 +346,19 @@ class ProductController
         }
 
         return $product;
+    }
+
+    protected function findProductIdentifierOr404(int $id): string
+    {
+        $identifier = $this->findIdentifier->fromId($id);
+
+        if (null === $identifier) {
+            throw new NotFoundHttpException(
+                sprintf('Product with id %s could not be found.', $id)
+            );
+        }
+
+        return $identifier;
     }
 
     /**
