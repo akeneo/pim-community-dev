@@ -17,35 +17,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SharedCatalogFixturesCommand extends Command
 {
-    const FIXTURES_NAME = 'shared_catalog_fixtures';
-
     protected static $defaultName = 'akeneo:shared-catalog:fixtures';
 
-    private $dbalConnection;
-    private $validator;
-    private $userFactory;
-    private $userUpdater;
-    private $userSaver;
-
     public function __construct(
-        DbalConnection $dbalConnection,
-        ValidatorInterface $validator,
-        SimpleFactoryInterface $userFactory,
-        ObjectUpdaterInterface $userUpdater,
-        SaverInterface $userSaver
+        private DbalConnection $dbalConnection,
+        private ValidatorInterface $validator,
+        private SimpleFactoryInterface $userFactory,
+        private ObjectUpdaterInterface $userUpdater,
+        private SaverInterface $userSaver
     ) {
-        parent::__construct(null);
-        $this->dbalConnection = $dbalConnection;
-        $this->validator = $validator;
-        $this->userFactory = $userFactory;
-        $this->userUpdater = $userUpdater;
-        $this->userSaver = $userSaver;
+        parent::__construct();
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Load the fixtures of the shared catalog.')
@@ -56,7 +43,7 @@ class SharedCatalogFixturesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): void
     {
         if (!$input->getOption('force')) {
             throw new \InvalidArgumentException('Missing argument "--force"');
@@ -199,7 +186,7 @@ SQL;
             throw new \InvalidArgumentException(
                 sprintf(
                     'Object "%s" is not valid, cf following constraint violations "%s"',
-                    get_class($object),
+                    $object::class,
                     implode(', ', $messages)
                 )
             );

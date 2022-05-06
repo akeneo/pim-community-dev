@@ -15,10 +15,11 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 interface UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent;
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent;
 
     public function supports(TargetInterface $target): bool;
 }

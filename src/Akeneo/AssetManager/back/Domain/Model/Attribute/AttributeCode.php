@@ -19,15 +19,13 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeCode
+class AttributeCode implements \Stringable
 {
     public const RESERVED_CODES = ['code', 'label', 'image'];
     public const REGEX = '/^[a-zA-Z0-9_]+$/';
     public const MAX_LENGTH = 255;
 
-    private string $code;
-
-    private function __construct(string $code)
+    private function __construct(private string $code)
     {
         Assert::stringNotEmpty($code, 'Attribute code cannot be empty');
         Assert::maxLength(
@@ -40,8 +38,6 @@ class AttributeCode
             self::REGEX,
             'Attribute code may contain only letters, numbers and underscores. %s given',
         );
-
-        $this->code = $code;
     }
 
     public static function fromString(string $code): self

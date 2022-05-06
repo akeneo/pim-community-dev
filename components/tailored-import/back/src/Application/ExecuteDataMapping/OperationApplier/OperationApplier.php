@@ -15,8 +15,10 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-class OperationApplier
+final class OperationApplier
 {
     /**
      * @param OperationApplierInterface[] $operationAppliers
@@ -28,8 +30,12 @@ class OperationApplier
 
     public function applyOperations(
         OperationCollection $operationCollection,
-        string $value,
-    ): string {
+        ValueInterface $value,
+    ): ValueInterface {
+        if ($value instanceof NullValue) {
+            return $value;
+        }
+
         foreach ($operationCollection as $operation) {
             $applier = $this->getApplier($operation);
 

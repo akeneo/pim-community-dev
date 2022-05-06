@@ -16,17 +16,10 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\PropertyTarget;
-use Akeneo\Platform\TailoredImport\Domain\Model\Target\SourceConfiguration\NumberSourceConfiguration;
-use Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceConfigurationHydrator;
 use PhpSpec\ObjectBehavior;
 
 class TargetHydratorSpec extends ObjectBehavior
 {
-    public function let(SourceConfigurationHydrator $sourceConfigurationHydrator)
-    {
-        $this->beConstructedWith($sourceConfigurationHydrator);
-    }
-
     public function it_hydrates_an_attribute_target()
     {
         $indexedAttributes = [
@@ -77,10 +70,8 @@ class TargetHydratorSpec extends ObjectBehavior
         );
     }
 
-    public function it_hydrates_an_attribute_and_a_source_configuration(
-        SourceConfigurationHydrator $sourceConfigurationHydrator,
-        NumberSourceConfiguration $numberSourceConfiguration,
-    ) {
+    public function it_hydrates_an_attribute_and_a_source_configuration()
+    {
         $indexedAttributes = [
             'count' => new Attribute(
                 'count',
@@ -95,10 +86,6 @@ class TargetHydratorSpec extends ObjectBehavior
                 []
             ),
         ];
-
-        $sourceConfigurationHydrator->hydrate([
-            'decimal_separator' => ','
-        ], 'pim_catalog_number')->willReturn($numberSourceConfiguration);
 
         $this->hydrate([
             'type' => 'attribute',
@@ -118,7 +105,9 @@ class TargetHydratorSpec extends ObjectBehavior
                 null,
                 'set',
                 'skip',
-                $numberSourceConfiguration->getWrappedObject(),
+                [
+                    'decimal_separator' => ','
+                ],
             ),
         );
     }

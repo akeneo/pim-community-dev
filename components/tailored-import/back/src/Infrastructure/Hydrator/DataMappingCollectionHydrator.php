@@ -31,7 +31,7 @@ class DataMappingCollectionHydrator
                 $dataMapping['uuid'],
                 $this->targetHydrator->hydrate($dataMapping['target'], $indexedAttributes),
                 $dataMapping['sources'],
-                $this->operationCollectionHydrator->hydrate($dataMapping['operations']),
+                $this->operationCollectionHydrator->hydrate($dataMapping['target'], $dataMapping['operations']),
                 $dataMapping['sample_data'],
             ),
             $normalizedDataMappingCollection,

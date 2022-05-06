@@ -25,6 +25,7 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
     public function __construct(
         private CellsFormatter $cellsFormatter,
         private FilesystemProvider $filesystemProvider,
+        private RowCleaner $rowCleaner,
     ) {
     }
 
@@ -43,7 +44,7 @@ class RemoteXlsxFileReaderFactory implements XlsxFileReaderFactoryInterface
         \file_put_contents($this->localFilePath, $remoteStream);
         \fclose($remoteStream);
 
-        return new XlsxFileReader($this->localFilePath, $this->cellsFormatter);
+        return new XlsxFileReader($this->localFilePath, $this->cellsFormatter, $this->rowCleaner);
     }
 
     public function __destruct()

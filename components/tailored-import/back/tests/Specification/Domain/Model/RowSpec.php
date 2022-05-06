@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class RowSpec extends ObjectBehavior
@@ -25,9 +26,9 @@ class RowSpec extends ObjectBehavior
             '5717b3de-4dfb-4f8e-ac42-cca126cc08de' => 'My name',
         ]);
 
-        $this->getCellData('c8f9f8e7-f8f8-4f8e-ac42-cca126cc08de')->shouldReturn('My sku');
-        $this->getCellData('a07b9dd7-f0ff-4d89-85a5-dee411cf53c2')->shouldReturn('My description');
-        $this->getCellData('5717b3de-4dfb-4f8e-ac42-cca126cc08de')->shouldReturn('My name');
+        $this->getCellData('c8f9f8e7-f8f8-4f8e-ac42-cca126cc08de')->shouldBeLike(new StringValue('My sku'));
+        $this->getCellData('a07b9dd7-f0ff-4d89-85a5-dee411cf53c2')->shouldBeLike(new StringValue('My description'));
+        $this->getCellData('5717b3de-4dfb-4f8e-ac42-cca126cc08de')->shouldBeLike(new StringValue('My name'));
     }
 
     public function it_throws_an_exception_when_cell_uuid_is_invalid()

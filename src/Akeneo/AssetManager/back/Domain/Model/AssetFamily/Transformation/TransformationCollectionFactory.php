@@ -18,11 +18,8 @@ use Webmozart\Assert\Assert;
 
 class TransformationCollectionFactory
 {
-    private OperationFactory $operationFactory;
-
-    public function __construct(OperationFactory $operationFactory)
+    public function __construct(private OperationFactory $operationFactory)
     {
-        $this->operationFactory = $operationFactory;
     }
 
     public function fromNormalized(array $normalizedTransformations): TransformationCollection
@@ -37,9 +34,6 @@ class TransformationCollectionFactory
     /**
      * Use only this method when data comes from storage. For any other scenario (specially when data comes from
      * external) the fromNormalized method should be used instead.
-     *
-     * @param array $normalizedTransformations
-     * @return TransformationCollection
      */
     public function fromDatabaseNormalized(array $normalizedTransformations): TransformationCollection
     {
@@ -49,7 +43,7 @@ class TransformationCollectionFactory
             array_filter(array_map(function (array $normalizedTransformation): ?Transformation {
                 try {
                     return $this->buildTransformation($normalizedTransformation);
-                } catch (UnknownOperationException $e) {
+                } catch (UnknownOperationException) {
                     // We only catch exception if an operation is unknown (for example someone deactivate an operation).
                     // Catching other exceptions can hide other problems.
                     return null;

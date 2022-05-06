@@ -54,36 +54,38 @@ final class IdentifierValidatorTest extends AbstractValidationTest
         return [
             'a valid identifier attribute target' => [
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => [],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [],
                 ]
             ],
             'a valid attribute target with sample data' => [
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['1', 'sample_2', 'sample_3'],
                 ]
             ],
         ];
@@ -96,118 +98,124 @@ final class IdentifierValidatorTest extends AbstractValidationTest
                 'This is not a valid UUID.',
                 '[uuid]',
                 [
-                    "uuid" => "an_invalid_uuid",
-                    "target" => [
+                    'uuid' => 'an_invalid_uuid',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'an identifier data mapping cannot clear value if empty' => [
                 'This value should be equal to "skip".',
                 '[target][action_if_empty]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'clear',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'an identifier data mapping does not handle add action if not empty' => [
                 'This value should be equal to "set".',
                 '[target][action_if_not_empty]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'add',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'an identifier data mapping with an unsupported operation' => [
                 'akeneo.tailored_import.validation.operations.incompatible_operation_type',
                 '[operations][0][type]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [
                         [
-                            "type" => "clean_html_tags"
+                            'type' => 'clean_html_tags'
                         ],
                     ],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'an identifier data mapping cannot have multiple sources' => [
                 'akeneo.tailored_import.validation.data_mappings.sources.count_mismatched',
                 '[sources]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
-                    "operations" => ["clean_html_tags"],
-                    "sample_data" => ["sample_1", "sample_2", "sample_3"],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529', '71480f22-f811-4261-b0fe-d93ad11666a9'],
+                    'operations' => ['clean_html_tags'],
+                    'sample_data' => ['sample_1', 'sample_2', 'sample_3'],
                 ]
             ],
             'an identifier data mapping with an invalid sample data' => [
                 'This value should be of type string.',
                 '[sample_data][0]',
                 [
-                    "uuid" => "f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd",
-                    "target" => [
+                    'uuid' => 'f3513836-4f1d-4bf6-b1a0-ce85ddcca5cd',
+                    'target' => [
                         'code' => 'sku',
                         'type' => 'attribute',
+                        'attribute_type' => 'pim_catalog_identifier',
                         'channel' => null,
                         'locale' => null,
                         'action_if_not_empty' => 'set',
                         'action_if_empty' => 'skip',
                         'source_configuration' => null
                     ],
-                    "sources" => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
-                    "operations" => [],
-                    "sample_data" => [12],
+                    'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
+                    'operations' => [],
+                    'sample_data' => [12],
                 ]
             ],
         ];

@@ -8,13 +8,9 @@ use Webmozart\Assert\Assert;
 
 class ChannelIdentifier
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         Assert::notEmpty($identifier, 'Channel identifier should not be empty');
-
-        $this->identifier = $identifier;
     }
 
     public static function fromCode(string $identifier): self

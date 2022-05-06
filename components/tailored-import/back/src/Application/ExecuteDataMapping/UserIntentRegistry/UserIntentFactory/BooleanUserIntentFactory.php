@@ -15,41 +15,38 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserInte
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\BooleanValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class BooleanUserIntentFactory implements UserIntentFactoryInterface
 {
     /**
      * @param AttributeTarget $target
      */
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent
+    public function create(TargetInterface $target, ValueInterface $value): ValueUserIntent
     {
         if (!$this->supports($target)) {
             throw new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_boolean"');
         }
 
-        if (!\is_string($value)) {
-            throw new \InvalidArgumentException('BooleanUserIntentFactory only supports string value');
+        if (!$value instanceof BooleanValue) {
+            throw new UnexpectedValueException($value, BooleanValue::class, self::class);
         }
-
-        if (!\in_array($value, ['1', '0'], true)) {
-            throw new \InvalidArgumentException('BooleanUserIntentFactory only supports "1" or "0"');
-        }
-
-        $value = boolval($value);
 
         return new SetBooleanValue(
             $target->getCode(),
             $target->getChannel(),
             $target->getLocale(),
-            $value,
+            $value->getValue(),
         );
     }
 
     public function supports(TargetInterface $target): bool
     {
-        return $target instanceof AttributeTarget && 'pim_catalog_boolean' === $target->getType();
+        return $target instanceof AttributeTarget && 'pim_catalog_boolean' === $target->getAttributeType();
     }
 }

@@ -133,7 +133,7 @@ SQL;
      */
     private function getFormattedClothingProductIds()
     {
-        $pqbFactory = $this->get('pim_catalog.query.product_query_builder_factory');
+        $pqbFactory = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose');
         $pqb = $pqbFactory->create([
             'filters' => [
                 [

@@ -24,44 +24,8 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
  */
 abstract class AbstractAttribute
 {
-    protected AttributeIdentifier $identifier;
-
-    protected AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    protected AttributeCode $code;
-
-    protected LabelCollection $labelCollection;
-
-    protected AttributeOrder $order;
-
-    protected AttributeIsRequired $isRequired;
-
-    protected AttributeIsReadOnly $isReadOnly;
-
-    protected AttributeValuePerChannel $valuePerChannel;
-
-    protected AttributeValuePerLocale $valuePerLocale;
-
-    protected function __construct(
-        AttributeIdentifier $identifier,
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        AttributeCode $code,
-        LabelCollection $labelCollection,
-        AttributeOrder $order,
-        AttributeIsRequired $isRequired,
-        AttributeIsReadOnly $isReadOnly,
-        AttributeValuePerChannel $valuePerChannel,
-        AttributeValuePerLocale $valuePerLocale
-    ) {
-        $this->identifier = $identifier;
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->code = $code;
-        $this->labelCollection = $labelCollection;
-        $this->order = $order;
-        $this->isRequired = $isRequired;
-        $this->isReadOnly = $isReadOnly;
-        $this->valuePerChannel = $valuePerChannel;
-        $this->valuePerLocale = $valuePerLocale;
+    protected function __construct(protected AttributeIdentifier $identifier, protected AssetFamilyIdentifier $assetFamilyIdentifier, protected AttributeCode $code, protected LabelCollection $labelCollection, protected AttributeOrder $order, protected AttributeIsRequired $isRequired, protected AttributeIsReadOnly $isReadOnly, protected AttributeValuePerChannel $valuePerChannel, protected AttributeValuePerLocale $valuePerLocale)
+    {
     }
 
     public function getIdentifier(): AttributeIdentifier

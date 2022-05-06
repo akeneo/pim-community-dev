@@ -28,14 +28,11 @@ class ScaleOperation implements Operation
 
     private const OPERATION_NAME = 'scale';
 
-    private ?int $width = null;
-
-    private ?int $height = null;
-
-    private ?int $ratioPercent = null;
-
-    private function __construct(?int $width, ?int $height, ?int $ratioPercent)
-    {
+    private function __construct(
+        private ?int $width,
+        private ?int $height,
+        private ?int $ratioPercent
+    ) {
         if (null === $width && null === $height && null === $ratioPercent) {
             throw new \InvalidArgumentException(
                 "No parameter is provided for 'scale' operation. At least one of parameter 'width', 'height' and 'ratio' must be defined."
@@ -55,10 +52,6 @@ class ScaleOperation implements Operation
                 ));
             }
         }
-
-        $this->width = $width;
-        $this->height = $height;
-        $this->ratioPercent = $ratioPercent;
     }
 
     public static function getType(): string

@@ -17,18 +17,14 @@ use Webmozart\Assert\Assert;
  */
 class AssetsDeletedEvent extends Event
 {
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    /** @var AssetCode[] */
-    private array $assetCodes;
-
+    /**
+     * @param AssetCode[] $assetCodes
+     */
     public function __construct(
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        array $assetCodes
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
+        private array $assetCodes
     ) {
         Assert::allIsInstanceOf($assetCodes, AssetCode::class);
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->assetCodes = $assetCodes;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier

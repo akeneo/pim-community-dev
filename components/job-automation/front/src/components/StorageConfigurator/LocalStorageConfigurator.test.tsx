@@ -1,36 +1,38 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {LocalStorage, SftpStorage} from '../model';
 import {LocalStorageConfigurator} from './LocalStorageConfigurator';
 
 test('it renders the local storage configurator', () => {
   const storage: LocalStorage = {
     type: 'local',
-    filePath: '/tmp/file.csv',
+    file_path: '/tmp/file.xlsx',
   };
 
-  renderWithProviders(<LocalStorageConfigurator storage={storage} onChange={jest.fn()} />);
+  renderWithProviders(<LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />);
 
-  expect(screen.getByDisplayValue('/tmp/file.csv')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('/tmp/file.xlsx')).toBeInTheDocument();
 });
 
-test('it allows user to fill local storage filePath field', () => {
+test('it allows user to fill local storage file_path field', () => {
   const storage: LocalStorage = {
     type: 'local',
-    filePath: '/tmp/file.cs',
+    file_path: '/tmp/file.xls',
   };
-  const onChange = jest.fn();
+  const onStorageChange = jest.fn();
 
-  renderWithProviders(<LocalStorageConfigurator storage={storage} onChange={onChange} />);
+  renderWithProviders(
+    <LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={onStorageChange} />
+  );
 
-  const filePathInput = screen.getByLabelText('akeneo.automation.storage.file_path.label');
-  userEvent.type(filePathInput, 'v');
+  const file_pathInput = screen.getByLabelText('akeneo.automation.storage.file_path.label');
+  userEvent.type(file_pathInput, 'x');
 
-  expect(onChange).toHaveBeenLastCalledWith({
+  expect(onStorageChange).toHaveBeenLastCalledWith({
     type: 'local',
-    filePath: '/tmp/file.csv',
+    file_path: '/tmp/file.xlsx',
   });
 });
 
@@ -39,15 +41,41 @@ test('it throws an exception when passing a non-local storage', () => {
 
   const storage: SftpStorage = {
     type: 'sftp',
-    filePath: '/tmp/file.txt',
+    file_path: '/tmp/file.xlsx',
     host: 'localhost',
+    port: 22,
     username: 'root',
     password: 'root',
   };
 
-  expect(() => renderWithProviders(<LocalStorageConfigurator storage={storage} onChange={jest.fn()} />)).toThrowError(
-    'Invalid storage type "sftp" for local storage configurator'
-  );
+  expect(() =>
+    renderWithProviders(
+      <LocalStorageConfigurator storage={storage} validationErrors={[]} onStorageChange={jest.fn()} />
+    )
+  ).toThrowError('Invalid storage type "sftp" for local storage configurator');
 
   mockedConsole.mockRestore();
+});
+
+test('it displays validation errors', () => {
+  const storage: LocalStorage = {
+    type: 'local',
+    file_path: '/tmp/file.xlsx',
+  };
+
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.a_file_path_error',
+      invalidValue: '',
+      message: 'this is a file_path error',
+      parameters: {},
+      propertyPath: '[file_path]',
+    },
+  ];
+
+  renderWithProviders(
+    <LocalStorageConfigurator storage={storage} validationErrors={validationErrors} onStorageChange={jest.fn()} />
+  );
+
+  expect(screen.getByText('error.key.a_file_path_error')).toBeInTheDocument();
 });

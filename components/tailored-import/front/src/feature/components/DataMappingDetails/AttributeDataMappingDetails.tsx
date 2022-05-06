@@ -16,6 +16,7 @@ import {
   NumberConfigurator,
   SimpleSelectConfigurator,
   MultiSelectConfigurator,
+  BooleanConfigurator,
   TextConfigurator,
 } from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
@@ -30,6 +31,7 @@ const attributeDataMappingConfigurators: {
   pim_catalog_textarea: TextConfigurator,
   pim_catalog_simpleselect: SimpleSelectConfigurator,
   pim_catalog_multiselect: MultiSelectConfigurator,
+  pim_catalog_boolean: BooleanConfigurator,
 };
 
 type AttributeDataMappingDetailsProps = {

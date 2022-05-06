@@ -15,12 +15,12 @@ namespace Akeneo\SharedCatalog\Connector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Channel;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FilterStructureLocale;
-use Akeneo\SharedCatalog\Validation\CssColor;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\CssColor;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -31,27 +31,19 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
 {
     /** 2MB size converted to base64 */
     private const MAX_LENGTH_BASE64 = 2000 * 1000 * 4 / 3;
-
+    private const INVALID_COLOR_MESSAGE = 'shared_catalog.branding.validation.invalid_color';
     private const MAX_RECIPIENT_COUNT = 500;
 
-    /** @var ConstraintCollectionProviderInterface */
-    protected $simpleProvider;
-
-    /** @var array */
-    protected $supportedJobNames;
-
     public function __construct(
-        ConstraintCollectionProviderInterface $simpleCsv,
-        array $supportedJobNames
+        private ConstraintCollectionProviderInterface $simpleProvider,
+        private array $supportedJobNames
     ) {
-        $this->simpleProvider = $simpleCsv;
-        $this->supportedJobNames = $supportedJobNames;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getConstraintCollection()
+    public function getConstraintCollection(): Collection
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
@@ -93,7 +85,9 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                     new Type(['type' => ['string', 'null']]),
                     new Length(['max' => self::MAX_LENGTH_BASE64, 'maxMessage' => 'shared_catalog.branding.filesize_too_large'])
                 ]),
-                'color' => new Optional(new CssColor()),
+                'color' => new Optional(
+                    new CssColor([CssColor::HEX_LONG, CssColor::HEX_SHORT], self::INVALID_COLOR_MESSAGE)
+                ),
             ],
         ]);
         $constraintFields['filters'] = [
@@ -130,7 +124,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

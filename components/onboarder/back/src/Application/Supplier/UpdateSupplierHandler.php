@@ -21,7 +21,7 @@ final class UpdateSupplierHandler
     public function __invoke(UpdateSupplier $updateSupplier): void
     {
         $violations = $this->validator->validate($updateSupplier);
-        if ($violations->count() > 0) {
+        if (0 < $violations->count()) {
             throw new InvalidData($violations);
         }
 

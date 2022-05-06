@@ -25,10 +25,7 @@ class AttributeMaxFileSize
     private const NO_LIMIT = null;
     private const LIMIT = 9999.99;
 
-    /*** @var ?string */
-    private ?string $maxFileSize = null;
-
-    private function __construct(?string $maxFileSize)
+    private function __construct(private ?string $maxFileSize)
     {
         Assert::nullOrStringNotEmpty($maxFileSize, 'The max file size cannot be empty');
         if (self::NO_LIMIT !== $maxFileSize) {
@@ -39,7 +36,6 @@ class AttributeMaxFileSize
                 sprintf('The maximum file size (in MB) authorized is %.2F, %.2F given', self::LIMIT, $maxFileSize)
             );
         }
-        $this->maxFileSize = $maxFileSize;
     }
 
     public static function fromString(string $maxFileSize) : self

@@ -12,7 +12,7 @@ const dataMapping: AttributeDataMapping = {
     locale: null,
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
-    source_parameter: null,
+    source_configuration: null,
   },
   sources: ['a9a2db9d-d150-4297-8265-d2e52394979f'],
   operations: [{type: 'clean_html_tags'}],
@@ -53,6 +53,15 @@ test('It returns the preview data', async () => {
     body: JSON.stringify({
       sample_data: ['<b>product_1</b>', 'product_2', null],
       operations: [{type: 'clean_html_tags'}],
+      target: {
+        code: 'description',
+        type: 'attribute',
+        channel: null,
+        locale: null,
+        action_if_not_empty: 'set',
+        action_if_empty: 'skip',
+        source_configuration: null,
+      },
     }),
     method: 'POST',
   });
@@ -98,6 +107,15 @@ test('It returns the error when an error occurred during the generation', async 
     body: JSON.stringify({
       sample_data: ['<b>product_1</b>', 'product_2', null],
       operations: [{type: 'clean_html_tags'}],
+      target: {
+        code: 'description',
+        type: 'attribute',
+        channel: null,
+        locale: null,
+        action_if_not_empty: 'set',
+        action_if_empty: 'skip',
+        source_configuration: null,
+      },
     }),
     method: 'POST',
   });

@@ -8,13 +8,9 @@ use Webmozart\Assert\Assert;
 
 class LocaleIdentifier
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         Assert::notEmpty($identifier, 'Locale identifier should not be empty');
-
-        $this->identifier = $identifier;
     }
 
     public static function fromCode(string $identifier): self

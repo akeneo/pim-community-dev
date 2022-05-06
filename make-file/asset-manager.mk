@@ -72,7 +72,7 @@ asset-manager-static-back: #Doc: launch PHP static analyzer for the asset manage
 .PHONY: asset-manager-unit-back
 asset-manager-unit-back: var/tests/phpspec #Doc: launch PHP unit test for the asset-manager
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/asset-manager.xml
 else
 	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/AssetManager/tests/back/phpspec.yml.dist $(O)
 endif

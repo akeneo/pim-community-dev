@@ -50,7 +50,7 @@ services:
   akeneo.tailored_export.connector.reader.database.product:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Reader\Database\ProductReader'
     arguments:
-      - '@pim_catalog.query.product_query_builder_factory'
+      - '@pim_catalog.query.product_query_builder_factory_for_reading_purpose'
 
   akeneo.tailored_export.connector.reader.database.product_model:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Reader\Database\ProductReader'

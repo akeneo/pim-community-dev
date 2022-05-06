@@ -28,40 +28,16 @@ class AssetFamily
     public const DEFAULT_ATTRIBUTE_AS_LABEL_CODE = 'label';
     public const DEFAULT_ATTRIBUTE_AS_MAIN_MEDIA_CODE = 'media';
 
-    private AssetFamilyIdentifier $identifier;
-
-    private LabelCollection $labelCollection;
-
-    private Image $image;
-
-    private AttributeAsLabelReference $attributeAsLabel;
-
-    private AttributeAsMainMediaReference $attributeAsMainMedia;
-
-    private RuleTemplateCollection $ruleTemplateCollection;
-
-    private TransformationCollection $transformationCollection;
-
-    private NamingConventionInterface $namingConvention;
-
     private function __construct(
-        AssetFamilyIdentifier $identifier,
-        LabelCollection $labelCollection,
-        Image $image,
-        AttributeAsLabelReference $attributeAsLabel,
-        AttributeAsMainMediaReference $attributeAsMainMedia,
-        RuleTemplateCollection $ruleTemplateCollection,
-        TransformationCollection $transformationCollection,
-        NamingConventionInterface $namingConvention
+        private AssetFamilyIdentifier $identifier,
+        private LabelCollection $labelCollection,
+        private Image $image,
+        private AttributeAsLabelReference $attributeAsLabel,
+        private AttributeAsMainMediaReference $attributeAsMainMedia,
+        private RuleTemplateCollection $ruleTemplateCollection,
+        private TransformationCollection $transformationCollection,
+        private NamingConventionInterface $namingConvention,
     ) {
-        $this->identifier = $identifier;
-        $this->labelCollection = $labelCollection;
-        $this->image = $image;
-        $this->attributeAsLabel = $attributeAsLabel;
-        $this->attributeAsMainMedia = $attributeAsMainMedia;
-        $this->ruleTemplateCollection = $ruleTemplateCollection;
-        $this->transformationCollection = $transformationCollection;
-        $this->namingConvention = $namingConvention;
     }
 
     public static function create(

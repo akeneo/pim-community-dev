@@ -19,13 +19,14 @@ class FileIteratorFactory
 {
     public function __construct(
         private CellsFormatter $cellsFormatter,
+        private RowCleaner $rowCleaner,
     ) {
     }
 
     public function create(string $fileType, string $filePath, FileStructure $fileStructure): FileIteratorInterface
     {
         return match ($fileType) {
-            'xlsx' => new XlsxFileIterator($filePath, $fileStructure, $this->cellsFormatter),
+            'xlsx' => new XlsxFileIterator($filePath, $fileStructure, $this->cellsFormatter, $this->rowCleaner),
             default => throw new \InvalidArgumentException(sprintf('Unsupported file type "%s"', $fileType)),
         };
     }

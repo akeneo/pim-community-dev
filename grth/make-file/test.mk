@@ -1,5 +1,5 @@
 var/tests/%: #Doc: run the selected test
-	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
+	$(DOCKER_COMPOSE) run --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations
 find-legacy-translations: #Doc: run find_legacy_translations.sh script
@@ -20,8 +20,8 @@ lint-front: #Doc: launch all YARN linter tests
 unit-back: $(PIM_SRC_PATH)/var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
 	PIM_CONTEXT=table-attribute $(MAKE) table-attribute-unit-back
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > $(PIM_SRC_PATH)/var/tests/phpspec/specs.xml
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > $(PIM_SRC_PATH)/var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
 endif
@@ -29,9 +29,9 @@ endif
 .PHONY: community-unit-back
 community-unit-back: $(PIM_SRC_PATH)/var/tests/phpspec #Doc: launch PHPSpec for PIM CE dev
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
+	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
 else
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
 endif
 
 .PHONY: unit-front
@@ -71,7 +71,7 @@ end-to-end-back: $(PIM_SRC_PATH)/var/tests/phpunit #Doc: launch PHP unit end to 
 ifeq ($(CI),true)
 	cd $(PIM_SRC_PATH) && vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php End_to_End
 else
-	APP_ENV=test $(DOCKER_COMPOSE) run -u www-data --rm php vendor/bin/phpunit --testsuite End_to_End
+	APP_ENV=test $(DOCKER_COMPOSE) run --rm php vendor/bin/phpunit --testsuite End_to_End
 endif
 
 .PHONY: coupling-back

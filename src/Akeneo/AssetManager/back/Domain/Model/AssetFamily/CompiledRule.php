@@ -19,14 +19,10 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily;
  */
 class CompiledRule
 {
-    private array $conditions;
-
-    private array $actions;
-
-    public function __construct(array $conditions, array $actions)
-    {
-        $this->conditions = $conditions;
-        $this->actions = $actions;
+    public function __construct(
+        private array $conditions,
+        private array $actions
+    ) {
     }
 
     public function getConditions(): array

@@ -6,6 +6,7 @@ type SimpleSelectTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
+  attribute_type: string;
   source_configuration: null;
   action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
@@ -18,6 +19,7 @@ const getDefaultSimpleSelectTarget = (
 ): SimpleSelectTarget => ({
   code: attribute.code,
   type: 'attribute',
+  attribute_type: attribute.type,
   locale,
   channel,
   source_configuration: null,
@@ -26,7 +28,9 @@ const getDefaultSimpleSelectTarget = (
 });
 
 const isSimpleSelectTarget = (target: Target): target is SimpleSelectTarget =>
-  'attribute' === target.type && null === target.source_configuration;
+  'attribute' === target.type &&
+  'pim_catalog_simpleselect' === target.attribute_type &&
+  null === target.source_configuration;
 
 export type {SimpleSelectTarget};
 export {getDefaultSimpleSelectTarget, isSimpleSelectTarget};

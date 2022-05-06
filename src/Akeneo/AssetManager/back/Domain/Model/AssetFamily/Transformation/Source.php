@@ -22,20 +22,11 @@ use Webmozart\Assert\Assert;
 
 class Source implements TransformationReference
 {
-    private AttributeCode $attributeCode;
-
-    private ChannelReference $channelReference;
-
-    private LocaleReference $localeReference;
-
     private function __construct(
-        AttributeCode $attributeCode,
-        ChannelReference $channelReference,
-        LocaleReference $localeReference
+        private AttributeCode $attributeCode,
+        private ChannelReference $channelReference,
+        private LocaleReference $localeReference,
     ) {
-        $this->attributeCode = $attributeCode;
-        $this->channelReference = $channelReference;
-        $this->localeReference = $localeReference;
     }
 
     public static function create(

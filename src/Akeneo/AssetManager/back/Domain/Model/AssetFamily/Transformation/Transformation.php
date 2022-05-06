@@ -17,28 +17,14 @@ use Webmozart\Assert\Assert;
 
 class Transformation
 {
-    private TransformationLabel $label;
-
-    private Source $source;
-
-    private Target $target;
-
-    private OperationCollection $operations;
-
-    private ?string $filenamePrefix = null;
-
-    private ?string $filenameSuffix = null;
-
-    private \DateTimeInterface $updatedAt;
-
     private function __construct(
-        TransformationLabel $label,
-        Source $source,
-        Target $target,
-        OperationCollection $operations,
-        ?string $filenamePrefix,
-        ?string $filenameSuffix,
-        \DateTimeInterface $updatedAt
+        private TransformationLabel $label,
+        private Source $source,
+        private Target $target,
+        private OperationCollection $operations,
+        private ?string $filenamePrefix,
+        private ?string $filenameSuffix,
+        private \DateTimeInterface $updatedAt
     ) {
         Assert::false($source->equals($target), 'A transformation can not have the same source and target');
 
@@ -46,14 +32,6 @@ class Transformation
             sprintf('%s%s', $filenamePrefix ?? '', $filenameSuffix ?? ''),
             'A transformation must have at least a filename prefix or a filename suffix'
         );
-
-        $this->label = $label;
-        $this->source = $source;
-        $this->target = $target;
-        $this->operations = $operations;
-        $this->filenamePrefix = $filenamePrefix;
-        $this->filenameSuffix = $filenameSuffix;
-        $this->updatedAt = $updatedAt;
     }
 
     public static function create(

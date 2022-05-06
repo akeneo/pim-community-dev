@@ -26,14 +26,12 @@ use Webmozart\Assert\Assert;
  */
 class OptionCollectionData implements ValueDataInterface
 {
-    /** @var string[] */
-    private array $optionCodes;
-
-    private function __construct(array $optionCodes)
+    /**
+     * @param string[] $optionCodes
+     */
+    private function __construct(private array $optionCodes)
     {
         Assert::notEmpty($optionCodes, 'Option codes should be a non empty array');
-
-        $this->optionCodes = $optionCodes;
     }
 
     public function equals(ValueDataInterface $valueData): bool

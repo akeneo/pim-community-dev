@@ -4,7 +4,7 @@ parameters:
 services:
     pimee_catalog.query.product_query_builder_factory_with_permissions:
         class: '%pimee_catalog.query.elasticsearch.product_query_builder_factory.class%'
-        decorates: pim_catalog.query.product_query_builder_factory
+        decorates: pim_catalog.query.product_query_builder_factory_for_reading_purpose
         decoration_inner_name: pim_catalog.query.product_query_builder_factory_with_all_categories
         arguments:
             - '@pim_catalog.query.product_query_builder_factory_with_all_categories'

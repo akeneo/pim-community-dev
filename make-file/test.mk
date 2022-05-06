@@ -1,5 +1,5 @@
 var/tests/%: #Doc: run the selected test
-	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p $@
+	$(DOCKER_COMPOSE) run --rm php mkdir -p $@
 
 .PHONY: find-legacy-translations
 find-legacy-translations: #Doc: run find_legacy_translations.sh script
@@ -37,8 +37,8 @@ check-sf-services: #Doc: check Sf services
 ### Lint tests
 .PHONY: lint-back
 lint-back: #Doc: launch all PHP linter tests
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
-	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Automation --level 3
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Enrichment --level 2
 	$(PHP_RUN) vendor/bin/phpstan analyse src/Akeneo/Pim/Permission --level 3
@@ -53,7 +53,7 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=job-automation $(MAKE) lint-back
 	PIM_CONTEXT=channel $(MAKE) channel-lint-back
 
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
 
@@ -72,7 +72,7 @@ unit-back: var/tests/phpspec community-unit-back growth-unit-back #Doc: launch a
 	PIM_CONTEXT=job-automation $(MAKE) unit-back
 	PIM_CONTEXT=channel $(MAKE) channel-unit-back
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
 else
 	${PHP_RUN} vendor/bin/phpspec run
@@ -81,17 +81,17 @@ endif
 .PHONY: community-unit-back
 community-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM CE dev
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
+	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run  --format=junit > ../../../var/tests/phpspec/specs-ce.xml"
 else
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd vendor/akeneo/pim-community-dev && php ../../../vendor/bin/phpspec run"
 endif
 
 .PHONY: growth-unit-back
 growth-unit-back: var/tests/phpspec #Doc: launch PHPSpec for PIM grth
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
+	$(DOCKER_COMPOSE) run -T --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist --format=junit > ../var/tests/phpspec/specs-ge.xml"
 else
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
+	$(DOCKER_COMPOSE) run --rm php sh -c "cd grth && php ../vendor/bin/phpspec run --config=src/Akeneo/Pim/TableAttribute/tests/back/phpspec.yml.dist"
 endif
 
 .PHONY: unit-front
@@ -184,7 +184,7 @@ endif
 
 .PHONY: test-database-structure
 test-database-structure: #Doc: test database structure
-	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
+	$(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bash -c 'bin/console pimee:database:inspect -f --env=test && bin/console pimee:database:diff --env=test'
 
 .PHONY: end-to-end-front
 end-to-end-front:

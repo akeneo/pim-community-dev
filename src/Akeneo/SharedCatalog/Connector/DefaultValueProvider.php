@@ -23,36 +23,15 @@ use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
 
 class DefaultValueProvider implements DefaultValuesProviderInterface
 {
-    /** @var DefaultValuesProviderInterface */
-    protected $simpleProvider;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param array $supportedJobNames
-     */
     public function __construct(
-        DefaultValuesProviderInterface $simpleProvider,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
-        array $supportedJobNames
+        private DefaultValuesProviderInterface $simpleProvider,
+        private ChannelRepositoryInterface $channelRepository,
+        private LocaleRepositoryInterface $localeRepository,
+        private array $supportedJobNames
     ) {
-        $this->simpleProvider = $simpleProvider;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->supportedJobNames = $supportedJobNames;
     }
 
-    public function getDefaultValues()
+    public function getDefaultValues(): array
     {
         $parameters = $this->simpleProvider->getDefaultValues();
 
@@ -61,10 +40,10 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
         $parameters['with_media'] = true;
 
         $channels = $this->channelRepository->getFullChannels();
-        $defaultChannelCode = (0 !== count($channels)) ? $channels[0]->getCode() : null;
+        $defaultChannelCode = (empty($channels)) ? null : $channels[0]->getCode();
 
         $localesCodes = $this->localeRepository->getActivatedLocaleCodes();
-        $defaultLocaleCodes = (0 !== count($localesCodes)) ? [$localesCodes[0]] : [];
+        $defaultLocaleCodes = (empty($localesCodes)) ? [] : [$localesCodes[0]];
 
         $parameters['filters'] = [
             'data' => [
@@ -104,7 +83,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(JobInterface $job)
+    public function supports(JobInterface $job): bool
     {
         return in_array($job->getName(), $this->supportedJobNames);
     }

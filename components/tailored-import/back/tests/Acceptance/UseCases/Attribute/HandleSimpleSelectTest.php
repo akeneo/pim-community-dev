@@ -33,11 +33,7 @@ final class HandleSimpleSelectTest extends AttributeTestCase
         array $dataMappings,
         UpsertProductCommand $expected,
     ): void {
-        $executeDataMappingQuery = new ExecuteDataMappingQuery(
-            new Row($row),
-            DataMappingCollection::create($dataMappings),
-        );
-
+        $executeDataMappingQuery = $this->getExecuteDataMappingQuery($row, '25621f5a-504f-4893-8f0c-9f1b0076e53e', $dataMappings);
         $upsertProductCommand = $this->getExecuteDataMappingHandler()->handle($executeDataMappingQuery);
 
         Assert::assertEquals($expected, $upsertProductCommand);

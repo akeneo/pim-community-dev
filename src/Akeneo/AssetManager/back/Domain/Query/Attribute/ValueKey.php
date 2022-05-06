@@ -27,15 +27,11 @@ use Webmozart\Assert\Assert;
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2018 Akeneo SAS (https://www.akeneo.com)
  */
-class ValueKey
+class ValueKey implements \Stringable
 {
-    private string $key;
-
-    private function __construct(string $key)
+    private function __construct(private string $key)
     {
         Assert::notEmpty($key, 'Key should not be empty');
-
-        $this->key = $key;
     }
 
     public static function create(

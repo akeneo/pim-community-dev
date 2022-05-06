@@ -30,12 +30,9 @@ class MediaType
         self::OTHER
     ];
 
-    private string $mediaType;
-
-    private function __construct(string $mediaType)
+    private function __construct(private string $mediaType)
     {
         Assert::true(in_array($mediaType, self::MEDIA_TYPES));
-        $this->mediaType = $mediaType;
     }
 
     public static function fromString(string $mediaType): self

@@ -8,13 +8,9 @@ use Webmozart\Assert\Assert;
 
 class TextData implements ValueDataInterface
 {
-    private string $text;
-
-    private function __construct(string $text)
+    private function __construct(private string $text)
     {
         Assert::stringNotEmpty($text, 'Text data should be a non empty string');
-
-        $this->text = $text;
     }
 
     public function equals(ValueDataInterface $valueData): bool

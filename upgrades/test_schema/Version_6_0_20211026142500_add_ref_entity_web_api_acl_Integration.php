@@ -32,6 +32,7 @@ class Version_6_0_20211026142500_add_ref_entity_web_api_acl_Integration extends 
     {
         parent::setUp();
         $this->aclManager = $this->get('oro_security.acl.manager');
+        $this->get('feature_flags')->enable('reference_entity');
     }
 
     protected function getConfiguration(): Configuration

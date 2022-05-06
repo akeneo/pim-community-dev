@@ -2,14 +2,20 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Specification\Akeneo\Platform\TailoredImport\Domain\Model\Target;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use PhpSpec\ObjectBehavior;
 
-/**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
- * @license   https://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class AttributeTargetSpec extends ObjectBehavior
 {
     public function it_can_be_initialized_from_normalized()
@@ -25,11 +31,16 @@ class AttributeTargetSpec extends ObjectBehavior
         ]);
 
         $this->getCode()->shouldReturn('test_code');
-        $this->getType()->shouldReturn('pim_catalog_text');
+        $this->getAttributeType()->shouldReturn('pim_catalog_text');
         $this->getChannel()->shouldReturn('web');
         $this->getLocale()->shouldReturn('fr_FR');
         $this->getActionIfNotEmpty()->shouldReturn('set');
         $this->getActionIfEmpty()->shouldReturn('skip');
         $this->getSourceConfiguration()->shouldReturn(null);
+    }
+
+    public function it_implements_target_interface()
+    {
+        $this->shouldBeAnInstanceOf(TargetInterface::class);
     }
 }

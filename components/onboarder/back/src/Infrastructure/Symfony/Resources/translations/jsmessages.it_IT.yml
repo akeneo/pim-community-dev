@@ -1,0 +1,66 @@
+onboarder:
+  menu_block_title: Onboarder
+  supplier:
+    breadcrumb:
+      root: Onboarder
+      suppliers: Fornitori
+    supplier_create:
+      modal:
+        title: Fornitore
+        code:
+          label: Codice
+        label:
+          label: Etichetta
+      create_button:
+        label: Crea il tuo primo fornitore
+      notification:
+        title: Il fornitore è stato creato.
+        content: Ora puoi modificarlo nella sezione di gestione fornitori.
+      error:
+        unknown_error: Si è verificato un errore durante la creazione del fornitore.
+        supplier_already_exists: 'Un fornitore con codice "{{ supplierCode }}" esiste già.'
+    supplier_list:
+      menu_item: Fornitori
+      title: "]-Inf, 1]{{ count }} fornitore|]1, Inf[{{ count }} fornitori"
+      no_supplier: Non ci sono ancora fornitori.
+      search_by_supplier: Cerca per fornitore
+      no_search_result: Non ci sono fornitori che corrispondono a questa ricerca
+      dropdown:
+        export_suppliers: Esporta fornitori
+        download_template: Scarica modello
+        import_suppliers: Importa fornitori
+      columns:
+        supplier: Fornitore
+        number_of_contributors: Numero di contributori
+        actions: Azioni
+    supplier_delete:
+      sucess_message: Il fornitore è stato eliminato correttamente
+      modal:
+        title: Fornitore
+        confirmation_question: Sei sicuro di voler eliminare questo fornitore?
+        warning: Eliminando questo fornitore, qualsiasi arricchimento non salvato andrà perso.
+        unknown_error: Si è verificato un errore durante l'eliminazione del fornitore.
+    supplier_edit:
+      tabs:
+        configuration: Configurazione
+        contributors: Contributori
+        product_files: File di prodotto
+      configuration_form:
+        code: Codice
+        label: Etichetta fornitore (obbligatoria)
+      contributors_form:
+        info: 'Aggiungi contributori per dare loro accesso ad Akeneo Onboarder. Puoi compilare un elenco di indirizzi con separatori: spazio, virgola, punto e virgola e interruzione di riga.'
+        add_contributors: Aggiungi contributori
+        add_button: Aggiungi
+        search_by_email_address: Cerca per indirizzo e-mail
+        columns:
+          email: Indirizzo e-mail
+        no_contributor: Non ci sono ancora contributori.
+        result_counter: '{0} Nessun risultato|{1} {{ count }} risultato|]1,Inf] {{ count }} risultati'
+      error: Si è verificato un errore durante il caricamento del fornitore.
+      success_message: Il fornitore è stato aggiornato correttamente
+      unknown_error: Si è verificato un errore durante l'aggiornamento del fornitore.
+pim_title:
+  onboarder_serenity_supplier_list: Fornitori
+  onboarder_serenity_supplier_edit: Modifica un fornitore
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Importazione di Onboarder Serenity Supplier in XLSX

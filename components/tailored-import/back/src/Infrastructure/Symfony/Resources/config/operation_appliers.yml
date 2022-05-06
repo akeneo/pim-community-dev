@@ -6,3 +6,19 @@ services:
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CleanHTMLTagsOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToNumberOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToMeasurementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\BooleanReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SplitOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }

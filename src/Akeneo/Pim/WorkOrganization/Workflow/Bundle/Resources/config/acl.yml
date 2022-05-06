@@ -2,3 +2,4 @@ pimee_workflow_published_product_index:
     type: action
     label: pimee_workflow.acl.published_product.index
     group_name: pim_enrich.acl_group.product
+    feature: published_product

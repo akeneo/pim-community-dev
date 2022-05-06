@@ -23,17 +23,11 @@ use Webmozart\Assert\Assert;
  */
 class NamingConvention implements NamingConventionInterface
 {
-    private Source $source;
-
-    private Pattern $pattern;
-
-    private bool $abortAssetCreationOnError;
-
-    private function __construct(Source $source, Pattern $pattern, bool $abortAssetCreationOnError)
-    {
-        $this->source = $source;
-        $this->pattern = $pattern;
-        $this->abortAssetCreationOnError = $abortAssetCreationOnError;
+    private function __construct(
+        private Source $source,
+        private Pattern $pattern,
+        private bool $abortAssetCreationOnError,
+    ) {
     }
 
     public static function createFromNormalized(array $normalizedNamingConvention): NamingConventionInterface

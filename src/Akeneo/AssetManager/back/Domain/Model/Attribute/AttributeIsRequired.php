@@ -20,11 +20,8 @@ namespace Akeneo\AssetManager\Domain\Model\Attribute;
  */
 class AttributeIsRequired
 {
-    private bool $value;
-
-    private function __construct(bool $value)
+    private function __construct(private bool $value)
     {
-        $this->value = $value;
     }
 
     public static function fromBoolean(bool $isRequired): self

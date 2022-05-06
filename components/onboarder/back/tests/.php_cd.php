@@ -41,6 +41,7 @@ $rules = [
             // External dependencies coupling
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
+            'Symfony\Component\Validator\Constraint',
         ],
     )->in('Akeneo\OnboarderSerenity\Application'),
 
@@ -61,7 +62,6 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
             'Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
-            'Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
@@ -107,6 +107,8 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 

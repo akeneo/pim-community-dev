@@ -31,7 +31,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
         }
 
         $validator = $this->context->getValidator()->inContext($this->context);
-        $validator->atPath('[file_structure]')->validate($value, new Collection([
+        $validator->validate($value, new Collection([
             'fields' => [
                 'header_row' => [
                     new Type('int'),
@@ -60,7 +60,7 @@ class IsValidFileStructureValidator extends ConstraintValidator
             return;
         }
 
-        $validator->atPath('[file_structure]')->validate($value, new Collection([
+        $validator->validate($value, new Collection([
             'fields' => [
                 'header_row' => new Range([
                     'min' => FileStructure::MINIMUM_HEADER_LINE,
