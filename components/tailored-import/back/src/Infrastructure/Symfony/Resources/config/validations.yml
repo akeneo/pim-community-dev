@@ -7,6 +7,7 @@ parameters:
     pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect\MultiSelect'
     pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
+    pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Date\Date'
 
   akeneo.tailored_import.validation.property_target_constraints: []
 

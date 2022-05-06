@@ -37,12 +37,12 @@ class CellsFormatterSpec extends ObjectBehavior
         $this->formatCells([true, false])->shouldReturn(['TRUE', 'FALSE']);
     }
 
-    public function it_formats_datetime_cells()
+    public function it_does_not_support_datetime_cell()
     {
-        $this->formatCells([
+        $this->shouldThrow(\RuntimeException::class)->during('formatCells', [[
             \DateTime::createFromFormat('Y-m-d H:i:s', '2021-03-24 16:00:00'),
             \DateTime::createFromFormat('Y-m-d H:i:s', '2020-06-02 15:00:00'),
-        ])->shouldReturn(['2021-03-24T16:00:00+00:00', '2020-06-02T15:00:00+00:00']);
+        ]]);
     }
 
     public function it_throws_an_exception_when_type_is_unsupported()
