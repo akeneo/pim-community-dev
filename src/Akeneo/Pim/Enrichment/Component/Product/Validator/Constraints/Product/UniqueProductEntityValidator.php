@@ -21,23 +21,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UniqueProductEntityValidator extends ConstraintValidator
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productRepository;
-
-    /** @var UniqueValuesSet */
-    private $uniqueValuesSet;
-
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productRepository,
-        UniqueValuesSet $uniqueValuesSet,
-        AttributeRepositoryInterface $attributeRepository
+        private IdentifiableObjectRepositoryInterface $productRepository,
+        private UniqueValuesSet $uniqueValuesSet,
+        private AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->productRepository = $productRepository;
-        $this->uniqueValuesSet = $uniqueValuesSet;
-        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -82,7 +70,7 @@ class UniqueProductEntityValidator extends ConstraintValidator
          * We don't want to validate a product identifier if we update a product because we have already validated the
          * product identifier during the creation
          */
-        if ($entity->getId() !== $entityInDatabase->getId()) {
+        if (!$entity->getUuid()->equals($entityInDatabase->getUuid())) {
             $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
                 ->atPath('identifier')
                 ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)

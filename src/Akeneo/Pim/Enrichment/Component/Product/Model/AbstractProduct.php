@@ -82,6 +82,8 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
+     * @TODO: remove this method?
+     *
      * {@inheritdoc}
      */
     public function getId()
@@ -91,6 +93,8 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
+     * @TODO: remove this method?
+     *
      * {@inheritdoc}
      */
     public function setId($id)
