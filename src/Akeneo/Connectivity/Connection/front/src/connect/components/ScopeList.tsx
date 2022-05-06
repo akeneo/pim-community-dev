@@ -56,6 +56,7 @@ const iconsMap: {[key: string]: React.ElementType} = {
     reference_entity_record: EntityIcon,
     asset_families: AssetsIcon,
     assets: AssetsIcon,
+    catalogs: AssociateIcon,
 };
 
 interface Props {
