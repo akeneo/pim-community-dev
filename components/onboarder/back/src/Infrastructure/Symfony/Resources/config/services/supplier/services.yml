@@ -129,8 +129,6 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\ImportSupplierTasklet'
-        tags:
-            - { name: akeneo_batch.step, feature: 'onboarder_serenity_supplier' }
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\ImportSupplierTasklet:
         arguments:
@@ -142,43 +140,37 @@ services:
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode'
-        tags:
-            - { name: akeneo_batch.tasklet, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'
         arguments:
             - '@pim_connector.reader.file.xlsx_iterator_factory'
             - '@Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\FlatToStandard'
-        tags:
-            - { name: akeneo_batch.reader, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.job.job_parameters.default_values_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class%'
         arguments:
             - [ 'onboarder_serenity_xlsx_supplier_import' ]
         tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider, feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     onboarder_serenity.job.job_parameters.constraint_collection_provider.xlsx_supplier_import:
         class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class%'
         arguments:
             - [ 'onboarder_serenity_xlsx_supplier_import' ]
         tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider, feature: 'onboarder_serenity_supplier' }
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\FlatToStandard:
         arguments:
             - '@pim_connector.array_convertor.checker.fields_requirement'
-        tags:
-            - { name: akeneo_batch.converter, feature: 'onboarder_serenity_supplier' }
 
     onboarder_serenity.supplier.job_instance.form_provider:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Provider\Form\JobInstanceFormProvider
         arguments:
             -   onboarder_serenity_xlsx_supplier_import: pim-job-instance-xlsx-base-import
         tags:
-            - { name: pim_enrich.provider.form, feature: 'onboarder_serenity_supplier' }
+            - { name: pim_enrich.provider.form }
 
     # Validators
     Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmailValidator:
