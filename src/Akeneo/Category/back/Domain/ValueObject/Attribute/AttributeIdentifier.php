@@ -44,13 +44,13 @@ class AttributeIdentifier implements \Stringable
         return new self($identifier);
     }
 
-    public static function create(string $referenceEntityIdentifier, string $attributeCode, string $fingerprint): self
+    public static function create(string $templateIdentifier, string $attributeCode, string $fingerprint): self
     {
-        Assert::stringNotEmpty($referenceEntityIdentifier, 'Reference entity identifier cannot be empty');
+        Assert::stringNotEmpty($templateIdentifier, 'Template identifier cannot be empty');
         Assert::regex(
-            $referenceEntityIdentifier,
+            $templateIdentifier,
             '/^[a-zA-Z0-9_]+$/',
-            'Reference entity identifier may contain only letters, numbers and underscores. %s given',
+            'Template identifier may contain only letters, numbers and underscores. %s given',
         );
 
         Assert::stringNotEmpty($attributeCode, 'Attribute code cannot be empty');
@@ -71,7 +71,7 @@ class AttributeIdentifier implements \Stringable
             sprintf(
                 '%s_%s_%s',
                 substr($attributeCode, 0, 20),
-                substr($referenceEntityIdentifier, 0, 20),
+                substr($templateIdentifier, 0, 20),
                 $fingerprint
             )
         );

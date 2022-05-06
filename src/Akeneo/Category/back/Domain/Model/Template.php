@@ -19,6 +19,7 @@ class Template
     ) {
 
     }
+
     public function normalize(): array
     {
         return [

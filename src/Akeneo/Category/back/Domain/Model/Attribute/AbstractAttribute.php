@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Domain\Model\Attribute;
 
+use Akeneo\Category\Domain\Model\Attribute;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeCode;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIdentifier;
 use Akeneo\Category\Domain\ValueObject\Attribute\AttributeIsRequired;
@@ -28,7 +29,7 @@ use Akeneo\Category\Domain\ValueObject\TemplateIdentifier;
  *
  * @api
  */
-abstract class AbstractAttribute
+abstract class AbstractAttribute implements Attribute
 {
     protected function __construct(
         protected AttributeIdentifier $identifier,
@@ -99,7 +100,7 @@ abstract class AbstractAttribute
     {
         return [
             'identifier' => (string) $this->identifier,
-            'reference_entity_identifier' => (string) $this->templateIdentifier,
+            'template_identifier' => (string) $this->templateIdentifier,
             'code' => (string) $this->code,
             'labels' => $this->labelCollection->normalize(),
             'order' => $this->order->intValue(),
