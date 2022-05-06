@@ -13,6 +13,9 @@ workflows:
                 - equal: [ "nightly_v6", << pipeline.schedule.name >> ]
         jobs:
             - checkout_ce
+            - build_docker_images:
+                  requires:
+                      - checkout_ce
             - build_dev:
                   is_ee_built: false
                   requires:
