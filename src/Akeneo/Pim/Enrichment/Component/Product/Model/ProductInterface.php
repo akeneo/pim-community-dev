@@ -40,15 +40,6 @@ interface ProductInterface extends
      */
     public function getId();
 
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductInterface
-     */
-    public function setId($id);
-
     public function getUuid(): UuidInterface;
 
     /**

@@ -92,19 +92,6 @@ abstract class AbstractProduct implements ProductInterface
         return $this->uuid->toString();
     }
 
-    /**
-     * @TODO: remove this method?
-     *
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        throw new \Exception('setId() should not be called');
-        $this->id = $id;
-
-        return $this;
-    }
-
     public function getUuid(): UuidInterface
     {
         return $this->uuid;
