@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
-use Akeneo\Channel\API\Query\Channel;
-use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
@@ -99,11 +97,6 @@ abstract class AbstractFilterIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
-            ->setChannels([
-                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
-            ]);
 
         $this->createChannel([
             'code' => 'mobile',
