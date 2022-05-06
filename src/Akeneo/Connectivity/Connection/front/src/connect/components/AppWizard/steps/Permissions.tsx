@@ -45,16 +45,11 @@ type Props = {
     providers: PermissionFormProvider<any>[];
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
-    scopeMessages: ScopeMessage[];
+    onlyDisplayViewPermissions: boolean;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions, scopeMessages}) => {
+export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions, onlyDisplayViewPermissions}) => {
     const translate = useTranslate();
-    const onlyDisplayViewPermissions =
-        undefined ===
-        scopeMessages.find((scopeMessage: ScopeMessage) => {
-            return 'products' === scopeMessage.entities && ['edit', 'delete'].includes(scopeMessage.type);
-        });
 
     return (
         <InfoContainer>
