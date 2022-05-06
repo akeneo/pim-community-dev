@@ -43,7 +43,7 @@ final class IsUserOwnerOfTheProductValidator extends ConstraintValidator
         }
 
         if ([] === $this->getOwnedCategories->forUserId($productCategoryCodes, $command->userId())) {
-            $this->context->buildViolation($constraint->message)->addViolation();
+            $this->context->buildViolation($constraint->message)->atPath('userId')->addViolation();
         }
     }
 }

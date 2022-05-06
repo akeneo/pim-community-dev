@@ -7,13 +7,16 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
-use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
+use Akeneo\Pim\Enrichment\Product\API\MessageBus;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -33,6 +36,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -45,116 +49,32 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductController
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
-
-    /** @var CursorableRepositoryInterface */
-    protected $cursorableRepository;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /** @var SaverInterface */
-    protected $productSaver;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var ObjectFilterInterface */
-    protected $objectFilter;
-
-    /** @var CollectionFilterInterface */
-    protected $productEditDataFilter;
-
-    /** @var RemoverInterface */
-    protected $productRemover;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
-    /** @var AttributeConverterInterface */
-    protected $localizedConverter;
-
-    /** @var FilterInterface */
-    protected $emptyValuesFilter;
-
-    /** @var ConverterInterface */
-    protected $productValueConverter;
-
-    /** @var NormalizerInterface */
-    protected $constraintViolationNormalizer;
-
-    /** @var ProductBuilderInterface */
-    protected $variantProductBuilder;
-
-    /** @var AttributeFilterInterface */
-    protected $productAttributeFilter;
-
-    /** @var Client */
-    private $productAndProductModelClient;
-
-    /** @var RemoveParentInterface */
-    private $removeParent;
-
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        CursorableRepositoryInterface $cursorableRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ObjectUpdaterInterface $productUpdater,
-        SaverInterface $productSaver,
-        NormalizerInterface $normalizer,
-        ValidatorInterface $validator,
-        UserContext $userContext,
-        ObjectFilterInterface $objectFilter,
-        CollectionFilterInterface $productEditDataFilter,
-        RemoverInterface $productRemover,
-        ProductBuilderInterface $productBuilder,
-        AttributeConverterInterface $localizedConverter,
-        FilterInterface $emptyValuesFilter,
-        ConverterInterface $productValueConverter,
-        NormalizerInterface $constraintViolationNormalizer,
-        ProductBuilderInterface $variantProductBuilder,
-        AttributeFilterInterface $productAttributeFilter,
-        RemoveParentInterface $removeParent,
-        Client $productAndProductModelClient
+        protected ProductRepositoryInterface $productRepository,
+        protected CursorableRepositoryInterface $cursorableRepository,
+        protected AttributeRepositoryInterface $attributeRepository,
+        protected ObjectUpdaterInterface $productUpdater,
+        protected SaverInterface $productSaver,
+        protected NormalizerInterface $normalizer,
+        protected ValidatorInterface $validator,
+        protected UserContext $userContext,
+        protected ObjectFilterInterface $objectFilter,
+        protected CollectionFilterInterface $productEditDataFilter,
+        protected RemoverInterface $productRemover,
+        protected ProductBuilderInterface $productBuilder,
+        protected AttributeConverterInterface $localizedConverter,
+        protected FilterInterface $emptyValuesFilter,
+        protected ConverterInterface $productValueConverter,
+        protected NormalizerInterface $constraintViolationNormalizer,
+        protected ProductBuilderInterface $variantProductBuilder,
+        protected AttributeFilterInterface $productAttributeFilter,
+        private Client $productAndProductModelClient,
+        private MessageBus $messageBus
     ) {
-        $this->productRepository = $productRepository;
-        $this->cursorableRepository = $cursorableRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->productUpdater = $productUpdater;
-        $this->productSaver = $productSaver;
-        $this->normalizer = $normalizer;
-        $this->validator = $validator;
-        $this->userContext = $userContext;
-        $this->objectFilter = $objectFilter;
-        $this->productEditDataFilter = $productEditDataFilter;
-        $this->productRemover = $productRemover;
-        $this->productBuilder = $productBuilder;
-        $this->localizedConverter = $localizedConverter;
-        $this->emptyValuesFilter = $emptyValuesFilter;
-        $this->productValueConverter = $productValueConverter;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->variantProductBuilder = $variantProductBuilder;
-        $this->productAttributeFilter = $productAttributeFilter;
-        $this->removeParent = $removeParent;
-        $this->productAndProductModelClient = $productAndProductModelClient;
     }
 
     /**
      * Returns a set of products from identifiers parameter
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function indexAction(Request $request): JsonResponse
     {
@@ -381,32 +301,28 @@ class ProductController
             throw new AccessDeniedHttpException();
         }
 
-        if (!$product->isVariant()) {
-            throw new BadRequestHttpException(sprintf('The "%s" product is not variant', $product->getIdentifier()));
-        }
-
         try {
-            $this->removeParent->from($product);
-        } catch (InvalidArgumentException $e) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $violations = $this->validator->validate($product);
-        if (0 === $violations->count()) {
-            $this->productSaver->save($product);
-
-            $normalizedProduct = $this->normalizer->normalize(
-                $product,
-                'internal_api',
-                $this->getNormalizationContext()
+            $userId = $this->userContext->getUser()?->getId();
+            $command = UpsertProductCommand::createFromCollection(
+                $userId,
+                $product->getIdentifier(),
+                [new ConvertToSimpleProduct()]
             );
-
-            return new JsonResponse($normalizedProduct);
+            $this->messageBus->dispatch($command);
+        } catch (ViolationsException $e) {
+            $hasUserException = \count(
+                \array_filter(
+                    $e->violations(),
+                    fn (ConstraintViolationInterface $violation): bool => $violation->getPropertyPath() === 'userId')
+                ) > 0;
+            if ($hasUserException) {
+                throw new AccessDeniedHttpException();
+            }
+            $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
+            return new JsonResponse($normalizedViolations, 400);
         }
 
-        $normalizedViolations = $this->normalizeViolations($violations, $product);
-
-        return new JsonResponse($normalizedViolations, 400);
+        return new JsonResponse();
     }
 
     /**

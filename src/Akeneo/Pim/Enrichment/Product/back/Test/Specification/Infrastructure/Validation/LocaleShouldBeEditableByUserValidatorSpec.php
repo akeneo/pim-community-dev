@@ -77,6 +77,7 @@ class LocaleShouldBeEditableByUserValidatorSpec extends ObjectBehavior
         $context->buildViolation($constraint->message, ['{{ locale_code }}' => 'de_DE'])
             ->shouldBeCalledOnce()
             ->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('userId')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($valueUserIntent, new LocaleShouldBeEditableByUser());
