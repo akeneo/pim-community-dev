@@ -44,6 +44,12 @@ class Acl implements \Serializable
     private int $order = 0;
 
     /**
+     * true if the ACL must be visible in the UI. eg: the edit role permissions screen
+     * ACL that are not visible still exist and can be managed by the code.
+     */
+    private bool $visible = true;
+
+    /**
      * Constructor
      *
      * @param  array                     $data
@@ -73,6 +79,7 @@ class Acl implements \Serializable
         $this->label = isset($data['label']) ? $data['label'] : '';
         $this->isEnabledAtCreation = $data['enabled_at_creation'] ?? true;
         $this->order = $data['order'] ?? 0;
+        $this->visible = $data['visible'] ?? true;
     }
 
     /**
@@ -155,6 +162,11 @@ class Acl implements \Serializable
         return $this->order;
     }
 
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -169,6 +181,7 @@ class Acl implements \Serializable
                 $this->group,
                 $this->label,
                 $this->order,
+                $this->visible,
             ]
         );
     }
@@ -186,6 +199,7 @@ class Acl implements \Serializable
             $this->group,
             $this->label,
             $this->order,
+            $this->visible,
             ) = unserialize($serialized);
     }
 }
