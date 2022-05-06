@@ -44,9 +44,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         );
 
         $results = $this->findSharedCatalogsQuery->execute();
-        $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
-            return $sharedCatalog->normalizeForExternalApi();
-        }, $results);
+        $normalizedResults = array_map(static fn(SharedCatalog $sharedCatalog) => $sharedCatalog->normalizeForExternalApi(), $results);
 
         self::assertEquals([
             [
@@ -102,9 +100,7 @@ class FindSharedCatalogsQueryIntegration extends TestCase
         );
 
         $results = $this->findSharedCatalogsQuery->execute();
-        $normalizedResults = array_map(function (SharedCatalog $sharedCatalog) {
-            return $sharedCatalog->normalizeForExternalApi();
-        }, $results);
+        $normalizedResults = array_map(static fn(SharedCatalog $sharedCatalog) => $sharedCatalog->normalizeForExternalApi(), $results);
 
         self::assertEquals([
             [
