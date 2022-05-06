@@ -24,32 +24,14 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLa
  */
 class ConnectorTransformation
 {
-    private TransformationLabel $label;
-
-    private Source $source;
-
-    private Target $target;
-
-    private OperationCollection $operations;
-
-    private ?string $filenamePrefix = null;
-
-    private ?string $filenameSuffix = null;
-
     public function __construct(
-        TransformationLabel $label,
-        Source $source,
-        Target $target,
-        OperationCollection $operations,
-        ?string $filenamePrefix,
-        ?string $filenameSuffix
+        private TransformationLabel $label,
+        private Source $source,
+        private Target $target,
+        private OperationCollection $operations,
+        private ?string $filenamePrefix,
+        private ?string $filenameSuffix,
     ) {
-        $this->label = $label;
-        $this->source = $source;
-        $this->target = $target;
-        $this->operations = $operations;
-        $this->filenamePrefix = $filenamePrefix;
-        $this->filenameSuffix = $filenameSuffix;
     }
 
     public function normalize(): array

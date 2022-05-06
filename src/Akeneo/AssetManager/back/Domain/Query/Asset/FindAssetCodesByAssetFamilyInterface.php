@@ -19,9 +19,6 @@ interface FindAssetCodesByAssetFamilyInterface
 {
     /**
      * Returns an iterator of AssetCodes
-     *
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
-     * @return \Iterator
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator;
 }

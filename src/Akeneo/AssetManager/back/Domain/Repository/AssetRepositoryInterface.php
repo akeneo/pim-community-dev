@@ -36,7 +36,6 @@ interface AssetRepositoryInterface
     public function getByAssetFamilyAndCode(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $code): Asset;
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      * @param AssetCode[] $assetCodes
      */
     public function deleteByAssetFamilyAndCodes(AssetFamilyIdentifier $assetFamilyIdentifier, array $assetCodes): void;

@@ -21,13 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class Field
 {
-    private string $value;
-
-    private function __construct(string $value)
+    private function __construct(private string $value)
     {
         Assert::stringNotEmpty($value, 'Field value of condition should not be empty');
-
-        $this->value = $value;
     }
 
     public static function createFromNormalized(string $value): self

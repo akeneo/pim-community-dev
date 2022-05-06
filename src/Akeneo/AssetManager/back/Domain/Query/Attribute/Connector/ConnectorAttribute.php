@@ -40,40 +40,16 @@ class ConnectorAttribute
         'asset_type' => 'asset_family_code',
     ];
 
-    private AttributeCode $code;
-
-    private LabelCollection $labelCollection;
-
-    private string $type;
-
-    private AttributeValuePerLocale $valuePerLocale;
-
-    private AttributeValuePerChannel $valuePerChannel;
-
-    private AttributeIsRequired $isRequired;
-
-    private AttributeIsReadOnly $isReadOnly;
-
-    private array $additionalProperties;
-
     public function __construct(
-        AttributeCode $identifier,
-        LabelCollection $labelCollection,
-        string $type,
-        AttributeValuePerLocale $valuePerLocale,
-        AttributeValuePerChannel $valuePerChannel,
-        AttributeIsRequired $isRequired,
-        AttributeIsReadOnly $isReadOnly,
-        array $additionalProperties
+        private AttributeCode $code,
+        private LabelCollection $labelCollection,
+        private string $type,
+        private AttributeValuePerLocale $valuePerLocale,
+        private AttributeValuePerChannel $valuePerChannel,
+        private AttributeIsRequired $isRequired,
+        private AttributeIsReadOnly $isReadOnly,
+        private array $additionalProperties,
     ) {
-        $this->code = $identifier;
-        $this->labelCollection = $labelCollection;
-        $this->type = $type;
-        $this->valuePerLocale = $valuePerLocale;
-        $this->valuePerChannel = $valuePerChannel;
-        $this->isRequired = $isRequired;
-        $this->isReadOnly = $isReadOnly;
-        $this->additionalProperties = $additionalProperties;
     }
 
     public function mapAttributeType(string $type)

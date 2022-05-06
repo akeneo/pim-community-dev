@@ -16,20 +16,11 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AssetCreatedEvent extends Event implements DomainEvent
 {
-    private AssetIdentifier $assetIdentifier;
-
-    private AssetCode $assetCode;
-
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
     public function __construct(
-        AssetIdentifier $assetIdentifier,
-        AssetCode $assetCode,
-        AssetFamilyIdentifier $assetFamilyIdentifier
+        private AssetIdentifier $assetIdentifier,
+        private AssetCode $assetCode,
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
     ) {
-        $this->assetIdentifier = $assetIdentifier;
-        $this->assetCode = $assetCode;
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
     }
 
     public function getAssetIdentifier(): AssetIdentifier

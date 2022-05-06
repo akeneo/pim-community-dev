@@ -42,48 +42,8 @@ class AssetDetails
 
     private const DATE_FORMAT = 'c';
 
-    public AssetIdentifier $identifier;
-
-    public AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    public AttributeIdentifier $attributeAsMainMediaIdentifier;
-
-    public AssetCode $code;
-
-    public LabelCollection $labels;
-
-    public \DateTimeImmutable $createdAt;
-
-    public \DateTimeImmutable $updatedAt;
-
-    public array $image;
-
-    public array $values;
-
-    public bool $isAllowedToEdit = true;
-
-    public function __construct(
-        AssetIdentifier $identifier,
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        AttributeIdentifier $attributeAsMainMediaIdentifier,
-        AssetCode $code,
-        LabelCollection $labels,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt,
-        array $image,
-        array $values,
-        bool $isAllowedToEdit
-    ) {
-        $this->identifier = $identifier;
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->attributeAsMainMediaIdentifier = $attributeAsMainMediaIdentifier;
-        $this->code = $code;
-        $this->labels = $labels;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
-        $this->values = $values;
-        $this->image = $image;
-        $this->isAllowedToEdit = $isAllowedToEdit;
+    public function __construct(public AssetIdentifier $identifier, public AssetFamilyIdentifier $assetFamilyIdentifier, public AttributeIdentifier $attributeAsMainMediaIdentifier, public AssetCode $code, public LabelCollection $labels, public \DateTimeImmutable $createdAt, public \DateTimeImmutable $updatedAt, public array $image, public array $values, public bool $isAllowedToEdit)
+    {
     }
 
     public function normalize(): array

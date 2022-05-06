@@ -19,11 +19,8 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
  */
 class LocaleReference
 {
-    private ?LocaleIdentifier $identifier = null;
-
-    private function __construct(?LocaleIdentifier $identifier)
+    private function __construct(private ?LocaleIdentifier $identifier)
     {
-        $this->identifier = $identifier;
     }
 
     public static function fromLocaleIdentifier(LocaleIdentifier $identifier): self
@@ -64,7 +61,7 @@ class LocaleReference
 
     public function normalize(): ?string
     {
-        if (null === $this->identifier) {
+        if (!$this->identifier instanceof LocaleIdentifier) {
             return null;
         }
 
@@ -73,6 +70,6 @@ class LocaleReference
 
     public function isEmpty(): bool
     {
-        return null === $this->identifier;
+        return !$this->identifier instanceof LocaleIdentifier;
     }
 }

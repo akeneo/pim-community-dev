@@ -32,21 +32,18 @@ class RuleTemplate
     public const PRODUCT_SELECTIONS = 'product_selections';
     public const ASSIGN_ASSETS_TO = 'assign_assets_to';
 
-    /** @var Condition[] */
-    private array $conditions;
-
-    /** @var Action[] */
-    private array $actions;
-
-    private function __construct(array $conditions, array $actions)
-    {
+    /**
+     * @param Action[] $actions
+     * @param Condition[] $conditions
+     */
+    private function __construct(
+        private array $conditions,
+        private array $actions
+    ) {
         Assert::notEmpty($conditions, 'A rule template should have at least have one condition');
         Assert::notEmpty($actions, 'A rule template should have at least have one action');
         Assert::allIsInstanceOf($conditions, Condition::class);
         Assert::allIsInstanceOf($actions, Action::class);
-
-        $this->conditions = $conditions;
-        $this->actions    = $actions;
     }
 
     public static function createFromNormalized(array $content): RuleTemplate

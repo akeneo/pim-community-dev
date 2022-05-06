@@ -30,41 +30,16 @@ class AssetQuery
     private const PAGINATE_USING_OFFSET = 'offset';
     private const PAGINATE_USING_SEARCH_AFTER = 'search_after';
 
-    private ChannelReference $channel;
-
-    private LocaleReference $locale;
-
-    private array $filters;
-
-    private ?int $page = null;
-
-    private ?int $size = null;
-
-    private ?AssetCode $searchAfterCode = null;
-
-    private string $paginationMethod;
-
-    /**
-     * If defined, the asset values will be filtered by the given channel.
-     * The values without channel will not be filtered.
-     */
-    private ChannelReference $channelReferenceValuesFilter;
-
-    /**
-     * To filter the values by locales. The values without locale will not be filtered.
-     */
-    private LocaleIdentifierCollection $localeIdentifiersValuesFilter;
-
     private function __construct(
-        ChannelReference $channel,
-        LocaleReference $locale,
-        array $filters,
-        ChannelReference $channelReferenceValuesFilter,
-        LocaleIdentifierCollection $localeIdentifiersValuesFilter,
-        string $paginationMethod,
-        int $size,
-        ?int $page,
-        ?AssetCode $searchAfterCode
+        private ChannelReference $channel,
+        private LocaleReference $locale,
+        private array $filters,
+        private ChannelReference $channelReferenceValuesFilter,
+        private LocaleIdentifierCollection $localeIdentifiersValuesFilter,
+        private string $paginationMethod,
+        private ?int $size,
+        private ?int $page,
+        private ?AssetCode $searchAfterCode
     ) {
         foreach ($filters as $filter) {
             if (!(array_key_exists('field', $filter) &&
@@ -77,18 +52,6 @@ class AssetQuery
         if (!in_array($paginationMethod, [self::PAGINATE_USING_OFFSET, self::PAGINATE_USING_SEARCH_AFTER])) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a supported pagination method', $paginationMethod));
         }
-
-        $this->channel = $channel;
-        $this->locale  = $locale;
-        $this->filters = $filters;
-        $this->page    = $page;
-        $this->size    = $size;
-
-        $this->searchAfterCode  = $searchAfterCode;
-        $this->paginationMethod = $paginationMethod;
-
-        $this->channelReferenceValuesFilter  = $channelReferenceValuesFilter;
-        $this->localeIdentifiersValuesFilter = $localeIdentifiersValuesFilter;
     }
 
     public static function createFromNormalized(array $normalizedQuery): AssetQuery

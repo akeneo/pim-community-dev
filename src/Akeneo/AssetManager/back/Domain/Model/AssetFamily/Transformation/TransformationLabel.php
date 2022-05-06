@@ -21,12 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class TransformationLabel
 {
-    private string $label;
-
-    private function __construct(string $label)
+    private function __construct(private string $label)
     {
         Assert::stringNotEmpty($label);
-        $this->label = $label;
     }
 
     public static function fromString(string $label): TransformationLabel

@@ -19,14 +19,10 @@ class ConnectorAttributeOption
     private const OPTION_CODE = 'code';
     private const LABELS = 'labels';
 
-    private OptionCode $code;
-
-    private LabelCollection $labels;
-
-    public function __construct(OptionCode $code, LabelCollection $labels)
-    {
-        $this->code = $code;
-        $this->labels = $labels;
+    public function __construct(
+        private OptionCode $code,
+        private LabelCollection $labels
+    ) {
     }
 
     public function normalize(): array

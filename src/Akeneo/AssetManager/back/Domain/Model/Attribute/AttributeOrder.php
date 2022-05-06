@@ -22,12 +22,9 @@ use Webmozart\Assert\Assert;
  */
 class AttributeOrder
 {
-    private int $order;
-
-    private function __construct(int $order)
+    private function __construct(private int $order)
     {
         Assert::natural($order, sprintf('An attribute order cannot be negative, %d given', $order));
-        $this->order = $order;
     }
 
     public static function fromInteger(int $order): self

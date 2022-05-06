@@ -19,11 +19,9 @@ use Webmozart\Assert\Assert;
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class AssetIdentifier
+class AssetIdentifier implements \Stringable
 {
-    private string $identifier;
-
-    private function __construct(string $identifier)
+    private function __construct(private string $identifier)
     {
         Assert::stringNotEmpty($identifier, 'Asset identifier cannot be empty');
         Assert::maxLength(
@@ -39,8 +37,6 @@ class AssetIdentifier
             '/^[a-zA-Z0-9_-]+$/',
             'Asset identifier may contain only letters, numbers, underscores and dashes. %s given',
         );
-
-        $this->identifier = $identifier;
     }
 
     public static function create(string $assetFamilyIdentifier, string $code, string $fingerprint): self

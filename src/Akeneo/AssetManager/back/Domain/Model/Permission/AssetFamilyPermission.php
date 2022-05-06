@@ -25,20 +25,15 @@ class AssetFamilyPermission
     private const ASSET_FAMILY_IDENTIFIER = 'asset_family_identifier';
     private const PERMISSIONS = 'permissions';
 
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    /** @var UserGroupPermission[] */
-    private array $permissions;
-
+    /**
+     * @param UserGroupPermission[] $permissions
+     */
     private function __construct(
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        array $permissions
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
+        private array $permissions
     ) {
         Assert::allIsInstanceOf($permissions, UserGroupPermission::class);
         $this->assertUniquePermissions($permissions);
-
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->permissions = $permissions;
     }
 
     /**
@@ -59,7 +54,6 @@ class AssetFamilyPermission
     }
 
     /**
-     * @param AssetFamilyIdentifier $assetFamilyIdentifier
      * @param UserGroupPermission[]     $permissions
      */
     public static function create(

@@ -21,12 +21,9 @@ use Webmozart\Assert\Assert;
  */
 class Limit
 {
-    private int $limit;
-
-    public function __construct(int $limit)
+    public function __construct(private int $limit)
     {
         Assert::greaterThan($limit, 0, 'The limit should be greater than zero.');
-        $this->limit = $limit;
     }
 
     public function intValue(): int

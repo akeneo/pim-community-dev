@@ -27,25 +27,18 @@ class SearchAssetResult
     private const MATCHES_COUNT = 'matches_count';
     private const TOTAL_COUNT = 'total_count';
 
-    /** @var AssetItem[] */
-    public array $items;
-
-    public int $matchesCount;
-
-    public int $totalCount;
-
-    public function __construct(array $assetItems, int $matchesCount, int $totalCount)
+    /**
+     * @param AssetItem[] $assetItems
+     */
+    public function __construct(public array $assetItems, public int $matchesCount, public int $totalCount)
     {
         Assert::allIsInstanceOf($assetItems, AssetItem::class);
-        $this->items = $assetItems;
-        $this->matchesCount = $matchesCount;
-        $this->totalCount = $totalCount;
     }
 
     public function normalize(): array
     {
         return [
-            self::ITEMS         => array_map(fn (AssetItem $assetItem) => $assetItem->normalize(), $this->items),
+            self::ITEMS         => array_map(fn (AssetItem $assetItem) => $assetItem->normalize(), $this->assetItems),
             self::MATCHES_COUNT => $this->matchesCount,
             self::TOTAL_COUNT => $this->totalCount,
         ];

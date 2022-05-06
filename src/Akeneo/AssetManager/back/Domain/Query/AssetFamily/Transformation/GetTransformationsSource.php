@@ -25,17 +25,11 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 class GetTransformationsSource
 {
-    private GetTransformations $getTransformations;
-
-    public function __construct(GetTransformations $getTransformations)
+    public function __construct(private GetTransformations $getTransformations)
     {
-        $this->getTransformations = $getTransformations;
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param LocaleReference $localeReference
-     * @param ChannelReference $channelReference
      * @return Transformation[]
      */
     public function forAttribute(
@@ -59,7 +53,7 @@ class GetTransformationsSource
     {
         try {
             return $this->getTransformations->fromAssetFamilyIdentifier($assetFamilyIdentifier);
-        } catch (AssetFamilyNotFoundException $exception) {
+        } catch (AssetFamilyNotFoundException) {
             return [];
         }
     }

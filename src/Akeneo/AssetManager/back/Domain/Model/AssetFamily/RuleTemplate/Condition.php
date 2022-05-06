@@ -27,23 +27,13 @@ use Webmozart\Assert\Assert;
  */
 class Condition
 {
-    private Field $field;
-
-    private Operator $operator;
-
-    private Value $value;
-
-    private ChannelReference $channel;
-
-    private LocaleReference $locale;
-
-    private function __construct(Field $field, Operator $operator, Value $value, ChannelReference $channel, LocaleReference $locale)
-    {
-        $this->field    = $field;
-        $this->operator = $operator;
-        $this->value    = $value;
-        $this->channel  = $channel;
-        $this->locale   = $locale;
+    private function __construct(
+        private Field $field,
+        private Operator $operator,
+        private Value $value,
+        private ChannelReference $channel,
+        private LocaleReference $locale,
+    ) {
     }
 
     public static function createFromNormalized(array $condition): self

@@ -26,12 +26,6 @@ class MediaFileAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'media_file';
 
-    private AttributeMaxFileSize $maxFileSize;
-
-    private AttributeAllowedExtensions $allowedExtensions;
-
-    private MediaType $mediaType;
-
     protected function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -42,9 +36,9 @@ class MediaFileAttribute extends AbstractAttribute
         AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxFileSize $maxFileSize,
-        AttributeAllowedExtensions $extensions,
-        MediaType $mediaType
+        private AttributeMaxFileSize $maxFileSize,
+        private AttributeAllowedExtensions $allowedExtensions,
+        private MediaType $mediaType
     ) {
         parent::__construct(
             $identifier,
@@ -57,10 +51,6 @@ class MediaFileAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->maxFileSize = $maxFileSize;
-        $this->allowedExtensions = $extensions;
-        $this->mediaType = $mediaType;
     }
 
     public static function create(
