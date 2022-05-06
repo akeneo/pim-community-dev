@@ -82,14 +82,11 @@ abstract class AbstractProduct implements ProductInterface
     }
 
     /**
-     * @TODO: remove this method?
-     *
      * {@inheritdoc}
      */
     public function getId()
     {
-        throw new \Exception('getId() should not be called');
-        return $this->uuid->toString();
+        throw new \LogicException('Product getId() should not be called');
     }
 
     public function getUuid(): UuidInterface
