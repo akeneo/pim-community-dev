@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: 詳細についてはヘルプセンターをご確認ください。
         card:
           developed_by: '開発者: {{ author }}'
+          new_access_authorization_required: 新たなアクセスの承認が必要です。
           not_listed_on_the_appstore: アプリが Akeneo App Store に表示されなくなりました。アプリのサポートにお問い合わせください。
           manage_app: アプリの管理
           open_app: アプリを開く
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: ヘルプセンターの記事
             no_scope: 特定の承認は要求されていません。
           authentication:
+            title: 認証
+            information: 'アプリ承認の詳細については、{{ link }} をご覧ください。'
             information_link_anchor: ヘルプセンターの記事
+            openid_only: このアプリは Akeneo App 認証を使用し、個人データは使用しません。
           pending: このアプリは PIM に接続されていません。アプリを開くと接続問題は解決されるはずです。解決しない場合は、アプリのサポートにお問い合わせください。
         error_monitoring:
           error: エラーが発生しました！
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: アプリは正常に削除されました。
           error: 申し訳ございません、アプリを削除中にエラーが発生しました。
+      open:
+        flash:
+          error: 申し訳ございません、アプリを開こうとしてエラーが発生しました。
     apps:
       loader:
         message: 読み込み中...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: 特定の承認は要求されていません。
           helper: アプリの承認について詳しくは、
           helper_link: ヘルプセンターの記事をご覧ください。
+          is_allowed_to: '次が既に許可されています:'
         flash:
           success: アプリが正常に構成されました。
           error: 申し訳ございません、アプリを接続中にエラーが発生しました。
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: 参照エンティティの記録
           asset_families: アセットファミリー
           assets: アセット
+        new: 新規
       error:
         sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
         app_not_found: client_id が既存のアプリと一致しません。
@@ -557,5 +566,7 @@ pim_permissions:
       view: 表示
     all: すべて
 pim_notification:
+  types:
+    connected_app_authorizations: 接続済みアプリの承認
   connected_app_authorizations:
     button_label: アプリを開く
