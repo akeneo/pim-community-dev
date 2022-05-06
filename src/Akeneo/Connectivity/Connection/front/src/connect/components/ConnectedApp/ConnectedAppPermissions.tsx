@@ -7,9 +7,15 @@ type Props = {
     providers: PermissionFormProvider<any>[];
     setProviderPermissions: (providerKey: string, providerPermissions: object) => void;
     permissions: PermissionsByProviderKey;
+    onlyDisplayViewPermissions: boolean;
 };
 
-export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermissions, permissions}) => {
+export const ConnectedAppPermissions: FC<Props> = ({
+    providers,
+    setProviderPermissions,
+    permissions,
+    onlyDisplayViewPermissions,
+}) => {
     return (
         <>
             {null !== providers &&
@@ -28,7 +34,7 @@ export const ConnectedAppPermissions: FC<Props> = ({providers, setProviderPermis
                             onPermissionsChange={handlePermissionsChange}
                             permissions={providerPermissions}
                             readOnly={readOnly}
-                            onlyDisplayViewPermissions={false}
+                            onlyDisplayViewPermissions={onlyDisplayViewPermissions}
                         />
                     );
                 })}

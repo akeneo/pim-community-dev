@@ -155,6 +155,7 @@ akeneo_connectivity.connection:
                     authorizations:
                         title: authorizations
                         information: 'To know more about app authorizations, check out our {{ link }}.'
+                        no_access_to_product_information: 'This connected app doesn’t access your product information.'
                         information_link_anchor: Help Center article
                         no_scope: No specific authorizations have been requested.
                     authentication:
