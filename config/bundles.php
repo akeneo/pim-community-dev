@@ -62,6 +62,8 @@ return [
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
+    Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
 
     // PIM Growth bundle
     Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
