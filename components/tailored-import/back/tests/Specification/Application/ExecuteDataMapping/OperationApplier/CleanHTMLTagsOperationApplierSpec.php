@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\CleanHTMLTagsOperationApplier;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
@@ -42,5 +46,26 @@ class CleanHTMLTagsOperationApplierSpec extends ObjectBehavior
         $value = new StringValue('test');
 
         $this->applyOperation($cleanHTMLTagsOperation, $value)->shouldBeLike($value);
+    }
+
+    public function it_throws_an_exception_when_value_type_is_invalid(): void
+    {
+        $operation = new CleanHTMLTagsOperation();
+        $value = new NumberValue('18');
+
+        $this->shouldThrow(new UnexpectedValueException($value, StringValue::class, CleanHTMLTagsOperationApplier::class))
+            ->during('applyOperation', [$operation, $value]);
+    }
+
+    public function it_throws_an_exception_when_operation_type_is_invalid(): void
+    {
+        $operation = new BooleanReplacementOperation([
+            '1' => true,
+            '0' => false,
+        ]);
+        $value = new StringValue('0');
+
+        $this->shouldThrow(new UnexpectedValueException($operation, CleanHTMLTagsOperation::class, CleanHTMLTagsOperationApplier::class))
+            ->during('applyOperation', [$operation, $value]);
     }
 }

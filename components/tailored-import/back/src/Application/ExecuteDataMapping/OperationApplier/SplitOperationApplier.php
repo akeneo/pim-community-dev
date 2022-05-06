@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
@@ -24,11 +25,11 @@ final class SplitOperationApplier implements OperationApplierInterface
     public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
         if (!$operation instanceof SplitOperation) {
-            throw new \InvalidArgumentException(sprintf('Expecting %s, "%s" given', SplitOperation::class, $operation::class));
+            throw new UnexpectedValueException($operation, SplitOperation::class, self::class);
         }
 
         if (!$value instanceof StringValue) {
-            throw new \InvalidArgumentException(sprintf('Split Operation only supports String value, "%s" given', $value::class));
+            throw new UnexpectedValueException($value, StringValue::class, self::class);
         }
 
         return new ArrayValue(

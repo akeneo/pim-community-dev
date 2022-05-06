@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SplitOperationApplier;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NumberValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use PhpSpec\ObjectBehavior;
 
@@ -32,5 +36,23 @@ class SplitOperationApplierSpec extends ObjectBehavior
 
         $this->applyOperation($operation, $value)
             ->shouldBeLike(new ArrayValue(['value1', 'value2', ' value3']));
+    }
+
+    public function it_throws_an_exception_when_value_type_is_invalid(): void
+    {
+        $operation = new SplitOperation(',');
+        $value = new NumberValue('18');
+
+        $this->shouldThrow(new UnexpectedValueException($value, StringValue::class, SplitOperationApplier::class))
+            ->during('applyOperation', [$operation, $value]);
+    }
+
+    public function it_throws_an_exception_when_operation_type_is_invalid(): void
+    {
+        $operation = new CleanHTMLTagsOperation();
+        $value = new StringValue('0');
+
+        $this->shouldThrow(new UnexpectedValueException($operation, SplitOperation::class, SplitOperationApplier::class))
+            ->during('applyOperation', [$operation, $value]);
     }
 }
