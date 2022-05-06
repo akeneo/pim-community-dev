@@ -25,7 +25,6 @@ onboarder:
       no_supplier: 제공업체가 없습니다.
       search_by_supplier: 제공업체로 검색
       no_search_result: 이 검색과 일치하는 제공업체가 없습니다.
-      error: 제공업체 목록을 로드하는 동안 오류가 발생했습니다.
       dropdown:
         export_suppliers: 제공업체 내보내기
         download_template: 템플릿 다운로드
