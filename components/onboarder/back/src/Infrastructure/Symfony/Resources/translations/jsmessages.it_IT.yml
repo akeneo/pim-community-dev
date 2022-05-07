@@ -57,9 +57,7 @@ onboarder:
           email: Indirizzo e-mail
         no_contributor: Non ci sono ancora contributori.
         result_counter: '{0} Nessun risultato|{1} {{ count }} risultato|]1,Inf] {{ count }} risultati'
-      error: Si è verificato un errore durante il caricamento del fornitore.
       success_message: Il fornitore è stato aggiornato correttamente
-      unknown_error: Si è verificato un errore durante l'aggiornamento del fornitore.
 pim_title:
   onboarder_serenity_supplier_list: Fornitori
   onboarder_serenity_supplier_edit: Modifica un fornitore
