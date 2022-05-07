@@ -1,0 +1,6 @@
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Taulukon rakenne
+      empty_title: Taulukon rakenne on tyhjä

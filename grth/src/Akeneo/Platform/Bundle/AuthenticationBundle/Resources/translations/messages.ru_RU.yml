@@ -1,0 +1,3 @@
+akeneo_authentication:
+  sso:
+    unknown_user_error: У вас нет доступа к этому приложению. Пожалуйста, свяжитесь с администратором.
