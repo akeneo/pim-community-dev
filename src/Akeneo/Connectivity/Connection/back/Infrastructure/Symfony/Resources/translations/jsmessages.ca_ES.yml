@@ -1,6 +1,8 @@
 pim_menu:
   tab:
     connect: Connectar
+  navigation:
+    connect: Connectar navegació
   navigation_back:
     connection: Tornar a connectar
   navigation_block:
@@ -9,7 +11,12 @@ pim_menu:
     connection_audit: Panell de connexions
     connection_settings: Connexions
     connection_settings_edit: Configuració de la connexió
+    connection_monitoring: Monitorització d'errors
+    connection_webhook_edit: Subscripció d'esdeveniment
+    connection_webhook_event_logs: Registre d'esdeveniments
+    data_flows: Flux de dades
     connect_connection_settings: Configuració de la connexió
+    marketplace: Marketplace
     connected_apps: Aplicacions
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
@@ -17,19 +24,35 @@ pim_title:
   akeneo_connectivity_connection_connect_apps_activate: Connectar
   akeneo_connectivity_connection_connect_apps_authorize: Connectar
   akeneo_connectivity_connection_connect_apps_authenticate: Connectar
+  akeneo_connectivity_connection_settings_index: Configuració de connexions
   akeneo_connectivity_connection_settings_edit: Configuració de la connexió
   akeneo_connectivity_connection_settings_any: Configuració de la connexió
   akeneo_connectivity_connection_audit_index: Panell de connexions
   akeneo_connectivity_connection_audit_any: Panell de connexions
   akeneo_connectivity_connection_error_management_dashboard: Panell de connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitorització de la connexió
+  akeneo_connectivity_connection_webhook_edit: Subscripció d'esdeveniment
+  akeneo_connectivity_connection_webhook_regenerate_secret: Subscripció d'esdeveniment
+  akeneo_connectivity_connection_webhook_event_logs: Registre d'esdeveniments
   akeneo_connectivity_connection_settings_redirect: Connexions
   akeneo_connectivity_connection_connect_connected_apps: Aplicacions
   akeneo_connectivity_connection_connect_connected_apps_edit: Configuració de l'aplicació
+  akeneo_connectivity_connection_connect_connected_apps_delete: Eliminació de l'aplicació
+  akeneo_connectivity_connection_connect_marketplace_test_app_create: Crear una aplicació de prova
+  akeneo_connectivity_connection_connect_marketplace_test_app_delete: Eliminar aplicació de prova
 akeneo_connectivity.connection:
   connect:
     marketplace:
+      title: Vol connectar el PIM amb una altra aplicació? 🤟
+      sub_title: Entra en el nostre marketplace per veure quines aplicacions es poden connectar al PIM d'Akeneo.
+      link: Accedir al marketplace
+      helper:
+        title: '{0} No hi ha aplicacions o connectors compatibles amb la teva versió PIM.|{1} Hi ha {{ count }} aplicació o connector compatiblee amb la vostra versió PIM.|[2,Inf] Hi ha {{ count }} aplicacions i connectors compatibles amb la vostra versió de PIM.'
+        title_without_apps: '{0} No hi ha connectors compatibles amb la seva versió de PIM.|{1} Hi ha {{ count }} connector compatible amb la teva versió de PIM.|[2,Inf] Hi ha {{ count }} connectors compatibles amb la vostra versió de PIM.'
+        description: Això només és un resum. Per veure més detalls, dona un cop d'ull al nostre marketplace.
+        link: Anar a la Marketplace
       card:
+        developed_by: 'Desenvolupat per {{ author }}'
         read_more: llegiu-ne més
         more_info: Més informació
         connect: Connectar
@@ -37,25 +60,61 @@ akeneo_connectivity.connection:
       extensions:
         title: Connectors
         total: '{0} Sense connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
+        empty: No hi ha connectors compatibles amb la vostra versió
       apps:
         title: Aplicacions
         total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
+        empty: No hi ha aplicacions compatibles amb la vostra versió
+      unreachable: No podem accedir al marketplace, torna més tard, si us plau.
+      scroll_to_top: Desplaça't a fins a dalt
       test_apps:
+        title: Les meves aplicacions de prova
+        removed_user: Usuari suprimit
+        create_a_test_app: Crear una aplicació de prova
         modal:
+          subtitle: Crear una aplicació de prova
           app_information:
             title: Informació de l'app
+            description: Si necessita ajuda, consulta el nostre article
+            link: Com provar la meva aplicació abans de publicar-la?
             fields:
               name: Nom
+              activate_url: URL d'activació
+              callback_url: URL de Callback
           credentials:
             title: Credencials
+            warning: Guarda't bé les credencials en un lloc, ja que les mostrarem només una vegada aquí.
             client_id: Identificador del client
             client_secret: Secret del client
+        errors:
+          creation:
+            name:
+              max_length: El nom de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
+              not_blank: Es requereix el nom de l'aplicació de prova.
+            client_id:
+              max_length: L'ID del client de la l'aplicació de prova és massa llarg. Ha de tenir 36 caràcters o menys.
+              not_blank: L'ID de client és obligatori.
+            activate_url:
+              max_length: La URL d'activació de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
+              must_be_url: La URL d'activació ha de ser vàlida.
+              not_blank: La URL d'activació és obligatori.
+            callback_url:
+              max_length: La URL de callback de l'aplicació de prova és massa llarg. Ha de tenir 255 caràcters o menys.
+              must_be_url: La URL de callback ha de ser vàlida.
+              not_blank: La URL de callback és obligatori.
         delete:
           subtitle: Aplicacions
           title: Confirmar l'eliminació
+          description: Esteu a punt d'eliminar la vostra aplicació de prova d'aquest PIM.
+          warning: En confirmar l'eliminació, eliminareu l'aplicació de prova a la pàgina del marketplace i l'aplicació connectada relacionada.
+          flash:
+            success: Aplicació de prova eliminada correctament.
+            error: Ho sentim, s'ha produït un error durant l'eliminació de l'aplicació de prova.
     connected_apps:
       list:
         apps:
+          title: Aplicacions connectades
+          total: '{0} Cap aplicació|{1} 1 aplicació|[2,Inf] {{ total }} aplicacions'
           marketplace_link_anchor: Marketplace
         card:
           manage_app: Administra l'aplicació
@@ -63,6 +122,12 @@ akeneo_connectivity.connection:
         tabs:
           settings: Preferències
           permissions: Permisos
+        error_monitoring:
+          not_auditable:
+            description:
+              1: To track errors on this app,
+              2: activar el seguiment
+              3: a la configuració.
       delete:
         subtitle: Aplicacions
         title: Confirmar l'eliminació
@@ -82,12 +147,17 @@ akeneo_connectivity.connection:
           authorizations: Autoritzacions
           permissions: Permisos
           summary: Ben fet!
+      title: Connecta
+      activate:
+        flash:
+          error: Ho sentim, s'ha produït un error al intentar connectar l'aplicació.
       scope:
         type:
           view: 'Veure {{ entities }}'
           edit: 'Veure i editar {{ entities }}'
           delete: 'Veure, editar i eliminar {{ entities }}'
         entities:
+          catalog_structure: atributs, grups d'atributs, famílies i variants de famílies
           attribute_options: opcions d'atribut
           categories: categories
           channel_localization: configuració regional i monedes
@@ -95,11 +165,26 @@ akeneo_connectivity.connection:
           association_types: tipus d'associació
           products: productes i models de producte
           reference_entity: entitats de referència
+          reference_entity_record: registres d'entitat de referència
           asset_families: famílies de recursos
           assets: recursos
+      error:
+        sub_text: Si us plau, contacta amb desenvolupador de l'aplicació o amb el servei d'assistència d'Akeneo
+      constraint:
+        client_id:
+          not_blank: El client_id és obligatori.
+          must_be_valid: El client_id no coincideix amb cap client conegut.
+          must_have_ongoing_authorization: El client_id no té cap procés d'autorització en curs en aquest moment
+        response_type:
+          not_blank: El response_type és obligatori.
+          must_be_code: El response_type ha de ser "codi".
+        redirect_uri:
+          not_blank: El redirect_uri és obligatori.
+          must_be_url: El redirect_uri no és una url vàlida.
   connections: Connexions
   secondary_actions:
     title: Altres accions
+  developer_mode: Mode desenvolupador
   connection:
     code: Codi
     label: Etiqueta
@@ -112,6 +197,7 @@ akeneo_connectivity.connection:
     user_role_id: Rol
     user_group_id: Grup
     constraint:
+      connections_number_limit_reached: Ha arribat al límit de 50 connexions i aplicacions connectades.
       code:
         required: El codi de connexió és obligatori.
         invalid: El codi de connexió només pot contenir lletres, números i guions baixos.
@@ -137,6 +223,7 @@ akeneo_connectivity.connection:
     message_link: feu clic aquí.
   create_connection:
     title: Crear una nova connexió
+    description: Pot connectar fins a 50 apps de tercers o aplicacions.
     flash:
       success: Connexió creada correctament.
       error: Ho sentim, s'ha produït un error durant la creació de la connexió.
@@ -153,7 +240,12 @@ akeneo_connectivity.connection:
         message: 'Aquí hi ha les credencials per utilitzar la connexió {{ label }}.'
         link: Més informació aquí...
       wrong_credentials_combinations:
+        single: Hem observat que està utilitzant un nom d'usuari {{ wrong_username }} per aquesta connexió (utilitzat per últim cop el {{ date }} a {{ time }}). Recomanem que utilitzi el nom d'usuari {{ good_username }}.
         link: Descobreix el motiu per utilitza-ho.
+        link_list: Descobriu per què us recomanem utilitzar aquest nom d'usuari.
+        several: Hem detectat que no està utilitzant el nom d'usuari {{ good_username }} per a aquesta connexió.
+        list: 'Aquí tens la llista de noms d''usuaris  que s''han utilitzat en els últims 7 dies:'
+        username_date: '{{ wrong_username }} el {{ date }} a {{ time }}'
       password_helper:
         message: Si ha oblidat la contrasenya, pot generar una nova aquí.
         link: Més informació…
@@ -206,6 +298,7 @@ akeneo_connectivity.connection:
     message: Quin tipus de flux és?
     link: Et podem ajudar aquí mateix!
   auditable_helper:
+    message: Només podeu fer un seguiment de les connexions "Font" i "Destinació".
     link: Més informació…
   edit_image:
     upload_helper: Canvia la imatge. Arrosega i deixa anar
@@ -213,7 +306,10 @@ akeneo_connectivity.connection:
     click_here: clica aquí
     flash:
       extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
+  grid.wrong_credentials_combination_helper: Algunes de les connexions següents no utilitzen els seus noms d'usuari de connexió. S'identifiquen amb un senyal d'advertència groc.
   dashboard:
+    helper:
+      title: '👋 Benvingut al flux de dades!'
     user_survey:
       title: Vols més dades sobre aquest panell?
       content: Els seus comentaris són realment valuosos per a nosaltres. Ajuda'ns a escollir el proper widget responent aquesta enquesta de només una pregunta.
@@ -224,6 +320,8 @@ akeneo_connectivity.connection:
         destination: Destinacions
       all: Tot
     charts:
+      inbound: Entrant
+      outbound: Sortint
       number_of_products_created: Productes creats
       number_of_products_updated: Productes actualitzats
       number_of_products_sent: Productes enviats
@@ -232,19 +330,30 @@ akeneo_connectivity.connection:
         today: Avui
     error_management:
       data_source_error_chart:
+        section:
+          helper: Aquí podeu veure el nombre total d'errors, inclosos els errors comercials.
         chart:
           title: Nombre d'errors al dia
       widget:
         over_the_last_seven_days: En els últims 7 dies
+        business_errors: Errors empresarials
     no_connection:
       title:
         default: Vol veure un gràfics sobre les seves connexions?
+        data_source: Voleu veure alguns gràfics sobre les vostres connexions d'origen?
+        data_destination: Voleu veure alguns gràfics sobre les vostres connexions de destinació?
       message_with_permission:
+        message: Crea i comença a fer el seguiment del teu primer
         link: aquí.
       message_without_permission:
         message: Demana al teu administrador per crear una.
         link: Aprendre més sobre les connexions aquí...
   webhook:
+    title: Subscripció d'esdeveniment
+    event_subscription: Subscripció d'esdeveniment
+    download_logs: Descarregar registres
+    helper:
+      link: Més informació sobre la configuració de la subscripció d'esdeveniments...
     form:
       url: URL
       secret: Secret
@@ -260,15 +369,26 @@ akeneo_connectivity.connection:
       error: Ho sentim, s'ha produït un error a l'editar la subscripció a l'esdeveniment.
     regenerate_secret:
       title: Confirmar regeneració
+      description: Esteu segur que voleu regenerar el secret de la subscripció a l'esdeveniment?
       action:
         regenerate: Regenera
       link: Això passarà.
+      flash:
+        success: El secret del webhook s'ha regenerat correctament.
+        error: Ho sentim, s'ha produït un error en regenerar el secret del webhook.
+    active_event_subscriptions_limit_reached:
+      message: Pot connectar fins a {{ limit }} connexions a la funció de subscripció d'esdeveniments. Has arribat a aquest límit.
     event_logs:
+      title: Registre d'esdeveniments
       level:
         info: Informació
+        notice: Avís
+        warning: Avís
         error: Error
       list:
         search:
+          placeholder: Cerqueu a missatges
+          total: '{0} Sense resultats|{1} 1 resultat|[2,Inf] {{ total }} resultats'
           level: Nivell
           all: Tot
           none: Cap
@@ -284,14 +404,19 @@ akeneo_connectivity.connection:
           message: Missatge
   error_management:
     connection_monitoring:
+      title: Monitorització d'errors
       helper:
         title: '{0} Te {{ count }} error |[1,Inf] Tens {{ count }} errores'
+        description: Aquí podeu veure el detall de cada error d'aquesta connexió durant els darrers 7 dies. El nombre d'error està limitat a 100 errors.
+        link: Per entendre com solucionar-ho, visiteu el Centre d'ajuda de l'API.
       search_filter:
         placeholder: Cercar un missatge d'error
+        result_count: '{0} Sense resultats|{1} 1 resultat|[2,Inf] {{ count }} resultats'
       error_list:
         date_time_column:
           title: Dia i hora
         content_column:
+          title: Missatge d'error empresarial
           product_name: Nom del producte
           with_id: amb l'ID
         details_column:
@@ -299,6 +424,16 @@ akeneo_connectivity.connection:
           locale: Configuració Regional
           channel: Canal
           family: Família
+      no_error:
+        title: Genial! No s'ha trobat cap error!
+      not_auditable:
+        title: Connexió sense control
+        description:
+          1: Per fer un seguiment dels errors en aquesta connexió,
+          2: activar el seguiment
+          3: a la configuració.
+      not_data_source:
+        title: De moment, la pàgina de supervisió només està disponible per a la connexió d'origen.
   runtime_error:
     error_message: Oh vaja! S'ha produït un error...
     reload_helper: Si us plau, actualitzeu la pàgina i torneu a provar.

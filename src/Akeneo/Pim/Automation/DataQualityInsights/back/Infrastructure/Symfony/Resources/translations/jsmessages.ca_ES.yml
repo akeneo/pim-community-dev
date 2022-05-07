@@ -43,13 +43,22 @@ akeneo_data_quality_insights:
       day: dia
     key_indicators:
       title: Indicadors clau
+      products_to_work_on: '{1}Tens <button>1 producte</button> per treballar.|]1, 200[Tens <button>{{ count }} productes</button> per treballar.|[200, Inf[Tens <button>més de {{ count }} productes</button> per treballar.'
       list:
         has_image:
           title: Productes sense una imatge
+          no_data: Sembla que els vostres atributs d'imatge estan buits, hauríeu de penjar imatges per a aquest indicador clau per ressaltar la qualitat dels vostres productes.
           messages:
             first_step:
               message1: Sense imatges, els seus productes no es veuran com es mereixen.
+              message2: Una primera impressió fa un llarg camí, mima els teus actius, els teus clients ho notaran.
+              message3: Segons la nostra experiència, les imatges realment marquen la diferència. És possible que hàgiu de dedicar més temps als actius.
+            second_step:
+              message1: Només heu de treballar una mica més en les imatges del vostre producte i ja estaràs a punt.
+              message2: Una imatge val més que mil paraules, treballa-hi ara, estalvia temps després!
+              message3: És possible que hàgiu de dedicar una mica de temps a les imatges, els vostres productes es veuran molt millor.
             third_step:
+              message1: Molt bé, només falten un parell d'imatges.
               message2: Es veu bé, queda molt poc.
               message3: Afegeix uns retocs finals i ho tindrem tot preparat.
             perfect_score_step:
@@ -57,12 +66,31 @@ akeneo_data_quality_insights:
               message2: Impressionant! Tots els productes són brillants i bonics!
               message3: Això és perfecte.
         good_enrichment:
+          title: Productes amb una bona relació d'enriquiment
+          no_data: Els vostres productes semblen buits, heu d'afegir atributs per a aquest indicador clau per destacar la qualitat dels vostres productes.
           messages:
+            first_step:
+              message1: Una manera de millorar aquesta ràtio és assegurar-se de definir acuradament els atributs més rellevants. <a href="{{ link }}" target="_blank">Fes una ullada al nostre centre d'ajuda</a>.
+              message2: El teu PIM encara és massa misteriós per a tu? <a href="{{ link }}" target="_blank">Aprèn a treure'n el màxim profit</a>.
+              message3: Els nostres equips van desenvolupar el PIM, dóna-li a la vida!
+            third_step:
+              message1: Fins aquí tot va bé, ara podeu anar una mica més enllà!
+              message2: Aquesta és una proporció molt bona, però no es veuria bé al 100%?
+              message3: Alguns dels vostres productes encara necessiten una mica d'ajuda per completar-los! Gairebé ho tens!
             perfect_score_step:
+              message1: Els vostres productes es vendran ells mateixos! Bona feina.
+              message2: Quina aventura, pots estar orgullós de la teva feina.
+              message3: Sou un veritable mestre en mantenir el vostre catàleg actualitzat.
               message4: Enhorabona, està perfecte!
+      no_data: Ho sentim, encara no tenim prou dades per mostrar els indicadors clau.
       no_data_subtitle: Si us plau, torni més tard.
+    score_distribution:
+      title: Distribució de la puntuació de qualitat
     quality_score_evolution:
+      title: Evolució del nivell de qualitat
+      current_score: és el nivell de qualitat del vostre catàleg actual per a aquest canal.
       current_month_label: Aquest mes
+      no_catalog_score: No hem pogut calcular el teu nivell de qualitat actual.
   product_evaluation:
     criteria:
       enrichment_image:
