@@ -114,6 +114,7 @@ pim_asset_manager:
       title: Permisos de la família de recursos
     title: Recursos
     breadcrumb: Families de recursos
+    img: El mitjà principal de la família de recursos designada "{{ label }}"
     tab:
       assets: Recursos
       attribute: Atributs
@@ -163,6 +164,9 @@ pim_asset_manager:
           title: 'Benvingut a les families de Recursos!'
           description_part_one: Enriquir la informació rellevant relacionada amb els productes (per exemple, marques, fabricants, colors, materials, ingredients...).
           description_part_two: Li permetrà oferir una millor experiència del producte als seus clients.
+          description_part_three: Feu clic al botó "Crea" per crear la vostra primera família d'actius, establiu els seus atributs i actius.
+          description_part_four: A continuació, per enllaçar els productes, creeu un tipus d'atribut de producte relacionat amb aquesta família d'actius.
+          description_part_five: Per a més detalls, us convidem a consultar aquest article.
     create:
       header:
         title: Crear
@@ -173,15 +177,28 @@ pim_asset_manager:
         code: Codi (requerit)
       confirm: Desar
     delete:
+      message: Esteu segur que voleu suprimir la família de recursos "{{ assetFamilyLabel }}"?
       title: Atribut
     notification:
+      save:
+        success: La família de recursos s'ha actualitzat correctament.
+        fail: S'ha produït un error durant el desat de la família de recursos
       create:
         success: Família de recursos creada correctament.
+        fail: S'ha produït un error durant la creació de la família d'actius
+      delete:
+        success: La família de recursos s'ha suprimit correctament.
+        fail: S'ha produït un error durant la supressió de la família de recursos
+      compute_transformations:
+        success: S'han posat en marxa transformacions. Un cop finalitzada aquesta feina, veureu les vostres noves variacions actualitzades als vostres actius.
+        fail: S'ha produït un error en intentar calcular les transformacions
       execute_product_link_rules:
         success: Les regles d'enllaç dels productes han sigut llençats
         fail: S'ha produït un error al provar de llençar les regles d'enllaços de productes
     helper:
       title: Benvingut a Gestor de Recursos!
+      no_asset_family:
+        link: Per a més detalls, us convidem a consultar aquest article.
     no_data:
       no_asset:
         title: Ho sento, això no és un recurs!
@@ -190,24 +207,41 @@ pim_asset_manager:
         title: Ho sentim, no hi ha cap família de recursos!
         link: Clic aquí per afegir una família de recursos
   permission:
+    notification:
+      save:
+        success: Els permisos de la família d'actius s'han actualitzat correctament.
+        fail: Almenys un grup d'usuaris ha de tenir permís d'edició en aquesta família de recursos
     no_data:
       title: No teniu cap grup d'usuaris
+      subtitle: Per gestionar el permís de la família d'actius, heu de tenir almenys un grup d'usuaris.
       link: Clic aquí per afegir el teu primer grup usuari
   asset:
+    img: El suport principal del recurs anomenat "{{ label }}"
     created_at: Creat
     updated_at: Actualitzat
+    validation:
+      limit_reached: 'No podeu crear el recurs "{{ %asset_label% }}" perquè heu assolit el límit de {{ %limit% }} recursos per a aquesta família de recursos'
+      code:
+        pattern: 'Aquest camp només pot contenir lletres, números i guions baixos.'
+        should_be_unique: 'Aquest codi ja existeix per a un altre recurs.'
     no_data:
       title: No hi ha cap recurs per {{ entityLabel }}
+      subtitle: Feu clic al botó "Afegeix nou" per crear el primer actiu
     no_result:
       title: No hi ha cap resultat de la cerca
+      subtitle: Torna-ho a provar amb nous criteris de cerca.
     selector:
       no_value: Feu clic aquí per seleccionar un recurs.
+      error:
+        value: Vaja, sembla que la representació del camp "{{ fieldName }}" ha fallat. Consulteu la consola de desenvolupadors per obtenir més detalls.
     button:
       save: Desar
       create: Crear un recurs
       mass_upload: Carregar en massa
       delete: Eliminar
+      delete_all: Eliminar tots els recursos
       back: Torna a la llista
+      launch_transformations: Llançar transformacions
       fullscreen: Pantalla completa
     product:
       attribute: Atribut de producte
@@ -215,6 +249,10 @@ pim_asset_manager:
       dropdown:
         attribute: Atribut de producte
       title: Productes
+      no_attribute:
+        title: No hi ha cap atribut de producte enllaçat a la família de recursos "{{ entityLabel }}"
+        subtitle: 'Per començar a enllaçar productes a aquesta família d''actius, en podeu crear-ne una de nova:'
+        link: Creeu un nou atribut de producte
       not_enough_items:
         button: Veure tots els productes
     enrich:
