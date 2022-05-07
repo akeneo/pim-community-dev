@@ -22,6 +22,9 @@ Millisecond: Mil·lisegon
 Microsecond: Microsegon
 "Time Zone": "Zona horària"
 duration:
+  days: "{0}0 dies|{1}1 dia|]1, Inf[{{ count }} dies"
+  hours: "{0}0 hores|{1}1 hora|]1, Inf[{{ count }} hores"
+  minutes: "{0}0 minuts|{1}1 minut|]1, Inf[{{ count }} minuts"
   seconds: "{0}0 segons|{1}1 segon|]1, Inf[{{ count }} segons"
 #PIM messages
 Localized value: Valor amb configuració regional
