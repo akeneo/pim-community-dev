@@ -77,7 +77,12 @@ akeneo_connectivity.connection:
         message: 'Aquí hi ha les credencials per utilitzar la connexió {{ label }}.'
         link: Més informació aquí...
       wrong_credentials_combinations:
+        single: Hem observat que està utilitzant un nom d'usuari {{ wrong_username }} per aquesta connexió (utilitzat per últim cop el {{ date }} a {{ time }}). Recomanem que utilitzi el nom d'usuari {{ good_username }}.
         link: Descobreix el motiu per utilitza-ho.
+        link_list: Descobriu per què us recomanem utilitzar aquest nom d'usuari.
+        several: Hem detectat que no està utilitzant el nom d'usuari {{ good_username }} per a aquesta connexió.
+        list: 'Aquí tens la llista de noms d''usuaris  que s''han utilitzat en els últims 7 dies:'
+        username_date: '{{ wrong_username }} el {{ date }} a {{ time }}'
       password_helper:
         message: Si ha oblidat la contrasenya, pot generar una nova aquí.
         link: Més informació…
@@ -132,6 +137,7 @@ akeneo_connectivity.connection:
     message: Quin tipus de flux és?
     link: Et podem ajudar aquí mateix!
   auditable_helper:
+    message: Només podeu fer un seguiment de les connexions "Font" i "Destinació".
     link: Més informació…
   edit_image:
     upload_helper: Canvia la imatge. Arrosega i deixa anar
@@ -139,6 +145,7 @@ akeneo_connectivity.connection:
     click_here: clica aquí
     flash:
       extension_not_allowed: Ho sentim, l'arxiu que està intentant pujar no té una extensió permesa.
+  grid.wrong_credentials_combination_helper: Algunes de les connexions següents no utilitzen els seus noms d'usuari de connexió. S'identifiquen amb un senyal d'advertència groc.
   dashboard:
     helper:
       title: '👋 Benvingut al panell de connexions!'
@@ -151,8 +158,11 @@ akeneo_connectivity.connection:
     connection_selector:
       title:
         source: Connexions de la font
+        destination: Connexions de destí
       all: Tot
     charts:
+      inbound: Entrant
+      outbound: Sortint
       number_of_products_created: Productes creats
       number_of_products_updated: Productes actualitzats
       number_of_products_sent: Productes enviats
@@ -161,14 +171,22 @@ akeneo_connectivity.connection:
         today: Avui
     error_management:
       data_source_error_chart:
+        section:
+          title: Error en les connexions d'origen
+          helper: Aquí podeu veure el nombre total d'errors, inclosos els errors comercials.
         chart:
           title: Nombre d'errors al dia
       widget:
+        title: Errors empresarials per connexió d'origen
         over_the_last_seven_days: En els últims 7 dies
+        business_errors: Errors empresarials
     no_connection:
       title:
         default: Vol veure un gràfics sobre les seves connexions?
+        data_source: Voleu veure alguns gràfics sobre les vostres connexions d'origen?
+        data_destination: Voleu veure alguns gràfics sobre les vostres connexions de destinació?
       message_with_permission:
+        message: Crea i comença a fer el seguiment del teu primer
         link: aquí.
       message_without_permission:
         message: Demana al teu administrador per crear una.
@@ -176,6 +194,9 @@ akeneo_connectivity.connection:
   webhook:
     title: Subscripció d'esdeveniment (BETA)
     event_subscription: Subscripció d'esdeveniment (BETA)
+    helper:
+      message: Podeu rebre notificacions dels esdeveniments que succeeixen al PIM per als productes sincronitzats amb aquesta aplicació connectada. Només heu de definir un URL i els tipus d'esdeveniments dels quals voleu fer un seguiment.
+      link: Més informació sobre la configuració de la subscripció d'esdeveniments...
     form:
       url: URL
       secret: Secret
@@ -191,14 +212,23 @@ akeneo_connectivity.connection:
       error: Ho sentim, s'ha produït un error a l'editar la subscripció a l'esdeveniment.
     regenerate_secret:
       title: Confirmar regeneració
+      description: Esteu segur que voleu regenerar el secret de la subscripció a l'esdeveniment?
       action:
         regenerate: Regenera
       link: Això passarà.
+      flash:
+        success: El secret del webhook s'ha regenerat correctament.
+        error: Ho sentim, s'ha produït un error en regenerar el secret del webhook.
+    active_event_subscriptions_limit_reached:
+      message: Pot connectar fins a {{ limit }} connexions a la funció de subscripció d'esdeveniments. Has arribat a aquest límit.
+      link: Més informació sobre la configuració de les subscripcions d'esdeveniments.
   error_management:
     connection_monitoring:
       title: Monitoritzant
       helper:
         title: '{0} Te {{ count }} error |[1,Inf] Tens {{ count }} errores'
+        description: Aquí podeu veure el detall de cada error d'aquesta connexió durant els darrers 7 dies. El nombre d'error està limitat a 100 errors.
+        link: Per entendre com solucionar-ho, visiteu el Centre d'ajuda de l'API.
       search_filter:
         placeholder: Cercar un missatge d'error
         result_count: '{0} Cap resultat |[1,Inf] {{ count }} resultats'
@@ -206,6 +236,7 @@ akeneo_connectivity.connection:
         date_time_column:
           title: Dia i hora
         content_column:
+          title: Missatge d'error empresarial
           product_name: Nom del producte
           with_id: amb l'ID
         details_column:
@@ -213,6 +244,16 @@ akeneo_connectivity.connection:
           locale: Configuració Regional
           channel: Canal
           family: Família
+      no_error:
+        title: Genial! No s'ha trobat cap error!
+      not_auditable:
+        title: Connexió sense control
+        description:
+          1: Per fer un seguiment dels errors en aquesta connexió,
+          2: activar el seguiment
+          3: a la configuració.
+      not_data_source:
+        title: De moment, la pàgina de supervisió només està disponible per a la connexió d'origen.
   runtime_error:
     error_message: Oh vaja! S'ha produït un error...
     reload_helper: Si us plau, actualitzeu la pàgina i torneu a provar.

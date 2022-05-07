@@ -100,6 +100,8 @@ pim_enrich.entity.product:
       association_type_selector: Tipus d'associació
       target: Objectiu
       manage: Afegir {{ associationType }} associacions
+      manage_description: Seleccionar els productes que vol associar amb el producte "{{ productLabel }}"
+      mass_edit_description: Seleccioneu els productes que voleu associar als {{ productCount }} productes seleccionats
       add_associations: Afegir associacions
       variant_products: Variant de productes
       quantified:
@@ -110,6 +112,8 @@ pim_enrich.entity.product:
       no_data: No hi ha productes associats.
       remove: Treure associació
       edit: Editar producte
+      limit_reached: No pot afegir més de {{ maxLimit }} associacions en aquest producte.
+      variant_updated: Heu actualitzat una quantitat en una variant, les quantitats ja no es sincronitzaran.
     attribute_filter:
       display: Mostrar
       all: Tots els atributs
@@ -281,6 +285,7 @@ pim_enrich.export.product:
     title: Configuració global
 pim_enrich.mass_edit.product:
   title: Acció en massa dels productes
+  confirm: "{0}Esteu a punt d'actualitzar alguns productes amb la informació següent, confirmeu-lo.|{1}Esteu a punt d'actualitzar un producte amb la informació següent, confirmeu-lo.|]1, Inf[Esteu a punt d'actualitzar {{ itemsCount }} productes amb la informació següent, confirmeu-ho."
   step:
     select:
       label: Triar productes
@@ -300,20 +305,25 @@ pim_enrich.mass_edit.product:
       select_attributes: Seleccionar atributs
     change_status:
       label: Canviar l'estat
+      label_count: "{0}Canviar l'estat d'alguns productes <span class=\"AknFullPage-title--highlight\"></span>|{1}Canviar l'estat de <span class=\"AknFullPage-title--highlight\">1 producte</span>|]1, Inf[Canviar l'estat de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Els productes seleccionats seran activats o desactivats.
       field: Per activar
     edit_common:
       label: Editar valor dels atributs
+      label_count: "{0}Edita els valors dels atributs d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Edita els valors dels atributs de <span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Edita els valors dels atributs de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Només els atributs que pertanyen a les famílies de productes seleccionats s'editaran amb les següents dades per {{ locale }} local i el {{ scope }} canal.
       no_update: Si us plau, seleccioneu almenys un camp per actualitzar
     add_attribute_value:
       label: Afegir valor dels atributs
+      label_count: "{0}Afegiu valors d'atributs per a alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Afegiu valors d'atributs per a <span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Afegeix valors d'atributs per a <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: Només els atributs multivalor pertanyents a les famílies dels productes s'editaran amb les següents dades per la localització {{ locale }} i el canal {{ scope }}. Els valors d'atributs s'afegeixen, mantenint els valors anteriors.
     change_family:
       label: Canviar família
+      label_count: "{0}Canviar la família d'alguns <span class=\"AknFullPage-title--highlight\">productes</span>|{1}Canviar la família d'<span class=\"AknFullPage-title--highlight\">1 producte< /span>|]1, Inf[Canviar la família de <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span>"
       description: La família dels productes seleccionats es canviarà per la família escollida
     add_to_group:
       label: Afegir a grups
+      label_count: "{0}Afegiu alguns <span class=\"AknFullPage-title--highlight\">productes</span> als grups|{1}Afegiu <span class=\"AknFullPage-title--highlight\">1 producte</span> a grups|]1, Inf[Afegeix <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productes</span> als grups"
       description: Seleccioneu els grups on volgueu afegir els productes seleccionats
       field: Grups
       no_update: Si us plau, seleccioneu un grup abans de continuar
@@ -331,6 +341,9 @@ pim_enrich.mass_edit.product:
       label: Afegir a un model de producte existent
       description: El model de producte seleccionat reunirà els productes i permetrà l'enriquiment de les propietats en comú.
       no_update: Si us plau, seleccioneu un model de producte abans de continuar
+    convert_to_simple_products:
+      label: Convertir a producte simple
+      description: Es desaran tots els valors, categories i associacions anteriors.
     associate_to_product_and_product_model:
       label: Associa
       description: Els productes seleccionats a la quadrícula s'associaran als productes seleccionats i models de producte per el tipus d'associació escollit
@@ -365,6 +378,8 @@ pim_datagrid:
         with_labels: Amb etiquetes
         without_media: Sense multimèdia
         with_media: Amb multimèdia
+      flash:
+        message: "Podeu seguir la progressió de la vostra exportació aquí."
     mass_edit: Accions en bloc
     sequential_edit: Editar seqüencialment
     mass_delete: Esborrat massiu
@@ -401,12 +416,18 @@ pim_datagrid:
       label: Grups
     enabled:
       label: Estat
+    scope:
+      label: Canal
     completeness:
       label: Complet
     created:
       label: Creat el
     updated:
       label: Actualitzat el
+    label_or_identifier:
+      label: Etiqueta o identificador
+    parent:
+      label: Pare
     identifier:
       label: Identificador
   search: Cercar a {{ label }}
@@ -426,6 +447,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Afegir a un model de producte existent
     perform.label: Afegir a un model de producte existent
+  convert_to_simple_products:
+    label: Convertir a productes simples
+    perform.label: Convertir a productes simples
   csv_product_grid_context_quick_export:
     quick_export.label: Exportació ràpida de marc de quadrícula de producte en CSV
     quick_export_product_model.label: Exportació ràpida de marc de quadrícula del model de producte en CSV
@@ -468,3 +492,7 @@ batch_jobs:
     quick_export.label: Exportació ràpida de producte en XSLX
     quick_export_product_model.label: Exportació ràpida del model de producte en XSLX
     perform.label: Exportació ràpida de producte en XSLX
+error:
+  removing:
+    group: Impossible eliminar el grup
+    association type: Impossible eliminar el tipus d'associació

@@ -131,15 +131,18 @@ pim_import_export:
             help: Significa que l'historial del producte s'actualitza automàticament, que es pot desactivar per millorar-ne el rendiment
           convert_variant_to_simple:
             title: Convertir productes variants en simples
+            help: Intenteu convertir productes variants en productes senzills quan la columna "pare" estigui buida. Si s'estableix a "No", s'ignorarà una columna "pare" buida
           family_variant_column:
             title: Columna de la variant familiar
           with_label:
             title: Amb etiquetes
+            help: Definiu si el fitxer d'exportació mostra etiquetes de valors en lloc de codis de valors
           header_with_label:
             title: Capçaleres amb etiquetes
             help: Definir si l'arxiu d'exportació mostra les etiquetes de les capçaleres en comptes del codi de les capçaleres
           file_locale:
             title: Local de l'arxiu
+            help: Definiu la configuració regional en què es mostren les etiquetes
       file_path: Ruta de l'arxiu
   widget:
     last_operations:
@@ -182,6 +185,8 @@ pim_import_export:
     completed: "Temps emprat: {{ duration }}"
     in_progress: "Temps restant estimat: {{ duration }}"
     not_started: "Pendent"
+    untrackable: Pas no rastrejable
+    estimating: "Calculant el temps restant..."
 confirmation:
   remove:
     import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
