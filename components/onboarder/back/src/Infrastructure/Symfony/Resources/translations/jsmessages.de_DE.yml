@@ -55,9 +55,7 @@ onboarder:
         columns:
           email: E‐Mail‐Adresse
         result_counter: '{0} Kein Ergebnis|{1} {{ count }} Ergebnis|]1,Inf] {{ count }} Ergebnisse'
-      error: Beim Laden des Lieferanten ist ein Fehler aufgetreten.
       success_message: Der Lieferant wurde erfolgreich aktualisiert.
-      unknown_error: Beim Aktualisieren des Lieferanten ist ein Fehler aufgetreten.
 pim_title:
   onboarder_serenity_supplier_list: Lieferanten
   onboarder_serenity_supplier_edit: Lieferanten bearbeiten

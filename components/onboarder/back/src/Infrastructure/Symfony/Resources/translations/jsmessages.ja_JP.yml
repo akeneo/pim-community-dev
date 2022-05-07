@@ -57,9 +57,7 @@ onboarder:
           email: メールアドレス
         no_contributor: まだ参加者がいません。
         result_counter: '{0} 結果がありません|{1} {{ count }} 件の結果|]1,Inf] {{ count }} 件の結果'
-      error: サプライヤーを読み込み中にエラーが発生しました。
       success_message: サプライヤーが正常に更新されました。
-      unknown_error: サプライヤーを更新中にエラーが発生しました。
 pim_title:
   onboarder_serenity_supplier_list: サプライヤー
   onboarder_serenity_supplier_edit: サプライヤーを編集

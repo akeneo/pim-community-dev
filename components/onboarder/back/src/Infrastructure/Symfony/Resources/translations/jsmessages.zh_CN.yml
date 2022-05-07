@@ -57,9 +57,7 @@ onboarder:
           email: 电子邮件地址
         no_contributor: 还没有贡献者。
         result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
-      error: 加载供应商时出错。
       success_message: 此供应商已成功更新
-      unknown_error: 更新供应商时出错。
 pim_title:
   onboarder_serenity_supplier_list: 供应商
   onboarder_serenity_supplier_edit: 编辑供应商
