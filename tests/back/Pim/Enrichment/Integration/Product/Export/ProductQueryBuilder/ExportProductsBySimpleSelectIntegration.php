@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsBySimpleSelectIntegration extends AbstractExportTestCase
@@ -17,33 +19,21 @@ class ExportProductsBySimpleSelectIntegration extends AbstractExportTestCase
         ]);
 
         $this->createProduct('product_option_A', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $this->createProduct('product_option_B', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_simple_select' => [
-                    ['data' => 'optionB', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionB')
         ]);
 
         $this->createProduct('product_without_option', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_simple_select' => [
-                    ['data' => null, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleSelectValue('a_simple_select', null, null, null)
         ]);
 
-        $this->createProduct('product_without_option_attribute', ['family' => 'a_family']);
+        $this->createProduct('product_without_option_attribute', [new SetFamily('a_family')]);
 
     }
 

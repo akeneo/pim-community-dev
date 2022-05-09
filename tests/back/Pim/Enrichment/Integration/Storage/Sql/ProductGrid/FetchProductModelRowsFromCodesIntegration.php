@@ -9,6 +9,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Row;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MediaValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
@@ -224,19 +227,30 @@ class FetchProductModelRowsFromCodesIntegration extends TestCase
 
     private function createVariantProduct(string $identifier, string $parentCode): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'parent' => $parentCode,
-            'values' => [
-                'a_yes_no' => [
-                    ['data' => true, 'locale' => null, 'scope' => null],
-                ],
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: [
+                new ChangeParent($parentCode),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
-        ]);
-        $errors = $this->get('validator')->validate($product);
-        Assert::same(0, $errors->count());
-        $this->get('pim_catalog.saver.product')->save($product);
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        \PHPUnit\Framework\Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 
     private function getFetchProductRowsFromCodes(): FetchProductModelRowsFromCodes

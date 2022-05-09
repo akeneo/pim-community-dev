@@ -9,8 +9,16 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\PropertyClearer;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -44,16 +52,10 @@ class PropertyClearerIntegration extends TestCase
     {
         $sku = 'test_localizable_title';
         $parameters = [
-            'values' => [
-                'a_text' => [
-                    ['data' => 'the text', 'locale' => null, 'scope'  => null],
-                ],
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'description', 'locale' => 'en_US', 'scope'  => 'ecommerce'],
-                    ['data' => 'description', 'locale' => 'en_US', 'scope'  => 'tablet'],
-                    ['data' => 'description', 'locale' => 'fr_FR', 'scope'  => 'tablet'],
-                ],
-            ],
+            new SetTextValue('a_text', null, null, 'the text'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'description'),
         ];
         $product = $this->createProduct($sku, $parameters);
 
@@ -74,14 +76,8 @@ class PropertyClearerIntegration extends TestCase
     {
         $sku = 'test_localizable_title';
         $parameters = [
-            'values' => [
-                'a_text' => [
-                    ['data' => 'the text', 'locale' => null, 'scope'  => null],
-                ],
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'description', 'locale' => 'en_US', 'scope'  => 'ecommerce'],
-                ],
-            ],
+            new SetTextValue('a_text', null, null, 'the text'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'description')
         ];
         $product = $this->createProduct($sku, $parameters);
 
@@ -100,13 +96,7 @@ class PropertyClearerIntegration extends TestCase
         $this->createProduct('another_product', []);
 
         $parameters = [
-            'associations' => [
-                'X_SELL' => [
-                    'products' => ['a_product', 'another_product'],
-                    'product_models' => [],
-                    'groups' => [],
-                ],
-            ],
+            new AssociateProducts('X_SELL', ['a_product', 'another_product'])
         ];
         $product = $this->createProduct('a_product_with_association', $parameters);
 
@@ -125,7 +115,7 @@ class PropertyClearerIntegration extends TestCase
     public function test_it_clears_categories(): void
     {
         $parameters = [
-            'categories' => ['categoryA', 'categoryB'],
+            new SetCategories(['categoryA', 'categoryB'])
         ];
         $product = $this->createProduct('a_product_with_categories', $parameters);
         $this->assertGreaterThan(0, $product->getCategories()->count());
@@ -143,7 +133,7 @@ class PropertyClearerIntegration extends TestCase
     public function test_it_clears_groups(): void
     {
         $parameters = [
-            'groups' => ['groupA', 'groupB'],
+            new SetGroups(['groupA', 'groupB'])
         ];
         $product = $this->createProduct('a_product_with_groups', $parameters);
         $this->assertGreaterThan(0, $product->getGroups()->count());
@@ -163,24 +153,22 @@ class PropertyClearerIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    protected function createProduct(string $sku, array $data): ProductInterface
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($sku);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function getAssociationsCount(EntityWithAssociationsInterface $entity): int
@@ -193,5 +181,17 @@ class PropertyClearerIntegration extends TestCase
         };
 
         return $count;
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

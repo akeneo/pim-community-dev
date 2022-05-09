@@ -2,8 +2,13 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Classification;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use PHPUnit\Framework\Assert;
 
 class ClassifyProductModelIntegration extends TestCase
 {
@@ -29,6 +34,8 @@ class ClassifyProductModelIntegration extends TestCase
         $this->get('pim_catalog.updater.product_model')->update($childrenProductModel, ['categories' => ['master_women_shirts']]);
         $this->get('pim_catalog.validator.product_model')->validate($childrenProductModel);
         $this->get('pim_catalog.saver.product_model')->save($childrenProductModel);
+
+
 
         $parentProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-tee');
         $this->assertCount(1, $parentProductModel->getCategories());
@@ -71,10 +78,7 @@ class ClassifyProductModelIntegration extends TestCase
 
     public function testClassifyChildrenProductDoesNotImpactItsParent()
     {
-        $childrenProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('tee-red-s');
-        $this->get('pim_catalog.updater.product')->update($childrenProduct, ['categories' => ['master_women_shirts']]);
-        $this->get('pim_catalog.validator.product')->validate($childrenProduct);
-        $this->get('pim_catalog.saver.product')->save($childrenProduct);
+        $this->createProduct('tee-red-s', [new SetCategories(['master_women_shirts'])]);
 
         $parentProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-tee-red');
         $this->assertCount(1, $parentProductModel->getCategories());
@@ -84,10 +88,8 @@ class ClassifyProductModelIntegration extends TestCase
 
     public function testClassifyWithSameCategoryThanParentHasNoImpactOnChildrenProduct()
     {
+        $this->createProduct('tee-red-s', [new SetCategories(['supplier_zaro'])]);
         $childrenProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('tee-red-s');
-        $this->get('pim_catalog.updater.product')->update($childrenProduct, ['categories' => ['supplier_zaro']]);
-        $this->get('pim_catalog.validator.product')->validate($childrenProduct);
-        $this->get('pim_catalog.saver.product')->save($childrenProduct);
 
         $this->assertCount(1, $childrenProduct->getCategories());
         $category = $childrenProduct->getCategories()->first();
@@ -96,10 +98,7 @@ class ClassifyProductModelIntegration extends TestCase
 
     public function testUnclassifyChildrenProductDoesNotImpactItsParents()
     {
-        $childrenProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('tee-red-s');
-        $this->get('pim_catalog.updater.product')->update($childrenProduct, ['categories' => []]);
-        $this->get('pim_catalog.validator.product')->validate($childrenProduct);
-        $this->get('pim_catalog.saver.product')->save($childrenProduct);
+        $this->createProduct('tee-red-s', [new SetCategories([])]);
 
         $parentProductModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-tee');
         $this->assertCount(1, $parentProductModel->getCategories());
@@ -139,8 +138,6 @@ class ClassifyProductModelIntegration extends TestCase
             $subProductModel,
             ['values' => ['size' => [['data' => 's', 'locale' => null, 'scope' => null]]]]
         );
-        $this->get('pim_catalog.validator.product')->validate($variantProduct);
-        $this->get('pim_catalog.saver.product')->save($variantProduct);
 
         $this->get('akeneo_integration_tests.launcher.job_launcher')->launchConsumerUntilQueueIsEmpty();
     }
@@ -151,5 +148,35 @@ class ClassifyProductModelIntegration extends TestCase
     protected function getConfiguration()
     {
         return $this->catalog->useFunctionalCatalog('catalog_modeling');
+    }
+
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
+    {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

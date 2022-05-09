@@ -2,6 +2,8 @@
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product\Export\ProductQueryBuilder;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use AkeneoTest\Pim\Enrichment\Integration\Product\Export\AbstractExportTestCase;
 
 class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExportTestCase
@@ -17,33 +19,21 @@ class ExportProductsBySimpleSelectReferenceDataIntegration extends AbstractExpor
         ]);
 
         $this->createProduct('product_option_baby_blue', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_simple_select' => [
-                    ['data' => 'baby-blue', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'baby-blue'),
         ]);
 
         $this->createProduct('product_option_champagne', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_simple_select' => [
-                    ['data' => 'champagne', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'champagne'),
         ]);
 
         $this->createProduct('product_without_option', [
-            'family' => 'a_family',
-            'values'     => [
-                'a_ref_data_simple_select' => [
-                    ['data' => null, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetFamily('a_family'),
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, null),
         ]);
 
-        $this->createProduct('product_without_option_attribute',['family' => 'a_family']);
+        $this->createProduct('product_without_option_attribute',[new SetFamily('a_family')]);
 
     }
 

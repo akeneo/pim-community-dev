@@ -3,7 +3,10 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Updater\Copier;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -21,34 +24,32 @@ class AbstractCopierTestCase extends TestCase
     }
 
     /**
-     * Creates a product.
-     *
-     * @param string $sku
-     * @param array  $data
-     *
-     * @throws \Exception
-     *
-     * @return ProductInterface
+     * @param UserIntent[] $userIntents
      */
-    protected function createProduct($sku, array $data)
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
     {
-        $productUpdater = $this->get('pim_catalog.updater.product');
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct($sku);
-        $productUpdater->update($product, $data);
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
 
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                'Impossible to setup test in %s: %s',
-                static::class,
-                $errors->get(0)->getMessage()
-            ));
-        }
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
 
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
-
-        return $product;
+        return \intval($id);
     }
 }

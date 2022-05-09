@@ -3,6 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 
 /**
@@ -30,18 +32,10 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
         );
 
         $product = $this->createProductWithStandardValues(
-            $family,
             'another_product',
             [
-                'values' => [
-                    'a_text' => [
-                        [
-                            'locale' => null,
-                            'scope'  => 'ecommerce',
-                            'data'   => 'just a text'
-                        ],
-                    ]
-                ]
+                new SetFamily('another_family'),
+                new SetTextValue('a_text', 'ecommerce', null, 'just a text'),
             ]
         );
 
@@ -50,7 +44,7 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
 
     public function testNotCompleteScopable()
     {
-        $family = $this->createFamilyWithRequirement(
+        $this->createFamilyWithRequirement(
             'another_family',
             'ecommerce',
             'a_text',
@@ -59,22 +53,17 @@ class CompletenessForScopableAttributeIntegration extends AbstractCompletenessTe
             true
         );
 
-        $productWithoutValues = $this->createProductWithStandardValues($family, 'product_witout_values');
+        $productWithoutValues = $this->createProductWithStandardValues(
+            'product_witout_values',
+            [new SetFamily('another_family')]
+        );
         $this->assertNotComplete($productWithoutValues, 'ecommerce', ['a_text']);
 
         $productDataEmpty = $this->createProductWithStandardValues(
-            $family,
             'product_data_empty',
             [
-                'values' => [
-                    'a_text' => [
-                        [
-                            'locale' => null,
-                            'scope'  => 'ecommerce',
-                            'data'   => null
-                        ],
-                    ]
-                ]
+                new SetFamily('another_family'),
+                new SetTextValue('a_text', 'ecommerce', null, null)
             ]
         );
         $this->assertNotComplete($productDataEmpty, 'ecommerce');

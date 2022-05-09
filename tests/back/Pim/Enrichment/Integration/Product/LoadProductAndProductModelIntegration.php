@@ -4,6 +4,19 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Test\Integration\TestCase;
 use PHPUnit\Framework\Assert;
 
@@ -18,43 +31,22 @@ class LoadProductAndProductModelIntegration extends TestCase
         $this->createProduct(
             'baz',
             [
-                'family' => 'familyA',
-                'values' => [
-                    'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
-                    'a_text' => [['locale' => null, 'scope' => null, 'data' => 'Lorem ipsum dolor sit amet']],
-                ],
-                'groups' => ['groupA'],
-                'categories' => ['categoryA'],
-                'associations' => [
-                    'X_SELL' => [
-                        'products' => ['foo'],
-                        'product_models' => ['bar'],
-                        'groups' => ['groupB'],
-                    ],
-                    'TWOWAY' => [
-                        'products' => ['foo'],
-                        'product_models' => ['bar'],
-                    ]
-                ],
-                'quantified_associations' => [
-                    'QUANTIFIED' => [
-                        'products' => [
-                            [
-                                'identifier' => 'foo',
-                                'quantity' => 2,
-                            ],
-                        ],
-                        'product_models' => [
-                            [
-                                'identifier' => 'bar',
-                                'quantity' => 5,
-                            ],
-                        ],
-                    ],
-                ],
+                new SetFamily('familyA'),
+                new SetBooleanValue('a_yes_no', null, null, true),
+                new SetTextValue('a_text', null, null, 'Lorem ipsum dolor sit amet'),
+                new SetGroups(['groupA']),
+                new SetCategories(['categoryA']),
+                new AssociateProducts('X_SELL', ['foo']),
+                new AssociateProductModels('X_SELL', ['bar']),
+                new AssociateGroups('X_SELL', ['groupB']),
+                new AssociateProducts('TWOWAY', ['foo']),
+                new AssociateProductModels('TWOWAY', ['bar']),
+                new AssociateQuantifiedProducts('QUANTIFIED', [new QuantifiedEntity('foo', 2)]),
+                new AssociateQuantifiedProductModels('QUANTIFIED', [
+                    new QuantifiedEntity('bar', 5)
+                ])
             ]
         );
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         $baz = $this->get('pim_catalog.repository.product')->findOneByIdentifier('baz');
         Assert::assertFalse($baz->isDirty(), 'The product should not be dirty after loading it from the database');
@@ -149,14 +141,32 @@ class LoadProductAndProductModelIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', (string)$violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 
     private function createProductModel(array $data): void
