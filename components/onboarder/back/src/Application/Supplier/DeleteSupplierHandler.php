@@ -23,7 +23,7 @@ final class DeleteSupplierHandler
         );
 
         $this->logger->debug(
-            sprintf('Supplier "%s" created.', $deleteSupplier->identifier),
+            sprintf('Supplier "%s" deleted.', $deleteSupplier->identifier),
         );
     }
 }
