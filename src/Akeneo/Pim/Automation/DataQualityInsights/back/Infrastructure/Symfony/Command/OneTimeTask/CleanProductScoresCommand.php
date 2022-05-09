@@ -55,6 +55,7 @@ final class CleanProductScoresCommand extends Command
         while ($productScoresToClean = $this->getNextProductScoresToClean($lastProductId)) {
             try {
                 $this->cleanProductScores($productScoresToClean);
+                $lastProductId = (int) end($productScoresToClean);
             } catch (\Throwable $exception) {
                 $this->deleteTask(self::$defaultName);
                 throw $exception;
@@ -68,7 +69,7 @@ final class CleanProductScoresCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function getNextProductScoresToClean(int $lastProductId): string
+    private function getNextProductScoresToClean(int $lastProductId): array
     {
         $query = <<<SQL
 SELECT old_scores.product_id, old_scores.evaluated_at
@@ -82,7 +83,7 @@ ORDER BY old_scores.product_id ASC, old_scores.evaluated_at ASC
 LIMIT :bulkSize;
 SQL;
 
-        $results = $this->dbConnection->executeQuery(
+        return $this->dbConnection->executeQuery(
             $query,
             [
                 'lastProductId' => $lastProductId,
@@ -92,17 +93,10 @@ SQL;
                 'lastProductId' => \PDO::PARAM_INT,
                 'bulkSize' => \PDO::PARAM_INT,
             ]
-        )->fetchAllAssociative();
-
-        return implode(', ', array_map(function (array $productScoreToClean) {
-            return sprintf(
-                "%d",
-                $productScoreToClean['product_id']
-            );
-        }, $results));
+        )->fetchFirstColumn();
     }
 
-    private function cleanProductScores(string $productIds): void
+    private function cleanProductScores(array $productIds): void
     {
         $this->dbConnection->executeQuery(
             <<<SQL
@@ -111,8 +105,10 @@ FROM pim_data_quality_insights_product_score AS old_scores
 INNER JOIN pim_data_quality_insights_product_score AS younger_scores
     ON younger_scores.product_id = old_scores.product_id
     AND younger_scores.evaluated_at > old_scores.evaluated_at
-WHERE old_scores.product_id IN ($productIds);
-SQL
+WHERE old_scores.product_id IN (:productIds);
+SQL,
+            ['productIds' => $productIds],
+            ['productIds' => Connection::PARAM_INT_ARRAY]
         );
     }
 }
