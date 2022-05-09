@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event;
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
-use Symfony\Contracts\EventDispatcher\Event;
 
-final class ContributorAdded extends Event
+final class ContributorAdded
 {
     public function __construct(private Identifier $supplierIdentifier, private string $contributorEmail)
     {

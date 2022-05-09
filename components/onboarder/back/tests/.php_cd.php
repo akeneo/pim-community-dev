@@ -28,7 +28,6 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
-            'Symfony\Contracts\EventDispatcher\Event',
         ],
     )->in('Akeneo\OnboarderSerenity\Domain'),
 
