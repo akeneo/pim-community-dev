@@ -21,4 +21,38 @@ class ContributorsTest extends TestCase
         ], $contributors->toArray());
         static::assertCount(2, $contributors);
     }
+
+    /** @test */
+    public function itComputesCreatedContributorEmails(): void
+    {
+        $currentContributorEmails = [
+            'foo@foo.foo',
+        ];
+
+        $newContributorEmails = [
+            'foo@foo.foo',
+            'bar@bar.bar',
+        ];
+
+        $contributors = Contributors::fromEmails($currentContributorEmails);
+
+        static::assertSame(['bar@bar.bar'], $contributors->computeCreatedContributorEmails($newContributorEmails));
+    }
+
+    /** @test */
+    public function itComputesDeletedContributorEmails(): void
+    {
+        $currentContributorEmails = [
+            'foo@foo.foo',
+            'bar@bar.bar',
+        ];
+
+        $newContributorEmails = [
+            'foo@foo.foo',
+        ];
+
+        $contributors = Contributors::fromEmails($currentContributorEmails);
+
+        static::assertSame(['bar@bar.bar'], $contributors->computeDeletedContributorEmails($newContributorEmails));
+    }
 }
