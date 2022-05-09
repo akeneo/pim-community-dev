@@ -25,8 +25,18 @@ class CachedFindAllViewableLocalesForUserSpec extends ObjectBehavior
             ->shouldBeCalledOnce()
         ;
 
+        $findAllViewableLocalesForUser
+            ->findAll(2)
+            ->willReturn([
+                new Locale('en_US', true),
+            ])
+            ->shouldBeCalledOnce()
+        ;
+
         $this->findAll(1);
         $this->findAll(1);
         $this->findAll(1);
+        $this->findAll(2);
+        $this->findAll(2);
     }
 }

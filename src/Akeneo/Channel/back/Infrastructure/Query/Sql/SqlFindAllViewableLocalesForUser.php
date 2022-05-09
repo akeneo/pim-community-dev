@@ -38,7 +38,7 @@ class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser
         foreach ($results as $result) {
             $locales[] = new Locale(
                 $result['localeCode'],
-                $result['isActivated']
+                (bool) $result['isActivated']
             );
         }
 

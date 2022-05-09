@@ -59,7 +59,7 @@ final class SqlFindLocales implements FindLocales
         foreach ($results as $result) {
             $locales[] = new Locale(
                 $result['localeCode'],
-                $result['isActivated']
+                (bool) $result['isActivated']
             );
         }
 

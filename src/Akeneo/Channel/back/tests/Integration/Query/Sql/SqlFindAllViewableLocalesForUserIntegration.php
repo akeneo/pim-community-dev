@@ -25,17 +25,12 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
         $results = $this->sqlFindAllViewableLocalesForUser->findAll(1);
 
         $this->assertIsArray($results);
-        $this->assertCount(3, $results);
+        $this->assertCount(210, $results);
         $this->assertContainsOnlyInstancesOf(Locale::class, $results);
-
-        $enUSLocale = current(array_filter($results, fn (Locale $channel) => $channel->getCode() === 'en_US'));
-
-        $this->assertEquals('en_US', $enUSLocale->getCode());
-        $this->assertEquals(true, $enUSLocale->isActivated());
     }
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
 }
