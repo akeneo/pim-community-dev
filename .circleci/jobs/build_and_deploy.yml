@@ -482,3 +482,31 @@ jobs:
                       ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                       export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
                       make -C deployments/ uncommit-instance
+
+    build_docker_images:
+        machine:
+            image: ubuntu-2004:2022.04.1
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - run:
+                  name: Build Akeneo PHP image
+                  command: docker build -t akeneo/pim-php-dev:6.0 .
+            - run:
+                  name: Display PHP version
+                  command: |
+                      docker-compose run --rm php php -v
+            - run:
+                  name: Build Akeneo Node image
+                  command: docker build -t akeneo/node:14 -f docker/Dockerfile_node .
+            - run:
+                  name: Display Node and Yarn versions
+                  command: |
+                      docker-compose run --rm node node --version
+                      docker-compose run --rm node yarn --version
+            - run:
+                  name: Push images to Dockerhub
+                  command: |
+                      docker login -u="$DOCKERHUB_USER" -p="$DOCKERHUB_PWD"
+                      docker push akeneo/pim-php-dev:6.0
+                      docker push akeneo/node:14
