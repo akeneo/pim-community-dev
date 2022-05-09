@@ -1,3 +1,6 @@
 services:
     akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
         class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindChannels
+
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales:
+        alias: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindLocales
