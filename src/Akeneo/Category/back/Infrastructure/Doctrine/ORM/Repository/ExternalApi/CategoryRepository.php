@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Category\Infrastructure\Doctrine\ORM\Repository\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Validator\Constraints\Type;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ORM\EntityManager;
@@ -11,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\UnexpectedResultException;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -20,22 +21,13 @@ use Symfony\Component\Validator\Validation;
  */
 class CategoryRepository extends EntityRepository implements ApiResourceRepositoryInterface
 {
-    /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
-
-    /**
-     * @param EntityManager $entityManager
-     * @param string $className
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(
-        EntityManager $entityManager,
-        $className,
-        CategoryRepositoryInterface $categoryRepository
+        protected EntityManager $entityManager,
+        protected string $className,
+        protected CategoryRepositoryInterface $categoryRepository,
+        private ValidatorInterface $validator
     ) {
         parent::__construct($entityManager, $entityManager->getClassMetadata($className));
-
-        $this->categoryRepository = $categoryRepository;
     }
 
     public function getIdentifierProperties()
@@ -152,7 +144,6 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
             return;
         }
 
-        $validator = Validation::createValidator();
         $constraints = [
             'code' => new Assert\All([
                 new Assert\Collection([
@@ -161,9 +152,9 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         'message' => 'In order to search on category codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
-                        new Assert\Type([
+                        new Type([
                             'type' => 'array',
-                            'message' => 'In order to search on category codes you must send an array of category codes as value, {{ type }} given.'
+                            'message' => 'In order to search on category codes you must send an array of category codes as value, {{ givenType }} given.'
                         ]),
                         new Assert\All([
                             new Assert\Type('string')
@@ -223,7 +214,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     $property
                 ));
             }
-            $violations = $validator->validate($searchFilter, $constraints[$property]);
+            $violations = $this->validator->validate($searchFilter, $constraints[$property]);
             foreach ($violations as $violation) {
                 $exceptionMessages[] = $violation->getMessage();
             }

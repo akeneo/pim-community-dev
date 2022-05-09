@@ -163,3 +163,9 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetViewableProductModels'
         tags:
             - { name: 'pim.enrichment.product.user_intent_applier' }
+
+    Akeneo\Pim\Enrichment\Product\Application\Applier\SetPriceCollectionValueApplier:
+        arguments:
+            - '@pim_catalog.updater.product'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_applier' }

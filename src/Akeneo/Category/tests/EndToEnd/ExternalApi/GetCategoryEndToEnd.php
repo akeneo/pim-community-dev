@@ -90,6 +90,24 @@ class GetCategoryEndToEnd extends ApiTestCase
         $this->assertResponse($response, $expectedCategory);
     }
 
+    public function testGetACategoryWithWrongCategoryCodeType(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $client->request('GET', 'api/rest/v1/categories?search={"code":[{"operator":"IN","value":1234}]}');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertSame(
+            [
+                'code' => 400,
+                'message' => 'In order to search on category codes you must send an array of category codes as value, integer given. This value should be of type iterable.'
+            ],
+            json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR));
+
+    }
+
     private function assertResponse(Response $response, array $expected)
     {
         $result = json_decode($response->getContent(), true);

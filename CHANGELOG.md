@@ -33,6 +33,7 @@
 - PIM-10251: Fix locale on API call
 - PIM-10421: Add missing translation key for delete button
 - PIM-10418: Simple and multi select values not showing if not imported with the correct letter case
+- PIM-10426: Fix empty array should be normalized as empty JSON object in Measurement Family API
 - PIM-10416: Fix letter case issue when importing families
 
 ## Improvements

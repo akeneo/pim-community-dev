@@ -1,17 +1,20 @@
+import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {action} from '@storybook/addon-actions';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
-import {CloseIcon, EditIcon, MoreIcon} from '../../icons';
+import {CloseIcon, ArrowDownIcon, MoreIcon} from '../../icons';
 
 <Meta
   title="Components/Block"
   component={Block}
   argTypes={{
+    title: {control: {type: 'text'}},
     children: {control: {type: 'text'}},
   }}
   args={{
-    children: 'I am a block',
+    title: 'I am a block',
+    children: 'I am the block content',
   }}
 />
 
@@ -36,22 +39,35 @@ Use this playground to test the block component
 
 <ArgsTable story="Standard" />
 
-## With Actions
+## Without Actions
 
 <Canvas>
-  <Story name="With Action">
+  <Story name="Without Actions">
     {args => {
       return (
         <>
-          <Block {...args}>
-            Block without action
-          </Block>
+          <Block {...args} title="Block without action" />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+
+## With Actions
+
+<Canvas>
+  <Story name="With Actions">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      return (
+        <>
           <Block
-            {...args}
-            action={<IconButton key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />}
-          >
-            Block with action
-          </Block>
+            {...args} title="Block with actions" isOpen={isOpen} onCollapse={setOpen} collapseButtonLabel="Collapse"
+            actions={<>
+              <IconButton level="danger" ghost size="small" key="remove" icon={<CloseIcon />} title='Remove' onClick={action('Remove block')} />
+            </>}
+          />
         </>
       );
     }}

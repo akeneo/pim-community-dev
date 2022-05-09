@@ -64,7 +64,8 @@ services:
         class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.saver.product'
             - '@pim_connector.doctrine.cache_clearer'
         public: false
@@ -122,7 +123,8 @@ services:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_notification.notifier'
             - '@pim_notification.factory.notification'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.saver.locale'
@@ -216,7 +218,7 @@ services:
     pim_connector.tasklet.mass_edit_family.compute_completeness_of_family_products:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Job\ComputeCompletenessOfFamilyProductsTasklet'
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_enrich.connector.reader.mass_edit.family'
             - '@pim_connector.doctrine.cache_clearer'
             - '@akeneo_batch.job_repository'
@@ -288,7 +290,7 @@ services:
         arguments:
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.connector.reader.mass_edit.family'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_identifier_query_builder_factory'
             - '@pim_catalog.query.product_model_query_builder_factory'
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@pim_catalog.elasticsearch.indexer.product_model_descendants_and_ancestors'

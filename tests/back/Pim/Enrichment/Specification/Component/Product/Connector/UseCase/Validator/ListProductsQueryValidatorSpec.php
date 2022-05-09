@@ -16,6 +16,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\Validate
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateChannel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateCriterion;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateIdentifiersLimit;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateLocales;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidatePagination;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Validator\ValidateProperties;
@@ -46,7 +47,8 @@ class ListProductsQueryValidatorSpec extends ObjectBehavior
             new ValidateAlwaysGrantedCategories(),
             new ValidateAlwaysGrantedProperties(),
             new ValidateAlwaysGrantedAttributes(),
-            new ValidateAlwaysGrantedLocales()
+            new ValidateAlwaysGrantedLocales(),
+            new ValidateIdentifiersLimit()
         );
 
         $channel = new Channel();

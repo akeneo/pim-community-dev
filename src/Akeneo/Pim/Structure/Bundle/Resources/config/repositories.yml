@@ -55,6 +55,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute.class%'
             - '@pim_catalog.repository.attribute'
+            - '@validator'
 
     pim_api.repository.family:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\FamilyRepository'
@@ -64,6 +65,7 @@ services:
             - '@pim_catalog.repository.family'
             - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsUsedByProductsQuery'
             - '@Akeneo\Pim\Structure\Bundle\Query\InternalApi\Family\GetFamilyIdsNotUsedByProductsQuery'
+            - '@validator'
 
     pim_api.repository.attribute_group:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeGroupRepository'
@@ -71,6 +73,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.attribute_group.class%'
             - '@pim_catalog.repository.attribute_group'
+            - '@validator'
 
     ### Internal API
     pim_enrich.repository.attribute_group:
