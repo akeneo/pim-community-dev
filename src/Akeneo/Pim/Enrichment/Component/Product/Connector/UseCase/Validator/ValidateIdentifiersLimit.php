@@ -35,7 +35,7 @@ final class ValidateIdentifiersLimit
 
         if (count(array_unique($inQuery['value'])) > self::LIMIT) {
             throw new BadRequestException(
-                "The identifier filter can't contains more than ". self::LIMIT ." product identifiers."
+                "The identifier filter can't contain more than ". self::LIMIT ." product identifiers."
             );
         }
     }
