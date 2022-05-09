@@ -5,7 +5,6 @@ import {useTranslate} from '@akeneo-pim-community/connectivity-connection/src/sh
 import {PermissionFormProvider} from '../../../../shared/permission-form-registry';
 import {PermissionsByProviderKey} from '../../../../model/Apps/permissions-by-provider-key';
 import {PermissionsForm} from '../../PermissionsForm';
-import ScopeMessage from '../../../../model/Apps/scope-message';
 
 const InfoContainer = styled.div`
     grid-area: INFO;
@@ -48,7 +47,13 @@ type Props = {
     onlyDisplayViewPermissions: boolean;
 };
 
-export const Permissions: FC<Props> = ({appName, providers, setProviderPermissions, permissions, onlyDisplayViewPermissions}) => {
+export const Permissions: FC<Props> = ({
+    appName,
+    providers,
+    setProviderPermissions,
+    permissions,
+    onlyDisplayViewPermissions,
+}) => {
     const translate = useTranslate();
 
     return (

@@ -17,12 +17,9 @@ export interface PermissionFormProvider<T> {
         onPermissionsChange: (state: T) => void,
         initialState: T | undefined,
         readOnly: boolean | undefined,
-        onlyDisplayViewPermissions: boolean,
+        onlyDisplayViewPermissions: boolean
     ) => ReactNode;
-    renderSummary: (
-        state: T,
-        onlyDisplayViewPermissions: boolean,
-    ) => ReactNode;
+    renderSummary: (state: T, onlyDisplayViewPermissions: boolean) => ReactNode;
     save: (userGroup: string, state: T) => Promise<void>;
     loadPermissions: (userGroup: string) => Promise<T>;
 }

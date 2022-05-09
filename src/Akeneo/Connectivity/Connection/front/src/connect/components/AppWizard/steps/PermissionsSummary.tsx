@@ -44,9 +44,11 @@ type PermissionsSummarySectionProps = {
     onlyDisplayViewPermissions: boolean;
 };
 
-const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(({provider, permissions, onlyDisplayViewPermissions}) => (
-    <div>{provider.renderSummary(permissions, onlyDisplayViewPermissions)}</div>
-));
+const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(
+    ({provider, permissions, onlyDisplayViewPermissions}) => (
+        <div>{provider.renderSummary(permissions, onlyDisplayViewPermissions)}</div>
+    )
+);
 
 type Props = {
     appName: string;
