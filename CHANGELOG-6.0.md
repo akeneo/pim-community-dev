@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10425: Fix notifications can't be displayed because of removed routes
+
 ## Improvements
 
 - Use Node v14 in docker-compose files
