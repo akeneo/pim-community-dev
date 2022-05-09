@@ -40,6 +40,9 @@ final class SqlFindLocales implements FindLocales
         return null;
     }
 
+    /**
+     * @return Locale[]
+     */
     public function findAllActivated(): array
     {
         $sql = <<<SQL
