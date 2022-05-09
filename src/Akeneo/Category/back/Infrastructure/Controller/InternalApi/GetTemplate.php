@@ -17,14 +17,14 @@ class GetTemplate
     public function __invoke(Request $request): Response
     {
         $labels = LabelCollection::fromArray([
-            'en_US' => 'a en_US label'
+            'en_US' => 'a en_US label',
         ]);
         $attributes = new AttributeCollection([]);
         $template = new Template(
             new TemplateIdentifier($request->get('identifier')),
             new TemplateCode('a_template_code'),
             $labels,
-            CategoryIdentifier::fromString($request->get('category_tree_identifier')),
+            CategoryIdentifier::fromString($request->get('categoryTreeIdentifier')),
             $attributes,
         );
 
