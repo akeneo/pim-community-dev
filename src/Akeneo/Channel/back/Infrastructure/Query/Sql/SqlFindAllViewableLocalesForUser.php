@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Channel\Infrastructure\Query\Sql;
 
+use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser;
 use Akeneo\Channel\API\Query\Locale;
 use Doctrine\DBAL\Connection;
 
-class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUserInterface
+class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser
 {
     public function __construct(
         private Connection $connection
     ) {
     }
 
-    public function fetchAll(int $userId): array
+    public function findAll(int $userId): array
     {
         $sql = <<<SQL
             SELECT
@@ -48,7 +49,7 @@ class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUserI
         foreach ($results as $result) {
             $locales[] = new Locale(
                 $result['localeCode'],
-                $result['isActivated']
+                (bool) $result['isActivated'],
             );
         }
 

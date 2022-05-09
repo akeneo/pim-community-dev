@@ -20,7 +20,13 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
         $userId =  $this->get('database_connection')
             ->fetchColumn('SELECT id FROM oro_user WHERE username = "mary"', [], 0);
 
-        Assert::assertSame(['en_US', 'fr_FR', 'zh_CN'], $query->fetchAll($userId));
+        $expectedLocales = [
+            new Locale('en_US', 1),
+            new Locale('fr_FR', 1),
+            new Locale('zh_CN', 1),
+        ];
+
+        Assert::assertEqualsCanonicalizing($expectedLocales, $query->fetchAll($userId));
     }
 
     /**
@@ -31,7 +37,7 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private function getQuery(): FindAllViewableLocalesForUserInterface
+    private function getQuery(): FindAllViewableLocalesForUser
     {
         return $this->get('Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser');
     }
