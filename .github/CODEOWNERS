@@ -7,3 +7,5 @@ components/onboarder/ @akeneo/squad-suricates
 .circleci/jobs/features/onboarder/ @cha-ser @akeneo/squad-suricates
 ## Onboarder makefile
 make-file/onboarder-serenity.mk @akeneo/squad-suricates
+## Product Database Migrations
+upgrades/schema/ @akeneo/squad-chipmunks

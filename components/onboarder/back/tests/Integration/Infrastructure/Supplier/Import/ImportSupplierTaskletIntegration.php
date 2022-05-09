@@ -21,7 +21,7 @@ final class ImportSupplierTaskletIntegration extends SqlIntegrationTestCase
     }
 
     /** @test */
-    public function itImportsSupplierFromAXlsxFile(): void
+    public function itImportsSuppliersFromAXlsxFile(): void
     {
         $filePath = sprintf(
             '%s/components/onboarder/back/tests/Integration/files/suppliers_import.xlsx',

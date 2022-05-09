@@ -256,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: 商品のテーブル値をXLSX形式でインポート
   csv_product_model_table_values_import.label: 商品モデルのテーブル値をCSV形式でインポート
   xlsx_product_model_table_values_import.label: 商品モデルのテーブル値をXLSX形式でインポート
+  default_steps.clean: 存在しないテーブルオプション値の削除
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 商品と商品モデルから存在しないテーブルオプション値を削除
