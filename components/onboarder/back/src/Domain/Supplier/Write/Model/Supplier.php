@@ -30,7 +30,7 @@ final class Supplier
         $this->label = Label::fromString($label);
         $this->contributors = Contributors::fromEmails($contributorEmails);
 
-        $this->events = array_merge($this->events(), array_map(fn (string $contributorEmail) => new ContributorAdded(
+        $this->events = array_merge($this->events, array_map(fn (string $contributorEmail) => new ContributorAdded(
             Identifier::fromString($this->identifier()),
             $contributorEmail,
         ), $contributorEmails));
@@ -55,12 +55,12 @@ final class Supplier
             $contributorEmails,
         );
 
-        $this->events = array_merge($this->events(), array_map(fn (string $deletedContributorEmail) => new ContributorDeleted(
+        $this->events = array_merge($this->events, array_map(fn (string $deletedContributorEmail) => new ContributorDeleted(
             Identifier::fromString($this->identifier()),
             $deletedContributorEmail,
         ), $this->contributors->computeDeletedContributorEmails($contributorEmails)));
 
-        $this->events = array_merge($this->events(), array_map(fn (string $createdContributorEmail) => new ContributorAdded(
+        $this->events = array_merge($this->events, array_map(fn (string $createdContributorEmail) => new ContributorAdded(
             Identifier::fromString($this->identifier()),
             $createdContributorEmail,
         ), $this->contributors->computeCreatedContributorEmails($contributorEmails)));

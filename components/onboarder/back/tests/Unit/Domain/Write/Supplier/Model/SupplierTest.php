@@ -34,17 +34,14 @@ final class SupplierTest extends TestCase
             '44ce8069-8da1-4986-872f-311737f46f02',
             'supplier_code',
             'Supplier label',
-            ['foo@foo.foo'],
+            ['foo@foo.foo', 'bar@bar.bar', 'baz@baz.baz'],
         );
 
-        $expectedContributorAddedEvent = $supplier->events()[0];
+        $expectedEvents = $supplier->events();
 
-        static::assertInstanceOf(ContributorAdded::class, $expectedContributorAddedEvent);
-        static::assertSame('foo@foo.foo', $expectedContributorAddedEvent->contributorEmail());
-        static::assertSame(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            (string) $expectedContributorAddedEvent->supplierIdentifier(),
-        );
+        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[0]);
+        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[1]);
+        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[2]);
         // Check that there is no events anymore in the supplier object
         static::assertCount(0, $supplier->events());
     }
@@ -62,20 +59,10 @@ final class SupplierTest extends TestCase
 
         $supplier->update('Supplier label', ['bar@bar.bar']);
 
-        $expectedContributorDeletedEvents = $supplier->events();
+        $expectedEvents = $supplier->events();
 
-        static::assertInstanceOf(ContributorDeleted::class, $expectedContributorDeletedEvents[0]);
-        static::assertSame('foo@foo.foo', $expectedContributorDeletedEvents[0]->contributorEmail());
-        static::assertSame(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            (string) $expectedContributorDeletedEvents[0]->supplierIdentifier(),
-        );
-        static::assertInstanceOf(ContributorAdded::class, $expectedContributorDeletedEvents[1]);
-        static::assertSame('bar@bar.bar', $expectedContributorDeletedEvents[1]->contributorEmail());
-        static::assertSame(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            (string) $expectedContributorDeletedEvents[1]->supplierIdentifier(),
-        );
+        static::assertInstanceOf(ContributorDeleted::class, $expectedEvents[0]);
+        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[1]);
         // Check that there is no events anymore in the supplier object
         static::assertCount(0, $supplier->events());
     }
