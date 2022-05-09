@@ -7,8 +7,10 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\UserManagement\Component\Model\User;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -100,6 +102,12 @@ class DatabaseCommand extends Command
                 InputOption::VALUE_NONE,
                 'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
             )
+            ->addOption(
+                'force-reset',
+                null,
+                InputOption::VALUE_NONE,
+                'Forces the full reset of the catalog. If this option is not set and a database exists and contains data, the operation will fail'
+            )
         ;
     }
 
@@ -126,6 +134,9 @@ class DatabaseCommand extends Command
         try {
             if (!$this->connection->isConnected()) {
                 $this->connection->connect();
+            }
+            if (!$input->getOption('force-reset')) {
+                $this->checkDatabaseIntegrity();
             }
             if ($input->getOption('doNotDropDatabase')) {
                 $this->commandExecutor->runCommand('doctrine:schema:drop', ['--force' => true, '--full-database' => true]);
@@ -354,5 +365,24 @@ class DatabaseCommand extends Command
     protected function launchCommands(): void
     {
         $this->commandExecutor->runCommand('pim:versioning:refresh');
+    }
+
+    private function checkDatabaseIntegrity(): void
+    {
+        $userTable = $this->entityManager->getClassMetadata(User::class)->getTableName();
+        try {
+            $hasUsers = (bool) $this->connection->executeQuery(\sprintf(
+                'SELECT EXISTS(SELECT * FROM %s);',
+                $userTable
+            ))->fetchOne();
+            if (!$hasUsers) {
+                return;
+            }
+        } catch (TableNotFoundException) {
+            // the user table daos not exist yet
+            return;
+        }
+
+        throw new \LogicException('Database already contains data. Aborting.');
     }
 }
