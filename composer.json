@@ -77,8 +77,8 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-RAB-611",
-        "akeneo/pim-onboarder": "dev-RAB-channel-decoupling",
+        "akeneo/pim-community-dev": "dev-master",
+        "akeneo/pim-onboarder": "^7.0.0",
         "grpc/grpc": "^1.30.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "jfcherng/php-diff": "^6.10",
