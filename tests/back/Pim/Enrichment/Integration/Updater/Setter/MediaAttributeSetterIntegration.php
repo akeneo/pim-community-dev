@@ -28,7 +28,6 @@ class MediaAttributeSetterIntegration extends TestCase
         $attributeName = 'a_localizable_image';
 
         $parameters = [
-            // TODO : use SetImageValue when ready
             'values' => [
                 $attributeName => [
                     [
@@ -57,7 +56,6 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
-                // TODO: use SetImageValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1C-t.png'),
@@ -85,7 +83,6 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
-                // TODO: use SetMediaValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),
@@ -113,7 +110,6 @@ class MediaAttributeSetterIntegration extends TestCase
 
         $parameters = [
             'values' => [
-                // TODO: use SetMediaValue when ready
                 $attributeName => [
                     [
                         'data'   => $this->getFileInfoKey($this->getParameter('kernel.project_dir').'/tests/legacy/features/Context/fixtures/SNKRS-1R.png'),

@@ -3,7 +3,9 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -38,18 +40,22 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_localizable_price', null, 'en_US', ['amount' => 20, 'currency' => 'EUR']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_localizable_price', null, 'fr_FR', ['amount' => 21, 'currency' => 'EUR']),
+            new SetPriceCollectionValue('a_localizable_price', null, 'en_US',
+                [new PriceValue(20, 'EUR')]
+            ),
+            new SetPriceCollectionValue('a_localizable_price', null, 'fr_FR',
+                [new PriceValue(21, 'EUR')]
+            ),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_localizable_price', null, 'en_US', ['amount' => 10, 'currency' => 'EUR']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_localizable_price', null, 'fr_FR', ['amount' => 1, 'currency' => 'EUR']),
+            new SetPriceCollectionValue('a_localizable_price', null, 'en_US',
+                [new PriceValue(10, 'EUR')]
+            ),
+            new SetPriceCollectionValue('a_localizable_price', null, 'fr_FR',
+                [new PriceValue(1, 'EUR')]
+            ),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

@@ -3,7 +3,9 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -40,24 +42,31 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'ecommerce', 'en_US', ['amount' => '-5.00', 'currency' => 'USD']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'tablet', 'en_US', ['amount' => '14', 'currency' => 'USD']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'tablet', 'fr_FR', ['amount' => '100', 'currency' => 'USD']),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'en_US',
+                [new PriceValue('-5.00', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'en_US',
+                [new PriceValue('14', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'fr_FR',
+                [new PriceValue('100', 'USD')]
+            ),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'ecommerce', 'en_US', ['amount' => '-5.00', 'currency' => 'USD']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'tablet', 'en_US', ['amount' => '10', 'currency' => 'USD']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'tablet', 'fr_FR', ['amount' => '75', 'currency' => 'USD']),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_localizable_price', 'ecommerce', 'fr_FR', ['amount' => '75', 'currency' => 'USD']),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'en_US',
+                [new PriceValue('-5.00', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'en_US',
+                [new PriceValue('10', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'tablet', 'fr_FR',
+                [new PriceValue('75', 'USD')]
+            ),
+            new SetPriceCollectionValue('a_scopable_localizable_price', 'ecommerce', 'fr_FR',
+                [new PriceValue('75', 'USD')]
+            ),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

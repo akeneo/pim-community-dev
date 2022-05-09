@@ -4,7 +4,9 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -31,17 +33,17 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_price', null, null, [
-                ['amount' => '10.55', 'currency' => 'EUR'],
-                ['amount' => '11', 'currency' => 'USD']
+            new SetPriceCollectionValue('a_price', null, null, [
+                new PriceValue('10.55', 'EUR'),
+                new PriceValue('11', 'USD')
             ]),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_price', null, null, [['amount' => '15', 'currency' => 'EUR']]),
+            new SetPriceCollectionValue('a_price', null, null,
+                [new PriceValue('15', 'EUR')]
+            ),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

@@ -3,7 +3,9 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Price;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
@@ -29,21 +31,23 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $this->createProduct('product_one', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'ecommerce', null, [['amount' => '10.55', 'currency' => 'EUR']]),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'tablet', null, [['amount' => '25', 'currency' => 'USD']]),
+            new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null,
+                [new PriceValue('10.55', 'EUR')]
+            ),
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null,
+                [new PriceValue('25', 'USD')]
+            ),
         ]);
 
         $this->createProduct('product_two', [
             new SetFamily('a_family'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'ecommerce', null, [
-                ['amount' => '2', 'currency' => 'EUR'],
-                ['amount' => '2.2', 'currency' => 'USD'],
+            new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                new PriceValue('2', 'EUR'),
+                new PriceValue('2.2', 'USD'),
             ]),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'tablet', null, [['amount' => '30', 'currency' => 'EUR']]),
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null,
+                [new PriceValue('30', 'EUR')]
+            ),
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

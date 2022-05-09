@@ -4,9 +4,11 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 
@@ -139,23 +141,10 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                 new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetTextValue('a_regexp', null, null, '\w+ .*'),
-                // TODO: use SetPriceValue when ready
-                'a_scopable_price'                   => [
-                    [
-                        'locale' => null,
-                        'scope'  => 'ecommerce',
-                        'data'   => [
-                            [
-                                'amount'   => 12,
-                                'currency' => 'EUR',
-                            ],
-                            [
-                                'amount'   => 14,
-                                'currency' => 'USD',
-                            ],
-                        ],
-                    ],
-                ],
+                new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                    new PriceValue(12, 'EUR'),
+                    new PriceValue(14, 'USD'),
+                ]),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'fr_FR', 'Mon textarea localisé et scopable ecommerce'),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', null),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Mon textarea localisé et scopable tablet'),

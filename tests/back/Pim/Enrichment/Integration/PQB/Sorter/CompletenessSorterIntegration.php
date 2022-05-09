@@ -4,8 +4,10 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -171,10 +173,9 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
             new SetFamily('familyB'),
             new SetMeasurementValue('a_metric', null, null, 15, 'WATT'),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'text'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'tablet', null, [
-                ['amount' => 15, 'currency' => 'EUR'],
-                ['amount' => 15.5, 'currency' => 'USD'],
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue(15, 'EUR'),
+                new PriceValue(15.5, 'USD'),
             ])
         ]);
 
@@ -182,10 +183,9 @@ class CompletenessSorterIntegration extends AbstractProductQueryBuilderTestCase
             new SetFamily('familyB'),
             new SetMeasurementValue('a_metric', null, null, 15, 'WATT'),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'text'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'tablet', null, [
-                ['amount' => 15, 'currency' => 'EUR'],
-                ['amount' => 15.5, 'currency' => 'USD'],
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue(15, 'EUR'),
+                new PriceValue(15.5, 'USD'),
             ])
         ]);
 

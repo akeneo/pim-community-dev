@@ -10,9 +10,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\TestCase;
@@ -96,17 +98,10 @@ class SqlGetProductCompletenessRatioIntegration extends TestCase
                 new SetDateValue('a_date', null, null, new \DateTime('2020-03-18T00:00:00+00:00')),
                 new SetTextValue('a_text', null, null, 'lorem ipsum'),
                 new SetBooleanValue('a_yes_no', null, null, false),
-                // TODO: use SetPriceValue when ready
-                /**'a_scopable_price' => [
-                    [
-                        'scope' => 'ecommerce',
-                        'locale' => null,
-                        'data' => [
-                            ['amount' => '10.00', 'currency' => 'EUR'],
-                            ['amount' => '12.00', 'currency' => 'USD'],
-                        ],
-                    ],
-                ],*/
+                new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                    new PriceValue('10.00', 'EUR'),
+                    new PriceValue('12.00', 'USD'),
+                ]),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Lorem ipsum dolor sit amet')
             ]
         );

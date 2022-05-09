@@ -3,9 +3,11 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Filter\Field\Product;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -65,10 +67,9 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
             new SetCategories(['categoryA2', 'categoryA1']),
             new SetMeasurementValue('a_metric', null, null, 15, 'WATT'),
             new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'text'),
-            // TODO: use SetPriceValue when ready
-            new SetTextValue('a_scopable_price', 'tablet', null, [
-                ['amount' => 15, 'currency' => 'EUR'],
-                ['amount' => 15.5, 'currency' => 'USD']
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue(15, 'EUR'),
+                new PriceValue(15.5, 'USD'),
             ])
         ]);
 
