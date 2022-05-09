@@ -8,6 +8,17 @@ ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
 endif
 
+# TESTS
+
+.PHONY: catalogs-tests
+catalogs-tests:
+	$(MAKE) catalogs-lint-back
+	$(MAKE) catalogs-coupling-back
+	$(MAKE) catalogs-coverage-back
+	$(MAKE) catalogs-acceptance-back
+	$(MAKE) catalogs-lint-front
+	$(MAKE) catalogs-unit-front
+
 # TESTS BACK
 
 .PHONY: catalogs-lint-back
