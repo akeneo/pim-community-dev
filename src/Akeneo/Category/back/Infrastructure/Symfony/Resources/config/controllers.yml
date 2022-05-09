@@ -67,6 +67,5 @@ services:
         calls:
             - [ setContainer, [ '@service_container' ] ]
 
-    Akeneo\Category\Infrastructure\Controller\InternalApi\GetTemplate: ~
     Akeneo\Category\Infrastructure\Controller\InternalApi\EditTemplate: ~
     Akeneo\Category\Infrastructure\Controller\InternalApi\CreateAttribute: ~
