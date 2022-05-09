@@ -82,7 +82,8 @@ jobs:
             - run:
                   name: Update composer.json if same branch exists in pim-onboader for EE
                   command: |
-                      curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-onboarder/tree/${CIRCLE_BRANCH} && \
+                      export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                      git ls-remote --exit-code --heads git@github.com:akeneo/pim-onboarder.git ${CIRCLE_BRANCH} && \
                       sed -i "s#akeneo/pim-onboarder\": \"^7.0.0#akeneo/pim-onboarder\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
                       echo "No pim-onboarder branch $CIRCLE_BRANCH found. I don't touch the dependencies."
             - run:
