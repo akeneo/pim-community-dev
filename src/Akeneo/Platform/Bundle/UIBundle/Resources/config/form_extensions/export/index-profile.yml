@@ -50,6 +50,18 @@ extensions:
         config:
             gridName: export-profile-grid
 
+    pim-export-profile-index-grid-title-information:
+        module: pimui/js/form/common/information
+        parent: pim-export-profile-index
+        targetZone: content
+        position: 1
+        config:
+            title: pim_information.export.title
+            text: pim_information.export.text
+            link:
+                href: https://help.akeneo.com/pim/serenity/articles/tailored-export.html
+                text: pim_information.export.link.text
+
     pim-export-profile-index-grid:
         module: pim/form/common/index/grid
         parent: pim-export-profile-index
