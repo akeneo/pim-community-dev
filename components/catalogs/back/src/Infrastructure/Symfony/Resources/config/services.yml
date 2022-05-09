@@ -14,12 +14,8 @@ services:
             - '../../../../Domain/'
             - '../../../../Application/Exception'
 
-    Akeneo\Catalogs\Application\CommandHandler\:
-        resource: '../../../../Application/CommandHandler/'
-        tags: [ 'messenger.message_handler' ]
-
-    Akeneo\Catalogs\Application\QueryHandler\:
-        resource: '../../../../Application/QueryHandler/'
+    Akeneo\Catalogs\Application\Handler\:
+        resource: '../../../../Application/Handler/'
         tags: [ 'messenger.message_handler' ]
 
     Akeneo\Catalogs\Infrastructure\Messenger\CommandBus:

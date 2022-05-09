@@ -15,6 +15,9 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Catalogs\Domain',
+
+            // Constraints attributes
+            'Symfony\Component\Validator\Constraints',
         ]
     )->in('Akeneo\Catalogs\Domain'),
 

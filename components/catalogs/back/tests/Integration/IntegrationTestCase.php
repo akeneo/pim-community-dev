@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -70,5 +72,35 @@ abstract class IntegrationTestCase extends WebTestCase
         $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
         return $client;
+    }
+
+    protected function assertViolationsListContains(
+        ConstraintViolationListInterface $violations,
+        string $expectedMessage
+    ): void {
+        if (0 === $violations->count()) {
+            throw new \LogicException('There is no violations');
+        }
+
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violations as $violation) {
+            if ($expectedMessage === $violation->getMessage()) {
+                return;
+            }
+        }
+
+        throw new \LogicException(
+            \sprintf(
+                'Violation with message "%s" not found, got "%s"',
+                $expectedMessage,
+                \implode(
+                    '","',
+                    \array_map(
+                        fn (ConstraintViolationInterface $violation) => $violation->getMessage(),
+                        \iterator_to_array($violations)
+                    )
+                )
+            )
+        );
     }
 }

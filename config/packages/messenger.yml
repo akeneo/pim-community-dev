@@ -4,5 +4,9 @@ framework:
         buses:
             messenger.bus.default: ~
 
-            catalogs.command.bus: ~
-            catalogs.query.bus: ~
+            catalogs.command.bus:
+                middleware:
+                    - validation
+            catalogs.query.bus:
+                middleware:
+                    - validation
