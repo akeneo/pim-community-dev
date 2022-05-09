@@ -79,7 +79,7 @@ abstract class IntegrationTestCase extends WebTestCase
         string $expectedMessage
     ): void {
         if (0 === $violations->count()) {
-            throw new \LogicException('There is no violations');
+            $this->fail('There is no violations but expected at least one.');
         }
 
         /** @var ConstraintViolationInterface $violation */
@@ -89,7 +89,7 @@ abstract class IntegrationTestCase extends WebTestCase
             }
         }
 
-        throw new \LogicException(
+        $this->fail(
             \sprintf(
                 'Violation with message "%s" not found, got "%s"',
                 $expectedMessage,
