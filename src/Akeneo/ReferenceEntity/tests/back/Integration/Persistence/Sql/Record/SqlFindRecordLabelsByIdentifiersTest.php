@@ -40,18 +40,7 @@ class SqlFindRecordLabelsByIdentifiersTest extends SqlIntegrationTestCase
     {
         parent::setUp();
 
-        $mockedFindLocalesQuery = $this->createMock(FindLocales::class);
-        $mockedFindLocalesQuery->method('findAllActivated')->willReturn([
-            new Locale('fr_FR', true),
-            new Locale('en_US', true),
-            new Locale('de_DE', true)
-        ]);
-
-        $this->query = new SqlFindRecordLabelsByIdentifiers(
-            $this->get('database_connection'),
-            $mockedFindLocalesQuery
-        );
-
+        $this->query = $this->get('akeneo_referenceentity.infrastructure.persistence.query.find_record_labels_by_identifiers');
         $this->resetDB();
         $this->loadReferenceEntityAndRecords();
     }
