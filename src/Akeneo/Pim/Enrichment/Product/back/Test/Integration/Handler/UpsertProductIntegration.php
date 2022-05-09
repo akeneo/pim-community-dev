@@ -277,20 +277,20 @@ final class UpsertProductIntegration extends TestCase
     {
         // create product with values from every type of attribute
         $this->createProduct('complex_product', 'familyA', [
-            'a_date' => [['locale' => null, 'scope' => null, 'data' => '2010-10-10']],
-            'a_file' => [['locale' => null, 'scope' => null, 'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))]],
-            'a_metric' => [['locale' => null, 'scope' => null, 'data' => ['amount' => 1, 'unit' => 'WATT']]],
-            'a_multi_select' => [['locale' => null, 'scope' => null, 'data' => ['optionA']]],
-            'a_number_float' => [['locale' => null, 'scope' => null, 'data' => 3.14]],
-            'a_number_float_negative' => [['locale' => null, 'scope' => null, 'data' => -3.14]],
-            'a_number_integer' => [['locale' => null, 'scope' => null, 'data' => 42]],
-            'a_ref_data_multi_select' => [['locale' => null, 'scope' => null, 'data' => ['brilliantine', 'tapestry', 'zibeline']]],
-            'a_ref_data_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'bright-pink']],
-            'a_simple_select' => [['locale' => null, 'scope' => null, 'data' => 'optionA']],
-            'a_text' => [['locale' => null, 'scope' => null, 'data' => 'foo']],
-            'a_text_area' => [['locale' => null, 'scope' => null, 'data' => self::TEXT_AREA_VALUE]],
-            'a_yes_no' => [['locale' => null, 'scope' => null, 'data' => true]],
-            'an_image' => [['locale' => null, 'scope' => null, 'data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))]],
+            new SetDateValue('a_date', null, null, new \DateTime('2010-10-10')),
+            new SetFileValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
+            new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
+            new SetMultiSelectValue('a_multi_select', null,null, ['optionA']),
+            new SetNumberValue('a_number_float', null,null, '3.14'),
+            new SetNumberValue('a_number_float_negative', null,null, '-3.14'),
+            new SetNumberValue('a_number_integer', null,null, '42'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null,null, ['brilliantine', 'tapestry', 'zibeline']),
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null,null, 'bright-pink'),
+            new SetSimpleSelectValue('a_simple_select', null,null, 'optionA'),
+            new SetTextValue('a_text', null,null, 'foo'),
+            new SetTextareaValue('a_text_area', null,null, self::TEXT_AREA_VALUE),
+            new SetBooleanValue('a_yes_no', null,null, true),
+            new SetImageValue('an_image', null,null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $product = $this->productRepository->findOneByIdentifier('complex_product');
@@ -347,7 +347,7 @@ final class UpsertProductIntegration extends TestCase
         $this->createProduct(
             'product_with_asset',
             'other',
-            ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1']]]]
+            [new SetAssetValue('packshot_attr', null, null, ['packshot1'])]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
@@ -395,8 +395,8 @@ final class UpsertProductIntegration extends TestCase
             'product_with_ref_entities',
             'other',
             [
-                'a_reference_entity_attribute' => [['scope' => null, 'locale' => null, 'data' => 'Akeneo']],
-                'a_reference_entity_collection_attribute' => [['scope' => null, 'locale' => null, 'data' => ['Akeneo', 'Other']]]
+                new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'),
+                new SetMultiReferenceEntityValue('a_reference_entity_collection_attribute', null, null, ['Akeneo', 'Other'])
             ]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
@@ -966,7 +966,7 @@ final class UpsertProductIntegration extends TestCase
         $this->createProduct(
             'identifier',
             'other',
-            ['packshot_attr' => [['scope' => null, 'locale' => null, 'data' => ['packshot1', 'packshot2', 'packshot3']]]]
+            [new SetAssetValue('packshot_attr' , null, null, ['packshot1', 'packshot2', 'packshot3'])]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 
@@ -1340,15 +1340,20 @@ final class UpsertProductIntegration extends TestCase
         $this->clearDoctrineUoW();
     }
 
-    private function createProduct(string $identifier, ?string $familyCode, array $values): void
+    /**
+     * @param UserIntent[] $userIntents
+     */
+    private function createProduct(string $identifier, ?string $familyCode, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
-        $this->get('pim_catalog.updater.product')->update($product, ['values' => $values]);
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf('Impossible to setup test in %s: %s', static::class, $errors->get(0)->getMessage()));
-        }
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: [
+                new SetFamily($familyCode),
+                ...$userIntents
+            ]
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
     protected function getFileInfoKey(string $path): string

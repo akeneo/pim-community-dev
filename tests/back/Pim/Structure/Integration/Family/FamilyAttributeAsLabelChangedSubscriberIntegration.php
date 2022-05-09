@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Family;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -41,11 +43,9 @@ class FamilyAttributeAsLabelChangedSubscriberIntegration extends AbstractProduct
         ]);
 
         $this->createProduct('my_product1', [
-            'family' => $familyCode,
-            'values' => [
-                'name' => [['scope' => null, 'locale' => null, 'data' => 'ABCD']],
-                'meta_title' => [['scope' => null, 'locale' => null, 'data' => 'DCBA']],
-            ]
+            new SetFamily($familyCode),
+            new SetTextValue('name', null, null, 'ABCD'),
+            new SetTextValue('meta_title', null, null, 'DCBA'),
         ]);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByCode($familyCode);

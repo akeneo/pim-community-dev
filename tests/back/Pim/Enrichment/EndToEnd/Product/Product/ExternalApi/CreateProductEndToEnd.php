@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Psr\Log\Test\TestLogger;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
