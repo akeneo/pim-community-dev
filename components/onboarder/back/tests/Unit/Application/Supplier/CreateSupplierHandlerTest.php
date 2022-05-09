@@ -12,6 +12,7 @@ use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class CreateSupplierHandlerTest extends TestCase
 {
@@ -21,7 +22,7 @@ final class CreateSupplierHandlerTest extends TestCase
         $supplierRepository = new InMemoryRepository();
         $supplierExists = new InMemorySupplierExists($supplierRepository);
 
-        $sut = new CreateSupplierHandler($supplierRepository, $supplierExists);
+        $sut = new CreateSupplierHandler($supplierRepository, $supplierExists, new NullLogger());
         ($sut)(new CreateSupplier(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'supplier_code',
@@ -51,7 +52,7 @@ final class CreateSupplierHandlerTest extends TestCase
 
         $this->expectExceptionObject(new SupplierAlreadyExistsException('code'));
 
-        $sut = new CreateSupplierHandler($repository, $supplierExists);
+        $sut = new CreateSupplierHandler($repository, $supplierExists, new NullLogger());
         ($sut)(new CreateSupplier(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'code',

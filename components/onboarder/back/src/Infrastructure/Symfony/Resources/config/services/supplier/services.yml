@@ -16,15 +16,18 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
+            - '@logger'
 
     Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@validator'
+            - '@logger'
 
     Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
+            - '@logger'
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:
@@ -100,6 +103,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
+            - '@logger'
 
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
         public: true
@@ -109,6 +113,8 @@ services:
     # Encoders
     Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
+        arguments:
+            - '@logger'
 
     # Import
     onboarder_serenity.job.xlsx_supplier_import:
@@ -140,6 +146,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetIdentifierFromCode'
+            - '@logger'
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'
