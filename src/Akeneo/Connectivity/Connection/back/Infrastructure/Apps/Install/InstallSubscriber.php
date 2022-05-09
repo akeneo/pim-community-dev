@@ -31,5 +31,6 @@ class InstallSubscriber implements EventSubscriberInterface
         $this->dbalConnection->executeStatement(CreateAppTableQuery::QUERY);
         $this->dbalConnection->executeStatement(CreateUserConsentTable::QUERY);
         $this->dbalConnection->executeStatement(CreateRevokedAppTokenTableQuery::QUERY);
+        $this->dbalConnection->executeStatement(CreateAppCatalogTableQuery::QUERY);
     }
 }

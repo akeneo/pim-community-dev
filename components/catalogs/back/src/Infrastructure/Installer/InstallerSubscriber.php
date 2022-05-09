@@ -26,7 +26,7 @@ class InstallerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['updateSchema', -20],
+            InstallerEvents::POST_DB_CREATE => ['updateSchema', 20],
         ];
     }
 
