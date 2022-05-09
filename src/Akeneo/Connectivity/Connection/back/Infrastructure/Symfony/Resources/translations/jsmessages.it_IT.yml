@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: Consulta il nostro Help Center per ulteriori informazioni.
         card:
           developed_by: 'Sviluppata da {{ author }}'
+          new_access_authorization_required: Nuova autorizzazione di accesso richiesta
           not_listed_on_the_appstore: L'app non è più elencata nell'App Store di Akeneo. Contatta il supporto dell'app.
           manage_app: Gestisci app
           open_app: Apri app
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: Articolo dell'Help Center
             no_scope: Nessuna autorizzazione specifica richiesta.
           authentication:
+            title: autenticazione
+            information: 'Per scoprire di più sull''autenticazione dell''app, consulta il nostro {{ link }}.'
             information_link_anchor: Articolo dell'Help Center
+            openid_only: Questa app utilizza l'autenticazione Akeneo App senza richiedere i tuoi dati personali.
           pending: Questa app non è connessa al tuo PIM. L'apertura dell'app dovrebbe risolvere il problema di connessione. Se il problema persiste, contatta il supporto dell'app.
         error_monitoring:
           error: Ops, si è verificato un errore!
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: App eliminata con successo
           error: Spiacenti, si è verificato un errore durante l'eliminazione dell'app.
+      open:
+        flash:
+          error: Spiacenti, si è verificato un errore durante l'apertura dell'app.
     apps:
       loader:
         message: Caricamento...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: Nessuna autorizzazione specifica richiesta.
           helper: Per scoprire di più sull'autorizzazione dell'app,
           helper_link: consulta il nostro articolo dell'Help Center.
+          is_allowed_to: 'Già consentito:'
         flash:
           success: App configurata con successo.
           error: Spiacenti, si è verificato un errore durante la connessione dell'app.
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: registri dell'entità di riferimento
           asset_families: famiglie di asset
           assets: asset
+        new: NOVITÀ
       error:
         sub_text: Contatta lo sviluppatore dell'app o il supporto di Akeneo
         app_not_found: Il client_id non corrisponde ad alcuna app esistente.
@@ -557,5 +566,7 @@ pim_permissions:
       view: Visualizza
     all: Tutte
 pim_notification:
+  types:
+    connected_app_authorizations: Autorizzazioni app connesse
   connected_app_authorizations:
     button_label: Apri app

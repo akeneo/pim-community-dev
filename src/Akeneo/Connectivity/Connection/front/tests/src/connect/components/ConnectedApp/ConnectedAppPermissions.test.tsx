@@ -55,6 +55,7 @@ test('The connected app permissions tab renders with providers', () => {
             providers={mockedProviders}
             permissions={mockedPermissions}
             setProviderPermissions={jest.fn()}
+            onlyDisplayViewPermissions={false}
         />
     );
 
@@ -80,8 +81,57 @@ test('The connected app permissions tab renders with providers', () => {
     );
 });
 
+test('The connected app permissions can display only view permission', () => {
+    const mockedProviders = [
+        {
+            key: 'providerKey1',
+            label: 'Provider1',
+            renderForm: jest.fn(),
+            renderSummary: jest.fn(),
+            save: jest.fn(),
+            loadPermissions: jest.fn(),
+        },
+    ];
+    const mockedPermissions = {
+        providerKey1: {
+            view: {
+                all: true,
+                identifiers: [],
+            },
+        },
+    };
+
+    renderWithProviders(
+        <ConnectedAppPermissions
+            providers={mockedProviders}
+            permissions={mockedPermissions}
+            setProviderPermissions={jest.fn()}
+            onlyDisplayViewPermissions={true}
+        />
+    );
+
+    expect(PermissionsForm).toHaveBeenCalledTimes(1);
+
+    expect(PermissionsForm).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+            provider: mockedProviders[0],
+            permissions: mockedPermissions.providerKey1,
+            onlyDisplayViewPermissions: true,
+        }),
+        {}
+    );
+});
+
 test('The connected app permissions tab is not displayed when there is no providers', () => {
-    renderWithProviders(<ConnectedAppPermissions providers={[]} permissions={{}} setProviderPermissions={jest.fn()} />);
+    renderWithProviders(
+        <ConnectedAppPermissions
+            providers={[]}
+            permissions={{}}
+            setProviderPermissions={jest.fn()}
+            onlyDisplayViewPermissions={false}
+        />
+    );
 
     expect(PermissionsForm).not.toHaveBeenCalled();
 });

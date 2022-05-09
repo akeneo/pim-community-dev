@@ -12,7 +12,7 @@ aliases:
                   username: _json_key  # default username when using a JSON key file to authenticate
                   password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
-executor-machine: &executor-machine 'ubuntu-2004:202111-02'
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 orbs:
   git-shallow-clone: guitarrapc/git-shallow-clone@2.4.0
@@ -588,3 +588,31 @@ jobs:
                       UNCOMMIT_INSTANCE_STATUS_CODE=0
                       for i in 1 2 3; do make -C deployments/ uncommit-instance && UNCOMMIT_INSTANCE_STATUS_CODE=0 && break || UNCOMMIT_INSTANCE_STATUS_CODE=1; done
                       exit ${UNCOMMIT_INSTANCE_STATUS_CODE}
+
+    build_docker_images:
+        machine:
+            image: *executor-machine
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - run:
+                  name: Build Akeneo PHP image
+                  command: docker build -t akeneo/pim-php-dev:6.0 .
+            - run:
+                  name: Display PHP version
+                  command: |
+                      docker-compose run --rm php php -v
+            - run:
+                  name: Build Akeneo Node image
+                  command: docker build -t akeneo/node:18 -f docker/Dockerfile_node .
+            - run:
+                  name: Display Node and Yarn versions
+                  command: |
+                      docker-compose run --rm node node --version
+                      docker-compose run --rm node yarn --version
+            - run:
+                  name: Push images to Dockerhub
+                  command: |
+                      docker login -u="$DOCKERHUB_USER" -p="$DOCKERHUB_PWD"
+                      docker push akeneo/pim-php-dev:6.0
+                      docker push akeneo/node:18

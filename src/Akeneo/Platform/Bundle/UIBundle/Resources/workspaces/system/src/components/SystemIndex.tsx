@@ -152,7 +152,7 @@ const SystemIndex = () => {
                     onClick={() => redirectToRoute('pim_analytics_system_info_index')}
                   />
                 )}
-                {canAccessSSO && !featureFlags.isEnabled('free_trial') && (
+                {canAccessSSO && featureFlags.isEnabled('sso_configuration') && (
                   <IconCard
                     id="pim-system-sso"
                     icon={<IdIcon />}

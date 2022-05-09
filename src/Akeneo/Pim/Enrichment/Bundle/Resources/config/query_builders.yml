@@ -57,7 +57,9 @@ parameters:
     pim_enrich.query.elasticsearch.product_and_product_model_query_builder_factory.class: Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory
 
 services:
-    pim_catalog.query.product_query_builder_factory:
+    # Disclaimer: use this factory only for read purpose. For write purpose, it could bring some problems (see PIM-10232).
+    # For write, use "pim_catalog.query.product_identifier_query_builder_factory" instead
+    pim_catalog.query.product_query_builder_factory_for_reading_purpose:
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
@@ -74,7 +76,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
-            - '@pim_catalog.factory.product_identifier_cursor'
+            - '@pim_catalog.factory.product_and_product_model_identifier_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
     pim_catalog.query.product_query_builder_search_after_size_factory:
@@ -175,6 +177,16 @@ services:
             - '@pim_catalog.query.filter.product_and_product_model_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_and_product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_and_product_model_identifier_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_and_model_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_and_product_model_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_and_product_model_identifier_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
     pim_catalog.factory.product_and_product_model_cursor:

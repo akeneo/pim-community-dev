@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: 자세한 내용은 도움말 센터를 확인하십시오.
         card:
           developed_by: '개발자: {{ author }}'
+          new_access_authorization_required: 새로운 액세스 권한 부여가 필요합니다.
           not_listed_on_the_appstore: 앱이 Akeneo App Store 목록에 더 이상 없습니다. App 지원 팀에 문의해주십시오.
           manage_app: 앱 관리
           open_app: 앱 열기
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: 도움말 문서
             no_scope: 특정 권한 부여 요청이 없습니다.
           authentication:
+            title: 권한 부여
+            information: '앱 권한 부여에 관한 자세한 내용은 {{ link }}을(를) 확인하십시오.'
             information_link_anchor: 도움말 문서
+            openid_only: 이 앱은 사용자의 개인 데이터가 아닌 Akeneo 앱 권한 부여를 사용합니다.
           pending: 이 앱은 PIM에 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다. 그래도 문제가 지속되면 App 지원 팀에 문의해주십시오.
         error_monitoring:
           error: 이런, 문제가 발생했습니다!
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: 앱이 삭제되었습니다.
           error: 죄송합니다. 앱을 삭제하는 동안 오류가 발생했습니다.
+      open:
+        flash:
+          error: 죄송합니다. 앱을 여는 동안 오류가 발생했습니다.
     apps:
       loader:
         message: 로드 중...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: 특정 권한 부여 요청이 없습니다.
           helper: 앱 권한 부여에 관해 자세히 알아보려면
           helper_link: 도움말 문서를 확인하십시오.
+          is_allowed_to: '다음 권한이 허용됨:'
         flash:
           success: 앱이 구성되었습니다.
           error: 죄송합니다. 앱에 연결하는 동안 오류가 발생했습니다.
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: 참조 엔터티 레코드
           asset_families: 애셋 패밀리
           assets: 애셋
+        new: 신규
       error:
         sub_text: 앱 개발자 또는 Akeneo 지원 팀에 문의해주십시오
         app_not_found: 기존 앱 중 이 client_id와 일치하는 것이 없습니다.
@@ -557,5 +566,7 @@ pim_permissions:
       view: 보기
     all: 모두
 pim_notification:
+  types:
+    connected_app_authorizations: 연결된 앱 권한 부여
   connected_app_authorizations:
     button_label: 앱 열기

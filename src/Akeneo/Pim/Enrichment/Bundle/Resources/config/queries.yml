@@ -50,8 +50,7 @@ services:
     pim_enrich.doctrine.query.count_impacted_products:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductGrid\CountImpactedProducts'
         arguments:
-            - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.query.product_and_product_model_identifier_query_builder_factory'
 
     pim_catalog.query.find_activated_currencies:
         class: Akeneo\Channel\Bundle\Doctrine\Query\FindActivatedCurrencies

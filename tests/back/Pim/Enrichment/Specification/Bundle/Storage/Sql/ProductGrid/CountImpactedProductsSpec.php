@@ -14,11 +14,9 @@ use Prophecy\Argument;
 
 class CountImpactedProductsSpec extends ObjectBehavior
 {
-    function let(
-        ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-    ) {
-        $this->beConstructedWith($productAndProductModelQueryBuilderFactory, $productQueryBuilderFactory);
+    function let(ProductQueryBuilderFactoryInterface $productAndProductModelQueryBuilderFactory)
+    {
+        $this->beConstructedWith($productAndProductModelQueryBuilderFactory);
     }
 
     function it_is_initializable()
@@ -28,7 +26,6 @@ class CountImpactedProductsSpec extends ObjectBehavior
 
     function it_returns_the_catalog_products_count_when_a_user_selects_all_products_in_the_grid(
         $productAndProductModelQueryBuilderFactory,
-        $productQueryBuilderFactory,
         SearchQueryBuilder $sqb,
         ProductQueryBuilderInterface $pqb,
         \Countable $countable
@@ -49,14 +46,11 @@ class CountImpactedProductsSpec extends ObjectBehavior
         $pqb->execute()->willReturn($countable);
         $countable->count()->willReturn(2500);
 
-        $productQueryBuilderFactory->create()->shouldNotBeCalled();
-
         $this->count($pqbFilters)->shouldReturn(2500);
     }
 
     function it_returns_the_catalog_products_count_when_a_user_selects_all_products_in_the_grid_with_a_label_search(
         $productAndProductModelQueryBuilderFactory,
-        $productQueryBuilderFactory,
         ProductQueryBuilderInterface $pqb,
         SearchQueryBuilder $sqb,
         \Countable $countable
@@ -79,8 +73,6 @@ class CountImpactedProductsSpec extends ObjectBehavior
 
         $pqb->execute()->willReturn($countable);
         $countable->count()->willReturn(2500);
-
-        $productQueryBuilderFactory->create()->shouldNotBeCalled();
 
         $this->count($pqbFilters)->shouldReturn(2500);
     }
