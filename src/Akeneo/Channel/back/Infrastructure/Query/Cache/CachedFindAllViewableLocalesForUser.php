@@ -22,11 +22,11 @@ final class CachedFindAllViewableLocalesForUser implements FindAllViewableLocale
 
     public function findAll(int $userId): array
     {
-        if (null === $this->cache) {
-            $this->cache = $this->findAllViewableLocalesForUser->findAll($userId);
+        if (empty($this->cache[$userId])) {
+            $this->cache[$userId] = $this->findAllViewableLocalesForUser->findAll($userId);
         }
 
-        return $this->cache;
+        return $this->cache[$userId];
     }
 
     public function clearCache(): void
