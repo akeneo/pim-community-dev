@@ -18,7 +18,7 @@ use Akeneo\Test\Channel\Integration\ChannelTestCase;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PHPUnit\Framework\Assert;
 
-final class LRUCachedIsLocaleEditableTest extends ChannelTestCase
+final class LRUCachedIsLocaleEditableIntegration extends ChannelTestCase
 {
     private IsLocaleEditable $isLocaleEditable;
     private UserInterface $userWithPermission;

@@ -13,7 +13,7 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_viewable_locales()
+    public function it_returns_all_viewable_locales_for_user()
     {
         $query = $this->getQuery();
 
@@ -26,7 +26,7 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
             new Locale('zh_CN', 1),
         ];
 
-        Assert::assertEqualsCanonicalizing($expectedLocales, $query->fetchAll($userId));
+        Assert::assertEqualsCanonicalizing($expectedLocales, $query->findAll($userId));
     }
 
     /**

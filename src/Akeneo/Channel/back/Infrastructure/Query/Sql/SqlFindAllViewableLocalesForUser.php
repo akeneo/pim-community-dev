@@ -42,7 +42,7 @@ class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser
             ->executeQuery(
                 $sql,
                 ['userId' => $userId]
-            )->fetchFirstColumn();
+            )->fetchAllAssociative();
 
         $locales = [];
 

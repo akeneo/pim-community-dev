@@ -24,7 +24,7 @@
             <directory>Acceptance</directory>
         </testsuite>
         <testsuite name="Channel_Integration_Test">
-            <directory>Integration</directory>
+            <directory suffix="Integration.php">Integration</directory>
         </testsuite>
     </testsuites>
 </phpunit>
