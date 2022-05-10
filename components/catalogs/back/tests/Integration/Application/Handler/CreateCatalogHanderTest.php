@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateCatalogHanderTest extends IntegrationTestCase
 {
-    private ValidatorInterface $validator;
+    private ?ValidatorInterface $validator;
 
     public function setUp(): void
     {
@@ -40,6 +40,7 @@ class CreateCatalogHanderTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '',
                     name: 'foo',
+                    ownerId: 42,
                 ),
                 'error' => 'This value should not be blank.',
             ],
@@ -47,6 +48,7 @@ class CreateCatalogHanderTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: 'not an uuid',
                     name: 'foo',
+                    ownerId: 42,
                 ),
                 'error' => 'This is not a valid UUID.',
             ],
@@ -54,6 +56,7 @@ class CreateCatalogHanderTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                     name: '',
+                    ownerId: 42,
                 ),
                 'error' => 'This value is too short. It should have 1 character or more.',
             ],
@@ -61,6 +64,7 @@ class CreateCatalogHanderTest extends IntegrationTestCase
                 'command' => new CreateCatalogCommand(
                     id: '43c74e94-0074-4316-ac66-93cd0ca71a6b',
                     name: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus placerat ante id dui ornare feugiat. Nulla egestas neque eu lectus interdum congue nec at diam. Phasellus ac magna lorem. Praesent non lectus sit amet lectus sollicitudin consectetur sed non.',
+                    ownerId: 42,
                 ),
                 'error' => 'This value is too long. It should have 255 characters or less.',
             ],

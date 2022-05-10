@@ -32,7 +32,7 @@ class ApiContext implements Context
      */
     public function theExternalApplicationCreatesACatalogUsingTheApi()
     {
-        $client = $this->authentication->getAuthenticatedClient([
+        $client = $this->authentication->createAuthenticatedClient([
             'write_catalogs',
         ]);
 

@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetCatalogHanderTest extends IntegrationTestCase
 {
-    private ValidatorInterface $validator;
+    private ?ValidatorInterface $validator;
 
     public function setUp(): void
     {

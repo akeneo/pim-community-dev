@@ -27,6 +27,7 @@ final class CreateCatalogHandler
         $catalog = new Catalog(
             $command->getId(),
             $command->getName(),
+            $command->getOwnerId(),
         );
 
         $this->upsertCatalogQuery->execute($catalog);

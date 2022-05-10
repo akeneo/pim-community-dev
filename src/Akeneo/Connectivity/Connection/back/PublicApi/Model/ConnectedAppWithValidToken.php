@@ -12,6 +12,7 @@ final class ConnectedAppWithValidToken
 {
     public function __construct(
         private string $id,
+        private string $username,
         private string $accessToken,
     ) {
     }
@@ -19,6 +20,11 @@ final class ConnectedAppWithValidToken
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
     public function getAccessToken(): string

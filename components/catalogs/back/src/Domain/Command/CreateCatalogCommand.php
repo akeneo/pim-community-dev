@@ -19,6 +19,7 @@ final class CreateCatalogCommand
         #[Assert\NotBlank]
         #[Assert\Length(min: 1, max: 255)]
         private string $name,
+        private int $ownerId,
     ) {
     }
 
@@ -30,5 +31,10 @@ final class CreateCatalogCommand
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getOwnerId(): int
+    {
+        return $this->ownerId;
     }
 }

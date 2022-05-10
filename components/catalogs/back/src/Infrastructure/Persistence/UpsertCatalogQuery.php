@@ -21,8 +21,8 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
     public function execute(Catalog $catalog): void
     {
         $query = <<<SQL
-        INSERT INTO akeneo_catalog (id, name)
-        VALUES (UUID_TO_BIN(:id), :name)
+        INSERT INTO akeneo_catalog (id, name, owner_id)
+        VALUES (UUID_TO_BIN(:id), :name, :owner_id)
         ON DUPLICATE KEY UPDATE name = :name, updated = NOW()
         SQL;
 
@@ -31,6 +31,7 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
             [
                 'id' => $catalog->getId(),
                 'name' => $catalog->getName(),
+                'owner_id' => $catalog->getOwnerId(),
             ]
         );
     }

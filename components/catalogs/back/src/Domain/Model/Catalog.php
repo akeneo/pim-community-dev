@@ -13,6 +13,7 @@ final class Catalog
     public function __construct(
         private string $id,
         private string $name,
+        private int $ownerId,
     ) {
     }
 
@@ -24,5 +25,10 @@ final class Catalog
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getOwnerId(): int
+    {
+        return $this->ownerId;
     }
 }

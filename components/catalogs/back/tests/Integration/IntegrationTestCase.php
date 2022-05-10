@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
+use Akeneo\UserManagement\Component\Model\User;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -68,8 +71,11 @@ abstract class IntegrationTestCase extends WebTestCase
 
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
-
         $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+
+        // The connected user is not derivated from the access token when in `test` env
+        // We need to explicitly log in with it
+        $this->logAs($connectedApp->getUsername());
 
         return $client;
     }
@@ -102,5 +108,34 @@ abstract class IntegrationTestCase extends WebTestCase
                 )
             )
         );
+    }
+
+    protected function createUser(string $username, ?array $groups = null, ?array $roles = null): UserInterface
+    {
+        $userPayload = [
+            'username' => $username,
+            'password' => \rand(),
+            'first_name' => 'firstname_' . \rand(),
+            'last_name' => 'lastname_' . \rand(),
+            'email' => \sprintf('%s@example.com', $username),
+        ];
+
+        if (null !== $groups) {
+            $userPayload['groups'] = $groups;
+        }
+
+        if (null !== $roles) {
+            $userPayload['roles'] = $roles;
+        }
+
+        $user = self::getContainer()->get('pim_user.factory.user')->create();
+        self::getContainer()->get('pim_user.updater.user')->update($user, $userPayload);
+
+        $violations = self::getContainer()->get('validator')->validate($user);
+        \assert(0 === $violations->count());
+
+        self::getContainer()->get('pim_user.saver.user')->save($user);
+
+        return $user;
     }
 }

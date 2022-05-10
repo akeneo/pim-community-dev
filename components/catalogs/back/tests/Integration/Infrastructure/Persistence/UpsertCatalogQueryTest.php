@@ -16,8 +16,8 @@ use Ramsey\Uuid\Uuid;
  */
 class UpsertCatalogQueryTest extends IntegrationTestCase
 {
-    private UpsertCatalogQuery $query;
-    private Connection $connection;
+    private ?UpsertCatalogQuery $query;
+    private ?Connection $connection;
 
     public function setUp(): void
     {
@@ -31,26 +31,30 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
 
     public function testItCreatesACatalog(): void
     {
+        $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US'));
+        $this->query->execute(new Catalog($id, 'Store US', $owner->getId()));
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US',
+            'owner_id' => $owner->getId(),
         ]);
     }
 
     public function testItUpdatesACatalog(): void
     {
+        $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
 
-        $this->query->execute(new Catalog($id, 'Store US'));
-        $this->query->execute(new Catalog($id, 'Store US [NEW]'));
+        $this->query->execute(new Catalog($id, 'Store US', $owner->getId()));
+        $this->query->execute(new Catalog($id, 'Store US [NEW]', $owner->getId()));
 
         $this->assertCatalogExists([
             'id' => $id,
             'name' => 'Store US [NEW]',
+            'owner_id' => $owner->getId(),
         ]);
         $this->assertCountCatalogs(1);
     }
@@ -72,7 +76,8 @@ class UpsertCatalogQueryTest extends IntegrationTestCase
         $query = <<<SQL
         SELECT
             BIN_TO_UUID(catalog.id) AS id,
-            catalog.name
+            catalog.name,
+            catalog.owner_id
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;

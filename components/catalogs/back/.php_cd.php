@@ -26,6 +26,9 @@ $rules = [
         [
             'Akeneo\Catalogs\Domain',
             'Akeneo\Catalogs\Application',
+
+            // Dispatch events
+            'Psr\EventDispatcher\EventDispatcherInterface',
         ]
     )->in('Akeneo\Catalogs\Application'),
 
@@ -41,6 +44,7 @@ $rules = [
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform',
             'Akeneo\Tool\Component\Api',
+            'Akeneo\UserManagement\Component\Model\UserInterface',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',

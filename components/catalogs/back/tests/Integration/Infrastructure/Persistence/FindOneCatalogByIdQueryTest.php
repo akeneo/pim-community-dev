@@ -16,8 +16,8 @@ use Ramsey\Uuid\Uuid;
  */
 class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
-    private FindOneCatalogByIdQuery $query;
-    private Connection $connection;
+    private ?FindOneCatalogByIdQuery $query;
+    private ?Connection $connection;
 
     public function setUp(): void
     {
@@ -31,14 +31,16 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 
     public function testItFindsTheCatalog(): void
     {
+        $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $this->insertCatalog([
             'id' => $id,
             'name' => 'Store US',
+            'owner_id' => $owner->getId(),
         ]);
 
         $result = $this->query->execute($id);
-        $expected = new Catalog($id, 'Store US');
+        $expected = new Catalog($id, 'Store US', $owner->getId());
 
         $this->assertEquals($expected, $result);
     }
