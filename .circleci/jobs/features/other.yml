@@ -1,7 +1,7 @@
 jobs:
     test_back_static_and_acceptance:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - attach_workspace:
                   at: ~/
@@ -38,7 +38,7 @@ jobs:
 
     test_back_phpunit:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         parallelism: 20
         steps:
             - attach_workspace:
@@ -103,7 +103,7 @@ jobs:
 
     test_back_behat_legacy:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         parallelism: 40
         steps:
             - attach_workspace:
@@ -159,7 +159,7 @@ jobs:
 
     test_front_static_acceptance_and_integration:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - attach_workspace:
                   at: ~/
@@ -181,7 +181,7 @@ jobs:
 
     test_back_performance:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - attach_workspace:
                   at: ~/
@@ -207,7 +207,7 @@ jobs:
 
     test_back_missing_structure_migrations:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             -   attach_workspace:
                     at: ~/
@@ -234,7 +234,7 @@ jobs:
 
     test_back_data_migrations:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - attach_workspace:
                   at: ~/
@@ -262,7 +262,7 @@ jobs:
 
     test_onboarder_bundle:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         environment:
             FLAG_ONBOARDER_ENABLED: 1
         steps:
