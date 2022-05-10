@@ -56,7 +56,7 @@ onboarder:
         columns:
           email: Adres e-mail
         no_contributor: Nie ma jeszcze żadnych współtwórców.
-        result_counter: '{0} Brak wyników|{1} {{ count }} wynik|[1,Inf] Liczba wyników: {{ count }}'
+        result_counter: '{0} Brak wyników|one: {{ count }} wynik|few: {{ count }} wyniki|many: {{ count }} wyników|[200, Inf[ponad {{ count }} wyników'
       success_message: Dostawca został pomyślnie zaktualizowany.
 pim_title:
   onboarder_serenity_supplier_list: Dostawcy
