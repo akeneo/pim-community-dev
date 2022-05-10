@@ -64,7 +64,7 @@ class MigrateToUuidCommand extends Command
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
-        if (!$this->shouldBeExecuted()) {
+        if ($this->isAlreadySuccessfull()) {
             $this->logger->notice('No step should be executed. Skip the migration.');
 
             return self::SUCCESS;
@@ -122,9 +122,13 @@ class MigrateToUuidCommand extends Command
                 );
             }
 
+            $this->success();
             $this->logger->notice('Migration done!', ['migration_duration_in_second' => time() - $startMigrationTime]);
-        } finally {
-            $this->stop();
+        } catch (\Throwable $e) {
+            $this->logger->error('Migration failed!', ['message' => $e->getMessage(), 'exception' => $e]);
+            $this->fail();
+
+            return Command::FAILURE;
         }
 
         return Command::SUCCESS;
@@ -143,7 +147,19 @@ class MigrateToUuidCommand extends Command
         ]);
     }
 
-    private function stop()
+    private function success(): void
+    {
+        $this->connection->executeQuery(<<<SQL
+            UPDATE `pim_one_time_task`
+            SET status=:status, end_time=NOW()
+            WHERE code=:code
+        SQL, [
+            'code' => self::$defaultName,
+            'status' => 'finished',
+        ]);
+    }
+
+    private function fail(): void
     {
         $this->connection->executeQuery(<<<SQL
             DELETE FROM `pim_one_time_task` WHERE code=:code
@@ -172,14 +188,21 @@ class MigrateToUuidCommand extends Command
         ]);
     }
 
-    private function shouldBeExecuted(): bool
+    private function isAlreadySuccessfull(): bool
     {
-        foreach ($this->steps as $step) {
-            if ($step->shouldBeExecuted()) {
-                return true;
-            }
-        }
+        $sql = <<<SQL
+            SELECT EXISTS (
+                SELECT 1
+                FROM pim_one_time_task
+                WHERE code=:code
+                  AND status=:status
+                LIMIT 1
+            ) AS missing
+        SQL;
 
-        return false;
+        return (bool) $this->connection->fetchOne($sql, [
+            'code' => self::$defaultName,
+            'status' => 'finished',
+        ]);
     }
 }
