@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Webmozart\Assert\Assert;
 
