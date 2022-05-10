@@ -11,14 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\ResolveTransferServiceAndUpload;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage;
 
-use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-
-class ResolveTransferServiceAndUploadHandler
+final class TransferFilesToStorageCommand
 {
-    public function handle(ResolveTransferServiceAndUploadCommand $command)
-    {
-
+    public function __construct(
+        public array $filesToTransfer,
+        public array $normalizedStorage
+    ) {
     }
 }

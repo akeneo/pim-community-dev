@@ -1,0 +1,7 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber\ExportFileToStorageAfterExportSubscriber:
+    arguments:
+      - '@akeneo_batch.job.job_registry'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler'
+    tags:
+      - { name: kernel.event_subscriber }

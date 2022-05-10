@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\ResolveTransferServiceAndUpload\ResolveTransferServiceAndUploadCommand;
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\ResolveTransferServiceAndUpload\ResolveTransferServiceAndUploadHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesCommand;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFileHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
+use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -22,12 +25,14 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
+use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ExportFileToStorageSubscriber
+final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private JobRegistry $jobRegistry,
-        private ResolveTransferServiceAndUploadHandler $resolveTransferServiceAndUploadHandler,
+        private TransferFilesToStorageHandler $transferFilesToStorageHandler,
     ) {
     }
 
@@ -50,14 +55,15 @@ class ExportFileToStorageSubscriber
             return;
         }
 
-        $command = new ResolveTransferServiceAndUploadCommand();
-        $command->writtenFilesInfo = $this->getWrittenFiles($jobExecution);;
-        $command->storageInformation = $jobParameters['storage'];
+        $command = new TransferFilesToStorageCommand(
+            $this->extractFileToTransfer($jobExecution),
+            $jobParameters['storage'],
+        );
 
-        $this->resolveTransferServiceAndUploadHandler->handle($command);
+        $this->transferFilesToStorageHandler->handle($command);
     }
 
-    private function getWrittenFiles(JobExecution $jobExecution): array
+    private function extractFileToTransfer(JobExecution $jobExecution): array
     {
         $writtenFiles = [];
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
@@ -72,9 +78,21 @@ class ExportFileToStorageSubscriber
                 continue;
             }
 
-            $writtenFiles = array_merge($writtenFiles, $writer->getWrittenFiles());
+
+            $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
         }
 
         return $writtenFiles;
+    }
+
+    private function extractFileToTransferFromWriter(ArchivableWriterInterface $writer): array
+    {
+        return array_map(
+            static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
+                $writtenFile->sourceKey(),
+                $writtenFile->sourceStorage(),
+                $writtenFile->isLocalFile()
+            ), $writer->getWrittenFiles()
+        );
     }
 }
