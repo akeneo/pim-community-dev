@@ -17,6 +17,8 @@ use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 final class Version_7_0_20220429131804_execute_uuid_migration_Integration extends TestCase
 {
@@ -65,8 +67,9 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
      */
     protected function tearDown(): void
     {
+        // We need to set back the schema for next tests
+        $this->clean();
         parent::tearDown();
-//        $this->clean();
     }
 
     private function clean(): void
@@ -137,12 +140,13 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
 
         $results = $this->connection->fetchAllAssociative($query);
 
-        Assert::assertGreaterThan(0, count($results), 'No quantified associations found');
+        Assert::assertGreaterThan(0, \count($results), 'No quantified associations found');
         foreach ($results as $result) {
             $quantifiedAssociations = \json_decode($result['quantified_associations'], true);
 
             foreach ($quantifiedAssociations as $quantifiedAssociation) {
                 Assert::assertArrayHasKey('products', $quantifiedAssociation);
+                Assert::assertGreaterThan(0, \count($quantifiedAssociation['products']), 'No product quantified associations found');
                 foreach ($quantifiedAssociation['products'] as $productInfo) {
                     Assert::assertArrayHasKey('id', $productInfo);
                     Assert::assertArrayHasKey('uuid', $productInfo);
@@ -161,7 +165,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
             Assert::assertSame(1, $split);
             Assert::assertTrue(Uuid::isValid($matches['uuid']));
             Assert::assertTrue(
-                (bool)$this->connection->executeQuery(
+                (bool) $this->connection->executeQuery(
                     'SELECT EXISTS(SELECT * FROM pim_catalog_product WHERE identifier = :identifier AND BIN_TO_UUID(uuid) = :uuid)',
                     ['identifier' => $identifier, 'uuid' => $matches['uuid']]
                 )
@@ -173,6 +177,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
     {
         $tableWithNullableColumnsList = [
             'pim_versioning_version' => ['resource_id'],
+            'pim_comment_comment' => ['resource_id'],
         ];
 
         foreach ($tableWithNullableColumnsList as $tableName => $columns) {
@@ -186,14 +191,12 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
     {
         Assert::assertSame(
             0,
-            (int) $this->connection->executeQuery(
-                <<<SQL
-                SELECT COUNT(c.id)
-                FROM pim_catalog_completeness c
+            (int) $this->connection->executeQuery(<<<SQL
+            SELECT COUNT(c.id)
+            FROM pim_catalog_completeness c
                 LEFT JOIN pim_catalog_product p ON p.id = c.product_id
-                WHERE p.id IS NULL
-                SQL
-            )->fetchOne()
+            WHERE p.id IS NULL
+            SQL)->fetchOne()
         );
     }
 
@@ -227,9 +230,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         $sql = <<<SQL
             SELECT IS_NULLABLE
             FROM information_schema.columns
-            WHERE table_schema=:schema
-              AND table_name=:tableName
-              AND column_name=:columnName;
+            WHERE table_schema=:schema AND table_name=:tableName AND column_name=:columnName;
         SQL;
 
         $result = $this->connection->fetchOne($sql, [
@@ -253,8 +254,9 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         // Schema
         $this->connection->executeQuery('drop database if exists akeneo_pim_test');
         $this->connection->executeQuery('create database akeneo_pim_test');
+        $this->connection->executeQuery('use ' . \getenv('APP_DATABASE_NAME')); // Needed after drop/create
 
-        $sql = <<<SQL
+        $this->executeLargeQuery(<<<SQL
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -1768,46 +1770,10 @@ CREATE TABLE `pim_versioning_version` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-SQL;
-
-        $file = $this->getParameter('kernel.project_dir') . '/var/cache/test/' . uniqid('migration_uuid') . '.sql';
-        file_put_contents($file, $sql);
-
-//        $process = new Process([
-//            'mysql',
-//            '-h',
-//            \getenv('APP_DATABASE_HOST'),
-//            '-u',
-//            \getenv('APP_DATABASE_USER'),
-//            '-p' . \getenv('APP_DATABASE_PASSWORD'),
-//            \getenv('APP_DATABASE_NAME'),
-//            '<',
-//            $file,
-//        ]);
-//        $process = new Process([
-//            'mysql -h ' . \getenv('APP_DATABASE_HOST')  . ' -u ' . \getenv('APP_DATABASE_USER') . ' -p' . \getenv('APP_DATABASE_PASSWORD') . ' ' . \getenv('APP_DATABASE_NAME') . ' < ' . $file,
-//        ]);
-//        $process->setTimeout(60);
-//        $process->run();
-
-//        if (!$process->isSuccessful()) {
-//            throw new ProcessFailedException($process);
-//        }
-//        print_r($process->getOutput());
-
-        $output = [];
-        $resultCode = -1;
-        exec(
-            'mysql -h ' . \getenv('APP_DATABASE_HOST')  . ' -u ' . \getenv('APP_DATABASE_USER') . ' -p' . \getenv('APP_DATABASE_PASSWORD') . ' ' . \getenv('APP_DATABASE_NAME') . ' < ' . $file,
-            $output,
-            $resultCode
-        );
-
-        Assert::assertSame(0, $resultCode, 'Error while load schema: ' . join(PHP_EOL, $output));
+SQL);
 
         // Fixtures
-        $this->connection->executeQuery('use ' . \getenv('APP_DATABASE_NAME'));
-        $this->connection->executeQuery(<<<SQL
+        $this->executeLargeQuery(<<<SQL
 SET FOREIGN_KEY_CHECKS = 0;
 INSERT INTO `acme_reference_data_color` VALUES (7,'colorA',1,'colorA','#colora',31,95,52,28,72,0,45,35),(8,'colorB',1,'colorB','#colorb',49,54,16,46,29,79,12,95),(9,'colorc',1,'colorc','#colorc',10,45,20,88,8,59,19,32);
 INSERT INTO `acme_reference_data_fabric` VALUES (5,'fabricA',1,'fabricA',NULL),(6,'fabricB',1,'fabricB',NULL);
@@ -1941,13 +1907,13 @@ SQL);
                 <<<SQL
                 INSERT INTO pim_catalog_completeness (locale_id, channel_id, product_id, missing_count, required_count)
                 SELECT locale.id, channel.id, (SELECT MAX(id) + :i FROM pim_catalog_product), 1, 5
-                FROM pim_catalog_locale locale,
-                     pim_catalog_channel channel
+                FROM pim_catalog_locale locale, pim_catalog_channel channel
                 SQL,
                 ['i' => $i]
             );
         }
 
+        // Check tables are not empty
         $tablesToCheck = [
             'pim_catalog_completeness',
             'pim_catalog_product',
@@ -1959,12 +1925,32 @@ SQL);
             'pim_comment_comment',
             'pim_versioning_version',
         ];
-
         foreach ($tablesToCheck as $tableName) {
             $count = (int) $this->connection->executeQuery(
                 \strtr('SELECT count(*) FROM `{tableName}`', ['{tableName}' => $tableName])
             )->fetchOne();
             Assert::assertGreaterThan(0, $count, 'The ' . $tableName . ' is empty.');
+        }
+    }
+
+    private function executeLargeQuery(string $query): void
+    {
+        $process = new Process([
+            'mysql',
+            '-h',
+            \getenv('APP_DATABASE_HOST'),
+            '-u',
+            \getenv('APP_DATABASE_USER'),
+            '-p' . \getenv('APP_DATABASE_PASSWORD'),
+            \getenv('APP_DATABASE_NAME'),
+        ]);
+        $process->setTimeout(60);
+        $process->setInput($query);
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
     }
 }
