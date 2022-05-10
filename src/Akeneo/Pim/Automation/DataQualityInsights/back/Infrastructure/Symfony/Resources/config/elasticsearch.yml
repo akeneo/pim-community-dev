@@ -73,4 +73,4 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
