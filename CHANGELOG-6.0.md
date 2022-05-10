@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.27 (2022-05-10)
+
 ## Improvements
 
 - Hotfix: Use Node v14 in docker-compose files
