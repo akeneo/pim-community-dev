@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ReferenceDataInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
@@ -20,7 +21,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = null, array $options = [])
+    public function findBySearch($search = null, array $options = []): array|float|int|string
     {
         if (null !== $labelProperty = $this->getReferenceDataLabelProperty()) {
             $selectDql = sprintf(
@@ -76,7 +77,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierProperties()
+    public function getIdentifierProperties(): array
     {
         return ['code'];
     }
@@ -102,23 +103,14 @@ class ReferenceDataRepository extends EntityRepository implements
             ->getResult();
     }
 
-    /**
-     * Alias of the repository
-     *
-     * @return string
-     */
-    protected function getAlias()
+    protected function getAlias(): string
     {
         return 'rd';
     }
 
-    /**
-     * The list of label property of the reference data
-     *
-     * @return string|null
-     */
-    private function getReferenceDataLabelProperty()
+    private function getReferenceDataLabelProperty(): ?string
     {
+        /** @var ReferenceDataInterface $referenceDataClass */
         $referenceDataClass = $this->getEntityName();
 
         return $referenceDataClass::getLabelProperty();

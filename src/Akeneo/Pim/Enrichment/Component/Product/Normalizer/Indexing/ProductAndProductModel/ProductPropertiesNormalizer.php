@@ -66,7 +66,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, CacheableSuppo
     /**
      * {@inheritdoc}
      *
-     * @var ProductInterface $product
+     * @param ProductInterface $product
      */
     public function normalize($product, $format = null, array $context = [])
     {
