@@ -13,7 +13,7 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
     /**
      * @test
      */
-    public function it_returns_all_viewable_locales_for_user()
+    public function itReturnsAllViewableLocalesForUser(): void
     {
         $query = $this->getQuery();
 
