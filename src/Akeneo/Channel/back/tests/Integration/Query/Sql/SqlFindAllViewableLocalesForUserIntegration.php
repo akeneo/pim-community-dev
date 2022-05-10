@@ -20,6 +20,9 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
         );
     }
 
+    /**
+     * @group ce
+     */
     public function test_it_finds_all_viewable_locales_for_user(): void
     {
         $results = $this->sqlFindAllViewableLocalesForUser->findAll(1);
