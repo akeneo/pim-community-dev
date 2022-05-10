@@ -35,6 +35,7 @@
 - PIM-10418: Simple and multi select values not showing if not imported with the correct letter case
 - PIM-10426: Fix empty array should be normalized as empty JSON object in Measurement Family API
 - PIM-10416: Fix letter case issue when importing families
+- PIM-10427: Fix display of boolean value in variant axis
 
 ## Improvements
 
