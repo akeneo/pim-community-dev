@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\EventSubscriber;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesCommand;
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFileHandler;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
@@ -33,6 +32,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     public function __construct(
         private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
+        private FeatureFlags $featureFlags
     ) {
     }
 
@@ -45,6 +45,10 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
 
     public function exportFileToStorage(JobExecutionEvent $event): void
     {
+        if (!$this->featureFlags->isEnabled('job_automation_remote_storage')) {
+            return;
+        }
+
         $jobExecution = $event->getJobExecution();
         if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
