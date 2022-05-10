@@ -56,7 +56,7 @@ class DeleteTestAppActionSpec extends ObjectBehavior
             ->during('__invoke', ['test_client_id']);
     }
 
-    public function it_throws_a_access_denied_exception_when_connection_cannot_manage_test_apps(
+    public function it_throws_an_access_denied_exception_when_connection_cannot_manage_test_apps(
         FeatureFlag $developerModeFeatureFlag,
         SecurityFacade $security,
     ): void {
