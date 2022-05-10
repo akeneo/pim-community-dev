@@ -54,7 +54,7 @@ commands:
 jobs:
     checkout_ee:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - add_ssh_keys:
                   fingerprints:
@@ -98,7 +98,7 @@ jobs:
 
     checkout_ce:
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - checkout
             - install_yq
@@ -119,7 +119,7 @@ jobs:
                 type: string
                 default: front-packages
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         steps:
             - attach_workspace:
                   at: ~/
@@ -276,7 +276,7 @@ jobs:
         environment:
             <<: *envVarsDeployDev
         machine:
-            image: ubuntu-2004:202101-01
+            image: ubuntu-2004:2022.04.1
         resource_class: medium
         working_directory: ~/project
         steps:
