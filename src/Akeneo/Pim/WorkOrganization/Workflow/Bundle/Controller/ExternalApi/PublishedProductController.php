@@ -318,7 +318,7 @@ class PublishedProductController
             $pqbOptions['search_after_unique_key'] = $this->getPublishedProductId->fromIdentifier(
                 $queryParameters['search_after']
             ) ?? '';
-            $pqbOptions['search_after'] = [\strtolower($queryParameters['search_after'])];
+            $pqbOptions['search_after'] = [\mb_strtolower($queryParameters['search_after'])];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
 
