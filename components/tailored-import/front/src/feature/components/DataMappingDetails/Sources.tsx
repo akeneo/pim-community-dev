@@ -65,6 +65,9 @@ const Sources = ({sources, columns, validationErrors, isMultiSource, onSourcesCh
                     icon={<CloseIcon />}
                     onClick={() => handleRemoveSource(uuid)}
                     title={translate('pim_common.remove')}
+                    ghost
+                    size="small"
+                    level="danger"
                   />
                 </>
               }

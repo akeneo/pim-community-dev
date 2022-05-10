@@ -43,7 +43,15 @@ akeneo.tailored_import:
       title: Operations
       identifier: No operation available for identifier attribute
       add: Add an operation
-      clean_html_tags: Clean HTML tags
+      clean_html_tags: 
+        title: Clean HTML tags
+      split: 
+        title: Split
+        collapse: Collapse
+        separator: Select the separator
+        comma: Comma (,)
+        semicolon: Semicolon (;)
+        pipe: Pipe (|)
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
       no_available:

@@ -3,14 +3,14 @@ import {Block, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-syste
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {OperationBlockProps} from './OperationBlockProps';
 
-const CLEAN_HTML_TAGS_TYPE = 'clean_html_tags';
+const CLEAN_HTML_TAGS_OPERATION_TYPE = 'clean_html_tags';
 
 type CleanHTMLTagsOperation = {
-  type: typeof CLEAN_HTML_TAGS_TYPE;
+  type: typeof CLEAN_HTML_TAGS_OPERATION_TYPE;
 };
 
 const getDefaultCleanHTMLTagsOperation = (): CleanHTMLTagsOperation => ({
-  type: CLEAN_HTML_TAGS_TYPE,
+  type: CLEAN_HTML_TAGS_OPERATION_TYPE,
 });
 
 const CleanHTMLTagsOperationBlock = ({operation, onRemove}: OperationBlockProps) => {
@@ -19,10 +19,17 @@ const CleanHTMLTagsOperationBlock = ({operation, onRemove}: OperationBlockProps)
 
   return (
     <Block
-      title={translate(`akeneo.tailored_import.data_mapping.operations.${operation.type}`)}
+      title={translate(`akeneo.tailored_import.data_mapping.operations.${operation.type}.title`)}
       actions={
         <>
-          <IconButton title={translate('pim_common.remove')} icon={<CloseIcon />} onClick={openDeleteModal} />
+          <IconButton
+            title={translate('pim_common.remove')}
+            icon={<CloseIcon />}
+            onClick={openDeleteModal}
+            ghost
+            size="small"
+            level="danger"
+          />
           {isDeleteModalOpen && (
             <DeleteModal
               title={translate('akeneo.tailored_import.data_mapping.operations.title')}
@@ -38,5 +45,5 @@ const CleanHTMLTagsOperationBlock = ({operation, onRemove}: OperationBlockProps)
   );
 };
 
-export {CLEAN_HTML_TAGS_TYPE, CleanHTMLTagsOperationBlock, getDefaultCleanHTMLTagsOperation};
+export {CLEAN_HTML_TAGS_OPERATION_TYPE, CleanHTMLTagsOperationBlock, getDefaultCleanHTMLTagsOperation};
 export type {CleanHTMLTagsOperation};

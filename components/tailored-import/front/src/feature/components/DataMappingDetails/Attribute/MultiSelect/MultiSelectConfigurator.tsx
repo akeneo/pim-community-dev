@@ -4,6 +4,7 @@ import {isMultiSelectTarget} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty, ActionIfNotEmpty} from '../../../../components';
+import {SPLIT_OPERATION_TYPE} from '../../Operation';
 
 const MultiSelectConfigurator = ({
   dataMapping,
@@ -41,7 +42,7 @@ const MultiSelectConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[]}
+        compatibleOperations={[SPLIT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
       />
