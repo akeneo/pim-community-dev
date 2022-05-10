@@ -1,5 +1,9 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10435: [Backport] Fix search_after requests with codes using uppercase accented characters
+
 # 6.0.43 (2022-09-20)
 
 ## Improvements
