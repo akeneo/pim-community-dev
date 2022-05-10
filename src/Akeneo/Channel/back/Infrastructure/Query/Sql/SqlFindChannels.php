@@ -20,7 +20,7 @@ final class SqlFindChannels implements FindChannels
     }
 
     /**
-     * @inerhitDoc
+     * @return Channel[]
      */
     public function findAll(): array
     {

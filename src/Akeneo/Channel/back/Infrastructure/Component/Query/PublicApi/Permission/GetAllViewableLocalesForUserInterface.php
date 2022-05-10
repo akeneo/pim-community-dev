@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Component\Query\PublicApi\Permission;
 
+/**
+ * @deprecated Use Akeneo\Channel\API\Query\FindAllViewableLocalesForUser
+ */
 interface GetAllViewableLocalesForUserInterface
 {
     /**

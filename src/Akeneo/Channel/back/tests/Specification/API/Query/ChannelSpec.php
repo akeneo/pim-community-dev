@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Specification\Akeneo\Channel\API\Query;
-
 
 use Akeneo\Channel\API\Query\LabelCollection;
 use PhpSpec\ObjectBehavior;
