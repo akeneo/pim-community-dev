@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isCategoriesTarget} from './model';
-import {PropertyDaraMappingConfiguratorProps} from '../../../../models';
+import {PropertyDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
 import {PropertyTargetParameters, Operations, Sources} from '../../../../components';
 
@@ -13,7 +13,7 @@ const CategoriesConfigurator = ({
   onRefreshSampleData,
   onSourcesChange,
   onTargetChange,
-}: PropertyDaraMappingConfiguratorProps) => {
+}: PropertyDataMappingConfiguratorProps) => {
   const target = dataMapping.target;
 
   if (!isCategoriesTarget(target)) {

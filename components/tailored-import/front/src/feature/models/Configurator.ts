@@ -21,7 +21,7 @@ type AttributeDataMappingConfiguratorProps = {
   onTargetChange: (target: AttributeTarget) => void;
 };
 
-type PropertyDaraMappingConfiguratorProps = {
+type PropertyDataMappingConfiguratorProps = {
   dataMapping: PropertyDataMapping;
   columns: Column[];
   validationErrors: ValidationError[];
@@ -31,4 +31,4 @@ type PropertyDaraMappingConfiguratorProps = {
   onTargetChange: (target: PropertyTarget) => void;
 };
 
-export type {AttributeDataMappingConfiguratorProps, PropertyDaraMappingConfiguratorProps};
+export type {AttributeDataMappingConfiguratorProps, PropertyDataMappingConfiguratorProps};

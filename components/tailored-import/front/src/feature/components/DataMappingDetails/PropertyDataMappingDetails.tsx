@@ -4,7 +4,7 @@ import {
   Column,
   ColumnIdentifier,
   Operation,
-  PropertyDaraMappingConfiguratorProps,
+  PropertyDataMappingConfiguratorProps,
   PropertyDataMapping,
   PropertyTarget,
 } from '../../models';
@@ -13,7 +13,7 @@ import {Helper} from 'akeneo-design-system';
 import {PropertyNotValid} from './PropertyNotValid';
 
 const propertyDataMappingConfigurators: {
-  [propertyCode: string]: FunctionComponent<PropertyDaraMappingConfiguratorProps>;
+  [propertyCode: string]: FunctionComponent<PropertyDataMappingConfiguratorProps>;
 } = {
   categories: CategoriesConfigurator,
 };
