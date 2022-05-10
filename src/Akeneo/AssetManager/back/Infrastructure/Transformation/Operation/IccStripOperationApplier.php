@@ -27,7 +27,7 @@ final class IccStripOperationApplier implements OperationApplier
     public function __construct(
         private FilterManager $filterManager,
         private Filesystem $filesystem
-    ){
+    ) {
     }
 
     public function supports(Operation $operation): bool

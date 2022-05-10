@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Symfony\Component\Filesystem\Filesystem;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 
 class IccStripOperation implements Operation
 {
