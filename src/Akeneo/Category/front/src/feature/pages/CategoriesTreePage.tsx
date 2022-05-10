@@ -65,7 +65,8 @@ const CategoriesTreePage: FC = () => {
     router.redirect(router.generate('pim_enrich_categorytree_edit', {id: id.toString()}));
   };
   const followEditTemplate = useCallback(() => {
-    router.redirect(`/enrich/product-category-tree/${treeId}/template/default`);
+    router.redirectToRoute ('pim_enrich_category_template_edit', { treeId: treeId.toString(), templateCode: 'default' });
+
   }, [router, treeId]);
 
   const addCategory = (parentCode: string, onCreate: () => void) => {

@@ -69,3 +69,12 @@ pim_enrich_categorytree_count_trees_children:
     path: /count-trees-children
     defaults: { _controller: pim_enrich.controller.category_tree.product:countTreesChildrenAction }
     methods: [GET]
+
+# Templates
+
+pim_enrich_category_template_edit:
+    path: /{treeId}/template/{templateCode}
+    requirements:
+        treeId: \d+
+# todo check (POC)
+        templateCode: \w+

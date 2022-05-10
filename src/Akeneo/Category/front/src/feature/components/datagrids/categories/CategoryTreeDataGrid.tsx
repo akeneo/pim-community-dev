@@ -65,7 +65,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
   };
 
   const followEditTemplate = useCallback((tree: CategoryTreeModel) => {
-    router.redirect(`/enrich/product-category-tree/${tree.id}/template/default`);
+    router.redirectToRoute('pim_enrich_category_template_edit', {treeId: tree.id.toString(), templateCode: 'default'});
   }, [router]);
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
