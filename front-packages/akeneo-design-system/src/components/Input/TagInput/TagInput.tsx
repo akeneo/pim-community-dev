@@ -24,9 +24,9 @@ type TagInputProps = Override<
     invalid?: boolean;
 
     /**
-     * Regular expression used to determine when to add a tag.
+     * List of separators used to create tags.
      */
-    separatorRegex?: RegExp;
+    separators?: string[];
 
     /**
      * Handler called when tags are updated.
@@ -47,7 +47,7 @@ const TagInput: FC<TagInputProps> = ({
   value = [],
   readOnly,
   onSubmit,
-  separatorRegex = /[\s,;]+/, // matching spaces, tabs, line breaks, coma and semi-colon
+  separators = ['\\s', ',', ';'], // matching spaces, tabs, line breaks, coma and semi-colon
   ...inputProps
 }) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
@@ -59,7 +59,7 @@ const TagInput: FC<TagInputProps> = ({
     (event: ChangeEvent<HTMLInputElement>) => {
       const tagsAsString = event.currentTarget.value;
       if (tagsAsString !== '') {
-        const newTags = tagsAsString.split(separatorRegex);
+        const newTags = tagsAsString.split(new RegExp(`[${separators.join('')}]+`, 'g'));
         if (newTags.length === 1) {
           return;
         }
