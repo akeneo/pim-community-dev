@@ -15,7 +15,7 @@ import {
   TextTarget,
 } from '../components';
 import {Attribute} from './Attribute';
-import {AttributeDataMapping, DataMapping} from './DataMapping';
+import {AttributeDataMapping, PropertyDataMapping, DataMapping} from './DataMapping';
 
 type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
@@ -79,6 +79,9 @@ const isAttributeDataMapping = (dataMapping: DataMapping): dataMapping is Attrib
 
 const isPropertyTarget = (target: Target): target is PropertyTarget => 'property' === target.type;
 
+const isPropertyDataMapping = (dataMapping: DataMapping): dataMapping is PropertyDataMapping =>
+  isPropertyTarget(dataMapping.target);
+
 const isTargetNotEmptyAction = (action: string): action is TargetNotEmptyAction => 'set' === action || 'add' === action;
 
 export type {AttributeTarget, PropertyTarget, Target, TargetNotEmptyAction, TargetEmptyAction};
@@ -89,4 +92,5 @@ export {
   isAttributeTarget,
   isPropertyTarget,
   isTargetNotEmptyAction,
+  isPropertyDataMapping,
 };

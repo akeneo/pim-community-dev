@@ -1,6 +1,6 @@
 parameters:
-    akeneo.tailored_import.supported_system_properties: []
-#        - 'categories'
+    akeneo.tailored_import.supported_system_properties:
+        - 'categories'
 #        - 'enabled'
 #        - 'family'
 #        - 'parent'
@@ -22,14 +22,6 @@ parameters:
 #        - 'pim_catalog_table'
         - 'pim_catalog_text'
         - 'pim_catalog_textarea'
-
-    akeneo.tailored_import.supported_collection_system_properties: []
-#        - 'categories'
-
-    akeneo.tailored_import.supported_collection_attribute_types:
-#        - 'akeneo_reference_entity_collection'
-#        - 'pim_catalog_asset_collection'
-        - 'pim_catalog_multiselect'
 
 services:
     akeneo.tailored_import.query.attribute.find_viewable_attributes:
