@@ -1,0 +1,2 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFilesToStorage: ~
