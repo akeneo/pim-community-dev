@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Enterprise\Integration\Value\Query;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\GetExistingRecordCodes;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Query\SqlGetExistingRecordCodes;
 use Akeneo\ReferenceEntity\Domain\Model\Image;
@@ -20,6 +22,12 @@ class SqlGetExistingRecordCodesIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+
         $this->sqlGetExistingRecordCodes = $this->get(GetExistingRecordCodes::class);
 
         $referenceEntity = ReferenceEntity::create(

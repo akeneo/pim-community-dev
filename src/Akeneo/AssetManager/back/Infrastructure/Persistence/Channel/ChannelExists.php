@@ -11,31 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel;
+namespace Akeneo\AssetManager\Infrastructure\Persistence\Channel;
 
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
 use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
+use Akeneo\Channel\API\Query\FindChannels;
 
 /**
  * @author    Laurent Petard <laurent.petard@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  */
-class CacheChannelExists implements ChannelExistsInterface
+class ChannelExists implements ChannelExistsInterface
 {
-    /** @var array<string, bool> */
-    private array $channels = [];
-
-    public function __construct(private ChannelExistsInterface $channelExists)
-    {
+    public function __construct(
+        private FindChannels $findChannels
+    ) {
     }
 
     public function exists(ChannelIdentifier $channelIdentifier): bool
     {
-        $channel = $channelIdentifier->normalize();
-        if (!array_key_exists($channel, $this->channels)) {
-            $this->channels[$channel] = $this->channelExists->exists($channelIdentifier);
+        $existingChannels = $this->findChannels->findAll();
+        $channelCode = strtolower($channelIdentifier->normalize());
+
+        foreach ($existingChannels as $existingChannel) {
+            if ($channelCode === strtolower($existingChannel->getCode())) {
+                return true;
+            }
         }
 
-        return $this->channels[$channel];
+        return false;
     }
 }

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\EndToEnd;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -51,13 +53,23 @@ final class GetProductsLinkedToARecordActionIntegration extends TestCase
     /** @var AttributeInterface */
     private $attributeLink;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->get('feature_flags')->enable('reference_entity');
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+    }
+
     /**
      * @test
      * @group critical
      */
     public function it_finds_the_products_linked_to_a_specific_record_for_an_attribute()
     {
-        $this->get('feature_flags')->enable('reference_entity');
         $this->loadProductsLinkedToARecord();
         $this->assertRequestContractRespected();
     }

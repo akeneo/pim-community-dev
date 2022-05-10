@@ -65,7 +65,11 @@ reference-entity-lint-back: #Doc: launch PHP linter for reference-entity
 
 .PHONY: reference-entity-unit-back
 reference-entity-unit-back: var/tests/phpspec #Doc: launch PHPSec for reference-entity
+ifeq ($(CI),true)
 	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist --format=junit > var/tests/phpspec/reference-entity-unit-back.xml $(O)
+else
+	$(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/ReferenceEntity/tests/back/phpspec.yml.dist $(O)
+endif
 
 .PHONY: reference-entity-acceptance-back
 reference-entity-acceptance-back: #Doc: launch Behat acceptance tests for reference-entity
