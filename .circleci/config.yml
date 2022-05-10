@@ -73,7 +73,7 @@ jobs:
   ##################
   build_dev:
     machine:
-      image: ubuntu-2004:202010-01
+      image: ubuntu-2004:2022.04.1
     resource_class: medium
     steps:
       - attach_workspace:
@@ -227,7 +227,7 @@ jobs:
   ##################
   test_back_static_and_acceptance:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
           - attach_workspace:
@@ -265,7 +265,7 @@ jobs:
 
   test_back_integration_bounded_contexts:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
           - attach_workspace:
@@ -303,7 +303,7 @@ jobs:
 
   test_back_integration_reference_entities:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
           - attach_workspace:
@@ -332,7 +332,7 @@ jobs:
 
   test_database:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       parallelism: 1
       steps:
@@ -356,7 +356,7 @@ jobs:
 
   test_back_phpunit:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       parallelism: 20
       steps:
@@ -389,7 +389,7 @@ jobs:
 
   test_back_behat_legacy:
     machine:
-        image: ubuntu-2004:202010-01
+        image: ubuntu-2004:2022.04.1
     resource_class: medium
     parallelism: 40
     steps:
@@ -438,7 +438,7 @@ jobs:
 
   test_front_code_style:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
         - attach_workspace:
@@ -458,7 +458,7 @@ jobs:
 
   test_front_static_acceptance_and_integration:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
         - attach_workspace:
@@ -475,7 +475,7 @@ jobs:
 
   test_front_end_to_end:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: large
       steps:
           - attach_workspace:
@@ -517,7 +517,7 @@ jobs:
 
   test_back_performance:
     machine:
-        image: ubuntu-2004:202010-01
+        image: ubuntu-2004:2022.04.1
     resource_class: medium
     steps:
       - attach_workspace:
@@ -544,7 +544,7 @@ jobs:
 
   test_back_missing_structure_migrations:
       machine:
-        image: ubuntu-2004:202010-01
+        image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
         -   attach_workspace:
@@ -573,7 +573,7 @@ jobs:
 
   test_back_data_migrations:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       steps:
           - attach_workspace:
@@ -602,7 +602,7 @@ jobs:
 
   test_onboarder_bundle:
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: medium
       environment:
           FLAG_ONBOARDER_ENABLED: 1
@@ -704,7 +704,7 @@ jobs:
           type: string
           default: ""
       machine:
-          image: ubuntu-2004:202010-01
+          image: ubuntu-2004:2022.04.1
       resource_class: large
       steps:
           - attach_workspace:
