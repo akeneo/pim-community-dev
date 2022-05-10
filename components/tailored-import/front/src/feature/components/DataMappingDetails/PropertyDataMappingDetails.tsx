@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {
   Column,
   ColumnIdentifier,
@@ -9,6 +9,8 @@ import {
   PropertyTarget,
 } from '../../models';
 import {CategoriesConfigurator} from './Property';
+import {Helper} from 'akeneo-design-system';
+import {PropertyNotValid} from './PropertyNotValid';
 
 const propertyDataMappingConfigurators: {
   [propertyCode: string]: FunctionComponent<PropertyDaraMappingConfiguratorProps>;
@@ -35,6 +37,22 @@ const PropertyDataMappingDetails = ({
   onSourcesChange,
   onTargetChange,
 }: PropertyDataMappingDetailsProps) => {
+  const translate = useTranslate();
+  const codeErrors = getErrorsForPath(validationErrors, '[target][code]');
+
+  if (0 < codeErrors.length) {
+    return (
+      <>
+        {codeErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+        <PropertyNotValid />
+      </>
+    );
+  }
+
   const Configurator = propertyDataMappingConfigurators[dataMapping.target.code] ?? null;
 
   if (null === Configurator) {

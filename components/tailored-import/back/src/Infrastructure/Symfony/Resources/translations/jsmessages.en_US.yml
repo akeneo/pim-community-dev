@@ -33,6 +33,7 @@ akeneo.tailored_import:
     title: Data mapping
     no_data_mapping_selected: No data mapping selected
     attribute_not_found: This attribute has been deleted, you can no longer use it in a data mapping.
+    property_not_valid: The property is not valid.
     preview:
       input_title: Input preview
       output_title: Output preview

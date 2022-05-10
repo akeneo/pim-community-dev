@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {DataMappingDetails} from './DataMappingDetails';
-import {AttributeTarget, Column, DataMapping, FileStructure} from '../../models';
+import {AttributeTarget, Column, DataMapping, FileStructure, PropertyTarget} from '../../models';
 
 const columns: Column[] = [
   {
@@ -37,7 +37,7 @@ const attributeDataMapping: DataMapping = {
 const propertyDataMapping: DataMapping = {
   uuid: 'd1249682-720e-11ec-90d6-0242ac120003',
   target: {
-    code: 'family',
+    code: 'categories',
     type: 'property',
     action_if_not_empty: 'set',
     action_if_empty: 'skip',
@@ -136,7 +136,7 @@ test('it displays an attribute data mapping', async () => {
   expect(screen.getByText('Name (B)')).toBeInTheDocument();
 });
 
-test('it can change target parameters', async () => {
+test('it can change attribute target parameters', async () => {
   const handleDataMappingChange = jest.fn();
 
   const attributeTarget: AttributeTarget = {
@@ -168,6 +168,38 @@ test('it can change target parameters', async () => {
     target: {
       ...attributeTarget,
       channel: 'ecommerce',
+    },
+  });
+});
+
+test('it can change property target parameters', async () => {
+  const handleDataMappingChange = jest.fn();
+
+  const propertyTarget: PropertyTarget = {
+    code: 'categories',
+    type: 'property',
+    action_if_not_empty: 'set',
+    action_if_empty: 'skip',
+  };
+
+  await renderWithProviders(
+    <DataMappingDetails
+      dataMapping={{...propertyDataMapping, target: propertyTarget}}
+      fileKey="/file_key"
+      fileStructure={fileStructure}
+      columns={columns}
+      validationErrors={[]}
+      onDataMappingChange={handleDataMappingChange}
+    />
+  );
+
+  userEvent.click(screen.getByLabelText('akeneo.tailored_import.data_mapping.target.clear_if_empty'));
+
+  expect(handleDataMappingChange).toHaveBeenCalledWith({
+    ...propertyDataMapping,
+    target: {
+      ...propertyTarget,
+      action_if_empty: 'clear',
     },
   });
 });
