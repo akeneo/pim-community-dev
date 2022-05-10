@@ -5,28 +5,29 @@ import {EditCategoryProvider} from './components';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
+  CategoryEnrichmentProvider: React.Component;
 };
 
-const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
+const CategoriesApp: FC<Props> = ({setCanLeavePage, CategoryEnrichmentProvider}) => {
   return (
-        <Router basename="/enrich/product-category-tree">
-          <Switch>
-            <Route path="/:treeId/template/:templateId">
-              <EditTemplatePage />
-            </Route>
-            <Route path="/:treeId/tree">
-              <CategoriesTreePage />
-            </Route>
-            <Route path="/:categoryId/edit">
-              <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
-                <CategoryEditPage />
-              </EditCategoryProvider>
-            </Route>
-            <Route path="/">
-              <CategoriesIndex />
-            </Route>
-          </Switch>
-        </Router>
+    <Router basename="/enrich/product-category-tree">
+      <Switch>
+        <Route path="/:treeId/template/:templateId">
+          <EditTemplatePage />
+        </Route>
+        <Route path="/:treeId/tree">
+          <CategoriesTreePage />
+        </Route>
+        <Route path="/:categoryId/edit">
+          <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
+            <CategoryEditPage />
+          </EditCategoryProvider>
+        </Route>
+        <Route path="/">
+          <CategoriesIndex />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 

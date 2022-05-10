@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState, ReactNode} from 'react';
 import {Button, Search, Table, useBooleanState} from 'akeneo-design-system';
 import {
   NotificationLevel,
@@ -64,9 +64,15 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
     closeConfirmationModal();
   };
 
-  const followEditTemplate = useCallback((tree: CategoryTreeModel) => {
-    router.redirectToRoute('pim_enrich_category_template_edit', {treeId: tree.id.toString(), templateCode: 'default'});
-  }, [router]);
+  const followEditTemplate = useCallback(
+    (tree: CategoryTreeModel) => {
+      router.redirectToRoute('pim_enrich_category_template_edit', {
+        treeId: tree.id.toString(),
+        templateCode: 'default',
+      });
+    },
+    [router]
+  );
 
   const onDeleteCategoryTree = (categoryTree: CategoryTreeModel) => {
     if (categoryTree.productsNumber && categoryTree.productsNumber > 100) {
@@ -159,12 +165,11 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         {translate('pim_common.delete')}
                       </Button>
                     )}
-                    <Button
-                      level="primary"
-                      size={'small'}
-                      onClick={() => followEditTemplate(tree)}>
-                      Edit template
-                    </Button>
+                    {isGranted('pim_enrich_product_category_template_edit') && (
+                      <Button level="primary" size={'small'} onClick={() => followEditTemplate(tree)}>
+                        Edit template
+                      </Button>
+                    )}
                   </TableActionCell>
                 </Table.Row>
               ))}

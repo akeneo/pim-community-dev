@@ -30,3 +30,9 @@ pim_enrich_product_category_history:
     type: action
     label: pim_enrich.acl.category.history
     group_name: pim_enrich.acl_group.category
+
+# Product Category Enrichment
+pim_enrich_product_category_template_edit:
+    type: action
+    label: pim_enrich.acl.category.template.edit
+    group_name: pim_enrich.acl_group.category
