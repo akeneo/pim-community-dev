@@ -37,6 +37,7 @@
 - PIM-10420: Handle status resolving when job crashes due to external issue (mysql crashes for example)
 - PIM-10416: Fix letter case issue when importing families
 - PIM-10427: Fix display of boolean value in variant axis
+- PIM-10435: Fix search_after requests with codes using uppercase accented characters
 
 ## Improvements
 
