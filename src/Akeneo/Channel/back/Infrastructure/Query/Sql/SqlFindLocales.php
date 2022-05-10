@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Akeneo\Channel\Infrastructure\Query\Sql;
 
@@ -33,7 +34,7 @@ final class SqlFindLocales implements FindLocales
         if ($result) {
             return new Locale(
                 $result['localeCode'],
-                $result['isActivated']
+                (bool) $result['isActivated'],
             );
         }
 
