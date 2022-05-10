@@ -21,7 +21,7 @@ class ReferenceDataRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = null, array $options = []): array|float|int|string
+    public function findBySearch($search = null, array $options = [])
     {
         if (null !== $labelProperty = $this->getReferenceDataLabelProperty()) {
             $selectDql = sprintf(
