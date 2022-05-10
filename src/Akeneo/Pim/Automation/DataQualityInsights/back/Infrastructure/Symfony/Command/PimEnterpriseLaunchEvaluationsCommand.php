@@ -80,12 +80,14 @@ class PimEnterpriseLaunchEvaluationsCommand extends Command
                 SELECT 1
                 FROM pim_one_time_task
                 WHERE code=:code
+                AND status=:status
                 LIMIT 1
             ) AS missing
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
             ':code' => 'pim:product:migrate-to-uuid',
+            ':status' => 'started',
         ]);
     }
 }
