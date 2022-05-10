@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.27 (2022-05-10)
+
 ## Bug fixes
 
 - PIM-10425: Fix notifications can't be displayed because of removed routes
