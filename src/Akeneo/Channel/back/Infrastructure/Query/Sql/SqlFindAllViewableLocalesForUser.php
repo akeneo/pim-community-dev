@@ -34,7 +34,7 @@ class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser
             JOIN pimee_security_locale_access locale_access ON locale.id = locale_access.locale_id
             JOIN oro_user_access_group user_access_group ON user_access_group.group_id = locale_access.user_group_id
             WHERE user_access_group.user_id = :userId
-            AND la.view_products = 1
+            AND locale_access.view_products = 1
         SQL;
 
         $results = $this->connection
