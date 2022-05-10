@@ -32,7 +32,8 @@ class IccStripOperation implements Operation
     public function normalize(): array
     {
         return [
-            'type' => self::OPERATION_NAME
+            'type' => self::OPERATION_NAME,
+            'parameters' => []
         ];
     }
 }

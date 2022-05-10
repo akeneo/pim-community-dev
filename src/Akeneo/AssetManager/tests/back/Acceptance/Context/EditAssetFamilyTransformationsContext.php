@@ -24,6 +24,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryClock;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
@@ -446,7 +447,7 @@ class EditAssetFamilyTransformationsContext implements Context
             function (array $transformation) {
                 $transformation = array_filter($transformation);
                 $transformation['updated_at'] = $this->clock->now()->format(\DateTimeImmutable::ISO8601);
-
+                array_unshift($transformation['operations'], IccStripOperation::create([])->normalize());
                 return $transformation;
             },
             self::COMPLEX_TRANSFORMATIONS

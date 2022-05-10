@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
@@ -33,10 +34,11 @@ class OperationCollectionSpec extends ObjectBehavior
 
     function it_normalizes_an_operation_collection()
     {
+        $iccStrip = IccStripOperation::create([]);
         $thumbnail = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
         $resize = ResizeOperation::create(['width' => 100, 'height' => 80]);
         $this->beConstructedThrough('create', [[$thumbnail, $resize]]);
-        $this->normalize()->shouldReturn([$thumbnail->normalize(), $resize->normalize()]);
+        $this->normalize()->shouldReturn([$iccStrip->normalize(), $thumbnail->normalize(), $resize->normalize()]);
     }
 
     function it_is_equal_to_another_operation_collection()
