@@ -30,12 +30,11 @@ class SqlFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser
             SELECT
                 locale.code as localeCode,
                 locale.is_activated AS isActivated
-            FROM
-                pimee_security_locale_access locale_access
-                JOIN pim_catalog_locale locale ON locale.id = locale_access.locale_id
-                JOIN oro_user_access_group user_access_group ON user_access_group.group_id = locale_access.user_group_id
-            WHERE
-                user_access_group.user_id = :userId
+            FROM pim_catalog_locale locale
+            JOIN pimee_security_locale_access locale_access ON locale.id = locale_access.locale_id
+            JOIN oro_user_access_group user_access_group ON user_access_group.group_id = locale_access.user_group_id
+            WHERE user_access_group.user_id = :userId
+            AND la.view_products = 1
         SQL;
 
         $results = $this->connection

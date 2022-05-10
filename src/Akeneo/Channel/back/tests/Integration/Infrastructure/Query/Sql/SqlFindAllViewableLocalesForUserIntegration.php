@@ -27,6 +27,18 @@ final class SqlFindAllViewableLocalesForUserIntegration extends TestCase
         ];
 
         Assert::assertEqualsCanonicalizing($expectedLocales, $query->findAll($userId));
+
+        $userId =  $this->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "julia"', [], 0);
+
+        $expectedLocales = [
+            new Locale('en_US', 1),
+            new Locale('fr_FR', 1),
+            new Locale('de_DE', 1),
+            new Locale('zh_CN', 1),
+        ];
+
+        Assert::assertEqualsCanonicalizing($expectedLocales, $query->findAll($userId));
     }
 
     /**
