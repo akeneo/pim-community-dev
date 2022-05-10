@@ -96,12 +96,12 @@ services:
     akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
 
     akeneo.pim.automation.data_quality_insights.product_model_criteria_by_feature_registry:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
 
     akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria
@@ -280,8 +280,8 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ProductKeyIndicatorsByFeatureRegistry:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature'
+            - '@akeneo.pim.automation.data_quality_insights.all_criteria.feature'

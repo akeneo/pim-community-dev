@@ -8,6 +8,8 @@ services:
             - '%env(bool:FLAG_DATA_QUALITY_INSIGHTS_ENABLED)%'
         public: true
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature:
+    akeneo.pim.automation.data_quality_insights.all_criteria.feature:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\FeatureFlag\AllCriteriaFeature
         arguments:
+            - '@akeneo.feature_flag.service.only_serenity_feature'
             - '@feature_flags'
