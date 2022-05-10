@@ -23,7 +23,7 @@ final class CreateSupplierHandler
     public function __invoke(CreateSupplier $createSupplier): void
     {
         if ($this->supplierExists->fromCode(Code::fromString($createSupplier->code))) {
-            $this->logger->warning(
+            $this->logger->info(
                 sprintf('Attempt to create a supplier "%s" that does already exist.', $createSupplier->code),
                 [
                     'data' => [

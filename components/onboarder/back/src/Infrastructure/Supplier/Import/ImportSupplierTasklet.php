@@ -70,7 +70,7 @@ final class ImportSupplierTasklet implements TaskletInterface
                     $this->stepExecution->incrementSummaryInfo('process');
                 }
             } catch (InvalidItemException $e) {
-                $this->logger->error(
+                $this->logger->info(
                     sprintf(
                         'An error occurred while importing a supplier: "%s"',
                         $e->getMessage(),

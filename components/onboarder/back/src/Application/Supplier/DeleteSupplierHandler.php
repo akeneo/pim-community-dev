@@ -22,7 +22,7 @@ final class DeleteSupplierHandler
             Identifier::fromString($deleteSupplier->identifier),
         );
 
-        $this->logger->debug(
+        $this->logger->info(
             sprintf('Supplier "%s" deleted.', $deleteSupplier->identifier),
         );
     }

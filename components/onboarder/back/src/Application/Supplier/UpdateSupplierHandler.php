@@ -30,7 +30,7 @@ final class UpdateSupplierHandler
         $supplier = $this->repository->find(Identifier::fromString($updateSupplier->identifier));
 
         if (null === $supplier) {
-            $this->logger->warning(
+            $this->logger->info(
                 'Attempt to update a supplier that does not exist.',
                 [
                     'data' => [
