@@ -111,7 +111,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
 
         $labels = [];
         foreach ($localeCodes as $localeCode) {
-            $labels[$localeCode] = $entity->getLabel($localeCode);
+            $labels[$localeCode] = $entity->getLabel($localeCode, null);
         }
 
         $identifier = $entity instanceof ProductModelInterface ? $entity->getCode() : $entity->getIdentifier();
