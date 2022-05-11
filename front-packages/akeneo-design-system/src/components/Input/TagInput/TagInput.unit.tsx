@@ -16,7 +16,7 @@ test('it allows tags to be created', () => {
 
   render(<TagInput value={[]} onChange={handleChange} />);
 
-  userEvent.type(screen.getByTestId('tag-input'), 'gucci{space}');
+  userEvent.type(screen.getByRole('textbox'), 'gucci{space}');
 
   expect(handleChange).toHaveBeenCalledWith(['gucci']);
 });
@@ -45,7 +45,7 @@ test('it supports the copy paste of multiple tags', () => {
 
   render(<TagInput value={[]} onChange={handleChange} />);
 
-  userEvent.paste(screen.getByTestId('tag-input'), ' gucci samsung    apple asus  ');
+  userEvent.paste(screen.getByRole('textbox'), ' gucci samsung    apple asus  ');
 
   expect(handleChange).toBeCalledWith(['gucci', 'samsung', 'apple', 'asus']);
 });
@@ -61,7 +61,7 @@ apple \
 dior,renault;porsche';
   /*eslint-enable */
 
-  userEvent.paste(screen.getByTestId('tag-input'), input);
+  userEvent.paste(screen.getByRole('textbox'), input);
 
   expect(handleChange).toBeCalledWith(['gucci', 'samsung', 'apple', 'dior', 'renault', 'porsche']);
 });
@@ -71,9 +71,9 @@ test('it can use overridden separators', () => {
 
   render(<TagInput value={[]} separators={['w', 'y']} onChange={handleChange} />);
 
-  userEvent.paste(screen.getByTestId('tag-input'), 'nicewseparatorwindeedythisyoneytoo');
+  userEvent.paste(screen.getByRole('textbox'), 'nicewsepa ratorwindeedythisyoneytoo');
 
-  expect(handleChange).toBeCalledWith(['nice', 'separator', 'indeed', 'this', 'one', 'too']);
+  expect(handleChange).toBeCalledWith(['nice', 'sepa rator', 'indeed', 'this', 'one', 'too']);
 });
 
 test('it handles deletion of a tag using the mouse', () => {
@@ -84,7 +84,7 @@ test('it handles deletion of a tag using the mouse', () => {
 
   const result = render(<TagInputContainer />);
 
-  userEvent.paste(screen.getByTestId('tag-input'), 'gucci samsung apple');
+  userEvent.paste(screen.getByRole('textbox'), 'gucci samsung apple');
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
   userEvent.click(screen.getByTestId('remove-1'));
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'apple']));
@@ -103,27 +103,27 @@ test('it supports the removal of a tag using keyboard only', () => {
   const result = render(<TagInputContainer />);
 
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung', 'apple']));
-  userEvent.type(screen.getByTestId('tag-input'), '{del}');
+  userEvent.type(screen.getByRole('textbox'), '{del}');
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'samsung']));
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
   expect(result.container.textContent).toBe(expectedTags(['gucci']));
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
   expect(result.container.textContent).toBe(expectedTags([]));
-  userEvent.type(screen.getByTestId('tag-input'), '{backspace}');
+  userEvent.type(screen.getByRole('textbox'), '{backspace}');
 });
 
 test('it allows input to be easily focused by clicking anywhere on the component', () => {
   render(<TagInput value={[]} onChange={jest.fn()} />);
 
-  expect(screen.getByTestId('tag-input')).not.toHaveFocus();
+  expect(screen.getByRole('textbox')).not.toHaveFocus();
 
   userEvent.click(screen.getByTestId('tagInputContainer'));
 
-  expect(screen.getByTestId('tag-input')).toHaveFocus();
+  expect(screen.getByRole('textbox')).toHaveFocus();
 });
 
 test('it creates a tag if the input loses focus', () => {
@@ -135,12 +135,12 @@ test('it creates a tag if the input loses focus', () => {
   const result = render(<TagInputContainer />);
 
   expect(result.container.textContent).toBe(expectedTags([]));
-  userEvent.type(screen.getByTestId('tag-input'), 'gucci');
+  userEvent.type(screen.getByRole('textbox'), 'gucci');
   expect(result.container.textContent).toBe(expectedTags([]));
-  screen.getByTestId('tag-input').blur();
+  screen.getByRole('textbox').blur();
   expect(result.container.textContent).toBe(expectedTags(['gucci']));
-  userEvent.type(screen.getByTestId('tag-input'), 'dior');
-  screen.getByTestId('tag-input').blur();
+  userEvent.type(screen.getByRole('textbox'), 'dior');
+  screen.getByRole('textbox').blur();
   expect(result.container.textContent).toBe(expectedTags(['gucci', 'dior']));
 });
 
