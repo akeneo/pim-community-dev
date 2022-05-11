@@ -26,7 +26,9 @@ class OperationCollection implements \IteratorAggregate
         Assert::notEmpty($operations);
         Assert::allIsInstanceOf($operations, Operation::class);
         $this->operations = $operations;
-        array_unshift($this->operations, IccStripOperation::create([]));
+        if (!$this->operations[0] instanceof IccStripOperation) {
+            array_unshift($this->operations, IccStripOperation::create([]));
+        }
     }
 
     public function getIterator(): \Iterator
