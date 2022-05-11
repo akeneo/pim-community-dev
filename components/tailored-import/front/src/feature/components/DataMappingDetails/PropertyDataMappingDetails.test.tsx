@@ -76,9 +76,7 @@ test('it displays property errors when property is not valid', async () => {
   expect(screen.getByText('code error message')).toBeInTheDocument();
 });
 
-test('it renders nothing if the configurator is unknown', async () => {
-  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-
+test('it displays property not valid when configuration is not found', async () => {
   await renderWithProviders(
     <PropertyDataMappingDetails
       dataMapping={{
@@ -96,6 +94,5 @@ test('it renders nothing if the configurator is unknown', async () => {
     />
   );
 
-  expect(mockedConsole).toHaveBeenCalledWith('No configurator found for "nothing" property');
-  mockedConsole.mockRestore();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.property_not_valid')).toBeInTheDocument();
 });

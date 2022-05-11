@@ -39,8 +39,9 @@ const PropertyDataMappingDetails = ({
 }: PropertyDataMappingDetailsProps) => {
   const translate = useTranslate();
   const codeErrors = getErrorsForPath(validationErrors, '[target][code]');
+  const Configurator = propertyDataMappingConfigurators[dataMapping.target.code] ?? null;
 
-  if (0 < codeErrors.length) {
+  if (0 < codeErrors.length || null === Configurator) {
     return (
       <>
         {codeErrors.map((error, index) => (
@@ -51,14 +52,6 @@ const PropertyDataMappingDetails = ({
         <PropertyNotValid />
       </>
     );
-  }
-
-  const Configurator = propertyDataMappingConfigurators[dataMapping.target.code] ?? null;
-
-  if (null === Configurator) {
-    console.error(`No configurator found for "${dataMapping.target.code}" property`);
-
-    return null;
   }
 
   return (

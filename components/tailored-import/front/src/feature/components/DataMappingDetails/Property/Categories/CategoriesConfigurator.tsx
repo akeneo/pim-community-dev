@@ -4,6 +4,7 @@ import {isCategoriesTarget} from './model';
 import {PropertyDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
 import {PropertyTargetParameters, Operations, Sources} from '../../../../components';
+import {SPLIT_OPERATION_TYPE} from '../../Operation';
 
 const CategoriesConfigurator = ({
   dataMapping,
@@ -32,7 +33,7 @@ const CategoriesConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[]}
+        compatibleOperations={[SPLIT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
       />

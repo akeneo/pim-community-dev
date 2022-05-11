@@ -10,7 +10,7 @@ type CategoriesTarget = {
 };
 
 const isCategoriesTarget = (target: Target): target is CategoriesTarget =>
-  'property' === target.type && 'categories' === target.code;
+  'property' === target.type && CATEGORIES_PROPERTY_CODE === target.code;
 
 export type {CategoriesTarget};
 export {isCategoriesTarget};
