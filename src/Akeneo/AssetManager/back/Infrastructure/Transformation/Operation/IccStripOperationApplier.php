@@ -42,7 +42,7 @@ final class IccStripOperationApplier implements OperationApplier
         $image = new FileBinary($file->getRealPath(), $file->getMimeType());
         $computedImage = $this->filterManager->applyFilters($image, [
             'filters' => [
-                'icc_strip' => null,
+                'icc_strip' => [],
             ],
             'quality' => 100,
             'format' => 'png'
