@@ -4,7 +4,7 @@ import {AkeneoThemedProps, CommonStyle, getColor} from '../theme';
 const StoryStyle = styled.div`
   ${CommonStyle}
   & > * {
-    margin: 0 10px 20px 0;
+    margin: 0 10px 20px 0 !important;
   }
 `;
 
