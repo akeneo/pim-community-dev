@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="2"
+    cacheDirectory="/tmp/psalm-cache"
+>
+    <projectFiles>
+        <directory name="src" />
+    </projectFiles>
+</psalm>
