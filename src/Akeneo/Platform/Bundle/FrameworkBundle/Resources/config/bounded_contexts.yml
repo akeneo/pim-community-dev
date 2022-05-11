@@ -25,7 +25,7 @@ parameters:
         'Akeneo\Pim\WorkOrganization\Workflow': 'Workflow'
         'Akeneo\Pim\WorkOrganization\ProductRevert': 'Workflow'
 
-        'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
+        'Akeneo\Platform\Bundle\ImportExportBundle': 'Import Export'
         'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
         'Akeneo\Platform\CommunicationChannel': 'CommunicationChannel'
         'Akeneo\Platform\Job': 'Job'
