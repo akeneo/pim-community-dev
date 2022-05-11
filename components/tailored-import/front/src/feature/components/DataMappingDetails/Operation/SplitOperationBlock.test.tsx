@@ -42,7 +42,7 @@ test('it can change the separator', () => {
     <SplitOperationBlock operation={{type: 'split', separator: ','}} onChange={handleChange} onRemove={jest.fn()} />
   );
 
-  userEvent.click(screen.getByTitle('Collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 
