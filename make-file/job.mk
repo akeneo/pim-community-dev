@@ -23,6 +23,10 @@ else
 	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit -c src/Akeneo/Platform/Job/back/tests --testsuite Job_Integration_Test $(O)
 endif
 
+.PHONY: job-find-deprecated
+job-find-deprecated:
+	$(DOCKER_COMPOSE) run -u www-data --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo -c phpstan-deprecations.neon --level 1
+
 .PHONY: job-acceptance-back
 job-acceptance-back: #Doc: launch PHPUnit acceptance tests for job bounded context
 ifeq ($(CI),true)
@@ -32,7 +36,8 @@ else
 endif
 
 .PHONY: job-ci-back
-job-ci-back: job-lint-back job-coupling-back job-unit-back job-acceptance-back job-integration-back
+job-ci-back: job-lint-back job-coupling-back job-unit-back job-acceptance-back job-integration-back job-find-deprecated
+
 
 .PHONY: job-ci-front
 job-ci-front:

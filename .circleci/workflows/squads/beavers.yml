@@ -1,0 +1,22 @@
+version: 2.1
+
+workflows:
+    version: 2
+
+    beavers_playground:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - checkout_ce:
+                  name: checkout
+                  filters:
+                      branches:
+                          only:
+                              - /^(DPE)-.*/
+            - install_ce_back_dependencies:
+                  requires:
+                      - checkout
+            - phpstan_deprecations_dependencies:
+                  requires:
+                      - install_ce_back_dependencies

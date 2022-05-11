@@ -365,3 +365,20 @@ jobs:
             - run:
                   name: Database test
                   command: APP_ENV=dev PIM_CONTEXT=test make test-database-structure
+
+    phpstan_deprecations_dependencies:
+        machine:
+            image: *executor-machine
+        parallelism: 1
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - run:
+                  name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                  command: sudo chown -R 1000:1000 ../project
+            - run:
+                  name: Warmup Symfony dev cache with debug
+                  command: APP_ENV=dev docker-compose run --rm -e APP_DEBUG=1 php bin/console cache:warmup
+            - run:
+                  name: Run deprecations detections
+                  command: docker-compose run --rm php php -d memory_limit=2G vendor/bin/phpstan analyse src/Akeneo -c phpstan-deprecations.neon --level 1
