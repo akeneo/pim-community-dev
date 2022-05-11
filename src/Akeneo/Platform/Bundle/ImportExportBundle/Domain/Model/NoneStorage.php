@@ -23,9 +23,4 @@ final class NoneStorage implements StorageInterface
             'type' => self::TYPE,
         ];
     }
-
-    public function getFilePath(): string
-    {
-        return '';
-    }
 }

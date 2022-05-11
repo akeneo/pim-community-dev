@@ -96,6 +96,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
             static fn (WrittenFileInfo $writtenFile) => new FileToTransfer(
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
+                $writtenFile->outputFilepath(),
                 $writtenFile->isLocalFile()
             ), $writer->getWrittenFiles()
         );

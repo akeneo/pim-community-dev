@@ -16,6 +16,4 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model;
 interface StorageInterface
 {
     public function normalize(): array;
-
-    public function getFilePath(): string;
 }
