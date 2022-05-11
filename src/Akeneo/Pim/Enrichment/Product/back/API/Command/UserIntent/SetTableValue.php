@@ -12,6 +12,13 @@ use Webmozart\Assert\Assert;
  */
 final class SetTableValue implements ValueUserIntent
 {
+    /**
+     * @param array<int, array<string, mixed>> $tableValue
+     *     ex. [
+     *             0 => ['ingredient' => 'butter', 'quantity' => 2],
+     *             1 => ['ingredient' => 'salt'],
+     *         ]
+     */
     public function __construct(
         private string $attributeCode,
         private ?string $channelCode,
@@ -25,6 +32,13 @@ final class SetTableValue implements ValueUserIntent
         return $this->attributeCode;
     }
 
+    /**
+     * @return array<int, array<string, mixed>> $tableValue
+     *     ex. [
+     *             0 => ['ingredient' => 'butter', 'quantity' => 2],
+     *             1 => ['ingredient' => 'salt'],
+     *         ]
+     */
     public function tableValue(): array
     {
         return $this->tableValue;

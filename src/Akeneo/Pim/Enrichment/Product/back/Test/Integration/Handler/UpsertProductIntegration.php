@@ -1113,6 +1113,8 @@ final class UpsertProductIntegration extends TestCase
     /** @test */
     public function it_creates_and_updates_a_product_with_a_table_value(): void
     {
+        FeatureHelper::skipIntegrationTestWhenTableAttributeIsNotActivated();
+
         $this->createAttribute([
             'code' => 'a_table',
             'type' => AttributeTypes::TABLE,
@@ -1161,7 +1163,7 @@ final class UpsertProductIntegration extends TestCase
 
         $this->clearDoctrineUoW();
 
-        $tableNormalizer = new TableNormalizer();
+        $tableNormalizer = $this->get('Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer');
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNotNull($product);
         Assert::assertEquals(
@@ -1197,8 +1199,10 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_table_value_has_wrong_format(): void // todo naming ?????
+    public function it_throws_an_exception_when_table_value_has_wrong_format(): void
     {
+        FeatureHelper::skipIntegrationTestWhenTableAttributeIsNotActivated();
+
         $this->createAttribute([
             'code' => 'a_table',
             'type' => AttributeTypes::TABLE,
@@ -1244,8 +1248,6 @@ final class UpsertProductIntegration extends TestCase
             ]
         );
         $this->messageBus->dispatch($command);
-
-        $this->clearDoctrineUoW();
     }
 
     private function getUserId(string $username): int
