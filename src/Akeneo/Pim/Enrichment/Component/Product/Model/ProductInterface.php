@@ -33,22 +33,6 @@ interface ProductInterface extends
     EntityWithQuantifiedAssociationsInterface,
     StateUpdatedAware
 {
-    /**
-     * Get the ID of the product
-     *
-     * @return int|string
-     */
-    public function getId();
-
-    /**
-     * Set id
-     *
-     * @param int|string $id
-     *
-     * @return ProductInterface
-     */
-    public function setId($id);
-
     public function getUuid(): UuidInterface;
 
     /**

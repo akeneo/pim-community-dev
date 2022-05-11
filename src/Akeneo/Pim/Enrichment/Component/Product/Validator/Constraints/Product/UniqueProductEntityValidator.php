@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -71,7 +72,7 @@ class UniqueProductEntityValidator extends ConstraintValidator
          * We don't want to validate a product identifier if we update a product because we have already validated the
          * product identifier during the creation
          */
-        if ((string)$entity->getId() !== $idFromDatabase) {
+        if (!$entity->getUuid()->equals($idFromDatabase)) {
             $this->context->buildViolation($constraint->message, ['%identifier%' => $identifierValue->getData()])
                           ->atPath('identifier')
                           ->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)

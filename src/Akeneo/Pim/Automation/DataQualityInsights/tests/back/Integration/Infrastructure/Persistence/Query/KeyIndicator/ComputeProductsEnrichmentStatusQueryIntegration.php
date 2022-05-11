@@ -111,7 +111,7 @@ final class ComputeProductsEnrichmentStatusQueryIntegration extends DataQualityI
 
     private function givenNotInvolvedProduct(): void
     {
-        $this->createProduct('not_involved_product', ['family' => 'family_with_5_attributes'])->getId();
+        $this->createProduct('not_involved_product', ['family' => 'family_with_5_attributes']);
     }
 
     private function givenProductWithoutEvaluations(): array
