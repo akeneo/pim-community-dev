@@ -52,6 +52,7 @@ class AkeneoCategoryExtension extends Extension
         $loader->load('scope_mappers.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('serializers_versioning.yml');
+        $loader->load('services.yml');
         $loader->load('steps.yml');
         $loader->load('twig.yml');
         $loader->load('updaters.yml');

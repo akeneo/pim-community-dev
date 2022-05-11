@@ -1,0 +1,15 @@
+services:
+  pim_catalog.elasticsearch.indexer.category:
+    class: Akeneo\Category\Infrastructure\Elasticsearch\CategoryIndexer
+    public: true
+    arguments:
+      - '@akeneo_elasticsearch.client.category'
+      - '@akeneo.pim.category.get_elasticsearch_category_projection'
+
+  akeneo.pim.category.get_elasticsearch_category_projection:
+    class: Akeneo\Category\Infrastructure\Elasticsearch\GetElasticsearchCategoryProjection
+    arguments:
+      - '@database_connection'
+      - '@pim_catalog.normalizer.indexing_product.product.product_value_collection'
+      - '@akeneo.pim.enrichment.factory.read_value_collection'
+      - !tagged akeneo.pim.enrichment.product.query.indexing_additional_properties

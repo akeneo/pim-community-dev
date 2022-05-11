@@ -1,0 +1,53 @@
+mappings:
+    properties:
+        identifier:
+            type: 'keyword'
+        updated_at:
+            type: 'date'
+        code:
+            type: 'keyword'
+            normalizer: 'text_normalizer'
+        category_id:
+            type: 'keyword'
+        root:
+            type: 'keyword'
+        root_code:
+            type: 'keyword'
+        parent_id:
+            type: 'keyword'
+        parent_code:
+            type: 'keyword'
+        level:
+            type: 'keyword'
+        sort_order:
+            type: 'keyword'
+        path:
+            type: 'keyword'
+        template_code:
+            type: 'keyword'
+        record_identifier:
+            type: 'keyword'
+
+    dynamic_templates:
+        -
+            record_full_text_search:
+                path_match: 'record_full_text_search.*.*'
+                mapping:
+                    type: 'keyword'
+                    normalizer: 'text_normalizer'
+        -
+            record_code_label_search:
+                path_match: 'record_code_label_search.*'
+                mapping:
+                    type: 'keyword'
+                    normalizer: 'text_normalizer'
+        -
+            complete_value_keys:
+                path_match: 'complete_value_keys.*'
+                mapping:
+                    type: 'boolean'
+        -
+            values:
+                path_match: 'values.*'
+                mapping:
+                    type: 'keyword'
