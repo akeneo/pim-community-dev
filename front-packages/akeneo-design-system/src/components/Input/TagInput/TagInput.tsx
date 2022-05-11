@@ -202,6 +202,7 @@ const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   position: relative;
   width: 100%;
+  margin: 0;
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
