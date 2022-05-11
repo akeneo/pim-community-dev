@@ -7,6 +7,7 @@ namespace Akeneo\Test\Pim\Enrichment\Product\Integration\Handler;
 use Akeneo\AssetManager\Application\Asset\CreateAsset\CreateAssetCommand;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
@@ -19,6 +20,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\AddToGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\RemoveFromGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\RemoveFamily;
@@ -36,6 +38,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -904,14 +907,6 @@ final class UpsertProductIntegration extends TestCase
         $this->updateProduct(new SetGroups(['unknown', 'groupB']));
     }
 
-    private function getUserId(string $username): int
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        Assert::assertNotNull($user);
-
-        return $user->getId();
-    }
-
     /** @test */
     public function it_creates_a_product_with_an_asset_value(): void
     {
@@ -1081,6 +1076,43 @@ final class UpsertProductIntegration extends TestCase
         $this->messageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
+    }
+
+    /** @test */
+    public function it_updates_a_product_with_a_price_value(): void
+    {
+        $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
+            new PriceValue('42', 'EUR'),
+            new PriceValue('24', 'USD'),
+        ]));
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        $value = $product->getValue('a_price', null, null)->getData()->toArray();
+
+        Assert::assertEqualsCanonicalizing([
+            new ProductPrice('42.00', 'EUR'),
+            new ProductPrice('24.00', 'USD'),
+        ], $value);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_currency_does_not_exist(): void
+    {
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('Please specify a valid currency for the a_price attribute, the UNKNOWN code was sent.');
+
+        $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
+            new PriceValue('42', 'UNKNOWN'),
+        ]));
+    }
+
+    private function getUserId(string $username): int
+    {
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        Assert::assertNotNull($user);
+
+        return $user->getId();
     }
 
     private function loadAssetFixtures(): void

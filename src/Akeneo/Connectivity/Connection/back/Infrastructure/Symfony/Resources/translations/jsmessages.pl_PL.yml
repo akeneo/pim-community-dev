@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
         card:
           developed_by: 'Autor: {{ author }}'
+          new_access_authorization_required: Wymagana nowa autoryzacja dostępu.
           not_listed_on_the_appstore: Aplikacja nie jest już dostępna w sklepie z aplikacjami Akeneo. Skontaktuj się z pomocą techniczną aplikacji.
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: Artykuł w Centrum Pomocy
             no_scope: Nie zażądano żadnych określonych autoryzacji.
           authentication:
+            title: uwierzytelnianie
+            information: 'Aby dowiedzieć się więcej o uwierzytelnieniu aplikacji, przejdź na stronę {{ link }}.'
             information_link_anchor: Artykuł w Centrum Pomocy
+            openid_only: Ta aplikacja korzysta z uwierzytelnienia aplikacji Akeneo bez użycia Twoich danych osobowych.
           pending: Ta aplikacja nie jest połączona z Twoim PIM. Otwarcie aplikacji powinno rozwiązać problem z połączeniem. Jeżeli problem nadal występuje, skontaktuj się z pomocą techniczną aplikacji.
         error_monitoring:
           error: Ups, coś poszło nie tak!
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: Aplikacja została usunięta z powodzeniem.
           error: Przepraszamy, w czasie usuwania aplikacji wystąpił błąd.
+      open:
+        flash:
+          error: Przepraszamy, podczas otwierania aplikacji wystąpił błąd.
     apps:
       loader:
         message: Ładowanie...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: Nie zażądano żadnych określonych autoryzacji.
           helper: Aby dowiedzieć się więcej o autoryzacji aplikacji,
           helper_link: zapoznaj się z artykułem w naszym Centrum Pomocy.
+          is_allowed_to: 'Ma zezwolenie na:'
         flash:
           success: Aplikacja została pomyślnie skonfigurowana.
           error: Przepraszamy, podczas łączenia aplikacji wystąpił błąd.
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: rekordy obiektów referencyjnych
           asset_families: rodziny zasobów
           assets: zasoby
+        new: NOWOŚĆ
       error:
         sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
         app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
@@ -557,5 +566,7 @@ pim_permissions:
       view: Podgląd
     all: Wszystkie
 pim_notification:
+  types:
+    connected_app_authorizations: Autoryzacje połączonych aplikacji
   connected_app_authorizations:
     button_label: Otwórz aplikację

@@ -16,4 +16,6 @@ interface ProductScoreRepositoryInterface
      * @param array<ProductScores> $productsScores
      */
     public function saveAll(array $productsScores): void;
+
+    public function purgeUntil(\DateTimeImmutable $date): void;
 }
