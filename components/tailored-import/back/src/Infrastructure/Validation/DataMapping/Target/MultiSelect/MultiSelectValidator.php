@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -50,7 +51,9 @@ final class MultiSelectValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(true, $constraint->getColumnUuids()),
-                'operations' => new Operations(['split']),
+                'operations' => new Operations([
+                    SplitOperation::TYPE,
+                ]),
                 'sample_data' => new SampleData(),
             ],
         ]));

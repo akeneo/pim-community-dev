@@ -1,4 +1,5 @@
 export * from './useAttributes';
+export * from './useAttributeOptions';
 export * from './useAvailableTargetsFetcher';
 export * from './useChannels';
 export * from './useFileTemplateInformationFetcher';
