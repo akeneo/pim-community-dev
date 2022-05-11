@@ -1,6 +1,57 @@
 executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 jobs:
+    test_catalogs:
+        machine:
+            image: *executor-machine
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Create yarn cache folder
+                    command: mkdir -p  ~/.cache/yarn
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+            -   run:
+                    name: Pull docker image for node
+                    command: docker-compose pull node
+            -   run:
+                    name: Lint front
+                    command: make catalogs-lint-front
+            -   run:
+                    name: Unit front
+                    command: make catalogs-unit-front
+            -   run:
+                    name: Pull docker image for php
+                    command: docker-compose pull php
+            -   run:
+                    name: Coupling back
+                    command: make catalogs-coupling-back
+            -   run:
+                    name: Lint back
+                    command: make catalogs-lint-back
+            -   run:
+                    name: Unit back
+                    command: make catalogs-unit-back
+            -   run:
+                    name: Pull docker images
+                    command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+            -   run:
+                    name: Start containers
+                    command: |
+                        APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+                        docker/wait_docker_up.sh
+            -   run:
+                    name: Install database
+                    command: APP_ENV=test O="--withoutFixtures" make database
+            -   run:
+                    name: Integration back
+                    command: APP_ENV=test make catalogs-integration-back
+            -   run:
+                    name: Acceptance back
+                    command: APP_ENV=test make catalogs-acceptance-back
+
     test_front_catalogs:
         machine:
             image: *executor-machine
