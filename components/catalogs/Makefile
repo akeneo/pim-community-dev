@@ -1,4 +1,6 @@
 CATALOGS_PATH ?= components/catalogs
+_config_bootstrap_realpath := $(shell docker-compose run --rm php realpath config/bootstrap.php)
+CATALOGS_BOOTSTRAP_PATH ?= $(_config_bootstrap_realpath)
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
@@ -46,13 +48,17 @@ catalogs-coupling-back:
 
 .PHONY: catalogs-unit-back
 catalogs-unit-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration
 
 .PHONY: catalogs-acceptance-back
@@ -61,13 +67,17 @@ catalogs-acceptance-back:
 
 .PHONY: catalogs-coverage-back
 catalogs-coverage-back:
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml \
 		--coverage-php coverage/Catalogs/Back/Global/unit.cov \
 		--coverage-html coverage/Catalogs/Back/Unit/ \
 		--coverage-filter $(CATALOGS_PATH)/back/src/
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . \
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml \
 		--coverage-php coverage/Catalogs/Back/Global/integration.cov \
@@ -86,16 +96,15 @@ catalogs-coverage-back:
 .PHONY: catalogs-lint-front
 catalogs-lint-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --check
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ tsc --noEmit --strict
+		yarn workspace @akeneo-pim-community/product-selection-builder prettier --check
+		yarn workspace @akeneo-pim-community/product-selection-builder eslint
+		yarn workspace @akeneo-pim-community/product-selection-builder tsc --noEmit --strict
 	@<<- EOF
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --clearCache
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --ci --coverage
+		yarn workspace @akeneo-pim-community/product-selection-builder jest --ci --coverage
 	@<<- EOF
 
 # UTILS
@@ -103,8 +112,8 @@ catalogs-unit-front:
 .PHONY: catalogs-lint-front_fix
 catalogs-lint-front_fix:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint --fix
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --write
+		yarn workspace @akeneo-pim-community/product-selection-builder eslint --fix
+		yarn workspace @akeneo-pim-community/product-selection-builder prettier --write
 	@<<- EOF
 
 .PHONY: catalogs-lint-back_fix
