@@ -1,4 +1,6 @@
 CATALOGS_PATH ?= components/catalogs
+_config_bootstrap_realpath := $(shell docker-compose run --rm php realpath config/bootstrap.php)
+CATALOGS_BOOTSTRAP_PATH ?= $(_config_bootstrap_realpath)
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
@@ -46,13 +48,17 @@ catalogs-coupling-back:
 
 .PHONY: catalogs-unit-back
 catalogs-unit-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c $(CATALOGS_PATH)/back/ \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c $(CATALOGS_PATH)/back/ \
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration
 
 .PHONY: catalogs-acceptance-back
@@ -61,13 +67,17 @@ catalogs-acceptance-back:
 
 .PHONY: catalogs-coverage-back
 catalogs-coverage-back:
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c $(CATALOGS_PATH)/back/ \
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
 		--log-junit var/tests/phpunit/phpunit_catalogs_unit.xml \
 		--coverage-php coverage/Catalogs/Back/Global/unit.cov \
 		--coverage-html coverage/Catalogs/Back/Unit/ \
 		--coverage-filter $(CATALOGS_PATH)/back/src/
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c $(CATALOGS_PATH)/back/ \
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		--configuration $(CATALOGS_PATH)/back/ \
+		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
 		--log-junit var/tests/phpunit/phpunit_catalogs_integration.xml \
 		--coverage-php coverage/Catalogs/Back/Global/integration.cov \
