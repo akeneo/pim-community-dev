@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Comparator\Attribute;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Comparator which calculate change set for collections of options
@@ -37,7 +38,10 @@ class OptionsComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        if (!\is_array($data['data'])) {
+        try {
+            Assert::isArray($data['data']);
+            Assert::allString($data['data']);
+        } catch (\InvalidArgumentException) {
             return $data;
         }
 
