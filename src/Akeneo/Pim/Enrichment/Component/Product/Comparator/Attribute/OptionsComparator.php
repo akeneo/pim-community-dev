@@ -29,7 +29,7 @@ class OptionsComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, $this->types);
+        return \in_array($type, $this->types);
     }
 
     /**
@@ -37,14 +37,18 @@ class OptionsComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
+        if (!\is_array($data['data'])) {
+            return $data;
+        }
+
         $default = ['locale' => null, 'scope' => null, 'data' => []];
-        $originals = array_merge($default, $originals);
+        $originals = \array_merge($default, $originals);
 
-        $originalsToLower = array_map('strtolower', $originals['data']);
-        $dataToLower = array_map('strtolower', $data['data'] ?? []);
+        $originalsToLower = \array_map('strtolower', $originals['data']);
+        $dataToLower = \array_map('strtolower', $data['data'] ?? []);
 
-        sort($originalsToLower);
-        sort($dataToLower);
+        \sort($originalsToLower);
+        \sort($dataToLower);
 
         if ($dataToLower === $originalsToLower) {
             return null;
