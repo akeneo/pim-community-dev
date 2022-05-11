@@ -24,20 +24,4 @@ class ApiContext implements Context
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
-
-    /**
-     * @When the external application creates a catalog using the API
-     */
-    public function theExternalApplicationCreatesACatalogUsingTheApi()
-    {
-        throw new \LogicException();
-    }
-
-    /**
-     * @Then the response should contain the catalog id
-     */
-    public function theResponseShouldContainTheCatalogId()
-    {
-        throw new \LogicException();
-    }
 }
