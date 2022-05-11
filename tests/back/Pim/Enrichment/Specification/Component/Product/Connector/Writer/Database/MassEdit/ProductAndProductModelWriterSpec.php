@@ -58,7 +58,9 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
         $jobParameters->get('realTimeVersioning')->willReturn(true);
 
         $items = [$product1, $productModel1, $product2];
-        $productModel1->getId()->willReturn(1);
+        $product1->isNew()->willReturn(true);
+        $product2->isNew()->willReturn(true);
+        $productModel1->isNew()->willReturn(false);
         $productModel1->getCode()->willReturn('product_model');
 
         $products = $items;
@@ -90,9 +92,9 @@ class ProductAndProductModelWriterSpec extends ObjectBehavior
 
         $items = [$product1, $productModel1, $product2];
 
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-        $productModel1->getId()->willReturn('89');
+        $product1->isNew()->willReturn(false);
+        $product2->isNew()->willReturn(true);
+        $productModel1->isNew()->willReturn(false);
         $productModel1->getCode()->willReturn('product_model');
 
         $productSaver->saveAll(Argument::any())->shouldBeCalled();

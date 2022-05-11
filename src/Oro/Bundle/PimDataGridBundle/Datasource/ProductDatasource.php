@@ -3,6 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -123,7 +124,9 @@ class ProductDatasource extends Datasource
     private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
     {
         $defaultNormalizedItem = [
-            'id'               => $item->getId(),
+            'id'               => $item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                ? $item->getUuid()->toString()
+                : $item->getId(),
             'dataLocale'       => $this->getParameters()['dataLocale'],
             'family'           => null,
             'values'           => [],

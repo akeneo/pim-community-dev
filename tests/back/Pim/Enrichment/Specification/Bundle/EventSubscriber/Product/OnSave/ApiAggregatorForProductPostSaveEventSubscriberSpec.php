@@ -45,7 +45,6 @@ class ApiAggregatorForProductPostSaveEventSubscriberSpec extends ObjectBehavior
         $this->activate();
 
         $product = new Product();
-        $product->setId(1);
         $event->getSubject()->willReturn($product);
         $event->getArguments()->willReturn(['unitary' => true]);
         $event->setArgument('unitary', false)->shouldBeCalled();
@@ -54,7 +53,6 @@ class ApiAggregatorForProductPostSaveEventSubscriberSpec extends ObjectBehavior
         $this->getEventProducts()->shouldHaveCount(1);
 
         $product = new Product();
-        $product->setId(2);
         $event = new GenericEvent($product, ['unitary' => true]);
         $this->batchEvents($event);
         $this->getEventProducts()->shouldHaveCount(2);
@@ -91,7 +89,6 @@ class ApiAggregatorForProductPostSaveEventSubscriberSpec extends ObjectBehavior
         $this->activate();
 
         $product = new Product();
-        $product->setId(1);
         $event->getSubject()->willReturn($product);
         $event->getArguments()->willReturn(['unitary' => false]);
         $event->setArgument(Argument::cetera())->shouldNotBeCalled();
@@ -124,13 +121,11 @@ class ApiAggregatorForProductPostSaveEventSubscriberSpec extends ObjectBehavior
         $this->activate();
 
         $product = new Product();
-        $product->setId(1);
         $event = new GenericEvent($product, ['unitary' => true]);
         $this->batchEvents($event);
         $this->getEventProducts()->shouldHaveCount(1);
 
         $product = new Product();
-        $product->setId(2);
         $event = new GenericEvent($product, ['unitary' => true]);
         $this->batchEvents($event);
         $this->getEventProducts()->shouldHaveCount(2);

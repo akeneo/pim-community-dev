@@ -123,7 +123,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface, Cacheabl
         }
 
         return [
-            'id'                 => $entity->getId(),
+            'id' => $entity instanceof ProductInterface ? $entity->getUuid()->toString() : $entity->getId(),
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,

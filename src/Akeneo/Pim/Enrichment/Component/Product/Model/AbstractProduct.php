@@ -86,17 +86,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getId()
     {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
+        throw new \LogicException('Product getId() should not be called');
     }
 
     public function getUuid(): UuidInterface
@@ -1090,5 +1080,13 @@ abstract class AbstractProduct implements ProductInterface
         $associationsCollection->add($association);
 
         return $associationsCollection;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->created;
     }
 }
