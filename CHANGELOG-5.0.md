@@ -1,12 +1,16 @@
 # 5.0.x
 
-# 5.0.93 (2022-05-03)
+## Bug fixes
 
-# 5.0.92 (2022-04-28)
+- PIM-10419: [Backport] PIM-10350: Fix simple and multi select filtering and comparison
+
+# 5.0.93 (2022-05-03)
 
 ## Bug fixes
 
 - PIM-10424: [Backport] Increase product grid filters limit display in user settings
+
+# 5.0.92 (2022-04-28)
 
 # 5.0.91 (2022-04-13)
 
