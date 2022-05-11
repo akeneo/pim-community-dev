@@ -50,7 +50,7 @@ class SetTableValueSpec extends ObjectBehavior
 
     function it_returns_the_table_value()
     {
-        $this->value()->shouldBeLike(
+        $this->tableValue()->shouldBeLike(
             [
                 ['ingredient' => 'salt'],
                 ['ingredient' => 'egg', 'quantity' => 2],

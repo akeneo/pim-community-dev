@@ -42,7 +42,7 @@ class SetTableValueApplierSpec extends ObjectBehavior
             $product,
             [
                 'values' => [
-                    'code' => [
+                    'nutrition' => [
                         [
                             'locale' => 'en_US',
                             'scope' => 'ecommerce',
