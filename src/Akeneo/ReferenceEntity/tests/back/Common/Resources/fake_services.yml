@@ -37,6 +37,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels:
         class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindChannels
 
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales:
+        class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindLocales
+
     akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityItems
 

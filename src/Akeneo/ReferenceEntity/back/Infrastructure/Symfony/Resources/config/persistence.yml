@@ -177,7 +177,7 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindRecordLabelsByIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_attribute_as_label'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_identifiers_by_reference_entity_and_codes:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record\SqlFindIdentifiersByReferenceEntityAndCodes
@@ -444,6 +444,9 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels:
         alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels
 
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales:
+        alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales
+
     akeneo_referenceentity.infrastructure.persistence.query.channel_exists:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\ChannelExists
         arguments:
@@ -452,12 +455,12 @@ services:
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:
-            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\FindActivatedLocales
         arguments:
-            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+            - '@akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels
