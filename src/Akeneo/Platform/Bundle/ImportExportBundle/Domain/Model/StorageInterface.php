@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model;
 
 interface StorageInterface
 {
     public function normalize(): array;
+
+    public function getFilePath(): string;
 }

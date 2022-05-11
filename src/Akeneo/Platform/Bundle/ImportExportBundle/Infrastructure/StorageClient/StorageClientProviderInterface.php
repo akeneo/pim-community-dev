@@ -11,15 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
+
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 
-interface TransferFilesToStorageInterface
+interface StorageClientProviderInterface
 {
-    /**
-     * @param FileToTransfer[] $filesToTransfer
-     */
-    public function transfer(array $filesToTransfer, StorageInterface $storage): void;
+    public function supports(StorageInterface $storage): bool;
+
+    public function getFromStorage(StorageInterface $storage): StorageClientInterface;
 }

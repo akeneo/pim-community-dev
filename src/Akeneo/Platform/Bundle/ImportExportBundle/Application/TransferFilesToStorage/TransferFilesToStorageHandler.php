@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\NoneStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
 

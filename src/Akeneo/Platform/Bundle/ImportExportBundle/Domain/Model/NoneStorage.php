@@ -11,21 +11,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
+namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model;
 
-final class LocalStorage implements StorageInterface
+final class NoneStorage implements StorageInterface
 {
-    public const TYPE = 'local';
-
-    public function __construct(private string $filePath)
-    {
-    }
+    public const TYPE = 'none';
 
     public function normalize(): array
     {
         return [
             'type' => self::TYPE,
-            'file_path' => $this->filePath,
         ];
+    }
+
+    public function getFilePath(): string
+    {
+        return '';
     }
 }

@@ -14,15 +14,27 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
 
 final class TransferFilesToStorage implements TransferFilesToStorageInterface
 {
+    public function __construct(
+        private StorageClientProvider $storageClientProvider,
+        private TransferFile $transferFile
+    ) {
+    }
+
     /**
      * @param FileToTransfer[] $filesToTransfer
      */
     public function transfer(array $filesToTransfer, StorageInterface $storage): void
     {
+        $destinationStorage = $this->storageClientProvider->getFromStorage($storage);
+        foreach ($filesToTransfer as $fileToTransfer) {
+            $sourceStorage = $this->storageClientProvider->getFromFileToTransfer($fileToTransfer);
+
+            $this->transferFile->transfer($sourceStorage, $destinationStorage, $fileToTransfer->getFileKey(), $storage->getFilePath());
+        }
     }
 }
