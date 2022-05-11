@@ -49,7 +49,7 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         $this->reExecuteMigration(self::MIGRATION_UUID_LABEL);
 
         $this->assertTheIndexesExist();
-        $this->assertAllProductsHaveUuid();
+        $this->assertAllTablesHaveFilledUuid();
         $this->assertJsonHaveUuid();
         $this->assertProductsAreReindexed();
         $this->assertColumnsAreNullable();
@@ -125,13 +125,33 @@ final class Version_7_0_20220429131804_execute_uuid_migration_Integration extend
         }
     }
 
-    private function assertAllProductsHaveUuid(): void
+    private function assertAllTablesHaveFilledUuid(): void
     {
-        $query = 'SELECT COUNT(*) FROM pim_catalog_product WHERE uuid IS NULL';
+        foreach (MigrateToUuidStep::TABLES as $tableName => $tableInfo) {
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
 
-        $result = (int)$this->connection->executeQuery($query)->fetchOne();
+            $additionalCondition = \in_array($tableName, ['pim_versioning_version', 'pim_comment_comment'])
+                ? ' AND resource_name="Akeneo\\\Pim\\\Enrichment\\\Component\\\Product\\\Model\\\Product"'
+                : '';
+            $count = $this->getCountWhereUuidColumnIsNull($tableName, $tableInfo[MigrateToUuidStep::UUID_COLUMN_INDEX], $additionalCondition);
+            Assert::assertSame(
+                0,
+                $count,
+                \sprintf('%d row(s) in %s do not have filled uuid after migration.', $count, $tableName)
+            );
+        }
+    }
 
-        Assert::assertSame(0, $result, \sprintf('%s product(s) does not have an uuid after migration.', $result));
+    private function getCountWhereUuidColumnIsNull(string $tableName, string $columnName, string $additionalCondition): int
+    {
+        $query = \strtr(
+            'SELECT COUNT(*) FROM {tableName} WHERE {columnName} IS NULL {additionalCondition}',
+            ['{tableName}' => $tableName, '{columnName}' => $columnName, '{additionalCondition}' => $additionalCondition]
+        );
+
+        return (int) $this->connection->executeQuery($query)->fetchOne();
     }
 
     private function assertJsonHaveUuid(): void
