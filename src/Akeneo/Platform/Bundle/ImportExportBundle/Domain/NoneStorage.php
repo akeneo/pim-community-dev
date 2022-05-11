@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
-class NoneStorage implements StorageInterface
+final class NoneStorage implements StorageInterface
 {
     public function normalize(): array
     {
-        return [];
+        return [
+            'type' => 'none',
+        ];
     }
 }
