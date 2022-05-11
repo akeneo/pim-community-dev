@@ -17,6 +17,7 @@ catalogs-tests:
 	$(MAKE) catalogs-lint-back
 	$(MAKE) catalogs-coupling-back
 	$(MAKE) catalogs-coverage-back
+	$(MAKE) catalogs-integration-back
 	$(MAKE) catalogs-acceptance-back
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\Domain\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\Domain\Event\CatalogWasCreated;
-use Akeneo\Catalogs\Domain\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Event\CatalogWasCreated;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**

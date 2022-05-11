@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Event;
+namespace Akeneo\Catalogs\ServiceAPI\Event;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

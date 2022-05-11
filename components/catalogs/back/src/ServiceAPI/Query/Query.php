@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Query;
+namespace Akeneo\Catalogs\ServiceAPI\Query;
 
 /**
  * @template R

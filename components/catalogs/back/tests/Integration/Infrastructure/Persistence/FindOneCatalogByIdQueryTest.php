@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
-use Akeneo\Catalogs\Domain\Model\Catalog;
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneCatalogByIdQuery;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;

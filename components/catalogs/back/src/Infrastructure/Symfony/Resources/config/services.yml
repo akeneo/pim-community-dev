@@ -12,6 +12,7 @@ services:
         exclude:
             - '../../../Symfony/'
             - '../../../../Domain/'
+            - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
 
     Akeneo\Catalogs\Application\Handler\:

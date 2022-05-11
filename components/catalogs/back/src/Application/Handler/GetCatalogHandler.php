@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Domain\Model\Catalog;
-use Akeneo\Catalogs\Domain\Query\GetCatalogQuery;
+use Akeneo\Catalogs\ServiceAPI\Exception\CatalogNotFoundException;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)

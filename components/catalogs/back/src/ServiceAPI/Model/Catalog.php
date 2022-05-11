@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Model;
+namespace Akeneo\Catalogs\ServiceAPI\Model;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
