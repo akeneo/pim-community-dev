@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Product\API;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\MessageBus;
+use Akeneo\Pim\Enrichment\Product\API\CommandMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\UnknownCommandException;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\DummyHandler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class MessageBusSpec extends ObjectBehavior
+class CommandMessageBusSpec extends ObjectBehavior
 {
     function let(DummyHandler $handler1, DummyHandler $handler2)
     {
@@ -24,7 +24,7 @@ class MessageBusSpec extends ObjectBehavior
 
     function it_is_a_message_bus()
     {
-        $this->shouldHaveType(MessageBus::class);
+        $this->shouldHaveType(CommandMessageBus::class);
         $this->shouldImplement(MessageBusInterface::class);
     }
 

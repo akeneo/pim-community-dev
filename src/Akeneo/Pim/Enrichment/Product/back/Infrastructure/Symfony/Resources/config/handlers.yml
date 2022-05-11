@@ -10,3 +10,9 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Application\Applier\UserIntentApplierRegistry'
         tags:
             - { name: 'akeneo.pim.enrichment.product.handler', command: 'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand' }
+
+    Akeneo\Pim\Enrichment\Product\Application\StandardFormat\ConvertStandardFormatIntoUserIntentsHandler:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat'}

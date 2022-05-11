@@ -14,6 +14,7 @@ $rules = [
         'Symfony\Component\Validator\ConstraintViolationList',
         'Symfony\Component\Messenger\Envelope',
         'Symfony\Component\Messenger\MessageBusInterface',
+        'Symfony\Component\Messenger\Stamp',
     ])->in('Akeneo\Pim\Enrichment\Product\API'),
 
     $builder->only([
@@ -35,6 +36,10 @@ $rules = [
         'Akeneo\Tool\Component\StorageUtils\Exception\PropertyException',
         'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
         'Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface',
+
+        // Public APIs
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface'
     ])->in('Akeneo\Pim\Enrichment\Product\Application'),
 
     $builder->only([

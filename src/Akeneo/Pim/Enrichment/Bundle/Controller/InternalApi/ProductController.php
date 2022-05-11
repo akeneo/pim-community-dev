@@ -16,30 +16,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
-use Akeneo\Pim\Enrichment\Product\API\MessageBus;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat;
 use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -56,6 +35,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -91,8 +72,9 @@ class ProductController
         protected ProductBuilderInterface $variantProductBuilder,
         protected AttributeFilterInterface $productAttributeFilter,
         private Client $productAndProductModelClient,
-        private MessageBus $messageBus,
-        private FindIdentifier $findIdentifier
+        private MessageBusInterface $commandMessageBus,
+        private FindIdentifier $findIdentifier,
+        private MessageBusInterface $queryMessageBus
     ) {
     }
 
@@ -204,7 +186,21 @@ class ProductController
         }
         try {
             $this->updateProduct($product, $data);
-        } catch (TwoWayAssociationWithTheSameProductException $e) {
+        } catch (ViolationsException $e) {
+            $hasPermissionException = \count(
+                    \array_filter(
+                        $e->violations(),
+                        fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION)
+                ) > 0;
+            if ($hasPermissionException) {
+                throw new AccessDeniedHttpException();
+            }
+            $product = $this->findProductOr404($id);
+            $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
+
+            return new JsonResponse($normalizedViolations, 400);
+        }
+        catch (TwoWayAssociationWithTheSameProductException $e) {
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
@@ -212,25 +208,6 @@ class ProductController
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
-
-//        $violations = $this->validator->validate($product);
-//        $violations->addAll($this->localizedConverter->getViolations());
-
-//        if (0 === $violations->count()) {
-//            $this->productSaver->save($product);
-//
-//            $normalizedProduct = $this->normalizer->normalize(
-//                $product,
-//                'internal_api',
-//                $this->getNormalizationContext()
-//            );
-//
-//            return new JsonResponse($normalizedProduct);
-//        }
-//
-//        $normalizedViolations = $this->normalizeViolations($violations, $product);
-//
-//        return new JsonResponse($normalizedViolations, 400);
         return new JsonResponse();
     }
 
@@ -321,7 +298,7 @@ class ProductController
                 $productIdentifier,
                 [new ConvertToSimpleProduct()]
             );
-            $this->messageBus->dispatch($command);
+            $this->commandMessageBus->dispatch($command);
         } catch (ViolationsException $e) {
             $hasPermissionException = \count(
                 \array_filter(
@@ -428,14 +405,17 @@ class ProductController
             $data = $this->productAttributeFilter->filter($data);
         }
 
-        $userIntents = $this->getUserIntentsFromData($data);
+        $envelope = $this->queryMessageBus->dispatch(new GetUserIntentsFromStandardFormat($data));
+        $handledStamp = $envelope->last(HandledStamp::class);
+        $userIntents = $handledStamp->getResult();
+
         $userId = $this->userContext->getUser()?->getId();
         $command = UpsertProductCommand::createFromCollection(
             $userId,
             $product->getIdentifier(),
             $userIntents
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /**
@@ -477,111 +457,5 @@ class ProductController
         return $normalizedViolations;
     }
 
-    /**
-     * @param array $data
-     * {
-     *  "identifier":"coucou",
-     *  "family":"webcams",
-     *  "parent":null,
-     *  "groups":[],
-     *  "categories":[],
-     *  "enabled":true,
-     *  "values":{
-         * "sku":[{"scope":null,"locale":null,"data":"coucou"}],
-         * "name":[{"scope":null,"locale":null,"data":null}],
-         * "description":[
-             * {"scope":"ecommerce","locale":"de_DE","data":null},
-             * {"scope":"ecommerce","locale":"en_US","data":null},
-             * {"scope":"ecommerce","locale":"fr_FR","data":null},
-         * ],
-         * "release_date":[
-             * {"scope":"ecommerce","locale":null,"data":null},
-             * {"scope":"mobile","locale":null,"data":null},
-             * {"scope":"print","locale":null,"data":null}
-         * ],
-         * "weight":[{"scope":null,"locale":null,"data":{"unit":null,"amount":null}}],
-         * "power_requirements":[{"scope":null,"locale":null,"data":null}],
-         * "total_megapixels":[{"scope":null,"locale":null,"data":null}],
-         * "maximum_video_resolution":[{"scope":null,"locale":null,"data":null}],
-         * "maximum_frame_rate":[{"scope":null,"locale":null,"data":null}],
-         * "picture":[{"scope":null,"locale":null,
-         * "data":{"filePath":null,"originalFilename":null}}],
-         * "price":[{"scope":null,"locale":null,"data":[{"currency":"EUR","amount":null},{"currency":"USD","amount":null}]}]
-     * },
-     * "created":"2022-05-06T12:28:58+00:00",
-     * "updated":"2022-05-06T12:28:58+00:00",
-     * "associations":{
-         * "PACK":{"groups":[],"products":[],"product_models":[]},
-         * "SUBSTITUTION":{"groups":[],"products":[],"product_models":[]},
-         * "UPSELL":{"groups":[],"products":[],"product_models":[]},
-         * "X_SELL":{"groups":[],"products":[],"product_models":[]}
-     * },
-     * "quantified_associations":[],
-     * "parent_associations":[]}
-     * @return array
-     */
-    private function getUserIntentsFromData(array $data): array
-    {
-        $userIntents = [
-            new SetFamily($data['family']),
-            new SetCategories($data['categories']),
-            new SetEnabled($data['enabled']),
-        ];
 
-        if (null !== $data['groups']) {
-            $userIntents[] = new SetGroups($data['groups']);
-        }
-        if (null !== $data['parent']) {
-            $userIntents[] = new ChangeParent($data['parent']);
-        }
-
-        $codes = \array_keys($data['values']);
-        $attributes = $this->attributeRepository->getAttributeTypeByCodes($codes);
-        $dataValues = $data['values'];
-
-        try {
-//currency & amount
-
-
-        foreach ($attributes as $attributeCode => $attributeType) {
-             $values = $dataValues[$attributeCode];
-             foreach ($values as $value) {
-                 $scope = $value['scope'];
-                 $locale = $value['locale'];
-                 $data = $value['data'];
-                 if (
-                     null === $data
-                     || ($attributeType === AttributeTypes::METRIC && (null === $data['amount' || null === $data['unit']]))
-                     // TODO: what to do with property$data['originalFilename']
-                     || ($attributeType === AttributeTypes::IMAGE && null === $data['filePath'])
-                     || ($attributeType === AttributeTypes::PRICE_COLLECTION && \count(\array_filter($data, fn($value) => $value !== null)) > 0)
-                 ) {
-                     $userIntents[] = new ClearValue($attributeCode, $scope, $locale);
-                     continue;
-                 }
-                 $userIntents[] = match ($attributeType) {
-                     AttributeTypes::BOOLEAN => new SetBooleanValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::DATE => new SetDateValue($attributeCode, $scope, $locale, new \DateTime($data)),
-                     AttributeTypes::FILE => new SetFileValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::IDENTIFIER => new SetIdentifierValue($attributeCode, $data),
-                     AttributeTypes::IMAGE => new SetImageValue($attributeCode, $scope, $locale, $data['filePath']),
-                     AttributeTypes::METRIC => new SetMeasurementValue($attributeCode, $scope, $locale, $data['amount'], $data['unit']),
-                     AttributeTypes::NUMBER => new SetNumberValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::OPTION_MULTI_SELECT => new SetMultiSelectValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::PRICE_COLLECTION => new SetPriceCollectionValue($attributeCode, $scope, $locale, \array_filter($data, fn($value) => $value !== null)),
-                     AttributeTypes::TEXTAREA => new SetTextareaValue($attributeCode, $scope, $locale, $data),
-                     // TODO: use SetTableValue
-                     AttributeTypes::TEXT, AttributeTypes::TABLE => new SetTextValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => new SetSimpleReferenceEntityValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::REFERENCE_ENTITY_COLLECTION => new SetMultiReferenceEntityValue($attributeCode, $scope, $locale, $data),
-                     AttributeTypes::ASSET_COLLECTION => new SetAssetValue($attributeCode, $scope, $locale, $data),
-                 };
-             }
-        }
-        } catch(\Exception $e) {
-            var_dump($e);
-        }
-
-        return $userIntents;
-    }
 }

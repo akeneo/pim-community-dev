@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\API;
 
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Webmozart\Assert\Assert;
 
 /**
@@ -14,7 +15,7 @@ use Webmozart\Assert\Assert;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class MessageBus implements MessageBusInterface
+final class QueryMessageBus implements MessageBusInterface
 {
     /** @var array<string, callable> */
     private array $handlers;
@@ -39,7 +40,8 @@ final class MessageBus implements MessageBusInterface
             throw new UnknownCommandException(\sprintf('No configured handler for the "%s" command', get_class($message)));
         }
 
-        $handler($message);
+        $result = $handler($message);
+        $stamps[] = new HandledStamp($result, (string) \get_class((object) $handler));
 
         return Envelope::wrap($message, $stamps);
     }
