@@ -136,6 +136,7 @@ class ConnectorAssetFamilySpec extends ObjectBehavior
                     'operations' => [
                         [
                             'type' => 'icc_strip',
+                            'parameters' => []
                         ],
                         [
                             'type' => 'thumbnail',
