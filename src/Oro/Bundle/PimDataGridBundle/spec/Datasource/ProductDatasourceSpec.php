@@ -16,6 +16,7 @@ use Oro\Bundle\PimDataGridBundle\Extension\Pager\PagerExtension;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductDatasourceSpec extends ObjectBehavior
@@ -51,6 +52,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         ProductInterface $product1,
         CursorInterface $productCursor
     ) {
+        $product1->getUuid()->willReturn(Uuid::uuid4());
         $config = [
             'displayed_attribute_ids' => [1, 2],
             'attributes_configuration' => [

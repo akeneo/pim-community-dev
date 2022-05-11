@@ -998,4 +998,12 @@ class ProductModel implements ProductModelInterface
 
         return $associationsCollection;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function isNew(): bool
+    {
+        return null === $this->id;
+    }
 }
