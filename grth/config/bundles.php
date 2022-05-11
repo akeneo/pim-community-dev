@@ -63,4 +63,5 @@ return [
     Akeneo\Pim\Enrichment\Product\Infrastructure\Symfony\AkeneoPimEnrichmentProductBundle::class => ['all' => true],
     Akeneo\Pim\Enrichment\Category\Infrastructure\Symfony\AkeneoPimEnrichmentCategoryBundle::class => ['all' => true],
     Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
+    Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
 ];

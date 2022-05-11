@@ -13,6 +13,7 @@ workflows:
                       branches:
                           only:
                               - /BH-.*/
+                              - /SDO-.*/
             - checkout:
                   requires:
                       - ready_to_build?
@@ -83,6 +84,7 @@ workflows:
                       branches:
                           only:
                               - /BH-.*/
+                              - /SDO-.*/
             - checkout:
                   requires:
                       - ready_to_build?
@@ -155,6 +157,7 @@ workflows:
                       branches:
                           only:
                               - /BH-.*/
+                              - /SDO-.*/
                   matrix:
                       parameters:
                           PRODUCT_TYPE: ["srnt", "grth", "tria"]
