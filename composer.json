@@ -113,7 +113,9 @@
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",
-        "symfony/web-profiler-bundle": "^5.4.0"
+        "symfony/web-profiler-bundle": "^5.4.0",
+        "nunomaduro/phpinsights": "^2.0",
+        "vimeo/psalm": "^4.10"
     },
     "repositories": {
         "onboarder-extension": {
