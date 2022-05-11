@@ -14,7 +14,6 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back",
             "Akeneo\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Akeneo\\Platform\\CommunicationChannel\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/back",
@@ -22,6 +21,7 @@
             "Akeneo\\FreeTrial\\": "src/Akeneo/FreeTrial/back",
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
             "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
+            "Akeneo\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Catalogs\\": "components/catalogs/back/src"
         }
     },
@@ -32,7 +32,6 @@
         },
         "psr-4": {
             "Pim\\Behat\\": "tests/legacy/features/Behat",
-            "Akeneo\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test",
             "Akeneo\\Connectivity\\Connection\\Tests\\": "src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",
@@ -44,6 +43,7 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
+            "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests"
         }
     },

@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Localization\Factory;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupTranslation;
