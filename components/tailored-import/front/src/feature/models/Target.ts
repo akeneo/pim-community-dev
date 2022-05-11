@@ -1,17 +1,18 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {
-  getDefaultTextTarget,
-  getDefaultNumberTarget,
-  getDefaultMeasurementTarget,
-  getDefaultSimpleSelectTarget,
-  getDefaultMultiSelectTarget,
+  DateTarget,
   getDefaultBooleanTarget,
-  NumberTarget,
+  getDefaultDateTarget,
+  getDefaultMeasurementTarget,
+  getDefaultMultiSelectTarget,
+  getDefaultNumberTarget,
+  getDefaultSimpleSelectTarget,
+  getDefaultTextTarget,
   MeasurementTarget,
-  TextTarget,
-  SimpleSelectTarget,
   MultiSelectTarget,
-  BooleanTarget,
+  NumberTarget,
+  SimpleSelectTarget,
+  TextTarget,
 } from '../components';
 import {Attribute} from './Attribute';
 import {AttributeDataMapping, DataMapping} from './DataMapping';
@@ -20,12 +21,12 @@ type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
 type AttributeTarget =
-  | NumberTarget
-  | TextTarget
+  | DateTarget
   | MeasurementTarget
-  | SimpleSelectTarget
   | MultiSelectTarget
-  | BooleanTarget;
+  | NumberTarget
+  | SimpleSelectTarget
+  | TextTarget;
 
 type PropertyTarget = {
   code: string;
@@ -46,6 +47,8 @@ const createAttributeTarget = (
       return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':
       return getDefaultNumberTarget(attribute, channel, locale);
+    case 'pim_catalog_date':
+      return getDefaultDateTarget(attribute, channel, locale);
     case 'pim_catalog_identifier':
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':

@@ -1,3 +1,5 @@
+export * from './Date/DateConfigurator';
+export * from './Date/model';
 export * from './Identifier/IdentifierConfigurator';
 export * from './Measurement/MeasurementConfigurator';
 export * from './Measurement/model';

@@ -3,6 +3,6 @@ parameters:
   paths:
     - %rootDir%/../../../components/tailored-import/back
   excludes_analyse:
-    - %rootDir%/../../../components/tailored-import/back/tests/Specification
+    - %rootDir%/../../../components/tailored-import/back/tests
   checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false

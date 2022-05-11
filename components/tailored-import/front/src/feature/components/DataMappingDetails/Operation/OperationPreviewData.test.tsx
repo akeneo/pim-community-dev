@@ -24,3 +24,20 @@ test('it displays an error when preview cannot be generated', async () => {
   expect(screen.queryByText('product_2')).not.toBeInTheDocument();
   expect(screen.queryByText('akeneo.tailored_import.data_mapping.preview.placeholder')).not.toBeInTheDocument();
 });
+
+test('it displays a tag element if preview data is an array of arrays', async () => {
+  await renderWithProviders(
+    <OperationPreviewData
+      isLoading={false}
+      previewData={[
+        ['product_1', 'product_2'],
+        ['product_3', 'product_4'],
+      ]}
+      hasErrors={false}
+    />
+  );
+
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.output_title')).toBeInTheDocument();
+  expect(screen.getByText('product_1')).toBeInTheDocument();
+  expect(screen.getByText('product_3')).toBeInTheDocument();
+});

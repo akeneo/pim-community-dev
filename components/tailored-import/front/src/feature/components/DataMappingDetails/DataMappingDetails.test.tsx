@@ -233,7 +233,7 @@ test('it can add an operation', async () => {
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
 
   expect(handleDataMappingChange).toHaveBeenCalledWith({
     ...attributeDataMapping,

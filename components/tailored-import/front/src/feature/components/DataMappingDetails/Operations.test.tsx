@@ -93,7 +93,7 @@ test('it displays compatible operation when present in data mapping', async () =
     />
   );
 
-  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title')).toBeInTheDocument();
   expect(
     screen.queryByText('akeneo.tailored_import.data_mapping.operations.unknown_operation')
   ).not.toBeInTheDocument();
@@ -113,7 +113,7 @@ test('it can add a compatible operation in data mapping', async () => {
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.add'));
-  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags'));
+  userEvent.click(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title'));
 
   expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'clean_html_tags'}]);
 });
@@ -181,4 +181,26 @@ test('it tells when the operation block is not found', async () => {
 
   expect(mockedConsole).toHaveBeenCalledWith('No operation block found for operation type "unknown_operation"');
   mockedConsole.mockRestore();
+});
+
+test('it can handle an operation change', async () => {
+  const handleOperationsChange = jest.fn();
+
+  await renderWithProviders(
+    <Operations
+      dataMapping={{
+        ...dataMapping,
+        operations: [{type: 'split', separator: ','}],
+      }}
+      compatibleOperations={['split']}
+      onOperationsChange={handleOperationsChange}
+      onRefreshSampleData={jest.fn()}
+    />
+  );
+
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
+  userEvent.click(screen.getByTitle('pim_common.open'));
+  userEvent.click(screen.getByTitle('semicolon'));
+
+  expect(handleOperationsChange).toHaveBeenCalledWith([{type: 'split', separator: ';'}]);
 });

@@ -8,7 +8,7 @@ use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Import\FlatToStandard;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use PHPUnit\Framework\TestCase;
 
-final class FlatToStandardUnit extends TestCase
+final class FlatToStandardTest extends TestCase
 {
     /** @test */
     public function itConvertsFlatSupplierDataIntoStructuredData(): void

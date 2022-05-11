@@ -1,5 +1,5 @@
 import React from 'react';
-import {Preview} from 'akeneo-design-system';
+import {Preview, Tag, Tags} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {formatSampleData, PreviewData} from '../../../models';
 import {PreviewRowData} from './PreviewRowData';
@@ -20,9 +20,17 @@ const OperationPreviewData = ({isLoading, previewData, hasErrors}: PreviewDataPr
           {translate('akeneo.tailored_import.data_mapping.preview.unable_to_generate_preview_data')}
         </PreviewRowData>
       ) : (
-        previewData.map((previewData, key) => (
-          <PreviewRowData key={key} hasError={false} isLoading={isLoading} isEmpty={null === previewData}>
-            {formatSampleData(translate, previewData)}
+        previewData.map((data, key) => (
+          <PreviewRowData key={key} hasError={false} isLoading={isLoading} isEmpty={null === data}>
+            {Array.isArray(data) ? (
+              <Tags>
+                {data.map((previewDataElement, key) => (
+                  <Tag key={key}>{formatSampleData(translate, previewDataElement)}</Tag>
+                ))}
+              </Tags>
+            ) : (
+              formatSampleData(translate, data)
+            )}
           </PreviewRowData>
         ))
       )}
