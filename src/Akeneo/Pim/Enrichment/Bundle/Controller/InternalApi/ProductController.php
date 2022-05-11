@@ -468,7 +468,7 @@ class ProductController
 
         // don't filter during creation, because identifier is needed
         // but not sent by the frontend during creation (it sends the sku in the values)
-        if (null !== $product->getId() && $product->isVariant()) {
+        if (!$product->isNew() && $product->isVariant()) {
             $data = $this->productAttributeFilter->filter($data);
         }
 

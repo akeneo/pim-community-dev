@@ -26,8 +26,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ])
             ->build();
 
-        $product->setId(111);
-
         $expected = [
             'identifier' => 'my-product',
             'family' => null,
@@ -87,8 +85,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
             ->withValue('a_multi_select', ['optionB', 'optionA'])
             ->build();
 
-        $product->setId(111);
-
         $expected = [
             'identifier' => 'my-product',
             'family' => null,
@@ -143,8 +139,6 @@ class ProductStandardSortedCollectionIntegration extends TestCase
         $product = $this->getProductBuilder()
             ->withValue('a_ref_data_multi_select', ['zibeline', 'tapestry', 'brilliantine'])
             ->build();
-
-        $product->setId(111);
 
         $expected = [
             'identifier' => 'my-product',

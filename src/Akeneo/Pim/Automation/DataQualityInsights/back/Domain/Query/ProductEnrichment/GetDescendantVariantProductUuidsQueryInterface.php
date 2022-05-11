@@ -6,7 +6,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichme
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
-interface GetDescendantVariantProductIdsQueryInterface
+interface GetDescendantVariantProductUuidsQueryInterface
 {
+    /**
+     * @return string[]
+     */
     public function fromProductModelIds(ProductEntityIdCollection $productModelIdCollection): array;
 }

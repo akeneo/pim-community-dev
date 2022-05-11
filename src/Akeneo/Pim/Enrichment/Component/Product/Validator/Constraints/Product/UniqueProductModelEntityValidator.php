@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
@@ -41,7 +40,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
     public function validate($entity, Constraint $constraint): void
     {
         if (!$constraint instanceof UniqueProductModelEntity) {
-            throw new UnexpectedTypeException($constraint, UniqueProductEntity::class);
+            throw new UnexpectedTypeException($constraint, UniqueProductModelEntity::class);
         }
 
         if (!$entity instanceof ProductModelInterface) {

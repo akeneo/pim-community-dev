@@ -54,8 +54,8 @@ final class AscendantCategories implements AscendantCategoriesInterface
                 ->leftJoin('product_model.parent', 'parent_product_model')
                 ->leftJoin('product_model.categories', 'category')
                 ->leftJoin('parent_product_model.categories', 'parent_category')
-                ->where('variant_product.id = :id')
-                ->setParameter(':id', $entity->getId());
+                ->where('variant_product.uuid = :uuid')
+                ->setParameter(':uuid', $entity->getUuid()->getBytes());
 
             foreach ($queryBuilder->getQuery()->getResult() as $resultItem) {
                 if (!in_array(intval($resultItem['id']), $result)) {
