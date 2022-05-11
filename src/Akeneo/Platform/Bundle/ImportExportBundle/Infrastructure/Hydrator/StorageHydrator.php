@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 
 final class StorageHydrator implements StorageHydratorInterface
 {

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageInterface;
 use Akeneo\Platform\VersionProviderInterface;
 use Webmozart\Assert\Assert;
 

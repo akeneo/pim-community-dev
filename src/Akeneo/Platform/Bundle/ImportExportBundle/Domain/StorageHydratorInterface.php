@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
+
 interface StorageHydratorInterface
 {
     public function hydrate(array $normalizedStorage): StorageInterface;
