@@ -86,16 +86,15 @@ catalogs-coverage-back:
 .PHONY: catalogs-lint-front
 catalogs-lint-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --check
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ tsc --noEmit --strict
+		yarn workspace @akeneo-pim-community/product-selection-builder prettier --check
+		yarn workspace @akeneo-pim-community/product-selection-builder eslint
+		yarn workspace @akeneo-pim-community/product-selection-builder tsc --noEmit --strict
 	@<<- EOF
 
 .PHONY: catalogs-unit-front
 catalogs-unit-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --clearCache
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ jest --ci --coverage
+		yarn workspace @akeneo-pim-community/product-selection-builder jest --ci --coverage
 	@<<- EOF
 
 # UTILS
@@ -103,8 +102,8 @@ catalogs-unit-front:
 .PHONY: catalogs-lint-front_fix
 catalogs-lint-front_fix:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ eslint --fix
-		yarn run --cwd=$(CATALOGS_PATH)/front/product-selection-builder/ prettier --write
+		yarn workspace @akeneo-pim-community/product-selection-builder eslint --fix
+		yarn workspace @akeneo-pim-community/product-selection-builder prettier --write
 	@<<- EOF
 
 .PHONY: catalogs-lint-back_fix
