@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Component\Model;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 
 /**
  * LocaleInterface access interface

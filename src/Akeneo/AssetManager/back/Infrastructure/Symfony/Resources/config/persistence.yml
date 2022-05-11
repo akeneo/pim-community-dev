@@ -195,7 +195,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_attribute_as_label'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamilyAndCodes
@@ -493,41 +493,37 @@ services:
             - { name: akeneo_assetmanager.connector_value_transformer }
 
     # Structure query functions
-    akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlChannelExists
-        arguments:
-            - '@database_connection'
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
+        alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels
 
-    akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheChannelExists
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales:
+        alias: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales
+
+    akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\ChannelExists
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.channel_exists'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocalesByIdentifiers
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:
-            - '@database_connection'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales:
-            class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Locale\SqlFindActivatedLocales
-            arguments:
-                - '@database_connection'
-
-    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Channel\CacheFindActivatedLocalesPerChannels
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocales
         arguments:
-            - '@akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
-    akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_by_identifiers:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Cache\Locale\CacheFindActivatedLocalesByIdentifiers
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
+        class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
 
     akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\UserGroup\SqlFindUserGroupsForSecurityIdentifier
         arguments:
             - '@database_connection'
-            -
+
     akeneoassetmanager.infrastructure.persistence.query.get_attribute_identifier:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeIdentifier
         arguments:

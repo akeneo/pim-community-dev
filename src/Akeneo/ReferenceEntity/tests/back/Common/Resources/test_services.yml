@@ -1,0 +1,6 @@
+services:
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels:
+        class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindChannels
+
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales:
+        class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindLocales

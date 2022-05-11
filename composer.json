@@ -28,7 +28,7 @@
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
             "Pim\\Upgrade\\": "upgrades/",
             "AkeneoEnterprise\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
-            "AkeneoEnterprise\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back",
+            "AkeneoEnterprise\\Channel\\": "src/Akeneo/Channel/back",
             "Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/src",
             "Akeneo\\Catalogs\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/src"
         },
@@ -72,8 +72,8 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Category/back/Test",
             "AkeneoEnterprise\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\OnboarderSerenity\\Test\\": "components/onboarder/back/tests",
-            "Akeneo\\Test\\Channel\\Locale\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/Locale/back/Test",
-            "AkeneoEnterprise\\Test\\Channel\\Locale\\": "src/Akeneo/Channel/Locale/back/Test",
+            "Akeneo\\Test\\Channel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
+            "AkeneoEnterprise\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests",
             "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests"
         }

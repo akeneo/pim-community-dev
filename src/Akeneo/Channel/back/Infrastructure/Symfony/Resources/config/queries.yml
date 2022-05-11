@@ -1,0 +1,10 @@
+services:
+    Akeneo\Channel\API\Query\IsLocaleEditable:
+        class: AkeneoEnterprise\Channel\Infrastructure\Query\LRUCachedIsLocaleEditable
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser:
+        class: AkeneoEnterprise\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser
+        arguments:
+            - '@database_connection'

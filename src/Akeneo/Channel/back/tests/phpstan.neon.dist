@@ -1,0 +1,7 @@
+parameters:
+  level: 6
+  paths:
+    - %rootDir%/../../../src/Akeneo/Channel
+  excludes_analyse:
+    - %rootDir%/../../../src/Akeneo/Channel/back/tests/Specification
+  checkMissingIterableValueType: false

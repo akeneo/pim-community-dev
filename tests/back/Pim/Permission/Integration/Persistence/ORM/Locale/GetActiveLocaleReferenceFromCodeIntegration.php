@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Permission\Integration\Persistence\ORM\Locale;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Persistence\ORM\Locale\GetActiveLocaleReferenceFromCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

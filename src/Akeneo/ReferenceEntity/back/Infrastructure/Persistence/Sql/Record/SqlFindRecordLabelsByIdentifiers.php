@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Record;
 
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Akeneo\ReferenceEntity\Domain\Query\Record\FindRecordLabelsByIdentifiersInterface;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -24,7 +25,8 @@ use PDO;
 class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersInterface
 {
     public function __construct(
-        private Connection $sqlConnection
+        private Connection $sqlConnection,
+        private FindLocales $findLocales
     ) {
     }
 
@@ -33,35 +35,19 @@ class SqlFindRecordLabelsByIdentifiers implements FindRecordLabelsByIdentifiersI
      */
     public function find(array $recordIdentifiers): array
     {
+        $activatedLocaleCodes = array_map(static fn (Locale $locale) => $locale->getCode(), $this->findLocales->findAllActivated());
+
         $fetch = <<<SQL
-SELECT 
-    result.record_identifier as identifier,
-    result.record_code as code,
-    JSON_OBJECTAGG(result.locale_code, result.label) as labels
-FROM (
-    SELECT 
-        labels_result.record_identifier,
-        labels_result.record_code,
-        labels_result.locale_code,
-        labels_result.label
-    FROM (
-        SELECT 
-            r.identifier as record_identifier,
-            r.code as record_code,
-            locales.code as locale_code,
-            JSON_EXTRACT(
-                value_collection,
-                CONCAT('$.', '"', re.attribute_as_label, '_', locales.code, '"', '.data')
-            ) as label
-        FROM akeneo_reference_entity_record r
-        JOIN akeneo_reference_entity_reference_entity re
-            ON r.reference_entity_identifier = re.identifier
-        CROSS JOIN pim_catalog_locale as locales
-        WHERE locales.is_activated = true
-        AND r.identifier IN (:recordIdentifiers)
-    ) as labels_result
-) as result
-GROUP BY identifier;
+SELECT
+    r.identifier,
+    r.code,
+    r.value_collection,
+    re.attribute_as_label
+FROM 
+    akeneo_reference_entity_record r
+    JOIN akeneo_reference_entity_reference_entity re ON r.reference_entity_identifier = re.identifier
+WHERE 
+    r.identifier IN (:recordIdentifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -74,13 +60,31 @@ SQL;
             ]
         );
 
-        return array_reduce($statement->fetchAllAssociative(), function ($labelsIndexedByRecord, $current) {
-            $labelsIndexedByRecord[$current['identifier']] = [
-                'labels' => json_decode($current['labels'], true),
-                'code' => $current['code'],
-            ];
+        $records = $statement->fetchAllAssociative();
 
-            return $labelsIndexedByRecord;
-        }, []);
+        $labelsIndexedByRecord = [];
+        foreach ($records as $record) {
+            $labelsIndexedByRecord[$record['identifier']] = [
+                'code' => $record['code'],
+                'labels' => $this->getLabelsIndexedByLocale($record, $activatedLocaleCodes),
+            ];
+        }
+
+        return $labelsIndexedByRecord;
+    }
+
+    private function getLabelsIndexedByLocale(array $record, array $activatedLocaleCodes): array
+    {
+        $values = json_decode($record['value_collection'], true);
+        $labels = [];
+
+        foreach ($activatedLocaleCodes as $activatedLocaleCode) {
+            $key = sprintf('%s_%s', $record['attribute_as_label'], $activatedLocaleCode);
+            $labels[$activatedLocaleCode] = key_exists($key, $values)
+                ? $values[$key]['data']
+                : null;
+        }
+
+        return $labels;
     }
 }
