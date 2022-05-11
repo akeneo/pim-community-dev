@@ -130,7 +130,7 @@ class SecurityContext extends PimContext
 
         $this->doCall('GET', $url, [
             'inset' => 1,
-            'values' => $product->getId()
+            'values' => $product->getUuid()->toString()
         ]);
     }
 
