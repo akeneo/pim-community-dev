@@ -56,4 +56,5 @@ return [
     Akeneo\FreeTrial\Infrastructure\Symfony\AkeneoCommunityFreeTrialBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
+    Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
 ];

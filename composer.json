@@ -22,6 +22,7 @@
             "Akeneo\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back",
             "Akeneo\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back",
             "Akeneo\\Channel\\": "src/Akeneo/Channel/back"
+            "Akeneo\\Catalogs\\": "components/catalogs/back/src"
         }
     },
     "autoload-dev": {
@@ -42,7 +43,8 @@
             "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
-            "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests"
+            "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
+            "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests"
         }
     },
     "require": {

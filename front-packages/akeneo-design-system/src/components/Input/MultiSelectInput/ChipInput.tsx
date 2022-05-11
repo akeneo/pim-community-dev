@@ -2,7 +2,7 @@ import React, {Ref, useEffect} from 'react';
 import styled from 'styled-components';
 import {CloseIcon, LockIcon} from '../../../icons';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
-import {IconButton} from '../../../components';
+import {IconButton} from '../../IconButton/IconButton';
 import {useBooleanState, useShortcut} from '../../../hooks';
 import {Key} from '../../../shared';
 
