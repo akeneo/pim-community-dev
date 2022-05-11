@@ -43,6 +43,7 @@
 
 ## Bug fixes
 
+- PIM-10430: add missing translation in attribute group import job page
 - PIM-10333: Import category without correct locale should be impossible
 
 # 5.0.84 (2022-03-15)
