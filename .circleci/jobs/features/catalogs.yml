@@ -46,7 +46,7 @@ jobs:
             command: make catalogs-unit-back
       -   run:
             name: Pull docker images
-            command: docker-compose pull php fpm mysql elasticsearch object-storage pubsub-emulator
+            command: docker-compose pull mysql elasticsearch object-storage pubsub-emulator
       -   run:
             name: Start containers
             command: |
