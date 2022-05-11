@@ -28,9 +28,4 @@ final class LocalStorage implements StorageInterface
             'file_path' => $this->filePath,
         ];
     }
-
-    public function getFilePath(): string
-    {
-        return $this->filePath;
-    }
 }

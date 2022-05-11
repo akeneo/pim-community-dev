@@ -18,6 +18,7 @@ final class FileToTransfer
     public function __construct(
         private string $fileKey,
         private string $storage,
+        private string $outputFilePath,
         private bool $isLocal
     ) {
     }
@@ -27,13 +28,18 @@ final class FileToTransfer
         return $this->fileKey;
     }
 
-    public function getStorage(): string
-    {
-        return $this->storage;
-    }
-
     public function isLocal(): bool
     {
         return $this->isLocal;
+    }
+
+    public function getOutputFilePath(): string
+    {
+        return $this->outputFilePath;
+    }
+
+    public function getStorage(): string
+    {
+        return $this->storage;
     }
 }

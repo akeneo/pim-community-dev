@@ -34,7 +34,12 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
         foreach ($filesToTransfer as $fileToTransfer) {
             $sourceStorage = $this->storageClientProvider->getFromFileToTransfer($fileToTransfer);
 
-            $this->transferFile->transfer($sourceStorage, $destinationStorage, $fileToTransfer->getFileKey(), $storage->getFilePath());
+            $this->transferFile->transfer(
+                $sourceStorage,
+                $destinationStorage,
+                $fileToTransfer->getFileKey(),
+                $fileToTransfer->getOutputFilePath()
+            );
         }
     }
 }
