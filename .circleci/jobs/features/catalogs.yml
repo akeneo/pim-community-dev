@@ -19,7 +19,9 @@ jobs:
             command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
       -   run:
             name: Symlink node_modules
-            command: ln -s node_modules vendor/akeneo/pim-community-dev/node_modules
+            command: |
+              rm -r vendor/akeneo/pim-community-dev/node_modules
+              ln -s ~/project/node_modules ~/project/vendor/akeneo/pim-community-dev/node_modules
       -   run:
             name: Pull docker image for node
             command: docker-compose pull node
