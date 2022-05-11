@@ -195,7 +195,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers
         arguments:
             - '@database_connection'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_identifiers_by_asset_family_and_codes:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindIdentifiersByAssetFamilyAndCodes
@@ -507,12 +507,12 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesByIdentifiers
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocales
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales'
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Channel\FindActivatedLocalesPerChannels

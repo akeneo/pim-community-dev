@@ -18,10 +18,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByIdentifiers;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
-use Akeneo\Channel\API\Query\FindLocales;
-use Akeneo\Channel\API\Query\Locale;
 
 class SqlFindAssetLabelsByIdentifiersTest extends SqlIntegrationTestCase
 {
