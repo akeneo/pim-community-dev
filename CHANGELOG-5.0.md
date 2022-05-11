@@ -1,5 +1,19 @@
 # 5.0.x
 
+# 5.0.94 (2022-05-11)
+
+## Bug fixes
+
+- PIM-10419: [Backport] PIM-10350: Fix simple and multi select filtering and comparison
+
+# 5.0.93 (2022-05-03)
+
+## Bug fixes
+
+- PIM-10424: [Backport] Increase product grid filters limit display in user settings
+
+# 5.0.92 (2022-04-28)
+
 # 5.0.91 (2022-04-13)
 
 # 5.0.90 (2022-04-06)
@@ -29,6 +43,7 @@
 
 ## Bug fixes
 
+- PIM-10430: add missing translation in attribute group import job page
 - PIM-10333: Import category without correct locale should be impossible
 
 # 5.0.84 (2022-03-15)
