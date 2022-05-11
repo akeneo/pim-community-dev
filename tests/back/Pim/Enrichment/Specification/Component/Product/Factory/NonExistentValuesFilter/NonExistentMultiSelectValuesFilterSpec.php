@@ -86,12 +86,10 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                     'FRAISES',
                     'JEAN',
                     'TOUrloupe',
-                'Fraises',
-                'FRAISES',
-            ],
+                ],
         ];
 
-        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->shouldBeCalled()->willReturn(
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
             [
                 'a_multi_select' => ['michel', 'fraises', 'tourlOUPE'],
             ]
