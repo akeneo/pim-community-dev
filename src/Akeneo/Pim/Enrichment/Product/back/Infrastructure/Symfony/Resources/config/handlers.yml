@@ -13,6 +13,6 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Application\StandardFormat\ConvertStandardFormatIntoUserIntentsHandler:
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\Enrichment\Product\Domain\UserIntent\UserIntentFactoryRegistry'
         tags:
             - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat'}

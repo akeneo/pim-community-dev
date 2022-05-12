@@ -30,7 +30,12 @@ class ConvertStandardFormatIntoUserIntentsHandler
 
         $userIntents = [];
         foreach ($standardFormat as $fieldName => $data) {
-            $userIntents[] = $this->userIntentFactoryRegistry->fromStandardFormatField($fieldName, $data);
+            $result = $this->userIntentFactoryRegistry->fromStandardFormatField($fieldName, $data);
+            if (\is_array($result)) {
+                $userIntents = \array_merge($userIntents, $result);
+            } else {
+                $userIntents[] = $result;
+            }
         }
 
         return \array_filter($userIntents);
