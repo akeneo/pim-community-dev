@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
@@ -54,7 +53,6 @@ class TransformationSpec extends ObjectBehavior
 
     function it_normalizes_a_transformation(Source $source, Target $target)
     {
-        $operation0 = IccStripOperation::create([]);
         $operation1 = ThumbnailOperation::create(['width' => 100, 'height' => 80]);
         $operation2 = ResizeOperation::create(['width' => 100, 'height' => 80]);
 
@@ -81,7 +79,6 @@ class TransformationSpec extends ObjectBehavior
             'source' => $normalizedSource,
             'target' => $normalizedTarget,
             'operations' => [
-                $operation0->normalize(),
                 $operation1->normalize(),
                 $operation2->normalize()
             ],

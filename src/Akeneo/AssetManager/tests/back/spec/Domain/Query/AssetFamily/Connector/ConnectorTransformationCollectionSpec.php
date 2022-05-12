@@ -54,7 +54,7 @@ class ConnectorTransformationCollectionSpec extends ObjectBehavior
                 'label' => 'label',
                 'source' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
                 'target' => ['attribute' => 'source', 'channel' => null, 'locale' => null],
-                'operations' => [['type' => 'icc_strip', 'parameters' => []],['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]]],
+                'operations' => [['type' => 'thumbnail', 'parameters' => ['width' => 100, 'height' => 80]]],
                 'filename_suffix' => 'suffix',
             ]
         ]);

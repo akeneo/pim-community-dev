@@ -65,10 +65,6 @@
                 },
                 "operations": [
                   {
-                    "type": "icc_strip",
-                    "parameters": []
-                  },
-                  {
                     "type": "thumbnail",
                     "parameters": {
                       "width": 100,

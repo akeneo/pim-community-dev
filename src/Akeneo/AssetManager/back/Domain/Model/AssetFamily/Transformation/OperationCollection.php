@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Webmozart\Assert\Assert;
 
 class OperationCollection implements \IteratorAggregate
@@ -26,9 +25,6 @@ class OperationCollection implements \IteratorAggregate
         Assert::notEmpty($operations);
         Assert::allIsInstanceOf($operations, Operation::class);
         $this->operations = $operations;
-        if (!$this->operations[0] instanceof IccStripOperation) {
-            array_unshift($this->operations, IccStripOperation::create([]));
-        }
     }
 
     public function getIterator(): \Iterator
@@ -38,6 +34,7 @@ class OperationCollection implements \IteratorAggregate
 
     /**
      * @param Operation[] $operations
+     *
      * @return OperationCollection
      */
     public static function create(array $operations): self
