@@ -65,4 +65,12 @@ final class FeatureHelper
             Assert::markTestSkipped('Asset feature is not available in this scope');
         }
     }
+
+    public static function skipIntegrationTestWhenTableAttributeIsNotActivated(): void
+    {
+        $isTableAttributeFeatureActivated = \class_exists('Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle');
+        if (!$isTableAttributeFeatureActivated) {
+            Assert::markTestSkipped('Table attribute feature is not available in this scope');
+        }
+    }
 }
