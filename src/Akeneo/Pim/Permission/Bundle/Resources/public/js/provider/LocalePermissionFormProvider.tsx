@@ -8,12 +8,12 @@ import {
   LevelSummaryField,
   PermissionFormWidget,
 } from '@akeneo-pim-community/permission-form';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 const StyledLocale = styled(Locale)`
   margin-right: 15px;
@@ -75,7 +75,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
     const [state, dispatch] = useReducer(LocalePermissionReducer, initialState);
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
     const canEditPermissions =
-      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && useFeatureFlags().isEnabled('permission');
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && featureFlags.isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -165,7 +165,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
   },
   save: async (userGroup: string, state: LocalePermissionState) => {
     const canEditPermissions =
-      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && useFeatureFlags().isEnabled('permission');
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && featureFlags.isEnabled('permission');
 
     if (!canEditPermissions) {
       return Promise.resolve();
