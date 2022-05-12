@@ -34,13 +34,13 @@ mappings:
 
     dynamic_templates:
         -
-            record_full_text_search:
+            category_full_text_search:
                 path_match: 'record_full_text_search.*.*'
                 mapping:
                     type: 'keyword'
                     normalizer: 'text_normalizer'
         -
-            record_code_label_search:
+            category_code_label_search:
                 path_match: 'record_code_label_search.*'
                 mapping:
                     type: 'keyword'

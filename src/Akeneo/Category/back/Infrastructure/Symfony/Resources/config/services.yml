@@ -3,7 +3,8 @@ services:
     class: Akeneo\Category\Infrastructure\Elasticsearch\CategoryIndexer
     arguments:
       - '@akeneo_elasticsearch.client.category'
-      - '@database_connection'
+      - '@pim_catalog.repository.category'
+      - '@pim_catalog.normalizer.standard.translation'
 
   akeneo.category.event_subscriber.on_save.update_index:
     class: Akeneo\Category\Infrastructure\EventSubscriber\OnSave\UpdateIndexSubscriber
