@@ -66,6 +66,9 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   const followEditTemplate = useCallback(
     (tree: CategoryTreeModel) => {
+      if (!isGranted('pimee_enrich_category_edit_template')) {
+        return;
+      }
       router.redirectToRoute('pim_enrich_category_template_edit', {
         treeId: tree.id.toString(),
         templateCode: 'default',
@@ -165,7 +168,7 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
                         {translate('pim_common.delete')}
                       </Button>
                     )}
-                    {isGranted('pim_enrich_product_category_template_edit') && (
+                    {isGranted('pimee_enrich_category_edit_template') && (
                       <Button level="primary" size={'small'} onClick={() => followEditTemplate(tree)}>
                         Edit template
                       </Button>

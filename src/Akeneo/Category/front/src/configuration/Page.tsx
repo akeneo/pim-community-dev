@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useCallback} from 'react';
 import {Breadcrumb, Button, Checkbox, SectionTitle} from "akeneo-design-system";
 import {PageContent, PageHeader} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
@@ -27,7 +27,32 @@ const Field = styled.div`
 `;
 
 const Page: FC = () => {
-  const {configuration, setDefaultCommunitySettings, setDefaultEnterpriseSettings, setDefaultGrowthSettings} = useConfiguration();
+  const {
+    configuration,
+    setDefaultCommunitySettings,
+    setDefaultEnterpriseSettings,
+    setDefaultGrowthSettings,
+    updateConfiguration
+  } = useConfiguration();
+
+  const changeFeature = useCallback((feature: string, value: boolean) => {
+    console.log(`change feature ${feature}: ${value}`)
+    updateConfiguration({
+      features: {
+        [feature]: value
+      }
+    });
+  }, [updateConfiguration]);
+
+  const changeAcl = useCallback((property: string, value: boolean) => {
+    console.log(`change acl ${property}: ${value}`)
+    updateConfiguration({
+      acls: {
+        [property]: value
+      }
+    });
+  }, [updateConfiguration]);
+
   return (<>
     <PageHeader>
       <PageHeader.Breadcrumb>
@@ -63,12 +88,12 @@ const Page: FC = () => {
         </SectionTitle>
         <Content>
           <Field>
-            <Checkbox checked={configuration.features.permission}>
+            <Checkbox checked={configuration.features.permission} onClick={() => changeFeature('permission', !configuration.features.permission)}>
               Permission
             </Checkbox>
           </Field>
           <Field>
-            <Checkbox checked={configuration.features.enrich_category}>
+            <Checkbox checked={configuration.features.enrich_category} onClick={() => changeFeature('enrich_category', !configuration.features.enrich_category)}>
               Enrich Category
             </Checkbox>
           </Field>
@@ -90,38 +115,44 @@ const Page: FC = () => {
           </Field>
 */}
           <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_category_create}>
+            <Checkbox checked={configuration.acls.pim_enrich_product_category_create} onClick={() => changeAcl('pim_enrich_product_category_create', !configuration.acls.pim_enrich_product_category_create)}>
               Create a category
             </Checkbox>
           </Field>
 
           <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_category_edit}>
+            <Checkbox checked={configuration.acls.pim_enrich_product_category_edit} onClick={() => changeAcl('pim_enrich_product_category_edit', !configuration.acls.pim_enrich_product_category_edit)}>
               Edit a category
             </Checkbox>
           </Field>
 
           <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_category_history}>
+            <Checkbox checked={configuration.acls.pim_enrich_product_category_history} onClick={() => changeAcl('pim_enrich_product_category_history', !configuration.acls.pim_enrich_product_category_history)}>
               View category history
             </Checkbox>
           </Field>
 
           <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_category_list}>
+            <Checkbox checked={configuration.acls.pim_enrich_product_category_list} onClick={() => changeAcl('pim_enrich_product_category_list', !configuration.acls.pim_enrich_product_category_list)}>
               List categories
             </Checkbox>
           </Field>
 
           <Field>
-            <Checkbox checked={configuration.acls.pim_enrich_product_category_remove}>
+            <Checkbox checked={configuration.acls.pim_enrich_product_category_remove} onClick={() => changeAcl('pim_enrich_product_category_remove', !configuration.acls.pim_enrich_product_category_remove)}>
               Remove a category
             </Checkbox>
           </Field>
 
           <Field>
-            <Checkbox checked={configuration.acls.pimee_enrich_category_edit_permissions}>
+            <Checkbox checked={configuration.acls.pimee_enrich_category_edit_permissions} onClick={() => changeAcl('pimee_enrich_category_edit_permissions', !configuration.acls.pimee_enrich_category_edit_permissions)}>
               Manage category permissions
+            </Checkbox>
+          </Field>
+
+          <Field>
+            <Checkbox checked={configuration.acls.pimee_enrich_category_edit_template} onClick={() => changeAcl('pimee_enrich_category_edit_template', !configuration.acls.pimee_enrich_category_edit_template)}>
+              Manage category template
             </Checkbox>
           </Field>
         </Content>

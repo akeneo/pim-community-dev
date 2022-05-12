@@ -13,10 +13,11 @@ type Configuration = {
     pim_enrich_product_category_list: boolean;
     pim_enrich_product_category_remove: boolean;
     pimee_enrich_category_edit_permissions: boolean;
+    pimee_enrich_category_edit_template: boolean;
   };
 };
 
-type WriteConfiguration = Configuration & {
+type WriteConfiguration = {
   features?: {
     permission?: boolean;
     enrich_category?: boolean;
@@ -29,6 +30,7 @@ type WriteConfiguration = Configuration & {
     pim_enrich_product_category_list?: boolean;
     pim_enrich_product_category_remove?: boolean;
     pimee_enrich_category_edit_permissions?: boolean;
+    pimee_enrich_category_edit_template?: boolean;
   };
 }
 
@@ -56,6 +58,7 @@ const ConfigurationProvider: FC = ({children}) => {
       pim_enrich_product_category_list: true,
       pim_enrich_product_category_remove: true,
       pimee_enrich_category_edit_permissions: true,
+      pimee_enrich_category_edit_template: true,
     }
   });
 
@@ -73,6 +76,7 @@ const ConfigurationProvider: FC = ({children}) => {
         pim_enrich_product_category_list: true,
         pim_enrich_product_category_remove: true,
         pimee_enrich_category_edit_permissions: false,
+        pimee_enrich_category_edit_template: false,
       }
     });
   }, []);
@@ -91,6 +95,7 @@ const ConfigurationProvider: FC = ({children}) => {
         pim_enrich_product_category_list: true,
         pim_enrich_product_category_remove: true,
         pimee_enrich_category_edit_permissions: false,
+        pimee_enrich_category_edit_template: true,
       }
     });
   }, []);
@@ -109,11 +114,27 @@ const ConfigurationProvider: FC = ({children}) => {
         pim_enrich_product_category_list: true,
         pim_enrich_product_category_remove: true,
         pimee_enrich_category_edit_permissions: true,
+        pimee_enrich_category_edit_template: true,
       }
     });
   }, []);
 
-  const updateConfiguration = useCallback((config) => setConfiguration(config), []);
+  // @todo split updateConfiguration in setFeature and setAcl
+  const updateConfiguration = useCallback((config: WriteConfiguration) => {
+    setConfiguration((configuration) => {
+      console.log(`setConfiguration ${JSON.stringify(configuration)} |  ${JSON.stringify(config)}`)
+      return {
+        features: {
+          ...configuration.features,
+          ...(config.features ?? {}),
+        },
+        acls: {
+          ...configuration.acls,
+          ...(config.acls ?? {}),
+        }
+      }
+    })
+  }, []);
 
   const state = {
     configuration,

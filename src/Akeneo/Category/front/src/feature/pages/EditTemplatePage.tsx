@@ -1,14 +1,18 @@
 import React, {FC, useCallback, useEffect, useState} from 'react';
 import {useParams} from "react-router";
 import {
+  FullScreenError,
   getLabel,
   LabelCollection,
   NotificationLevel,
   PageContent,
   PageHeader,
   Section,
+  useFeatureFlags,
   useNotify,
-  useRouter
+  useRouter,
+  useSecurity,
+  useTranslate
 } from "@akeneo-pim-community/shared";
 import {
   AttributeTextareaIcon,
@@ -114,13 +118,28 @@ const EditTemplatePage: FC = () => {
   const [template, setTemplate] = useState<Template | null>(null);
   const [updatedTemplate, setUpdateTemplate] = useState<Template | null>(null);
   const notify = useNotify();
+  const translate = useTranslate();
+  const featureFlags = useFeatureFlags()
+  const {isGranted} = useSecurity();
 
   const loadTemplate = useCallback(async () => {
-    const response = await fetch(router.generate('pim_enrich_category_rest_template_get', {
+    /*const response = await fetch(router.generate('pim_enrich_category_rest_template_get', {
       identifier: templateId,
       categoryTreeIdentifier: treeId
     }));
-    const data = await response.json();
+    const data = await response.json();*/
+    if (templateId !== 'default') {
+      return;
+    }
+    const data = {
+      identifier: `${templateId}_xxxxxx`,
+      code: templateId,
+      labels: {
+        en_US: 'A template',
+      },
+      categoryTreeIdentifier: treeId,
+      attributes: [],
+    };
 
     setTemplate(data);
   }, [templateId, treeId]);
@@ -201,6 +220,25 @@ const EditTemplatePage: FC = () => {
     loadTemplate();
   }, [loadTemplate]);
 
+  if (!featureFlags.isEnabled('enrich_category') || !isGranted('pimee_enrich_category_edit_template')) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: '403'})}
+        message={'Access not allowed'}
+        code={403}
+      />
+    );
+  }
+  if (template === null) {
+    return (
+      <FullScreenError
+        title={translate('error.exception', {status_code: '404'})}
+        message={'Template not found'}
+        code={404}
+      />
+    );
+  }
+
   return (
     <>
       <PageHeader>
@@ -244,7 +282,6 @@ const EditTemplatePage: FC = () => {
 
       </PageHeader>
       <PageContent>
-        {(template !== null) && (
           <Section>
             <SectionTitle title="Properties">
               <SectionTitle.Title>Properties</SectionTitle.Title>
@@ -288,7 +325,6 @@ const EditTemplatePage: FC = () => {
               </>
             ))}
           </Section>
-        )}
         <Section>
           <hr/>
           <p>Update template</p>
