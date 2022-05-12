@@ -260,6 +260,7 @@ akeneo_connectivity.connection:
                     reference_entity_record: reference entity records
                     asset_families: asset families
                     assets: assets
+                    catalogs: catalogs
                 new: NEW
             error:
                 sub_text: Please contact the app developer or Akeneo support

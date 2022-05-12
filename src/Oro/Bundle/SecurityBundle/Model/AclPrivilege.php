@@ -28,6 +28,12 @@ class AclPrivilege
 
     private int $order = 0;
 
+    /**
+     * true if the ACL must be visible in the UI. eg: the edit role permissions screen
+     * ACL that are not visible still exist and can be managed by the code.
+     */
+    private bool $visible = true;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -153,6 +159,18 @@ class AclPrivilege
     public function setOrder(int $order): self
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): self
+    {
+        $this->visible = $visible;
 
         return $this;
     }
