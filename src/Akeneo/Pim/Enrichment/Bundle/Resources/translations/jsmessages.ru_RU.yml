@@ -50,6 +50,7 @@ pim_enrich.entity.product:
       label: Преобразовать в простой товар
       dialog:
         title: Подтвердите преобразование
+        content: "Вы уверены, что хотите конвертировать продукт в простой тип? Все предыдущие значения, категории и ассоциации будут сохранены."
     history:
       version: Версия
       author: Автор
@@ -82,6 +83,7 @@ pim_enrich.entity.product:
       save_and_next: Сохранить и далее
       save_and_finish: Сохранить и завершить
     associations:
+      title: Связи ({{ count }})
       none_exist: Типы ассоциаций отсутствуют.
       show_products: Показать продукты
       show_groups: Отображать группы
@@ -92,9 +94,13 @@ pim_enrich.entity.product:
       manage_description: Выберите товары, которые вы хотите связать с товаром "{{ productLabel }}"
       mass_edit_description: Выберите товары, которые вы хотите связать с {{ productCount }} выбранными товарами
       add_associations: Добавить связи
+      variant_products: Разновидность продуктов
       quantified:
         quantity: Кол-во
+      search:
+        placeholder: Поиск по названию или идентификатору
       no_result: Поиск не дал результатов.
+      no_data: Нет связанных продуктов.
       remove: Удалить связь
       edit: Редактировать товар
       limit_reached: Вы не можете добавить более {{ maxLimit }} связей к этому товару.
@@ -326,11 +332,14 @@ pim_datagrid:
         title: Выберите действие
         csv: CSV
         xlsx: XLSX
+        grid_context: Контекст сетки
         all_attributes: Все атрибуты
         with_codes: С кодами
         with_labels: С метками
         without_media: Без медиа
         with_media: С медиа
+      flash:
+        message: "Вы можете следить за процессом экспорта здесь."
     mass_edit: Массовые действия
     sequential_edit: Последовательное редактирование
     mass_delete: Массовое удаление
@@ -364,6 +373,8 @@ pim_datagrid:
       label: Группы
     enabled:
       label: Статус
+    scope:
+      label: Область
     completeness:
       label: Завершено
     created:
