@@ -24,6 +24,7 @@ final class AkeneoPimEnrichmentProductExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('appliers.yml');
+        $loader->load('factories.yml');
         $loader->load('handlers.yml');
         $loader->load('message_bus.yml');
         $loader->load('queries.yml');
