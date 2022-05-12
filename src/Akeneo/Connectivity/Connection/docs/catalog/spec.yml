@@ -203,7 +203,7 @@ paths:
                             search_after: "YTVlZWQ2MDYtNGY5OC00ZDhjLWI5MjYtNWI1OWY4ZmIwZWU3"
                             _embedded:
                                 items:
-                                    -   identifier: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                                    -   uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
                                         family: "tshirt"
                                         groups: [ ]
                                         parent: null
@@ -237,7 +237,7 @@ paths:
                     description: "OK"
                     examples:
                         application/json:
-                            identifier: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
+                            uuid: "a5eed606-4f98-4d8c-b926-5b59f8fb0ee7"
                             family: "tshirt"
                             groups: [ ]
                             parent: null
