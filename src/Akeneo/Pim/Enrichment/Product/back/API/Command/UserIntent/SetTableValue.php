@@ -25,6 +25,7 @@ final class SetTableValue implements ValueUserIntent
         private ?string $localeCode,
         private array $tableValue
     ) {
+        Assert::allIsArray($tableValue);
     }
 
     public function attributeCode(): string
@@ -33,7 +34,7 @@ final class SetTableValue implements ValueUserIntent
     }
 
     /**
-     * @return array<int, array<string, mixed>> $tableValue
+     * @return array<int, array<string, mixed>>
      *     ex. [
      *             0 => ['ingredient' => 'butter', 'quantity' => 2],
      *             1 => ['ingredient' => 'salt'],

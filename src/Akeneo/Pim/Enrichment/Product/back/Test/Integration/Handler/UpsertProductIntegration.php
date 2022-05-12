@@ -46,7 +46,6 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
@@ -1199,7 +1198,7 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_table_value_has_wrong_format(): void
+    public function it_throws_an_exception_when_table_value_has_unknown_column(): void
     {
         FeatureHelper::skipIntegrationTestWhenTableAttributeIsNotActivated();
 
@@ -1231,8 +1230,8 @@ final class UpsertProductIntegration extends TestCase
         $product = $this->productRepository->findOneByIdentifier('identifier');
         Assert::assertNull($product);
 
-        $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('Property "a_table" expects an array of arrays as data.');
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The "origin" column does not exist');
 
         // create product 'identifier'
         $command = new UpsertProductCommand(
@@ -1243,7 +1242,7 @@ final class UpsertProductIntegration extends TestCase
                     'a_table',
                     null,
                     null,
-                    ['ingredient' => 'butter', 'quantity' => 3]
+                    [['ingredient' => 'butter', 'origin' => 'Nantes', 'quantity' => 3]]
                 )
             ]
         );
