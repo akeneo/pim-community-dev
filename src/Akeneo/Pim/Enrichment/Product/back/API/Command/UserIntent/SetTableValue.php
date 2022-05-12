@@ -25,7 +25,8 @@ final class SetTableValue implements ValueUserIntent
         private ?string $localeCode,
         private array $tableValue
     ) {
-        Assert::allIsArray($tableValue);
+        Assert::isList($tableValue);
+        Assert::allIsMap($tableValue);
     }
 
     public function attributeCode(): string

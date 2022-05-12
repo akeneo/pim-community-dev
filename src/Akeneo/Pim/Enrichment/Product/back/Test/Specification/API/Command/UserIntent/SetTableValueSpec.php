@@ -57,4 +57,24 @@ class SetTableValueSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_must_be_instantiated_with_valid_data_structure()
+    {
+        $this->beConstructedWith('nutrition',
+            'ecommerce',
+            'en_US',
+            ['ingredient' => 'salt']
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+
+        $this->beConstructedWith('nutrition',
+            'ecommerce',
+            'en_US',
+            [
+                'wrong_index_1' => ['ingredient' => 'salt'],
+                'wrong_index_2' => ['ingredient' => 'egg', 'quantity' => 2],
+            ]
+        );
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
 }
