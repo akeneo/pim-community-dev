@@ -150,18 +150,6 @@ class Category extends BaseCategory implements CategoryInterface
         return $translation;
     }
 
-    public function getLabels(): array
-    {
-        $labels = [];
-
-        /** @var CategoryTranslationInterface $translation */
-        foreach ($this->getTranslations() as $translation) {
-            $labels[$translation->getLocale()] = $translation->getLabel();
-        }
-
-        return $labels;
-    }
-
     /**
      * {@inheritdoc}
      */

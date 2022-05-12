@@ -61,8 +61,6 @@ interface CategoryInterface extends
 
     public function getLabel(): string;
 
-    public function getLabels(): array;
-
     /**
      * Set updated datetime
      */
