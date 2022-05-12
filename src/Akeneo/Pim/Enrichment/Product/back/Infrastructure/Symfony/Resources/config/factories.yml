@@ -4,6 +4,39 @@ services:
             - !tagged_iterator 'pim.enrichment.product.user_intent_factory'
             - ['identifier', 'created', 'updated', 'parent_associations', 'metadata', 'quality_scores', 'completenesses']
 
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactoryRegistry:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - !tagged_iterator 'pim.enrichment.product.value_user_intent_factory'
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
     Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\FamilyUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\AssociationsUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\CategoriesUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\EnabledUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\GroupsUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ParentUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\QuantifiedAssociationUserIntentFactory:
+        arguments:
+            - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
         tags:
             - { name: 'pim.enrichment.product.user_intent_factory' }
