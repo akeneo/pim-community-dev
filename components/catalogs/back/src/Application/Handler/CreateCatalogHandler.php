@@ -6,9 +6,7 @@ namespace Akeneo\Catalogs\Application\Handler;
 
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\ServiceAPI\Event\CatalogWasCreated;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +16,6 @@ final class CreateCatalogHandler
 {
     public function __construct(
         private UpsertCatalogQueryInterface $upsertCatalogQuery,
-        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -31,7 +28,5 @@ final class CreateCatalogHandler
         );
 
         $this->upsertCatalogQuery->execute($catalog);
-
-        $this->eventDispatcher->dispatch(new CatalogWasCreated($catalog->getId()));
     }
 }

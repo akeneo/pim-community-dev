@@ -19,10 +19,10 @@ services:
         resource: '../../../../Application/Handler/'
         tags: [ 'messenger.message_handler' ]
 
-    Akeneo\Catalogs\Infrastructure\Messenger\CommandBus:
+    Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
         arguments:
             $messageBus: '@catalogs.command.bus'
 
-    Akeneo\Catalogs\Infrastructure\Messenger\QueryBus:
+    Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
         arguments:
             $messageBus: '@catalogs.query.bus'
