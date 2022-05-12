@@ -1,3 +1,0 @@
-pim_enrich.entity.locale:
-  constraint:
-    invalid_locale_code: 이 로케일 코드는 예상 형식과 일치하지 않습니다.
