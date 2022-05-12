@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {AkeneoIcon, CommonStyle, getColor} from 'akeneo-design-system';
+import {AkeneoIcon, CardIcon, CommonStyle, getColor, MainNavigationItem, SettingsIcon} from 'akeneo-design-system';
 import {useDependenciesContext} from '@akeneo-pim-community/shared';
 
 const Container = styled.div`
@@ -13,8 +13,8 @@ const Container = styled.div`
 
 const Menu = styled.div`
   display: flex;
-  justify-content: center;
-  padding: 15px;
+  flex-direction: column;
+  justify-content: start;
   width: 80px;
   height: 100vh;
   border-right: 1px solid ${getColor('grey', 60)};
@@ -24,6 +24,14 @@ const Menu = styled.div`
 const Page = styled.div`
   flex: 1;
   padding: 40px;
+`;
+
+
+const LogoContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 80px;
+  align-items: center;
 `;
 
 const FakePIM = ({children}) => {
@@ -47,7 +55,21 @@ const FakePIM = ({children}) => {
   return (
     <Container>
       <Menu>
-        <AkeneoIcon size={36} />
+        <LogoContainer>
+          <AkeneoIcon size={36}/>
+        </LogoContainer>
+        <MainNavigationItem
+          href="#/"
+          icon={<CardIcon/>}
+        >
+          App
+        </MainNavigationItem>
+        <MainNavigationItem
+          href="#/configuration"
+          icon={<SettingsIcon/>}
+        >
+          Configuration
+        </MainNavigationItem>
       </Menu>
       <Page>{children}</Page>
     </Container>

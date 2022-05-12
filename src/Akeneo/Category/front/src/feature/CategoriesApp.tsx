@@ -5,10 +5,9 @@ import {EditCategoryProvider} from './components';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
-  CategoryEnrichmentProvider: React.Component;
 };
 
-const CategoriesApp: FC<Props> = ({setCanLeavePage, CategoryEnrichmentProvider}) => {
+const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
   return (
     <Router basename="/enrich/product-category-tree">
       <Switch>
