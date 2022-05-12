@@ -13,6 +13,12 @@ mappings:
             normalizer: 'text_normalizer'
         updated_at:
             type: 'date'
+        parent_id:
+            type: 'keyword'
+        parent_code:
+            type: 'keyword'
+        level:
+            type: 'keyword'
 
     dynamic_templates:
         -

@@ -28,6 +28,9 @@ class CategoryIndexer
             'id' => 'category_' . $category->getId(),
             'code' => $category->getCode(),
             'updated_at' => $category->getUpdated()->format('c'),
+            'parent_id' => $category->getParent() ? 'category_' . $category->getParent()->getId() : null,
+            'parent_code' => $category->getParent() ? $category->getParent()->getCode() : null,
+            'level' => $category->getLevel(),
             'category_code_label_search' => $this->getCodeLabelMatrix($category),
         ];
 
