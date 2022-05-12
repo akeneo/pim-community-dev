@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnId;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
@@ -38,6 +40,11 @@ final class CleanRecordsFromTableValuesIntegration extends TestCase
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
         parent::setUp();
+
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->connection = $this->get('database_connection');

@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -29,34 +30,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ImportSupplierTasklet implements TaskletInterface
 {
-    private ItemReaderInterface $reader;
-    private ValidatorInterface $validator;
-    private CreateSupplierHandler $createSupplierHandler;
-    private UpdateSupplierHandler $updateSupplierHandler;
-    private SupplierExists $supplierExists;
-    private JobRepositoryInterface $jobRepository;
-    private EventDispatcherInterface $eventDispatcher;
     private ?StepExecution $stepExecution;
-    private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode;
 
     public function __construct(
-        ItemReaderInterface $reader,
-        ValidatorInterface $validator,
-        CreateSupplierHandler $createSupplierHandler,
-        UpdateSupplierHandler $updateSupplierHandler,
-        SupplierExists $supplierExists,
-        JobRepositoryInterface $jobRepository,
-        EventDispatcherInterface $eventDispatcher,
-        GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
+        private ItemReaderInterface $reader,
+        private ValidatorInterface $validator,
+        private CreateSupplierHandler $createSupplierHandler,
+        private UpdateSupplierHandler $updateSupplierHandler,
+        private SupplierExists $supplierExists,
+        private JobRepositoryInterface $jobRepository,
+        private EventDispatcherInterface $eventDispatcher,
+        private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
+        private LoggerInterface $logger,
     ) {
-        $this->reader = $reader;
-        $this->validator = $validator;
-        $this->createSupplierHandler = $createSupplierHandler;
-        $this->updateSupplierHandler = $updateSupplierHandler;
-        $this->supplierExists = $supplierExists;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->getSupplierIdentifierFromSupplierCode = $getSupplierIdentifierFromSupplierCode;
     }
 
     /**
@@ -84,7 +70,23 @@ final class ImportSupplierTasklet implements TaskletInterface
                     $this->stepExecution->incrementSummaryInfo('process');
                 }
             } catch (InvalidItemException $e) {
+                $this->logger->info(
+                    sprintf(
+                        'An error occurred while importing a supplier: "%s"',
+                        $e->getMessage(),
+                    ),
+                );
+
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
+
+                continue;
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    sprintf(
+                        'An unhandled exception has been thrown while creating suppliers: "%s"',
+                        $e->getMessage(),
+                    ),
+                );
 
                 continue;
             }

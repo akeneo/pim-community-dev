@@ -1,5 +1,0 @@
-services:
-    Akeneo\Channel\Locale\API\Query\IsLocaleEditable:
-        class: AkeneoEnterprise\Channel\Locale\Infrastructure\Query\LRUCachedIsLocaleEditable
-        arguments:
-            - '@database_connection'

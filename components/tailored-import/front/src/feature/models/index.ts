@@ -1,4 +1,5 @@
 export * from './Attribute';
+export * from './AttributeOption';
 export * from './AvailableTarget';
 export * from './Column';
 export * from './Configuration';

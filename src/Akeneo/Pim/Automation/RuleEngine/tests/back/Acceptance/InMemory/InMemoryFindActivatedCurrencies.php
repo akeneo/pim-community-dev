@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\Automation\RuleEngine\Acceptance\InMemory;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\CurrencyInterface;
-use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
 
 /**

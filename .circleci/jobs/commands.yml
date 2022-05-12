@@ -130,7 +130,7 @@ commands:
               if [[ "${LOGS}" != "" ]]; then
                 echo ${LOGS} | jq -r .data[].attributes.message
               fi
-                              
+
     skip_job:
         description: "Skip following steps when turned on"
         parameters:

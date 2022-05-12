@@ -33,6 +33,12 @@ services:
         class: Akeneo\AssetManager\Common\Fake\InMemoryMediaFileRepository
 
     # Query functions
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_channels:
+        class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindChannels
+
+    akeneo_assetmanager.infrastructure.persistence.query.channel.find_locales:
+        class: Akeneo\AssetManager\Common\Fake\Channel\InMemoryFindLocales
+
     akeneo_assetmanager.infrastructure.persistence.query.find_asset_family_items:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindAssetFamilyItems
 
@@ -183,8 +189,6 @@ services:
     akeneo_assetmanager.infrastructure.persistence.query.channel_exists:
         class: Akeneo\AssetManager\Common\Fake\InMemoryChannelExists
 
-    akeneo_assetmanager.infrastructure.persistence.cache.query.channel_exists:
-        alias: akeneo_assetmanager.infrastructure.persistence.query.channel_exists
 
     akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_by_identifiers:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers
@@ -197,7 +201,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels:
+    akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesPerChannels
 
     akeneoassetmanager.infrastructure.persistence.query.find_user_groups_for_security_identifier:

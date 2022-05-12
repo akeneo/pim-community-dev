@@ -12,7 +12,12 @@ test('it can get the default clean html tags operation', () => {
 
 test('it displays a clean html tags operation block', () => {
   renderWithProviders(
-    <CleanHTMLTagsOperationBlock operation={{type: 'clean_html_tags'}} onChange={jest.fn()} onRemove={jest.fn()} />
+    <CleanHTMLTagsOperationBlock
+      targetCode="name"
+      operation={{type: 'clean_html_tags'}}
+      onChange={jest.fn()}
+      onRemove={jest.fn()}
+    />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.operations.clean_html_tags.title')).toBeInTheDocument();
@@ -22,7 +27,12 @@ test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
 
   renderWithProviders(
-    <CleanHTMLTagsOperationBlock operation={{type: 'clean_html_tags'}} onChange={jest.fn()} onRemove={handleRemove} />
+    <CleanHTMLTagsOperationBlock
+      targetCode="name"
+      operation={{type: 'clean_html_tags'}}
+      onChange={jest.fn()}
+      onRemove={handleRemove}
+    />
   );
 
   userEvent.click(screen.getByTitle('pim_common.remove'));

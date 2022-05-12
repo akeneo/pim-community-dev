@@ -62,7 +62,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             //Subscribers for locale updates
-            'Akeneo\Channel\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
@@ -89,7 +89,7 @@ $rules = [
             'Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface',
 
             //Attribute group grid
-            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Component\Batch',

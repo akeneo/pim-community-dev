@@ -48,13 +48,11 @@ class IsValidFileTemplateInformationQueryValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateSheetExist($value, $constraint);
+        $this->validateSheetExist($value);
     }
 
-    public function validateSheetExist(
-        GetFileTemplateInformationQuery $query,
-        IsValidFileTemplateInformationQuery $constraint,
-    ): void {
+    public function validateSheetExist(GetFileTemplateInformationQuery $query): void
+    {
         if (null === $query->sheetName) {
             return;
         }

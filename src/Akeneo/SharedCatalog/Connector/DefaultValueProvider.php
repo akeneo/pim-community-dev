@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\SharedCatalog\Connector;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\SharedCatalog\Model\SharedCatalog;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;

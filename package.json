@@ -101,6 +101,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Job/front/process-tracker",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
+    "vendor/akeneo/pim-community-dev/components/catalogs/front/product-selection-builder"
   ]
 }

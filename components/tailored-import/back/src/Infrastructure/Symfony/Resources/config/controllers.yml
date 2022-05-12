@@ -52,3 +52,18 @@ services:
       - '@akeneo.tailored_import.handler.sample_data.generate_preview_data_handler'
       - '@validator'
       - '@serializer'
+
+  akeneo.tailored_import.controller.get_attribute_options_action:
+    class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetAttributeOptionsAction
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.search_attribute_options'
+      - '@validator'
+      - '@serializer'
+
+  akeneo.tailored_import.controller.validate_replacement_operation_action:
+    class: 'Akeneo\Platform\TailoredImport\Infrastructure\Controller\ValidateReplacementOperationAction'
+    public: true
+    arguments:
+      - '@validator'
+      - '@serializer'

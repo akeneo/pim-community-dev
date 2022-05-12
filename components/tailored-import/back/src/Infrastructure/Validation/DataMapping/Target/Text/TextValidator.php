@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -48,7 +49,9 @@ final class TextValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations(['clean_html_tags']),
+                'operations' => new Operations([
+                    CleanHTMLTagsOperation::TYPE,
+                ]),
                 'sample_data' => new SampleData(),
             ],
         ]));

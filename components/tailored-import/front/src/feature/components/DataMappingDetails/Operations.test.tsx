@@ -198,7 +198,7 @@ test('it can handle an operation change', async () => {
     />
   );
 
-  userEvent.click(screen.getByTitle('Collapse'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_import.data_mapping.operations.split.collapse'));
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByTitle('semicolon'));
 

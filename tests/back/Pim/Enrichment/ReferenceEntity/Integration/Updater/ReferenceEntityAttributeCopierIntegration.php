@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration\Updater;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
@@ -138,7 +140,13 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
 
     private function loadFixtures(): void
     {
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
+
         // Enable the fr_FR locale
+        // TODO: Remove this part when Channel Service API is used everywhere in Reference Entity queries
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier('ecommerce');
         $frFr = $this->get('pim_catalog.repository.locale')->findOneByIdentifier('fr_FR');
         $channel->addLocale($frFr);

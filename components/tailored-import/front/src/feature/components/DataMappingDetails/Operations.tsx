@@ -20,6 +20,8 @@ import {
   OperationSampleData,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
+  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SimpleSelectReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -40,6 +42,7 @@ const operationBlocks: {
 } = {
   [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
+  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
 };
 
 type OperationsProps = {
@@ -106,6 +109,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             return (
               <OperationBlock
                 key={operation.type}
+                targetCode={dataMapping.target.code}
                 operation={operation}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}

@@ -102,7 +102,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityValueInterface',
 
         // Channel coupling
-        'Akeneo\Channel\Component\Query\PublicApi',
+        'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
 
     ])->in('Akeneo\Pim\Automation\RuleEngine\Component'),
 ];

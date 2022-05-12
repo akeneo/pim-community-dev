@@ -22,10 +22,10 @@ $rules = [
 
         // TIP-1004: WidgetInterface located in Platform is used in multiple contexts
         // TIP-966: TWA should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         // TIP-967: TWA should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-968: TWA depends on PIM/Enrichment
         // TIP-963: Define the Products public API
@@ -82,10 +82,10 @@ $rules = [
         'Gedmo\Sluggable\Util\Urlizer', // used to format the project identifier
 
         // TIP-966: TWA should not be linked to Locale
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         // TIP-967: TWA should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-968: TWA depends on PIM/Enrichment
         'Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface',
@@ -95,7 +95,7 @@ $rules = [
         // TIP-971 ProjectRemoverInterface should not be linked to PIM/Enrichment or PIM/Structure
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
-        'Akeneo\Channel\Component\Model\CurrencyInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\CurrencyInterface',
 
         // TIP-972: TWA should not be linked to User Group
         'Akeneo\UserManagement\Component\Model\UserInterface',
