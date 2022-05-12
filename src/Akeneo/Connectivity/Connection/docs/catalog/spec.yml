@@ -171,8 +171,6 @@ paths:
                                     - "a1a2b7de-128b-4d78-a048-85f39c67a60d"
                                     - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
                                     - "81627547-a389-4e0f-9788-1c815a8cfe08"
-                "204":
-                    description: "No product uuids. Catalog is disabled"
                 "403":
                     description: "Access forbidden. You are not allowed to access app catalogs"
                 "404":
