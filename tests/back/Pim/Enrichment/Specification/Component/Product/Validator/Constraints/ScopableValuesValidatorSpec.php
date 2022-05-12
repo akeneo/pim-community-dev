@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValues;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ScopableValuesValidator;

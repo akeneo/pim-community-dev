@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Pim\Structure\Component\ArrayConverter\FlatToStan
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 
 class AttributeOptionSpec extends ObjectBehavior

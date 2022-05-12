@@ -52,10 +52,10 @@ Akeneo\UserManagement\Component\Model\User:
             - NotBlank: ~
         catalogLocale:
             - NotBlank: ~
-            - Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale: ~
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale: ~
         defaultTree:
             - NotBlank: ~
-            - Akeneo\Channel\Component\Validator\Constraint\IsRootCategory: ~
+            - Akeneo\Channel\Infrastructure\Component\Validator\Constraint\IsRootCategory: ~
         phone:
             - Regex:
                 pattern: '/^\+[0-9]+$/'

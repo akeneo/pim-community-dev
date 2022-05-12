@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Test\Integration\Loader;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory;
 use Akeneo\UserManagement\Component\Factory\UserFactory;

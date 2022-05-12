@@ -9,27 +9,32 @@ type TagInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLInputElement>, InputProps<string[]>>,
   {
     /**
-     * Tags to display
+     * Tags to display.
      */
     value: string[];
 
     /**
-     * Handle called when tags are updated
-     */
-    onChange: (tags: string[]) => void;
-
-    /**
-     * Placeholder displayed where there is no tag
+     * Placeholder displayed where there is no tag.
      */
     placeholder?: string;
 
     /**
-     * Defines if the input is valid on not
+     * Defines if the input is valid on not.
      */
     invalid?: boolean;
 
     /**
-     * Callback called when the user hit enter on the field.
+     * List of separators used to create tags.
+     */
+    separators?: string[];
+
+    /**
+     * Handler called when tags are updated.
+     */
+    onChange: (tags: string[]) => void;
+
+    /**
+     * Callback called when the user hits enter on the field.
      */
     onSubmit?: () => void;
   }
@@ -42,6 +47,7 @@ const TagInput: FC<TagInputProps> = ({
   value = [],
   readOnly,
   onSubmit,
+  separators = ['\\s', ',', ';'], // matching spaces, tabs, line breaks, coma and semi-colon
   ...inputProps
 }) => {
   const [isLastTagSelected, setLastTagAsSelected] = useState<boolean>(false);
@@ -53,7 +59,7 @@ const TagInput: FC<TagInputProps> = ({
     (event: ChangeEvent<HTMLInputElement>) => {
       const tagsAsString = event.currentTarget.value;
       if (tagsAsString !== '') {
-        const newTags = tagsAsString.split(/[\s,;]+/); // matching spaces, tabs, line breaks, coma and semi-colon
+        const newTags = tagsAsString.split(new RegExp(`[${separators.join('')}]+`, 'g'));
         if (newTags.length === 1) {
           return;
         }
@@ -196,6 +202,7 @@ const TagContainer = styled.ul<AkeneoThemedProps & {invalid: boolean}>`
   background: ${({readOnly}) => (readOnly ? getColor('grey', 20) : getColor('white'))};
   position: relative;
   width: 100%;
+  margin: 0;
 
   &:focus-within {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
@@ -227,6 +234,7 @@ const InputContainer = styled.li<AkeneoThemedProps>`
     outline: 0;
     color: ${getColor('grey', 120)};
     background-color: transparent;
+    width: 100%;
 
     &::placeholder {
       opacity: 1;
