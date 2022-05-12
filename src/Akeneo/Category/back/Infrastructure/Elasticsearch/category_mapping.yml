@@ -1,14 +1,18 @@
+settings:
+    analysis:
+        normalizer:
+            text_normalizer:
+                filter: ['lowercase']
+
 mappings:
     properties:
-        identifier:
+        id:
             type: 'keyword'
         updated_at:
             type: 'date'
         code:
             type: 'keyword'
             normalizer: 'text_normalizer'
-        category_id:
-            type: 'keyword'
         root:
             type: 'keyword'
         root_code:

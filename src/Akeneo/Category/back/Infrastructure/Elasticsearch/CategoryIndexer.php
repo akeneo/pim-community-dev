@@ -18,30 +18,28 @@ class CategoryIndexer
     ) {
     }
 
-    public function index(string $categoryIdentifier): void
+    public function index(int $categoryId): void
     {
         $sql = <<<SQL
-SELECT category.id, category.identifier, category.code, category.updated
+SELECT category.id, category.code, category.updated
 FROM pim_catalog_category category
-WHERE category.identifier IN (:identifier)
+WHERE category.id = :category_id
 SQL;
 
         $category = $this->connection->fetchAssociative(
             $sql,
-            ['identifier' => $categoryIdentifier],
-            ['identifier' => Connection::PARAM_STR_ARRAY]
+            ['category_id' => $categoryId]
         );
 
         $platform = $this->connection->getDatabasePlatform();
         $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($category['updated'], $platform);
 
         $normalizedCategory = [
-            'id' => $category['id'],
-            'identifier' => $category['identifier'],
+            'id' => 'category_' . $category['id'],
             'code' => $category['code'],
             'updated_at' => $updatedAt->format('c'),
         ];
 
-        $this->categoryClient->index($normalizedCategory['identifier'], $normalizedCategory, refresh::disable());
+        $this->categoryClient->index($normalizedCategory['id'], $normalizedCategory, refresh::disable());
     }
 }
