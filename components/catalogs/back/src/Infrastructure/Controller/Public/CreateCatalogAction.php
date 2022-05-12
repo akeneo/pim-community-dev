@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
-use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\UserManagement\Component\Model\UserInterface;

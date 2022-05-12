@@ -18,6 +18,11 @@ $rules = [
 
             // Constraints attributes
             'Symfony\Component\Validator\Constraints',
+
+            // Bus
+            'Symfony\Component\Messenger\Exception\HandlerFailedException',
+            'Symfony\Component\Messenger\HandleTrait',
+            'Symfony\Component\Messenger\MessageBusInterface',
         ]
     )->in('Akeneo\Catalogs\ServiceAPI'),
 
