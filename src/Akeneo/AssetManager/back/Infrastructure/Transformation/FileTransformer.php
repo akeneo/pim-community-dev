@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\IccStripOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplierRegistry;
@@ -31,11 +32,14 @@ class FileTransformer
 
     public function transform(File $sourceFile, Transformation $transformation): File
     {
-        foreach ($transformation->getOperationCollection() as $operation) {
+        $iccOperation = IccStripOperation::create([]);
+        $operations = [$iccOperation, ...$transformation->getOperationCollection()];
+
+        foreach ($operations as $operation) {
             $applier = $this->operationApplierRegistry->getApplier($operation);
             try {
                 $sourceFile = $applier->apply($sourceFile, $operation);
-            } catch (ExceptionInterface | RuntimeException | \ImagickException $exception) {
+            } catch (ExceptionInterface|RuntimeException|\ImagickException $exception) {
                 throw new TransformationException($exception->getMessage(), $exception->getCode(), $exception);
             }
         }
@@ -47,7 +51,7 @@ class FileTransformer
 
     private function rename(File $sourceFile, Transformation $transformation): File
     {
-        $extension = ('' === $sourceFile->getExtension()) ? '' : '.' . $sourceFile->getExtension();
+        $extension = ('' === $sourceFile->getExtension()) ? '' : '.'.$sourceFile->getExtension();
         $newFilename = sprintf(
             '%s%s%s.%s',
             $transformation->getFilenamePrefix() ?? '',
