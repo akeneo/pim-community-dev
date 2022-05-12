@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Test\Integration\Application\Handler;
+namespace Akeneo\Catalogs\Test\Integration\ServiceAPI\Query;
 
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogHanderTest extends IntegrationTestCase
+class GetCatalogCommandValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
