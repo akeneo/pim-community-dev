@@ -9,7 +9,6 @@ use Akeneo\Connectivity\Connection\Application\Apps\ScopeListComparatorInterface
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\AuthenticationScope;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\FindOneConnectedAppByIdQueryInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetConnectedAppScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\GetUserConsentedAuthenticationScopesQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\Persistence\HasUserConsentForAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
@@ -31,7 +30,6 @@ final class GetWizardDataAction
         private GetAppQueryInterface $getAppQuery,
         private AppAuthorizationSessionInterface $appAuthorizationSession,
         private ScopeMapperRegistry $scopeMapperRegistry,
-        private GetConnectedAppScopesQueryInterface $getConnectedAppScopesQuery,
         private FindOneConnectedAppByIdQueryInterface $findOneConnectedAppByIdQuery,
         private ScopeListComparatorInterface $scopeListComparator,
         private ConnectedPimUserProvider $connectedPimUserProvider,

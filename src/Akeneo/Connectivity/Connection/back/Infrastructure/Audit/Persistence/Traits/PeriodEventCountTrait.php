@@ -35,16 +35,14 @@ trait PeriodEventCountTrait
                     $data[$connectionCode] = [];
                 }
 
-                if (null !== $row['event_datetime'] && null !== $row['event_count']) {
-                    $data[$connectionCode][] = new HourlyEventCount(
-                        \DateTimeImmutable::createFromFormat(
-                            'Y-m-d H:i:s',
-                            $row['event_datetime'],
-                            new \DateTimeZone('UTC')
-                        ),
-                        (int) $row['event_count']
-                    );
-                }
+                $data[$connectionCode][] = new HourlyEventCount(
+                    \DateTimeImmutable::createFromFormat(
+                        'Y-m-d H:i:s',
+                        $row['event_datetime'],
+                        new \DateTimeZone('UTC')
+                    ),
+                    (int) $row['event_count']
+                );
 
                 return $data;
             },
