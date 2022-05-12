@@ -10,13 +10,13 @@ import {
   PermissionSectionSummary,
   LevelSummaryField,
 } from '@akeneo-pim-community/permission-form';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 const H3 = styled.h3`
   color: ${getColor('grey', 140)};
@@ -163,7 +163,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
   ) => {
     const [state, dispatch] = useReducer(CategoryPermissionReducer, initialState);
     const canEditPermission =
-      securityContext.isGranted('pimee_enrich_category_edit_permissions') && useFeatureFlags().isEnabled('permission');
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && featureFlags.isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -279,7 +279,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
   },
   save: async (userGroup: string, state: CategoryPermissionState) => {
     const canEditPermission =
-      securityContext.isGranted('pimee_enrich_category_edit_permissions') && useFeatureFlags().isEnabled('permission');
+      securityContext.isGranted('pimee_enrich_category_edit_permissions') && featureFlags.isEnabled('permission');
 
     if (!canEditPermission) {
       return Promise.resolve();

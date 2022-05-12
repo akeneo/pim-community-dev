@@ -10,13 +10,13 @@ import {
   PermissionSectionSummary,
   LevelSummaryField,
 } from '@akeneo-pim-community/permission-form';
-import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 const UserContext = require('pim/user-context');
 const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 const H3 = styled.h3`
   color: ${getColor('grey', 140)};
@@ -158,7 +158,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
     const [state, dispatch] = useReducer(AttributeGroupPermissionReducer, initialState);
     const canEditPermissions =
       securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') &&
-      useFeatureFlags().isEnabled('permission');
+      featureFlags.isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -250,7 +250,7 @@ const AttributeGroupPermissionFormProvider: PermissionFormProvider<AttributeGrou
   save: async (userGroup: string, state: AttributeGroupPermissionState) => {
     const canEditPermissions =
       securityContext.isGranted('pimee_enrich_attribute_group_edit_permissions') &&
-      useFeatureFlags().isEnabled('permission');
+      featureFlags.isEnabled('permission');
 
     if (!canEditPermissions) {
       return Promise.resolve();
