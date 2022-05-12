@@ -20,7 +20,7 @@ const IdentifierConfigurator = ({
             {translate('akeneo.tailored_import.data_mapping.target.title')}
           </SectionTitle.Title>
         </SectionTitle>
-        <Helper>{translate('akeneo.tailored_import.data_mapping.target.identifier')}</Helper>
+        <Helper level="info">{translate('akeneo.tailored_import.data_mapping.target.identifier')}</Helper>
       </div>
       <Sources
         isMultiSource={false}
@@ -35,7 +35,7 @@ const IdentifierConfigurator = ({
             {translate('akeneo.tailored_import.data_mapping.operations.title')}
           </SectionTitle.Title>
         </SectionTitle>
-        <Helper>{translate('akeneo.tailored_import.data_mapping.operations.identifier')}</Helper>
+        <Helper level="info">{translate('akeneo.tailored_import.data_mapping.operations.identifier')}</Helper>
       </div>
     </>
   );

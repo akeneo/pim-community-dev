@@ -8,6 +8,7 @@ import {
   Placeholder,
   AttributesIllustration,
   Helper,
+  Link,
 } from 'akeneo-design-system';
 import {
   filterErrors,
@@ -125,9 +126,14 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
         <Modal.Title>{translate('akeneo.tailored_import.file_structure.modal.title')}</Modal.Title>
         <Content>
           <HelperContainer>
-            <Helper>{translate('akeneo.tailored_import.file_structure.modal.helper')}</Helper>
+            <Helper level="info">
+              {translate('akeneo.tailored_import.file_structure.modal.helper')}{' '}
+              <Link href="#TODO Add missing link" target="_blank">
+                {translate('akeneo.tailored_import.file_structure.modal.link')}
+              </Link>
+            </Helper>
             {globalValidationErrors.map((validationError, index) => (
-              <Helper key={index} level={'error'}>
+              <Helper key={index} level="error">
                 {translate(validationError.message, validationError.parameters)}
               </Helper>
             ))}
@@ -151,6 +157,12 @@ const InitializeFileStructure = ({onConfirm}: InitializeFileStructureProps) => {
       title={translate('akeneo.tailored_import.file_structure.placeholder.title')}
       illustration={<AttributesIllustration />}
     >
+      <div>
+        {translate('akeneo.tailored_import.file_structure.placeholder.helper')}{' '}
+        <Link href="#TODO Add missing link" target="_blank">
+          {translate('akeneo.tailored_import.file_structure.placeholder.link')}
+        </Link>
+      </div>
       <Button ghost={true} level="secondary" onClick={handleOpenModal}>
         {translate('akeneo.tailored_import.file_structure.placeholder.button')}
       </Button>

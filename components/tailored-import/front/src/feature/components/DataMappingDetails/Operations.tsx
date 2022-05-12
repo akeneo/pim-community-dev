@@ -89,7 +89,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
         </SectionTitle.Title>
       </SectionTitle>
       {0 === dataMapping.sources.length ? (
-        <Helper>{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
+        <Helper level="info">{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
       ) : (
         <OperationBlocksContainer>
           <OperationSampleData
