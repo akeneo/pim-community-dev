@@ -18,6 +18,10 @@ paths:
                     name: page
                     type: integer
                     required: false
+                -   in: query
+                    name: limit
+                    type: integer
+                    required: false
             responses:
                 "200":
                     description: "OK"
@@ -28,8 +32,13 @@ paths:
                                 items:
                                     -   id: "e8da3927-e116-492b-a3fa-2497495b0560"
                                         name: "Demo App default catalog"
+                                        enabled: true
                 "401":
                     description: "Unauthorized"
+                "403":
+                    description: "Access forbidden. You are not allowed to access app catalogs"
+                "404":
+                    description: "No catalog found"
         post:
             summary: "Create a new catalog"
             produces:
@@ -51,6 +60,7 @@ paths:
                         application/json:
                             id: "e8da3927-e116-492b-a3fa-2497495b0560"
                             name: "Demo App default catalog"
+                            enabled: false
                 "401":
                     description: "Unauthorized"
     /api/rest/v1/catalogs/{id}:
@@ -70,6 +80,7 @@ paths:
                         application/json:
                             id: "e8da3927-e116-492b-a3fa-2497495b0560"
                             name: "Demo App default catalog"
+                            enabled: true
                 "401":
                     description: "Unauthorized"
                 "403":
@@ -101,6 +112,7 @@ paths:
                         application/json:
                             id: "e8da3927-e116-492b-a3fa-2497495b0560"
                             name: "Demo App default catalog"
+                            enabled: true
                 "401":
                     description: "Unauthorized"
                 "403":
@@ -123,9 +135,9 @@ paths:
                     description: "Forbidden"
                 "404":
                     description: "Not Found"
-    /api/rest/v1/catalogs/{id}/product-identifiers:
+    /api/rest/v1/catalogs/{id}/product-uuids:
         get:
-            summary: "List of product identifiers belonging to the catalog"
+            summary: "List of product uuids belonging to the catalog"
             produces:
                 - "application/json"
             parameters:
@@ -159,10 +171,12 @@ paths:
                                     - "a1a2b7de-128b-4d78-a048-85f39c67a60d"
                                     - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
                                     - "81627547-a389-4e0f-9788-1c815a8cfe08"
-                "401":
-                    description: "Unauthorized"
+                "204":
+                    description: "No product uuids. Catalog is disabled"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to access app catalogs"
+                "404":
+                    description: "Catalog not found"
     /api/rest/v1/catalogs/{id}/products:
         get:
             summary: "List of products belonging to the catalog"
