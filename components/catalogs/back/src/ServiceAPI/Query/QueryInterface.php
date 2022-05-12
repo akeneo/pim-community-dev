@@ -7,6 +7,6 @@ namespace Akeneo\Catalogs\ServiceAPI\Query;
 /**
  * @template R
  */
-interface Query
+interface QueryInterface
 {
 }

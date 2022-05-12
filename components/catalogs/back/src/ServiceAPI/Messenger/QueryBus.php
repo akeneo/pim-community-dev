@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\ServiceAPI\Messenger;
 
-use Akeneo\Catalogs\ServiceAPI\Query\Query;
+use Akeneo\Catalogs\ServiceAPI\Query\QueryInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -25,13 +25,13 @@ final class QueryBus
 
     /**
      * @template R
-     * @param \Akeneo\Catalogs\ServiceAPI\Query\Query<R> $query
+     * @param QueryInterface<R> $query
      * @return R
      *
      * @psalm-suppress MixedReturnStatement
      * @psalm-suppress MixedInferredReturnType
      */
-    public function execute(Query $query): mixed
+    public function execute(QueryInterface $query): mixed
     {
         try {
             return $this->handle($query);
