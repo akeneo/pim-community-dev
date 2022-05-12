@@ -16,6 +16,7 @@ help:
 
 ## Include all *.mk files
 include make-file/*.mk
+include components/*/Makefile
 
 ##
 ## Front

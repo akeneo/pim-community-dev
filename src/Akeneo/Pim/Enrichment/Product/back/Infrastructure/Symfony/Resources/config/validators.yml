@@ -29,7 +29,7 @@ services:
 
     Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\LocaleShouldBeEditableByUserValidator:
         arguments:
-            - '@Akeneo\Channel\Locale\API\Query\IsLocaleEditable'
+            - '@Akeneo\Channel\API\Query\IsLocaleEditable'
         tags:
             - { name: validator.constraint_validator }
 

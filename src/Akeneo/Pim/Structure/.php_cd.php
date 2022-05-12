@@ -38,7 +38,7 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\UserInterface',
 
         // TIP-910: PIM/Structure should not be linked to Channel
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-939: Remove filter system for permissions
         'Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface',
@@ -64,13 +64,13 @@ $rules = [
         'Doctrine\ORM\QueryBuilder',
 
         // TIP-910: PIM/Structure should not be linked to Channel
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
 
         // TIP-908: Entities should not be linked directly to Locale for translation purposes
         // TIP-909: PIM/Structure should not be linked to Locale
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
         //TIP-906: Functionnal problem -> used to check if we can remove a family / family variant
         'Akeneo\Pim\Enrichment\Component\Product\ProductAndProductModel\Query\CountProductsWithFamilyInterface',
