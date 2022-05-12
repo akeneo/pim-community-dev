@@ -28,7 +28,7 @@ jest.mock('pim/feature-flags', () => ({
 }));
 
 jest.mock('routing', () => ({
-  generate: (route) => route,
+  generate: route => route,
 }));
 
 const fetchByIdentifiers = jest.fn(() => Promise.resolve([]));
@@ -54,12 +54,8 @@ type PermissionsFormProps<T> = {
 
 export const PermissionsForm: FC<PermissionsFormProps<PermissionsFormState>> = React.memo(
   ({provider, onPermissionsChange, permissions, readOnly, onlyDisplayViewPermissions}) => {
-    return (
-      <div>
-        {provider.renderForm(onPermissionsChange, permissions, readOnly, onlyDisplayViewPermissions)}
-      </div>
-    );
-  },
+    return <div>{provider.renderForm(onPermissionsChange, permissions, readOnly, onlyDisplayViewPermissions)}</div>;
+  }
 );
 
 type PermissionsSummaryProps<T> = {
@@ -69,12 +65,8 @@ type PermissionsSummaryProps<T> = {
 
 export const PermissionsSummary: FC<PermissionsSummaryProps<PermissionsFormState>> = React.memo(
   ({provider, permissions}) => {
-    return (
-      <div>
-        {provider.renderSummary(permissions)}
-      </div>
-    );
-  },
+    return <div>{provider.renderSummary(permissions)}</div>;
+  }
 );
 
 test('it renders the form without error', () => {
@@ -100,7 +92,7 @@ test('it renders the form without error', () => {
         readOnly={false}
         onlyDisplayViewPermissions={false}
       />
-    </ThemeProvider>,
+    </ThemeProvider>
   );
 });
 
@@ -124,7 +116,7 @@ test('it renders the summary without error', async () => {
           },
         }}
       />
-    </ThemeProvider>,
+    </ThemeProvider>
   );
 
   await waitFor(() => expect(fetchByIdentifiers).toHaveBeenCalled());
