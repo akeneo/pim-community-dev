@@ -19,6 +19,11 @@ services:
         resource: '../../../../Application/Handler/'
         tags: [ 'messenger.message_handler' ]
 
+    Akeneo\Catalogs\Infrastructure\Controller\:
+        resource: '../../../../Infrastructure/Controller/'
+        tags: [ 'controller.service_arguments' ]
+        public: true
+
     Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
         arguments:
             $messageBus: '@catalogs.command.bus'
