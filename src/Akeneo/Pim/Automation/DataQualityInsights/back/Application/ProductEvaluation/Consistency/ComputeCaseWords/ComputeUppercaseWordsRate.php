@@ -17,8 +17,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\Rate;
 
 class ComputeUppercaseWordsRate implements ComputeCaseWordsRate
 {
-    private const POINTS_TO_SUBTRACT_PER_ERROR = 24;
-
     public function __invoke(?string $productValue): ?Rate
     {
         if ($productValue === null) {

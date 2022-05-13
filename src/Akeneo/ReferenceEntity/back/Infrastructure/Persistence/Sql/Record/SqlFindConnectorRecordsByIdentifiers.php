@@ -43,6 +43,10 @@ class SqlFindConnectorRecordsByIdentifiers implements FindConnectorRecordsByIden
      */
     public function find(array $identifiers, RecordQuery $recordQuery): array
     {
+        if (empty($identifiers)) {
+            return [];
+        }
+
         $sql = <<<SQL
             SELECT 
                 identifier,
