@@ -12,7 +12,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 final class ProductModelIdCollection implements ProductEntityIdCollection
 {
     /**
-     * @var array<ProductEntityIdInterface>
+     * @var array<ProductModelId>
      */
     private array $productIds;
 

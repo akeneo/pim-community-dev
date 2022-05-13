@@ -15,7 +15,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
 interface GetEvaluationResultsByProductsAndCriterionQueryInterface
 {
     /**
-     * @return array<int, ?CriterionEvaluationResult>
+     * @return array<string, ?CriterionEvaluationResult>
      */
     public function execute(ProductEntityIdCollection $productIdCollection, CriterionCode $criterionCode): array;
 }

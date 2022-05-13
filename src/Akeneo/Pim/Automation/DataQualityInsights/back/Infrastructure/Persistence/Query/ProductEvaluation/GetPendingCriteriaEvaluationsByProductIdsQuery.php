@@ -22,7 +22,6 @@ final class GetPendingCriteriaEvaluationsByProductIdsQuery implements GetPending
 {
     public function __construct(
         private Connection                      $dbConnection,
-        private Clock                           $clock,
         private string                          $tableName,
         private ProductEntityIdFactoryInterface $idFactory
     ) {
