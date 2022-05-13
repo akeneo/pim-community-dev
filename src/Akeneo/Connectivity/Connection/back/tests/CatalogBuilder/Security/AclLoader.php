@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security;
 
-use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
-use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -16,26 +20,26 @@ class AclLoader
 {
     public function __construct(
         private AclManager $aclManager,
-        private RoleWithPermissionsRepository $roleWithPermissionsRepository,
-        private RoleWithPermissionsSaver $roleWithPermissionsSaver,
+        private RoleRepository $roleRepository,
     ) {
     }
 
     public function addAclToRoles(string $acl, array $roles): void
     {
-        $roleWithPermissionsCollection = [];
+        $aclPrivilegeIdentityId = 'action:' . $acl;
+
         foreach ($roles as $role) {
-            $roleWithPermissions = $this->roleWithPermissionsRepository->findOneByIdentifier($role);
-            \assert(null !== $roleWithPermissions);
-
-            $permissions = $roleWithPermissions->permissions();
-            $permissions[\sprintf('action:%s', $acl)] = true;
-            $roleWithPermissions->setPermissions($permissions);
-
-            $roleWithPermissionsCollection[] = $roleWithPermissions;
+            $role = $this->roleRepository->findOneByIdentifier($role);
+            $privilege = new AclPrivilege();
+            $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
+            $privilege
+                ->setIdentity($identity)
+                ->addPermission(new AclPermission('EXECUTE', AccessLevel::BASIC_LEVEL));
+            $this->aclManager->getPrivilegeRepository()->savePrivileges(
+                $this->aclManager->getSid($role),
+                new ArrayCollection([$privilege])
+            );
         }
-
-        $this->roleWithPermissionsSaver->saveAll($roleWithPermissionsCollection);
         $this->aclManager->flush();
         $this->aclManager->clearCache();
     }
