@@ -276,6 +276,8 @@ akeneo_connectivity.connection:
                 redirect_uri:
                     not_blank: The redirect_uri is required.
                     must_be_url: The redirect_uri is not a valid url.
+                scope:
+                    too_long: The scope must have 1000 characters or less.
     connections: Connections
     secondary_actions:
         title: Other actions
