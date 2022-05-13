@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -24,7 +24,7 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
      * @param iterable<ValueUserIntentFactory> $valueUserIntentFactories
      */
     public function __construct(
-        private AttributeRepositoryInterface $attributeRepository,
+        private GetAttributeTypes $getAttributeTypes,
         iterable $valueUserIntentFactories
     ) {
         foreach ($valueUserIntentFactories as $valueUserIntentFactory) {
@@ -48,7 +48,7 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
     {
         Assert::isArray($data);
 
-        $attributeTypesByCode = \array_change_key_case($this->attributeRepository->getAttributeTypeByCodes(\array_keys($data)), \CASE_LOWER);
+        $attributeTypesByCode = \array_change_key_case($this->getAttributeTypes->fromAttributeCodes(\array_keys($data)), \CASE_LOWER);
         $valueUserIntents = [];
         foreach ($data as $attributeCode => $values) {
             $attributeType = $attributeTypesByCode[\strtolower($attributeCode)] ?? null;

@@ -48,3 +48,5 @@ services:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
         tags:
             - { name: validator.constraint_validator }
+
+    Akeneo\Pim\Enrichment\Product\Domain\StandardFormat\Validator\QuantifiedAssociationsStructureValidator: ~
