@@ -38,7 +38,10 @@ class MigrateToUuidCleanCompletenessTable implements MigrateToUuidStep
     public function addMissing(Context $context): bool
     {
         if ($context->dryRun()) {
-            $this->logger->notice('Option --dry-run is set, will continue to next step.', $context->logContext->toArray());
+            $this->logger->notice(
+                'Option --dry-run is set, will continue to next step.',
+                $context->logContext->toArray()
+            );
 
             return true;
         }
@@ -49,34 +52,43 @@ class MigrateToUuidCleanCompletenessTable implements MigrateToUuidStep
         );
 
         $cleanedRows = 0;
-        while ($this->shouldBeExecuted()) {
-            $this->connection->executeQuery(
+        $currentProductId = 0;
+
+        do {
+            $idsToRemove = $this->connection->executeQuery(
                 <<<SQL
-                WITH ids_to_remove AS (
-                    SELECT c.id
-                    FROM pim_catalog_completeness c
-                    LEFT JOIN pim_catalog_product p ON p.id = c.product_id
-                    WHERE p.id IS NULL
-                    LIMIT :limit
-                )
-                DELETE c.*
+                SELECT c.product_id
                 FROM pim_catalog_completeness c
-                INNER JOIN ids_to_remove ON c.id = ids_to_remove.id
+                LEFT JOIN pim_catalog_product p ON p.id = c.product_id
+                WHERE c.product_id >= :currentProductId
+                AND p.id IS NULL
+                LIMIT :limit
                 SQL,
                 [
+                    'currentProductId' => $currentProductId,
                     'limit' => self::BATCH_SIZE,
                 ],
                 [
-                    'limit' => \PDO::PARAM_INT
+                    'currentProductId' => \PDO::PARAM_INT,
+                    'limit' => \PDO::PARAM_INT,
                 ]
-            );
+            )->fetchFirstColumn();
 
-            $cleanedRows += self::BATCH_SIZE;
-            $this->logger->notice(
-                \sprintf('Cleaned rows: %d', $cleanedRows),
-                $context->logContext->toArray(['cleaned_completeness_rows_counter' => $cleanedRows])
-            );
-        }
+            if ([] !== $idsToRemove) {
+                $this->connection->executeQuery(
+                    'DELETE FROM pim_catalog_completeness WHERE product_id IN (:idsToRemove)',
+                    ['idsToRemove' => $idsToRemove],
+                    ['idsToRemove' => Connection::PARAM_INT_ARRAY]
+                );
+
+                $cleanedRows += \count($idsToRemove);
+                $this->logger->notice(
+                    \sprintf('Non-existing product ids cleaned: %d', $cleanedRows),
+                    $context->logContext->toArray(['cleaned_completeness_rows_counter' => $cleanedRows])
+                );
+            }
+            $currentProductId = \end($idsToRemove);
+        } while (\count($idsToRemove) >= self::BATCH_SIZE);
 
         return true;
     }
@@ -97,9 +109,10 @@ class MigrateToUuidCleanCompletenessTable implements MigrateToUuidStep
         return (bool) $this->connection->executeQuery(
             <<<SQL
             SELECT EXISTS (
-                SELECT * FROM pim_catalog_completeness c
+                SELECT 1 FROM pim_catalog_completeness c
                 LEFT JOIN pim_catalog_product p ON p.id = c.product_id
                 WHERE p.id IS NULL
+                LIMIT 1
             ) AS is_existing
             SQL
         )->fetchOne();
