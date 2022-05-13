@@ -18,7 +18,7 @@ class ProductCompletenessNormalizer implements NormalizerInterface, CacheableSup
     /**
      * {@inheritdoc}
      *
-     * @var ProductCompletenessWithMissingAttributeCodes $completeness
+     * @param ProductCompletenessWithMissingAttributeCodes $completeness
      */
     public function normalize($completeness, $format = null, array $context = [])
     {

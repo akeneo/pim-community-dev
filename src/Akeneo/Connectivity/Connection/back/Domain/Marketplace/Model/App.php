@@ -67,17 +67,17 @@ class App
 
     /**
      * @param array{
-     *     id: string,
-     *     name: string,
-     *     logo: string,
-     *     author: string,
+     *     id?: string,
+     *     name?: string,
+     *     logo?: string,
+     *     author?: string,
      *     partner?: string,
      *     description?: string,
-     *     url: string,
-     *     categories: array<string>,
+     *     url?: string,
+     *     categories?: array<string>,
      *     certified?: bool,
-     *     activate_url: string,
-     *     callback_url: string,
+     *     activate_url?: string,
+     *     callback_url?: string,
      *     connected?: bool,
      *     isPending?: bool,
      * } $values
@@ -89,6 +89,23 @@ class App
                 throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
+
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     logo: string,
+         *     author: string,
+         *     partner?: string,
+         *     description?: string,
+         *     url: string,
+         *     categories: array<string>,
+         *     certified?: bool,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         *     isPending?: bool,
+         * } $values
+         */
 
         return new self(
             $values['id'],
@@ -110,12 +127,13 @@ class App
 
     /**
      * @param array{
-     *     id: string,
-     *     name: string,
+     *     id?: string,
+     *     name?: string,
      *     author?: string,
-     *     activate_url: string,
-     *     callback_url: string,
+     *     activate_url?: string,
+     *     callback_url?: string,
      *     connected?: bool,
+     *     isPending?: bool,
      * } $values
      */
     public static function fromTestAppValues(array $values): self
@@ -125,6 +143,17 @@ class App
                 throw new \InvalidArgumentException(\sprintf('Missing property "%s" in given app', $key));
             }
         }
+
+        /** @phpstan-var array{
+         *     id: string,
+         *     name: string,
+         *     author?: string,
+         *     activate_url: string,
+         *     callback_url: string,
+         *     connected?: bool,
+         *     isPending?: bool,
+         * } $values
+         */
 
         return new self(
             $values['id'],
@@ -155,7 +184,7 @@ class App
             return $this;
         }
 
-        $values['url'] = static::appendQueryParametersToUrl($values['url'], $queryParameters);
+        $values['url'] = self::appendQueryParametersToUrl($values['url'], $queryParameters);
 
         /* @phpstan-ignore-next-line */
         return self::fromWebMarketplaceValues($values);
@@ -167,7 +196,7 @@ class App
     public function withPimUrlSource(array $queryParameters): self
     {
         $app = clone $this;
-        $app->activateUrl = static::appendQueryParametersToUrl(
+        $app->activateUrl = self::appendQueryParametersToUrl(
             $app->activateUrl,
             $queryParameters
         );

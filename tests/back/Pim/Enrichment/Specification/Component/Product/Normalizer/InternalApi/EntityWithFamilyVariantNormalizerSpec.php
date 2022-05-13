@@ -106,8 +106,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $variantProduct->isVariant()->willReturn(true);
-        $variantProduct->getLabel('fr_FR')->willReturn('Tshirt Blanc S');
-        $variantProduct->getLabel('en_US')->willReturn('Tshirt White S');
+        $variantProduct->getLabel('fr_FR', null)->willReturn('Tshirt Blanc S');
+        $variantProduct->getLabel('en_US', null)->willReturn('Tshirt White S');
         $variantProduct->getIdentifier()->willReturn('tshirt_white_s');
         $variantProduct->getImage()->willReturn(null);
         $variantProduct->getId()->willReturn(42);
@@ -192,8 +192,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ];
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
-        $productModel->getLabel('fr_FR')->willReturn('Tshirt Blanc');
-        $productModel->getLabel('en_US')->willReturn('Tshirt White');
+        $productModel->getLabel('fr_FR', null)->willReturn('Tshirt Blanc');
+        $productModel->getLabel('en_US', null)->willReturn('Tshirt White');
         $productModel->getId()->willReturn(5);
 
         $productModel->getCode()->willReturn('tshirt_white');

@@ -16,7 +16,7 @@ interface GetAllEventSubscriptionDebugLogsQueryInterface
      *  level: string,
      *  message: string,
      *  connection_code: ?string,
-     *  context: array
+     *  context: mixed[]
      * }>
      */
     public function execute(string $connectionCode): \Generator;

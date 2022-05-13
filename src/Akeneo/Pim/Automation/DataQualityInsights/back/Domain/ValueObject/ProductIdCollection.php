@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
 final class ProductIdCollection implements ProductEntityIdCollection
 {
     /**
-     * @var array<ProductEntityIdInterface>
+     * @var array<ProductId>
      */
     private array $productIds;
 

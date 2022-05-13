@@ -177,11 +177,11 @@ class FamilyVariantValidator extends ConstraintValidator
                     )
                     ->atPath('variant_attribute_sets')
                     ->addViolation();
-            } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
+            } elseif (self::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $this->context
                     ->buildViolation(
                         FamilyVariant::NUMBER_OF_AXES,
-                        ['%max_axes_number%' => static::MAXIMUM_AXES_NUMBER]
+                        ['%max_axes_number%' => self::MAXIMUM_AXES_NUMBER]
                     )
                     ->atPath('variant_attribute_sets')
                     ->addViolation();
