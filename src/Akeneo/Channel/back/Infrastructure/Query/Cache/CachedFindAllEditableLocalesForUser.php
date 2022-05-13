@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
  */
 final class CachedFindAllEditableLocalesForUser implements FindAllEditableLocalesForUser, CachedQueryInterface
 {
-    private ?array $cache = null;
+    private array $cache = [];
 
     public function __construct(
         private FindAllEditableLocalesForUser $findAllEditableLocalesForUser
