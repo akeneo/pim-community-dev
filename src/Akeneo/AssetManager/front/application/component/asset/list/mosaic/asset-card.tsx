@@ -23,8 +23,6 @@ type AssetCardProps = {
   assetWithLink?: boolean;
   onSelectionChange?: (code: AssetCode, value: boolean) => void;
   onClick?: (code: AssetCode) => void;
-  shouldGeneratePreview: boolean;
-  handlePreviewGenerated: (code: AssetCode) => void;
 };
 
 const AssetCard = ({
@@ -35,8 +33,6 @@ const AssetCard = ({
   isDisabled,
   assetWithLink = false,
   onClick,
-  shouldGeneratePreview,
-  handlePreviewGenerated,
 }: AssetCardProps) => {
   const router = useRouter();
   const [url, setUrl] = useState<string | null>(null);
@@ -44,7 +40,6 @@ const AssetCard = ({
   const [, , refreshedUrl] = useRegenerate(imageUrl);
   const emptyMediaUrl = getMediaPreviewUrl(router, emptyMediaPreview());
   const assetLabel = getAssetLabel(asset, context.locale);
-  const [previewGeneratedUrl, setPreviewGeneratedUrl] = useState<string | null>(null);
 
   const assetEditUrl = router.generate('akeneo_asset_manager_asset_edit', {
     assetFamilyIdentifier: asset.assetFamilyIdentifier,
@@ -69,20 +64,6 @@ const AssetCard = ({
     };
   }, [asset, context.channel, context.locale]);
 
-  /**
-   * PIM-10306: We want to avoid the preview generation to be done when the component is rendered
-   * The preview generation is managed by the parent component
-   */
-  useEffect(() => {
-    const fetchPreviewUrl = async (url: string) => fetch(url);
-    if (shouldGeneratePreview && null !== url) {
-      fetchPreviewUrl(url).then(() => {
-        setPreviewGeneratedUrl(url);
-        handlePreviewGenerated(asset.code);
-      });
-    }
-  }, [url, shouldGeneratePreview]);
-
   const handleClick = useCallback(() => {
     onClick?.(asset.code);
   }, [onClick]);
@@ -96,7 +77,7 @@ const AssetCard = ({
 
   return (
     <Card
-      src={previewGeneratedUrl}
+      src={url}
       fit="contain"
       isSelected={isSelected}
       onClick={undefined === onClick ? undefined : handleClick}
