@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Application\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -20,7 +18,7 @@ use Webmozart\Assert\Assert;
 final class GetProductUuidsHandler
 {
     public function __construct(
-        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
+        private ProductQueryBuilderInterface $pqb,
         private ApplyProductSearchQueryParametersToPQB $applyProductSearchQueryParametersToPQB,
         private ProductUuidQueryFetcher $productUuidQueryFetcher,
         private ValidatorInterface $validator
@@ -34,11 +32,8 @@ final class GetProductUuidsHandler
             throw new ViolationsException($violations);
         }
 
-        $pqb = $this->productQueryBuilderFactory->create();
-        $this->applyProductSearchQueryParametersToPQB->apply($pqb, $getProductUuids->searchFilters(), null, null, null);
-
-        Assert::implementsInterface($pqb, ProductQueryBuilderInterface::class);
-        $this->productUuidQueryFetcher->initialize($pqb->buildQuery());
+        $this->applyProductSearchQueryParametersToPQB->apply($this->pqb, $getProductUuids->searchFilters(), null, null, null);
+        $this->productUuidQueryFetcher->initialize($this->pqb->buildQuery());
 
         return ProductUuidCursor::createFromFetcher($this->productUuidQueryFetcher);
     }

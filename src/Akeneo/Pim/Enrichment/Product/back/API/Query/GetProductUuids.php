@@ -11,14 +11,14 @@ namespace Akeneo\Pim\Enrichment\Product\API\Query;
 final class GetProductUuids
 {
     /**
-     * @param array<string, array<mixed>> $searchFilters
+     * @param array<string, array> $searchFilters
      *
      * The format of the search filters is the same as the one used in the external API. For example:
      *  [
      *      'sku' => [
      *          [
-     *              'operator' => "IN",
-     *              'value': ['SKU1', 'SKU2', 'SKU13],
+     *              'operator' => 'IN',
+     *              'value' => ['SKU1', 'SKU2', 'SKU3'],
      *          ],
      *      ],
      *  ]
