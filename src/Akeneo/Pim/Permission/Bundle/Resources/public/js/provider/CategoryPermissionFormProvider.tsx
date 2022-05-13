@@ -243,7 +243,7 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
       </>
     );
   },
-  renderSummary: (state: CategoryPermissionState) => {
+  renderSummary: (state: CategoryPermissionState, onlyDisplayViewPermissions = false) => {
     const [summaries, setSummaries] = useState<SummaryLabels>({
       own: '',
       edit: '',
@@ -262,12 +262,16 @@ const CategoryPermissionFormProvider: PermissionFormProvider<CategoryPermissionS
 
     return (
       <PermissionSectionSummary label={'pim_permissions.widget.entity.category.label'}>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.own'} icon={<KeyIcon size={20} />}>
-          {summaries.own}
-        </LevelSummaryField>
-        <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
-          {summaries.edit}
-        </LevelSummaryField>
+        {!onlyDisplayViewPermissions && (
+          <>
+            <LevelSummaryField levelLabel={'pim_permissions.widget.level.own'} icon={<KeyIcon size={20} />}>
+              {summaries.own}
+            </LevelSummaryField>
+            <LevelSummaryField levelLabel={'pim_permissions.widget.level.edit'} icon={<EditIcon size={20} />}>
+              {summaries.edit}
+            </LevelSummaryField>
+          </>
+        )}
         <LevelSummaryField levelLabel={'pim_permissions.widget.level.view'} icon={<ViewIcon size={20} />}>
           {summaries.view}
         </LevelSummaryField>
