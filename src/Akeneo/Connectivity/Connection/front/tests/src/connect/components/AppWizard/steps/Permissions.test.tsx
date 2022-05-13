@@ -16,7 +16,7 @@ test('The permissions step renders with no providers', () => {
             providers={[]}
             setProviderPermissions={jest.fn()}
             permissions={{}}
-            scopeMessages={[{entities: 'products', type: 'edit', icon: 'products'}]}
+            onlyDisplayViewPermissions={false}
         />
     );
 
@@ -63,7 +63,7 @@ test('The permissions step renders with providers from the registry', () => {
             providers={mockedProviders}
             setProviderPermissions={jest.fn()}
             permissions={mockedPermissions}
-            scopeMessages={[{entities: 'products', type: 'edit', icon: 'products'}]}
+            onlyDisplayViewPermissions={false}
         />
     );
 
@@ -115,7 +115,7 @@ test('The permissions step renders and will only display view permissions', () =
             providers={mockedProviders}
             setProviderPermissions={jest.fn()}
             permissions={mockedPermissions}
-            scopeMessages={[{entities: 'products', type: 'view', icon: 'products'}]}
+            onlyDisplayViewPermissions={true}
         />
     );
 
