@@ -4,17 +4,17 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
-use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\SetDateValueUserIntentFactory;
+use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\DateValueUserIntentFactory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
 
-class SetDateValueUserIntentFactorySpec extends ObjectBehavior
+class DateValueUserIntentFactorySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(SetDateValueUserIntentFactory::class);
+        $this->shouldHaveType(DateValueUserIntentFactory::class);
     }
 
     function it_returns_set_date_user_intent()

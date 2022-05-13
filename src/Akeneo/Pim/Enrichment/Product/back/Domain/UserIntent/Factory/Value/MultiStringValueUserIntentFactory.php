@@ -5,36 +5,38 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValidateDataTrait;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValueUserIntentFactory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueUserIntentFactory implements ValueUserIntentFactory
+class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
 {
     use ValidateDataTrait;
 
     public function getSupportedAttributeTypes(): array
     {
-        return [AttributeTypes::TEXT];
+        return [AttributeTypes::OPTION_MULTI_SELECT, AttributeTypes::REFERENCE_ENTITY_COLLECTION];
     }
 
     public function create(string $attributeType, string $attributeCode, mixed $data): ValueUserIntent
     {
         $this->validateValueStructure($attributeCode, $data);
-        if (null === $data['data'] || '' === $data['data']) {
+        if (null === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
-        if (!\is_string($data['data'])) {
-            throw InvalidPropertyTypeException::stringExpected($attributeCode, static::class, $data['data']);
-        }
+        $this->validateScalarArray($attributeCode, $data['data']);
 
-        return new SetTextValue($attributeCode, $data['scope'], $data['locale'], $data['data']);
+        return match ($attributeType) {
+            AttributeTypes::OPTION_MULTI_SELECT => new SetMultiSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::REFERENCE_ENTITY_COLLECTION => new SetMultiReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            default => throw new \InvalidArgumentException('Not implemented')
+        };
     }
 }
