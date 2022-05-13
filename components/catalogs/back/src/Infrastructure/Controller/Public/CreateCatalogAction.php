@@ -37,12 +37,12 @@ final class CreateCatalogAction
         /** @var array{name?: string} $payload */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
-        $id = Uuid::uuid4()->toString();
+        $catalogId = Uuid::uuid4()->toString();
         $userId = $this->getCurrentUserId();
 
         try {
             $this->commandBus->execute(new CreateCatalogCommand(
-                $id,
+                $catalogId,
                 $payload['name'] ?? '',
                 $userId,
             ));
@@ -50,7 +50,10 @@ final class CreateCatalogAction
             throw new ViolationHttpException($e->getViolations());
         }
 
-        $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
+        $catalog = $this->queryBus->execute(new GetCatalogQuery($catalogId));
+        if (null === $catalog) {
+            throw new \LogicException('The catalog should exists after its creation');
+        }
 
         return new JsonResponse($this->normalizer->normalize($catalog, 'external_api'), 201);
     }

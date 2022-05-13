@@ -1,6 +1,5 @@
 CATALOGS_PATH ?= components/catalogs
-_config_bootstrap_realpath := $(shell docker-compose run --rm php realpath config/bootstrap.php)
-CATALOGS_BOOTSTRAP_PATH ?= $(_config_bootstrap_realpath)
+CATALOGS_BOOTSTRAP_PATH ?= /srv/pim/config/bootstrap.php
 
 ifeq ($(CI),true)
 	BEHAT_ARGS += --no-snippets --no-interaction
