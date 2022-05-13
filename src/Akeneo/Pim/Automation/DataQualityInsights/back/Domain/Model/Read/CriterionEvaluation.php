@@ -14,12 +14,6 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 final class CriterionEvaluation
 {
-    /** @var \DateTimeImmutable|null */
-    private $startedAt;
-
-    /** @var \DateTimeImmutable|null */
-    private $endedAt;
-
     public function __construct(
         private CriterionCode              $criterionCode,
         private ProductEntityIdInterface   $productId,

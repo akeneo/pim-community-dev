@@ -12,13 +12,11 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
-use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
 final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistributionFromProductScoresQueryInterface
 {
     public function __construct(
-        private Connection                             $connection,
         private Client                                 $elasticsearchClient,
         private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
         private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
