@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Model;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\ReferableInterface;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;

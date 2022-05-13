@@ -2,8 +2,8 @@
 
 namespace Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

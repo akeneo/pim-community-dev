@@ -22,10 +22,10 @@ $rules = [
         'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-944: UserManager used in component
         'Akeneo\UserManagement\Bundle\Manager\UserManager',
@@ -58,12 +58,12 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
-        'Akeneo\Channel\Component\Model\ChannelInterface',
-        'Akeneo\Channel\Component\Model\Channel',
-        'Akeneo\Channel\Component\Model\LocaleInterface',
-        'Akeneo\Channel\Component\Model\Locale',
-        'Akeneo\Channel\Component\Repository\ChannelRepositoryInterface',
-        'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Channel',
+        'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
+        'Akeneo\Channel\Infrastructure\Component\Model\Locale',
+        'Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface',
+        'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
         // TIP-1005: Clean UI form types
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',

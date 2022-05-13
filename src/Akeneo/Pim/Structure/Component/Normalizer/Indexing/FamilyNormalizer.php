@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Normalizer\Indexing;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;

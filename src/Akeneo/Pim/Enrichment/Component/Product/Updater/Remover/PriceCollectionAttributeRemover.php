@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Remover;
 
-use Akeneo\Channel\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\FindActivatedCurrenciesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\AttributeValidatorHelper;

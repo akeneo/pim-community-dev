@@ -1,14 +1,15 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {TagInput} from './TagInput.tsx';
+import {Section} from '../../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Inputs/Tag input"
   component={TagInput}
   args={{
-      value: [],
-      placeholder: 'Placeholder',
-      invalid: false,
+    value: [],
+    placeholder: 'Placeholder',
+    invalid: false,
   }}
 />
 
@@ -21,6 +22,7 @@ Fill an input with a list of "tags".
 Tags are created when a separator is used (typed or pasted).
 
 Tags can be separated thanks to the following characters:
+
 - space
 - tab
 - line break
@@ -33,9 +35,7 @@ Tags can be separated thanks to the following characters:
   <Story name="Standard">
     {args => {
       const [tags, setTags] = useState([]);
-      return (
-          <TagInput {...args} value={tags} onChange={setTags}/>
-      );
+      return <TagInput {...args} value={tags} onChange={setTags} />;
     }}
   </Story>
 </Canvas>
@@ -47,9 +47,7 @@ Tags can be separated thanks to the following characters:
 <Canvas>
   <Story name="Existing value">
     {args => {
-      return (
-        <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}}/>
-      );
+      return <TagInput value={['batman', 'superman', 'catwoman', 'joker']} onChange={() => {}} />;
     }}
   </Story>
 </Canvas>
@@ -59,34 +57,32 @@ Tags can be separated thanks to the following characters:
 <Canvas>
   <Story name="With a high number of tags">
     {args => {
-      return (
-        <TagInput value={Array.from(Array(30).keys()).map(tag => `tag-${tag}`)} onChange={() => {}}/>
-      );
+      return <TagInput value={Array.from(Array(30).keys()).map(tag => `tag-${tag}`)} onChange={() => {}} />;
     }}
   </Story>
 </Canvas>
 
 ## Variation on invalid
+
 <Canvas>
-    <Story name="Variation on invalid">
-        {args => {
-            return (
-                <>
-                    <TagInput value={[]} onChange={() => {}} invalid={false}/>
-                    <TagInput value={[]} onChange={() => {}} invalid={true}/>
-                </>
-            );
-        }}
-    </Story>
+  <Story name="Variation on invalid">
+    {args => {
+      return (
+        <Section>
+          <TagInput value={[]} onChange={() => {}} invalid={false} />
+          <TagInput value={[]} onChange={() => {}} invalid={true} />
+        </Section>
+      );
+    }}
+  </Story>
 </Canvas>
 
 ## Variation on readonly
+
 <Canvas>
-    <Story name="Variation on readonly">
-        {args => {
-            return (
-                <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly/>
-            );
-        }}
-    </Story>
+  <Story name="Variation on readonly">
+    {args => {
+      return <TagInput value={['gucci', 'dior']} onChange={() => {}} readOnly={true} />;
+    }}
+  </Story>
 </Canvas>

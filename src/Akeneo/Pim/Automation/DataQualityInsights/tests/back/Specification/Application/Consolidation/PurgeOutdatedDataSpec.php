@@ -48,6 +48,8 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
             return $purgeDates == $expectedPurgeDates;
         }))->shouldBeCalled();
 
+        $productScoreRepository->purgeUntil($purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS)))->shouldBeCalled();
+
         $this->purgeAllFrom($purgeDate);
     }
 

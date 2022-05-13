@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Job\Application\SearchJobExecution\Model;
 
-use Akeneo\Platform\Job\Domain\Model\Status;
-
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
@@ -19,7 +17,7 @@ final class JobExecutionRow
         private string $type,
         private ?\DateTimeImmutable $startedAt,
         private ?string $username,
-        private Status $status,
+        private JobExecutionHealthCheck $jobExecutionHealthCheck,
         private bool $isStoppable,
         private JobExecutionTracking $tracking,
     ) {
@@ -33,7 +31,7 @@ final class JobExecutionRow
             'type' => $this->type,
             'started_at' => $this->startedAt?->format(DATE_ATOM),
             'username' => $this->username,
-            'status' => $this->status->getLabel(),
+            'status' => $this->jobExecutionHealthCheck->resolveStatus()->getLabel(),
             'warning_count' => $this->tracking->getWarningCount(),
             'has_error' => $this->tracking->hasError(),
             'tracking' => $this->tracking->normalize(),

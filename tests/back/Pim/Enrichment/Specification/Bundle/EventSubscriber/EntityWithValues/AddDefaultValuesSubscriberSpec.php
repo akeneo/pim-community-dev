@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues;
 
-use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\AddDefaultValuesSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;

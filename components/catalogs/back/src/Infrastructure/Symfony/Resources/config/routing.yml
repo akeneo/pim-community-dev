@@ -1,0 +1,5 @@
+akeneo_catalogs_public:
+    resource: ./routing/public.yml
+
+akeneo_catalogs_internal:
+    resource: ./routing/internal.yml

@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\WriteValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;

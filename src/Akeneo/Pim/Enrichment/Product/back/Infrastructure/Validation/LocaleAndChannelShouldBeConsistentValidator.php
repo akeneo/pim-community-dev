@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;

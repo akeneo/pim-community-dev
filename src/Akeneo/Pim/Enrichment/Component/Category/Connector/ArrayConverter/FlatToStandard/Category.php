@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 

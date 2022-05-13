@@ -6,7 +6,7 @@ use Akeneo\Pim\Structure\Component\Model\AttributeRequirement;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 
 class AttributeRequirementFactorySpec extends ObjectBehavior
 {

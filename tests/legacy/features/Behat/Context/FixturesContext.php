@@ -2,9 +2,9 @@
 
 namespace Pim\Behat\Context;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Currency;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Currency;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;

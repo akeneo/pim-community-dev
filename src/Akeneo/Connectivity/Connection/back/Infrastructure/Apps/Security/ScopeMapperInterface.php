@@ -32,7 +32,7 @@ interface ScopeMapperInterface
      *      entities: string,
      * }
      */
-    public function getMessage(string $scopeName): array;
+    public function getMessage(string $scopeName): ?array;
 
     /**
      * @throw \InvalidArgumentException if the given scope does not exist.

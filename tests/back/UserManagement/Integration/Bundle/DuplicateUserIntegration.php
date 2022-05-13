@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\UserManagement\Integration\Bundle;
 
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;

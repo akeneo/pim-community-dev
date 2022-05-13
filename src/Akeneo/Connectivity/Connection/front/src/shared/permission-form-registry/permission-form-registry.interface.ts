@@ -9,7 +9,7 @@ export interface PermissionFormProvider<T> {
         readOnly: boolean | undefined,
         onlyDisplayViewPermissions: boolean | undefined
     ) => ReactNode;
-    renderSummary: (state: T) => ReactNode;
+    renderSummary: (state: T, onlyDisplayViewPermissions: boolean) => ReactNode;
     save: (userGroup: string, state: T) => Promise<void>;
     loadPermissions: (userGroup: string) => Promise<T>;
 }

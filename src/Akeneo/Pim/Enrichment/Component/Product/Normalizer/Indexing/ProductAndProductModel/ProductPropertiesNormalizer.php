@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\ProductAndProductModel;
 
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;

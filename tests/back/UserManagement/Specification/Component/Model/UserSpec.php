@@ -2,8 +2,8 @@
 
 namespace Specification\Akeneo\UserManagement\Component\Model;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Tool\Component\Classification\Model\Category;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\Role;
