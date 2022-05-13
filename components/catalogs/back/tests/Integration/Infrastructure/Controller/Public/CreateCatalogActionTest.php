@@ -46,6 +46,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(201, $response->getStatusCode());
         Assert::assertArrayHasKey('id', $payload);
         Assert::assertSame('Store US', $payload['name']);
+        Assert::assertSame(false, $payload['enabled']);
     }
 
     public function testItReturnsUnprocessableEntityWhenInvalid(): void
