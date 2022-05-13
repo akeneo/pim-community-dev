@@ -2,33 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Model;
+namespace Akeneo\Catalogs\ServiceAPI\Query;
+
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @implements QueryInterface<Catalog|null>
  */
-final class Catalog
+final class GetCatalogQuery implements QueryInterface
 {
     public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
         private string $id,
-        private string $name,
-        private int $ownerId,
     ) {
     }
 
     public function getId(): string
     {
         return $this->id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getOwnerId(): int
-    {
-        return $this->ownerId;
     }
 }

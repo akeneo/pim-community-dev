@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Normalizer;
 
-use Akeneo\Catalogs\Domain\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

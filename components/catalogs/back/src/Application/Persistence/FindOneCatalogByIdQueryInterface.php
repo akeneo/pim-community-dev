@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Persistence;
 
-use Akeneo\Catalogs\Domain\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 
 interface FindOneCatalogByIdQueryInterface
 {

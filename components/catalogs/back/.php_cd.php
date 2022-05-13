@@ -11,19 +11,33 @@ $finder->notPath('tests');
 $builder = new RuleBuilder();
 
 $rules = [
-    // Domain layer should only use classes from Domain
+    // ServiceAPI layer should only use classes from service API
     $builder->only(
         [
-            'Akeneo\Catalogs\Domain',
+            'Akeneo\Catalogs\ServiceAPI',
 
             // Constraints attributes
             'Symfony\Component\Validator\Constraints',
+
+            // Bus
+            'Symfony\Component\Messenger\Exception\HandlerFailedException',
+            'Symfony\Component\Messenger\HandleTrait',
+            'Symfony\Component\Messenger\MessageBusInterface',
+        ]
+    )->in('Akeneo\Catalogs\ServiceAPI'),
+
+    // Domain layer should only use classes from Domain and ServiceAPI
+    $builder->only(
+        [
+            'Akeneo\Catalogs\ServiceAPI',
+            'Akeneo\Catalogs\Domain',
         ]
     )->in('Akeneo\Catalogs\Domain'),
 
-    // Application layer should only use classes from Domain or Application
+    // Application layer should only use classes from Domain, ServiceAPI or Application
     $builder->only(
         [
+            'Akeneo\Catalogs\ServiceAPI',
             'Akeneo\Catalogs\Domain',
             'Akeneo\Catalogs\Application',
 
@@ -35,6 +49,7 @@ $rules = [
     // Infrastructure layer can use anything, but we track used dependencies anyway to detect changes
     $builder->only(
         [
+            'Akeneo\Catalogs\ServiceAPI',
             'Akeneo\Catalogs\Domain',
             'Akeneo\Catalogs\Application',
             'Akeneo\Catalogs\Infrastructure',

@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Application\Handler;
 
-use Akeneo\Catalogs\Application\Exception\CatalogNotFoundException;
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Domain\Model\Catalog;
-use Akeneo\Catalogs\Domain\Query\GetCatalogQuery;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -20,14 +19,8 @@ class GetCatalogHandler
     ) {
     }
 
-    public function __invoke(GetCatalogQuery $query): Catalog
+    public function __invoke(GetCatalogQuery $query): ?Catalog
     {
-        $catalog = $this->findOneCatalogByIdQuery->execute($query->getId());
-
-        if (null === $catalog) {
-            throw new CatalogNotFoundException($query->getId());
-        }
-
-        return $catalog;
+        return $this->findOneCatalogByIdQuery->execute($query->getId());
     }
 }

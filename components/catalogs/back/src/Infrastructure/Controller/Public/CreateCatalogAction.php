@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
-use Akeneo\Catalogs\Domain\Command\CreateCatalogCommand;
-use Akeneo\Catalogs\Domain\Query\GetCatalogQuery;
-use Akeneo\Catalogs\Infrastructure\Messenger\CommandBus;
-use Akeneo\Catalogs\Infrastructure\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Ramsey\Uuid\Uuid;
