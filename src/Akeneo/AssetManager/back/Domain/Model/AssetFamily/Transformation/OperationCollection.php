@@ -33,6 +33,8 @@ class OperationCollection implements \IteratorAggregate
 
     /**
      * @param Operation[] $operations
+     *
+     * @return OperationCollection
      */
     public static function create(array $operations): self
     {
