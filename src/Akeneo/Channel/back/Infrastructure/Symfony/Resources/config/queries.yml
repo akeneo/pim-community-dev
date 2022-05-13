@@ -8,3 +8,8 @@ services:
         class: AkeneoEnterprise\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser
         arguments:
             - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllEditableLocalesForUser:
+        class: AkeneoEnterprise\Channel\Infrastructure\Query\Sql\SqlFindAllEditableLocalesForUser
+        arguments:
+            - '@database_connection'
