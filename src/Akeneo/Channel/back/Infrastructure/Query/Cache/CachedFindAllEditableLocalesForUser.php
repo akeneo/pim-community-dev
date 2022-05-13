@@ -31,6 +31,6 @@ final class CachedFindAllEditableLocalesForUser implements FindAllEditableLocale
 
     public function clearCache(): void
     {
-        $this->cache = null;
+        $this->cache = [];
     }
 }
