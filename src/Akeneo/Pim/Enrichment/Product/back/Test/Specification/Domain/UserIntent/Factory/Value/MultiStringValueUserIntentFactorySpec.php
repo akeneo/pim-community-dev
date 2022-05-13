@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetAssetValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
@@ -38,6 +39,15 @@ class MultiStringValueUserIntentFactorySpec extends ObjectBehavior
             'locale' => null,
             'scope' => null,
         ])->shouldBeLike(new SetMultiReferenceEntityValue('a_multi_ref_entity', null, null, ['record1', 'record2']));
+    }
+
+    function it_returns_set_asset_collection_user_intent()
+    {
+        $this->create(AttributeTypes::ASSET_COLLECTION, 'an_asset_collection', [
+            'data' => ['asset1', 'asset2'],
+            'locale' => null,
+            'scope' => null,
+        ])->shouldBeLike(new SetAssetValue('an_asset_collection', null, null, ['asset1', 'asset2']));
     }
 
     function it_returns_clear_value()
