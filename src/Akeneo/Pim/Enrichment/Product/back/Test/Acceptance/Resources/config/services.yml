@@ -1,1 +1,19 @@
 services:
+    # Context
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext:
+        public: true
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\AttributeContext:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes'
+
+    Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\UserIntentContext:
+        public: true
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Product\Test\Acceptance\Context\ExceptionContext'
+            - '@pim_enrich.product.query_message_bus'
+
+    # InMemory
+    Akeneo\Pim\Enrichment\Product\Domain\Query\GetAttributeTypes:
+        class: Akeneo\Pim\Enrichment\Product\Test\Acceptance\InMemory\InMemoryGetAttributeTypes

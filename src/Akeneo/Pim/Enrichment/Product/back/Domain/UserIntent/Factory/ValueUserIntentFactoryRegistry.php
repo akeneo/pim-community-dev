@@ -14,13 +14,10 @@ use Webmozart\Assert\Assert;
  */
 class ValueUserIntentFactoryRegistry implements UserIntentFactory
 {
-    /**
-     * @var array<string, ValueUserIntentFactory>
-     */
-    private array $valueUserIntentFactoriesByAttributeType;
+    /** @var array<string, ValueUserIntentFactory> */
+    private array $valueUserIntentFactoriesByAttributeType = [];
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
      * @param iterable<ValueUserIntentFactory> $valueUserIntentFactories
      */
     public function __construct(
