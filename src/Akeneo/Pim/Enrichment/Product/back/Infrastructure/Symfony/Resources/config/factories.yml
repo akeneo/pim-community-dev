@@ -40,3 +40,35 @@ services:
             - '@pim_catalog.updater.validator.quantified_associations_structure_validator'
         tags:
             - { name: 'pim.enrichment.product.user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\BooleanValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\DateValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\IdentifierValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\StringValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\MeasurementValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\NumberValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\MultiStringValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
+
+    Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\PriceCollectionValueUserIntentFactory:
+        tags:
+            - { name: 'pim.enrichment.product.value_user_intent_factory' }
