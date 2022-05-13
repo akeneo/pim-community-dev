@@ -26,3 +26,6 @@ services:
     Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
         arguments:
             $messageBus: '@catalogs.query.bus'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
+        alias: "oro_security.security_facade"

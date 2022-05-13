@@ -49,6 +49,7 @@ $rules = [
             'Doctrine\DBAL',
             'Ramsey\Uuid\Uuid',
             'Akeneo\Platform\Bundle\InstallerBundle',
+            'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Tool\Component\Api',
             'Akeneo\UserManagement\Component\Model\UserInterface',
 

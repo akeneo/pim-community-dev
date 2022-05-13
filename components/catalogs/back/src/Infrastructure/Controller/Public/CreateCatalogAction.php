@@ -8,14 +8,16 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -28,12 +30,15 @@ final class CreateCatalogAction
         private CommandBus $commandBus,
         private QueryBus $queryBus,
         private NormalizerInterface $normalizer,
-        private Security $security,
+        private TokenStorageInterface $tokenStorage,
+        private SecurityFacadeInterface $security,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
+        $this->denyAccessUnlessGrantedToCreateCatalogs();
+
         /** @var array{name?: string} $payload */
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
@@ -60,7 +65,7 @@ final class CreateCatalogAction
 
     private function getCurrentUserId(): int
     {
-        $user = $this->security->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
 
         if (null === $user) {
             throw new \LogicException('User should not be null');
@@ -71,5 +76,12 @@ final class CreateCatalogAction
         }
 
         return (int) $user->getId();
+    }
+
+    private function denyAccessUnlessGrantedToCreateCatalogs(): void
+    {
+        if (!$this->security->isGranted('pim_api_catalog_edit')) {
+            throw new AccessDeniedHttpException();
+        }
     }
 }

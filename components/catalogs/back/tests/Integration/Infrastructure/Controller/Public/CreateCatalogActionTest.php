@@ -21,12 +21,12 @@ class CreateCatalogActionTest extends IntegrationTestCase
         parent::setUp();
 
         $this->purgeDataAndLoadMinimalCatalog();
-
-        $this->client = $this->getAuthenticatedClient();
     }
 
     public function testItFindsTheCatalog(): void
     {
+        $this->client = $this->getAuthenticatedClient(['write_catalogs']);
+
         $this->client->request(
             'POST',
             '/api/rest/v1/catalogs',
@@ -50,6 +50,8 @@ class CreateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsUnprocessableEntityWhenInvalid(): void
     {
+        $this->client = $this->getAuthenticatedClient(['write_catalogs']);
+
         $this->client->request(
             'POST',
             '/api/rest/v1/catalogs',
@@ -69,5 +71,27 @@ class CreateCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(422, $response->getStatusCode());
         Assert::assertArrayHasKey('message', $payload);
         Assert::assertArrayHasKey('errors', $payload);
+    }
+
+    public function testItReturnsForbiddenWhenMissingPermissions(): void
+    {
+        $this->client = $this->getAuthenticatedClient([]);
+
+        $this->client->request(
+            'POST',
+            '/api/rest/v1/catalogs',
+            [],
+            [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            \json_encode([
+                'name' => 'Store US',
+            ]),
+        );
+
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(403, $response->getStatusCode());
     }
 }
