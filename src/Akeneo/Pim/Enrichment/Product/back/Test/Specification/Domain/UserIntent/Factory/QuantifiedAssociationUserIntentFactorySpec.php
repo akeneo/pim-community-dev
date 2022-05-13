@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidatorInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\ReplaceAssociatedQuantifiedProducts;
@@ -10,6 +11,11 @@ use PhpSpec\ObjectBehavior;
 
 class QuantifiedAssociationUserIntentFactorySpec extends ObjectBehavior
 {
+    function let(QuantifiedAssociationsStructureValidatorInterface $quantifiedAssociationsStructureValidator)
+    {
+        $this->beConstructedWith($quantifiedAssociationsStructureValidator);
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(QuantifiedAssociationUserIntentFactory::class);

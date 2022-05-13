@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\Value\StringValueUserIntentFactory;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -27,6 +28,15 @@ class StringValueUserIntentFactorySpec extends ObjectBehavior
             'locale' => null,
             'scope' => null,
         ])->shouldBeLike(new SetTextValue('a_text', null, null, 'coucou'));
+    }
+
+    function it_returns_set_text_area_user_intent()
+    {
+        $this->create(AttributeTypes::TEXTAREA, 'a_textarea', [
+            'data' => '<p>coucou</p>',
+            'locale' => null,
+            'scope' => null,
+        ])->shouldBeLike(new SetTextareaValue('a_textarea', null, null, '<p>coucou</p>'));
     }
 
     function it_returns_set_file_user_intent()

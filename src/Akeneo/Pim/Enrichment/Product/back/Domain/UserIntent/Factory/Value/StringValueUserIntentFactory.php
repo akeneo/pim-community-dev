@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
 use Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory\ValidateDataTrait;
@@ -29,6 +30,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
     {
         return [
             AttributeTypes::TEXT,
+            AttributeTypes::TEXTAREA,
             AttributeTypes::FILE,
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::IMAGE,
@@ -48,6 +50,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
 
         return match ($attributeType) {
             AttributeTypes::TEXT => new SetTextValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::TEXTAREA => new SetTextareaValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::FILE => new SetFileValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::OPTION_SIMPLE_SELECT => new SetSimpleSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::IMAGE => new SetImageValue($attributeCode, $data['scope'], $data['locale'], $data['data']),

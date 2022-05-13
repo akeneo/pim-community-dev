@@ -456,6 +456,4 @@ class ProductController
 
         return $normalizedViolations;
     }
-
-
 }
