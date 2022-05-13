@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.95 (2022-05-13)
+
 ## Bug fixes
 
 - PIM-10428: [Backport PIM-10049] Add custom strip filter to avoid segmentation fault
