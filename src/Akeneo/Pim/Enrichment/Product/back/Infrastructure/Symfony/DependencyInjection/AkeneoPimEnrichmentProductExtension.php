@@ -27,6 +27,7 @@ final class AkeneoPimEnrichmentProductExtension extends Extension
         $loader->load('handlers.yml');
         $loader->load('message_bus.yml');
         $loader->load('queries.yml');
+        $loader->load('query_builders.yml');
         $loader->load('validators.yml');
     }
 }

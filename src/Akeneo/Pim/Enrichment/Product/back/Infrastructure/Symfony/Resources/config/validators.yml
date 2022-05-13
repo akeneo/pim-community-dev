@@ -48,3 +48,14 @@ services:
             - '@Akeneo\Pim\Enrichment\Category\API\Query\GetViewableCategories'
         tags:
             - { name: validator.constraint_validator }
+
+    # PQB
+    Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\PQB\SearchFiltersValidator:
+        arguments:
+            - '@akeneo.pim.enrichment.use_cases.validator.criterion'
+            - '@akeneo.pim.enrichment.use_cases.validator.categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.properties'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_categories'
+            - '@akeneo.pim.enrichment.use_cases.validator.validate_granted_properties'
+        tags:
+            - { name: validator.constraint_validator }

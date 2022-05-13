@@ -39,7 +39,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
 
         $this->loadEnrichmentProductFunctionalFixtures();
 
-        $this->messageBus = $this->get('pim_enrich.product.message_bus');
+        $this->commandMessageBus = $this->get('pim_enrich.product.message_bus');
         $this->productRepository = $this->get('pim_catalog.repository.product');
     }
 
@@ -58,7 +58,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('a_text', null, null, 'foo'),
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -70,7 +70,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'identifier', valueUserIntents: [
             new SetTextValue('name', null, 'en_GB', 'foo'),
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -79,7 +79,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
         $command = new UpsertProductCommand(userId: $this->getUserId('mary'), productIdentifier: 'new_product', valueUserIntents: [
             new SetTextValue('name', null, null, 'foo'),
         ]);
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('new_product');
@@ -96,7 +96,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['print'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('identifier');
@@ -117,7 +117,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['suppliers'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -133,7 +133,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['suppliers'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -147,7 +147,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['sales'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -163,7 +163,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new SetCategories(['sales']) // betty can view 'sales' category, but is not owner.
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -179,7 +179,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'identifier',
             categoryUserIntent: new RemoveCategories(['print'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -195,7 +195,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'my_product',
             categoryUserIntent: new SetCategories(['print'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
     }
 
     /** @test */
@@ -208,7 +208,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             productIdentifier: 'my_product',
             categoryUserIntent: new SetCategories(['print', 'sales'])
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         $this->clearDoctrineUoW();
         $product = $this->productRepository->findOneByIdentifier('my_product');
@@ -242,7 +242,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
                 new ReplaceAssociatedProducts('X_SELL', ['product_viewable_by_manager'])
             ]
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
@@ -277,7 +277,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
                 new ReplaceAssociatedProductModels('X_SELL', ['product_model_viewable_by_manager'])
             ]
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->clearDoctrineUoW();
 
@@ -310,7 +310,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
             ])]
         );
 
-        $this->messageBus->dispatch(UpsertProductCommand::createFromCollection(
+        $this->commandMessageBus->dispatch(UpsertProductCommand::createFromCollection(
             $this->getUserId('betty'),
             'my_product',
             [new ReplaceAssociatedQuantifiedProducts('bundle', [
@@ -352,7 +352,7 @@ final class UpsertProductWithPermissionIntegration extends EnrichmentProductTest
                 ]),
             ]
         );
-        $this->messageBus->dispatch($command);
+        $this->commandMessageBus->dispatch($command);
 
         Assert::assertEqualsCanonicalizing(
             [
