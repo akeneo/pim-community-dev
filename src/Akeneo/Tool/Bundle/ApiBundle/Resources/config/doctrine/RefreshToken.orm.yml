@@ -20,3 +20,7 @@ Akeneo\Tool\Bundle\ApiBundle\Entity\RefreshToken:
                 client:
                     referencedColumnName: id
                     onDelete: CASCADE
+    attributeOverride:
+        scope:
+            length: 1000
+            nullable: true
