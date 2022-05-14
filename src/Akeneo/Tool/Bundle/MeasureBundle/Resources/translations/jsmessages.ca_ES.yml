@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: Ho sentim, no hi ha cap família mètrica!
       link: Feu clic aquí per afegir-ne una
-    no_result:
-      title: Ho sentim, no hi ha cap resultat de la cerca!
     standard_unit: Unitat estàndard
     standard_unit_is_not_editable_after_creation: Aquesta unitat estàndard s'estableix un cop per a totes. S'utilitzarà per convertir les altres unitats.
     add_new_measurement_family: Afegir una nova família de mètriques
