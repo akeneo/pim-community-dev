@@ -423,6 +423,9 @@
     "phpstan/phpstan": {
         "version": "0.11.16"
     },
+    "phpstan/phpstan-deprecation-rules": {
+        "version": "1.0.0"
+    },
     "phpstan/phpstan-symfony": {
         "version": "0.11.6"
     },
