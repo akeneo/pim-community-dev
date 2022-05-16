@@ -61,14 +61,14 @@ const AxisEvaluation: FC<AxisEvaluationProps> = ({children, evaluation = evaluat
   }
 
   return (
-      <div className="AknSubsection AxisEvaluationContainer">
-        <AxisHeader evaluation={evaluation} axis={axis} />
+    <div className="AknSubsection AxisEvaluationContainer">
+      <AxisHeader evaluation={evaluation} axis={axis} />
 
-        {axisHasError && <AxisError />}
-        {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
+      {axisHasError && <AxisError />}
+      {axisGradingInProgress && !axisHasError && <AxisGradingInProgress />}
 
-        {recommendations}
-      </div>
+      {recommendations}
+    </div>
   );
 };
 
