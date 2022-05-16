@@ -36,7 +36,7 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Access forbidden. You are not allowed to access app catalogs"
+                    description: "Access forbidden. You are not allowed to access app catalogs."
                 "404":
                     description: "No catalog found"
         post:
@@ -64,7 +64,7 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to create app catalogs."
                 "422":
                     description: "Unprocessable entity"
     /api/rest/v1/catalogs/{id}:
@@ -88,9 +88,9 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to access app catalogs."
                 "404":
-                    description: "Not Found"
+                    description: "Catalog \"{id}\" does not exist or you can't access it."
         patch:
             summary: "Update a catalog"
             produces:
@@ -120,9 +120,9 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to edit app catalogs."
                 "404":
-                    description: "Not Found"
+                    description: "Catalog \"{id}\" does not exist or you can't access it."
         delete:
             summary: "Delete a catalog"
             parameters:
@@ -136,9 +136,9 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to delete app catalogs."
                 "404":
-                    description: "Not Found"
+                    description: "Catalog \"{id}\" does not exist or you can't access it."
     /api/rest/v1/catalogs/{id}/product-uuids:
         get:
             summary: "List of product uuids belonging to the catalog"
@@ -176,9 +176,9 @@ paths:
                                     - "aafb8869-d5b3-436d-a17b-99ca42e09c20"
                                     - "81627547-a389-4e0f-9788-1c815a8cfe08"
                 "403":
-                    description: "Access forbidden. You are not allowed to access app catalogs"
+                    description: "Access forbidden. You are not allowed to access app catalogs."
                 "404":
-                    description: "Catalog not found"
+                    description: "Catalog \"{id}\" does not exist or you can't access it."
     /api/rest/v1/catalogs/{id}/products:
         get:
             summary: "List of products belonging to the catalog"
@@ -219,7 +219,9 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to access app catalogs."
+                "404":
+                    description: "Catalog \"{id}\" does not exist or you can't access it."
     /api/rest/v1/catalogs/{id}/products/{identifier}:
         get:
             summary: "Product belonging to the catalog"
@@ -253,4 +255,6 @@ paths:
                 "401":
                     description: "Unauthorized"
                 "403":
-                    description: "Forbidden"
+                    description: "Access forbidden. You are not allowed to access app catalogs or products."
+                "404":
+                    description: "Either catalog \"{id}\" does not exist or you can't access it, or product \"{identifier}\" does not exist or you do not have permission to access it."
