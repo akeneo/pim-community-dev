@@ -34,6 +34,6 @@ final class SqlCreateJobInstance implements CreateJobInstanceInterface
             'raw_parameters' => 'a:0:{}',
         ];
 
-        return $this->connection->executeUpdate($sql, array_merge($defaultParams, $params));
+        return $this->connection->executeStatement($sql, array_merge($defaultParams, $params));
     }
 }

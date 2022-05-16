@@ -29,7 +29,7 @@ AND job_execution.health_check_time IS NULL
 AND job_execution.status IN (:runningStatuses);
 SQL;
 
-        return $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             $sql,
             [
                 'jobCodes' => $jobCodes,

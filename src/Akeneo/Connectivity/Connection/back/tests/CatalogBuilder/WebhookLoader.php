@@ -37,7 +37,7 @@ SET webhook_url = :url, webhook_enabled = :enabled, webhook_secret = :secret
 WHERE code = :code
 SQL;
 
-        return $this->dbalConnection->executeUpdate(
+        return $this->dbalConnection->executeStatement(
             $query,
             [
                 'url' => $url,

@@ -34,7 +34,7 @@ VALUES(:connection_code, :event_datetime, :event_count, :event_type, UTC_TIMESTA
 ON DUPLICATE KEY UPDATE event_count = :event_count, updated = UTC_TIMESTAMP()
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeStatement(
             $insertQuery,
             [
                 'connection_code' => $hourlyEventCount->connectionCode(),

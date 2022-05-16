@@ -27,7 +27,7 @@ INSERT INTO akeneo_connectivity_connection_events_api_request_count(event_minute
 VALUES (:event_minute,:event_count,:updated)	
 SQL;
 
-        $this->dbalConnection->executeUpdate(
+        $this->dbalConnection->executeStatement(
             $query,
             [
                 'event_minute' => (int)$eventDateTime->format('i'),

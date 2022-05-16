@@ -77,7 +77,7 @@ REPLACE INTO akeneo_structure_version_last_update SET resource_name = :resource_
 SQL;
 
         $connection = $this->doctrine->getConnection();
-        $connection->executeUpdate($sql, [
+        $connection->executeStatement($sql, [
             'resource_name' => $subject,
         ]);
     }

@@ -51,7 +51,7 @@ final class DeleteJobExecution
             )
 SQL;
 
-        $numberDeletedJobExecution = $this->connection->executeUpdate(
+        $numberDeletedJobExecution = $this->connection->executeStatement(
             $query,
             ['create_time' => $endTime, 'status' => BatchStatus::COMPLETED],
             ['create_time' => Types::DATETIME_MUTABLE]
@@ -63,6 +63,6 @@ SQL;
     public function all(): void
     {
         $query = 'DELETE FROM akeneo_batch_job_execution';
-        $this->connection->executeUpdate($query);
+        $this->connection->executeStatement($query);
     }
 }

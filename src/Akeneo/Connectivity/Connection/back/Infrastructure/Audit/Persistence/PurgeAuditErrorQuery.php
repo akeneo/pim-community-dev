@@ -26,7 +26,7 @@ class PurgeAuditErrorQuery
 DELETE FROM akeneo_connectivity_connection_audit_error
 WHERE error_datetime < :before
 SQL;
-        return $this->connection->executeUpdate(
+        return $this->connection->executeStatement(
             $deleteQuery,
             ['before' => $before],
             ['before' => Types::DATETIME_IMMUTABLE]

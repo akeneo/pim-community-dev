@@ -23,7 +23,7 @@ VALUES
     (:attribute_code);
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $blacklistAttributeCodeSql,
             [
                 'attribute_code' => $attributeCode
@@ -42,7 +42,7 @@ SET `cleanup_job_execution_id` = :job_execution_id
 WHERE `attribute_code` = :attribute_code;
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $registerJobSql,
             [
                 'attribute_code' => $attributeCode,
@@ -62,7 +62,7 @@ DELETE FROM `pim_catalog_attribute_blacklist`
 WHERE `attribute_code` = :attribute_code;
 SQL;
 
-        $this->connection->executeUpdate(
+        $this->connection->executeStatement(
             $whiteListSql,
             [
                 'attribute_code' => $attributeCode,
