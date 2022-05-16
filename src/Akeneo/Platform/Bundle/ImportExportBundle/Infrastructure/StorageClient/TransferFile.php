@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
-class TransferFile
+final class TransferFile
 {
     public function transfer(
         StorageClientInterface $sourceFilesystem,

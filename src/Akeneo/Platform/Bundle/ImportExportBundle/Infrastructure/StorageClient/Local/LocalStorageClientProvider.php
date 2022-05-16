@@ -21,7 +21,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Stora
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
-class LocalStorageClientProvider implements StorageClientProviderInterface
+final class LocalStorageClientProvider implements StorageClientProviderInterface
 {
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
