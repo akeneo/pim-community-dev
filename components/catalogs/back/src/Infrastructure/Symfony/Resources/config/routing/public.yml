@@ -12,3 +12,8 @@ akeneo_catalogs_public_delete_catalog:
     path: '/api/rest/v1/catalogs/{id}'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\DeleteCatalogAction
     methods: [ DELETE ]
+
+akeneo_catalogs_public_update_catalog:
+    path: '/api/rest/v1/catalogs/{id}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\UpdateCatalogAction
+    methods: [ PATCH ]
