@@ -36,7 +36,8 @@ class MigrateToUuidCommand extends Command
         MigrateToUuidStep $migrateToUuidAddConstraints,
         MigrateToUuidStep $migrateToUuidReindexElasticsearch,
         private LoggerInterface $logger,
-        private Connection $connection
+        private Connection $connection,
+        private MigrationAuthorization $migrationAuthorization
     ) {
         parent::__construct();
         $this->steps = [
@@ -66,6 +67,12 @@ class MigrateToUuidCommand extends Command
 
         if ($this->isAlreadySuccessfull()) {
             $this->logger->notice('No step should be executed. Skip the migration.');
+
+            return self::SUCCESS;
+        }
+
+        if (!$this->migrationAuthorization->isGranted()) {
+            $this->logger->notice('The client is not authorized to tun migration.');
 
             return self::SUCCESS;
         }
