@@ -116,10 +116,10 @@ cache: #Doc: clean, generate & warm the Sf cache up
 	$(PHP_RUN) bin/console cache:warmup
 
 $(PIM_SRC_PATH)/composer.lock: $(PIM_SRC_PATH)/composer.json #Doc: launch composer update
-	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer update --no-interaction
 
 $(PIM_SRC_PATH)/vendor: $(PIM_SRC_PATH)/composer.lock #Doc: run composer install
-	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer install --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer install --no-interaction
 
 .PHONY: check-requirements
 check-requirements: #Doc: check if PIM requirements are set

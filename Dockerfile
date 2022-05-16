@@ -152,7 +152,7 @@ ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
     composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' && \
-    php -d 'memory_limit=4G' /usr/local/bin/composer install \
+    composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \

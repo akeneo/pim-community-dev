@@ -150,7 +150,7 @@ ENV SRNT_GOOGLE_APPLICATION_CREDENTIALS="/srv/pim/config/fake_credentials_gcp.js
 ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
-    php -d 'memory_limit=4G' /usr/local/bin/composer install \
+    composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \
