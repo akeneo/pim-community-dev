@@ -9,7 +9,6 @@ use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUserIdTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
-use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -41,20 +40,20 @@ final class GetCatalogAction
         try {
             $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
         } catch (ValidationFailedException $e) {
-            $this->throwNotFound($id);
+            throw $this->notFound($id);
         }
 
         $userId = $this->getCurrentUserId();
         if (null === $catalog || $catalog->getOwnerId() !== $userId) {
-            $this->throwNotFound($id);
+            throw $this->notFound($id);
         }
 
         return new JsonResponse($this->normalizer->normalize($catalog, 'external_api'), Response::HTTP_OK);
     }
 
-    private function throwNotFound(string $id): void
+    private function notFound(string $id): NotFoundHttpException
     {
-        throw new NotFoundHttpException(
+        return new NotFoundHttpException(
             \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id)
         );
     }

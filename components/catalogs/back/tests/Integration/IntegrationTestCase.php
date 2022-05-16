@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
