@@ -137,5 +137,8 @@ services:
     Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Security\AclLoader:
         arguments:
             - '@oro_security.acl.manager'
-            - '@pim_user.repository.role_with_permissions'
-            - '@pim_user.saver.role_with_permissions'
+            - '@pim_user.repository.role'
+
+    Akeneo\Connectivity\Connection\Tests\CatalogBuilder\TestAppLoader:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Marketplace\TestApps\Command\CreateTestAppCommandHandler'
