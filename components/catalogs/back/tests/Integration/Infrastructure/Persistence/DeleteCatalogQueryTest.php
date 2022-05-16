@@ -46,7 +46,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
 
         $this->query->execute($id);
 
-        $this->assertCatalogDoNotExists($id);
+        $this->assertCatalogDoesNotExists($id);
     }
 
     private function assertCatalogExists(string $id): void
@@ -64,7 +64,7 @@ class DeleteCatalogQueryTest extends IntegrationTestCase
         $this->assertSame(1, $count);
     }
 
-    private function assertCatalogDoNotExists(string $id): void
+    private function assertCatalogDoesNotExists(string $id): void
     {
         $query = <<<SQL
         SELECT COUNT(*)
