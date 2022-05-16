@@ -50,7 +50,7 @@ final class DeleteTestAppAction
 
         $this->deleteTestAppHandler->handle(new DeleteTestAppCommand($clientId));
 
-        if ($testAppData['connected'] ?? false) {
+        if ($testAppData['connected']) {
             $this->deleteAppHandler->handle(new DeleteAppCommand($clientId));
         }
 
