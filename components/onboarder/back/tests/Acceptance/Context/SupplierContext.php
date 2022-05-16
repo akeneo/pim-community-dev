@@ -11,13 +11,10 @@ use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
 use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributorCount;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Read\Model\SupplierWithContributors;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use Behat\Behat\Context\Context;
@@ -31,8 +28,6 @@ final class SupplierContext implements Context
 
     private array $suppliers;
 
-    private ?SupplierWithContributors $supplier;
-
     private array $errors;
 
     public function __construct(
@@ -40,11 +35,9 @@ final class SupplierContext implements Context
         private CreateSupplierHandler $createSupplierHandler,
         private InMemoryGetSupplierList $getSupplierList,
         private DeleteSupplierHandler $deleteSuppliersHandler,
-        private GetSupplier $getSupplier,
         private UpdateSupplierHandler $updateSupplierHandler,
     ) {
         $this->suppliers = [];
-        $this->supplier = null;
         $this->errors = [];
     }
 
@@ -114,14 +107,6 @@ final class SupplierContext implements Context
     {
         $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
         ($this->deleteSuppliersHandler)(new DeleteSupplier($supplier->identifier()));
-    }
-
-    /**
-     * @When I retrieve the supplier ":code"
-     */
-    public function iRetrieveTheSupplier(string $code): void
-    {
-        $this->loadSupplier($code);
     }
 
     /**
@@ -280,12 +265,6 @@ final class SupplierContext implements Context
     private function loadSuppliers(string $search = ''): void
     {
         $this->suppliers = ($this->getSupplierList)(1, $search);
-    }
-
-    private function loadSupplier(string $code): void
-    {
-        $supplier = $this->supplierRepository->findByCode(Code::fromString($code));
-        $this->supplier = ($this->getSupplier)(Identifier::fromString($supplier->identifier()));
     }
 
     private function normalizeValidationErrors(InvalidData $e): void
