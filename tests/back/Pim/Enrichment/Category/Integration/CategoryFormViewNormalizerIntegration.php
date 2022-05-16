@@ -10,6 +10,7 @@ class CategoryFormViewNormalizerIntegration extends TestCase
 {
     public function testNormalizeFormView()
     {
+        $this->get('feature_flags')->enable('permission');
         $category = $this->get('pim_catalog.repository.category')->findOneByCode('categoryA');
 
         $form = $this->get('form.factory')->create(CategoryType::class, $category, []);

@@ -33,6 +33,7 @@ class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
 
     public function testItSavesLocalesPermissions(): void
     {
+        $this->get('feature_flags')->enable('permission');
         $this->authenticateAsAdmin();
 
         $this->localeFixturesLoader->activateLocalesOnChannel(['en_US', 'fr_FR', 'de_DE'], 'ecommerce');
@@ -76,6 +77,39 @@ class SaveLocalesPermissionsActionEndToEnd extends WebTestCase
 
         $dePermissions = $this->getLocaleAccessFor('de_DE');
         Assert::assertEquals(['edit' => false, 'view' => true], $dePermissions);
+    }
+
+    public function testItDoesNotSavesLocalesPermissionsWhenFeatureDisabled(): void
+    {
+        $this->get('feature_flags')->disable('permission');
+        $this->authenticateAsAdmin();
+
+        $this->localeFixturesLoader->activateLocalesOnChannel(['en_US', 'fr_FR', 'de_DE'], 'ecommerce');
+
+        $this->client->request(
+            'POST',
+            '/rest/permissions/locale',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            \json_encode([
+                'user_group' => 'Redactor',
+                'permissions' => [
+                    'edit' => [
+                        'all' => false,
+                        'identifiers' => ['en_US', 'fr_FR'],
+                    ],
+                    'view' => [
+                        'all' => true,
+                        'identifiers' => [],
+                    ],
+                ],
+            ], JSON_THROW_ON_ERROR)
+        );
+
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     private function getUserGroupDefaultPermissions(string $name): array

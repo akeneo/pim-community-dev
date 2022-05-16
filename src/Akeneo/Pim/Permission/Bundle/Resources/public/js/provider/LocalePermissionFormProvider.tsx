@@ -13,6 +13,7 @@ const FetcherRegistry = require('pim/fetcher-registry');
 const translate = require('oro/translator');
 const routing = require('routing');
 const securityContext = require('pim/security-context');
+const featureFlags = require('pim/feature-flags');
 
 const StyledLocale = styled(Locale)`
   margin-right: 15px;
@@ -73,6 +74,8 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
   ) => {
     const [state, dispatch] = useReducer(LocalePermissionReducer, initialState);
     const [activatedLocales, setActivatedLocales] = useState<LocaleType[]>([]);
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && featureFlags.isEnabled('permission');
 
     useEffect(() => {
       readOnly !== true && onPermissionsChange(state);
@@ -91,7 +94,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
         </SectionTitle>
         {!onlyDisplayViewPermissions && (
           <>
-            {securityContext.isGranted('pimee_enrich_locale_edit_permissions') ? (
+            {canEditPermissions ? (
               <Helper level="info">{translate('pim_permissions.widget.entity.locale.help')}</Helper>
             ) : (
               <Helper level="warning">
@@ -107,7 +110,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
               onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_EDIT, identifier: code})}
               onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_EDIT, identifier: code})}
               disabled={state.edit.all}
-              readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
+              readOnly={!canEditPermissions || readOnly}
               allByDefaultIsSelected={state.edit.all}
               onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_EDIT})}
               onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_EDIT})}
@@ -123,7 +126,7 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
           onAdd={code => dispatch({type: PermissionFormReducer.Actions.ADD_TO_VIEW, identifier: code})}
           onRemove={code => dispatch({type: PermissionFormReducer.Actions.REMOVE_FROM_VIEW, identifier: code})}
           disabled={state.view.all}
-          readOnly={!securityContext.isGranted('pimee_enrich_locale_edit_permissions') || readOnly}
+          readOnly={!canEditPermissions || readOnly}
           allByDefaultIsSelected={state.view.all}
           onSelectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.ENABLE_ALL_VIEW})}
           onDeselectAllByDefault={() => dispatch({type: PermissionFormReducer.Actions.DISABLE_ALL_VIEW})}
@@ -163,7 +166,10 @@ const LocalePermissionFormProvider: PermissionFormProvider<LocalePermissionState
     );
   },
   save: async (userGroup: string, state: LocalePermissionState) => {
-    if (false === securityContext.isGranted('pimee_enrich_locale_edit_permissions')) {
+    const canEditPermissions =
+      securityContext.isGranted('pimee_enrich_locale_edit_permissions') && featureFlags.isEnabled('permission');
+
+    if (!canEditPermissions) {
       return Promise.resolve();
     }
 

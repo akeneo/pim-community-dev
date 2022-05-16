@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
@@ -24,9 +25,11 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         Form $form,
         JobInstance $jobInstance,
         Form $executeForm,
-        Form $editForm
+        Form $editForm,
+        FeatureFlags $featureFlags
     ) {
-        $this->beConstructedWith($manager, $securityFacade, $userGroupRepository);
+        $this->beConstructedWith($manager, $securityFacade, $userGroupRepository, $featureFlags);
+        $featureFlags->isEnabled('permission')->willreturn(true);
 
         $securityFacade->isGranted(Argument::any())->willReturn(true);
 

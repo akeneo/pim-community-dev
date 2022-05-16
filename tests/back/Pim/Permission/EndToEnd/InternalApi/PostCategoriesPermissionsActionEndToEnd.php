@@ -22,6 +22,7 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
 
     public function testItSavesCategoriesPermissions(): void
     {
+        $this->get('feature_flags')->enable('permission');
         $this->authenticateAsAdmin();
 
         $this->client->request(
@@ -68,6 +69,43 @@ class PostCategoriesPermissionsActionEndToEnd extends WebTestCase
             'edit' => true,
             'view' => true,
         ], $masterPermissions);
+    }
+
+    public function testItDoesNotSavesCategoriesPermissionsWhenFeatureDisabled(): void
+    {
+        $this->get('feature_flags')->disable('permission');
+        $this->authenticateAsAdmin();
+
+        $this->client->request(
+            'POST',
+            '/rest/permissions/category',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ],
+            \json_encode([
+                'user_group' => 'Redactor',
+                'permissions' => [
+                    'own' => [
+                        'all' => false,
+                        'identifiers' => [
+                            'master',
+                        ],
+                    ],
+                    'edit' => [
+                        'all' => true,
+                        'identifiers' => [],
+                    ],
+                    'view' => [
+                        'all' => true,
+                        'identifiers' => [],
+                    ],
+                ],
+            ])
+        );
+
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     private function getUserGroupDefaultPermissions(string $name): array
