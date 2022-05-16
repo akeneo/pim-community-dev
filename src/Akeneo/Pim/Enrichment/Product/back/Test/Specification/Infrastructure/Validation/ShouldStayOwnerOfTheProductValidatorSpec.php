@@ -111,6 +111,7 @@ class ShouldStayOwnerOfTheProductValidatorSpec extends ObjectBehavior
         ;
         $getOwnedCategories->forUserId(['categoryA', 'categoryC'], 10)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(new RemoveCategories(['categoryB']), $constraint);
