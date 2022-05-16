@@ -89,9 +89,10 @@ class SettingsContext extends PimContext
     {
         $listType = $this->getListTypeFromConnectionType($connectionType);
 
-        $connectionList = $this->getCurrentPage()->getElement($listType);
-
-        $connectionLink = $connectionList->find('css', sprintf('[title="%s"]', $connection));
+        $connectionLink = $this->spin(function () use ($listType, $connection) {
+            $connectionList = $this->getCurrentPage()->getElement($listType);
+            return $connectionList->find('css', sprintf('[title="%s"]', $connection));
+        }, sprintf('Can not find connection link for "%s"', $connection));
 
         Assert::assertNotNull($connectionLink);
 
