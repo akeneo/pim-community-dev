@@ -95,6 +95,7 @@ class DeleteTestAppActionSpec extends ObjectBehavior
 
         $getTestAppQuery->execute('test_client_id')->willReturn([
             'some' => 'data',
+            'connected' => false,
         ]);
 
         $deleteTestAppHandler
