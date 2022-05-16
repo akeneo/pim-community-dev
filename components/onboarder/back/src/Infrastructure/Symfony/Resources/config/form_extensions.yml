@@ -6,7 +6,7 @@ extensions:
         config:
             title: Onboarder
             to: onboarder_serenity_supplier_list
-        feature: onboarder_serenity_supplier
+        feature: onboarder_serenity
 
     pim-menu-onboarder-column:
         module: pim/menu/column
@@ -19,7 +19,7 @@ extensions:
             backLink:
                 title: pim_menu.navigation_back.connection
                 route: akeneo_connectivity_connection_audit_index
-        feature: onboarder_serenity_supplier
+        feature: onboarder_serenity
 
     pim-menu-connect-onboarder-block:
         module: pim/menu/navigation-block
@@ -28,7 +28,7 @@ extensions:
         position: 100
         config:
             title: onboarder.menu_block_title
-        feature: onboarder_serenity_supplier
+        feature: onboarder_serenity
 
     pim-menu-connect-onboarder-supplier-list:
         module: pim/menu/item
@@ -37,4 +37,4 @@ extensions:
         config:
             title: onboarder.supplier.supplier_list.menu_item
             to: onboarder_serenity_supplier_list
-        feature: onboarder_serenity_supplier
+        feature: onboarder_serenity

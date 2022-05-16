@@ -8,7 +8,7 @@ akeneo_feature_flag:
         - { feature: 'reference_entity', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'new_shared_catalog_branding', service: 'akeneo.shared_catalog.feature.new_shared_catalog_branding' }
         - { feature: 'app_developer_mode', service: 'akeneo_connectivity.connection.app_developer_mode.feature' }
-        - { feature: 'onboarder_serenity_supplier', service: 'akeneo.onboarder_serenity.supplier.feature' }
+        - { feature: 'onboarder_serenity', service: 'akeneo.onboarder_serenity.feature' }
         - { feature: 'permission', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'product_rules', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'asset_manager', service: 'akeneo.feature_flag.service.only_serenity_feature' }

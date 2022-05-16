@@ -347,6 +347,10 @@ pim:
         requests:
           cpu: "10m"
           memory: "10Mi"
+  onboarder_serenity:
+    settings:
+      enabled: false
+
 
 # Onboarder
 onboarder:
