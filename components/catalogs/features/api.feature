@@ -8,3 +8,9 @@ Feature:
     When the external application creates a catalog using the API
     Then the response should contain the catalog id
     And the catalog should exist in the PIM
+
+  @database
+  Scenario: Get a catalog
+    Given an existing catalog
+    When the external application retrieves the catalog using the API
+    Then the response should contain the catalog details
