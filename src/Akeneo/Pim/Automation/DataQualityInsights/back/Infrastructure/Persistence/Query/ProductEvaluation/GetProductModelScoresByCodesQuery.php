@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresByCodesQueryInterface;
 use Doctrine\DBAL\Connection;
 
@@ -19,16 +20,16 @@ final class GetProductModelScoresByCodesQuery implements GetProductModelScoresBy
     ) {
     }
 
-    public function byProductModelCode(string $productModelCode): ChannelLocaleRateCollection
+    public function byProductModelCode(string $productModelCode): Read\Scores
     {
         $productModelScores = $this->byProductModelCodes([$productModelCode]);
 
-        return $productModelScores[$productModelCode] ?? new ChannelLocaleRateCollection();
+        return $productModelScores[$productModelCode] ?? new Read\Scores(
+            new ChannelLocaleRateCollection(),
+            new ChannelLocaleRateCollection()
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     /**
      * {@inheritdoc}
      */
@@ -39,7 +40,7 @@ final class GetProductModelScoresByCodesQuery implements GetProductModelScoresBy
         }
 
         $query = <<<SQL
-SELECT pcpm.code, product_model_score.scores 
+SELECT pcpm.code, product_model_score.scores, product_model_score.scores_partial_criteria
 FROM pim_data_quality_insights_product_model_score AS product_model_score
 LEFT JOIN pim_catalog_product_model pcpm ON pcpm.id = product_model_score.product_model_id
 WHERE pcpm.code IN (:productModelCodes);
@@ -53,7 +54,10 @@ SQL;
 
         $productModelsScores = [];
         while ($row = $stmt->fetchAssociative()) {
-            $productModelsScores[$row['code']] = $this->hydrateScores($row['scores']);
+            $productModelsScores[$row['code']] = new Read\Scores(
+                $this->hydrateScores($row['scores']),
+                $this->hydrateScores($row['scores_partial_criteria'] ?? '{}'),
+            );
         }
 
         return $productModelsScores;

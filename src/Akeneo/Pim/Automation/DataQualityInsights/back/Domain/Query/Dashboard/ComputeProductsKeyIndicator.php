@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
@@ -12,7 +13,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityId
  */
 interface ComputeProductsKeyIndicator
 {
-    public function getName(): string;
+    public function getCode(): KeyIndicatorCode;
 
     /**
      * @return array<string, array<string, array<string, bool>>> Enrichment status by product/product-model channel and locale

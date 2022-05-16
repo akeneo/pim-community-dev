@@ -87,7 +87,6 @@ final class ComputeScoresSpec extends ObjectBehavior
             ))
         ;
 
-        $criteriaEvaluationRegistry->getCriterionCodes()->willReturn([$criterionA, $criterionB, $criterionC]);
         $criteriaEvaluationRegistry->getCriterionCoefficient($criterionA)->willReturn(2);
         $criteriaEvaluationRegistry->getCriterionCoefficient($criterionB)->willReturn(1);
         $criteriaEvaluationRegistry->getCriterionCoefficient($criterionC)->willReturn(1);

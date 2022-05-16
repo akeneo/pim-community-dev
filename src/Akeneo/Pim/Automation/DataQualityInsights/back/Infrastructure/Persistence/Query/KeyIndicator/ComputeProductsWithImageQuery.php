@@ -9,6 +9,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\Products
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
@@ -22,9 +23,9 @@ final class ComputeProductsWithImageQuery implements ComputeProductsKeyIndicator
     ) {
     }
 
-    public function getName(): string
+    public function getCode(): KeyIndicatorCode
     {
-        return ProductsWithImage::CODE;
+        return new KeyIndicatorCode(ProductsWithImage::CODE);
     }
 
     public function compute(ProductEntityIdCollection $productIdCollection): array

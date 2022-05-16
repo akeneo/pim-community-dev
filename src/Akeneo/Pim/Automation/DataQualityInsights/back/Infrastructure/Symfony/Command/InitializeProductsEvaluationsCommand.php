@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
@@ -24,20 +24,12 @@ final class InitializeProductsEvaluationsCommand extends Command
 
     private const BATCH_SIZE = 100;
 
-    private Connection $dbConnection;
-    private CriteriaEvaluationRegistry $productCriteriaRegistry;
-    private CriteriaEvaluationRegistry $productModelCriteriaRegistry;
-
     public function __construct(
-        Connection $dbConnection,
-        CriteriaEvaluationRegistry $productCriteriaRegistry,
-        CriteriaEvaluationRegistry $productModelCriteriaRegistry
+        private Connection $dbConnection,
+        private CriteriaByFeatureRegistry $productCriteriaRegistry,
+        private CriteriaByFeatureRegistry $productModelCriteriaRegistry
     ) {
         parent::__construct();
-
-        $this->dbConnection = $dbConnection;
-        $this->productCriteriaRegistry = $productCriteriaRegistry;
-        $this->productModelCriteriaRegistry = $productModelCriteriaRegistry;
     }
 
     protected function configure()
@@ -89,7 +81,7 @@ SQL
         $progressBar = new ProgressBar($io, $productCount);
         $progressBar->start();
 
-        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productCriteriaRegistry->getCriterionCodes());
+        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productCriteriaRegistry->getAllCriterionCodes());
         $statusPending = CriterionEvaluationStatus::PENDING;
 
         $lastProductId = 0;
@@ -131,7 +123,7 @@ SQL
         $progressBar = new ProgressBar($io, $productModelCount);
         $progressBar->start();
 
-        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productModelCriteriaRegistry->getCriterionCodes());
+        $criteria = array_map(fn ($criterionCode) => strval($criterionCode), $this->productModelCriteriaRegistry->getAllCriterionCodes());
         $statusPending = CriterionEvaluationStatus::PENDING;
 
         $lastProductModelId = 0;
