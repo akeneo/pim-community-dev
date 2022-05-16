@@ -30,7 +30,7 @@ final class GetWebMarketplaceUrlAction
             return new RedirectResponse('/');
         }
 
-        $username = $this->userContext->getUser()->getUsername();
+        $username = $this->userContext->getUser()->getUserIdentifier();
         $url = $this->marketplaceUrlGenerator->generateUrl($username);
 
         return new JsonResponse($url);

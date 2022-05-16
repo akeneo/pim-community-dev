@@ -41,7 +41,7 @@ class AddUserSubscriberSpec extends ObjectBehavior
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $user->getUsername()->willReturn('foo');
+        $user->getUserIdentifier()->willReturn('foo');
 
         $this->preBuild($event);
     }

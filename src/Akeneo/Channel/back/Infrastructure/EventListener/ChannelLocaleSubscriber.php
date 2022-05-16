@@ -142,7 +142,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             [
                 'locales_identifier' => $localesCodes,
                 'channel_code' => $channelCode,
-                'username' => $user->getUsername(),
+                'username' => $user->getUserIdentifier(),
             ]
         );
     }

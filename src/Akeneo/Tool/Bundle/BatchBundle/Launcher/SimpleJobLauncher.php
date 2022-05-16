@@ -160,7 +160,7 @@ class SimpleJobLauncher implements JobLauncherInterface
         }
 
         $jobExecution = $this->jobRepository->createJobExecution($job, $jobInstance, $jobParameters);
-        $jobExecution->setUser($user->getUsername());
+        $jobExecution->setUser($user->getUserIdentifier());
         $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);

@@ -58,7 +58,7 @@ class AddUserSubscriber implements EventSubscriberInterface
 
         $token = $this->tokenStorage->getToken();
         if (null !== $token && $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $event->setUsername($token->getUser()->getUsername());
+            $event->setUsername($token->getUser()->getUserIdentifier());
         }
 
         return $event;

@@ -51,7 +51,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $user->getId()->willReturn(10);
-        $user->getUsername()->willReturn('ecommerce_0000');
+        $user->getUserIdentifier()->willReturn('ecommerce_0000');
 
         $collection = new EventDataCollection();
         $collection->setEventData($pimEvent, ['data']);
@@ -94,7 +94,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $user->getId()->willReturn(10);
-        $user->getUsername()->willReturn('ecommerce_0000');
+        $user->getUserIdentifier()->willReturn('ecommerce_0000');
 
         $collection = new EventDataCollection();
         $collection->setEventDataError($pimEvent, new \Exception());
@@ -128,7 +128,7 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
         $user->getId()->willReturn(10);
-        $user->getUsername()->willReturn('ecommerce_0000');
+        $user->getUserIdentifier()->willReturn('ecommerce_0000');
 
         $collection = new EventDataCollection();
         $collection->setEventDataError($pimEvent, new \Exception());

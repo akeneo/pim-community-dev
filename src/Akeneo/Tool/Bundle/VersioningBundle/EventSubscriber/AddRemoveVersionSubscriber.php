@@ -83,7 +83,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         if (null !== ($token = $this->tokenStorage->getToken()) &&
             $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
         ) {
-            $author = $token->getUser()->getUsername();
+            $author = $token->getUser()->getUserIdentifier();
         }
 
         $previousVersion = $this->versionRepository->getNewestLogEntry(

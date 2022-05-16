@@ -52,7 +52,7 @@ class WebhookEventBuilder
 
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-            new Context($user->getUsername(), $user->getId())
+            new Context($user->getUserIdentifier(), $user->getId())
         );
 
         return $this->buildWebhookEvents(
