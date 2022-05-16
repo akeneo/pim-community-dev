@@ -9,3 +9,6 @@ oneup_flysystem:
         jobs_storage:
             adapter: jobs_storage_adapter
             mount: jobsStorage
+        local_storage:
+            adapter: local_storage_adapter
+            mount: localFilesystem

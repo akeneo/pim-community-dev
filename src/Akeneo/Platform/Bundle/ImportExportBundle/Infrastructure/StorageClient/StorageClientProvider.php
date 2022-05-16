@@ -32,10 +32,6 @@ final class StorageClientProvider
 
     public function getFromFileToTransfer(FileToTransfer $fileToTransfer): StorageClientInterface
     {
-        if ($fileToTransfer->isLocal()) {
-            return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter('/')));
-        }
-
         return new FileSystemStorageClient($this->filesystemProvider->getFilesystem($fileToTransfer->getStorage()));
     }
 
