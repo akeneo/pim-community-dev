@@ -23,7 +23,7 @@ class CreateCatalogActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItFindsTheCatalog(): void
+    public function testItCreatesTheCatalog(): void
     {
         $this->client = $this->getAuthenticatedClient(['write_catalogs']);
 

@@ -5,15 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Acceptance;
 
 use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Persistence\UpsertCatalogQuery;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
-use Akeneo\Catalogs\Test\Integration\Infrastructure\Controller\Public\CreateCatalogActionTest;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
