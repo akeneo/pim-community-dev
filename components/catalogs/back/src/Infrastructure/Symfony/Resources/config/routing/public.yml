@@ -1,0 +1,4 @@
+akeneo_catalogs_public_create_catalog:
+    path: '/api/rest/v1/catalogs'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\CreateCatalogAction
+    methods: [ POST ]

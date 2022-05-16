@@ -12,20 +12,25 @@ services:
         exclude:
             - '../../../Symfony/'
             - '../../../../Domain/'
+            - '../../../../ServiceAPI/'
             - '../../../../Application/Exception'
 
-    Akeneo\Catalogs\Application\CommandHandler\:
-        resource: '../../../../Application/CommandHandler/'
+    Akeneo\Catalogs\Application\Handler\:
+        resource: '../../../../Application/Handler/'
         tags: [ 'messenger.message_handler' ]
 
-    Akeneo\Catalogs\Application\QueryHandler\:
-        resource: '../../../../Application/QueryHandler/'
-        tags: [ 'messenger.message_handler' ]
+    Akeneo\Catalogs\Infrastructure\Controller\:
+        resource: '../../../../Infrastructure/Controller/'
+        tags: [ 'controller.service_arguments' ]
+        public: true
 
-    Akeneo\Catalogs\Infrastructure\Messenger\CommandBus:
+    Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
         arguments:
             $messageBus: '@catalogs.command.bus'
 
-    Akeneo\Catalogs\Infrastructure\Messenger\QueryBus:
+    Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
         arguments:
             $messageBus: '@catalogs.query.bus'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
+        alias: "oro_security.security_facade"

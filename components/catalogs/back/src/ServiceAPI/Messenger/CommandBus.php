@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Messenger;
+namespace Akeneo\Catalogs\ServiceAPI\Messenger;
 
+use Akeneo\Catalogs\ServiceAPI\Command\CommandInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -22,7 +23,7 @@ final class CommandBus
         $this->messageBus = $messageBus;
     }
 
-    public function execute(object $command): void
+    public function execute(CommandInterface $command): void
     {
         try {
             $this->handle($command);
