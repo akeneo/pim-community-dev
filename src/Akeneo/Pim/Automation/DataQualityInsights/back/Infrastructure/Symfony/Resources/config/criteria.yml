@@ -12,16 +12,16 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeUppercaseWordsRate'
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion', feature: 'data_quality_insights_all_criteria'}
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion', feature: 'data_quality_insights_all_criteria' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateLowerCaseWords:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateCaseWords'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\ComputeCaseWords\ComputeLowerCaseWordsRate'
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion', feature: 'data_quality_insights_all_criteria' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion', feature: 'data_quality_insights_all_criteria' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateSpelling:
         arguments:
@@ -31,8 +31,8 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling'
             - '@logger'
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion', feature: 'data_quality_insights_all_criteria' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion', feature: 'data_quality_insights_all_criteria' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\FilterProductValuesForSpelling:
         arguments:
@@ -46,7 +46,7 @@ services:
     akeneo.pim.automation.data_quality_insights.criteria_evaluation.evaluate_products_attribute_spelling:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateProductAttributeSpelling
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion', feature: 'data_quality_insights_all_criteria' }
 
     akeneo.pim.automation.data_quality_insights.criteria_evaluation.evaluate_product_models_attribute_spelling:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateProductModelAttributeSpelling
@@ -54,12 +54,12 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetProductModelFamilyAttributeCodesQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeSpelling'
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion', feature: 'data_quality_insights_all_criteria' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Consistency\EvaluateAttributeOptionSpelling:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetLocalesByChannelQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeOptionSpellcheckQuery'
         tags:
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion' }
-            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_criterion', feature: 'data_quality_insights_all_criteria' }
+            - { name: 'akeneo.pim.automation.data_quality_insights.evaluate_product_model_criterion', feature: 'data_quality_insights_all_criteria' }

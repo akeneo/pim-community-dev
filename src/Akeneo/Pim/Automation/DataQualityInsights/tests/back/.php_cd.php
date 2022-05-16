@@ -21,6 +21,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             //External dependencies
             'Psr\Log\LoggerInterface',

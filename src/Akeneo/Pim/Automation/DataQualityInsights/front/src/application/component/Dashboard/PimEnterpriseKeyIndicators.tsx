@@ -3,6 +3,7 @@ import {KeyIndicators} from '@akeneo-pim-community/data-quality-insights/src/app
 import {useGetSpellcheckSupportedLocales} from '../../../infrastructure';
 import {keyIndicatorDescriptorsEE} from './KeyIndicatorDescriptorsEE';
 import {keyIndicatorDescriptorsCE} from '@akeneo-pim-community/data-quality-insights/src/application/component/Dashboard/keyIndicatorDescriptorsCE';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 type Props = {
   channel: string;
@@ -12,16 +13,15 @@ type Props = {
 };
 
 const PimEnterpriseKeyIndicators: FC<Props> = ({channel, locale, family, category}) => {
-  const spellcheckSupportedLocales = useGetSpellcheckSupportedLocales();
+  const featureFlags = useFeatureFlags();
+  const spellcheckSupportedLocales = featureFlags.isEnabled('data_quality_insights_all_criteria')
+    ? useGetSpellcheckSupportedLocales()
+    : null;
 
   const keyIndicatorDescriptors = useMemo(
     () => (spellcheckSupportedLocales?.includes(locale) ? keyIndicatorDescriptorsEE : keyIndicatorDescriptorsCE),
     [locale, spellcheckSupportedLocales]
   );
-
-  if (spellcheckSupportedLocales === null) {
-    return <></>;
-  }
 
   return (
     <KeyIndicators

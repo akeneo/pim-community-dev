@@ -116,14 +116,14 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductsAndCriterionQuery'
         tags:
-            - { name: akeneo.pim.automation.data_quality_insights.compute_product_key_indicator_query }
+            - { name: akeneo.pim.automation.data_quality_insights.compute_product_key_indicator, feature: 'data_quality_insights_all_criteria' }
 
     akeneo.pim.automation.data_quality_insights.query.compute_product_models_spelling_status_query:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeProductsSpellingStatusQuery
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetEvaluationRatesByProductModelsAndCriterionQuery'
         tags:
-            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator_query }
+            - { name: akeneo.pim.automation.data_quality_insights.compute_product_model_key_indicator, feature: 'data_quality_insights_all_criteria' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\KeyIndicator\ComputeAttributesWithPerfectSpellingQuery:
         arguments:

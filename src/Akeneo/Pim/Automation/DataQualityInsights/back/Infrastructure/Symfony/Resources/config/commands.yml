@@ -48,3 +48,14 @@ services:
             - '@database_connection'
         tags:
             - { name: 'console.command' }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\OneTimeTask\InitializeGrowthEditionDoubleScoreCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo.pim.automation.data_quality_insights.product_criteria_by_feature_registry'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\ProductModelIdFactory'
+        tags:
+            - { name: 'console.command' }

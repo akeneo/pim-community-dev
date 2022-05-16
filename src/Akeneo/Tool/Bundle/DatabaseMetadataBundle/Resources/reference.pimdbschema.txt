@@ -746,9 +746,11 @@ pim_data_quality_insights_product_model_criteria_evaluation | result | YES | jso
 pim_data_quality_insights_product_model_score | product_model_id | NO | int | PRI
 pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
 pim_data_quality_insights_product_model_score | scores | NO | json |
+pim_data_quality_insights_product_model_score | scores_partial_criteria | YES | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | PRI
 pim_data_quality_insights_product_score | scores | NO | json |
+pim_data_quality_insights_product_score | scores_partial_criteria | YES | json |
 pim_data_quality_insights_product_score | product_uuid | YES | binary(16) |
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
