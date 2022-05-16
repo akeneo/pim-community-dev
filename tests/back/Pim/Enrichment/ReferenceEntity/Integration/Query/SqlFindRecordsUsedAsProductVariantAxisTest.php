@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlFindRecordsUsedAsProductVariantAxis;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -228,7 +228,12 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         return $productModel;
     }
 
-    private function createProductVariant(string $identifier, array $userIntents): ProductInterface
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return void
+     */
+    private function createProductVariant(string $identifier, array $userIntents): void
     {
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
@@ -236,11 +241,7 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->clearDoctrineUoW();
-
-        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function createFamilyVariantWithAxis(string $familyCode, Attribute $attribute, string $code): FamilyVariant

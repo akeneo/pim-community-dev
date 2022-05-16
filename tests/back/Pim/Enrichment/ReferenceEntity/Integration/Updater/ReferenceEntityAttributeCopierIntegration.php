@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Value\ReferenceEntityCollectionValue;
@@ -72,7 +73,7 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
      */
     public function it_copies_a_reference_entity_collection_value()
     {
-        $collectionAttribute = $this->createAttribute(
+        $this->createAttribute(
             [
                 'code' => 'designers',
                 'group' => 'other',
@@ -160,6 +161,11 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
         return $attribute;
     }
 
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return ProductInterface
+     */
     private function createProduct(string $identifier, array $userIntents): ProductInterface
     {
         $command = UpsertProductCommand::createFromCollection(
@@ -168,9 +174,6 @@ class ReferenceEntityAttributeCopierIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->clearDoctrineUoW();
 
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }

@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -153,8 +154,6 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             'family_variant' => 'attribute_at_variant_level',
         ]);
 
-
-        // todo
         $refEntityUserIntent = $this->createReferenceEntityUserIntentFromAttributeValue(
             $attributeCode,
             $nonEmptyData
@@ -258,6 +257,11 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
     }
 
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return void
+     */
     private function createProduct(string $identifier, array $userIntents): void
     {
         $command = UpsertProductCommand::createFromCollection(
@@ -266,9 +270,6 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->clearDoctrineUoW();
     }
 
     private function createProductModel(array $data): void
@@ -280,12 +281,12 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->save($productModel);
     }
 
-    protected function clearDoctrineUoW(): void
+    private function clearDoctrineUoW(): void
     {
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
-    protected function getUserId(string $username): int
+    private function getUserId(string $username): int
     {
         $query = <<<SQL
             SELECT id FROM oro_user WHERE username = :username
@@ -298,14 +299,11 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
     }
 
     /**
-     *
-     * ['data' => 'super_record', 'scope' => null, 'locale' => null]
-     * ['data' => ['super_record', 'not_so_nice_record'], 'scope' => null, 'locale' => null]
-     *
-     *
      * @param string $attributeCode
      * @param array $standardFormat
-     * @return void
+     *      ex. ['data' => 'record', 'scope' => null, 'locale' => null]
+     *          ['data' => ['record1', 'record2'], 'scope' => null, 'locale' => null]
+     * @return SetSimpleReferenceEntityValue|SetMultiReferenceEntityValue
      */
     private function createReferenceEntityUserIntentFromAttributeValue(
         string $attributeCode,

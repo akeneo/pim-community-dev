@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
@@ -219,6 +220,11 @@ SQL,
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return void
+     */
     protected function createProduct(string $identifier, array $userIntents): void
     {
         $command = UpsertProductCommand::createFromCollection(
@@ -227,9 +233,6 @@ SQL,
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->clearDoctrineUoW();
     }
 
     protected function createReferenceEntity(string $referenceEntityIdentifier): void

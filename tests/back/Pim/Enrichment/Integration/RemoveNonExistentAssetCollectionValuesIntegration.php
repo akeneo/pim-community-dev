@@ -165,7 +165,7 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
         );
     }
 
-    protected function createProduct(string $identifier, array $userIntents): void
+    private function createProduct(string $identifier, array $userIntents): void
     {
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
@@ -173,9 +173,6 @@ final class RemoveNonExistentAssetCollectionValuesIntegration extends TestCase
             userIntents: $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
-        $this->clearDoctrineUoW();
     }
 
     private function assertAssetCollectionValues(string $identifier, array $values): void
