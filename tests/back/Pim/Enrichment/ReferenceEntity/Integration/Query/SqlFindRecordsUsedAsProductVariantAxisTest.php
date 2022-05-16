@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace AkeneoTestEnterprise\Pim\Enrichment\ReferenceEntity\Integration\Query;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Enrichment\SqlFindRecordsUsedAsProductVariantAxis;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
@@ -35,6 +40,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Refresh;
+use PHPUnit\Framework\Assert;
 
 class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
 {
@@ -130,19 +136,20 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
     private function createProductVariantUsingRecordAsAxis(string $recordCode, string $productVariantCode): void
     {
         $productModel = $this->createProductModel('familyA_variant', $productVariantCode . '-product-model');
-        $this->createProductVariant($productVariantCode, 'familyA', [
-            'enabled' => true,
-            'parent' => $productModel->getCode(),
-            'values' => [
-                'a_reference_entity_single_link' => [
-                    [
-                        'data' => $recordCode,
-                        'scope' => null,
-                        'locale' => null,
-                    ],
-                ],
-            ],
-        ]);
+        $this->createProductVariant(
+            $productVariantCode,
+            [
+                new SetFamily('familyA'),
+                new SetEnabled(true),
+                new ChangeParent($productModel->getCode()),
+                new SetSimpleReferenceEntityValue(
+                    'a_reference_entity_single_link',
+                    null,
+                    null,
+                    $recordCode
+                )
+            ]
+        );
     }
 
     private function createReferenceEntity(string $identifier): ReferenceEntity
@@ -221,20 +228,19 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         return $productModel;
     }
 
-    private function createProductVariant(
-        string $identifier,
-        string $familyCode,
-        array $values
-    ): Product {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
+    private function createProductVariant(string $identifier, array $userIntents): ProductInterface
+    {
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->clearDoctrineUoW();
 
-        $this->get('pim_catalog.updater.product')->update($product, $values);
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier($identifier, [
-            'index_refresh' => Refresh::enable(),
-        ]);
-
-        return $product;
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 
     private function createFamilyVariantWithAxis(string $familyCode, Attribute $attribute, string $code): FamilyVariant
@@ -279,5 +285,22 @@ class SqlFindRecordsUsedAsProductVariantAxisTest extends SqlIntegrationTestCase
         $family = $this->findFamily($familyCode);
         $family->addAttribute($attribute);
         $this->get('pim_catalog.saver.family')->save($family);
+    }
+
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

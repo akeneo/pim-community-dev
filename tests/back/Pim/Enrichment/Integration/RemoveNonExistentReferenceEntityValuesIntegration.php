@@ -15,6 +15,12 @@ namespace AkeneoTestEnterprise\Pim\Enrichment\Integration;
 
 use Akeneo\Channel\API\Query\Channel;
 use Akeneo\Channel\API\Query\LabelCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
@@ -76,6 +82,7 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
             ->setChannels([
                 new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
             ]);
+        $this->createAdminUser();
         $this->loadFixtures();
 
         $jobInstance = $this->get('pim_enrich.repository.job_instance')
@@ -142,27 +149,16 @@ class RemoveNonExistentReferenceEntityValuesIntegration extends TestCase
             ]
         ]);
 
-        $this->createProduct('sunglasses', [
-            'categories' => ['master'],
-            'family' => 'marketing',
-            'values' => [
-                'name' => [[
-                    "locale" => null,
-                    "scope" => null,
-                    "data" => 'Sunglasses'
-                ]],
-                'fabric_color' => [[
-                    "locale" => null,
-                    "scope" => null,
-                    "data" => 'black'
-                ]],
-                'palette' => [[
-                    "locale" => null,
-                    "scope" => null,
-                    "data" => ['black']
-                ]]
-            ],
-        ]);
+        $this->createProduct(
+            identifier: 'sunglasses',
+            userIntents: [
+                new SetFamily('marketing'),
+                new SetCategories(['master']),
+                new SetTextValue('name', null, null, 'Sunglasses'),
+                new SetSimpleReferenceEntityValue('fabric_color', null, null, 'black'),
+                new SetMultiReferenceEntityValue('palette', null, null, ['black'])
+            ]
+        );
     }
 
     private function assertReferenceEntityValues(string $identifier, string $value): void
@@ -223,15 +219,17 @@ SQL,
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
-    protected function createProduct(string $identifier, array $data): void
+    protected function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertCount(0, $violations, \sprintf('The product is not valid: %s', $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        $this->clearDoctrineUoW();
     }
 
     protected function createReferenceEntity(string $referenceEntityIdentifier): void
@@ -263,5 +261,22 @@ SQL,
 
         $handler = $this->get('akeneo_referenceentity.application.record.delete_record_handler');
         ($handler)($deleteCommand);
+    }
+
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }
