@@ -45,3 +45,10 @@ services:
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees:
+        arguments:
+            - '@database_connection'
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: console.command }

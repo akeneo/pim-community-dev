@@ -43,6 +43,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             type: integer
             gedmo:
                 - treeRoot
+                 #   identifierMethod: getRoot
         level:
             type: integer
             column: lvl
