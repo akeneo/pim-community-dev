@@ -14,19 +14,16 @@ DEPLOYMENT_DIR ?= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 PIM_SRC_PATH ?= $(realpath $(DEPLOYMENT_DIR)/..)
 TYPE_LONG ?= serenity
 ENV_NAME ?= dev
-EDITION_VERSION_FILE ?= EnterpriseVersion.php
 
 BUCKET ?= serenity-edition-dev
 ifeq ($(TYPE),grth)
 	TYPE_LONG := growth_edition
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
-	EDITION_VERSION_FILE := GrowthEditionVersion.php
 	BUCKET := growth-edition-dev
 endif
 ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
-	EDITION_VERSION_FILE := FreeTrialVersion.php
 	BUCKET := trial-edition-dev
 endif
 
@@ -532,7 +529,7 @@ migrate_flexibility_to_serenity:
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: build docker image for pim-enterprise-dev with the prod tag
-	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
+	echo "${RELEASE_NAME}" > "$(PIM_SRC_PATH)/version.txt"
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile ${PIM_ROOT_DIR}
 
 .PHONY: push-php-image-prod

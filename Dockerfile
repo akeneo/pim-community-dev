@@ -143,7 +143,7 @@ COPY src src
 COPY components components
 COPY grth grth
 COPY upgrades upgrades
-COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
+COPY composer.json package.json yarn.lock .env tsconfig.json *.js version.txt .
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
@@ -194,6 +194,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
+COPY --from=builder --chown=www-data:www-data /srv/pim/version.txt .
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
