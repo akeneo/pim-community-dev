@@ -6,7 +6,6 @@ services:
     environment:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
-      COMPOSER_MEMORY_LIMIT: '4G'
       PHP_IDE_CONFIG: 'serverName=pim-docker-cli'
       XDEBUG_CONFIG: 'client_host=172.17.0.1'
       XDEBUG_MODE: '${XDEBUG_MODE:-off}'
