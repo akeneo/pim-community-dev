@@ -34,7 +34,7 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.query.get_product_model_ids_with_outdated_attribute_option_spellcheck'
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
 
-# PIM enrichment BC anti-corruption layers
+    # PIM enrichment BC anti-corruption layers
     akeneo.pim.automation.calculate_product_model_completeness_of_required_attributes:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Enrichment\CalculateProductModelCompleteness
         arguments:
@@ -49,65 +49,70 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Completeness\GetNonRequiredProductModelAttributesMaskQuery'
             - '@pim_catalog.repository.product_model_without_permission'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker:
-        arguments:
-            $spellerProvider: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellSpellerProvider'
-            $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator'
-            $lineNumberCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellLineNumberCalculator'
-            $textCheckerDictionaryRepository: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\TextChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Checker'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellMultipleChecker:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Checker:
         arguments:
-            $checker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
-            $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator'
+            $spellerProvider: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\TigitzSpeller'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellSpellerProvider:
+    akeneo.pimee.automation.data_quality_insights.tigitz.aspell_speller:
+        class: 'PhpSpellcheck\Spellchecker\Aspell'
+        factory: ['PhpSpellcheck\Spellchecker\Aspell', 'create']
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
-            - '@logger'
             - '%env(ASPELL_BINARY_PATH)%'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\SupportedLocale\ChainedSupportedLocaleValidator'
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\SupportedLocale\SupportedPrefixLocaleValidator:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\TigitzSpeller:
+        arguments:
+            - '@akeneo.pimee.automation.data_quality_insights.tigitz.aspell_speller'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Result\AspellGlobalOffsetCalculator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Result\AspellLineNumberCalculator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\TextCheckerDictionaryRepository'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\MultipleChecker:
+        arguments:
+            $checker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Checker'
+            $globalOffsetCalculator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Result\AspellGlobalOffsetCalculator'
+
+    Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\SupportedLocale\ChainedSupportedLocaleValidator'
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\SupportedLocale\SupportedPrefixLocaleValidator:
         arguments:
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: pimee_data_quality_insights.inner_supported_locale_validator }
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\SupportedLocale\SupportedPortugueseLocaleValidator:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\SupportedLocale\SupportedPortugueseLocaleValidator:
         arguments:
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: pimee_data_quality_insights.inner_supported_locale_validator }
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\SupportedLocale\ChainedSupportedLocaleValidator:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\SupportedLocale\ChainedSupportedLocaleValidator:
         arguments:
             $supportedLocaleValidatorList: !tagged pimee_data_quality_insights.inner_supported_locale_validator
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellGlobalOffsetCalculator: ~
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\Result\AspellLineNumberCalculator: ~
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Result\AspellGlobalOffsetCalculator: ~
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Result\AspellLineNumberCalculator: ~
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\ProductValueInDatabaseDictionarySource:
         public: true
         arguments:
             $db: '@database_connection'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem: ~
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryLocalFilesystem: ~
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionary:
         arguments:
             $filesystemProvider: '@akeneo_file_storage.file_storage.filesystem_provider'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
-            $localFilesystemProvider : '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
+            $localFilesystemProvider: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryLocalFilesystem'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
 
-    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator:
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryGenerator:
         public: true
         arguments:
-            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
+            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionary'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $clock: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Clock\SystemClock'
 
-# Structure Evaluation
+    # Structure Evaluation
     Akeneo\Pim\Automation\DataQualityInsights\Application\StructureEvaluation\EvaluateAttributeLabelsSpelling:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\GetAttributeLabelsQuery'

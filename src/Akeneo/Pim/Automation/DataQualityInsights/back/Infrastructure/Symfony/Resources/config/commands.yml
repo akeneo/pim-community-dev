@@ -3,15 +3,15 @@ services:
         arguments:
             - '@database_connection'
             - '@akeneo.pim.automation.data_quality_insights.feature'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryLocalFilesystem'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryLocalFilesystem'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
         tags:
             - { name: 'console.command' }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\DemoHelperCommand:
         arguments:
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource'
-            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\ProductValueInDatabaseDictionarySource'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryGenerator'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateDashboardRates'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
             - '@database_connection'
@@ -28,9 +28,9 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Command\GenerateAspellDictionaryFromProductValuesCommand:
         arguments:
-            $productValueInDatabaseDictionarySource: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\ProductValueInDatabaseDictionarySource'
-            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionary'
-            $aspellDictionaryGenerator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellDictionaryGenerator'
+            $productValueInDatabaseDictionarySource: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\ProductValueInDatabaseDictionarySource'
+            $aspellDictionary: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionary'
+            $aspellDictionaryGenerator: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\AspellDictionaryGenerator'
             $allActivatedLocalesQuery: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Structure\CachedGetAllActivatedLocalesQuery'
         tags:
             - { name: 'console.command' }

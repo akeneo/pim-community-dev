@@ -86,8 +86,8 @@
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
         "league/flysystem-google-cloud-storage": "^2.3.0",
-        "mekras/php-speller": "^2.1.4",
-        "phpseclib/phpseclib": "2.0.31"
+        "phpseclib/phpseclib": "2.0.31",
+        "tigitz/php-spellchecker": "0.4.0"
     },
     "require-dev": {
         "akeneo/php-coupling-detector": "^0.7.0",

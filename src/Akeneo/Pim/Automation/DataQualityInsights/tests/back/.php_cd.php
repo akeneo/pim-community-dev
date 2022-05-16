@@ -115,7 +115,9 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Symfony\Contracts\Translation',
-            'Mekras\Speller',
+            'PhpSpellcheck\Spellchecker\Aspell',
+            'PhpSpellcheck\MisspellingInterface',
+            'PhpSpellcheck\Spellchecker\SpellcheckerInterface',
             'League\Flysystem',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',

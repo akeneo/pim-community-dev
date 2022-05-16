@@ -18,7 +18,10 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
  */
 class TextCheckResultCollection implements \IteratorAggregate, \Countable
 {
-    private $results;
+    /**
+     * @var array<TextCheckResult>
+     */
+    private array $results;
 
     public function __construct()
     {
@@ -39,7 +42,7 @@ class TextCheckResultCollection implements \IteratorAggregate, \Countable
         }, $this->results);
     }
 
-    public function getIterator()
+    public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->results);
     }
@@ -47,7 +50,7 @@ class TextCheckResultCollection implements \IteratorAggregate, \Countable
     /**
      * @inheritDoc
      */
-    public function count()
+    public function count(): int
     {
         return count($this->results);
     }
