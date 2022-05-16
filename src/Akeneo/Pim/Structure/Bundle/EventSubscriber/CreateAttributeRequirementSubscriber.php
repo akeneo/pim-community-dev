@@ -49,7 +49,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $event)
     {
-        $entity = $event->getEntity();
+        $entity = $event->getObject();
 
         if (!$entity instanceof ChannelInterface) {
             return;

@@ -24,7 +24,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith($requirementFactory);
 
-        $eventArgs->getEntity()->willReturn($channel);
+        $eventArgs->getObject()->willReturn($channel);
         $eventArgs->getEntityManager()->willReturn($entityManager);
     }
 
