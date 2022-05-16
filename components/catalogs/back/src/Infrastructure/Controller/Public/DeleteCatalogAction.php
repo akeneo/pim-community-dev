@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Exception\ValidationFailedException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -30,7 +29,6 @@ final class DeleteCatalogAction
     public function __construct(
         private CommandBus $commandBus,
         private QueryBus $queryBus,
-        private NormalizerInterface $normalizer,
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
     ) {
