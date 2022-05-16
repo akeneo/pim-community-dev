@@ -17,7 +17,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
-class FileSystemStorageClient implements StorageClientInterface
+final class FileSystemStorageClient implements StorageClientInterface
 {
     public function __construct(private FilesystemOperator $filesystemOperator)
     {

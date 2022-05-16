@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
-class StorageClientProvider
+final class StorageClientProvider
 {
     /**
      * @param iterable<StorageClientProviderInterface> $storageClientProviders
