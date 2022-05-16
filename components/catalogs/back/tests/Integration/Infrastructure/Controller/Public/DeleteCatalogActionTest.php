@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogActionTest extends IntegrationTestCase
+class DeleteCatalogActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
@@ -31,10 +31,13 @@ class GetCatalogActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItFindsTheCatalog(): void
+    public function testItDeletesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
-
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
@@ -42,28 +45,17 @@ class GetCatalogActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'GET',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
         );
 
         $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
-
-        Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload['id']);
-        Assert::assertSame('Store US', $payload['name']);
-        Assert::assertSame(false, $payload['enabled']);
+        Assert::assertEquals(204, $response->getStatusCode());
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
         $this->client = $this->getAuthenticatedClient([]);
-
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
@@ -71,36 +63,28 @@ class GetCatalogActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'GET',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
         );
 
         $response = $this->client->getResponse();
-
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
 
         $this->client->request(
-            'GET',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
         );
 
         $response = $this->client->getResponse();
-
         Assert::assertEquals(404, $response->getStatusCode());
     }
 
@@ -113,16 +97,15 @@ class GetCatalogActionTest extends IntegrationTestCase
             $anotherUserId,
         ));
 
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
 
         $this->client->request(
-            'GET',
+            'DELETE',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
         );
 
         $response = $this->client->getResponse();

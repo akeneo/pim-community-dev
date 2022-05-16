@@ -14,3 +14,10 @@ Feature:
     Given an existing catalog
     When the external application retrieves the catalog using the API
     Then the response should contain the catalog details
+
+  @database
+  Scenario: Delete a catalog
+    Given an existing catalog
+    When the external application deletes a catalog using the API
+    Then the response should be empty
+    And the catalog should be removed from the PIM
