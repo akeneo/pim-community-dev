@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEntityIdFactoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEnrichment\GetProductIdsFromProductIdentifiersQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
@@ -43,7 +43,8 @@ final class GetDataQualityInsightsPropertiesForProductProjection implements GetA
             $index = (string)$productId;
             $additionalProperties[$productIdentifier] = [
                 'data_quality_insights' => [
-                    'scores' => isset($productScores[$index]) ? $productScores[$index]->toArrayIntRank() : [],
+                    'scores' => isset($productScores[$index]) ? $productScores[$index]->allCriteria()->toArrayIntRank() : [],
+                    'scores_partial_criteria' => isset($productScores[$index]) ? $productScores[$index]->partialCriteria()->toArrayIntRank() : [],
                     'key_indicators' => isset($productKeyIndicators[$index]) ? $productKeyIndicators[$index] : []
                 ],
             ];

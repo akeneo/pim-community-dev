@@ -39,16 +39,18 @@ class ProductModelScoreRepository implements ProductModelScoreRepositoryInterfac
             $productModelId = sprintf('productModelId_%d', $index);
             $evaluatedAt = sprintf('evaluatedAt_%d', $index);
             $scores = sprintf('scores_%d', $index);
+            $scoresPartialCriteria = sprintf('scores_partial_criteria_%d', $index);
 
             $queries .= <<<SQL
-INSERT INTO pim_data_quality_insights_product_model_score (product_model_id, evaluated_at, scores)
-VALUES (:$productModelId, :$evaluatedAt, :$scores)
-ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores;
+INSERT INTO pim_data_quality_insights_product_model_score (product_model_id, evaluated_at, scores, scores_partial_criteria)
+VALUES (:$productModelId, :$evaluatedAt, :$scores, :$scoresPartialCriteria)
+ON DUPLICATE KEY UPDATE evaluated_at = :$evaluatedAt, scores = :$scores, scores_partial_criteria = :$scoresPartialCriteria;
 SQL;
             $queriesParameters[$productModelId] = (string)$productModelScore->getProductId();
             $queriesParametersTypes[$productModelId] = \PDO::PARAM_INT;
             $queriesParameters[$evaluatedAt] = $productModelScore->getEvaluatedAt()->format('Y-m-d');
             $queriesParameters[$scores] = \json_encode($productModelScore->getScores()->toNormalizedRates());
+            $queriesParameters[$scoresPartialCriteria] = \json_encode($productModelScore->getScoresPartialCriteria()->toNormalizedRates());
         }
 
         $this->dbConnection->executeQuery($queries, $queriesParameters, $queriesParametersTypes);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Automation\DataQualityInsights\Application;
+namespace Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProductsKeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
@@ -51,7 +51,7 @@ class ComputeProductsKeyIndicators
         foreach ($this->keyIndicatorQueries as $keyIndicatorQuery) {
             $keyIndicatorResult = $keyIndicatorQuery->compute($productIdCollection);
             if (!empty($keyIndicatorResult)) {
-                $keyIndicatorsResults[$keyIndicatorQuery->getName()] = $keyIndicatorResult;
+                $keyIndicatorsResults[(string)$keyIndicatorQuery->getCode()] = $keyIndicatorResult;
             }
         }
 

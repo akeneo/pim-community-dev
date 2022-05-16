@@ -52,18 +52,22 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
 
         $insertValues = implode(', ', array_map(function (Write\ProductScores $productScore) {
             return sprintf(
-                "(%d, '%s', '%s')",
+                "(%d, '%s', '%s', '%s')",
                 (int) (string) $productScore->getProductId(),
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
-                \json_encode($productScore->getScores()->toNormalizedRates())
+                \json_encode($productScore->getScores()->toNormalizedRates()),
+                \json_encode($productScore->getScoresPartialCriteria()->toNormalizedRates())
             );
         }, $productsScores));
 
         $this->dbConnection->executeQuery(
             <<<SQL
-INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores) 
+INSERT INTO pim_data_quality_insights_product_score (product_id, evaluated_at, scores, scores_partial_criteria) 
 VALUES $insertValues AS product_score_values
-ON DUPLICATE KEY UPDATE evaluated_at = product_score_values.evaluated_at, scores = product_score_values.scores;
+ON DUPLICATE KEY UPDATE 
+    evaluated_at = product_score_values.evaluated_at, 
+    scores = product_score_values.scores, 
+    scores_partial_criteria = product_score_values.scores_partial_criteria;
 SQL
         );
 
