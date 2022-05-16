@@ -22,7 +22,7 @@ final class CachedFindAllEditableLocalesForUser implements FindAllEditableLocale
 
     public function findAll(int $userId): array
     {
-        if (empty($this->cache[$userId])) {
+        if (!array_key_exists($userId, $this->cache)) {
             $this->cache[$userId] = $this->findAllEditableLocalesForUser->findAll($userId);
         }
 
