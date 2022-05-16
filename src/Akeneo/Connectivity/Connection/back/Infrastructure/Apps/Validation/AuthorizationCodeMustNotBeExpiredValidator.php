@@ -33,7 +33,7 @@ class AuthorizationCodeMustNotBeExpiredValidator extends ConstraintValidator
 
         $authCode = $this->storage->getAuthCode($value);
 
-        if ($authCode->hasExpired()) {
+        if ($authCode !== null && $authCode->hasExpired()) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->setCause($constraint->cause)

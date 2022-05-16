@@ -42,7 +42,10 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
     public function test_it_invalidates_a_not_known_client_id(): void
     {
-        $accessTokenRequest = new AccessTokenRequest('unknown_client_id', '12345', 'authorization_code', '12345', '12345');
+        $this->createApp();
+        $authCode = $this->getAuthCode();
+
+        $accessTokenRequest = new AccessTokenRequest('unknown_client_id', $authCode, 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'clientId', 'invalid_client');
@@ -50,7 +53,10 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
     public function test_it_invalidates_a_blank_client_id(): void
     {
-        $accessTokenRequest = new AccessTokenRequest('', '12345', 'authorization_code', '12345', '12345');
+        $this->createApp();
+        $authCode = $this->getAuthCode();
+
+        $accessTokenRequest = new AccessTokenRequest('', $authCode, 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'clientId', 'invalid_request');
@@ -59,8 +65,9 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     public function test_it_invalidates_a_blank_code_identifier(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '', '12345');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'codeIdentifier', 'invalid_request');
@@ -69,8 +76,9 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     public function test_it_invalidates_a_blank_code_challenge(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '12345', '');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'codeChallenge', 'invalid_request');
@@ -79,6 +87,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     public function test_it_invalidates_a_blank_authorization_code(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
         $accessTokenRequest = new AccessTokenRequest($this->clientId, '', 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
@@ -89,8 +98,22 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     public function test_it_invalidates_a_not_known_authorization_code(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
         $accessTokenRequest = new AccessTokenRequest($this->clientId, 'unknown_auth_code', 'authorization_code', '12345', '12345');
+        $violations = $this->validator->validate($accessTokenRequest);
+
+        $this->assertHasViolation($violations, 'authorizationCode', 'invalid_grant');
+    }
+
+    public function test_it_invalidates_an_expired_authorization_code(): void
+    {
+        $this->createApp();
+        $authCode = $this->getAuthCode();
+
+        \sleep(30);
+
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'authorizationCode', 'invalid_grant');
@@ -99,8 +122,9 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     public function test_it_invalidates_the_grant_type(): void
     {
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'wrong_grant_type', '12345', '12345');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'wrong_grant_type', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'grantType', 'unsupported_grant_type');
@@ -110,8 +134,9 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
     {
         $this->webMarketplaceApi->setCodeChallengeResult(false);
         $this->createApp();
+        $authCode = $this->getAuthCode();
 
-        $accessTokenRequest = new AccessTokenRequest($this->clientId, '12345', 'authorization_code', '12345', '12345');
+        $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
 
         $this->assertHasViolation($violations, 'codeChallenge', 'invalid_client');
