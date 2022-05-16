@@ -1,4 +1,4 @@
-import React, {RefObject, useRef, useState, useEffect} from 'react';
+import React, {RefObject, useRef} from 'react';
 import styled from 'styled-components';
 import {AssetsIllustration, CardGrid, Helper, Information} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -9,7 +9,6 @@ import ListAsset, {ASSET_COLLECTION_LIMIT} from 'akeneoassetmanager/domain/model
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 
 const MAX_DISPLAYED_ASSETS = 500;
-const GENERATE_PREVIEW_BATCH_SIZE = 10;
 
 const Container = styled.div`
   height: 100%;
@@ -51,36 +50,6 @@ const Mosaic = ({
   const shouldDisplayMoreResultsHelper =
     null !== resultCount && resultCount >= MAX_DISPLAYED_ASSETS && assetCollection.length === MAX_DISPLAYED_ASSETS;
 
-  /**
-   * PIM-10306: Batch the preview generation
-   * We want to generate the preview for the first batch of assets, then the next batch, and so on.
-   */
-  const [previewsToGenerate, setPreviewsToGenerate] = useState<AssetCode[]>([]);
-  const [generatedPreviews, setGeneratedPreviews] = useState<AssetCode[]>([]);
-
-  /* istanbul ignore next */
-  const handlePreviewGenerated = (assetCode: AssetCode): void => {
-    setGeneratedPreviews(generatedPreviews => [...generatedPreviews, assetCode]);
-  };
-
-  // We initialize the previews to generate with the first batch of assets
-  useEffect(() => {
-    setGeneratedPreviews([]);
-    const previewsToGenerate = assetCollection.slice(0, GENERATE_PREVIEW_BATCH_SIZE).map(asset => asset.code);
-    setPreviewsToGenerate(previewsToGenerate);
-  }, [context, assetCollection]);
-
-  // When a preview is generated and if the current batch is generated, we generate the next batch
-  useEffect(() => {
-    if (0 === generatedPreviews.length % GENERATE_PREVIEW_BATCH_SIZE) {
-      const nextPreviewsToGenerate = assetCollection
-        .slice(generatedPreviews.length, generatedPreviews.length + GENERATE_PREVIEW_BATCH_SIZE)
-        .map(asset => asset.code);
-
-      setPreviewsToGenerate(nextPreviewsToGenerate);
-    }
-  }, [generatedPreviews]);
-
   return (
     <>
       {hasReachMaximumSelection && (
@@ -104,8 +73,6 @@ const Mosaic = ({
                   onSelectionChange={onSelectionChange}
                   onClick={!selectionState ? onAssetClick : undefined}
                   assetWithLink={assetWithLink}
-                  shouldGeneratePreview={previewsToGenerate.includes(asset.code)}
-                  handlePreviewGenerated={handlePreviewGenerated}
                 />
               );
             })}

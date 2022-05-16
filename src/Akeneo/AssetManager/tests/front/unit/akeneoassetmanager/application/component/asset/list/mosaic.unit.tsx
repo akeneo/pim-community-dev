@@ -103,7 +103,7 @@ test('It displays selected assets', () => {
     />
   );
 
-  expect(isItemSelected).toHaveBeenCalledTimes(9);
+  expect(isItemSelected).toHaveBeenCalledTimes(3);
   expect(isItemSelected).toHaveBeenCalledWith('iphone7_pack');
   expect(isItemSelected).toHaveBeenCalledWith('iphone8_pack');
   expect(isItemSelected).toHaveBeenCalledWith('Philips22PDL4906H_pack');
