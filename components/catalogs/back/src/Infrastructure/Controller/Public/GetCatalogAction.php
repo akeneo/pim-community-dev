@@ -41,16 +41,21 @@ final class GetCatalogAction
         try {
             $catalog = $this->queryBus->execute(new GetCatalogQuery($id));
         } catch (ValidationFailedException $e) {
-            throw new ViolationHttpException($e->getViolations());
+            $this->throwNotFound($id);
         }
 
         $userId = $this->getCurrentUserId();
         if (null === $catalog || $catalog->getOwnerId() !== $userId) {
-            throw new NotFoundHttpException(
-                \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id)
-            );
+            $this->throwNotFound($id);
         }
 
         return new JsonResponse($this->normalizer->normalize($catalog, 'external_api'), Response::HTTP_OK);
+    }
+
+    private function throwNotFound(string $id): void
+    {
+        throw new NotFoundHttpException(
+            \sprintf('Catalog "%s" does not exist or you can\'t access it.', $id)
+        );
     }
 }
