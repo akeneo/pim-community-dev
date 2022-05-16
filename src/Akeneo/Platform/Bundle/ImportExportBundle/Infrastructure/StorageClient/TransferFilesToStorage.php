@@ -38,7 +38,7 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
                 $sourceStorage,
                 $destinationStorage,
                 $fileToTransfer->getFileKey(),
-                $fileToTransfer->getOutputFilePath()
+                $fileToTransfer->getOutputFileName()
             );
         }
     }

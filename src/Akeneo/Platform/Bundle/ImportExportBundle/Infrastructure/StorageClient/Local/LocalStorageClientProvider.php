@@ -25,7 +25,10 @@ class LocalStorageClientProvider implements StorageClientProviderInterface
 {
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
-        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter('/')));
+        $normalizedStorage = $storage->normalize();
+        $dirname = dirname($normalizedStorage['file_path']);
+
+        return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
     }
 
     public function supports(StorageInterface $storage): bool
