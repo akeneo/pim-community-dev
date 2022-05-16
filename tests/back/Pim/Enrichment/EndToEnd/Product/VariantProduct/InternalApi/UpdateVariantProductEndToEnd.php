@@ -23,7 +23,7 @@ class UpdateVariantProductEndToEnd extends InternalApiTestCase
         // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $product = $this->createProduct(
             'apollon_optionb_false',
-            'clothing_colorsize',
+            'familyA',
             [
                 new SetCategories(['master', 'categoryB']),
                 new ChangeParent('amor'),

@@ -280,17 +280,17 @@ final class UpsertProductIntegration extends TestCase
             new SetDateValue('a_date', null, null, new \DateTime('2010-10-10')),
             new SetFileValue('a_file', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))),
             new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
-            new SetMultiSelectValue('a_multi_select', null,null, ['optionA']),
-            new SetNumberValue('a_number_float', null,null, '3.14'),
-            new SetNumberValue('a_number_float_negative', null,null, '-3.14'),
-            new SetNumberValue('a_number_integer', null,null, '42'),
-            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null,null, ['brilliantine', 'tapestry', 'zibeline']),
-            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null,null, 'bright-pink'),
-            new SetSimpleSelectValue('a_simple_select', null,null, 'optionA'),
-            new SetTextValue('a_text', null,null, 'foo'),
-            new SetTextareaValue('a_text_area', null,null, self::TEXT_AREA_VALUE),
-            new SetBooleanValue('a_yes_no', null,null, true),
-            new SetImageValue('an_image', null,null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA']),
+            new SetNumberValue('a_number_float', null, null, '3.14'),
+            new SetNumberValue('a_number_float_negative', null, null, '-3.14'),
+            new SetNumberValue('a_number_integer', null, null, '42'),
+            new SetMultiReferenceEntityValue('a_ref_data_multi_select', null, null, ['brilliantine', 'tapestry', 'zibeline']),
+            new SetSimpleReferenceEntityValue('a_ref_data_simple_select', null, null, 'bright-pink'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
+            new SetTextValue('a_text', null, null, 'foo'),
+            new SetTextareaValue('a_text_area', null, null, self::TEXT_AREA_VALUE),
+            new SetBooleanValue('a_yes_no', null, null, true),
+            new SetImageValue('an_image', null, null, $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
         ]);
 
         $product = $this->productRepository->findOneByIdentifier('complex_product');
@@ -346,7 +346,7 @@ final class UpsertProductIntegration extends TestCase
 
         $this->createProduct(
             'product_with_asset',
-            'other',
+            'familyA',
             [new SetAssetValue('packshot_attr', null, null, ['packshot1'])]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
@@ -393,7 +393,7 @@ final class UpsertProductIntegration extends TestCase
 
         $this->createProduct(
             'product_with_ref_entities',
-            'other',
+            'familyA',
             [
                 new SetSimpleReferenceEntityValue('a_reference_entity_attribute', null, null, 'Akeneo'),
                 new SetMultiReferenceEntityValue('a_reference_entity_collection_attribute', null, null, ['Akeneo', 'Other'])
@@ -965,8 +965,8 @@ final class UpsertProductIntegration extends TestCase
 
         $this->createProduct(
             'identifier',
-            'other',
-            [new SetAssetValue('packshot_attr' , null, null, ['packshot1', 'packshot2', 'packshot3'])]
+            'familyA',
+            [new SetAssetValue('packshot_attr', null, null, ['packshot1', 'packshot2', 'packshot3'])]
         );
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset(); // Needed to update the product
 

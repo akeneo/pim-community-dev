@@ -51,10 +51,10 @@ abstract class InternalApiTestCase extends TestCase
         $command = UpsertProductCommand::createFromCollection(
             userId: $this->getUserId('admin'),
             productIdentifier: $identifier,
-            userIntents: [
+            userIntents: $familyCode ? [
                 new SetFamily($familyCode),
                 ...$userIntents
-            ]
+            ] : $userIntents
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
         $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();

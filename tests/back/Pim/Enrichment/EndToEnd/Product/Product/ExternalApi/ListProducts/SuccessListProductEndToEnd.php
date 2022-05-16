@@ -7,11 +7,14 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
@@ -48,43 +51,26 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         // scopable, categorized in 1 tree (master)
         $this->createProduct('scopable', [
             new SetCategories(['categoryA1', 'categoryA2']),
-            // TODO : use SetPriceCollectionValue when ready
-            /**'values' => [
-                'a_scopable_price' => [
-                    [
-                        'locale' => null,
-                        'scope' => 'ecommerce',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ],
-                    [
-                        'locale' => null,
-                        'scope' => 'tablet',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ]
-                ]
-            ]*/
+            new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
         $this->createProduct('localizable_and_scopable', [
-            'categories' => ['categoryA', 'master_china'],
-            'values' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'Great description', 'locale' => 'en_US', 'scope' => 'ecommerce_china'],
-                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                ]
-            ]
+            new SetCategories(['categoryA', 'master_china']),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Big description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'Medium description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'en_US', 'Great description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Description moyenne'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'zh_CN', 'hum...'),
         ]);
 
         $this->createProduct('product_china', [
@@ -492,6 +478,9 @@ JSON;
             new SetCategories(['master']),
             new SetFamily('familyA'),
         ]);
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             $this->get(ProductIdFactory::class)->createCollection([
