@@ -7,7 +7,6 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure
 use PhpSpec\ObjectBehavior;
 
 /**
- * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   https://opensource.org/licenses/MIT MIT
  * @source    https://github.com/mekras/php-speller
  */
