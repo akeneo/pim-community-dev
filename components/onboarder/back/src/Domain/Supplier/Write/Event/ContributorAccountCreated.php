@@ -2,7 +2,7 @@
 
 namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event;
 
-use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\ContributorAccount;
+use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 
 class ContributorAccountCreated
 {
