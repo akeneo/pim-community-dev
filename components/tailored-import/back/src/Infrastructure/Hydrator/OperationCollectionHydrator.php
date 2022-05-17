@@ -45,8 +45,9 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
 
     private function hydrateProperty(string $propertyCode, array $normalizedOperations): OperationCollection
     {
-        // TODO
-        return OperationCollection::create([]);
+        $configuredOperations = $this->getConfiguredOperations($normalizedOperations);
+
+        return OperationCollection::create($configuredOperations);
     }
 
     private function getConfiguredOperations(array $normalizedOperations): array

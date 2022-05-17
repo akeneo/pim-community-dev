@@ -101,6 +101,8 @@ class ExecuteDataMappingHandler
             [],
         );
 
-        return new ArrayValue($value);
+        $uniqueValue = array_values(array_unique($value));
+
+        return new ArrayValue($uniqueValue);
     }
 }

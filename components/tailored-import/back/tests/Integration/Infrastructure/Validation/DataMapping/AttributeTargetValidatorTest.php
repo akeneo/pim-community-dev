@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validat
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Test\Integration\Infrastructure\Validation\AbstractValidationTest;
 use Akeneo\Test\Integration\Configuration;
-use Symfony\Component\Validator\Constraints\Type;
 
 class AttributeTargetValidatorTest extends AbstractValidationTest
 {

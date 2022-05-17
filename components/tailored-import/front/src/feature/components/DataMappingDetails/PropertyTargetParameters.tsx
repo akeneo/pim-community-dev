@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled from 'styled-components';
 import {Checkbox, SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -18,10 +18,12 @@ const TargetParametersContainer = styled.div`
 
 type PropertyTargetParametersProps = {
   target: PropertyTarget;
+  /** Specific parameters of the property */
+  children?: ReactNode;
   onTargetChange: (target: PropertyTarget) => void;
 };
 
-const PropertyTargetParameters = ({target, onTargetChange}: PropertyTargetParametersProps) => {
+const PropertyTargetParameters = ({children, target, onTargetChange}: PropertyTargetParametersProps) => {
   const translate = useTranslate();
 
   const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>
@@ -38,6 +40,7 @@ const PropertyTargetParameters = ({target, onTargetChange}: PropertyTargetParame
         <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
           {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
         </Checkbox>
+        {children}
       </Container>
     </TargetParametersContainer>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isMultiSelectTarget} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty, ActionIfNotEmpty} from '../../../../components';
 import {SPLIT_OPERATION_TYPE} from '../../Operation';
@@ -30,7 +30,7 @@ const MultiSelectConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ActionIfNotEmpty target={target} onTargetChange={onTargetChange} />
+        <ActionIfNotEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
         <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
