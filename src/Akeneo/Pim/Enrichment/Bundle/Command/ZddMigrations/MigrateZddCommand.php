@@ -13,11 +13,16 @@ class MigrateZddCommand extends Command
 {
     protected static $defaultName = 'pim:zdd-migration:migrate';
 
+    /** @var ZddMigration[] */
+    private array $zddMigrations;
+
     public function __construct(
         private Connection $connection,
         private LoggerInterface $logger,
-        private array $zddMigrations
+        \Traversable $zddMigrations
     ) {
+        $this->zddMigrations = iterator_to_array($zddMigrations);
+
         Assert::allIsInstanceOf($this->zddMigrations, ZddMigration::class);
         usort($this->zddMigrations, fn ($a, $b) => \strcmp(
             (new \ReflectionClass($a))->getShortName(),
