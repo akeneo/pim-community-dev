@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\GetCatalogsByOwnerIdQuery;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
+/**
+ * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class GetCatalogsByOwnerIdQueryTest extends IntegrationTestCase
 {
-    private ?Connection $connection;
     private ?GetCatalogsByOwnerIdQuery $query;
+    private ?CommandBus $commandBus;
 
     public function setUp(): void
     {
@@ -21,8 +25,8 @@ class GetCatalogsByOwnerIdQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->query = self::getContainer()->get(GetCatalogsByOwnerIdQuery::class);
+        $this->commandBus = self::getContainer()->get(CommandBus::class);
     }
 
     public function testItGetsPaginatedCatalogsByOwnerId(): void
@@ -33,26 +37,26 @@ class GetCatalogsByOwnerIdQueryTest extends IntegrationTestCase
         $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
         $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
         $idJP = '34478398-d77b-44d6-8a71-4d9ba4cb2c3b';
-        $this->insertCatalog([
-            'id' => $idUS,
-            'name' => 'Store US',
-            'owner_id' => $ownerId,
-        ]);
-        $this->insertCatalog([
-            'id' => $idFR,
-            'name' => 'Store FR',
-            'owner_id' => $ownerId,
-        ]);
-        $this->insertCatalog([
-            'id' => $idJP,
-            'name' => 'Store JP',
-            'owner_id' => $anotherUserId,
-        ]);
-        $this->insertCatalog([
-            'id' => $idUK,
-            'name' => 'Store UK',
-            'owner_id' => $ownerId,
-        ]);
+        $this->commandBus->execute(new CreateCatalogCommand(
+            $idUS,
+            'Store US',
+            $ownerId,
+        ));
+        $this->commandBus->execute(new CreateCatalogCommand(
+            $idFR,
+            'Store FR',
+            $ownerId,
+        ));
+        $this->commandBus->execute(new CreateCatalogCommand(
+            $idJP,
+            'Store JP',
+            $anotherUserId,
+        ));
+        $this->commandBus->execute(new CreateCatalogCommand(
+            $idUK,
+            'Store UK',
+            $ownerId,
+        ));
 
         $resultFirstPage = $this->query->execute($ownerId, 0, 2);
         $expectedFirstPage = [
@@ -66,15 +70,5 @@ class GetCatalogsByOwnerIdQueryTest extends IntegrationTestCase
             new Catalog($idFR, 'Store FR', $ownerId),
         ];
         $this->assertEquals($expectedSecondPage, $resultSecondPage);
-    }
-
-    private function insertCatalog(array $values): void
-    {
-        $this->connection->insert(
-            'akeneo_catalog',
-            \array_merge($values, [
-                'id' => Uuid::fromString($values['id'])->getBytes(),
-            ])
-        );
     }
 }

@@ -45,8 +45,8 @@ class GetCatalogsByOwnerIdQuery implements GetCatalogsByOwnerIdQueryInterface
         )->fetchAllAssociative();
 
         return \array_map(fn ($row) => new Catalog(
-            $row['id'],
-            $row['name'],
+            (string) $row['id'],
+            (string) $row['name'],
             (int) $row['owner_id'],
         ), $catalogs);
     }

@@ -32,5 +32,5 @@ Feature:
   @database
   Scenario: Get catalogs
     Given several existing catalogs
-    When the external application retrieves the 2 first catalogs using the API
+    When the external application retrieves the catalogs using the API
     Then the response should contain catalogs details

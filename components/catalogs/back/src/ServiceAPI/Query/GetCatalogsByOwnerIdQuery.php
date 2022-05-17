@@ -17,7 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class GetCatalogsByOwnerIdQuery implements QueryInterface
 {
     public function __construct(
-        #[Assert\NotBlank]
         private int $ownerId,
         #[Assert\PositiveOrZero]
         private int $offset,

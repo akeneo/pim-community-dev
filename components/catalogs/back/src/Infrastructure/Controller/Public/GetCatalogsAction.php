@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class GetCatalogsByOwnerIdAction
+final class GetCatalogsAction
 {
     use GetCurrentUserIdTrait;
     use DenyAccessUnlessGrantedTrait;
@@ -38,13 +38,13 @@ final class GetCatalogsByOwnerIdAction
     {
         $this->denyAccessUnlessGrantedToListCatalogs();
 
-        $limit = $request->query->get('limit', 100);
-        $offset = $request->query->get('offset', 0);
+        $limit = (int) $request->query->get('limit', 100);
+        $offset = (int) $request->query->get('offset', 0);
 
         $ownerId = $this->getCurrentUserId();
 
         try {
-            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerIdQuery($ownerId, (int) $offset, (int) $limit));
+            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerIdQuery($ownerId, $offset, $limit));
         } catch (ValidationFailedException $e) {
             throw new BadRequestHttpException();
         }

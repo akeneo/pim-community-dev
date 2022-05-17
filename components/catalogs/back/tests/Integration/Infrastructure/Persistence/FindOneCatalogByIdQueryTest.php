@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Infrastructure\Persistence\FindOneCatalogByIdQuery;
+use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
-use Doctrine\DBAL\Connection;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -17,7 +17,7 @@ use Ramsey\Uuid\Uuid;
 class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 {
     private ?FindOneCatalogByIdQuery $query;
-    private ?Connection $connection;
+    private ?CommandBus $commandBus;
 
     public function setUp(): void
     {
@@ -25,19 +25,19 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
 
         $this->purgeDataAndLoadMinimalCatalog();
 
-        $this->connection = self::getContainer()->get(Connection::class);
         $this->query = self::getContainer()->get(FindOneCatalogByIdQuery::class);
+        $this->commandBus = self::getContainer()->get(CommandBus::class);
     }
 
     public function testItFindsTheCatalog(): void
     {
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->insertCatalog([
-            'id' => $id,
-            'name' => 'Store US',
-            'owner_id' => $owner->getId(),
-        ]);
+        $this->commandBus->execute(new CreateCatalogCommand(
+            $id,
+            'Store US',
+            $owner->getId(),
+        ));
 
         $result = $this->query->execute($id);
         $expected = new Catalog($id, 'Store US', $owner->getId());
@@ -50,15 +50,5 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
         $result = $this->query->execute('db1079b6-f397-4a6a-bae4-8658e64ad47c');
 
         $this->assertNull($result);
-    }
-
-    private function insertCatalog(array $values): void
-    {
-        $this->connection->insert(
-            'akeneo_catalog',
-            \array_merge($values, [
-                'id' => Uuid::fromString($values['id'])->getBytes(),
-            ])
-        );
     }
 }

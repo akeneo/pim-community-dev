@@ -108,9 +108,9 @@ class ApiContext implements Context
     }
 
     /**
-     * @When the external application retrieves the 2 first catalogs using the API
+     * @When the external application retrieves the catalogs using the API
      */
-    public function theExternalApplicationRetrievesTheTwoFirstCatalogsUsingTheApi()
+    public function theExternalApplicationRetrievesTheCatalogsUsingTheApi()
     {
         $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
@@ -151,18 +151,11 @@ class ApiContext implements Context
     {
         $payload = \json_decode($this->response->getContent(), true);
 
-        Assert::assertEquals(200, $this->response->getStatusCode());
         Assert::assertCount(2, $payload);
 
         Assert::assertArrayHasKey('id', $payload[0]);
         Assert::assertArrayHasKey('name', $payload[0]);
         Assert::assertArrayHasKey('enabled', $payload[0]);
-        Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $payload[0]['id']);
-
-        Assert::assertArrayHasKey('id', $payload[1]);
-        Assert::assertArrayHasKey('name', $payload[1]);
-        Assert::assertArrayHasKey('enabled', $payload[1]);
-        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload[1]['id']);
     }
 
     /**

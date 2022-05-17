@@ -20,5 +20,5 @@ akeneo_catalogs_public_update_catalog:
 
 akeneo_catalogs_public_get_catalogs:
     path: '/api/rest/v1/catalogs'
-    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetCatalogsByOwnerIdAction
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetCatalogsAction
     methods: [ GET ]
