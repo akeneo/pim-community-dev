@@ -45,10 +45,10 @@ class MigrateZddCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var ZddMigration $zddMigration */
         $this->logger->notice('pim:zdd-migration:migrate start');
 
         $migrationCount = 0;
+        /** @var ZddMigration $zddMigration */
         foreach($this->zddMigrations as $zddMigration) {
             if (!$this->isMigrated($zddMigration)) {
                 try {
