@@ -14,6 +14,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Query
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsightsTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -142,25 +143,25 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
     private function givenAProductWithoutValues(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
-        $this->updateKeyIndicators($product->getId(), false, false);
+        $this->updateKeyIndicators($product->getUuid(), false, false);
     }
 
     private function givenAProductWithPerfectEnrichmentAndImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
-        $this->updateKeyIndicators($product->getId(), true, true);
+        $this->updateKeyIndicators($product->getUuid(), true, true);
     }
 
     private function givenAProductWithPerfectEnrichmentButWithoutAttributeImage(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
-        $this->updateKeyIndicators($product->getId(), true, false);
+        $this->updateKeyIndicators($product->getUuid(), true, false);
     }
 
     private function givenAProductWithImageButMissingEnrichment(array $data = []): void
     {
         $product = $this->createProduct($this->getRandomCode(), $data);
-        $this->updateKeyIndicators($product->getId(), false, true);
+        $this->updateKeyIndicators($product->getUuid(), false, true);
     }
 
     private function givenAProductVariantWithoutValues(ProductModelInterface $productModel, array $data = []): void
@@ -173,7 +174,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         );
 
         $this->updateKeyIndicators($productModel->getId(), false, false, true);
-        $this->updateKeyIndicators($productVariant->getId(), false, false);
+        $this->updateKeyIndicators($productVariant->getUuid(), false, false);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentAndImage(ProductModelInterface $productModel, array $data = []): void
@@ -186,7 +187,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         );
 
         $this->updateKeyIndicators($productModel->getId(), true, true, true);
-        $this->updateKeyIndicators($productVariant->getId(), true, true);
+        $this->updateKeyIndicators($productVariant->getUuid(), true, true);
     }
 
     private function givenAProductVariantWithPerfectEnrichmentButWithoutAttributeImage(ProductModelInterface $productModel, array $data = []): void
@@ -199,10 +200,10 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
         );
 
         $this->updateKeyIndicators($productModel->getId(), true, false, true);
-        $this->updateKeyIndicators($productVariant->getId(), true, false);
+        $this->updateKeyIndicators($productVariant->getUuid(), true, false);
     }
 
-    private function updateKeyIndicators(int $productId, bool $goodEnrichment, bool $hasImage, bool $isProductModel = false): void
+    private function updateKeyIndicators(int|UuidInterface $productId, bool $goodEnrichment, bool $hasImage, bool $isProductModel = false): void
     {
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
@@ -227,7 +228,7 @@ final class GetProductKeyIndicatorsQueryIntegration extends DataQualityInsightsT
 
         $this->esClient->refreshIndex();
 
-        $updatedId = $isProductModel ? sprintf('product_model_%d', $productId) : sprintf('product_%d', $productId);
+        $updatedId = $isProductModel ? sprintf('product_model_%d', $productId) : sprintf('product_%s', $productId->toString());
         $this->esClient->updateByQuery(
             [
                 'script' => [

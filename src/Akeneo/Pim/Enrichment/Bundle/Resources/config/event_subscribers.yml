@@ -43,6 +43,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithQuantifiedAssociations\ComputeEntitySubscriber'
         arguments:
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_identifiers_query'
+            - '@akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_from_product_identifiers_query'
             - '@akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query'
         tags:
             - { name: kernel.event_subscriber }
@@ -67,6 +68,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber'
         arguments:
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
+            - '@database_connection'
         tags:
             - { name: kernel.event_subscriber }
 

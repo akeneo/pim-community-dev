@@ -54,7 +54,10 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
             static fn (array $row): string => (string) $row['identifier'],
             $rows
         );
-        $diffIdentifiers = \array_diff($productIdentifiers, $rowIdentifiers);
+        $diffIdentifiers = \array_diff(
+            array_map('strtolower', $productIdentifiers),
+            array_map('strtolower', $rowIdentifiers)
+        );
         if (\count($diffIdentifiers) > 0) {
             throw new ObjectNotFoundException(\sprintf('Product identifiers "%s" were not found.', \implode(',', $diffIdentifiers)));
         }
@@ -87,6 +90,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
             $projection = new ElasticsearchProductProjection(
                 $row['id'],
+                $row['uuid'],
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
@@ -119,6 +123,7 @@ WITH
     product as (
         SELECT
             product.id,
+            BIN_TO_UUID(product.uuid) as uuid,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -252,6 +257,7 @@ WITH
     )
     SELECT
         product.id,
+        product.uuid,
         product.identifier,
         product.is_enabled,
         product.parent_product_model_code,

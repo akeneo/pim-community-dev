@@ -3,8 +3,8 @@
 namespace AkeneoTest\Pim\Enrichment\Integration\Completeness;
 
 use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

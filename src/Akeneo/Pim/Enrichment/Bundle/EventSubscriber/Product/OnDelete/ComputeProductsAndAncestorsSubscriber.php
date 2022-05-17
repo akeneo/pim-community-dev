@@ -8,6 +8,9 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexe
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,12 +22,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInterface
 {
-    /** @var ProductAndAncestorsIndexer */
-    private $productAndAncestorsIndexer;
+    /**
+     * @var UuidInterface[]
+     */
+    private array $productUuidsCache = [];
 
-    public function __construct(ProductAndAncestorsIndexer $productAndAncestorsIndexer)
-    {
-        $this->productAndAncestorsIndexer = $productAndAncestorsIndexer;
+    public function __construct(
+        private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
+        private Connection $connection
+    ) {
     }
 
     /**
@@ -33,12 +39,46 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     public static function getSubscribedEvents() : array
     {
         return [
-            StorageEvents::POST_REMOVE   => ['deleteProduct'],
+            StorageEvents::PRE_REMOVE => ['setProductUuidCache'],
+            StorageEvents::PRE_REMOVE_ALL => ['setProductUuidsCache'],
+            StorageEvents::POST_REMOVE => ['deleteProduct'],
             StorageEvents::POST_REMOVE_ALL => ['deleteProducts'],
         ];
     }
 
-    public function deleteProduct(RemoveEvent $event) : void
+    public function setProductUuidCache(RemoveEvent $event): void
+    {
+        $product = $event->getSubject();
+        if (!$product instanceof ProductInterface) {
+            return;
+        }
+        // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+        if (get_class($product) == 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct') {
+            return;
+        }
+        if (!$event->hasArgument('unitary') || true !== $event->getArgument('unitary')) {
+            return;
+        }
+
+        $this->setProductUuidsCacheInner([$event->getSubjectId()]);
+    }
+
+    public function setProductUuidsCache(RemoveEvent $event): void
+    {
+        $products = $event->getSubject();
+        if (!is_array($products)) {
+            return;
+        }
+        $products = array_filter($products, function ($product) {
+            return $product instanceof ProductInterface
+                // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
+                && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
+        });
+
+        $this->setProductUuidsCacheInner(array_map(fn (ProductInterface $product): int => $product->getId(), $products));
+    }
+
+    public function deleteProduct(RemoveEvent $event): void
     {
         $product = $event->getSubject();
         if (!$product instanceof ProductInterface) {
@@ -54,6 +94,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
 
         $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
             [$event->getSubjectId()],
+            $this->productUuidsCache,
             $this->getAncestorCodes([$product])
         );
     }
@@ -73,6 +114,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         if (!empty($products)) {
             $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
                 $event->getSubjectId(),
+                $this->productUuidsCache,
                 $this->getAncestorCodes($products)
             );
         }
@@ -90,5 +132,30 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
         }
 
         return array_unique($ancestorCodes, SORT_STRING);
+    }
+
+    private function setProductUuidsCacheInner(array $productIds): void
+    {
+        if (0 === count($productIds)) {
+            $this->productUuidsCache = [];
+
+            return;
+        }
+
+        $result = $this->connection->fetchFirstColumn(<<<SQL
+            SELECT BIN_TO_UUID(uuid) AS uuid
+            FROM pim_catalog_product
+            WHERE id IN (:product_ids)
+            AND uuid IS NOT NULL
+        SQL, [
+            'product_ids' => $productIds
+        ], [
+            'product_ids' => Connection::PARAM_INT_ARRAY
+        ]);
+
+        $this->productUuidsCache = array_map(
+            fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
+            $result
+        );
     }
 }
