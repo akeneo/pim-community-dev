@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\Category;
 
-class CategoriesPool // implements \Stringable
+class CategoriesPool
 {
     /** @var array */
     private $categories;
@@ -11,7 +11,8 @@ class CategoriesPool // implements \Stringable
         $this->categories = [];
 
         foreach ($dbModels as $dbModel) {
-            $this->categories[] = new Category($dbModel);
+            $id = (int)$dbModel['id'];
+            $this->categories[$id] = new Category($dbModel);
         }
 
     }
@@ -26,7 +27,7 @@ class CategoriesPool // implements \Stringable
 
     public function getRoots(): iterable {
         $roots = [];
-        foreach ($this->categories as $c) {
+        foreach ($this->categories as $id =>$c) {
             if (is_null($c->getParentId())) {
                 $roots[] = clone $c;
             }
@@ -44,13 +45,4 @@ class CategoriesPool // implements \Stringable
         return $children;
     }
 
-//    public function __toString(): string {
-//        return "pool: {count($this->categories)} categories";
-//    }
-//
-//    public function __debugInfo() {
-//        return [
-//            'size' => count($this->categories),
-//        ];
-//    }
 }

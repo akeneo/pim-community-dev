@@ -46,12 +46,12 @@ class Category
         $this->id = $dbModel['id'];
         $this->code = $dbModel['code'];
 
-        $this->parent_id = $dbModel['parent_id'];
-        $this->root_id = $dbModel['root'];
+        $this->parent_id = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
+        $this->root_id =$dbModel['root'] === null ? null : (int)$dbModel['root'];
 
-        $this->lft = $dbModel['lft'];
-        $this->rgt = $dbModel['rgt'];
-        $this->lvl = $dbModel['lvl'];
+        $this->lft = (int)$dbModel['lft'];
+        $this->rgt = (int)$dbModel['rgt'];
+        $this->lvl = (int)$dbModel['lvl'];
 
         $this->isLinked = false;
         $this->parent = null;
@@ -105,7 +105,7 @@ class Category
         $this->lvl = $level;
     }
 
-    public function getChildren(): iterable
+    public function getChildren(): array
     {
         return $this->children;
     }
@@ -126,26 +126,30 @@ class Category
 
         $unlinkedChildren = $pool->findForParent($this->id);
 
+        // make sure that children are sorted by the lft property
+        // this will make the ordering basis for (lft,rgt) reordering in ::reorder()
         usort($unlinkedChildren, function (Category $c1, Category $c2) {
             return $c1->getLeft() - $c2->getLeft();
         });
 
         foreach ($unlinkedChildren as $child) {
             $child->link($pool);
-            $this->children[] = &$child;
+            $this->children[] = $child;
         }
 
         $this->isLinked = true;
     }
 
-    public function computeNested(int $left = 1, int $level = 0): Category
+    public function reorder(int $left = 1, int $level = 0): Category
     {
         $c = clone $this;
-
+        $c->children=[];
 
         $right = $left;
         foreach ($this->children as $child) {
-            $right = $child->computeNested($right + 1, $level + 1)->getRight();
+            $reorderedChild = $child->reorder($right + 1, $level + 1);
+            $right = $reorderedChild->getRight();
+            $c->children[] = $reorderedChild;
         }
 
         $c->setLeft($left);
@@ -155,30 +159,58 @@ class Category
         return $c;
     }
 
+    private function makeDiffError(string $message): string {
+        return "id={$this->id} code={$this->code}  : {$message}";
+    }
+
     public function diff(Category $c): array
     {
         $diffs = [];
-        if ($this->level !== $c->getLevel()) {
-            $diffs[] = "Level mismatch ({$this->level} vs {$c->getLevel()})";
+        if ($this->lvl !== $c->getLevel()) {
+            $diffs[] = $this->makeDiffError("Level mismatch (has:{$this->lvl}, expected:{$c->getLevel()})");
         }
         if ($this->lft !== $c->getLeft()) {
-            $diffs[] = "Left mismatch ({$this->lft} vs {$c->getLeft()})";
+            $diffs[] = $this->makeDiffError("Left mismatch (has:{$this->lft}, expected:{$c->getLeft()})");
         }
         if ($this->rgt !== $c->getRight()) {
-            $diffs[] = "Right mismatch ({$this->rgt} vs {$c->getRight()})";
+            $diffs[] = $this->makeDiffError("Right mismatch (has:{$this->rgt}, expected:{$c->getRight()})");
         }
 
         if (count($this->children) !== count($c->getChildren())) {
-            $diffs[] = "Children count  mismatch ({count($this->children)} vs {count($c->getChildren()})";
+            $diffs[] = $this->makeDiffError("Children count mismatch (has:{count($this->children)}, expected:{count($c->getChildren()})");
         }
 
+        //var_export($this->children);
+
         for ($i = 0; $i < count($this->children); $i++) {
+            $childrenDiffErrors =  $this->children[$i]->diff($c->getChildAt($i));
+
+            $childrenDiffErrorsWithContext = array_map(
+                function($childDiff) use ($i) {
+                    return "Child at index {$i}: ${childDiff}";
+                },
+                $childrenDiffErrors
+            );
+
             $diffs = array_merge(
                 $diffs,
-                $this->children[$i]->diff($c->getChildAt($i))
+               $childrenDiffErrorsWithContext
             );
         }
 
         return $diffs;
+    }
+
+    public function dumpNodes($level = 0, $maxLevel = 1) : array {
+        $spaces = str_repeat("\t", $level);
+        $rows = ["{$spaces}({$this->id},{$this->code},lvl={$this->lvl},lft={$this->lft},rgt={$this->rgt})"];
+        if ($level < $maxLevel) {
+            foreach ($this->children as $child) {
+                $rows = array_merge($rows,
+                    $child->dumpNodes($level + 1)
+                );
+            }
+        }
+        return $rows;
     }
 }

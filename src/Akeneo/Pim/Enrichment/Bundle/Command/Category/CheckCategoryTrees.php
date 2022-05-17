@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -30,7 +31,7 @@ class CheckCategoryTrees extends Command
     private $repository;
 
     public function __construct(
-        Connection $connection,
+        Connection         $connection,
         CategoryRepository $repository
 
     )
@@ -46,13 +47,20 @@ class CheckCategoryTrees extends Command
     protected function configure()
     {
         $this
-//            ->addArgument(
-//                'identifiers',
-//                InputArgument::REQUIRED,
-//                'The product identifiers to clean (comma separated values)'
-//            )
-//            ->setHidden(true)
-            ->setDescription('Check all category trees agains nested structure');
+            ->addOption(
+                'dump-corruptions',
+                'c',
+                InputOption::VALUE_NONE,
+                'Whether we dump detected corruptions or not',
+            )
+            ->addOption(
+                'dump-fixed-trees',
+                't',
+                InputOption::VALUE_NONE,
+                'Whether we dump the corrected trees or not',
+            )
+            ->addOption("max-level",'m',InputArgument::OPTIONAL,"max level for tree dumping", 1)
+            ->setDescription('Check all category trees against nested structure');
     }
 
     /**
@@ -61,60 +69,53 @@ class CheckCategoryTrees extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
-        if (false) {
-            $errors = $this->repository->verify();
-            if ($errors === false) {
-                echo "FINE!!\n";
-            } else {
-                var_export($errors);
-            }
-        }
+        $dumpCorruptions= !!$input->getOption('dump-corruptions');
 
-        // TODO lock tables !
+        $dumpFixedTrees = !!$input->getOption('dump-fixed-trees');
 
-
-           $this->repository->reorderAll(null, 'ASC', false);
-
-        // TODO unlock tables !
-
-        echo "Reordered!!\n";
-
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute2(InputInterface $input, OutputInterface $output): int
-    {
+        $dumpFixedTreesMaxLevel = $input->getOption("max-level");
 
         // 1 - read all categories and build object trees
 
+        echo "Fetching all categories\n";
         $pool = $this->getAllCategories();
 
         $roots = $pool->getRoots();
 
-        foreach($roots as $root) {
+        echo "Building trees\n";
+        foreach ($roots as $root) {
             $root->link($pool);
         }
 
+        $hasCorruptions = false;
 
+        foreach ($roots as $root) {
+            $output->writeln("======================================");
+            $output->writeln( "Checking root id={$root->getId()} code={$root->getCode()}");
 
-        // 2 - traversing trees
-        // for reach node
-        // check that
-        // - (node.lft,node.rgt) = (min(child.lft)-1, max(child.right)+1)
-        // - child[i].rgt = child[i+1].lft - 1
+            $fixedTree = $root->reorder();
+            $corruptions = $root->diff($fixedTree);
 
-        // on each violation report
+            $rootHasCorruptions = !!count($corruptions);
+            if ($rootHasCorruptions) {
+                if ($dumpCorruptions) {
+                    $output->writeln($corruptions);
+                }
+                if ($dumpFixedTrees) {
+                    $output->writeln($fixedTree->dumpNodes(0, $dumpFixedTreesMaxLevel));
+                }
+            }
 
+            $corruptionStatus = count($corruptions) ? 'CORRUPTED': 'SANE';
 
-        foreach($roots as $root) {
-            $this->checkRoot($root);
+            $hasCorruptions |= $rootHasCorruptions;
+
+            $output->writeln(
+                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus} "
+            );
         }
 
-        return 0;
-
+        return $hasCorruptions ? 1 : 0;
     }
 
     private function getAllCategories(): CategoriesPool
@@ -129,22 +130,6 @@ SQL;
         return new CategoriesPool($rows);
     }
 
-    private function checkRoot(Category $c) {
-        echo "Checking root [{$c->getCode()}]\n";
 
-
-
-        $this->checkCategory($c);
-}
-
-    private function computeCorrectlyNestedCategory(Category $c) {
-        echo "checking category id={$c->getId()}\n";
-
-        $violations = $c->diff($c->computeNested());
-
-        foreach($violations as $v) {
-            echo "{v}\n";
-        }
-    }
 
 }
