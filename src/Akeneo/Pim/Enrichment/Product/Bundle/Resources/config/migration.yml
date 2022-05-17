@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrationAuthorization:
+        class: Akeneo\Pim\Enrichment\Product\Bundle\Migration\WebClientMigrationAuthorization
+        arguments:
+            - '%kernel.environment%'
+            - '@monolog.logger'
