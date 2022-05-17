@@ -30,11 +30,6 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             gedmo:
                 timestampable:
                     on: create
-        root:
-            type: integer
-            gedmo:
-                - treeRoot
-                 #   identifierMethod: getRoot
         level:
             type: integer
             column: lvl
@@ -78,6 +73,14 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
                     onDelete: 'SET NULL'
             gedmo:
                 - treeParent
+        root:
+            targetEntity: Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface
+            joinColumn:
+                name: root
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeRoot
     manyToMany:
         products:
             targetEntity: Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface
