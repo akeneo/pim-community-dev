@@ -190,7 +190,7 @@ services:
             - { name: validator.constraint_validator }
 
     #Event subscribers
-    Akeneo\OnboarderSerenity\Application\Supplier\Subscriber\ContributorAddedSubscriber:
+    Akeneo\OnboarderSerenity\Application\Supplier\Subscriber\CreateContributorAccountOnContributorAdded:
         arguments:
             - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccountHandler'
         tags:
