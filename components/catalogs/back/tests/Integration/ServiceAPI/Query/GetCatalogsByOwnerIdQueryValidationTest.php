@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\ServiceAPI\Query;
 
-use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerIdQuery;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogCommandValidationTest extends IntegrationTestCase
+class GetCatalogsByOwnerIdQueryValidationTest extends IntegrationTestCase
 {
     private ?ValidatorInterface $validator;
 
@@ -26,7 +26,7 @@ class GetCatalogCommandValidationTest extends IntegrationTestCase
     /**
      * @dataProvider validations
      */
-    public function testItValidatesTheQuery(GetCatalogQuery $query, string $error): void
+    public function testItValidatesTheQuery(GetCatalogsByOwnerIdQuery $query, string $error): void
     {
         $violations = $this->validator->validate($query);
 
@@ -36,17 +36,13 @@ class GetCatalogCommandValidationTest extends IntegrationTestCase
     public function validations(): array
     {
         return [
-            'id is not empty' => [
-                'query' => new GetCatalogQuery(
-                    id: '',
-                ),
-                'error' => 'This value should not be blank.',
+            'offset is negative' => [
+                'query' => new GetCatalogsByOwnerIdQuery(123, -1, 100),
+                'error' => 'This value should be either positive or zero.',
             ],
-            'id is an uuid' => [
-                'query' => new GetCatalogQuery(
-                    id: 'not an uuid',
-                ),
-                'error' => 'This is not a valid UUID.',
+            'limit is negative' => [
+                'query' => new GetCatalogsByOwnerIdQuery(123, 0, -1),
+                'error' => 'This value should be either positive or zero.',
             ],
         ];
     }

@@ -28,3 +28,9 @@ Feature:
     When the external application updates a catalog using the API
     Then the response should contain the catalog details
     And the catalog should be updated in the PIM
+
+  @database
+  Scenario: Get catalogs
+    Given several existing catalogs
+    When the external application retrieves the catalogs using the API
+    Then the response should contain catalogs details
