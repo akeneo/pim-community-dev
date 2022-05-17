@@ -16,6 +16,11 @@ namespace Akeneo\Platform\TailoredImport\Domain\Query\Filesystem;
 interface XlsxFileReaderInterface
 {
     /**
+     * @return array<string>
+     */
+    public function readRow(?string $sheetName, int $lineNumber): array;
+
+    /**
      * @return array<array<string>>
      */
     public function readRows(?string $sheetName, int $start, int $length): array;
@@ -25,7 +30,7 @@ interface XlsxFileReaderInterface
      *
      * @return array<int, array<string>>
      */
-    public function readColumnsValues(?string $sheetName, int $productLine, array $columnIndices): array;
+    public function readColumnsValues(?string $sheetName, int $productLine, array $columnIndices, int $length): array;
 
     /**
      * @return array<string>

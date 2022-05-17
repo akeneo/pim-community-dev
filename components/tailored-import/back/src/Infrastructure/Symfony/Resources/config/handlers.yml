@@ -12,7 +12,7 @@ services:
   akeneo.tailored_import.handler.read_columns:
     class: Akeneo\Platform\TailoredImport\Application\ReadColumns\ReadColumnsHandler
     arguments:
-      - '@akeneo.tailored_import.query.filesystem.read_file_headers'
+      - '@akeneo.tailored_import.spout.remote_file_reader.factory'
       - '@akeneo.tailored_import.ramsey.uuid_generator'
 
   akeneo.tailored_import.handler.execute_data_mapping:
@@ -20,8 +20,6 @@ services:
     arguments:
       - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier'
       - '@akeneo.tailored_import.user_intent_registry'
-      - '@akeneo.tailored_import.user_intent_aggregator'
-      - '@Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\SourceConfigurationApplier\SourceConfigurationApplier'
       - '@akeneo.tailored_import.query.attribute.get_identifier_attribute_code'
 
   akeneo.tailored_import.handler.get_file_template_information_handler:
@@ -49,6 +47,3 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry
     arguments:
       - !tagged_iterator akeneo.tailored_import.user_intent_factory
-
-  akeneo.tailored_import.user_intent_aggregator:
-    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentAggregator\UserIntentAggregator

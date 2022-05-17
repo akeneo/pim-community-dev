@@ -1,23 +1,32 @@
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {
-  getDefaultTextTarget,
-  getDefaultNumberTarget,
+  DateTarget,
+  getDefaultBooleanTarget,
+  getDefaultDateTarget,
   getDefaultMeasurementTarget,
-  getDefaultSimpleSelectTarget,
   getDefaultMultiSelectTarget,
-  NumberTarget,
+  getDefaultNumberTarget,
+  getDefaultSimpleSelectTarget,
+  getDefaultTextTarget,
   MeasurementTarget,
-  TextTarget,
-  SimpleSelectTarget,
   MultiSelectTarget,
+  NumberTarget,
+  SimpleSelectTarget,
+  TextTarget,
 } from '../components';
 import {Attribute} from './Attribute';
-import {AttributeDataMapping, DataMapping} from './DataMapping';
+import {AttributeDataMapping, PropertyDataMapping, DataMapping} from './DataMapping';
 
 type TargetNotEmptyAction = 'set' | 'add';
 type TargetEmptyAction = 'clear' | 'skip';
 
-type AttributeTarget = NumberTarget | TextTarget | MeasurementTarget | SimpleSelectTarget | MultiSelectTarget;
+type AttributeTarget =
+  | DateTarget
+  | MeasurementTarget
+  | MultiSelectTarget
+  | NumberTarget
+  | SimpleSelectTarget
+  | TextTarget;
 
 type PropertyTarget = {
   code: string;
@@ -38,6 +47,8 @@ const createAttributeTarget = (
       return getDefaultMeasurementTarget(attribute, channel, locale);
     case 'pim_catalog_number':
       return getDefaultNumberTarget(attribute, channel, locale);
+    case 'pim_catalog_date':
+      return getDefaultDateTarget(attribute, channel, locale);
     case 'pim_catalog_identifier':
     case 'pim_catalog_textarea':
     case 'pim_catalog_text':
@@ -46,6 +57,8 @@ const createAttributeTarget = (
       return getDefaultSimpleSelectTarget(attribute, channel, locale);
     case 'pim_catalog_multiselect':
       return getDefaultMultiSelectTarget(attribute, channel, locale);
+    case 'pim_catalog_boolean':
+      return getDefaultBooleanTarget(attribute, channel, locale);
     default:
       throw new Error(`Invalid attribute target "${attribute.type}"`);
   }
@@ -66,6 +79,9 @@ const isAttributeDataMapping = (dataMapping: DataMapping): dataMapping is Attrib
 
 const isPropertyTarget = (target: Target): target is PropertyTarget => 'property' === target.type;
 
+const isPropertyDataMapping = (dataMapping: DataMapping): dataMapping is PropertyDataMapping =>
+  isPropertyTarget(dataMapping.target);
+
 const isTargetNotEmptyAction = (action: string): action is TargetNotEmptyAction => 'set' === action || 'add' === action;
 
 export type {AttributeTarget, PropertyTarget, Target, TargetNotEmptyAction, TargetEmptyAction};
@@ -76,4 +92,5 @@ export {
   isAttributeTarget,
   isPropertyTarget,
   isTargetNotEmptyAction,
+  isPropertyDataMapping,
 };

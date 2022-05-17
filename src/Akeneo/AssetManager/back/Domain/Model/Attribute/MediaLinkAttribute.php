@@ -27,12 +27,6 @@ class MediaLinkAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'media_link';
 
-    private Prefix $prefix;
-
-    private Suffix $suffix;
-
-    private MediaType $mediaType;
-
     private function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -43,9 +37,9 @@ class MediaLinkAttribute extends AbstractAttribute
         AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        Prefix $prefix,
-        Suffix $suffix,
-        MediaType $mediaType
+        private Prefix $prefix,
+        private Suffix $suffix,
+        private MediaType $mediaType
     ) {
         parent::__construct(
             $identifier,
@@ -58,10 +52,6 @@ class MediaLinkAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->prefix = $prefix;
-        $this->suffix = $suffix;
-        $this->mediaType = $mediaType;
     }
 
     public static function create(

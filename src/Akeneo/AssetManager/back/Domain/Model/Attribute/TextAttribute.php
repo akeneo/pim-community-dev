@@ -26,16 +26,6 @@ class TextAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'text';
 
-    private AttributeMaxLength $maxLength;
-
-    private AttributeIsTextarea $isTextarea;
-
-    private AttributeValidationRule $validationRule;
-
-    private AttributeRegularExpression $regularExpression;
-
-    private AttributeIsRichTextEditor $isRichTextEditor;
-
     protected function __construct(
         AttributeIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
@@ -46,11 +36,11 @@ class TextAttribute extends AbstractAttribute
         AttributeIsReadOnly $isReadOnly,
         AttributeValuePerChannel $valuePerChannel,
         AttributeValuePerLocale $valuePerLocale,
-        AttributeMaxLength $maxLength,
-        AttributeIsTextarea $isTextarea,
-        AttributeValidationRule $validationRule,
-        AttributeRegularExpression $regularExpression,
-        AttributeIsRichTextEditor $isRichTextEditor
+        private AttributeMaxLength $maxLength,
+        private AttributeIsTextarea $isTextarea,
+        private AttributeValidationRule $validationRule,
+        private AttributeRegularExpression $regularExpression,
+        private AttributeIsRichTextEditor $isRichTextEditor
     ) {
         if ($isTextarea->isYes()) {
             Assert::true(
@@ -77,12 +67,6 @@ class TextAttribute extends AbstractAttribute
             $valuePerChannel,
             $valuePerLocale
         );
-
-        $this->maxLength = $maxLength;
-        $this->isTextarea = $isTextarea;
-        $this->validationRule = $validationRule;
-        $this->regularExpression = $regularExpression;
-        $this->isRichTextEditor = $isRichTextEditor;
     }
 
     public static function createText(

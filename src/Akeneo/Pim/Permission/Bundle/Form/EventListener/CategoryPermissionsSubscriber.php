@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Form\EventListener;
 
 use Akeneo\Pim\Permission\Bundle\Form\Type\CategoryPermissionsType;
 use Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
@@ -33,23 +34,14 @@ use Symfony\Component\Form\FormEvents;
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
-    /** @var CategoryAccessManager */
-    protected $accessManager;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
     /** @var array store the previous roles to be able to do a diff of added/removed */
     protected $previousRoles = ['view' => [], 'edit' => [], 'own' => []];
 
-    /**
-     * @param CategoryAccessManager $accessManager
-     * @param SecurityFacade        $securityFacade
-     */
-    public function __construct(CategoryAccessManager $accessManager, SecurityFacade $securityFacade)
-    {
-        $this->accessManager = $accessManager;
-        $this->securityFacade = $securityFacade;
+    public function __construct(
+        private CategoryAccessManager $accessManager,
+        private SecurityFacade $securityFacade,
+        private FeatureFlags $featureFlags
+    ) {
     }
 
     /**
@@ -201,7 +193,8 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     protected function isApplicable(FormEvent $event)
     {
-        return null !== $event->getData()
+        return $this->featureFlags->isEnabled('permission')
+            &&null !== $event->getData()
             && null !== $event->getData()->getId()
             && $this->securityFacade->isGranted('pimee_enrich_category_edit_permissions');
     }

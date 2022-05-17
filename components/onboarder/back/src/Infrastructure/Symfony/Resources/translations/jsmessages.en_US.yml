@@ -54,6 +54,8 @@ onboarder:
                 label: Supplier label (required)
             contributors_form:
                 info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                invalid_emails_warning: Some emails are invalid and won’t be added.
+                emails_belonging_to_other_suppliers_warning: A contributor can only belong to one supplier. When you save this supplier, all emails shown as warnings will be deleted.
                 add_contributors: Add contributors
                 add_button: Add
                 search_by_email_address: Search by email address
@@ -65,9 +67,12 @@ onboarder:
                     email_error:
                         title: We were not able to add this contributor.
                         content: "The email {{ emailAddress }} is invalid : {{ message }}"
-            error: An error occured while loading the supplier.
+                    contributor_email_already_exists:
+                        title: We were not able to add this contributor.
+                        content: The email {{ emailAddress }} is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience.
+            loading_error: An error occured while loading the supplier.
             success_message: The supplier was successfully updated.
-            unknown_error: An error occured while updating the supplier.
+            update_error: An error occured while updating the supplier.
             delete_label: Delete this supplier
 
 pim_title:

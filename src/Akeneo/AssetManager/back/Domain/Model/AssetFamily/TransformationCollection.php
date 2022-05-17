@@ -88,7 +88,7 @@ class TransformationCollection implements \IteratorAggregate
             $findInNewCollection = $transformationCollection->getByTarget(
                 $currentTransformation->getTarget()
             );
-            if (null === $findInNewCollection) {
+            if (!$findInNewCollection instanceof Transformation) {
                 $this->removeTransformation($index);
                 continue;
             }

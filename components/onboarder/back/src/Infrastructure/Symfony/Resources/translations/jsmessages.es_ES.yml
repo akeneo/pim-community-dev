@@ -25,7 +25,6 @@ onboarder:
       no_supplier: Aún no hay proveedores.
       search_by_supplier: Buscar por Proveedor
       no_search_result: No hay proveedores que coincidan con esta búsqueda.
-      error: Se ha producido un error al cargar la lista de proveedores.
       dropdown:
         export_suppliers: Exportar proveedores
         download_template: Descargar plantilla
@@ -58,9 +57,7 @@ onboarder:
           email: Dirección de correo electrónico
         no_contributor: No hay colaboradores todavía.
         result_counter: '{0} Ningún resultado |{1} {{ count }} resultado|]1,Inf] {{ count }} resultados'
-      error: Se ha producido un error al cargar el proveedor.
       success_message: El proveedor se ha actualizado correctamente.
-      unknown_error: Se ha producido un error al actualizar el proveedor.
 pim_title:
   onboarder_serenity_supplier_list: Proveedores
   onboarder_serenity_supplier_edit: Editar un proveedor

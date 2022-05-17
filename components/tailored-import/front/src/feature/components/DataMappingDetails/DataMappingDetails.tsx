@@ -10,12 +10,15 @@ import {
   filterColumnsByUuids,
   replaceSampleData,
   isAttributeDataMapping,
+  isPropertyDataMapping,
   Target,
   isAttributeTarget,
   Operation,
+  isPropertyTarget,
 } from '../../models';
 import {useSampleDataFetcher, useRefreshedSampleDataFetcher} from '../../hooks';
 import {AttributeDataMappingDetails} from './AttributeDataMappingDetails';
+import {PropertyDataMappingDetails} from './PropertyDataMappingDetails';
 
 const DataMappingDetailsContainer = styled.div`
   height: 100%;
@@ -65,6 +68,8 @@ const DataMappingDetails = ({
   const handleTargetChange = (target: Target) => {
     if (isAttributeTarget(target)) {
       onDataMappingChange({...dataMapping, target});
+    } else if (isPropertyTarget(target)) {
+      onDataMappingChange({...dataMapping, target});
     }
   };
 
@@ -97,6 +102,17 @@ const DataMappingDetails = ({
       <Container>
         {isAttributeDataMapping(dataMapping) && (
           <AttributeDataMappingDetails
+            columns={columns}
+            dataMapping={dataMapping}
+            validationErrors={validationErrors}
+            onOperationsChange={handleOperationsChange}
+            onRefreshSampleData={handleRefreshSampleData}
+            onSourcesChange={handleSourcesChange}
+            onTargetChange={handleTargetChange}
+          />
+        )}
+        {isPropertyDataMapping(dataMapping) && (
+          <PropertyDataMappingDetails
             columns={columns}
             dataMapping={dataMapping}
             validationErrors={validationErrors}

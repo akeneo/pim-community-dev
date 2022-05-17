@@ -2,7 +2,7 @@ parameters:
     level: 1
     paths:
         - %rootDir%/../../../src/Akeneo/AssetManager
-    excludes_analyse:
+    excludePaths:
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/back/spec/*
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-fake-implementations.php
         - %rootDir%/../../../src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php

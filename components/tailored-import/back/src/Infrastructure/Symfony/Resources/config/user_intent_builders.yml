@@ -33,3 +33,13 @@ services:
     class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\TextareaUserIntentFactory
     tags:
       - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.date:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\DateUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }
+
+  akeneo.tailored_import.user_intent_factory.categories:
+    class: Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\CategoriesUserIntentFactory
+    tags:
+      - { name: akeneo.tailored_import.user_intent_factory }

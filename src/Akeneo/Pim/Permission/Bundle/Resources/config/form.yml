@@ -43,12 +43,14 @@ services:
         arguments:
             - '@pimee_security.manager.category_access'
             - '@oro_security.security_facade'
+            - '@feature_flags'
 
     pimee_security.form.subscriber.locale_permissions:
         class: '%pimee_security.form.subscriber.locale_permissions.class%'
         arguments:
             - '@pimee_security.manager.locale_access'
             - '@oro_security.security_facade'
+            - '@feature_flags'
 
     pimee_security.form.subscriber.job_profile_permissions:
         class: '%pimee_security.form.subscriber.job_profile_permissions.class%'
@@ -56,6 +58,7 @@ services:
             - '@pimee_security.manager.job_profile_access'
             - '@oro_security.security_facade'
             - '@pim_user.repository.group'
+            - '@feature_flags'
 
     # Provider
     pimee_security.form.provider.form.product:

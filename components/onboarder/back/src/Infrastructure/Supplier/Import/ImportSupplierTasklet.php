@@ -22,7 +22,7 @@ use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
+use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -30,39 +30,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class ImportSupplierTasklet implements TaskletInterface
 {
-    private const CLEAR_FREQUENCY = 100;
-
-    private ItemReaderInterface $reader;
-    private ValidatorInterface $validator;
-    private CreateSupplierHandler $createSupplierHandler;
-    private UpdateSupplierHandler $updateSupplierHandler;
-    private EntityManagerClearerInterface $unitOfWorkAndRepositoriesClearer;
-    private SupplierExists $supplierExists;
-    private JobRepositoryInterface $jobRepository;
-    private EventDispatcherInterface $eventDispatcher;
     private ?StepExecution $stepExecution;
-    private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode;
 
     public function __construct(
-        ItemReaderInterface $reader,
-        ValidatorInterface $validator,
-        CreateSupplierHandler $createSupplierHandler,
-        UpdateSupplierHandler $updateSupplierHandler,
-        EntityManagerClearerInterface $unitOfWorkAndRepositoriesClearer,
-        SupplierExists $supplierExists,
-        JobRepositoryInterface $jobRepository,
-        EventDispatcherInterface $eventDispatcher,
-        GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
+        private ItemReaderInterface $reader,
+        private ValidatorInterface $validator,
+        private CreateSupplierHandler $createSupplierHandler,
+        private UpdateSupplierHandler $updateSupplierHandler,
+        private SupplierExists $supplierExists,
+        private JobRepositoryInterface $jobRepository,
+        private EventDispatcherInterface $eventDispatcher,
+        private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
+        private LoggerInterface $logger,
     ) {
-        $this->reader = $reader;
-        $this->validator = $validator;
-        $this->createSupplierHandler = $createSupplierHandler;
-        $this->updateSupplierHandler = $updateSupplierHandler;
-        $this->unitOfWorkAndRepositoriesClearer = $unitOfWorkAndRepositoriesClearer;
-        $this->supplierExists = $supplierExists;
-        $this->jobRepository = $jobRepository;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->getSupplierIdentifierFromSupplierCode = $getSupplierIdentifierFromSupplierCode;
     }
 
     /**
@@ -73,8 +53,6 @@ final class ImportSupplierTasklet implements TaskletInterface
         if ($this->reader instanceof StepExecutionAwareInterface) {
             $this->reader->setStepExecution($this->stepExecution);
         }
-
-        $itemsProcessed = 0;
 
         while (true) {
             try {
@@ -92,18 +70,27 @@ final class ImportSupplierTasklet implements TaskletInterface
                     $this->stepExecution->incrementSummaryInfo('process');
                 }
             } catch (InvalidItemException $e) {
+                $this->logger->info(
+                    sprintf(
+                        'An error occurred while importing a supplier: "%s"',
+                        $e->getMessage(),
+                    ),
+                );
+
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
 
                 continue;
-            }
+            } catch (\Exception $e) {
+                $this->logger->error(
+                    sprintf(
+                        'An unhandled exception has been thrown while creating suppliers: "%s"',
+                        $e->getMessage(),
+                    ),
+                );
 
-            $itemsProcessed++;
-            if (0 === $itemsProcessed % static::CLEAR_FREQUENCY) {
-                $this->unitOfWorkAndRepositoriesClearer->clear();
+                continue;
             }
         }
-
-        $this->unitOfWorkAndRepositoriesClearer->clear();
     }
 
     public function setStepExecution(StepExecution $stepExecution): void
@@ -122,7 +109,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
         $errors = $this->validator->validate($command);
 
-        if ($errors->count() > 0) {
+        if (0 < $errors->count()) {
             $this->skipItemWithConstraintViolations($supplierData, $errors);
         }
 
@@ -141,7 +128,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
         $errors = $this->validator->validate($command);
 
-        if ($errors->count() > 0) {
+        if (0 < $errors->count()) {
             $this->skipItemWithConstraintViolations($supplierData, $errors);
         }
 
@@ -156,7 +143,6 @@ final class ImportSupplierTasklet implements TaskletInterface
     private function skipItemWithConstraintViolations(
         array $item,
         ConstraintViolationListInterface $violations,
-        \Exception $previousException = null,
     ): void {
         if ($this->stepExecution) {
             $this->stepExecution->incrementSummaryInfo('skip');
@@ -169,7 +155,6 @@ final class ImportSupplierTasklet implements TaskletInterface
             new FileInvalidItem($item, $itemPosition),
             [],
             0,
-            $previousException,
         );
     }
 

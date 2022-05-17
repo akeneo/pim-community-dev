@@ -14,10 +14,14 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {DataMapping, getDefaultOperation, Operation, OperationType} from '../../models';
 import {
   CleanHTMLTagsOperationBlock,
+  SplitOperationBlock,
   OperationBlockProps,
   OperationPreviewData,
   OperationSampleData,
-  CLEAN_HTML_TAGS_TYPE,
+  CLEAN_HTML_TAGS_OPERATION_TYPE,
+  SPLIT_OPERATION_TYPE,
+  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  SimpleSelectReplacementOperationBlock,
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -36,7 +40,9 @@ const OperationBlocksContainer = styled.div`
 const operationBlocks: {
   [operationType in OperationType]: FunctionComponent<OperationBlockProps>;
 } = {
-  [CLEAN_HTML_TAGS_TYPE]: CleanHTMLTagsOperationBlock,
+  [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
+  [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
+  [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
 };
 
 type OperationsProps = {
@@ -63,6 +69,10 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
     onOperationsChange([...dataMapping.operations, operation]);
   };
 
+  const handleOperationChange = (operation: Operation) => {
+    onOperationsChange(dataMapping.operations.map(value => (value.type === operation.type ? operation : value)));
+  };
+
   const handleOperationRemove = (operationType: OperationType) => {
     onOperationsChange(dataMapping.operations.filter(({type}) => type !== operationType));
   };
@@ -79,7 +89,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
         </SectionTitle.Title>
       </SectionTitle>
       {0 === dataMapping.sources.length ? (
-        <Helper>{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
+        <Helper level="info">{translate('akeneo.tailored_import.data_mapping.operations.no_source')}</Helper>
       ) : (
         <OperationBlocksContainer>
           <OperationSampleData
@@ -96,7 +106,15 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               return null;
             }
 
-            return <OperationBlock key={operation.type} operation={operation} onRemove={handleOperationRemove} />;
+            return (
+              <OperationBlock
+                key={operation.type}
+                targetCode={dataMapping.target.code}
+                operation={operation}
+                onChange={handleOperationChange}
+                onRemove={handleOperationRemove}
+              />
+            );
           })}
           <Dropdown>
             {0 < availableOperations.length ? (
@@ -122,7 +140,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                       key={operationType}
                       onClick={() => handleOperationAdd(getDefaultOperation(operationType))}
                     >
-                      {translate(`akeneo.tailored_import.data_mapping.operations.${operationType}`)}
+                      {translate(`akeneo.tailored_import.data_mapping.operations.${operationType}.title`)}
                     </Dropdown.Item>
                   ))}
                 </Dropdown.ItemCollection>

@@ -19,6 +19,32 @@ final class Contributors implements \Countable
         return new self(array_map(fn (string $email) => Contributor::fromEmail($email), $contributorEmails));
     }
 
+    public function computeCreatedContributorEmails(array $newContributorEmails): array
+    {
+        return \array_values(
+            \array_diff(
+                $newContributorEmails,
+                \array_map(
+                    fn (Contributor $contributor) => $contributor->email(),
+                    $this->contributors,
+                ),
+            ),
+        );
+    }
+
+    public function computeDeletedContributorEmails(array $newContributorEmails): array
+    {
+        return \array_values(
+            \array_diff(
+                \array_map(
+                    fn (Contributor $contributor) => $contributor->email(),
+                    $this->contributors,
+                ),
+                $newContributorEmails,
+            ),
+        );
+    }
+
     public function toArray(): array
     {
         return array_map(fn (Contributor $contributor) => ['email' => $contributor->email()], $this->contributors);

@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Validator\Constraint;
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Permission\Component\Validator\Constraint\IsGrantedLocale;
 use Akeneo\Pim\Permission\Component\Validator\Constraint\IsGrantedLocaleValidator;

@@ -11,23 +11,11 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductListAction
 {
-    /** @var FindSharedCatalogQueryInterface */
-    private $findSharedCatalogQuery;
-
-    /** @var FindProductIdentifiersQueryInterface */
-    private $findProductIdentifiersQuery;
-
-    /** @var int */
-    private $defaultPageSize;
-
     public function __construct(
-        FindSharedCatalogQueryInterface $findSharedCatalogQuery,
-        FindProductIdentifiersQueryInterface $findProductIdentifiersQuery,
-        int $defaultPageSize
+        private FindSharedCatalogQueryInterface $findSharedCatalogQuery,
+        private FindProductIdentifiersQueryInterface $findProductIdentifiersQuery,
+        private int $defaultPageSize
     ) {
-        $this->findSharedCatalogQuery = $findSharedCatalogQuery;
-        $this->findProductIdentifiersQuery = $findProductIdentifiersQuery;
-        $this->defaultPageSize = $defaultPageSize;
     }
 
     public function __invoke(
@@ -35,7 +23,7 @@ class ProductListAction
         string $sharedCatalogCode
     ): JsonResponse {
         $sharedCatalog = $this->findSharedCatalogQuery->find($sharedCatalogCode);
-        if (!$sharedCatalog) {
+        if ($sharedCatalog === null) {
             throw new NotFoundHttpException("Catalog \"$sharedCatalogCode\" does not exist");
         }
 

@@ -1,5 +1,13 @@
 ## Rename this file in phpspec.yml to customize the phpspec configuration
 suites:
+    ## Channel context
+    Channel:
+        namespace: AkeneoEnterprise\Channel
+        psr4_prefix: AkeneoEnterprise\Channel
+        spec_path: src/Akeneo/Channel/back/tests
+        src_path: src/Akeneo/Channel/back
+        spec_prefix: Specification
+
     ## Platform BC
     Platform:
         namespace: Akeneo\Platform

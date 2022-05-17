@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\MeasurementColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ReferenceEntityColumn;
@@ -79,7 +79,7 @@ abstract class AbstractFilterIntegration extends TestCase
             'row' => $filter['row'] ?? null,
         ], static fn ($value): bool => null !== $value);
 
-        $pqb = $this->get('pim_catalog.query.product_query_builder_factory')->create();
+        $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter($attributeCode, $this->getTestedOperator(), $data, [
             'locale' => $filter['locale'] ?? null,
             'scope' => $filter['scope'] ?? null,

@@ -12,8 +12,10 @@ services:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\RegisterKeyIndicatorFilter
         arguments:
             - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@feature_flags'
             - 'data_quality_insights_spelling_quality'
             - 'akeneo_data_quality_insights.product_grid.filter_label.spelling_quality'
+            - 'data_quality_insights_all_criteria'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 

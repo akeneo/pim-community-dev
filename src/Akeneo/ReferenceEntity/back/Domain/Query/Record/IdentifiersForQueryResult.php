@@ -26,7 +26,7 @@ class IdentifiersForQueryResult
     private const IDENTIFIERS = 'identifiers';
     private const MATCHES_COUNT = 'matches_count';
 
-    /** @param string[] */
+    /** @param string[] $identifiers */
     public function __construct(
         public array $identifiers,
         public int $matchesCount,

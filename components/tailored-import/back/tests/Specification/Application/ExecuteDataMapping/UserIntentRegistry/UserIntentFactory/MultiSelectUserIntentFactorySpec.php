@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactory\MultiSelectUserIntentFactory;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentFactoryInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ArrayValue;
 use PhpSpec\ObjectBehavior;
 
 class MultiSelectUserIntentFactorySpec extends ObjectBehavior
@@ -35,17 +36,17 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
     public function it_throws_an_exception_when_target_type_is_invalid(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_textarea');
-        $value = '';
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_textarea');
+        $value = new ArrayValue(['f']);
 
         $this->shouldThrow(new \InvalidArgumentException('The target must be an AttributeTarget and be of type "pim_catalog_multiselect"'))
             ->during('create', [$attributeTarget, $value]);
     }
 
-    public function it_create_a_set_multi_select_value_object(
+    public function it_creates_a_set_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_multiselect');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getActionIfNotEmpty()->willReturn('set');
         $attributeTarget->getChannel()->willReturn(null);
@@ -58,13 +59,13 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
             ['a_value']
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+        $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
-    public function it_create_an_add_multi_select_value_object(
+    public function it_creates_an_add_multi_select_value_object(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_multiselect');
         $attributeTarget->getCode()->willReturn('an_attribute_code');
         $attributeTarget->getActionIfNotEmpty()->willReturn('add');
         $attributeTarget->getChannel()->willReturn(null);
@@ -77,13 +78,13 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
             ['a_value']
         );
 
-        $this->create($attributeTarget, 'a_value')->shouldBeLike($expected);
+        $this->create($attributeTarget, new ArrayValue(['a_value']))->shouldBeLike($expected);
     }
 
     public function it_supports_target_attribute_type_catalog_multiselect(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_multiselect');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_multiselect');
 
         $this->supports($attributeTarget)->shouldReturn(true);
     }
@@ -91,7 +92,7 @@ class MultiSelectUserIntentFactorySpec extends ObjectBehavior
     public function it_does_not_support_others_target_attribute_type(
         AttributeTarget $attributeTarget
     ) {
-        $attributeTarget->getType()->willReturn('pim_catalog_number');
+        $attributeTarget->getAttributeType()->willReturn('pim_catalog_number');
 
         $this->supports($attributeTarget)->shouldReturn(false);
     }

@@ -63,6 +63,6 @@ SQL;
                 $this->platform
             );
             return AttributeCode::fromString($stringAttributeCode);
-        }, $result ?? []);
+        }, $result);
     }
 }

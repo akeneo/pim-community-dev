@@ -23,3 +23,8 @@ services:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
+
+    Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupplierContributorsBelongingToAnotherSupplier
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'

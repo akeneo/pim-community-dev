@@ -43,6 +43,16 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                 'operations' => [
                     ['type' => 'clean_html_tags']
                 ],
+                'target' => [
+                    'code' => 'name',
+                    'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_text',
+                    'locale' => null,
+                    'channel' => null,
+                    'source_configuration' => [],
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip'
+                ]
             ]
         );
 
@@ -67,6 +77,16 @@ class GeneratePreviewDataActionTest extends ControllerIntegrationTestCase
                 'operations' => [
                     ['type' => 'unknown_operation']
                 ],
+                'target' => [
+                    'code' => 'name',
+                    'type' => 'attribute',
+                    'attribute_type' => 'pim_catalog_text',
+                    'locale' => null,
+                    'channel' => null,
+                    'source_configuration' => [],
+                    'action_if_not_empty' => 'set',
+                    'action_if_empty' => 'skip'
+                ]
             ]
         );
 

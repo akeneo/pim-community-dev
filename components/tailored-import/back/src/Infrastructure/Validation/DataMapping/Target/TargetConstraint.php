@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Symfony\Component\Validator\Constraint;
 
 abstract class TargetConstraint extends Constraint
 {
     public function __construct(
         private array $columnsUuids,
-        private Attribute $attribute,
     ) {
         parent::__construct();
     }
@@ -28,10 +26,5 @@ abstract class TargetConstraint extends Constraint
     public function getColumnUuids(): array
     {
         return $this->columnsUuids;
-    }
-
-    public function getAttribute(): Attribute
-    {
-        return $this->attribute;
     }
 }

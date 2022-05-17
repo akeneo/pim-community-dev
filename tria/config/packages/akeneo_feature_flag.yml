@@ -1,6 +1,7 @@
 akeneo_feature_flag:
     feature_flags:
         - { feature: 'data_quality_insights', service: 'akeneo.pim.automation.data_quality_insights.feature' }
+        - { feature: 'data_quality_insights_all_criteria', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'free_trial', service: 'akeneo.free_trial.feature' }
         - { feature: 'marketplace_activate', service: 'akeneo_connectivity.connection.marketplace_activate.feature' }
         - { feature: 'connect_app_with_permissions', service: 'akeneo_connectivity.connection.connect_app_with_permissions.feature' }

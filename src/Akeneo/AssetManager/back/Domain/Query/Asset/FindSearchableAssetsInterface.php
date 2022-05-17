@@ -15,7 +15,6 @@ interface FindSearchableAssetsInterface
 
     /**
      * @param AssetIdentifier[] $assetIdentifiers
-     * @return \Iterator
      */
     public function byAssetIdentifiers(array $assetIdentifiers): \Iterator;
 }

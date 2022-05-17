@@ -47,7 +47,7 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
         return [
             'a valid clean html tag operation' => [
                 [
-                    "type" => "clean_html_tags",
+                    'type' => 'clean_html_tags',
                 ],
             ],
         ];
@@ -60,7 +60,7 @@ final class CleanHTMLTagsOperationValidatorTest extends AbstractValidationTest
                 'This value should be equal to "clean_html_tags".',
                 '[type]',
                 [
-                    "type" => "invalid_operation",
+                    'type' => 'invalid_operation',
                 ],
             ],
         ];

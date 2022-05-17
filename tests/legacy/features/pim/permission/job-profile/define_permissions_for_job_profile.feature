@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Define permissions for a job profile
   In order to be able to restrict access to job profiles
   As an administrator

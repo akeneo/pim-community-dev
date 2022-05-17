@@ -26,7 +26,6 @@ interface FindConnectorAssetsByIdentifiersInterface
 {
     /**
      * @param string[]    $identifiers
-     * @param AssetQuery $assetQuery
      *
      * @return ConnectorAsset[]
      */

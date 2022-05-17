@@ -7,11 +7,14 @@ parameters:
     pim_catalog_multiselect: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\MultiSelect\MultiSelect'
     pim_catalog_text: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Text\Text'
+    pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Date\Date'
 
   akeneo.tailored_import.validation.property_target_constraints: []
 
   akeneo.tailored_import.validation.operation_constraints:
     clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'
+    split: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperation'
+    simple_select_replacement: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\ReplacementOperation'
 
 services:
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\IsValidAttributeValidator:
@@ -42,6 +45,10 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\SearchAttributeOptionsQueryValidator:
+    tags:
+      - { name: validator.constraint_validator }
+
   Akeneo\Platform\TailoredImport\Infrastructure\Validation\SampleData\SampleDataQueryValidator:
     tags:
       - { name: validator.constraint_validator }
@@ -56,7 +63,13 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\SourceConfiguration\DecimalSeparatorValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\SplitOperationValidator:
+    arguments:
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SourceConfiguration\DecimalSeparatorValidator:
     arguments:
       - [',', '.', '٫‎']
     tags:
@@ -68,7 +81,7 @@ services:
     tags:
       - { name: validator.constraint_validator }
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Measurement\UnitValidator:
+  Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Measurement\UnitValidator:
     arguments:
       - '@akeneo_measurement.public_api.find_unit'
     tags:

@@ -97,7 +97,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
     }
 
     /**
-     * @var Attribute[]
+     * @param Attribute[] $attributes
      *
      * @return Attribute[]
      */

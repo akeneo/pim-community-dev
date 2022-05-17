@@ -10,18 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterface
 {
-    /** @var GetProductIdFromProductIdentifierQueryInterface */
-    private $getProductIdFromProductIdentifierQuery;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
     public function __construct(
-        GetProductIdFromProductIdentifierQueryInterface $getProductIdFromProductIdentifierQuery,
-        ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
+        private GetProductIdFromProductIdentifierQueryInterface $getProductIdFromProductIdentifierQuery,
+        private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
     ) {
-        $this->getProductIdFromProductIdentifierQuery = $getProductIdFromProductIdentifierQuery;
-        $this->productQueryBuilderFactory = $productQueryBuilderFactory;
     }
 
     public function find(SharedCatalog $sharedCatalog, array $options = []): array
@@ -46,9 +38,11 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
                 ));
             }
 
+            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
+            // Replace the $searchAfterProductId by a new $searchAfterProductUuid
             $pqbOptions['search_after'] = [
                 strtolower($searchAfterProductIdentifier),
-                'product_'.$searchAfterProductId,
+                'product_z',
             ];
         }
 
@@ -57,9 +51,7 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
 
         $results = $pqb->execute();
 
-        return array_map(function (IdentifierResult $result) {
-            return $result->getIdentifier();
-        }, iterator_to_array($results));
+        return array_map(static fn (IdentifierResult $result) => $result->getIdentifier(), iterator_to_array($results));
     }
 
     private function resolveOptions(array $options = []): array

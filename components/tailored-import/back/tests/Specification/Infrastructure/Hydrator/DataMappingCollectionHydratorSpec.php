@@ -83,61 +83,29 @@ class DataMappingCollectionHydratorSpec extends ObjectBehavior
             ),
         ];
 
-        $targetHydrator->hydrate([
-            'type' => 'attribute',
-            'code' => 'name',
-            'channel' => null,
-            'locale' => null,
-            'action_if_not_empty' => 'set',
-            'action_if_empty' => 'skip',
-        ], $indexedAttributes)->willReturn($nameTarget);
-
-        $targetHydrator->hydrate([
-            'type' => 'attribute',
-            'code' => 'description',
-            'channel' => 'ecommerce',
-            'locale' => 'fr_FR',
-            'action_if_not_empty' => 'set',
-            'action_if_empty' => 'skip',
-        ], $indexedAttributes)->willReturn($descriptionTarget);
+        $targetHydrator->hydrate($nameTarget->normalize(), $indexedAttributes)->willReturn($nameTarget);
+        $targetHydrator->hydrate($descriptionTarget->normalize(), $indexedAttributes)->willReturn($descriptionTarget);
 
         $emptyOperationCollection = OperationCollection::create([]);
         $operationCollection = OperationCollection::create([
             new CleanHTMLTagsOperation(),
         ]);
 
-        $operationCollectionHydrator->hydrate([])
-            ->willReturn($emptyOperationCollection);
-        $operationCollectionHydrator->hydrate([[
-            'type' => CleanHTMLTagsOperation::TYPE,
-        ]])->willReturn($operationCollection);
+        $operationCollectionHydrator->hydrate($nameTarget->normalize(), [])->willReturn($emptyOperationCollection);
+        $operationCollectionHydrator->hydrate($descriptionTarget->normalize(), [['type' => CleanHTMLTagsOperation::TYPE]])->willReturn($operationCollection);
 
         $this->hydrate(
             [
                 [
                     'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
-                    'target' => [
-                        'type' => 'attribute',
-                        'code' => 'name',
-                        'channel' => null,
-                        'locale' => null,
-                        'action_if_not_empty' => 'set',
-                        'action_if_empty' => 'skip',
-                    ],
+                    'target' => $nameTarget->normalize(),
                     'sources' => ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                     'operations' => [],
                     'sample_data' => [],
                 ],
                 [
                     'uuid' => 'b244c45c-d5ec-4993-8cff-7ccd04e82fec',
-                    'target' => [
-                        'type' => 'attribute',
-                        'code' => 'description',
-                        'channel' => 'ecommerce',
-                        'locale' => 'fr_FR',
-                        'action_if_not_empty' => 'set',
-                        'action_if_empty' => 'skip',
-                    ],
+                    'target' => $descriptionTarget->normalize(),
                     'sources' => ['2d9e967a-4efa-4a31-a254-99f7c50a145c'],
                     'operations' => [
                         ['type' => CleanHTMLTagsOperation::TYPE],

@@ -25,11 +25,9 @@ class CellsFormatter
         return array_map(fn ($cell) => $this->formatCell($cell), $cells);
     }
 
-    public function formatCell(mixed $cell): string
+    private function formatCell(mixed $cell): string
     {
         switch (true) {
-            case $cell instanceof \DateTime:
-                return $cell->format('c');
             case is_bool($cell):
                 return $cell ? 'TRUE' : 'FALSE';
             case is_string($cell):
@@ -38,6 +36,7 @@ class CellsFormatter
             case is_null($cell):
                 /* TODO validate the error message that we want expose to the user */
                 throw new \RuntimeException('');
+            case $cell instanceof \DateTime:
             default:
                 throw new \RuntimeException(sprintf('Unsupported cell format "%s"', gettype($cell)));
         }

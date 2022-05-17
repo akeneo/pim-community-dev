@@ -17,14 +17,13 @@ use Webmozart\Assert\Assert;
 
 class OperationCollection implements \IteratorAggregate
 {
-    /** @var Operation[] */
-    private array $operations = [];
-
-    private function __construct(array $operations)
+    /**
+     * @param Operation[] $operations
+     */
+    private function __construct(private array $operations)
     {
         Assert::notEmpty($operations);
         Assert::allIsInstanceOf($operations, Operation::class);
-        $this->operations = $operations;
     }
 
     public function getIterator(): \Iterator
@@ -34,6 +33,7 @@ class OperationCollection implements \IteratorAggregate
 
     /**
      * @param Operation[] $operations
+     *
      * @return OperationCollection
      */
     public static function create(array $operations): self

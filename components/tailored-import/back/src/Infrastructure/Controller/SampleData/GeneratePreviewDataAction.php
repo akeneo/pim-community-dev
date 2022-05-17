@@ -44,6 +44,7 @@ class GeneratePreviewDataAction
         }
 
         $query = new GeneratePreviewDataQuery();
+        $query->target = $request->get('target');
         $query->sampleData = $request->get('sample_data');
         $query->operations = $request->get('operations');
 

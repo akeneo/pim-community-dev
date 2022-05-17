@@ -256,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: 以 XLSX 格式导入产品表值
   csv_product_model_table_values_import.label: 以 CSV 格式导入产品模型表值
   xlsx_product_model_table_values_import.label: 以 XLSX 格式导入产品模型表值
+  default_steps.clean: 移除不存在的表选项值
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 从产品和产品模型中移除不存在的表选项值

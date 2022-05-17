@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 final class UserIntentRegistry
 {
     /**
-     * @var iterable<UserIntentFactoryInterface>
+     * @param iterable<UserIntentFactoryInterface> $factories
      */
     public function __construct(private iterable $factories)
     {

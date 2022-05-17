@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\GetKeyIndicatorsInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\GetKeyIndicatorsInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\KeyIndicator\AttributesWithPerfectSpelling;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read\KeyIndicator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\KeyIndicator\ComputeStructureKeyIndicator;
@@ -22,13 +22,18 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ChannelCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PhpSpec\ObjectBehavior;
 
 final class PimEnterpriseGetKeyIndicatorsSpec extends ObjectBehavior
 {
-    public function let(GetKeyIndicatorsInterface $getProductsKeyIndicators, ComputeStructureKeyIndicator $computeAttributesPerfectSpelling)
-    {
-        $this->beConstructedWith($getProductsKeyIndicators, $computeAttributesPerfectSpelling);
+    public function let(
+        GetKeyIndicatorsInterface $getProductsKeyIndicators,
+        ComputeStructureKeyIndicator $computeAttributesPerfectSpelling,
+        FeatureFlag $allCriteriaFeature
+    ) {
+        $allCriteriaFeature->isEnabled()->willReturn(true);
+        $this->beConstructedWith($getProductsKeyIndicators, $computeAttributesPerfectSpelling, $allCriteriaFeature);
     }
 
     public function it_gives_key_indicators_for_all_products_and_product_models($getProductsKeyIndicators, $computeAttributesPerfectSpelling)

@@ -8,3 +8,11 @@ framework:
                 # Alternatively, we can define as our middlewares instead of using the default ones
                 # see Messenger middleware docs: https://symfony.com/doc/current/messenger.html#middleware
                 default_middleware: true
+
+            catalogs.command.bus:
+                middleware:
+                    - validation
+                    - doctrine_transaction
+            catalogs.query.bus:
+                middleware:
+                    - validation

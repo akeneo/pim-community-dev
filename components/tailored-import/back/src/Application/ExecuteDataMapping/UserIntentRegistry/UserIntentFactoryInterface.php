@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 interface UserIntentFactoryInterface
 {
-    public function create(TargetInterface $target, string|array $value): ValueUserIntent;
+    public function create(TargetInterface $target, ValueInterface $value): UserIntent;
 
     public function supports(TargetInterface $target): bool;
 }

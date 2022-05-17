@@ -8,6 +8,7 @@ Feature: Browse smart attributes in the attribute grid
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @data_quality_insights-feature-enabled @data_quality_insights_all_criteria-feature-enabled
   Scenario: Successfully display the smart column in the attribute grid
     Given I am on the attributes page
     Then I should see the columns Label, Type, Group, Scopable, Localizable, Smart and Quality

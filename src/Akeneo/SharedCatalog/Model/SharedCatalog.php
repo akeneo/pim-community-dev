@@ -32,9 +32,7 @@ class SharedCatalog
             'code' => $this->code,
             'label' => $this->label,
             'publisher' => $this->publisher,
-            'recipients' => array_map(function ($recipient) {
-                return $recipient['email'];
-            }, $this->recipients ?? []),
+            'recipients' => array_map(static fn ($recipient) => $recipient['email'], $this->recipients ?? []),
             'channel' => $this->filters['structure']['scope'] ?? null,
             'catalogLocales' => $this->filters['structure']['locales'] ?? [],
             'attributes' => $this->filters['structure']['attributes'] ?? [],

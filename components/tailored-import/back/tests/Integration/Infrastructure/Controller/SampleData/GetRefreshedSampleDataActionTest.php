@@ -44,10 +44,10 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
             [],
             'GET',
             [
-                'current_sample' => ['Produit 1', 'Produit 2', 'Produit 3', 'ref1', 'ref2'],
+                'current_sample' => ['Produit 1', 'Produit 2', 'ref1'],
                 'file_key' => $fileKey,
                 'column_indices' => [0, 1],
-                'sheet_name' => 'Products',
+                'sheet_name' => 'Two lines',
                 'product_line' => 2,
             ],
         );
@@ -56,8 +56,7 @@ class GetRefreshedSampleDataActionTest extends ControllerIntegrationTestCase
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $response = \json_decode($response->getContent(), true);
-
-        $this->assertSame(['refreshed_data' => 'ref3'], $response);
+        $this->assertSame(['refreshed_data' => 'ref2'], $response);
     }
 
     private function storeFile(string $filePath): string

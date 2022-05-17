@@ -19,6 +19,7 @@ class AkeneoPimEnterpriseProductEnrichmentExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('product_values.yml');
         $loader->load('duplicate_product.yml');
+        $loader->load('migration.yml');
         $loader->load('webhook.yml');
     }
 }

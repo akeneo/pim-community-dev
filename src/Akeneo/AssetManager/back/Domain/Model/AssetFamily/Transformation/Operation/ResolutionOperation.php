@@ -26,14 +26,11 @@ class ResolutionOperation implements Operation
     private const OPERATION_NAME = 'resolution';
     private const RESOLUTION_UNIT_CHOICES = ['ppc', 'ppi'];
 
-    private int $resolutionX;
-
-    private int $resolutionY;
-
-    private string $resolutionUnit;
-
-    private function __construct(int $resolutionX, int $resolutionY, string $resolutionUnit)
-    {
+    private function __construct(
+        private int $resolutionX,
+        private int $resolutionY,
+        private string $resolutionUnit
+    ) {
         Assert::oneOf($resolutionUnit, self::RESOLUTION_UNIT_CHOICES, sprintf(
             "Parameter 'resolution-unit' must be one of this values: '%s'. '%s' given.",
             implode(', ', self::RESOLUTION_UNIT_CHOICES),
@@ -49,10 +46,6 @@ class ResolutionOperation implements Operation
                 ));
             }
         }
-
-        $this->resolutionX = $resolutionX;
-        $this->resolutionY = $resolutionY;
-        $this->resolutionUnit = $resolutionUnit;
     }
 
     public static function getType(): string

@@ -339,6 +339,25 @@ pim:
         requests:
           cpu: "100m"
           memory: "256Mi"
+    clean-product-scores:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:clean-product-scores --no-interaction"
+      schedule: "1 0 * * *"
+      resources:
+        requests:
+          cpu: "10m"
+          memory: "10Mi"
+    migrate-id-to-uuid:
+      enabled: true
+      pimCommand: "pim:product:migrate-to-uuid --no-interaction"
+      schedule: "45 * * * *"
+      resources:
+        requests:
+          cpu: "350m"
+          memory: "350Mi"
+  onboarder_serenity:
+    settings:
+      enabled: false
 
 # Onboarder
 onboarder:

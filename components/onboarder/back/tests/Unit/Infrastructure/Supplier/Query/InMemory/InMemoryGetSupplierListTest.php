@@ -24,7 +24,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new InMemoryGetSupplierList($repository);
 
-        for ($i = 1; $i <= 60; $i++) {
+        for ($i = 1; 60 >= $i; $i++) {
             $repository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),
@@ -66,7 +66,7 @@ final class InMemoryGetSupplierListTest extends TestCase
         $repository = new InMemoryRepository();
         $sut = new InMemoryGetSupplierList($repository);
 
-        for ($i = 1; $i <= 110; $i++) {
+        for ($i = 1; 110 >= $i; $i++) {
             $repository->save(Supplier::create(
                 Uuid::uuid4()->toString(),
                 sprintf('supplier_code_%d', $i),

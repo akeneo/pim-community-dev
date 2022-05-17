@@ -14,7 +14,7 @@ final class Label
             throw new \InvalidArgumentException('The supplier label cannot be empty.');
         }
 
-        if (strlen($label) > self::MAX_LENGTH) {
+        if (self::MAX_LENGTH < strlen($label)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The supplier label is too long. It should have %d characters or less.',

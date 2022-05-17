@@ -15,11 +15,11 @@ use Webmozart\Assert\Assert;
  */
 class ValueCollection implements \IteratorAggregate, \Countable
 {
-    private array $values;
-
-    private function __construct(array $values)
+    /**
+     * @param Value[] $values
+     */
+    private function __construct(private array $values)
     {
-        $this->values = $values;
     }
 
     public function normalize(): array
@@ -88,6 +88,6 @@ class ValueCollection implements \IteratorAggregate, \Countable
 
     public function count(): int
     {
-        return count($this->values);
+        return count((array) $this->values);
     }
 }

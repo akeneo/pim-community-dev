@@ -2,7 +2,7 @@ parameters:
   level: 5
   paths:
     - %rootDir%/../../../components/tailored-export/back
-  excludes_analyse:
+  excludePaths:
     - %rootDir%/../../../components/tailored-export/back/tests/Specification
   checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false

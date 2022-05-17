@@ -39,7 +39,10 @@
 - PIM-10377: Change Elastic Search field Limit for everyone
 - PIM-10384: Fix cannot build EE standard due to "can't resolve '@akeneo-pim-enterprise/onboarder'" error
 - PIM-10417: Increase ImageMagick disk resource
+- PIM-10429: Fix mismatch between Reference-entity records and their link in the PEF
 - PIM-10408: Fix bad product version when importing a product table value with wrong option case
+- PIM-10435: Fix search_after requests with codes using uppercase accented characters
+- PIM-10440: Fix error adding records into a table attribute if the reference entity had uppercase characters in the code
 
 ## Improvements
 

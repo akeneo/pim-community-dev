@@ -1,14 +1,14 @@
 import React from 'react';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {AttributeTarget, isTargetNotEmptyAction} from '../../../models';
+import {Target, isTargetNotEmptyAction} from '../../../models';
 
-type ActionIfNotEmptyProps = {
-  target: AttributeTarget;
-  onTargetChange: (target: AttributeTarget) => void;
+type ActionIfNotEmptyProps<T> = {
+  target: T;
+  onTargetChange: (target: T) => void;
 };
 
-const ActionIfNotEmpty = ({target, onTargetChange}: ActionIfNotEmptyProps) => {
+const ActionIfNotEmpty = <T extends Target>({target, onTargetChange}: ActionIfNotEmptyProps<T>) => {
   const translate = useTranslate();
 
   const handleActionIfNotEmptyChange = (actionIfNotEmpty: string) => {

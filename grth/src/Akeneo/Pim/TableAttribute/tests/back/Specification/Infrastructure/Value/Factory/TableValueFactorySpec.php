@@ -157,10 +157,10 @@ class TableValueFactorySpec extends ObjectBehavior
             ReferenceEntityColumn::fromNormalized([
                 'id' => ColumnIdGenerator::supplier(),
                 'code' => 'supplier',
-                'reference_entity_identifier' => 'brand',
+                'reference_entity_identifier' => 'BRAND',
             ])
         ]));
-        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['brand' => ['AKENeo']])
+        $getExistingRecordCodes->fromReferenceEntityIdentifierAndRecordCodes(['BRAND' => ['AKENeo']])
             ->willReturn(['brand' => ['Akeneo']]);
 
         $value = $this->createWithoutCheckingData(

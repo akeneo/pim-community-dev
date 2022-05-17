@@ -151,6 +151,9 @@ workflows:
             - test_tria:
                   requires:
                       - build_srnt_dev
+            - test_catalogs:
+                  requires:
+                      - build_srnt_dev
             - pull_request_success:
                   requires:
                       - test_back_behat_legacy
@@ -159,3 +162,4 @@ workflows:
                       - test_back_data_migrations
                       - test_grth
                       - test_tria
+                      - test_catalogs

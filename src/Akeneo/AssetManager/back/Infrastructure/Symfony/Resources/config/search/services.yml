@@ -54,11 +54,6 @@ services:
             - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales'
 
     # Query function
-    akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_activated_locales_per_channels:
-        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Channel\SqlFindActivatedLocalesPerChannels
-        arguments:
-            - '@database_connection'
-
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_identifiers_for_query:
         class: Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\FindIdentifiersForQuery
         arguments:
@@ -74,7 +69,7 @@ services:
        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
        arguments:
            - '@database_connection'
-           - '@akeneoassetmanager.infrastructure.persistence.cache.query.find_activated_locales_per_channels'
+           - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets:
        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets

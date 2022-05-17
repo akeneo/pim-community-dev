@@ -25,6 +25,8 @@ final class DatabaseGetIdentifierFromCodeIntegration extends SqlIntegrationTestC
     /** @test */
     public function itReturnsNullIfThereIsNoSupplierForTheGivenCode(): void
     {
+        $this->createSupplier();
+
         $supplierIdentifier = ($this->get(GetIdentifierFromCode::class))(
             Code::fromString('unknown_supplier_code')
         );

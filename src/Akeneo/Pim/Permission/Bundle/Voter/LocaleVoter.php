@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Voter;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Permission\Bundle\Manager\LocaleAccessManager;
 use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\UserManagement\Component\Model\GroupInterface;

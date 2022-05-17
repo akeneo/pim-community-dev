@@ -196,7 +196,7 @@ class TableValueFactory implements ValueFactory
                     continue;
                 }
 
-                $filteredRecordCodes = $existingRecordCodes[$referenceEntityColumn->referenceEntityIdentifier()->asString()] ?? [];
+                $filteredRecordCodes = $existingRecordCodes[\strtolower($referenceEntityColumn->referenceEntityIdentifier()->asString())] ?? [];
                 $valueIndex = array_search(
                     \strtolower((string) $value),
                     \array_map('strtolower', $filteredRecordCodes)

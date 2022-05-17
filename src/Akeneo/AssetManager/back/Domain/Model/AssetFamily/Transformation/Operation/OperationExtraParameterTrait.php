@@ -18,7 +18,7 @@ trait OperationExtraParameterTrait
     private static function assertNoExtraParameters(array $parameters, array $allowedParameters): void
     {
         $extraFields = array_keys(array_diff_key($parameters, array_flip($allowedParameters)));
-        if (count($extraFields) > 0) {
+        if ($extraFields !== []) {
             $messages = [];
             foreach ($extraFields as $extraField) {
                 $messages[] = sprintf(

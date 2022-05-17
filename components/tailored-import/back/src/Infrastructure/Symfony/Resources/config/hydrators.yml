@@ -5,10 +5,6 @@ services:
       - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator'
       - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator'
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceConfigurationHydrator: ~
-
   Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\OperationCollectionHydrator: ~
 
-  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator:
-    arguments:
-      - '@Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\SourceConfigurationHydrator'
+  Akeneo\Platform\TailoredImport\Infrastructure\Hydrator\TargetHydrator: ~

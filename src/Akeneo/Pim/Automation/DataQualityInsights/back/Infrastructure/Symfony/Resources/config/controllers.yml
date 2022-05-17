@@ -2,7 +2,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Symfony\Controller\CheckTextController:
         public: true
         arguments:
-            $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Aspell\AspellChecker'
+            $textChecker: '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Spellcheck\Checker'
             $supportedLocaleValidator: '@Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator'
             $logger: '@logger'
 

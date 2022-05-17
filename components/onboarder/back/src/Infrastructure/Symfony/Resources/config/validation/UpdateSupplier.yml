@@ -11,3 +11,5 @@ Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier:
           - Email: ~
           - Length:
               max: 255
+          - Akeneo\OnboarderSerenity\Application\Supplier\Validation\UniqueContributorEmail: ~
+

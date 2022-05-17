@@ -25,7 +25,6 @@ onboarder:
       no_supplier: Il n'y a pas encore de fournisseurs.
       search_by_supplier: Rechercher par fournisseur
       no_search_result: Il n'y a aucun fournisseur correspondant à cette recherche.
-      error: Une erreur est survenue lors du chargement de la liste des fournisseurs.
       dropdown:
         export_suppliers: Exporter les fournisseurs
         download_template: Téléchargez le modèle
@@ -58,9 +57,7 @@ onboarder:
           email: Adresse e-mail
         no_contributor: Il n'y a pas encore de contributeurs.
         result_counter: '{0} Pas de résultat|{1} {{ count }} résultat|]1,Inf] {{ count }} résultats'
-      error: Une erreur est survenue lors du chargement du fournisseur.
       success_message: Le fournisseur a été mis à jour avec succès.
-      unknown_error: Une erreur est survenue lors de la mise à jour du fournisseur.
 pim_title:
   onboarder_serenity_supplier_list: Fournisseurs
   onboarder_serenity_supplier_edit: Modifier un fournisseur

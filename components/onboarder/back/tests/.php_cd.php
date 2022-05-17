@@ -39,8 +39,10 @@ $rules = [
             // PIM coupling
 
             // External dependencies coupling
+            'Psr\Log\LoggerInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
+            'Symfony\Component\Validator\Constraint',
         ],
     )->in('Akeneo\OnboarderSerenity\Application'),
 
@@ -61,15 +63,17 @@ $rules = [
             'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
             'Akeneo\Tool\Component\Connector\Exception\InvalidItemFromViolationsException',
             'Akeneo\Tool\Component\Connector\Step\TaskletInterface',
-            'Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
+            'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
             'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
             'Box\Spout\Writer\Common\Creator\WriterFactory',
+            'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
+            'Psr\Log\LoggerInterface',
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
@@ -104,9 +108,12 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
+            'Psr\Log\NullLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
+            'Symfony\Component\Validator\Context\ExecutionContextInterface',
+            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 

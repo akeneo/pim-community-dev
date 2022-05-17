@@ -7,13 +7,8 @@ use Doctrine\DBAL\Types\Types;
 
 class GetProductIdFromProductIdentifierQuery implements GetProductIdFromProductIdentifierQueryInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    public function __construct(
-        Connection $connection
-    ) {
-        $this->connection = $connection;
+    public function __construct(private Connection $connection)
+    {
     }
 
     /**

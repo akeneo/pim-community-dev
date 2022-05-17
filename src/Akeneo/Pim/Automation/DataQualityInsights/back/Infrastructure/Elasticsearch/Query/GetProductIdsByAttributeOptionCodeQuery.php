@@ -19,12 +19,15 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\AttributeOption
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
+use Doctrine\DBAL\Connection;
+use Ramsey\Uuid\Uuid;
 
 final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAttributeOptionCodeQueryInterface
 {
     public function __construct(
         private Client                          $esClient,
-        private ProductEntityIdFactoryInterface $idFactory
+        private ProductEntityIdFactoryInterface $idFactory,
+        private Connection $connection
     ) {
     }
 
@@ -68,10 +71,23 @@ final class GetProductIdsByAttributeOptionCodeQuery implements GetProductIdsByAt
                 $productIds[] = str_replace('product_', '', $product['_source']['id']);
                 $searchAfter = $product['sort'];
             }
+            $count = \count($productIds);
 
-            yield $this->idFactory->createCollection($productIds);
+            $productUuids = \array_filter($productIds, fn ($productId): bool => Uuid::isValid($productId));
+            $productIds = \array_values(\array_filter($productIds, fn ($productId): bool => \is_numeric($productId)));
 
-            $returnedProducts += count($productIds);
+            $productIdsFromUuids = [];
+            if ([] !== $productUuids) {
+                $productIdsFromUuids = $this->connection->executeQuery(
+                    'SELECT id FROM pim_catalog_product WHERE uuid IN (:uuids)',
+                    ['uuids' => \array_map(fn (string $uuid): string => Uuid::fromString($uuid)->getBytes(), $productUuids)],
+                    ['uuids' => Connection::PARAM_STR_ARRAY]
+                )->fetchFirstColumn();
+            }
+
+            yield $this->idFactory->createCollection(\array_merge($productIds, $productIdsFromUuids));
+
+            $returnedProducts += $count;
             $result = $returnedProducts < $totalProducts ? $this->searchAfter($searchQuery, $searchAfter) : [];
         }
     }

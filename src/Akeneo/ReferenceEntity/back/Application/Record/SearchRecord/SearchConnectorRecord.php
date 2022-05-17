@@ -34,7 +34,7 @@ class SearchConnectorRecord
     public function __invoke(RecordQuery $query): SearchConnectorRecordResult
     {
         $result = $this->findIdentifiersForQuery->find($query);
-        $records = empty($result) ? [] : $this->findConnectorRecordsByIdentifiers->find($result->identifiers, $query);
+        $records = $this->findConnectorRecordsByIdentifiers->find($result->identifiers, $query);
 
         return SearchConnectorRecordResult::createFromSearchAfterQuery($records, $result->lastSortValue);
     }

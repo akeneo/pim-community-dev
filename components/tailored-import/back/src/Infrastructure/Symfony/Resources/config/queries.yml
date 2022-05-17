@@ -1,6 +1,6 @@
 parameters:
-    akeneo.tailored_import.supported_system_properties: []
-#        - 'categories'
+    akeneo.tailored_import.supported_system_properties:
+        - 'categories'
 #        - 'enabled'
 #        - 'family'
 #        - 'parent'
@@ -10,8 +10,8 @@ parameters:
 #        - 'akeneo_reference_entity_collection'
 #        - 'akeneo_reference_entity'
 #        - 'pim_catalog_asset_collection'
-#        - 'pim_catalog_boolean'
-#        - 'pim_catalog_date'
+        - 'pim_catalog_boolean'
+        - 'pim_catalog_date'
 #        - 'pim_catalog_file'
 #        - 'pim_catalog_image'
         - 'pim_catalog_metric'
@@ -22,14 +22,6 @@ parameters:
 #        - 'pim_catalog_table'
         - 'pim_catalog_text'
         - 'pim_catalog_textarea'
-
-    akeneo.tailored_import.supported_collection_system_properties: []
-#        - 'categories'
-
-    akeneo.tailored_import.supported_collection_attribute_types:
-#        - 'akeneo_reference_entity_collection'
-#        - 'pim_catalog_asset_collection'
-        - 'pim_catalog_multiselect'
 
 services:
     akeneo.tailored_import.query.attribute.find_viewable_attributes:
@@ -50,12 +42,6 @@ services:
         arguments:
             - '@akeneo_file_storage.repository.file_info'
             - '@akeneo_file_storage.file_storage.file.file_storer'
-
-    akeneo.tailored_import.query.filesystem.read_file_headers:
-        class: Akeneo\Platform\TailoredImport\Infrastructure\Query\Filesystem\ReadFileHeaders
-        arguments:
-            - '@akeneo_file_storage.file_storage.filesystem_provider'
-            - '@akeneo.tailored_import.spout.file_reader.factory'
 
     akeneo.tailored_import.query.find_system_targets:
         class: Akeneo\Platform\TailoredImport\Infrastructure\Query\InMemoryFindSystemTargets

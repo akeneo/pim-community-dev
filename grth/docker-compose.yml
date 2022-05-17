@@ -45,7 +45,7 @@ services:
       - 'pim'
 
   node:
-    image: 'akeneo/node:12'
+    image: 'akeneo/node:14'
     environment:
       YARN_CACHE_FOLDER: '/home/node/.yarn'
       CYPRESS_CACHE_FOLDER: '/home/node/.cypress'
@@ -91,7 +91,7 @@ services:
 
   mysql:
     image: 'mysql:8.0.26'
-    command: '--default-authentication-plugin=mysql_native_password'
+    command: '--default-authentication-plugin=mysql_native_password --log_bin_trust_function_creators=1'
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_USER: '${APP_DATABASE_USER}'
@@ -149,6 +149,12 @@ services:
   pubsub-emulator:
     image: 'google/cloud-sdk:331.0.0'
     command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
+    networks:
+      - 'pim'
+
+  firestore-emulator:
+    image: 'google/cloud-sdk:375.0.0-emulators'
+    command: 'gcloud --user-output-enabled --log-http beta emulators firestore start --host-port=0.0.0.0:8086'
     networks:
       - 'pim'
 

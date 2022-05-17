@@ -15,4 +15,5 @@ namespace Akeneo\Platform\TailoredImport\Domain\Model\Operation;
 
 interface OperationInterface
 {
+    public function normalize(): array;
 }

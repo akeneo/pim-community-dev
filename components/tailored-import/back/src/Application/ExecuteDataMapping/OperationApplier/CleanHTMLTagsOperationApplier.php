@@ -13,22 +13,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier;
 
+use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Exception\UnexpectedValueException;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
-class CleanHTMLTagsOperationApplier implements OperationApplierInterface
+final class CleanHTMLTagsOperationApplier implements OperationApplierInterface
 {
-    public function applyOperation(OperationInterface $operation, string $value): string
+    public function applyOperation(OperationInterface $operation, ValueInterface $value): ValueInterface
     {
         if (!$operation instanceof CleanHTMLTagsOperation) {
-            throw new \InvalidArgumentException(sprintf('Expecting Clean HTML Tags Operation, "%s" given', $operation::class));
+            throw new UnexpectedValueException($operation, CleanHTMLTagsOperation::class, self::class);
         }
 
-        return strip_tags(
+        if (!$value instanceof StringValue) {
+            throw new UnexpectedValueException($value, StringValue::class, self::class);
+        }
+
+        return new StringValue(strip_tags(
             htmlspecialchars_decode(
-                str_replace('&nbsp;', ' ', $value),
+                str_replace('&nbsp;', ' ', $value->getValue()),
             ),
-        );
+        ));
     }
 
     public function supports(OperationInterface $operation): bool

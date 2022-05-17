@@ -26,17 +26,13 @@ class ColorspaceOperation implements Operation
     private const OPERATION_NAME = 'colorspace';
     private const COLORSPACE_CHOICES = ['grey', 'cmyk', 'rgb'];
 
-    private string $colorspace;
-
-    private function __construct(string $colorspace)
+    private function __construct(private string $colorspace)
     {
         Assert::oneOf($colorspace, self::COLORSPACE_CHOICES, sprintf(
             "Parameter 'colorspace' must be one of this values: '%s'. '%s' given.",
             implode(', ', self::COLORSPACE_CHOICES),
             $colorspace
         ));
-
-        $this->colorspace = $colorspace;
     }
 
     public static function getType(): string

@@ -45,4 +45,9 @@ class OperationCollection implements \IteratorAggregate
     {
         return new self($operations);
     }
+
+    public function normalize(): array
+    {
+        return \array_map(static fn ($operation) => $operation->normalize(), $this->operations);
+    }
 }

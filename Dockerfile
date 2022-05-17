@@ -82,6 +82,7 @@ COPY docker/php.ini /etc/php/8.0/fpm/conf.d/99-akeneo.ini
 FROM base AS dev
 
 ENV PHP_CONF_OPCACHE_VALIDATE_TIMESTAMP=1
+ENV COMPOSER_MEMORY_LIMIT=4G
 
 RUN apt-get update && \
     apt-get --yes install gnupg &&\
@@ -152,7 +153,7 @@ ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
     composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' && \
-    php -d 'memory_limit=4G' /usr/local/bin/composer install \
+    composer install \
         --no-scripts \
         --no-interaction \
         --no-ansi \

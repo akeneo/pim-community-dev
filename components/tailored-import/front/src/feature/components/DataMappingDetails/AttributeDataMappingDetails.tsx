@@ -16,13 +16,16 @@ import {
   NumberConfigurator,
   SimpleSelectConfigurator,
   MultiSelectConfigurator,
+  BooleanConfigurator,
   TextConfigurator,
+  DateConfigurator,
 } from './Attribute';
 import {AttributeDoesNotExist} from './AttributeDoesNotExist';
 
 const attributeDataMappingConfigurators: {
   [attributeType: string]: FunctionComponent<AttributeDataMappingConfiguratorProps>;
 } = {
+  pim_catalog_date: DateConfigurator,
   pim_catalog_identifier: IdentifierConfigurator,
   pim_catalog_metric: MeasurementConfigurator,
   pim_catalog_number: NumberConfigurator,
@@ -30,6 +33,7 @@ const attributeDataMappingConfigurators: {
   pim_catalog_textarea: TextConfigurator,
   pim_catalog_simpleselect: SimpleSelectConfigurator,
   pim_catalog_multiselect: MultiSelectConfigurator,
+  pim_catalog_boolean: BooleanConfigurator,
 };
 
 type AttributeDataMappingDetailsProps = {

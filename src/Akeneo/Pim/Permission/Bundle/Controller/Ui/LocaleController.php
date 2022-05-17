@@ -11,7 +11,7 @@
 
 namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Spellcheck\SupportedLocaleValidator;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LocaleCode;
 use Akeneo\Pim\Permission\Bundle\Form\Type\LocaleType;

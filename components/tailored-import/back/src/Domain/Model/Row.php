@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Domain\Model;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 use Webmozart\Assert\Assert;
 
 class Row
@@ -25,10 +28,14 @@ class Row
         }
     }
 
-    public function getCellData(string $columnUuid): string
+    public function getCellData(string $columnUuid): ValueInterface
     {
         Assert::keyExists($this->cells, $columnUuid);
 
-        return $this->cells[$columnUuid];
+        if (0 === strlen($this->cells[$columnUuid])) {
+            return new NullValue();
+        }
+
+        return new StringValue($this->cells[$columnUuid]);
     }
 }

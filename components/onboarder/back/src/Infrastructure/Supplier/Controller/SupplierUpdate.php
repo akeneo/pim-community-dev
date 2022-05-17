@@ -8,14 +8,17 @@ use Akeneo\OnboarderSerenity\Application\Supplier\Exception\InvalidData;
 use Akeneo\OnboarderSerenity\Application\Supplier\Exception\SupplierDoesNotExist;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SupplierUpdate
 {
-    public function __construct(private UpdateSupplierHandler $updateSupplierHandler)
-    {
+    public function __construct(
+        private UpdateSupplierHandler $updateSupplierHandler,
+        private SupplierContributorsBelongingToAnotherSupplier $supplierContributorsBelongToAnotherSupplier,
+    ) {
     }
 
     public function __invoke(Request $request, string $identifier): JsonResponse
@@ -26,9 +29,14 @@ final class SupplierUpdate
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         }
 
+        $availableContributorEmails = $this->filterContributorEmailsBelongingToAnotherSupplier(
+            $identifier,
+            $requestContent['contributors'],
+        );
+
         try {
             ($this->updateSupplierHandler)(
-                new UpdateSupplier($identifier, $requestContent['label'], $requestContent['contributors'])
+                new UpdateSupplier($identifier, $requestContent['label'], $availableContributorEmails)
             );
         } catch (InvalidData $e) {
             $errors = [];
@@ -41,10 +49,20 @@ final class SupplierUpdate
             }
 
             return new JsonResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
-        } catch (SupplierDoesNotExist $e) {
+        } catch (SupplierDoesNotExist) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function filterContributorEmailsBelongingToAnotherSupplier(string $identifier, array $contributorEmails): array
+    {
+        $contributorsBelongingToAnotherSupplier = ($this->supplierContributorsBelongToAnotherSupplier)(
+            $identifier,
+            $contributorEmails,
+        );
+
+        return array_diff($contributorEmails, $contributorsBelongingToAnotherSupplier);
     }
 }

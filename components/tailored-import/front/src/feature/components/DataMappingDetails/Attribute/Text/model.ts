@@ -6,6 +6,7 @@ type TextTarget = {
   channel: ChannelReference;
   locale: LocaleReference;
   type: 'attribute';
+  attribute_type: string;
   source_configuration: null;
   action_if_not_empty: TargetNotEmptyAction;
   action_if_empty: TargetEmptyAction;
@@ -18,6 +19,7 @@ const getDefaultTextTarget = (
 ): TextTarget => ({
   code: attribute.code,
   type: 'attribute',
+  attribute_type: attribute.type,
   locale,
   channel,
   source_configuration: null,

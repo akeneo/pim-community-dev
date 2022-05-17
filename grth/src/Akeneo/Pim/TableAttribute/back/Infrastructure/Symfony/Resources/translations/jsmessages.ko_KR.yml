@@ -256,3 +256,7 @@ batch_jobs:
   xlsx_product_table_values_import.label: XLSX로 제품 테이블 값 가져오기
   csv_product_model_table_values_import.label: CSV로 제품 모델 테이블 값 가져오기
   xlsx_product_model_table_values_import.label: XLSX로 제품 모델 테이블 값 가져오기
+  default_steps.clean: 기존에 없는 테이블 옵션 값 제거
+akeneo_job_process_tracker:
+  type_filter:
+    clean_table_values_following_deleted_options: 기존에 없는 테이블 옵션 값을 제품 및 제품 모델에서 제거

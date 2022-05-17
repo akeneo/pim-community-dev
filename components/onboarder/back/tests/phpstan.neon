@@ -5,3 +5,5 @@ parameters:
   checkMissingIterableValueType: false # Allow array typehint instead of int[]
   treatPhpDocTypesAsCertain: false # https://phpstan.org/config-reference#treatphpdoctypesascertain
   checkFunctionNameCase: true # https://phpstan.org/config-reference#checkfunctionnamecase
+  ignoreErrors:
+    - '#Access to an undefined property Symfony\\\Component\\\Validator\\\Constraint::\$message#'

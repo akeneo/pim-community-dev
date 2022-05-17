@@ -26,14 +26,10 @@ class OptimizeJpegOperation implements Operation
 
     private const OPERATION_NAME = 'optimize_jpeg';
 
-    private int $quality;
-
-    private function __construct(int $quality)
+    private function __construct(private int $quality)
     {
         Assert::greaterThanEq($quality, 1, "Parameter 'quality' must be between 1 and 100.");
         Assert::lessThanEq($quality, 100, "Parameter 'quality' must be between 1 and 100.");
-
-        $this->quality = $quality;
     }
 
     public static function getType(): string

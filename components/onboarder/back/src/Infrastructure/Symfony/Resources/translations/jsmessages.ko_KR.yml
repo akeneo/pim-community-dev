@@ -25,7 +25,6 @@ onboarder:
       no_supplier: 제공업체가 없습니다.
       search_by_supplier: 제공업체로 검색
       no_search_result: 이 검색과 일치하는 제공업체가 없습니다.
-      error: 제공업체 목록을 로드하는 동안 오류가 발생했습니다.
       dropdown:
         export_suppliers: 제공업체 내보내기
         download_template: 템플릿 다운로드
@@ -58,9 +57,7 @@ onboarder:
           email: 이메일 주소
         no_contributor: 기여자가 없습니다.
         result_counter: '{0} 결과 없음|{1} {{ count }}개 결과|]1,Inf] {{ count }}개 결과'
-      error: 제공업체를 로드하는 동안 오류가 발생했습니다.
       success_message: 제공업체가 업데이트되었습니다.
-      unknown_error: 제공업체를 업데이트하는 동안 오류가 발생했습니다.
 pim_title:
   onboarder_serenity_supplier_list: 제공업체
   onboarder_serenity_supplier_edit: 제공업체 편집

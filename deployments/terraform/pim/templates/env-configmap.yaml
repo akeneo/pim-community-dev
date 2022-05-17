@@ -49,6 +49,11 @@ data:
   {{- else }}
   FLAG_ONBOARDER_ENABLED: "0"
   {{- end }}
+  {{- if .Values.pim.onboarder_serenity.settings.enabled }}
+  FLAG_ONBOARDER_SERENITY_ENABLED: "1"
+  {{- else }}
+  FLAG_ONBOARDER_SERENITY_ENABLED: "0"
+  {{- end }}
   {{- if .Values.pim.comm_panel_api_url }}
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
   {{- end }}
@@ -98,5 +103,12 @@ data:
   {{- if eq ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_code") | toString) "serenity_dev" }}
   FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
   FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
-  FLAG_ONBOARDER_SERENITY_SUPPLIER_ENABLED: "1"
+  FLAG_ONBOARDER_SERENITY_ENABLED: "1"
+  FLAG_TAILORED_IMPORT_ENABLED: "1"
+  FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED: "1"
+  {{- end }}
+
+  {{- if eq ((index .Values.global.extraLabels "tags.akeneo.com/product_reference_code") | toString) "growth_edition_dev" }}
+  FLAG_MARKETPLACE_FAKE_APPS_ENABLED: "1"
+  FLAG_APP_DEVELOPER_MODE_ENABLED: "1"
   {{- end }}

@@ -1,3 +1,5 @@
+export * from './Date/DateConfigurator';
+export * from './Date/model';
 export * from './Identifier/IdentifierConfigurator';
 export * from './Measurement/MeasurementConfigurator';
 export * from './Measurement/model';
@@ -9,3 +11,5 @@ export * from './SimpleSelect/model';
 export * from './SimpleSelect/SimpleSelectConfigurator';
 export * from './Text/model';
 export * from './Text/TextConfigurator';
+export * from './Boolean/model';
+export * from './Boolean/BooleanConfigurator';

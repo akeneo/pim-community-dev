@@ -1,12 +1,5 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {
-    NotificationLevel,
-    useNotify,
-    useRoute,
-    useTranslate,
-    ValidationError,
-    filterErrors,
-} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
@@ -22,7 +15,7 @@ const useSupplier = (identifier: string) => {
         const response = await fetch(getSupplierRoute, {method: 'GET'});
 
         if (!response.ok) {
-            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.error'));
+            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.loading_error'));
             return;
         }
 
@@ -44,21 +37,7 @@ const useSupplier = (identifier: string) => {
         if (!response.ok) {
             const errors: ValidationError[] = await response.json();
             setValidationErrors(errors);
-            const emailErrors = filterErrors(errors, 'contributorEmails');
-            if (0 < emailErrors.length) {
-                emailErrors.forEach(error =>
-                    notify(
-                        NotificationLevel.ERROR,
-                        translate('onboarder.supplier.supplier_edit.contributors_form.notification.email_error.title'),
-                        translate(
-                            'onboarder.supplier.supplier_edit.contributors_form.notification.email_error.content',
-                            {emailAddress: error.invalidValue, message: error.message}
-                        )
-                    )
-                );
-            } else {
-                notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.unknown_error'));
-            }
+            notify(NotificationLevel.ERROR, translate('onboarder.supplier.supplier_edit.update_error'));
             return;
         }
 

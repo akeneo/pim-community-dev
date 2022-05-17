@@ -1,5 +1,5 @@
 akeneo_channel:
-    resource: "@AkeneoLegacyChannelBundle/Resources/config/routing.yml"
+    resource: "@AkeneoChannelBundle/Resources/config/routing.yml"
     prefix:   /
 
 akeneo_pim_structure:
@@ -10,6 +10,9 @@ akeneo_pim_enrichment:
 
 akeneo_connectivity_connection:
     resource: "@AkeneoConnectivityConnectionBundle/Resources/config/routing.yml"
+
+akeneo_catalogs:
+    resource: "@AkeneoCatalogsBundle/Resources/config/routing.yml"
 
 akeneo_measure:
     resource: "@AkeneoMeasureBundle/Resources/config/routing.yml"

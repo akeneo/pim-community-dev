@@ -10,11 +10,8 @@ namespace Akeneo\AssetManager\Domain\Model\Attribute;
  */
 class AttributeIsRichTextEditor
 {
-    private bool $isRichTextEditor;
-
-    private function __construct(bool $isRichTextEditor)
+    private function __construct(private bool $isRichTextEditor)
     {
-        $this->isRichTextEditor = $isRichTextEditor;
     }
 
     public static function fromBoolean(bool $isRichTextEditor): self

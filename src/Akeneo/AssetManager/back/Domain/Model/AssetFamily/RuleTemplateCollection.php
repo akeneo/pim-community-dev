@@ -23,14 +23,12 @@ class RuleTemplateCollection implements \IteratorAggregate
 {
     public const EMPTY = [];
 
-    /** @var RuleTemplate[] */
-    private array $ruleTemplates;
-
-    private function __construct(array $ruleTemplates)
+    /**
+     * @param RuleTemplate[] $ruleTemplates
+     */
+    private function __construct(private array $ruleTemplates)
     {
         Assert::allIsInstanceOf($ruleTemplates, RuleTemplate::class);
-
-        $this->ruleTemplates = $ruleTemplates;
     }
 
     public static function createFromNormalized(array $normalizedRuleTemplates): self

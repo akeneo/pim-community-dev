@@ -21,6 +21,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             //External dependencies
             'Psr\Log\LoggerInterface',
@@ -62,7 +63,7 @@ $rules = [
             'Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface',
 
             //Subscribers for locale updates
-            'Akeneo\Channel\Component\Model\LocaleInterface',
+            'Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface',
 
             //Connector / (Tasklets, job parameters)
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
@@ -89,7 +90,7 @@ $rules = [
             'Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface',
 
             //Attribute group grid
-            'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
+            'Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface',
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Component\Batch',
@@ -115,8 +116,12 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Symfony\Contracts\Translation',
-            'Mekras\Speller',
+            'PhpSpellcheck\Spellchecker\Aspell',
+            'PhpSpellcheck\MisspellingInterface',
+            'PhpSpellcheck\Spellchecker\SpellcheckerInterface',
             'League\Flysystem',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
 
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\FileStorage\FilesystemProvider',

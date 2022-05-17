@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByIdentifiersInterface;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -22,8 +24,10 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindLocales $findLocales
+    ) {
     }
 
     /**
@@ -31,35 +35,19 @@ class SqlFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInt
      */
     public function find(array $assetIdentifiers): array
     {
+        $activatedLocaleCodes = array_map(static fn (Locale $locale) => $locale->getCode(), $this->findLocales->findAllActivated());
+
         $fetch = <<<SQL
-SELECT 
-    result.asset_identifier as identifier,
-    result.asset_code as code,
-    JSON_OBJECTAGG(result.locale_code, result.label) as labels
-FROM (
-    SELECT 
-        labels_result.asset_identifier,
-        labels_result.asset_code,
-        labels_result.locale_code,
-        labels_result.label
-    FROM (
-        SELECT 
-            r.identifier as asset_identifier,
-            r.code as asset_code,
-            locales.code as locale_code,
-            JSON_EXTRACT(
-                value_collection,
-                CONCAT('$.', '"', re.attribute_as_label, '_', locales.code, '"', '.data')
-            ) as label
-        FROM akeneo_asset_manager_asset r
-        JOIN akeneo_asset_manager_asset_family re
-            ON r.asset_family_identifier = re.identifier
-        CROSS JOIN pim_catalog_locale as locales
-        WHERE locales.is_activated = true
-        AND r.identifier IN (:assetIdentifiers)
-    ) as labels_result
-) as result
-GROUP BY identifier;
+SELECT
+    a.identifier,
+    a.code,
+    a.value_collection,
+    af.attribute_as_label
+FROM 
+    akeneo_asset_manager_asset a
+    JOIN akeneo_asset_manager_asset_family af ON a.asset_family_identifier = af.identifier
+WHERE 
+    a.identifier IN (:assetIdentifiers);
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -72,13 +60,31 @@ SQL;
             ]
         );
 
-        return array_reduce($statement->fetchAllAssociative(), function ($labelsIndexedByAsset, $current) {
-            $labelsIndexedByAsset[$current['identifier']] = [
-                'labels' => json_decode($current['labels'], true),
-                'code' => $current['code'],
-            ];
+        $assets = $statement->fetchAllAssociative();
 
-            return $labelsIndexedByAsset;
-        }, []);
+        $labelsIndexedByAsset = [];
+        foreach ($assets as $asset) {
+            $labelsIndexedByAsset[$asset['identifier']] = [
+                'code' => $asset['code'],
+                'labels' => $this->getLabelsIndexedByLocale($asset, $activatedLocaleCodes),
+            ];
+        }
+
+        return $labelsIndexedByAsset;
+    }
+
+    private function getLabelsIndexedByLocale(array $asset, array $activatedLocaleCodes): array
+    {
+        $values = json_decode($asset['value_collection'], true);
+        $labels = [];
+
+        foreach ($activatedLocaleCodes as $activatedLocaleCode) {
+            $key = sprintf('%s_%s', $asset['attribute_as_label'], $activatedLocaleCode);
+            $labels[$activatedLocaleCode] = key_exists($key, $values)
+                ? $values[$key]['data']
+                : null;
+        }
+
+        return $labels;
     }
 }

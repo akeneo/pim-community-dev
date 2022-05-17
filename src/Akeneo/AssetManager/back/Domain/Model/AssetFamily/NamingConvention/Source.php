@@ -21,20 +21,11 @@ class Source
 {
     private const ASSET_CODE_PROPERTY = 'code';
 
-    private string $property;
-
-    private ChannelReference $channelReference;
-
-    private LocaleReference $localeReference;
-
     public function __construct(
-        string $property,
-        ChannelReference $channelReference,
-        LocaleReference $localeReference
+        private string $property,
+        private ChannelReference $channelReference,
+        private LocaleReference $localeReference,
     ) {
-        $this->property = $property;
-        $this->channelReference = $channelReference;
-        $this->localeReference = $localeReference;
     }
 
     public static function createFromNormalized(array $normalizedSource): self

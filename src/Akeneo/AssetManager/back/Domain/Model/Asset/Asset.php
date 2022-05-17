@@ -28,34 +28,16 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
  */
 class Asset
 {
-    private AssetIdentifier $identifier;
-
-    private AssetCode $code;
-
-    private AssetFamilyIdentifier $assetFamilyIdentifier;
-
-    private ValueCollection $valueCollection;
-
-    private \DateTimeImmutable $createdAt;
-
-    private \DateTimeImmutable $updatedAt;
-
     private array $recordedEvents = [];
 
     private function __construct(
-        AssetIdentifier $identifier,
-        AssetFamilyIdentifier $assetFamilyIdentifier,
-        AssetCode $code,
-        ValueCollection $valueCollection,
-        \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
+        private AssetIdentifier $identifier,
+        private AssetFamilyIdentifier $assetFamilyIdentifier,
+        private AssetCode $code,
+        private ValueCollection $valueCollection,
+        private \DateTimeImmutable $createdAt,
+        private \DateTimeImmutable $updatedAt,
     ) {
-        $this->identifier = $identifier;
-        $this->assetFamilyIdentifier = $assetFamilyIdentifier;
-        $this->code = $code;
-        $this->valueCollection = $valueCollection;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
     }
 
     public static function create(

@@ -1,4 +1,4 @@
-@javascript
+@javascript @permission-feature-enabled
 Feature: Profile permissions on Export
   In order to edit the profile permission
   As a product manager

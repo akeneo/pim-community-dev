@@ -35,7 +35,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $baseConstraint = $this->overriddenProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
 
-        $constraintFields['storage'] = new Storage();
+        $constraintFields['storage'] = new Storage(['xlsx', 'xls']);
 
         return new Collection(['fields' => $constraintFields]);
     }
