@@ -21,6 +21,7 @@ doctrine:
         types:
             datetime: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
             datetime_immutable: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeImmutableType
+            uuid_binary: Ramsey\Uuid\Doctrine\UuidBinaryType
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         auto_mapping: true

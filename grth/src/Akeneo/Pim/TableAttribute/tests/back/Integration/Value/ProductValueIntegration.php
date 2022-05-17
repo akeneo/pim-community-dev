@@ -74,7 +74,7 @@ final class ProductValueIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product')->save($product);
         $this->assertProductIsInDatabase($product);
-        $this->assertIndexingFormat(\sprintf('product_%d', $product->getId()));
+        $this->assertIndexingFormat(\sprintf('product_%s', $product->getUuid()->toString()));
         $this->assertValuesAreSanitized();
     }
 

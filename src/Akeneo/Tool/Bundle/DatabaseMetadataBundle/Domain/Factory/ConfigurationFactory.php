@@ -42,7 +42,7 @@ final class ConfigurationFactory
         $assetManagerEs->setDataProcessing(DateTimeFormat::formatFromInt());
 
         $productMySql = EntityIndexConfiguration::create(
-            ['CONCAT("product_",id) AS id', 'updated'],
+            ['CONCAT("product_",COALESCE(BIN_TO_UUID(uuid), id)) AS id', 'updated'],
             'pim_catalog_product',
             'id',
             'mysql'

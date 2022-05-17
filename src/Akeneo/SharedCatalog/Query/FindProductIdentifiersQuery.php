@@ -38,9 +38,11 @@ class FindProductIdentifiersQuery implements FindProductIdentifiersQueryInterfac
                 ));
             }
 
+            // @TODO CPM-596: use product_<uuid> once the uuid migration will be done
+            // Replace the $searchAfterProductId by a new $searchAfterProductUuid
             $pqbOptions['search_after'] = [
                 strtolower($searchAfterProductIdentifier),
-                'product_'.$searchAfterProductId,
+                'product_z',
             ];
         }
 
