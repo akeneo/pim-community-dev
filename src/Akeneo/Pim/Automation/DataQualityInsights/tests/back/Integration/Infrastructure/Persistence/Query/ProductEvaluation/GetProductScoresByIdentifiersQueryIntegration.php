@@ -38,7 +38,7 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
         $productIdC = $this->get(ProductIdFactory::class)->create((string)$productC->getId());
 
         $productsScores = [
-            'product_A_latest_scores' => new Write\ProductScores(
+            'product_A_scores' => new Write\ProductScores(
                 $productIdA,
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
@@ -48,17 +48,7 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
                     ->addRate($channelMobile, $localeEn, new Rate(89))
                     ->addRate($channelMobile, $localeFr, new Rate(54)),
             ),
-            'product_A_previous_scores' => new Write\ProductScores(
-                $productIdA,
-                new \DateTimeImmutable('2020-01-07'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(76))
-                    ->addRate($channelMobile, $localeFr, new Rate(67)),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(39))
-                    ->addRate($channelMobile, $localeFr, new Rate(62)),
-            ),
-            'product_B_latest_scores' => new Write\ProductScores(
+            'product_B_scores' => new Write\ProductScores(
                 $productIdB,
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
@@ -67,16 +57,6 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(34))
                     ->addRate($channelMobile, $localeFr, new Rate(87)),
-            ),
-            'product_B_previous_scores' => new Write\ProductScores(
-                $productIdB,
-                new \DateTimeImmutable('2020-01-08'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(81))
-                    ->addRate($channelMobile, $localeFr, new Rate(95)),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(84))
-                    ->addRate($channelMobile, $localeFr, new Rate(57)),
             ),
             'other_product_scores' => new Write\ProductScores(
                 $productIdC,
@@ -92,12 +72,12 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
 
         $expectedProductsScores = [
             $productA->getIdentifier() => new Read\Scores(
-                $productsScores['product_A_latest_scores']->getScores(),
-                $productsScores['product_A_latest_scores']->getScoresPartialCriteria(),
+                $productsScores['product_A_scores']->getScores(),
+                $productsScores['product_A_scores']->getScoresPartialCriteria(),
             ),
             $productB->getIdentifier() => new Read\Scores(
-                $productsScores['product_B_latest_scores']->getScores(),
-                $productsScores['product_B_latest_scores']->getScoresPartialCriteria(),
+                $productsScores['product_B_scores']->getScores(),
+                $productsScores['product_B_scores']->getScoresPartialCriteria(),
             ),
         ];
 
