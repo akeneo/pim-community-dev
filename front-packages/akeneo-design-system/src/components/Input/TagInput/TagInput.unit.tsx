@@ -21,7 +21,7 @@ test('it allows tags to be created', () => {
   expect(handleChange).toHaveBeenCalledWith(['gucci']);
 });
 
-test('it handles on submit callback', () => {
+test('it handles on submit callback and creates a tag when submitting', () => {
   const handleChange = jest.fn();
   const handleSubmit = jest.fn();
 
@@ -32,11 +32,9 @@ test('it handles on submit callback', () => {
     </>
   );
 
-  const input = screen.getByLabelText('My label');
-  userEvent.type(input, 'nice{space}');
-  userEvent.type(input, '{enter}');
+  userEvent.type(screen.getByLabelText('My label'), 'nice{enter}');
 
-  expect(handleChange).toHaveBeenCalled();
+  expect(handleChange).toHaveBeenCalledWith(['12', 'nice']);
   expect(handleSubmit).toHaveBeenCalled();
 });
 

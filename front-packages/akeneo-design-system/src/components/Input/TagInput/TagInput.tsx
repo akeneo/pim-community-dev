@@ -118,6 +118,11 @@ const TagInput: FC<TagInputProps> = ({
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
+        const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
+        if ('' !== inputCurrentValue) {
+          createTags([...value, ...[inputCurrentValue]]);
+        }
+
         onSubmit?.();
 
         return;
@@ -159,7 +164,7 @@ const TagInput: FC<TagInputProps> = ({
             readOnly={readOnly}
           >
             {!readOnly && <RemoveTagIcon onClick={() => removeTag(index)} data-testid={`remove-${index}`} />}
-            {tag}
+            <TagText>{tag}</TagText>
           </Tag>
         );
       })}
@@ -218,6 +223,14 @@ const Tag = styled.li<AkeneoThemedProps & {isSelected: boolean; readOnly: boolea
   align-items: center;
   height: 30px;
   box-sizing: border-box;
+  max-width: 100%;
+`;
+
+const TagText = styled.span`
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const InputContainer = styled.li<AkeneoThemedProps>`
