@@ -265,3 +265,10 @@ services:
           - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\MarkZddMigrationsAsMigratedSubscriber:
+        arguments:
+            - '@database_connection'
+            - !tagged_iterator { tag: 'akeneo.pim.zdd_migration' }
+        tags:
+            - { name: kernel.event_subscriber }
