@@ -21,3 +21,10 @@ Feature:
     When the external application deletes a catalog using the API
     Then the response should be empty
     And the catalog should be removed from the PIM
+
+  @database
+  Scenario: Update a catalog
+    Given an existing catalog
+    When the external application updates a catalog using the API
+    Then the response should contain the catalog details
+    And the catalog should be updated in the PIM

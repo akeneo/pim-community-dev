@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -175,5 +174,43 @@ class ApiContext implements Context
         $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
 
         Assert::assertNull($catalog);
+    }
+
+    /**
+     * @When the external application updates a catalog using the API
+     */
+    public function theExternalApplicationUpdatesACatalogUsingTheApi()
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
+
+        $this->client->request(
+            method: 'PATCH',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: \json_encode([
+                'name' => 'Store US [NEW]',
+            ]),
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog should be updated in the PIM
+     */
+    public function theCatalogShouldBeUpdatedInThePim()
+    {
+        $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+
+        Assert::assertNotNull($catalog);
+        Assert::assertEquals('Store US [NEW]', $catalog->getName());
     }
 }
