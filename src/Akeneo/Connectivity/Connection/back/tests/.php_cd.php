@@ -178,7 +178,6 @@ $rules = [
             'Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App',
             'Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface',
 
-            'Akeneo\Connectivity\Connection\Application\Settings\Service\CreateUserInterface',
             'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteClientInterface',
             'Akeneo\Connectivity\Connection\Application\Settings\Service\DeleteUserInterface',
             'Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface',
