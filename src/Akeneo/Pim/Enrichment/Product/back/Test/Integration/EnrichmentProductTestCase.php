@@ -47,6 +47,7 @@ abstract class EnrichmentProductTestCase extends TestCase
         $this->createCategory(['code' => 'print']);
         $this->createCategory(['code' => 'suppliers']);
         $this->createCategory(['code' => 'sales']);
+        $this->createCategory(['code' => 'samples']);
 
         if (FeatureHelper::isPermissionFeatureActivated()) {
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('All', [
@@ -56,8 +57,8 @@ abstract class EnrichmentProductTestCase extends TestCase
             ]);
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('Redactor', [
                 'own' => ['all' => false, 'identifiers' => []],
-                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'samples']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'samples']],
             ]);
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('Manager', [
                 'own' => ['all' => false, 'identifiers' => ['print']],
@@ -65,9 +66,9 @@ abstract class EnrichmentProductTestCase extends TestCase
                 'view' => ['all' => false, 'identifiers' => ['print', 'sales']],
             ]);
             $this->get('Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver')->save('IT Support', [
-                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
-                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales']],
+                'own' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'samples']],
+                'edit' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'samples']],
+                'view' => ['all' => false, 'identifiers' => ['print', 'suppliers', 'sales', 'samples']],
             ]);
         }
 
