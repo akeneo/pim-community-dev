@@ -4,3 +4,4 @@ services:
         arguments:
             - '%kernel.environment%'
             - '@monolog.logger'
+            - '%env(GOOGLE_NAMESPACE)%'

@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Bundle\Migration;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrationAuthorization;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class WebClientMigrationAuthorization implements MigrationAuthorization
 {
     private const WEB_URL = 'https://storage.googleapis.com/sku-to-uuid-instances-list/list.json';
 
-    public function __construct(private string $env, private LoggerInterface $logger)
+    public function __construct(private string $env, private LoggerInterface $logger, private string $clientName)
     {
     }
 
@@ -36,40 +36,44 @@ final class WebClientMigrationAuthorization implements MigrationAuthorization
             return true;
         }
 
-        $client = HttpClient::create();
 
         // Unique URL prevents cache
         $uniqueUrl = \sprintf('%s?%s', self::WEB_URL, (Uuid::uuid4())->toString());
 
-        $response = $client->request(Request::METHOD_GET, $uniqueUrl);
-        if (Response::HTTP_OK !== $response->getStatusCode()) {
-            $this->logger->notice('Error while requesting web url', [
-                'message' => $response->getContent(),
-            ]);
-
-            return false;
-        }
-
+        $client = new Client();
         try {
-            $content = $response->getContent();
-            $decodedResponse = \json_decode($content, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\Exception $e) {
-            $this->logger->notice('Error while decoding web url response', [
-                'message' => $response->getContent(),
+            $response = $client->request('GET', $uniqueUrl);
+        } catch (GuzzleException $e) {
+            $this->logger->error('Error while requesting web url', [
                 'exception' => $e,
             ]);
 
             return false;
         }
 
-        $client = $_ENV['GOOGLE_NAMESPACE'];
-        $authorizedClients = \array_column($decodedResponse, 'name');
-        if (!\in_array($client, $authorizedClients)) {
-            $this->logger->notice('The client is not authorized to run the migration', [
-                'client' => $client,
-                'authorized_clients' => $authorizedClients,
-                'http_response' => $decodedResponse,
+        if (Response::HTTP_OK !== $response->getStatusCode()) {
+            $this->logger->error('Error while requesting web url', [
+                'message' => $response->getBody()->getContents(),
             ]);
+
+            return false;
+        }
+
+        try {
+            $content = $response->getBody()->getContents();
+            $decodedResponse = \json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\Exception) {
+            $this->logger->error('Error while decoding web url response');
+
+            return false;
+        }
+
+        $authorizedClients = \array_column($decodedResponse, 'name');
+        if (!\in_array($this->clientName, $authorizedClients)) {
+            $this->logger->notice(
+                \sprintf('The "%s" client is not authorized to run the migration', $this->clientName),
+                ['clientName' => $this->clientName]
+            );
 
             return false;
         }
