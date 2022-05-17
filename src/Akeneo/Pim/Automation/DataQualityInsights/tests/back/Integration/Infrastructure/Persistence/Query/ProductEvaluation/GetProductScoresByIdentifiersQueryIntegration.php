@@ -73,11 +73,11 @@ final class GetProductScoresByIdentifiersQueryIntegration extends DataQualityIns
         $expectedProductsScores = [
             $productA->getIdentifier() => new Read\Scores(
                 $productsScores['product_A_scores']->getScores(),
-                $productsScores['product_A_latest_scores']->getScoresPartialCriteria(),
+                $productsScores['product_A_scores']->getScoresPartialCriteria(),
             ),
             $productB->getIdentifier() => new Read\Scores(
                 $productsScores['product_B_scores']->getScores(),
-                $productsScores['product_B_latest_scores']->getScoresPartialCriteria(),
+                $productsScores['product_B_scores']->getScoresPartialCriteria(),
             ),
         ];
 
