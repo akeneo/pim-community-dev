@@ -51,7 +51,7 @@
         "akeneo/pim-community-dev": "dev-master",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "justinrainbow/json-schema": "^5.2",
-        "grpc/grpc": "1.30.0",
+        "grpc/grpc": "^1.42.0",
         "akeneo/api-php-client": "^6.0",
         "php-http/guzzle6-adapter": "^2.0",
         "http-interop/http-factory-guzzle": "^1.0",

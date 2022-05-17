@@ -152,5 +152,11 @@ services:
     networks:
       - 'pim'
 
+  firestore-emulator:
+    image: 'google/cloud-sdk:375.0.0-emulators'
+    command: 'gcloud --user-output-enabled --log-http beta emulators firestore start --host-port=0.0.0.0:8086'
+    networks:
+      - 'pim'
+
 networks:
   pim:

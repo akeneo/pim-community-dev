@@ -81,7 +81,8 @@
     "require": {
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^7.0.0",
-        "grpc/grpc": "^1.30.0",
+        "google/cloud-firestore": "^1.22",
+        "grpc/grpc": "^1.42.0",
         "hslavich/oneloginsaml-bundle": "2.0.*",
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
