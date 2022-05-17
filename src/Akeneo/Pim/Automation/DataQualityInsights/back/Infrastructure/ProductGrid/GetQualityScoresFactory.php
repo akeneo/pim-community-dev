@@ -28,7 +28,6 @@ class GetQualityScoresFactory
 
     public function __invoke(ProductEntityIdCollection $entityIdCollection, string $type): array
     {
-
         switch ($type) {
             case 'product':
                 Assert::isInstanceOf($entityIdCollection, ProductUuidCollection::class);

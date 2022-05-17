@@ -71,17 +71,17 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->get(ProductScoreRepository::class)->saveAll(array_values($productsScores));
 
         $expectedProductsScores = [
-            $productUuidA->toString() => new Read\Scores(
+            $productUuidA => new Read\Scores(
                 $productsScores['product_A_scores']->getScores(),
                 $productsScores['product_A_scores']->getScoresPartialCriteria()
             ),
-            $productUuidB->toString() => new Read\Scores(
+            $productUuidB => new Read\Scores(
                 $productsScores['product_B_scores']->getScores(),
                 $productsScores['product_B_scores']->getScoresPartialCriteria()
             ),
         ];
 
-        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([(string)$productUuidA, (string)$productUuidB, (string)$productUuidD]);
+        $productUuidCollection = $this->get(ProductUuidFactory::class)->createCollection([$productUuidA, $productUuidB, $productUuidD]);
         $productAxesRates = $this->get(GetProductScoresQuery::class)->byProductUuidCollection($productUuidCollection);
 
         $this->assertEqualsCanonicalizing($expectedProductsScores, $productAxesRates);
