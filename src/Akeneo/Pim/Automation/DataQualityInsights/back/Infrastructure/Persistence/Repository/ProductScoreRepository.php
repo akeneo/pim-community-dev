@@ -57,7 +57,7 @@ final class ProductScoreRepository implements ProductScoreRepositoryInterface
             Assert::isInstanceOf($productUuid, ProductUuid::class);
 
             return sprintf(
-                "(UUID_TO_BIN('%s'), '%s', '%s')",
+                "(UUID_TO_BIN('%s'), '%s', '%s', '%s')",
                 (string) $productUuid,
                 $productScore->getEvaluatedAt()->format('Y-m-d'),
                 \json_encode($productScore->getScores()->toNormalizedRates()),
