@@ -213,10 +213,18 @@ class BulkUpdateProductQualityScoresIndexSpec extends ObjectBehavior
 
         $productModelIdCollection = ProductModelIdCollection::fromStrings(['123', '456', '42']);
         $scores = [
-            123 => (new ChannelLocaleRateCollection)
-                ->addRate($channel, $locale, new Rate(10)),
-            456 => (new ChannelLocaleRateCollection)
-                ->addRate($channel, $locale, new Rate(96)),
+            123 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(10)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(65)),
+            ),
+            456 => new Read\Scores(
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(96)),
+                (new ChannelLocaleRateCollection)
+                    ->addRate($channel, $locale, new Rate(78)),
+            ),
         ];
         $keyIndicators = [
             123 => [
