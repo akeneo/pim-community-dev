@@ -73,12 +73,20 @@ class CheckCategoryTrees extends Command
         // TODO lock tables !
 
 
-           $reorder =  $this->repository->reorderAll(null, 'ASC', false);
-var_export($reorder);
+           $this->repository->reorderAll(null, 'ASC', false);
+
+        // TODO unlock tables !
 
         echo "Reordered!!\n";
 
         return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute2(InputInterface $input, OutputInterface $output): int
+    {
 
         // 1 - read all categories and build object trees
 
@@ -105,27 +113,7 @@ var_export($reorder);
             $this->checkRoot($root);
         }
 
-//
-//        $identifiers = $input->getArgument('identifiers');
-//
-//
-//        $pqb = $this->productQueryBuilderFactory->create();
-//        $pqb->addFilter('id', Operators::IN_LIST, explode(',', $identifiers));
-//        $products = $pqb->execute();
-//
-//        $productsToSave = [
-//            'product_models' => [],
-//            'products' => []
-//        ];
-//        foreach ($products as $product) {
-//            $productsToSave[$product instanceof ProductModelInterface ? 'product_models' : 'products'][] = $product;
-//        }
-//
-//        $this->productSaver->saveAll($productsToSave['products'], ['force_save' => true]);
-//        $this->productModelSaver->saveAll($productsToSave['product_models'], ['force_save' => true]);
-//
         return 0;
-
 
     }
 
