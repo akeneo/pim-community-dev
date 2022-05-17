@@ -103,7 +103,7 @@ SQL,
             ]
         )->fetchOne();
 
-        $this->assertSame('1', $productScoreExists, sprintf('Product %d should have a score evaluated at %s', $productUuid, $evaluatedAt->format('Y-m-d')));
+        $this->assertSame('1', $productScoreExists, sprintf('Product %s should have a score evaluated at %s', $productUuid->toString(), $evaluatedAt->format('Y-m-d')));
     }
 
     private function insertProductScore(UuidInterface $productUuid, \DateTimeImmutable $evaluatedAt): void
