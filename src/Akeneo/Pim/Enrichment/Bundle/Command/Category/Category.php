@@ -2,6 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\Category;
 
+use Doctrine\DBAL\Connection;
+
 class Category
 {
     /** @var integer */
@@ -47,7 +49,7 @@ class Category
         $this->code = $dbModel['code'];
 
         $this->parent_id = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
-        $this->root_id =$dbModel['root'] === null ? null : (int)$dbModel['root'];
+        $this->root_id = $dbModel['root'] === null ? null : (int)$dbModel['root'];
 
         $this->lft = (int)$dbModel['lft'];
         $this->rgt = (int)$dbModel['rgt'];
@@ -143,7 +145,7 @@ class Category
     public function reorder(int $left = 1, int $level = 0): Category
     {
         $c = clone $this;
-        $c->children=[];
+        $c->children = [];
 
         $right = $left;
         foreach ($this->children as $child) {
@@ -159,7 +161,8 @@ class Category
         return $c;
     }
 
-    private function makeDiffError(string $message): string {
+    private function makeDiffError(string $message): string
+    {
         return "id={$this->id} code={$this->code}  : {$message}";
     }
 
@@ -183,10 +186,10 @@ class Category
         //var_export($this->children);
 
         for ($i = 0; $i < count($this->children); $i++) {
-            $childrenDiffErrors =  $this->children[$i]->diff($c->getChildAt($i));
+            $childrenDiffErrors = $this->children[$i]->diff($c->getChildAt($i));
 
             $childrenDiffErrorsWithContext = array_map(
-                function($childDiff) use ($i) {
+                function ($childDiff) use ($i) {
                     return "Child at index {$i}: ${childDiff}";
                 },
                 $childrenDiffErrors
@@ -194,14 +197,15 @@ class Category
 
             $diffs = array_merge(
                 $diffs,
-               $childrenDiffErrorsWithContext
+                $childrenDiffErrorsWithContext
             );
         }
 
         return $diffs;
     }
 
-    public function dumpNodes($level = 0, $maxLevel = 1) : array {
+    public function dumpNodes($level = 0, $maxLevel = 1): array
+    {
         $spaces = str_repeat("\t", $level);
         $rows = ["{$spaces}({$this->id},{$this->code},lvl={$this->lvl},lft={$this->lft},rgt={$this->rgt})"];
         if ($level < $maxLevel) {
@@ -212,5 +216,24 @@ class Category
             }
         }
         return $rows;
+    }
+
+    public function doUpdate(Connection $connection)
+    {
+        $connection->update(
+            "pim_catalog_category",
+            [
+                "lvl" => $this->lvl,
+                "lft" => $this->lft,
+                "rgt" => $this->rgt,
+            ], [
+            "id" => $this->id
+        ],
+
+        );
+
+        foreach ($this->children as $child) {
+            $child->doUpdate($connection);
+        }
     }
 }

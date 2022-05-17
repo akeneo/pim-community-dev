@@ -27,18 +27,12 @@ class CheckCategoryTrees extends Command
     /** @var Connection */
     private $connection;
 
-    /** @var CategoryRepository */
-    private $repository;
-
     public function __construct(
         Connection         $connection,
-        CategoryRepository $repository
-
     )
     {
         parent::__construct();
         $this->connection = $connection;
-        $this->repository = $repository;
     }
 
     /**
@@ -59,7 +53,18 @@ class CheckCategoryTrees extends Command
                 InputOption::VALUE_NONE,
                 'Whether we dump the corrected trees or not',
             )
-            ->addOption("max-level",'m',InputArgument::OPTIONAL,"max level for tree dumping", 1)
+            ->addOption(
+                "max-level",
+                'm',
+                InputArgument::OPTIONAL,
+                "max level for tree dumping",
+                1)
+            ->addOption(
+                'do-it',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether we update the category trees in DB',
+            )
             ->setDescription('Check all category trees against nested structure');
     }
 
@@ -69,13 +74,21 @@ class CheckCategoryTrees extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
 
-        $dumpCorruptions= !!$input->getOption('dump-corruptions');
+        $dumpCorruptions = !!$input->getOption('dump-corruptions');
 
         $dumpFixedTrees = !!$input->getOption('dump-fixed-trees');
 
         $dumpFixedTreesMaxLevel = $input->getOption("max-level");
 
+        $doIt = !!$input->getOption('do-it');
+
+        if ($doIt) {
+            $output->writeln("WILL update !! Ctrl-C Now if npt intended");
+        }
+
+        //
         // 1 - read all categories and build object trees
+        //
 
         echo "Fetching all categories\n";
         $pool = $this->getAllCategories();
@@ -90,8 +103,8 @@ class CheckCategoryTrees extends Command
         $hasCorruptions = false;
 
         foreach ($roots as $root) {
-            $output->writeln("======================================");
-            $output->writeln( "Checking root id={$root->getId()} code={$root->getCode()}");
+            $output->writeln("\n======================================");
+            $output->writeln("Checking root id={$root->getId()} code={$root->getCode()}");
 
             $fixedTree = $root->reorder();
             $corruptions = $root->diff($fixedTree);
@@ -104,15 +117,27 @@ class CheckCategoryTrees extends Command
                 if ($dumpFixedTrees) {
                     $output->writeln($fixedTree->dumpNodes(0, $dumpFixedTreesMaxLevel));
                 }
+
             }
 
-            $corruptionStatus = count($corruptions) ? 'CORRUPTED': 'SANE';
+            $corruptionStatus = count($corruptions) ? 'CORRUPTED' : 'SANE';
 
             $hasCorruptions |= $rootHasCorruptions;
 
             $output->writeln(
                 "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus} "
             );
+
+            if ($rootHasCorruptions && $doIt) {
+                    $output->writeln("UPDATING tree id={$root->getId()} !!");
+                    $this->doUpdate($fixedTree);
+            }
+
+
+        }
+
+        if ($doIt && !$hasCorruptions) {
+            $output->writeln("Requested update but no corruption found => nothing wad done.");
         }
 
         return $hasCorruptions ? 1 : 0;
@@ -130,6 +155,22 @@ SQL;
         return new CategoriesPool($rows);
     }
 
+    private function doUpdate(Category $root) : void {
+        if (!$this->connection->beginTransaction()) {
+            throw new Exception("Could not start update transaction");
+        }
+
+        try {
+            $root->doUpdate($this->connection);
+            if (!       $this->connection->commit()) {
+                throw new Exception("Could not commit update transaction");
+            }
+        } catch (\Throwable $e) {
+            $this->connection->rollBack();
+        }
+
+
+    }
 
 
 }

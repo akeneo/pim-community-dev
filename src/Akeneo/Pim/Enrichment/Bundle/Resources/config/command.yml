@@ -64,6 +64,5 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees:
         arguments:
             - '@database_connection'
-            - '@pim_catalog.repository.category'
         tags:
             - { name: console.command }
