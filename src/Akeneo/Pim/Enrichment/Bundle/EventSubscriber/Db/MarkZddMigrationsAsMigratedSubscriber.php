@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db;
 
 use Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations\ZddMigration;
@@ -8,6 +10,14 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * When installing a fresh new database, this subscriber will automatically mark ZDD Migrations as "migrated".
+ *
+ * @see ZddMigration
+ *
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
 {
     /** @var ZddMigration[] */
