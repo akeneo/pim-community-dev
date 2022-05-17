@@ -134,6 +134,7 @@ akeneo_connectivity.connection:
           link: Ga naar Hulp voor meer informatie.
         card:
           developed_by: 'Ontwikkeld door {{ author }}'
+          new_access_authorization_required: Nieuwe autorisatie voor toegang vereist.
           not_listed_on_the_appstore: De app staat niet meer in de Akeneo App Store. Neem contact op met het ondersteuningsteam voor apps.
           manage_app: App beheren
           open_app: App openen
@@ -155,7 +156,10 @@ akeneo_connectivity.connection:
             information_link_anchor: Artikel in Hulp
             no_scope: Er zijn geen specifieke autorisaties aangevraagd.
           authentication:
+            title: authenticatie
+            information: 'Bekijk {{ link }} voor meer informatie over de authenticatie van apps.'
             information_link_anchor: Artikel in Hulp
+            openid_only: Deze app maakt gebruik van Akeneo app-authenticatie zonder uw persoonlijke gegevens te gebruiken
           pending: Deze app is niet verbonden met uw PIM. Door de app te openen, zou het probleem opgelost moeten zijn. Als dit niet zo is, neem dan contact op met het ondersteuningsteam voor apps.
         error_monitoring:
           error: Er is iets fout gegaan.
@@ -183,6 +187,9 @@ akeneo_connectivity.connection:
         flash:
           success: De app is verwijderd.
           error: Er is een fout opgetreden tijdens het verwijderen van de app.
+      open:
+        flash:
+          error: Er is een fout opgetreden tijdens het openen van de app.
     apps:
       loader:
         message: Bezig met laden...
@@ -222,6 +229,7 @@ akeneo_connectivity.connection:
           no_scope: Er zijn geen specifieke autorisaties aangevraagd.
           helper: Voor meer informatie over het autoriseren van apps,
           helper_link: kunt u het artikel in Hulp raadplegen.
+          is_allowed_to: 'Heeft al toestemming om:'
         flash:
           success: De app is geconfigureerd.
           error: Er is een fout opgetreden tijdens het verbinden van de app.
@@ -249,6 +257,7 @@ akeneo_connectivity.connection:
           reference_entity_record: Records van referentie-entiteiten
           asset_families: assetfamilies
           assets: assets
+        new: NIEUW
       error:
         sub_text: Neem contact op met de ontwikkelaar of met de helpdesk van Akeneo
         app_not_found: De klant_id komt niet overeen met een bestaande app.
@@ -557,5 +566,7 @@ pim_permissions:
       view: Weergeven
     all: Alles
 pim_notification:
+  types:
+    connected_app_authorizations: Autorisaties voor verbonden apps
   connected_app_authorizations:
     button_label: App openen

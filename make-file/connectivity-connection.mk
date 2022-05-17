@@ -62,8 +62,8 @@ connectivity-connection-coupling-back:
 
 connectivity-connection-lint-back:
 ifneq ($(CI),true)
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
-	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 -u www-data --rm php bin/console cache:warmup
+	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
+	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
 endif
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=src/Akeneo/Connectivity/Connection/back/tests/.php_cs.php
 	$(PHP_RUN) vendor/bin/phpstan analyse \
@@ -81,7 +81,7 @@ connectivity-connection-lint-back_fix:
 
 connectivity-connection-unit-back:
 ifeq ($(CI),true)
-	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
+	$(DOCKER_COMPOSE) run -T --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	.circleci/find_non_executed_phpspec.sh
 endif
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
@@ -90,8 +90,9 @@ endif
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Enrichment/Specification/Component/Security/
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Component/Security/
 
-connectivity-connection-activate-e2e: var/tests/behat/connectivity/connection
+connectivity-connection-critical-e2e: var/tests/behat/connectivity/connection
 	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/edit_connection.feature
 
 connectivity-connection-integration-back:
 ifeq ($(CI),true)
@@ -163,11 +164,11 @@ connectivity-connection-coverage:
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
 
-	$(DOCKER_COMPOSE) run -u www-data --rm php mkdir -p var/tests/behat/connectivity/connection
+	$(DOCKER_COMPOSE) run --rm php mkdir -p var/tests/behat/connectivity/connection
 	# download phpcov binary
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
+	$(DOCKER_COMPOSE) run --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
 	# create a coverage global folder
-	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "\
+	$(DOCKER_COMPOSE) run --rm php sh -c "\
 		if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi && \
 		mkdir -p coverage/Connectivity/Back/Global/ && \
 		cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov && \

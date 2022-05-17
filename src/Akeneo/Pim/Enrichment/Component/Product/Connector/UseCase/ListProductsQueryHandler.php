@@ -155,7 +155,7 @@ final class ListProductsQueryHandler
         if (null !== $query->searchAfter) {
             $id = $this->getProductId->fromIdentifier($query->searchAfter);
             $pqbOptions['search_after_unique_key'] = null === $id ? '' : \sprintf('product_%s', $id);
-            $pqbOptions['search_after'] = [\strtolower($query->searchAfter)];
+            $pqbOptions['search_after'] = [\mb_strtolower($query->searchAfter)];
         }
 
         return $this->searchAfterPqbFactory->create($pqbOptions);

@@ -102,7 +102,7 @@ final class AssociationUserIntentCollectionApplier implements UserIntentApplier
             default => throw new \LogicException('Not implemented')
         };
 
-        return $normalizedAssociations[$associationUserIntent->associationType()][$entityType] ?? $values ?? [];
+        return $normalizedAssociations[$associationUserIntent->associationType()][$entityType] ?? $values;
     }
 
     private function getAssociationEntityType(AssociationUserIntent $userIntent): string

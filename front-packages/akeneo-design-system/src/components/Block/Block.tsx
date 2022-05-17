@@ -121,14 +121,25 @@ const Container = styled.div<AkeneoThemedProps>`
 
 const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
   (
-    {title, actions, ariaDescribedBy, ariaLabel, ariaLabelledBy, isOpen, onCollapse, children, ...rest}: BlockProps,
+    {
+      title,
+      actions,
+      ariaDescribedBy,
+      ariaLabel,
+      ariaLabelledBy,
+      isOpen,
+      collapseButtonLabel,
+      onCollapse,
+      children,
+      ...rest
+    }: BlockProps,
     forwardedRef: Ref<HTMLButtonElement>
   ) => {
     const [contentHeight, setContentHeight] = useState<number>(0);
     const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
 
-    const isCollapsable = undefined !== onCollapse && undefined !== isOpen;
+    const isCollapsable = undefined !== collapseButtonLabel && undefined !== onCollapse && undefined !== isOpen;
 
     const handleCollapse = () => onCollapse?.(!isOpen);
 
@@ -166,7 +177,7 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
             {!isCollapsable ? null : (
               <IconButton
                 icon={isOpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
-                title="Collapse"
+                title={collapseButtonLabel}
                 level="tertiary"
                 ghost
                 size="small"

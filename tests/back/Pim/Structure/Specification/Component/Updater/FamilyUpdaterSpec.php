@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Updater;
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Structure\Component\Updater\FamilyUpdater;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -16,11 +16,11 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeRequirementInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRequirementRepositoryInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;

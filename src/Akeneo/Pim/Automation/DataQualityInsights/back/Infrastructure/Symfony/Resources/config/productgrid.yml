@@ -27,6 +27,7 @@ services:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetUpToDateProductScoresQuery'
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation\GetProductModelScoresQuery'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\GetScoresByCriteriaStrategy'
 
     akeneo.pim.automation.data_quality_insights.product_grid.add_scores_to_product_rows:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid\AddScoresToProductAndProductModelRows
@@ -42,11 +43,14 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Sorter\QualityScoreSorter:
         arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy'
             - ['quality_score']
         tags:
             - { name: pim_catalog.elasticsearch.query.sorter, priority: 30 }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreFilter:
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy'
         tags:
             - { name: pim_catalog.elasticsearch.query.product_filter, priority: 30 }
             - { name: pim_catalog.elasticsearch.query.product_and_product_model_filter, priority: 30 }

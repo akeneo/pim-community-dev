@@ -5,10 +5,10 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job\Jo
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
-use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\ChannelRepositoryInterface;
+use Akeneo\Channel\Infrastructure\Component\Repository\LocaleRepositoryInterface;
 
 class ProductXlsxExportSpec extends ObjectBehavior
 {

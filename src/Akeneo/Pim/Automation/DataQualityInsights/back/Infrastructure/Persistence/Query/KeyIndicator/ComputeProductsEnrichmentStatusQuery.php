@@ -12,6 +12,7 @@ use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\ComputeProd
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetEvaluationResultsByProductsAndCriterionQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetLocalesByChannelQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\KeyIndicatorCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 
 /**
@@ -28,9 +29,9 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     ) {
     }
 
-    public function getName(): string
+    public function getCode(): KeyIndicatorCode
     {
-        return ProductsWithGoodEnrichment::CODE;
+        return new KeyIndicatorCode(ProductsWithGoodEnrichment::CODE);
     }
 
     /**
@@ -68,8 +69,8 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     private function computeEnrichmentStatus(
         ?CriterionEvaluationResult $nonRequiredAttributesEvaluationResult,
         ?CriterionEvaluationResult $requiredAttributesEvaluationResult,
-        string                     $channel,
-        string                     $locale
+        string $channel,
+        string $locale
     ): ?bool {
         $nonRequiredAttributesEvaluation = null !== $nonRequiredAttributesEvaluationResult ? $nonRequiredAttributesEvaluationResult->getData() : [];
         $requiredAttributesEvaluationData = null !== $requiredAttributesEvaluationResult ? $requiredAttributesEvaluationResult->getData() : [];

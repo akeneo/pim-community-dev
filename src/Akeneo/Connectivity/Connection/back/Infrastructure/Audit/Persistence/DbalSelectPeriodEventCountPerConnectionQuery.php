@@ -76,7 +76,8 @@ SQL;
 
     /**
      * @param string[] $connectionCodes
-     * @return mixed[]
+     *
+     * @return array<array{connection_code: string, event_datetime: string, event_count: string}>
      */
     private function getPeriodEventCountPerConnection(
         string $eventType,
@@ -111,7 +112,8 @@ SQL;
 
     /**
      * @param string[] $connectionCodes
-     * @return mixed[]
+     *
+     * @return array<array{connection_code: string, event_datetime: string, event_count: string}>
      */
     private function getPeriodEventCountForAllConnections(
         string $eventType,

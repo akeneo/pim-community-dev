@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+    beStrictAboutTestsThatDoNotTestAnything="false"
+    bootstrap="../../../../../config/bootstrap.php">
+    <php>
+        <ini name="date.timezone" value="Europe/Paris"/>
+        <ini name="intl.default_locale" value="en"/>
+        <ini name="intl.error_level" value="0"/>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="zend.enable_gc" value="1"/>
+        <server name="KERNEL_CLASS" value="Kernel" force="true" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Channel_Acceptance_Test">
+            <directory>Acceptance</directory>
+        </testsuite>
+        <testsuite name="Channel_Integration_Test">
+            <directory suffix="Integration.php">Integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

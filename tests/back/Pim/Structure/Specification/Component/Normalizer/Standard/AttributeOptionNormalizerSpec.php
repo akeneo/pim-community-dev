@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\Standard;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Structure\Component\Normalizer\Standard\AttributeOptionNormalizer;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;

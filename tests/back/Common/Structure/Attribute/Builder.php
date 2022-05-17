@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\Structure\Attribute;
 
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Pim\Structure\Component\Model;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

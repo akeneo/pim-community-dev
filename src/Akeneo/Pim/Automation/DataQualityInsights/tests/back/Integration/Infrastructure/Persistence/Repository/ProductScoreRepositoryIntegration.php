@@ -34,18 +34,32 @@ final class ProductScoreRepositoryIntegration extends DataQualityInsightsTestCas
             new \DateTimeImmutable('2020-11-17'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(96))
-                ->addRate($channelMobile, $localeFr, new Rate(36))
+                ->addRate($channelMobile, $localeFr, new Rate(36)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(96))
         );
         $productScoreB = new ProductScores(
             new ProductId($productIdB),
             new \DateTimeImmutable('2020-11-16'),
             (new ChannelLocaleRateCollection())
                 ->addRate($channelMobile, $localeEn, new Rate(71))
-                ->addRate($channelMobile, $localeFr, new Rate(0))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(71))
+        );
+        // To ensure that it doesn't crash when saving a unknown product
+        $unknownProductScore = new ProductScores(
+            new ProductId($productIdB),
+            new \DateTimeImmutable('2020-11-16'),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(71))
+                ->addRate($channelMobile, $localeFr, new Rate(0)),
+            (new ChannelLocaleRateCollection())
+                ->addRate($channelMobile, $localeEn, new Rate(65))
         );
 
         $this->resetProductsScores();
-        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $productScoreB]);
+        $this->get(ProductScoreRepository::class)->saveAll([$productScoreA1, $unknownProductScore, $productScoreB]);
 
         $this->assertCountProductsScores(2);
         $this->assertProductScoreExists($productScoreA1);
@@ -76,13 +90,20 @@ SQL,
 
         $this->assertNotEmpty($productScore);
 
-        $expectedScore = $expectedProductScore->getScores()->mapWith(function (Rate $score) {
+        $expectedScores = $this->formatScoresForComparison($expectedProductScore->getScores());
+        $this->assertEquals($expectedScores, json_decode($productScore['scores'], true));
+
+        $expectedScoresPartialCriteria = $this->formatScoresForComparison($expectedProductScore->getScoresPartialCriteria());
+        $this->assertEquals($expectedScoresPartialCriteria, json_decode($productScore['scores_partial_criteria'], true));
+    }
+
+    private function formatScoresForComparison(ChannelLocaleRateCollection $scores): array
+    {
+        return $scores->mapWith(function (Rate $score) {
             return [
                 'rank' => Rank::fromRate($score)->toInt(),
                 'value' => $score->toInt(),
             ];
         });
-
-        $this->assertEquals($expectedScore, json_decode($productScore['scores'], true));
     }
 }

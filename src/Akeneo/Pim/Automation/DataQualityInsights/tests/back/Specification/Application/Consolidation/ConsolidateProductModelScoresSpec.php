@@ -6,6 +6,7 @@ namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Co
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Clock;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ComputeScores;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\FilterPartialCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\CriterionEvaluationResultStatusCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
@@ -32,19 +33,19 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
         GetCriteriaEvaluationsByProductIdQueryInterface $getCriteriaEvaluationsQuery,
         ComputeScores                                   $computeScores,
         ProductModelScoreRepositoryInterface            $productModelScoreRepository,
-        Clock                                           $clock
-    )
-    {
-        $this->beConstructedWith($getCriteriaEvaluationsQuery, $computeScores, $productModelScoreRepository, $clock);
+        Clock                                           $clock,
+        FilterPartialCriteriaEvaluations $filterCriteriaEvaluationsForPartialScore
+    ) {
+        $this->beConstructedWith($getCriteriaEvaluationsQuery, $computeScores, $productModelScoreRepository, $clock, $filterCriteriaEvaluationsForPartialScore);
     }
 
     public function it_consolidates_product_model_scores(
         $getCriteriaEvaluationsQuery,
         $computeScores,
         $productModelScoreRepository,
-        $clock
-    )
-    {
+        $clock,
+        $filterCriteriaEvaluationsForPartialScore
+    ) {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
 
@@ -55,11 +56,15 @@ class ConsolidateProductModelScoresSpec extends ObjectBehavior
 
         $scores1 = (new ChannelLocaleRateCollection())->addRate($channelMobile, $localeEn, new Rate(93));
         $productModelId1Evaluations = $this->givenACriterionEvaluationCollection($productModelId1);
+        $filterCriteriaEvaluationsForPartialScore->__invoke($productModelId1Evaluations)->willReturn($productModelId1Evaluations);
+
         $getCriteriaEvaluationsQuery->execute($productModelId1)->willReturn($productModelId1Evaluations);
         $computeScores->fromCriteriaEvaluations($productModelId1Evaluations)->willReturn($scores1);
 
         $scores2 = (new ChannelLocaleRateCollection())->addRate($channelMobile, $localeEn, new Rate(65));
         $productModelId2Evaluations = $this->givenACriterionEvaluationCollection($productModelId2);
+        $filterCriteriaEvaluationsForPartialScore->__invoke($productModelId2Evaluations)->willReturn($productModelId2Evaluations);
+
         $getCriteriaEvaluationsQuery->execute($productModelId2)->willReturn($productModelId2Evaluations);
         $computeScores->fromCriteriaEvaluations($productModelId2Evaluations)->willReturn($scores2);
 

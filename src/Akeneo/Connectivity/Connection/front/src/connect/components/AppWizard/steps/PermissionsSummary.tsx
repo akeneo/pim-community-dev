@@ -41,18 +41,22 @@ const Helper = styled.div`
 type PermissionsSummarySectionProps = {
     provider: PermissionFormProvider<any>;
     permissions: PermissionsByProviderKey;
+    onlyDisplayViewPermissions: boolean;
 };
 
-const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(({provider, permissions}) => (
-    <div>{provider.renderSummary(permissions)}</div>
-));
+const PermissionsSummarySection: FC<PermissionsSummarySectionProps> = React.memo(
+    ({provider, permissions, onlyDisplayViewPermissions}) => (
+        <div>{provider.renderSummary(permissions, onlyDisplayViewPermissions)}</div>
+    )
+);
 
 type Props = {
     appName: string;
     providers: PermissionFormProvider<any>[];
     permissions: PermissionsByProviderKey;
+    onlyDisplayViewPermissions: boolean;
 };
-export const PermissionsSummary: FC<Props> = ({appName, providers, permissions}) => {
+export const PermissionsSummary: FC<Props> = ({appName, providers, permissions, onlyDisplayViewPermissions}) => {
     const translate = useTranslate();
 
     return (
@@ -77,6 +81,7 @@ export const PermissionsSummary: FC<Props> = ({appName, providers, permissions})
                         key={provider.key}
                         provider={provider}
                         permissions={providerPermissions}
+                        onlyDisplayViewPermissions={onlyDisplayViewPermissions}
                     />
                 );
             })}

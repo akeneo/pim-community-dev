@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    _instanceof:
+        Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:
+            tags: [ 'pim_api.security.scope_mapper' ]
+
+    Akeneo\Catalogs\:
+        resource: '../../../../'
+        exclude:
+            - '../../../Symfony/'
+            - '../../../../Domain/'
+            - '../../../../ServiceAPI/'
+            - '../../../../Application/Exception'
+
+    Akeneo\Catalogs\Application\Handler\:
+        resource: '../../../../Application/Handler/'
+        tags: [ 'messenger.message_handler' ]
+
+    Akeneo\Catalogs\Infrastructure\Controller\:
+        resource: '../../../../Infrastructure/Controller/'
+        tags: [ 'controller.service_arguments' ]
+        public: true
+
+    Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus:
+        arguments:
+            $messageBus: '@catalogs.command.bus'
+
+    Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus:
+        arguments:
+            $messageBus: '@catalogs.query.bus'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
+        alias: "oro_security.security_facade"

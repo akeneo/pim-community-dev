@@ -47,7 +47,7 @@ SQL;
 
         $evaluationResults = [];
         while ($evaluation = $stmt->fetchAssociative()) {
-            $evaluationResults[\intval($evaluation['product_id'])] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
+            $evaluationResults[(string) $evaluation['product_id']] = $this->hydrateEvaluationResult($criterionCode, $evaluation['result']);
         }
 
         return $evaluationResults;

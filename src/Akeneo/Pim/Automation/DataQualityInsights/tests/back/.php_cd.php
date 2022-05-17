@@ -24,6 +24,7 @@ $rules = [
     $builder->only(
         [
             'Akeneo\Pim\Automation\DataQualityInsights\Domain',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             //External dependencies
             'Psr\Log\LoggerInterface',
@@ -133,7 +134,7 @@ $rules = [
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
-            'Akeneo\Channel\Component\Query\PublicApi',
+            'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

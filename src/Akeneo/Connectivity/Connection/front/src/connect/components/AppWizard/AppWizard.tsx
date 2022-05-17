@@ -94,10 +94,15 @@ export const AppWizard: FC<Props> = ({clientId}) => {
         permissionsAreEditable ? providers : [],
         permissionsAreEditable ? permissions : {}
     );
-
     if (wizardData === null) {
         return null;
     }
+
+    const onlyDisplayViewPermissions =
+        undefined ===
+        wizardData.scopeMessages.find((scopeMessage: ScopeMessage) => {
+            return 'products' === scopeMessage.entities && ['edit', 'delete'].includes(scopeMessage.type);
+        });
 
     if (processing) {
         return <FullScreenLoader />;
@@ -139,7 +144,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             providers={providers}
                             setProviderPermissions={handleSetProviderPermissions}
                             permissions={permissions}
-                            scopeMessages={wizardData.scopeMessages}
+                            onlyDisplayViewPermissions={onlyDisplayViewPermissions}
                         />
                     )}
                     {step.name === 'summary' && (
@@ -147,6 +152,7 @@ export const AppWizard: FC<Props> = ({clientId}) => {
                             appName={wizardData.appName}
                             providers={providers}
                             permissions={permissions}
+                            onlyDisplayViewPermissions={onlyDisplayViewPermissions}
                         />
                     )}
                 </>

@@ -13,7 +13,8 @@ import React, {
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {Dropdown, IconButton} from '../../components';
+import {Dropdown} from '../Dropdown/Dropdown';
+import {IconButton} from '../IconButton/IconButton';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
 import {Key, Override} from '../../shared';

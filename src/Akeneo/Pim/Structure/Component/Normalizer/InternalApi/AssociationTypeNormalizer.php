@@ -28,9 +28,6 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /**
-     * @param NormalizerInterface $normalizer
-     */
     public function __construct(
         NormalizerInterface $normalizer,
         VersionManager $versionManager,
@@ -42,7 +39,7 @@ class AssociationTypeNormalizer implements NormalizerInterface, CacheableSupport
     }
 
     /**
-     * @var AssociationTypeInterface $object
+     * @param AssociationTypeInterface $object
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = [])

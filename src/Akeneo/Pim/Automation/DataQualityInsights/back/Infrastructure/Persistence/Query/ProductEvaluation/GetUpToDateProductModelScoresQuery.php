@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\ProductEvaluation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\HasUpToDateEvaluationQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -24,13 +23,13 @@ class GetUpToDateProductModelScoresQuery implements GetProductModelScoresQueryIn
     ) {
     }
 
-    public function byProductModelId(ProductEntityIdInterface $productModelId): ChannelLocaleRateCollection
+    public function byProductModelId(ProductEntityIdInterface $productModelId): Read\Scores
     {
         if ($this->hasUpToDateEvaluationQuery->forProductId($productModelId)) {
             return $this->getProductModelScoresQuery->byProductModelId($productModelId);
         }
 
-        return new ChannelLocaleRateCollection();
+        return new Read\Scores(new ChannelLocaleRateCollection(), new ChannelLocaleRateCollection());
     }
 
     public function byProductModelIds(ProductEntityIdCollection $productIdCollection): array

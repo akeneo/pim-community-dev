@@ -1,6 +1,0 @@
-Akeneo\Channel\Component\Model\Currency:
-    constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Akeneo\Tool\Component\StorageUtils\Validator\Constraints\Immutable:
-            properties:
-                - code

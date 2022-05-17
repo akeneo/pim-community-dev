@@ -41,9 +41,11 @@ use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTableValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\ReferenceEntity\Application\Record\CreateRecord\CreateRecordCommand;
 use Akeneo\ReferenceEntity\Application\ReferenceEntity\CreateReferenceEntity\CreateReferenceEntityCommand;
 use Akeneo\Test\Integration\Configuration;
@@ -1105,6 +1107,146 @@ final class UpsertProductIntegration extends TestCase
         $this->updateProduct(new SetPriceCollectionValue('a_price', null, null, [
             new PriceValue('42', 'UNKNOWN'),
         ]));
+    }
+
+    /** @test */
+    public function it_creates_and_updates_a_product_with_a_table_value(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenTableAttributeIsNotActivated();
+
+        $this->createAttribute([
+            'code' => 'a_table',
+            'type' => AttributeTypes::TABLE,
+            'group' => 'other',
+            'localizable' => false,
+            'scopable' => false,
+            'table_configuration' => [
+                [
+                    'code' => 'ingredient',
+                    'data_type' => 'select',
+                    'labels' => [],
+                    'options' => [
+                        ['code' => 'salt'],
+                        ['code' => 'egg'],
+                        ['code' => 'butter'],
+                    ],
+                ],
+                [
+                    'code' => 'quantity',
+                    'data_type' => 'number',
+                    'labels' => [],
+                ],
+            ],
+        ]);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        // create product 'identifier'
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [
+                new SetTableValue(
+                    'a_table',
+                    null,
+                    null,
+                    [
+                        ['ingredient' => 'salt'],
+                        ['ingredient' => 'egg', 'quantity' => 2],
+                    ]
+                )
+            ]
+        );
+        $this->messageBus->dispatch($command);
+
+        $this->clearDoctrineUoW();
+
+        $tableNormalizer = $this->get('Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer');
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals(
+            [
+                ['ingredient' => 'salt'],
+                ['ingredient' => 'egg', 'quantity' => 2],
+            ],
+            $tableNormalizer->normalize($product->getValue('a_table')->getData())
+        );
+
+        // update product 'identifier'
+        $this->updateProduct(
+            new SetTableValue(
+                'a_table',
+                null,
+                null,
+                [
+                    ['ingredient' => 'butter', 'quantity' => 3],
+                    ['ingredient' => 'egg'],
+                ]
+            )
+        );
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNotNull($product);
+        Assert::assertEquals(
+            [
+                ['ingredient' => 'butter', 'quantity' => 3],
+                ['ingredient' => 'egg'],
+            ],
+            $tableNormalizer->normalize($product->getValue('a_table')->getData())
+        );
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_table_value_has_unknown_column(): void
+    {
+        FeatureHelper::skipIntegrationTestWhenTableAttributeIsNotActivated();
+
+        $this->createAttribute([
+            'code' => 'a_table',
+            'type' => AttributeTypes::TABLE,
+            'group' => 'other',
+            'localizable' => false,
+            'scopable' => false,
+            'table_configuration' => [
+                [
+                    'code' => 'ingredient',
+                    'data_type' => 'select',
+                    'labels' => [],
+                    'options' => [
+                        ['code' => 'salt'],
+                        ['code' => 'egg'],
+                        ['code' => 'butter'],
+                    ],
+                ],
+                [
+                    'code' => 'quantity',
+                    'data_type' => 'number',
+                    'labels' => [],
+                ],
+            ],
+        ]);
+
+        $product = $this->productRepository->findOneByIdentifier('identifier');
+        Assert::assertNull($product);
+
+        $this->expectException(LegacyViolationsException::class);
+        $this->expectExceptionMessage('The "origin" column does not exist');
+
+        // create product 'identifier'
+        $command = new UpsertProductCommand(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'identifier',
+            valueUserIntents: [
+                new SetTableValue(
+                    'a_table',
+                    null,
+                    null,
+                    [['ingredient' => 'butter', 'origin' => 'Nantes', 'quantity' => 3]]
+                )
+            ]
+        );
+        $this->messageBus->dispatch($command);
     }
 
     private function getUserId(string $username): int

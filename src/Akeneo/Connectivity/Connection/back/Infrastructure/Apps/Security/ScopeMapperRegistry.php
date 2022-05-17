@@ -80,7 +80,9 @@ final class ScopeMapperRegistry implements ScopeMapperRegistryInterface
 
         $messages = [];
         foreach ($filteredScopes as $scope) {
-            $messages[] = $this->getScopeMapper($scope)->getMessage($scope);
+            if (null !== $message = $this->getScopeMapper($scope)->getMessage($scope)) {
+                $messages[] = $message;
+            }
         }
 
         return $messages;

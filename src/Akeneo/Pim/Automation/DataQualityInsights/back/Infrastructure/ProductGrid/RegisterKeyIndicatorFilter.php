@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\ProductGrid;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
@@ -17,17 +18,13 @@ class RegisterKeyIndicatorFilter
 {
     public const PRODUCT_DATAGRID_NAME = 'product-grid';
 
-    private FeatureFlag $featureFlag;
-
-    private string $filterName;
-
-    private string $filterLabel;
-
-    public function __construct(FeatureFlag $featureFlag, string $filterName, string $filterLabel)
-    {
-        $this->featureFlag = $featureFlag;
-        $this->filterName = $filterName;
-        $this->filterLabel = $filterLabel;
+    public function __construct(
+        private FeatureFlag $dqiFeature,
+        private FeatureFlags $featureFlags,
+        private string $filterName,
+        private string $filterLabel,
+        private ?string $featureName,
+    ) {
     }
 
     // TIP-1555: to remove later on with AddDraftStatusFilterToProductGridListener also
@@ -39,7 +36,11 @@ class RegisterKeyIndicatorFilter
             return;
         }
 
-        if (!$this->featureFlag->isEnabled()) {
+        if (!$this->dqiFeature->isEnabled()) {
+            return;
+        }
+
+        if (null !== $this->featureName && !$this->featureFlags->isEnabled($this->featureName)) {
             return;
         }
 

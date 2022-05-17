@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaEvaluationRegistry;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CriteriaByFeatureRegistry;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\CriterionEvaluationCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\CriterionEvaluationRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,14 +19,14 @@ use Prophecy\Argument;
 final class CreateCriteriaEvaluationsSpec extends ObjectBehavior
 {
     public function it_creates_all_criteria(
-        CriteriaEvaluationRegistry $criterionEvaluationRegistry,
+        CriteriaByFeatureRegistry $criteriaRegistry,
         CriterionEvaluationRepositoryInterface $criterionEvaluationRepository
     ) {
-        $this->beConstructedWith($criterionEvaluationRegistry, $criterionEvaluationRepository);
+        $this->beConstructedWith($criteriaRegistry, $criterionEvaluationRepository);
 
         $productId = ProductIdCollection::fromInt(42);
 
-        $criterionEvaluationRegistry->getCriterionCodes()->willReturn([new CriterionCode('criterion1'), new CriterionCode('criterion2')]);
+        $criteriaRegistry->getAllCriterionCodes()->willReturn([new CriterionCode('criterion1'), new CriterionCode('criterion2')]);
 
         $criterionEvaluationRepository->create(Argument::that(function (CriterionEvaluationCollection $collection) {
             return $collection->count() === 2;

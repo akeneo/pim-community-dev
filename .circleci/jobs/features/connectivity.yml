@@ -1,4 +1,4 @@
-executor-machine: &executor-machine 'ubuntu-2004:2022.04.1 '
+executor-machine: &executor-machine 'ubuntu-2004:2022.04.1'
 
 jobs:
     test_front_lint_connectivity:
@@ -140,14 +140,14 @@ jobs:
                     name: Start containers
                     command: |
                         docker load -i php-pim-image.tar
-                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphan fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator
+                        APP_ENV=behat docker-compose -f docker-compose.yml -f src/Akeneo/Connectivity/Connection/tests/docker-compose.yml up -d --remove-orphans fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator
                         docker/wait_docker_up.sh
             -   run:
                     name: Install database
                     command: APP_ENV=behat make database
             -   run:
                     name: End to end Behat tests
-                    command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
+                    command: PIM_CONTEXT=test make connectivity-connection-critical-e2e
             -   store_test_results:
                     path: var/tests/behat
             -   store_artifacts:
