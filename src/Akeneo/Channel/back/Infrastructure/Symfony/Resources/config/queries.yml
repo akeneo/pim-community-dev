@@ -70,3 +70,14 @@ services:
         arguments:
             - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllViewableLocalesForUser'
         tags: [ 'akeneo.pim.cached_query' ]
+
+    Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllEditableLocalesForUser:
+        class: Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllEditableLocalesForUser
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Channel\Infrastructure\Query\Cache\CachedFindAllEditableLocalesForUser:
+        class: Akeneo\Channel\Infrastructure\Query\Cache\CachedFindAllEditableLocalesForUser
+        arguments:
+            - '@Akeneo\Channel\Infrastructure\Query\Sql\SqlFindAllEditableLocalesForUser'
+        tags: [ 'akeneo.pim.cached_query' ]

@@ -147,7 +147,7 @@ jobs:
                     command: APP_ENV=behat make database
             -   run:
                     name: End to end Behat tests
-                    command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
+                    command: PIM_CONTEXT=test make connectivity-connection-critical-e2e
             -   store_test_results:
                     path: var/tests/behat
             -   store_artifacts:

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\ComputeProductsKeyIndicators;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\KeyIndicator\ComputeProductsKeyIndicators;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductModelScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\ProductEvaluation\GetProductScoresQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductEntityIdCollection;
@@ -60,7 +60,8 @@ class BulkUpdateProductQualityScoresIndex implements BulkUpdateProductQualitySco
                 'script' => [
                     'inline' => "ctx._source.data_quality_insights = params;",
                     'params' => [
-                        'scores' => $qualityScores->toArrayIntRank(),
+                        'scores' => $qualityScores->allCriteria()->toArrayIntRank(),
+                        'scores_partial_criteria' => $qualityScores->partialCriteria()->toArrayIntRank(),
                         'key_indicators' => $keyIndicators
                     ],
                 ]

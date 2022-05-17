@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\GetScoresPropertyStrategy;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Filter\Field\AbstractFieldFilter;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
@@ -20,8 +21,9 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
     public const OPERATOR_IN_AT_LEAST_ONE_LOCALE = 'IN AT LEAST ONE LOCALE';
     public const OPERATOR_IN_ALL_LOCALES = 'IN ALL LOCALES';
 
-    public function __construct()
-    {
+    public function __construct(
+        private GetScoresPropertyStrategy $getScoresProperty
+    ) {
         $this->supportedFields = [self::FIELD];
         $this->supportedOperators = [
             self::OPERATOR_IN_ALL_LOCALES,
@@ -53,7 +55,7 @@ final class QualityScoreMultiLocalesFilter extends AbstractFieldFilter implement
         $terms = [];
         foreach ($locales as $locale) {
             $terms[] = [
-                'terms' => [sprintf('data_quality_insights.scores.%s.%s', $channel, $locale) => $values]
+                'terms' => [sprintf('data_quality_insights.%s.%s.%s', ($this->getScoresProperty)(), $channel, $locale) => $values]
             ];
         }
 

@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
  */
 final class CachedFindAllViewableLocalesForUser implements FindAllViewableLocalesForUser, CachedQueryInterface
 {
-    private ?array $cache = null;
+    private array $cache = [];
 
     public function __construct(
         private FindAllViewableLocalesForUser $findAllViewableLocalesForUser
@@ -31,6 +31,6 @@ final class CachedFindAllViewableLocalesForUser implements FindAllViewableLocale
 
     public function clearCache(): void
     {
-        $this->cache = null;
+        $this->cache = [];
     }
 }
