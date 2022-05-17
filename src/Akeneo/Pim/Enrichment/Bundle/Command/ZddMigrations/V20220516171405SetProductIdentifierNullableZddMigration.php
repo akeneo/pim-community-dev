@@ -1,9 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
 
 use Doctrine\DBAL\Connection;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 class V20220516171405SetProductIdentifierNullableZddMigration implements ZddMigration
 {
     public function __construct(private Connection $connection)
