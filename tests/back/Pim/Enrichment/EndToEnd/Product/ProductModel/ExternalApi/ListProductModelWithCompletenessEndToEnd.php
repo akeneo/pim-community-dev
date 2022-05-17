@@ -146,7 +146,7 @@ JSON;
         );
 
         // product complete, whatever the scope
-        $this->createVariantProduct('product_complete', [
+        $this->createVariantProduct('sku-product-complete', [
             new SetCategories(['categoryA', 'categoryB', 'master']),
             new ChangeParent('product_model_complete'),
             new SetBooleanValue('a_yes_no', null, null, false),
@@ -195,7 +195,7 @@ JSON;
         );
 
         // product complete, whatever the scope
-        $this->createVariantProduct('product_uncomplete', [
+        $this->createVariantProduct('sku-product-uncomplete', [
             new SetCategories(['categoryA', 'categoryB', 'master']),
             new ChangeParent('product_model_uncomplete'),
             new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),

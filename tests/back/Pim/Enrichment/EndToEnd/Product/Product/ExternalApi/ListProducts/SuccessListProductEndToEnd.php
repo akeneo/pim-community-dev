@@ -113,6 +113,8 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
             new ChangeParent('prod_mod_optA'),
             new SetBooleanValue('a_yes_no', null, null, true)
         ]);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     public function testDefaultPaginationFirstPageListProductsWithCount()
@@ -479,8 +481,7 @@ JSON;
             new SetFamily('familyA'),
         ]);
 
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             $this->get(ProductIdFactory::class)->createCollection([
@@ -549,6 +550,7 @@ JSON;
             new SetCategories(['master']),
             new SetFamily('familyA')
         ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $values = '{
             "a_text": [{
@@ -785,6 +787,7 @@ JSON;
     {
         $this->createProduct('AN_UPPERCASE_IDENTIFIER', []);
         $this->createProduct('MY_OTHER_UPPERCASE_IDENTIFIER', []);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();

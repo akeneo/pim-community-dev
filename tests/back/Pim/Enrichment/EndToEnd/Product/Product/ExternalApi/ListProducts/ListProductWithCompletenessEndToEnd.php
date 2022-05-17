@@ -45,7 +45,7 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
             new SetImageValue(
                 'a_localizable_image',
                 null,
-                null,
+                'en_US',
                 $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))
             ),
             new SetDateValue('a_date', null, null, new \DateTime('2016-06-28')),
@@ -68,6 +68,8 @@ class ListProductWithCompletenessEndToEnd extends AbstractProductTestCase
                 $this->getFileInfoKey($this->getFixturePath('akeneo.txt'))
             )
         ]);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $this->products = $this->get('pim_catalog.repository.product')->findAll();
     }
