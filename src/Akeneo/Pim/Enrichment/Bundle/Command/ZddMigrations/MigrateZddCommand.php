@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Pim\Enrichment\Bundle\Command\ZddMigrations;
 
 use Doctrine\DBAL\Connection;
@@ -9,6 +11,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
+ * @license https://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ */
 class MigrateZddCommand extends Command
 {
     protected static $defaultName = 'pim:zdd-migration:migrate';
