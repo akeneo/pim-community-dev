@@ -29,7 +29,9 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DB_CREATE => 'markMigrations'
+            InstallerEvents::POST_DB_CREATE => [
+                ['markMigrations', 0],
+            ]
         ];
     }
 
@@ -39,7 +41,7 @@ class MarkZddMigrationsAsMigratedSubscriber implements EventSubscriberInterface
             $this->connection->executeQuery(<<<SQL
             INSERT INTO `pim_one_time_task` (`code`, `status`, `start_time`, `values`) 
             VALUES (:code, :status, NOW(), :values)
-            ON DUPLICATE KEY UPDATE status=NEW.status, start_time=NOW();
+            ON DUPLICATE KEY UPDATE status=VALUES(status), start_time=NOW();
         SQL, [
                 'code' => $this->getZddMigrationCode($zddMigration),
                 'status' => 'finished',
