@@ -56,6 +56,37 @@ class ApiContext implements Context
     }
 
     /**
+     * @Given several existing catalogs
+     */
+    public function severalExistingCatalogs()
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
+
+        /** @var UserInterface $user */
+        $user = $this->container->get('security.token_storage')->getToken()->getUser();
+        $commandBus = $this->container->get(CommandBus::class);
+        $commandBus->execute(new CreateCatalogCommand(
+            'db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            'Store US',
+            $user->getId(),
+        ));
+        $commandBus->execute(new CreateCatalogCommand(
+            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            'Store FR',
+            $user->getId(),
+        ));
+        $commandBus->execute(new CreateCatalogCommand(
+            '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
+            'Store UK',
+            $user->getId(),
+        ));
+    }
+
+    /**
      * @When the external application retrieves the catalog using the API
      */
     public function theExternalApplicationRetrievesTheCatalogUsingTheApi()
@@ -77,6 +108,31 @@ class ApiContext implements Context
     }
 
     /**
+     * @When the external application retrieves the 2 first catalogs using the API
+     */
+    public function theExternalApplicationRetrievesTheTwoFirstCatalogsUsingTheApi()
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
+
+        $this->client->request(
+            method: 'GET',
+            uri: '/api/rest/v1/catalogs',
+            parameters: [
+                'limit' => 2,
+                'offset' => 0,
+            ],
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
      * @Then the response should contain the catalog details
      */
     public function theResponseShouldContainTheCatalogDetails()
@@ -86,6 +142,27 @@ class ApiContext implements Context
         Assert::assertArrayHasKey('id', $payload);
         Assert::assertArrayHasKey('name', $payload);
         Assert::assertArrayHasKey('enabled', $payload);
+    }
+
+    /**
+     * @Then the response should contain catalogs details
+     */
+    public function theResponseShouldContainCatalogsDetails()
+    {
+        $payload = \json_decode($this->response->getContent(), true);
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+        Assert::assertCount(2, $payload);
+
+        Assert::assertArrayHasKey('id', $payload[0]);
+        Assert::assertArrayHasKey('name', $payload[0]);
+        Assert::assertArrayHasKey('enabled', $payload[0]);
+        Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $payload[0]['id']);
+
+        Assert::assertArrayHasKey('id', $payload[1]);
+        Assert::assertArrayHasKey('name', $payload[1]);
+        Assert::assertArrayHasKey('enabled', $payload[1]);
+        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload[1]['id']);
     }
 
     /**

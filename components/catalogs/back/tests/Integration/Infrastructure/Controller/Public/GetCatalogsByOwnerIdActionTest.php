@@ -9,13 +9,14 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogActionTest extends IntegrationTestCase
+class GetCatalogsByOwnerIdActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
@@ -31,33 +32,52 @@ class GetCatalogActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItFindsTheCatalog(): void
+    public function testItGetsPaginatedCatalogsByOwnerId(): void
     {
         $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $user = $this->tokenStorage->getToken()->getUser();
+        $userId = $user->getId();
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getId()
+            $userId
+        ));
+        $this->commandBus->execute(new CreateCatalogCommand(
+            'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
+            'Store FR',
+            $userId
+        ));
+        $this->commandBus->execute(new CreateCatalogCommand(
+            '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
+            'Store UK',
+            $userId
         ));
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
+            '/api/rest/v1/catalogs',
+            [
+                'limit' => 2,
+                'offset' => 0,
+            ],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
         );
 
-        $response = $this->client->getResponse();
-        $payload = \json_decode($response->getContent(), true);
+        $firstPageResponse = $this->client->getResponse();
+        $firstPagePayload = \json_decode($firstPageResponse->getContent(), true);
 
-        Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload['id']);
-        Assert::assertSame('Store US', $payload['name']);
-        Assert::assertSame(false, $payload['enabled']);
+        Assert::assertEquals(200, $firstPageResponse->getStatusCode());
+        Assert::assertCount(2, $firstPagePayload);
+
+        Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $firstPagePayload[0]['id']);
+        Assert::assertSame('Store UK', $firstPagePayload[0]['name']);
+        Assert::assertSame(false, $firstPagePayload[0]['enabled']);
+
+        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $firstPagePayload[1]['id']);
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
@@ -66,7 +86,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            '/api/rest/v1/catalogs',
             [],
             [],
             [
@@ -79,48 +99,32 @@ class GetCatalogActionTest extends IntegrationTestCase
         Assert::assertEquals(403, $response->getStatusCode());
     }
 
-    public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
+    public function testItGetsBadRequestWithWrongPagination(): void
     {
         $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $user = $this->tokenStorage->getToken()->getUser();
+        $userId = $user->getId();
 
-        $this->client->request(
-            'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
-            [],
-            [
-                'CONTENT_TYPE' => 'application/json',
-            ],
-        );
-
-        $response = $this->client->getResponse();
-
-        Assert::assertEquals(404, $response->getStatusCode());
-    }
-
-    public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
-    {
-        $anotherUserId = $this->createUser('willy-mesnage')->getId();
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $anotherUserId,
+            $userId
         ));
-
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
 
         $this->client->request(
             'GET',
-            '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
-            [],
+            '/api/rest/v1/catalogs',
+            [
+                'limit' => -1,
+                'offset' => -1,
+            ],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
         );
-
         $response = $this->client->getResponse();
 
-        Assert::assertEquals(404, $response->getStatusCode());
+        Assert::assertEquals(400, $response->getStatusCode());
     }
 }

@@ -10,7 +10,7 @@ use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 
-class GetCatalogsQueryTest extends IntegrationTestCase
+class GetCatalogsByOwnerIdQueryTest extends IntegrationTestCase
 {
     private ?Connection $connection;
     private ?GetCatalogsByOwnerIdQuery $query;
