@@ -29,12 +29,12 @@ class InitDataQualityInsightsDbSchemaSubscriber implements EventSubscriberInterf
     {
         $query = <<<'SQL'
 CREATE TABLE pim_data_quality_insights_product_criteria_evaluation (
-  product_id int NOT NULL,
+  product_uuid BINARY(16) NOT NULL,
   criterion_code varchar(40) NOT NULL,
   evaluated_at datetime NULL,
   status varchar(15) NOT NULL,
   result json DEFAULT NULL,
-  PRIMARY KEY (product_id, criterion_code),
+  PRIMARY KEY (product_uuid, criterion_code),
   INDEX status_index (status),
   CONSTRAINT FK_dqi_product_uuid_criteria_evaluation FOREIGN KEY (product_uuid) REFERENCES pim_catalog_product (uuid) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
