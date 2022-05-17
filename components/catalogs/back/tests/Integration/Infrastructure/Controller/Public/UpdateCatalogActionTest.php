@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GetCatalogActionTest extends IntegrationTestCase
+class UpdateCatalogActionTest extends IntegrationTestCase
 {
     private ?KernelBrowser $client;
     private ?CommandBus $commandBus;
@@ -31,9 +31,13 @@ class GetCatalogActionTest extends IntegrationTestCase
         $this->purgeDataAndLoadMinimalCatalog();
     }
 
-    public function testItFindsTheCatalog(): void
+    public function testItUpdatesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -42,22 +46,23 @@ class GetCatalogActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'GET',
+            'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
+            \json_encode([
+                'name' => 'new name',
+            ]),
         );
 
         $response = $this->client->getResponse();
         $payload = \json_decode($response->getContent(), true);
 
         Assert::assertEquals(200, $response->getStatusCode());
-        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload['id']);
-        Assert::assertSame('Store US', $payload['name']);
-        Assert::assertSame(false, $payload['enabled']);
+        Assert::assertSame('new name', $payload['name']);
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
@@ -71,13 +76,16 @@ class GetCatalogActionTest extends IntegrationTestCase
         ));
 
         $this->client->request(
-            'GET',
+            'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
+            \json_encode([
+                'name' => 'new name',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -87,16 +95,23 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
 
         $this->client->request(
-            'GET',
+            'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
+            \json_encode([
+                'name' => 'new name',
+            ]),
         );
 
         $response = $this->client->getResponse();
@@ -113,16 +128,23 @@ class GetCatalogActionTest extends IntegrationTestCase
             $anotherUserId,
         ));
 
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
 
         $this->client->request(
-            'GET',
+            'PATCH',
             '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
             [],
             [],
             [
                 'CONTENT_TYPE' => 'application/json',
             ],
+            \json_encode([
+                'name' => 'new name',
+            ]),
         );
 
         $response = $this->client->getResponse();

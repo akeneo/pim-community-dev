@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Catalogs\Application\Persistence\FindOneCatalogByIdQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
+use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogQuery;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
@@ -28,6 +29,7 @@ class ApiContext implements Context
     public function __construct(
         KernelInterface $kernel,
         private AuthenticationContext $authentication,
+        private QueryBus $queryBus,
     ) {
         $this->container = $kernel->getContainer()->get('test.service_container');
     }
@@ -91,13 +93,13 @@ class ApiContext implements Context
      */
     public function theExternalApplicationCreatesACatalogUsingTheApi()
     {
-        $client = $this->authentication->createAuthenticatedClient([
+        $this->client ??= $this->authentication->createAuthenticatedClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
         ]);
 
-        $client->request(
+        $this->client->request(
             method: 'POST',
             uri: '/api/rest/v1/catalogs',
             server: [
@@ -108,7 +110,7 @@ class ApiContext implements Context
             ]),
         );
 
-        $this->response = $client->getResponse();
+        $this->response = $this->client->getResponse();
 
         Assert::assertEquals(201, $this->response->getStatusCode());
     }
@@ -130,9 +132,85 @@ class ApiContext implements Context
     {
         $payload = \json_decode($this->response->getContent(), true);
 
-        $catalog = $this->container->get(FindOneCatalogByIdQueryInterface::class)
-            ->execute($payload['id']);
+        $catalog = $this->queryBus->execute(new GetCatalogQuery($payload['id']));
 
         Assert::assertNotNull($catalog);
+    }
+
+    /**
+     * @When the external application deletes a catalog using the API
+     */
+    public function theExternalApplicationDeletesACatalogUsingTheApi()
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
+
+        $this->client->request(
+            method: 'DELETE',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(204, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the response should be empty
+     */
+    public function theResponseShouldBeEmpty()
+    {
+        Assert::assertEmpty($this->response->getContent());
+    }
+
+    /**
+     * @Then the catalog should be removed from the PIM
+     */
+    public function theCatalogShouldBeRemovedFromThePim()
+    {
+        $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+
+        Assert::assertNull($catalog);
+    }
+
+    /**
+     * @When the external application updates a catalog using the API
+     */
+    public function theExternalApplicationUpdatesACatalogUsingTheApi()
+    {
+        $this->client ??= $this->authentication->createAuthenticatedClient([
+            'read_catalogs',
+            'write_catalogs',
+            'delete_catalogs',
+        ]);
+
+        $this->client->request(
+            method: 'PATCH',
+            uri: '/api/rest/v1/catalogs/db1079b6-f397-4a6a-bae4-8658e64ad47c',
+            server: [
+                'CONTENT_TYPE' => 'application/json',
+            ],
+            content: \json_encode([
+                'name' => 'Store US [NEW]',
+            ]),
+        );
+
+        $this->response = $this->client->getResponse();
+
+        Assert::assertEquals(200, $this->response->getStatusCode());
+    }
+
+    /**
+     * @Then the catalog should be updated in the PIM
+     */
+    public function theCatalogShouldBeUpdatedInThePim()
+    {
+        $catalog = $this->queryBus->execute(new GetCatalogQuery('db1079b6-f397-4a6a-bae4-8658e64ad47c'));
+
+        Assert::assertNotNull($catalog);
+        Assert::assertEquals('Store US [NEW]', $catalog->getName());
     }
 }
