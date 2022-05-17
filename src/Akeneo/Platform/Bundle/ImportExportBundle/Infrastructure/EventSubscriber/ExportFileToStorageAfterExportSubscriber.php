@@ -29,6 +29,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberInterface
 {
+    private const STORAGE_KEY = 'storage';
+
     public function __construct(
         private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
@@ -55,13 +57,13 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
         }
 
         $jobParameters = $jobExecution->getJobInstance()->getRawParameters();
-        if (!array_key_exists('storage', $jobParameters)) {
+        if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
             return;
         }
 
         $command = new TransferFilesToStorageCommand(
             $this->extractFileToTransfer($jobExecution),
-            $jobParameters['storage'],
+            $jobParameters[self::STORAGE_KEY],
         );
 
         $this->transferFilesToStorageHandler->handle($command);
@@ -81,7 +83,6 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
             if (!$writer instanceof ArchivableWriterInterface) {
                 continue;
             }
-
 
             $writtenFiles = array_merge($writtenFiles, $this->extractFileToTransferFromWriter($writer));
         }
