@@ -44,6 +44,7 @@
 
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
+- Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:7.0
 
 ## New features
 
