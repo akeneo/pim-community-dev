@@ -8,6 +8,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -57,18 +58,18 @@ class RemovingProductModelFromIndexIntegration extends TestCase
         $products = $this->createProductModelAndChildren();
         $productModelId = $products[0]->getId();
         $subProductModelId = $products[1]->getId();
-        $variantProductId = $products[2]->getId();
+        $variantProductUuid = $products[2]->getUuid();
 
         $this->assertTrue($this->productModelIdIsInIndex($productModelId));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertTrue($this->productIdIsInIndex($variantProductId));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
 
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->removeFromProductModelId($productModelId);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertFalse($this->productIdIsInIndex($variantProductId));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
     }
 
     public function testBulkRemovingProductModel()
@@ -76,18 +77,18 @@ class RemovingProductModelFromIndexIntegration extends TestCase
         $products = $this->createProductModelAndChildren();
         $productModelId = $products[0]->getId();
         $subProductModelId = $products[1]->getId();
-        $variantProductId = $products[2]->getId();
+        $variantProductUuid = $products[2]->getUuid();
         $products = $this->createProductModelAndChildren();
         $productModelId2 = $products[0]->getId();
         $subProductModelId2 = $products[1]->getId();
-        $variantProductId2 = $products[2]->getId();
+        $variantProductUuid = $products[2]->getUuid();
 
         $this->assertTrue($this->productModelIdIsInIndex($productModelId));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertTrue($this->productIdIsInIndex($variantProductId));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
         $this->assertTrue($this->productModelIdIsInIndex($productModelId2));
         $this->assertTrue($this->productModelIdIsInIndex($subProductModelId2));
-        $this->assertTrue($this->productIdIsInIndex($variantProductId2));
+        $this->assertTrue($this->productIsInIndex($variantProductUuid));
 
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->removeFromProductModelIds(
             [$productModelId, $productModelId2]
@@ -96,16 +97,16 @@ class RemovingProductModelFromIndexIntegration extends TestCase
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->assertFalse($this->productModelIdIsInIndex($productModelId));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId));
-        $this->assertFalse($this->productIdIsInIndex($variantProductId));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
         $this->assertFalse($this->productModelIdIsInIndex($productModelId2));
         $this->assertFalse($this->productModelIdIsInIndex($subProductModelId2));
-        $this->assertFalse($this->productIdIsInIndex($variantProductId2));
+        $this->assertFalse($this->productIsInIndex($variantProductUuid));
     }
 
-    private function productIdIsInIndex(int $productId): bool
+    private function productIsInIndex(UuidInterface $productUuid): bool
     {
         try {
-            $this->esProductAndProductModelClient->get('product_' . $productId);
+            $this->esProductAndProductModelClient->get('product_' . $productUuid->toString());
         } catch (Missing404Exception $e) {
             return false;
         }

@@ -28,6 +28,9 @@ Akeneo\Pim\Enrichment\Component\Product\Model\Product:
             type: json
             column: quantified_associations
             nullable: true
+        uuid:
+            type: uuid_binary
+            nullable: true
     manyToOne:
         family:
             targetEntity: Akeneo\Pim\Structure\Component\Model\FamilyInterface

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle;
 
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
@@ -118,6 +119,13 @@ class Client
             'items' => [],
         ];
         foreach ($documents as $document) {
+            $extraActions = [];
+            if ($document instanceof AffectedByMigrationProjection) {
+                if ($document->shouldBeMigrated()) {
+                    $extraActions[] = ['delete' => ['_index' => $this->indexName, '_id' => $document->getFormerDocumentId()]];
+                }
+                $document = $document->toArray();
+            }
             $action = ['index' => ['_index' => $this->indexName]];
 
             if (null !== $keyAsId) {
@@ -128,7 +136,11 @@ class Client
                 $action['index']['_id'] = $this->idPrefix . $document[$keyAsId];
             }
 
-            if (($paramsComputedSize + strlen(json_encode($document))) >= $this->maxChunkSize) {
+            $estimatedAddedSize = strlen(json_encode(
+                array_merge([$action, $document], $extraActions),
+                JSON_PRESERVE_ZERO_FRACTION + JSON_INVALID_UTF8_SUBSTITUTE
+            ));
+            if ($paramsComputedSize + $estimatedAddedSize >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
                 $paramsComputedSize = 0;
                 $params = [];
@@ -136,7 +148,9 @@ class Client
 
             $params['body'][] = $action;
             $params['body'][] = $document;
-            $paramsComputedSize += strlen(json_encode($document));
+            $params['body'] = array_merge($params['body'], $extraActions);
+
+            $paramsComputedSize += $estimatedAddedSize;
 
             if (null !== $refresh) {
                 $params['refresh'] = $refresh->getType();
@@ -156,7 +170,7 @@ class Client
         $length = count($params['body']);
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
-        } catch (BadRequest400Exception $e) {
+        } catch (BadRequest400Exception) {
             $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
             $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
 

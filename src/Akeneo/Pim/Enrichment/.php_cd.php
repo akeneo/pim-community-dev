@@ -19,6 +19,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Job\Domain\Model\Status',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',
         'Liip\ImagineBundle',
@@ -26,6 +27,7 @@ $rules = [
         'Dompdf\Options',
         'Webmozart\Assert\Assert',
         'Psr\Log\LoggerInterface',
+        'Ramsey\Uuid',
         // TODO the feature use the datagrid
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
@@ -128,6 +130,7 @@ $rules = [
         'Webmozart\Assert\Assert',
         'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Psr\Log\LoggerInterface',
+        'Ramsey\Uuid',
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',

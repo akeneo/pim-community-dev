@@ -196,8 +196,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
-        GetConnectorProducts $getConnectorProducts,
-        FindId $findProductId
+        GetConnectorProducts $getConnectorProducts
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -205,11 +204,9 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = 'AN-UPPERCASE-IDENTIFIER';
         $query->userId = 1;
 
-        $findProductId->fromIdentifier('AN-UPPERCASE-IDENTIFIER')->shouldBeCalledOnce()->willReturn('1234');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_1234',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['an-uppercase-identifier']
         ])->shouldBeCalled()->willReturn($pqb);
 
@@ -359,8 +356,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        EventDispatcherInterface $eventDispatcher,
-        FindId $findProductId
+        EventDispatcherInterface $eventDispatcher
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -368,10 +364,9 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->searchAfter = '69';
         $query->userId = 1;
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('5634');
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_5634',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
@@ -411,8 +406,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        FindId $findProductId
+        GetProductsWithQualityScoresInterface $getProductsWithQualityScores
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -421,11 +415,9 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withQualityScores = 'true';
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn('44');
-
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => 'product_44',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 
@@ -469,8 +461,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $searchAfterPqbFactory,
         ProductQueryBuilderInterface $pqb,
         GetConnectorProducts $getConnectorProducts,
-        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
-        FindId $findProductId
+        GetProductsWithCompletenessesInterface $getProductsWithCompletenesses
     ) {
         $query = new ListProductsQuery();
         $query->paginationType = PaginationTypes::SEARCH_AFTER;
@@ -479,10 +470,9 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
         $query->userId = 1;
         $query->withCompletenesses = 'true';
 
-        $findProductId->fromIdentifier('69')->shouldBeCalledOnce()->willReturn(null);
         $searchAfterPqbFactory->create([
             'limit' => 42,
-            'search_after_unique_key' => '',
+            'search_after_unique_key' => 'product_z',
             'search_after' => ['69']
         ])->shouldBeCalled()->willReturn($pqb);
 

@@ -130,6 +130,8 @@ $rules = [
             'Symfony\Component\Validator\Constraints',
             'Symfony\Component\Form\FormFactoryInterface',
             'Webmozart\Assert\Assert',
+            'Ramsey\Uuid\Uuid',
+            'Ramsey\Uuid\UuidInterface',
 
             // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',

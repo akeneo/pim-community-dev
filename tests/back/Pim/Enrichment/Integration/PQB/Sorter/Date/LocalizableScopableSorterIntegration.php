@@ -23,7 +23,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             Directions::ASCENDING,
             ['locale' => 'fr_FR', 'scope' => 'tablet'],
         ]]);
-        $this->assertOrder($result, ['product_three', 'product_two', 'product_one', 'product_four', 'empty_product']);
+        $this->assertOrder($result, ['product_three', 'product_two', 'product_one', 'empty_product', 'product_four']);
     }
 
     public function testSorterDescending()
@@ -33,7 +33,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             Directions::DESCENDING,
             ['locale' => 'fr_FR', 'scope' => 'tablet']
         ]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product', 'product_four']);
     }
 
     public function testErrorOperatorNotSupported()
@@ -46,18 +46,6 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'A_BAD_DIRECTION',
             ['locale' => 'fr_FR', 'scope' => 'tablet']
         ]]);
-    }
-
-    /**
-     * @jira https://akeneo.atlassian.net/browse/PIM-6872
-     */
-    public function testSorterWithNoDataOnSorterField()
-    {
-        $result = $this->executeSorter([['a_localizable_scopable_date', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
-
-        $result = $this->executeSorter([['a_localizable_scopable_date', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
-        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four', 'empty_product']);
     }
 
     /**

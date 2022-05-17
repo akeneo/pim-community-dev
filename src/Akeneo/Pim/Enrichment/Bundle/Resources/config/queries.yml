@@ -376,6 +376,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.enrichment.product.query.quantified_association.get_uuid_mapping_from_product_identifiers_query:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetUuidMappingFromProductIdentifiersQuery'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.product.query.quantified_association.get_id_mapping_from_product_model_codes_query:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Query\QuantifiedAssociation\GetIdMappingFromProductModelCodesQuery'
         arguments:

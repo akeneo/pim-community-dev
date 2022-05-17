@@ -10,8 +10,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Domain\Model\AffectedByMigrationProjection;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Integration tests to check that the projection of the product is correctly fetched from the database.
@@ -484,6 +486,20 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
         $this->expectException(ObjectNotFoundException::class);
 
         $this->getProductProjection('unknown_product');
+    }
+
+    public function test_that_it_returns_uuid_if_column_is_filled()
+    {
+        $this->createProductWithFamily();
+        /** @var AffectedByMigrationProjection $normalizedProductProjection */
+        $normalizedProductProjection = $this->getProductProjection('bar');
+
+        $id = $normalizedProductProjection->toArray()['id'];
+        $split = preg_match('/^product_(?P<uuid>.*)$/', $id, $matches);
+
+        Assert::assertSame(1, $split);
+        Assert::assertTrue(Uuid::isValid($matches['uuid']));
+        Assert::assertTrue($normalizedProductProjection->shouldBeMigrated());
     }
 
     protected function getConfiguration(): Configuration
