@@ -2,7 +2,7 @@ parameters:
     level: 1
     paths:
         - %rootDir%/../../../src/Akeneo/ReferenceEntity
-    excludes_analyse:
+    excludePaths:
         - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/back/spec/*
         - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/check-requests-contracts.php
         - %rootDir%/../../../src/Akeneo/ReferenceEntity/tests/check-fake-implementations.php

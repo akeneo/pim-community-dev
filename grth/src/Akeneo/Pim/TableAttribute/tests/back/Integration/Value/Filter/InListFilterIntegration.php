@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Filter;
 
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\LabelCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Test\Pim\TableAttribute\Helper\FeatureHelper;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -259,6 +261,11 @@ final class InListFilterIntegration extends AbstractFilterIntegration
     public function it_filters_on_in_list_operator_on_reference_entity_column(): void
     {
         FeatureHelper::skipIntegrationTestWhenReferenceEntityIsNotActivated();
+
+        $this->get('akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels')
+            ->setChannels([
+                new Channel('ecommerce', ['en_US'], LabelCollection::fromArray(['en_US' => 'Ecommerce', 'de_DE' => 'Ecommerce', 'fr_FR' => 'Ecommerce']), ['USD'])
+            ]);
 
         $this->createNutritionAttributeWithReferenceEntityColumn();
         $this->createProductWithValues('empty_product', [], 'family_with_table');

@@ -4,7 +4,7 @@ const SAMPLE_DATA_MAX_LENGTH = 100;
 const ELLIPSIS_CHARACTER = '…';
 
 type SampleData = string | null;
-type PreviewData = string | null;
+type PreviewData = string | string[] | null;
 
 const formatSampleData = (translate: Translate, sampleData: SampleData): string => {
   if (sampleData === null) {

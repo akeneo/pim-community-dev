@@ -9,6 +9,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class DeleteSupplierHandlerTest extends TestCase
 {
@@ -22,7 +23,7 @@ final class DeleteSupplierHandlerTest extends TestCase
         $spy = $this->createMock(Repository::class);
         $spy->expects($this->once())->method('delete')->with($identifier);
 
-        $sut = new DeleteSupplierHandler($spy);
+        $sut = new DeleteSupplierHandler($spy, new NullLogger());
         ($sut)(new DeleteSupplier(
             (string) $identifier,
         ));

@@ -12,6 +12,7 @@ use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -29,7 +30,7 @@ final class UpdateSupplierHandlerTest extends TestCase
         $repository = new InMemoryRepository();
         $repository->save(Supplier::create((string) $identifier, 'code', 'label', []));
 
-        $handler = new UpdateSupplierHandler($repository, $validatorSpy);
+        $handler = new UpdateSupplierHandler($repository, $validatorSpy, new NullLogger());
         ($handler)($command);
 
         $supplier = $repository->find($identifier);
@@ -59,7 +60,7 @@ final class UpdateSupplierHandlerTest extends TestCase
 
         $this->expectExceptionObject(new InvalidData($violationsSpy));
 
-        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $validatorSpy);
+        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $validatorSpy, new NullLogger());
         ($handler)($command);
     }
 
@@ -76,7 +77,11 @@ final class UpdateSupplierHandlerTest extends TestCase
 
         $this->expectExceptionObject(new SupplierDoesNotExist());
 
-        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $this->getValidatorSpyWithNoError($command));
+        $handler = new UpdateSupplierHandler(
+            new InMemoryRepository(),
+            $this->getValidatorSpyWithNoError($command),
+            new NullLogger(),
+        );
         ($handler)($command);
     }
 

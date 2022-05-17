@@ -32,3 +32,13 @@ pimee_tailored_import_generate_preview_data_action:
     path: /rest/tailored-import/generate-preview-data
     defaults: { _controller: akeneo.tailored_import.controller.generate_preview_data_action }
     methods: [POST]
+
+pimee_tailored_import_get_attribute_options_action:
+    path: /rest/tailored-import/attribute-options/{attribute_code}
+    defaults: { _controller: akeneo.tailored_import.controller.get_attribute_options_action }
+    methods: [POST]
+
+pimee_tailored_import_validate_replacement_operation_action:
+    path: /rest/tailored-import/validate-replacement-operation
+    defaults: { _controller: akeneo.tailored_import.controller.validate_replacement_operation_action }
+    methods: [POST]

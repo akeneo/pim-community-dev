@@ -2,8 +2,8 @@
 
 namespace AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\Product;
 
-use Akeneo\Channel\Component\Model\Channel;
-use Akeneo\Channel\Component\Model\Locale;
+use Akeneo\Channel\Infrastructure\Component\Model\Channel;
+use Akeneo\Channel\Infrastructure\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;

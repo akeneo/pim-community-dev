@@ -25,7 +25,7 @@ Akeneo\Pim\Permission\Bundle\Entity\LocaleAccess:
                 default: false
     manyToOne:
         locale:
-            targetEntity: Akeneo\Channel\Component\Model\LocaleInterface
+            targetEntity: Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface
             joinColumns:
                 locale_id:
                     referencedColumnName: id

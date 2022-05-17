@@ -4,6 +4,7 @@ import {isSimpleSelectTarget} from './model';
 import {AttributeDataMappingConfiguratorProps} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
+import {SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE} from '../../Operation';
 
 const SimpleSelectConfigurator = ({
   dataMapping,
@@ -40,7 +41,7 @@ const SimpleSelectConfigurator = ({
       />
       <Operations
         dataMapping={dataMapping}
-        compatibleOperations={[]}
+        compatibleOperations={[SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]}
         onOperationsChange={onOperationsChange}
         onRefreshSampleData={onRefreshSampleData}
       />

@@ -48,7 +48,10 @@ final class SimpleSelectValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                'operations' => new Operations([]),
+                // TODO replace with SimpleSelectReplacementOperation::TYPE when back is merged
+                'operations' => new Operations([
+                    'simple_select_replacement',
+                ]),
                 'sample_data' => new SampleData(),
             ],
         ]));

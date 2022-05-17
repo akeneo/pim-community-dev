@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Automation\RuleEngine\Component\Validator;
 
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\Constraint\LocaleShouldBeActive;
 use Akeneo\Pim\Automation\RuleEngine\Component\Validator\LocaleShouldBeActiveValidator;
 use PhpSpec\ObjectBehavior;

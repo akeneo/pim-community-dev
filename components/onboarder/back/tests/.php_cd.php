@@ -39,6 +39,7 @@ $rules = [
             // PIM coupling
 
             // External dependencies coupling
+            'Psr\Log\LoggerInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
@@ -66,10 +67,13 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
             // External dependencies coupling
+            'Box\Spout\Common\Exception\IOException',
             'Box\Spout\Common\Type',
             'Box\Spout\Writer\Common\Creator\WriterEntityFactory',
             'Box\Spout\Writer\Common\Creator\WriterFactory',
+            'Box\Spout\Writer\Exception\WriterNotOpenedException',
             'Doctrine\DBAL\Connection',
+            'Psr\Log\LoggerInterface',
             'Ramsey\Uuid\Uuid',
             'Symfony',
         ],
@@ -104,6 +108,7 @@ $rules = [
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
+            'Psr\Log\NullLogger',
             'Ramsey\Uuid\Uuid',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',

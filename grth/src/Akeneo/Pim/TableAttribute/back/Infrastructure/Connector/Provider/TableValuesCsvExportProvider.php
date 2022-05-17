@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\Provider;
 
-use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
+use Akeneo\Channel\Infrastructure\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;

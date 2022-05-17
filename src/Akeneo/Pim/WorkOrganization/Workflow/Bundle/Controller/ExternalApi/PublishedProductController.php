@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Controller\ExternalApi;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidOperatorException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnsupportedFilterException;
@@ -318,7 +318,7 @@ class PublishedProductController
             $pqbOptions['search_after_unique_key'] = $this->getPublishedProductId->fromIdentifier(
                 $queryParameters['search_after']
             ) ?? '';
-            $pqbOptions['search_after'] = [\strtolower($queryParameters['search_after'])];
+            $pqbOptions['search_after'] = [\mb_strtolower($queryParameters['search_after'])];
         }
         $pqb = $this->searchAfterPqbFactory->create($pqbOptions);
 

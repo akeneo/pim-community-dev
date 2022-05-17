@@ -2,7 +2,7 @@ includes:
     - phpstan-ee.neon
 
 parameters:
-  excludes_analyse:
+  excludePaths:
     - %rootDir%/../../../components/tailored-export/back/src/Application/Common/Selection/ReferenceEntity
     - %rootDir%/../../../components/tailored-export/back/Application/Common/Selection/ReferenceEntityCollection
     - %rootDir%/../../../components/tailored-export/back/src/Application/MapValues/SelectionApplier/ReferenceEntity

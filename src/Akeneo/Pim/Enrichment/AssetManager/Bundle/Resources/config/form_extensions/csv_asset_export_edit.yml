@@ -55,6 +55,7 @@ extensions:
             title: pim_common.permissions
             entity: job_instance
             tabCode: pim-job-instance-permission
+        feature: permission
 
     pim-job-instance-csv-asset-export-edit-global:
         module: pim/job/common/edit/properties

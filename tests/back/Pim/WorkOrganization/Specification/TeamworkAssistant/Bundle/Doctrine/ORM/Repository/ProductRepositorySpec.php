@@ -6,8 +6,8 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetGrantedCateg
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\Doctrine\ORM\Repository\ProductRepository;

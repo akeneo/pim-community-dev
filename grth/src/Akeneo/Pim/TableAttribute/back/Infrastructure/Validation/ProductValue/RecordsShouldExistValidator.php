@@ -52,7 +52,7 @@ final class RecordsShouldExistValidator extends ConstraintValidator
             foreach ($row as $stringColumnId => $cell) {
                 $referenceEntityColumn = $indexedReferenceEntityColumns[$stringColumnId] ?? null;
                 if (null !== $referenceEntityColumn && is_string($cell->normalize())) {
-                    $referenceEntityIdentifier = $referenceEntityColumn->referenceEntityIdentifier()->asString();
+                    $referenceEntityIdentifier = \strtolower($referenceEntityColumn->referenceEntityIdentifier()->asString());
                     $cellInformation = $rowIndex . '-' . $referenceEntityColumn->code()->asString();
                     $indexedRecordCodes[$referenceEntityIdentifier][$cellInformation] = $cell->normalize();
                 }

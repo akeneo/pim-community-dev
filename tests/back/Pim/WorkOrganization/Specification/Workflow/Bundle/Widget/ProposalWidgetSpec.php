@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Widget;
 
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Permission\Component\Attributes;

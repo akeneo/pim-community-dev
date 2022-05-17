@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Infrastructure\Hydrator;
 use Akeneo\Platform\TailoredImport\Domain\Hydrator\OperationCollectionHydratorInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\BooleanReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -66,6 +67,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
             'pim_catalog_boolean' => $this->getBooleanRequiredOperations(),
             'pim_catalog_metric' => $this->getMeasurementRequiredOperations($normalizedTarget['source_configuration']),
             'pim_catalog_number' => $this->getNumberRequiredOperations($normalizedTarget['source_configuration']),
+            'pim_catalog_date' => $this->getDateRequiredOperations($normalizedTarget['source_configuration']),
             default => [],
         };
     }
@@ -94,6 +96,13 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
     {
         return [
             new ConvertToNumberOperation($sourceConfiguration['decimal_separator']),
+        ];
+    }
+
+    private function getDateRequiredOperations(array $sourceConfiguration): array
+    {
+        return [
+            new ConvertToDateOperation($sourceConfiguration['date_format']),
         ];
     }
 }

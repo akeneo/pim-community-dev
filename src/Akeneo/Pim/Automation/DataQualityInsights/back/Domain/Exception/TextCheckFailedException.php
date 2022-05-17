@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception;
 
-final class TextCheckFailedException extends \Exception
+final class TextCheckFailedException extends SpellcheckException
 {
 }

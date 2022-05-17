@@ -33,6 +33,7 @@ class UpdateCategoriesPermissionsEndToEnd extends WebTestCase
 
     public function testUpdateAttributeGroupPermissionsWithNonDefaultTypeUserGroup()
     {
+        $this->get('feature_flags')->enable('permission');
         $this->authenticateAsAdmin();
 
         $group = $this->createUserGroupWillAllPermissionsByDefault('TestApp', 'app');

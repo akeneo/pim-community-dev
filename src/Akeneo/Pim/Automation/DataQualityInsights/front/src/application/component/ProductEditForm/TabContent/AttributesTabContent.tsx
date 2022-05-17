@@ -14,6 +14,7 @@ import TabContentWithPortalDecorator from '@akeneo-pim-community/data-quality-in
 import {usePageContext} from '@akeneo-pim-community/data-quality-insights/src/infrastructure/hooks';
 import SpellcheckProductValuesList from './SpellcheckProductValuesList';
 import {useCatalogContext, useGetSpellcheckSupportedLocales} from '../../../../infrastructure';
+import {useFeatureFlags} from '@akeneo-pim-community/shared';
 
 export const CONTAINER_ELEMENT_ID = 'attributes-product-tab-content-dqi';
 
@@ -22,6 +23,11 @@ export interface AttributesTabContentProps {
 }
 
 const BaseAttributesTabContent: FunctionComponent<AttributesTabContentProps> = () => {
+  const featureFlags = useFeatureFlags();
+  if (!featureFlags.isEnabled('data_quality_insights_all_criteria')) {
+    return null;
+  }
+
   const {locale} = useCatalogContext();
   const spellcheckSupportedLocales = useGetSpellcheckSupportedLocales();
 

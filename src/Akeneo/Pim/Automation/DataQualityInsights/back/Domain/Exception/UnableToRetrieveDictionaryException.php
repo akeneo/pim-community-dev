@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\LanguageCode;
 
-final class UnableToRetrieveDictionaryException extends \Exception
+final class UnableToRetrieveDictionaryException extends SpellcheckException
 {
     public function __construct(LanguageCode $languageCode, string $extraMessage = '')
     {

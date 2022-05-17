@@ -9,7 +9,7 @@ use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface;
-use Akeneo\Channel\Component\Model\LocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Provider\OwnerGroupsProvider;

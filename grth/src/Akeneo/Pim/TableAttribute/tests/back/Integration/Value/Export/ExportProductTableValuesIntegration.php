@@ -2,7 +2,7 @@
 
 namespace Akeneo\Test\Pim\TableAttribute\Integration\Value\Export;
 
-use Akeneo\Channel\Component\Model\ChannelInterface;
+use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Test\Integration\Configuration;

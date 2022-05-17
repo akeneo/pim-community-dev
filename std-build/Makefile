@@ -58,11 +58,11 @@ cache:
 	$(CMD_ON_PROJECT) rm -rf var/cache && $(PHP_RUN) -d memory_limit=256M bin/console cache:warmup
 
 composer.lock: composer.json
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer update --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer update --no-interaction
 
 .PHONY: vendor
 vendor: composer.lock
-	$(PHP_RUN) -d memory_limit=4G /usr/local/bin/composer install --no-interaction
+	$(PHP_RUN) /usr/local/bin/composer install --no-interaction
 
 .PHONY: dependencies
 dependencies: vendor node_modules

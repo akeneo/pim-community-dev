@@ -11,6 +11,7 @@ akeneo_batch_job_execution | BASE TABLE
 akeneo_batch_job_instance | BASE TABLE
 akeneo_batch_step_execution | BASE TABLE
 akeneo_batch_warning | BASE TABLE
+akeneo_catalog | BASE TABLE
 akeneo_communication_channel_viewed_announcements | BASE TABLE
 akeneo_connectivity_connected_app | BASE TABLE
 akeneo_connectivity_connection | BASE TABLE
@@ -253,6 +254,11 @@ akeneo_batch_warning | step_execution_id | YES | int | MUL
 akeneo_batch_warning | reason | YES | longtext |
 akeneo_batch_warning | reason_parameters | NO | longtext |
 akeneo_batch_warning | item | NO | longtext |
+akeneo_catalog | id | NO | binary(16) | PRI
+akeneo_catalog | name | NO | varchar(255) |
+akeneo_catalog | owner_id | NO | int | MUL
+akeneo_catalog | created | NO | datetime |
+akeneo_catalog | updated | NO | datetime |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
 akeneo_communication_channel_viewed_announcements | user_id | NO | int | PRI
 akeneo_connectivity_connected_app | id | NO | varchar(36) | PRI
@@ -740,9 +746,11 @@ pim_data_quality_insights_product_model_criteria_evaluation | result | YES | jso
 pim_data_quality_insights_product_model_score | product_model_id | NO | int | PRI
 pim_data_quality_insights_product_model_score | evaluated_at | NO | date |
 pim_data_quality_insights_product_model_score | scores | NO | json |
+pim_data_quality_insights_product_model_score | scores_partial_criteria | YES | json |
 pim_data_quality_insights_product_score | product_id | NO | int | PRI
 pim_data_quality_insights_product_score | evaluated_at | NO | date | MUL
 pim_data_quality_insights_product_score | scores | NO | json |
+pim_data_quality_insights_product_score | scores_partial_criteria | YES | json |
 pim_data_quality_insights_product_score | product_uuid | YES | binary(16) |
 pim_datagrid_view | id | NO | int | PRI
 pim_datagrid_view | owner_id | YES | int | MUL
@@ -973,6 +981,8 @@ INDEX | akeneo_batch_step_execution | IDX_BDE7D0925871C06B | job_execution_id
 INDEX | akeneo_batch_step_execution | PRIMARY | id
 INDEX | akeneo_batch_warning | IDX_8EE0AE736C7DA296 | step_execution_id
 INDEX | akeneo_batch_warning | PRIMARY | id
+INDEX | akeneo_catalog | idx_owner | owner_id
+INDEX | akeneo_catalog | PRIMARY | id
 INDEX | akeneo_communication_channel_viewed_announcements | IDX_VIEWED_ANNOUNCEMENTS_user_id_announcement_id | user_id, announcement_id
 INDEX | akeneo_communication_channel_viewed_announcements | PRIMARY | announcement_id, user_id
 INDEX | akeneo_connectivity_connected_app | FK_CONNECTIVITY_CONNECTED_APP_connection_code | connection_code
@@ -1378,6 +1388,7 @@ FOREIGN CONSTRAINT | attribute_asset_family_identifier_foreign_key | akeneo_asse
 FOREIGN CONSTRAINT | FK_62738477593D6954 | akeneo_batch_job_execution.job_instance_id | akeneo_batch_job_instance.id
 FOREIGN CONSTRAINT | FK_BDE7D0925871C06B | akeneo_batch_step_execution.job_execution_id | akeneo_batch_job_execution.id
 FOREIGN CONSTRAINT | FK_8EE0AE736C7DA296 | akeneo_batch_warning.step_execution_id | akeneo_batch_step_execution.id
+FOREIGN CONSTRAINT | fk_owner | akeneo_catalog.owner_id | oro_user.id
 FOREIGN CONSTRAINT | FK_COMMUNICATION_CHANNEL_VIEWED_ANNOUNCEMENTS_user_id | akeneo_communication_channel_viewed_announcements.user_id | oro_user.id
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTED_APP_connection_code | akeneo_connectivity_connected_app.connection_code | akeneo_connectivity_connection.code
 FOREIGN CONSTRAINT | FK_CONNECTIVITY_CONNECTED_APP_user_group_name | akeneo_connectivity_connected_app.user_group_name | oro_access_group.name

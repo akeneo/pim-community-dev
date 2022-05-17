@@ -34,6 +34,12 @@ services:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository
 
     # Query functions
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_channels:
+        class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindChannels
+
+    akeneo_referenceentity.infrastructure.persistence.query.channel.find_locales:
+        class: Akeneo\ReferenceEntity\Common\Fake\Channel\InMemoryFindLocales
+
     akeneo_referenceentity.infrastructure.persistence.query.find_reference_entity_items:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindReferenceEntityItems
 
@@ -160,7 +166,7 @@ services:
         arguments:
             - '@akeneo_referenceentity.infrastructure.persistence.repository.attribute'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_activated_locales_per_channels:
+    akeneo_referenceentity.infrastructure.persistence.query.find_activated_locales_per_channels:
         class: Akeneo\ReferenceEntity\Common\Fake\InMemoryFindActivatedLocalesPerChannels
 
     akeneo.referencentity.infrastructure.persistence.query.find_user_groups_for_security_identifier:

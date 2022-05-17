@@ -188,7 +188,7 @@ class NonExistentTableValueFilter implements NonExistentValuesFilter
                     continue;
                 }
 
-                $filteredRecordCodes = $existingRecordCodes[$foundReferenceEntityColumn->referenceEntityIdentifier()->asString()] ?? [];
+                $filteredRecordCodes = $existingRecordCodes[\strtolower($foundReferenceEntityColumn->referenceEntityIdentifier()->asString())] ?? [];
                 $valueIndex = array_search(
                     strtolower($value),
                     array_map('strtolower', $filteredRecordCodes)

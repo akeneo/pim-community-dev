@@ -46,6 +46,7 @@ $rules = [
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
         'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
         'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',
+        'Akeneo\Channel\API',
     ])->in('Akeneo\ReferenceEntity\Infrastructure'),
 ];
 

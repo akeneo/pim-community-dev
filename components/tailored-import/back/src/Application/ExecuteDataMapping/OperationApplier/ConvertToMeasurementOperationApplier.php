@@ -35,7 +35,7 @@ class ConvertToMeasurementOperationApplier implements OperationApplierInterface
         }
 
         return new MeasurementValue(
-            str_replace($operation->getDecimalSeparator(), static::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
+            str_replace($operation->getDecimalSeparator(), self::DEFAULT_DECIMAL_SEPARATOR, $value->getValue()),
             $operation->getUnit(),
         );
     }

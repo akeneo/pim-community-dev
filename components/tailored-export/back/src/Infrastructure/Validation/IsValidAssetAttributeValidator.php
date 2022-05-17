@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\AttributeAsMainMedia;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Platform\GetAttributeAsMainMediaInterface;
-use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
+use Akeneo\Channel\Infrastructure\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
