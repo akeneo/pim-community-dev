@@ -22,7 +22,7 @@ use Akeneo\Test\Pim\Automation\DataQualityInsights\Integration\DataQualityInsigh
  */
 final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 {
-    public function test_it_returns_the_latest_scores_by_product_ids()
+    public function test_it_returns_the_scores_by_product_ids()
     {
         $channelMobile = new ChannelCode('mobile');
         $localeEn = new LocaleCode('en_US');
@@ -36,7 +36,7 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
         $this->resetProductsScores();
 
         $productsScores = [
-            'product_A_latest_scores' => new Write\ProductScores(
+            'product_A_scores' => new Write\ProductScores(
                 new ProductId($productIdA),
                 new \DateTimeImmutable('2020-01-08'),
                 (new ChannelLocaleRateCollection())
@@ -46,17 +46,7 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
                     ->addRate($channelMobile, $localeEn, new Rate(89))
                     ->addRate($channelMobile, $localeFr, new Rate(23))
             ),
-            'product_A_previous_scores' => new Write\ProductScores(
-                new ProductId($productIdA),
-                new \DateTimeImmutable('2020-01-07'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(76))
-                    ->addRate($channelMobile, $localeFr, new Rate(67)),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(88))
-                    ->addRate($channelMobile, $localeFr, new Rate(32))
-            ),
-            'product_B_latest_scores' => new Write\ProductScores(
+            'product_B_scores' => new Write\ProductScores(
                 new ProductId($productIdB),
                 new \DateTimeImmutable('2020-01-09'),
                 (new ChannelLocaleRateCollection())
@@ -65,16 +55,6 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
                 (new ChannelLocaleRateCollection())
                     ->addRate($channelMobile, $localeEn, new Rate(89))
                     ->addRate($channelMobile, $localeFr, new Rate(98)),
-            ),
-            'product_B_previous_scores' => new Write\ProductScores(
-                new ProductId($productIdB),
-                new \DateTimeImmutable('2020-01-08'),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(81))
-                    ->addRate($channelMobile, $localeFr, new Rate(95)),
-                (new ChannelLocaleRateCollection())
-                    ->addRate($channelMobile, $localeEn, new Rate(76))
-                    ->addRate($channelMobile, $localeFr, new Rate(28))
             ),
             'other_product_scores' => new Write\ProductScores(
                 new ProductId($productIdC),
@@ -92,12 +72,12 @@ final class GetProductScoresQueryIntegration extends DataQualityInsightsTestCase
 
         $expectedProductsScores = [
             $productIdA => new Read\Scores(
-                $productsScores['product_A_latest_scores']->getScores(),
-                $productsScores['product_A_latest_scores']->getScoresPartialCriteria()
+                $productsScores['product_A_scores']->getScores(),
+                $productsScores['product_A_scores']->getScoresPartialCriteria()
             ),
             $productIdB => new Read\Scores(
-                $productsScores['product_B_latest_scores']->getScores(),
-                $productsScores['product_B_latest_scores']->getScoresPartialCriteria()
+                $productsScores['product_B_scores']->getScores(),
+                $productsScores['product_B_scores']->getScoresPartialCriteria()
             ),
         ];
 
