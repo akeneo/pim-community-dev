@@ -165,23 +165,6 @@ class InMemoryProductRepositorySpec extends ObjectBehavior
         $products->shouldHaveKeyWithValue('A', $productA);
     }
 
-    function it_finds_one_product_by_id()
-    {
-        $productA = new Product();
-        $productA->setId(1);
-        $productA->setIdentifier('A');
-        $this->save($productA);
-
-        $productB = new Product();
-        $productB->setId(2);
-        $productB->setIdentifier('B');
-        $this->save($productB);
-
-        $this->findOneBy(['id' => 1])->shouldBe($productA);
-        $this->findOneBy(['id' => 2])->shouldBe($productB);
-        $this->findOneBy(['id' => 3])->shouldBeNull();
-    }
-
     function it_finds_one_product_by_uuid()
     {
         $productA = new Product();

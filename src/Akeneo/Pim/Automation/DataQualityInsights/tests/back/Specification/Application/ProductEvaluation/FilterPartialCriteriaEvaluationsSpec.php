@@ -8,8 +8,9 @@ use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\Crit
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Read;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CriterionEvaluationStatus;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductUuid;
 use PhpSpec\ObjectBehavior;
+use Ramsey\Uuid\Uuid;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -49,7 +50,7 @@ class FilterPartialCriteriaEvaluationsSpec extends ObjectBehavior
     {
         return new Read\CriterionEvaluation(
             new CriterionCode($criterionCode),
-            new ProductId(42),
+            ProductUuid::fromString(Uuid::uuid4()->toString()),
             null,
             CriterionEvaluationStatus::pending(),
             null
