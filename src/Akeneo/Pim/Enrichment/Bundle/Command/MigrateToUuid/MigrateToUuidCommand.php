@@ -72,7 +72,7 @@ class MigrateToUuidCommand extends Command
         }
 
         if (!$this->migrationAuthorization->isGranted()) {
-            $this->logger->notice('The client is not authorized to tun migration.');
+            $this->logger->notice('The client is not authorized to run the migration.');
 
             return self::SUCCESS;
         }
