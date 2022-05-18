@@ -2,56 +2,43 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\Category;
 
+use Doctrine\DBAL\Connection;
+
 class Category
 {
-    /** @var integer */
-    private $id;
+    private int $id;
 
-    /** @var integer */
-    private $parent_id;
+    private ?int $parent_id;
 
-    /** @var integer */
-    private $root_id;
+    private ?int $root_id;
 
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var integer */
-    private $lft;
+    private int $lft;
 
-    /** @var integer */
-    private $rgt;
+    private int $rgt;
 
-    /** @var integer */
-    private $lvl;
+    private int $lvl;
 
-    //
-    // links
-    //
+    private bool $isLinked;
 
-    /** @var boolean */
-    private $isLinked;
+    private ?Category $parent;
 
-    /** @var Category|null */
-    private $parent;
+    private ?Category $root;
 
-    /** @var Category|null */
-    private $root;
-
-    /** @Var array */
-    private $children;
+    private array $children;
 
     public function __construct(array $dbModel)
     {
         $this->id = $dbModel['id'];
         $this->code = $dbModel['code'];
 
-        $this->parent_id = $dbModel['parent_id'];
-        $this->root_id = $dbModel['root'];
+        $this->parent_id = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
+        $this->root_id = $dbModel['root'] === null ? null : (int)$dbModel['root'];
 
-        $this->lft = $dbModel['lft'];
-        $this->rgt = $dbModel['rgt'];
-        $this->lvl = $dbModel['lvl'];
+        $this->lft = (int)$dbModel['lft'];
+        $this->rgt = (int)$dbModel['rgt'];
+        $this->lvl = (int)$dbModel['lvl'];
 
         $this->isLinked = false;
         $this->parent = null;
@@ -62,11 +49,6 @@ class Category
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getParentId(): ?int
-    {
-        return $this->parent_id;
     }
 
     public function getCode(): string
@@ -94,7 +76,6 @@ class Category
         $this->rgt = $right;
     }
 
-
     public function getLevel(): int
     {
         return $this->lvl;
@@ -105,7 +86,7 @@ class Category
         $this->lvl = $level;
     }
 
-    public function getChildren(): iterable
+    public function getChildren(): array
     {
         return $this->children;
     }
@@ -126,6 +107,8 @@ class Category
 
         $unlinkedChildren = $pool->findForParent($this->id);
 
+        // make sure that children are sorted by the lft property
+        // this will make the ordering basis for (lft,rgt) reordering in ::reorder()
         usort($unlinkedChildren, function (Category $c1, Category $c2) {
             return $c1->getLeft() - $c2->getLeft();
         });
@@ -138,47 +121,94 @@ class Category
         $this->isLinked = true;
     }
 
-    public function computeNested(int $left = 1, int $level = 0): Category
+    public function reorder(int $left = 1, int $level = 0): Category
     {
-        $c = clone $this;
-
+        $category = clone $this;
+        $category->children = [];
 
         $right = $left;
         foreach ($this->children as $child) {
-            $right = $child->computeNested($right + 1, $level + 1)->getRight();
+            $reorderedChild = $child->reorder($right + 1, $level + 1);
+            $right = $reorderedChild->getRight();
+            $category->children[] = $reorderedChild;
         }
 
-        $c->setLeft($left);
-        $c->setRight($right + 1);
-        $c->setLevel($level);
+        $category->setLeft($left);
+        $category->setRight($right + 1);
+        $category->setLevel($level);
 
-        return $c;
+        return $category;
     }
 
-    public function diff(Category $c): array
+    private function makeDiffError(string $message): string
+    {
+        return "id={$this->id} code={$this->code} : {$message}";
+    }
+
+    public function diff(Category $category): array
     {
         $diffs = [];
-        if ($this->level !== $c->getLevel()) {
-            $diffs[] = "Level mismatch ({$this->level} vs {$c->getLevel()})";
+        if ($this->lvl !== $category->getLevel()) {
+            $diffs[] = $this->makeDiffError("Level mismatch (has:{$this->lvl}, expected:{$category->getLevel()})");
         }
-        if ($this->lft !== $c->getLeft()) {
-            $diffs[] = "Left mismatch ({$this->lft} vs {$c->getLeft()})";
+        if ($this->lft !== $category->getLeft()) {
+            $diffs[] = $this->makeDiffError("Left mismatch (has:{$this->lft}, expected:{$category->getLeft()})");
         }
-        if ($this->rgt !== $c->getRight()) {
-            $diffs[] = "Right mismatch ({$this->rgt} vs {$c->getRight()})";
+        if ($this->rgt !== $category->getRight()) {
+            $diffs[] = $this->makeDiffError("Right mismatch (has:{$this->rgt}, expected:{$category->getRight()})");
         }
 
-        if (count($this->children) !== count($c->getChildren())) {
-            $diffs[] = "Children count  mismatch ({count($this->children)} vs {count($c->getChildren()})";
+        if (count($this->children) !== count($category->getChildren())) {
+            $diffs[] = $this->makeDiffError("Children count mismatch (has:{count($this->children)}, expected:{count($category->children})");
         }
 
         for ($i = 0; $i < count($this->children); $i++) {
+            $childrenDiffErrors = $this->children[$i]->diff($category->getChildAt($i));
+
+            $childrenDiffErrorsWithContext = array_map(
+                function ($childDiff) use ($i) {
+                    return "Child at index {$i}: ${childDiff}";
+                },
+                $childrenDiffErrors
+            );
+
             $diffs = array_merge(
                 $diffs,
-                $this->children[$i]->diff($c->getChildAt($i))
+                $childrenDiffErrorsWithContext
             );
         }
 
         return $diffs;
+    }
+
+    public function dumpNodes($level = 0, $maxLevel = 1): array
+    {
+        $spaces = str_repeat("\t", $level);
+        $rows = ["{$spaces}({$this->id},{$this->code},lvl={$this->lvl},lft={$this->lft},rgt={$this->rgt})"];
+        if ($level < $maxLevel) {
+            foreach ($this->children as $child) {
+                $rows = array_merge($rows,
+                    $child->dumpNodes($level + 1)
+                );
+            }
+        }
+        return $rows;
+    }
+
+    public function doUpdate(Connection $connection)
+    {
+        $connection->update('pim_catalog_category',
+            [
+                'lvl' => $this->lvl,
+                'lft' => $this->lft,
+                'rgt' => $this->rgt,
+            ], [
+                'id' => $this->id
+            ],
+        );
+
+        foreach ($this->children as $child) {
+            $child->doUpdate($connection);
+        }
     }
 }

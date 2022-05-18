@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -23,21 +24,12 @@ class CheckCategoryTrees extends Command
 {
     protected static $defaultName = 'pim:categories:check';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var CategoryRepository */
-    private $repository;
-
-    public function __construct(
-        Connection $connection,
-        CategoryRepository $repository
-
-    )
+    public function __construct(Connection $connection)
     {
         parent::__construct();
         $this->connection = $connection;
-        $this->repository = $repository;
     }
 
     /**
@@ -46,75 +38,94 @@ class CheckCategoryTrees extends Command
     protected function configure()
     {
         $this
-//            ->addArgument(
-//                'identifiers',
-//                InputArgument::REQUIRED,
-//                'The product identifiers to clean (comma separated values)'
-//            )
-//            ->setHidden(true)
-            ->setDescription('Check all category trees agains nested structure');
+            ->addOption(
+                'dump-corruptions',
+                'c',
+                InputOption::VALUE_NONE,
+                'Whether we dump detected corruptions or not',
+            )
+            ->addOption(
+                'dump-fixed-trees',
+                't',
+                InputOption::VALUE_NONE,
+                'Whether we dump the corrected trees or not',
+            )
+            ->addOption(
+                "max-level",
+                'm',
+                InputArgument::OPTIONAL,
+                "max level for tree dumping",
+                1)
+            ->addOption(
+                'fix-trees',
+                null,
+                InputOption::VALUE_NONE,
+                'Whether we update the category trees in DB',
+            )
+            ->setDescription('Check all category trees against nested structure');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): bool
     {
+        $dumpCorruptions = !!$input->getOption('dump-corruptions');
+        $dumpFixedTrees = !!$input->getOption('dump-fixed-trees');
+        $dumpFixedTreesMaxLevel = $input->getOption('max-level');
+        $fixTrees = !!$input->getOption('fix-trees');
 
-        if (false) {
-            $errors = $this->repository->verify();
-            if ($errors === false) {
-                echo "FINE!!\n";
-            } else {
-                var_export($errors);
-            }
+        if ($fixTrees) {
+            $output->writeln("WILL update !! Ctrl-C Now if npt intended");
         }
 
-        // TODO lock tables !
-
-
-           $this->repository->reorderAll(null, 'ASC', false);
-
-        // TODO unlock tables !
-
-        echo "Reordered!!\n";
-
-        return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute2(InputInterface $input, OutputInterface $output): int
-    {
-
-        // 1 - read all categories and build object trees
-
+        $output->writeln('Fetching all categories');
         $pool = $this->getAllCategories();
 
+        $output->writeln('Building trees');
         $roots = $pool->getRoots();
-
-        foreach($roots as $root) {
+        /** @var Category $root */
+        foreach ($roots as $root) {
             $root->link($pool);
         }
 
+        $hasCorruptions = false;
 
+        foreach ($roots as $root) {
+            $output->writeln("Checking root id={$root->getId()} code={$root->getCode()}");
 
-        // 2 - traversing trees
-        // for reach node
-        // check that
-        // - (node.lft,node.rgt) = (min(child.lft)-1, max(child.right)+1)
-        // - child[i].rgt = child[i+1].lft - 1
+            $fixedTree = $root->reorder();
+            $corruptions = $root->diff($fixedTree);
 
-        // on each violation report
+            $rootHasCorruptions = !!count($corruptions);
+            if ($rootHasCorruptions) {
+                if ($dumpCorruptions) {
+                    $output->writeln($corruptions);
+                }
+                if ($dumpFixedTrees) {
+                    $output->writeln($fixedTree->dumpNodes(0, $dumpFixedTreesMaxLevel));
+                }
+            }
 
+            $corruptionStatus = count($corruptions) ? 'CORRUPTED' : 'SANE';
 
-        foreach($roots as $root) {
-            $this->checkRoot($root);
+            $hasCorruptions |= $rootHasCorruptions;
+
+            $output->writeln(
+                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus}"
+            );
+
+            if ($rootHasCorruptions && $fixTrees) {
+                $output->writeln("UPDATING tree id={$root->getId()} !!");
+                $this->doUpdate($fixedTree);
+            }
         }
 
-        return 0;
+        if ($fixTrees && !$hasCorruptions) {
+            $output->writeln("Requested update but no corruption found => nothing wad done.");
+        }
 
+        return $hasCorruptions;
     }
 
     private function getAllCategories(): CategoriesPool
@@ -129,22 +140,19 @@ SQL;
         return new CategoriesPool($rows);
     }
 
-    private function checkRoot(Category $c) {
-        echo "Checking root [{$c->getCode()}]\n";
+    private function doUpdate(Category $root): void
+    {
+        if (!$this->connection->beginTransaction()) {
+            throw new \Exception("Could not start update transaction");
+        }
 
-
-
-        $this->checkCategory($c);
-}
-
-    private function computeCorrectlyNestedCategory(Category $c) {
-        echo "checking category id={$c->getId()}\n";
-
-        $violations = $c->diff($c->computeNested());
-
-        foreach($violations as $v) {
-            echo "{v}\n";
+        try {
+            $root->doUpdate($this->connection);
+            if (!$this->connection->commit()) {
+                throw new Exception("Could not commit update transaction");
+            }
+        } catch (\Throwable $e) {
+            $this->connection->rollBack();
         }
     }
-
 }
