@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Domain\Supplier\Write;
+namespace Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write;
 
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 
