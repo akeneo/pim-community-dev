@@ -2,8 +2,6 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Platform\VersionProvider;
-use Akeneo\Platform\VersionProviderInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
