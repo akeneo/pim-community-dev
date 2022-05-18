@@ -111,8 +111,3 @@ services:
 
     akeneo_connectivity.connection.ip_matcher:
         class: Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher
-
-    akeneo_connectivity.marketplace.content_security_policy:
-        class: Akeneo\Connectivity\Connection\Infrastructure\ContentSecurityPolicy\MarketplaceContentSecurityPolicy
-        tags:
-            - { name: akeneo.pim.security.content_security_policy_provider }
