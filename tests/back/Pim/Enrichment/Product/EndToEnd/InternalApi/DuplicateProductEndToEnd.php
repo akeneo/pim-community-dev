@@ -4,6 +4,14 @@ namespace AkeneoTestEnterprise\Pim\Enrichment\Product\EndToEnd\InternalAPI;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetIdentifierValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\UserManagement\Component\Model\User;
@@ -39,13 +47,25 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
         $this->addAttributesToFamily($familyCode, $uniqueAttributeCodes);
         $associatedProduct = $this->createProduct(
             'associated_product',
-            'familyA1'
+            'familyA1',
+            []
         );
         $normalizedProductToDuplicate = $this->getNormalizedProductToDuplicate($familyCode, $associatedProduct->getIdentifier());
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
             $familyCode,
-            $normalizedProductToDuplicate
+            [
+                new SetGroups(['groupA', 'groupB']),
+                new SetCategories(['categoryA', 'categoryB']),
+                new SetIdentifierValue('sku', 'product_to_duplicate'),
+                new SetTextValue('unique_attribute_1', null, null, 'The first unique value'),
+                new SetTextValue('unique_attribute_2', null, null, 'The second unique value'),
+                new SetTextValue('non_unique_attribute', null, null, 'value non unique'),
+                new AssociateProducts('PACK', [$associatedProduct->getIdentifier()]),
+                new AssociateGroups('UPSELL', ['groupA']),
+                new AssociateProducts('X_SELL', [$associatedProduct->getIdentifier()]),
+                new AssociateGroups('X_SELL', ['groupB']),
+            ]
         );
         $this->clearMessageBusObserver();
 
@@ -111,15 +131,8 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
             'product_to_duplicate',
             'familyA2',
             [
-                'family' => 'familyA2',
-                'values' => [
-                    'a_metric' => [
-                        ['data' => ['amount' => 1, 'unit' => 'WATT'], 'locale' => null, 'scope' => null]
-                    ],
-                    'a_number_float' => [
-                        ['data' => '12.05', 'locale' => null, 'scope' => null]
-                    ]
-                ]
+                new SetMeasurementValue('a_metric', null, null, 1, 'WATT'),
+                new SetNumberValue('a_number_float', null, null, '12.05')
             ]
         );
 
@@ -149,7 +162,8 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     {
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
-            null
+            null,
+            []
         );
 
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
@@ -175,7 +189,8 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
     {
         $productToDuplicate = $this->createProduct(
             'product_to_duplicate',
-            'familyA'
+            'familyA',
+            []
         );
         $url = $this->router->generate('pimee_enrich_product_rest_duplicate', [
             'id' => $productToDuplicate->getId()
