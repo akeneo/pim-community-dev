@@ -1,22 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {ThemeProvider} from 'styled-components';
 import {CatalogList} from './component/CatalogList';
 import {CatalogEdit} from './component/CatalogEdit';
-import {HashRouter as Router, Route, Switch} from 'react-router-dom';
+import {pimTheme} from 'akeneo-design-system';
 
 ReactDOM.render(
     <React.StrictMode>
-        <Router>
-            <Switch>
-                <Route path='/:id'>
-                    <CatalogEdit />
-                </Route>
-                <Route path='/'>
-                    <CatalogList />
-                </Route>
-            </Switch>
-        </Router>
+        <ThemeProvider theme={pimTheme}>
+            <Router>
+                <Switch>
+                    <Route path='/:id'>
+                        <CatalogEdit />
+                    </Route>
+                    <Route path='/'>
+                        <CatalogList />
+                    </Route>
+                </Switch>
+            </Router>
+        </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')
 );
