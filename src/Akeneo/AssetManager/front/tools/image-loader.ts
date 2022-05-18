@@ -1,7 +1,7 @@
 import PQueue from 'p-queue';
 
 const queue = new PQueue({concurrency: 4});
-let abortController: null|AbortController = null;
+let abortController: null | AbortController = null;
 
 const cache: {[imageUrl: string]: Promise<void>} = {};
 const addToQueue = async (imagePath: string): Promise<void> => {
@@ -32,7 +32,7 @@ const loadImage = async (imagePath: string) => {
   }
 
   const response = await fetch(imagePath, {
-    signal: abortController.signal
+    signal: abortController.signal,
   });
 
   if (response.ok) {
