@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class CreateContributorAccountHandlerTest extends TestCase
 {
     /** @test */
-    public function itCreatesAContributorAccount()
+    public function itCreatesAContributorAccount(): void
     {
         $eventDispatcherStub = new StubEventDispatcher();
         $repository = new InMemoryRepository();
@@ -25,7 +25,7 @@ class CreateContributorAccountHandlerTest extends TestCase
 
         $createdContributorAccount = $repository->findByEmail('contributor@example.com');
         $this->assertInstanceOf(ContributorAccount::class, $createdContributorAccount);
-        $this->assertSame('contributor@example.com', (string) $createdContributorAccount->getEmail());
+        $this->assertSame('contributor@example.com', (string) $createdContributorAccount->email());
 
         $dispatchedEvents = $eventDispatcherStub->getDispatchedEvents();
         $this->assertCount(1, $dispatchedEvents);
