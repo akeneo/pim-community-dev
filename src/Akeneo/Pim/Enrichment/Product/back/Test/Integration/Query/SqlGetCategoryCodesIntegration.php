@@ -54,7 +54,7 @@ final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
     }
 
     /** @test */
-    public function it_returns_category_codes_for_variant_products()
+    public function it_returns_category_codes_for_variant_products_and_their_parent()
     {
         $this->createProductModel('root', 'color_variant_accessories', [
             'categories' => ['print'],
@@ -77,6 +77,33 @@ final class SqlGetCategoryCodesIntegration extends EnrichmentProductTestCase
         Assert::assertEqualsCanonicalizing(
             ['variant_product2' => ['print', 'suppliers']],
             $this->sqlGetCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('variant_product2')])
+        );
+    }
+
+    /** @test */
+    public function it_returns_category_codes_only_for_variant_products()
+    {
+        $this->createProductModel('root', 'color_variant_accessories', [
+            'categories' => ['print'],
+        ]);
+        $this->createProduct('variant_product1', [
+            new ChangeParent('root'),
+            new SetCategories(['suppliers']),
+            new SetSimpleSelectValue('main_color', null, null, 'red')
+        ]);
+        $this->createProduct('variant_product2', [
+            new ChangeParent('root'),
+            new SetCategories(['suppliers', 'print']),
+            new SetSimpleSelectValue('main_color', null, null, 'green')
+        ]);
+
+        Assert::assertEqualsCanonicalizing(
+            ['variant_product1' => ['suppliers']],
+            $this->sqlGetCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('variant_product1')])
+        );
+        Assert::assertEqualsCanonicalizing(
+            ['variant_product2' => ['suppliers']],
+            $this->sqlGetCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('variant_product2')])
         );
     }
 }

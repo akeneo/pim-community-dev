@@ -36,7 +36,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)->willReturn([]);
+        $getNonViewableCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)->willReturn([]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
 
@@ -51,7 +51,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
+        $getNonViewableCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => []]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB']])->shouldBeCalledOnce();
@@ -67,7 +67,7 @@ class SetCategoriesApplierSpec extends ObjectBehavior
         $product = new Product();
         $product->setIdentifier('foo');
 
-        $getNonViewableCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
+        $getNonViewableCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('foo')], 10)
             ->willReturn(['foo' => ['categoryD', 'categoryE']]);
 
         $productUpdater->update($product, ['categories' => ['categoryA', 'categoryB', 'categoryD', 'categoryE']])

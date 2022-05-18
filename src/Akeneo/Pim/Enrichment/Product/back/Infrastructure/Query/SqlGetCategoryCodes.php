@@ -82,4 +82,53 @@ final class SqlGetCategoryCodes implements GetCategoryCodes
 
         return $indexedResults;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function forProductVariantFromProductIdentifiers(array $productIdentifiers): array
+    {
+        if ([] === $productIdentifiers) {
+            return [];
+        }
+
+        Assert::allIsInstanceOf($productIdentifiers, ProductIdentifier::class);
+        $stringProductIdentifiers = \array_map(
+            static fn (ProductIdentifier $productIdentifier): string => $productIdentifier->asString(),
+            $productIdentifiers
+        );
+
+        $sql = <<<SQL
+        WITH
+            existing_product AS (
+                SELECT id, identifier FROM pim_catalog_product WHERE identifier IN (:product_identifiers)
+            )
+        SELECT p.identifier, IF(COUNT(mc.category_code) = 0, JSON_ARRAY(), JSON_ARRAYAGG(mc.category_code)) as category_codes
+        FROM
+            existing_product p
+                LEFT JOIN (
+                SELECT
+                    p.identifier, c.code AS category_code
+                FROM existing_product p
+                    INNER JOIN pim_catalog_category_product cp ON cp.product_id = p.id
+                    INNER JOIN pim_catalog_category c ON c.id = cp.category_id
+            ) AS mc ON mc.identifier = p.identifier
+        GROUP BY p.identifier
+        SQL;
+
+        $results = $this->connection->executeQuery(
+            $sql,
+            ['product_identifiers' => $stringProductIdentifiers],
+            ['product_identifiers' => Connection::PARAM_STR_ARRAY]
+        )->fetchAllAssociative();
+
+        $indexedResults = [];
+        foreach ($results as $result) {
+            /** @var string[] $decoded */
+            $decoded = \json_decode($result['category_codes'], true);
+            $indexedResults[(string) $result['identifier']] = $decoded;
+        }
+
+        return $indexedResults;
+    }
 }

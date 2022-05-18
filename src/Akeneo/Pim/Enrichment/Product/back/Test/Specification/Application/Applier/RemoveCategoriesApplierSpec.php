@@ -37,7 +37,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn(['id' => []]);
 
         $productUpdater->update($product, ['categories' => []])->shouldBeCalledOnce();
@@ -51,7 +51,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn(['id' => ['print', 'master', 'sales']]);
 
         $productUpdater->update($product, ['categories' => ['master', 'sales']])->shouldBeCalledOnce();
@@ -65,7 +65,7 @@ class RemoveCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn([]);
 
         $productUpdater->update($product, ['categories' => []])->shouldBeCalledOnce();

@@ -37,7 +37,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn(['id' => []]);
 
         $productUpdater->update($product, ['categories' => ['supplier', 'print']])->shouldBeCalledOnce();
@@ -51,7 +51,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn(['id' => ['print', 'master']]);
 
         $productUpdater->update($product, ['categories' => ['print', 'master', 'supplier']])->shouldBeCalledOnce();
@@ -65,7 +65,7 @@ class AddCategoriesApplierSpec extends ObjectBehavior
     ) {
         $product = new Product();
         $product->setIdentifier('id');
-        $getCategoryCodes->fromProductIdentifiers([ProductIdentifier::fromString('id')])
+        $getCategoryCodes->forProductVariantFromProductIdentifiers([ProductIdentifier::fromString('id')])
             ->willReturn([]);
 
         $productUpdater->update($product, ['categories' => ['supplier', 'print']])->shouldBeCalledOnce();
