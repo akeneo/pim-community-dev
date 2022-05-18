@@ -20,7 +20,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             type: integer
             id: true
             generator:
-                 strategy: AUTO
+                strategy: AUTO
         code:
             type: string
             length: 100
@@ -30,20 +30,10 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             gedmo:
                 timestampable:
                     on: create
-        updated:
-            type: datetime
-            options:
-                default: CURRENT_TIMESTAMP
-            gedmo:
-                timestampable:
-                    on: change
-                    field:
-                        - parent
         root:
             type: integer
             gedmo:
                 - treeRoot
-                 #   identifierMethod: getRoot
         level:
             type: integer
             column: lvl
