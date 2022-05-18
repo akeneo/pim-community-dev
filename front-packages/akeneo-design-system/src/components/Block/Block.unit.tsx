@@ -1,5 +1,5 @@
 import React from 'react';
-import {fireEvent, render, screen} from '../../storybook/test-util';
+import {fireEvent, render, screen, act} from '../../storybook/test-util';
 import {Block} from './Block';
 import {IconButton} from '../IconButton/IconButton';
 import {CloseIcon, EditIcon, PlusIcon} from '../../icons';
@@ -53,19 +53,18 @@ test('it renders actions passed by props', () => {
 
 test('it supports collapsing', () => {
   const onCollapse = jest.fn();
-  const isOpen = false;
   jest.useFakeTimers();
 
   render(
-    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+    <Block title="My block" isOpen={false} onCollapse={onCollapse} collapseButtonLabel="Collapse">
       I am a block
     </Block>
   );
 
-  const collapseIconButton = screen.getByTitle('Collapse');
-  fireEvent.click(collapseIconButton);
-
-  jest.runAllTimers();
+  act(() => {
+    fireEvent.click(screen.getByTitle('Collapse'));
+    jest.runAllTimers();
+  });
 
   expect(onCollapse).toBeCalled();
   expect(screen.getByText('I am a block')).toBeInTheDocument();
@@ -90,7 +89,7 @@ test('it renders children with icon', () => {
   const isOpen = false;
 
   render(
-    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse" actions={<></>}>
+    <Block title="My block" isOpen={isOpen} onCollapse={onCollapse} collapseButtonLabel="Collapse">
       <PlusIcon data-testid="children-icon" />
       Icon
     </Block>
