@@ -3,10 +3,12 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\Media;
 
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemOperator;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -308,8 +310,15 @@ JSON;
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: 'foo',
+            userIntents: []
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
         $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
@@ -328,5 +337,17 @@ JSON;
     protected function getConfiguration()
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
     }
 }

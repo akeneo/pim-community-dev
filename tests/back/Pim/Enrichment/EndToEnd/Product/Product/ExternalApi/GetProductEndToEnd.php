@@ -5,6 +5,13 @@ declare(strict_types=1);
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductIdCollection;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiSelectValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use PHPUnit\Framework\Assert;
@@ -20,14 +27,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product_with_attribute_options_simple_select()
     {
         $this->createProduct('product', [
-            'family' => 'familyA',
-            'categories' => [],
-            'groups' => [],
-            'values' => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -76,14 +77,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product_with_attribute_options_multi_select()
     {
         $this->createProduct('product', [
-            'family' => 'familyA',
-            'categories' => [],
-            'groups' => [],
-            'values' => [
-                'a_multi_select' => [
-                    ['data' => ['optionA', 'optionB'], 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetMultiSelectValue('a_multi_select', null, null, ['optionA', 'optionB'])
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -144,15 +139,11 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product()
     {
         $this->createProduct('product', [
-            'family' => 'familyA1',
-            'enabled' => true,
-            'categories' => ['categoryA', 'master', 'master_china'],
-            'groups' => ['groupA', 'groupB'],
-            'values' => [
-                'a_date' => [
-                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA1'),
+            new SetEnabled(true),
+            new SetCategories(['categoryA', 'master', 'master_china']),
+            new SetGroups(['groupA', 'groupB']),
+            new SetDateValue('a_date', null, null, new \DateTime('2016-06-28'))
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -202,12 +193,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function test_it_gets_a_product_with_quality_scores()
     {
-        $product = $this->createProduct('product', [
-            'family' => 'familyA',
-            'categories' => [],
-            'groups' => [],
-            'values' => [],
-        ]);
+        $product = $this->createProduct('product', [new SetFamily('familyA')]);
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             ProductIdCollection::fromInt($product->getId())
@@ -252,14 +238,8 @@ class GetProductEndToEnd extends AbstractProductTestCase
     public function test_it_gets_a_product_with_completenesses()
     {
         $this->createProduct('product', [
-            'family' => 'familyA',
-            'categories' => [],
-            'groups' => [],
-            'values' => [
-                'a_simple_select' => [
-                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
-                ],
-            ],
+            new SetFamily('familyA'),
+            new SetSimpleSelectValue('a_simple_select', null, null, 'optionA')
         ]);
 
         $client = $this->createAuthenticatedClient();
@@ -308,9 +288,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
     public function testAccessDeniedWhenRetrievingProductWithoutTheAcl()
     {
-        $this->createProduct('product', [
-            'family' => 'familyA',
-        ]);
+        $this->createProduct('product', [new SetFamily('familyA')]);
         $client = $this->createAuthenticatedClient();
         $this->removeAclFromRole('action:pim_api_product_list');
 

@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Psr\Log\Test\TestLogger;
@@ -781,7 +782,7 @@ JSON;
             'values'  => [],
         ]);
 
-        $this->createProduct('simple', ['enabled' => false]);
+        $this->createProduct('simple', [new SetEnabled(false)]);
 
         $client = $this->createAuthenticatedClient();
 

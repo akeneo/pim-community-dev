@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Family;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Test\Integration\Configuration;
