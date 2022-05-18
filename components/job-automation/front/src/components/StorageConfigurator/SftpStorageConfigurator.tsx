@@ -1,4 +1,5 @@
 import React from 'react';
+import {Field, Helper, NumberInput} from 'akeneo-design-system';
 import {TextField, useTranslate, filterErrors} from '@akeneo-pim-community/shared';
 import {StorageConfiguratorProps, isSftpStorage} from './model';
 
@@ -8,6 +9,7 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
   }
 
   const translate = useTranslate();
+  const portValidationErrors = filterErrors(validationErrors, '[port]');
 
   return (
     <>
@@ -23,12 +25,20 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
         onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
-      <TextField
-        value={storage.port.toString()}
-        label={translate('akeneo.automation.storage.port.label')}
-        onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
-        errors={filterErrors(validationErrors, '[port]')}
-      />
+      <Field label={translate('akeneo.automation.storage.port.label')}>
+        <NumberInput
+          min={1}
+          max={65535}
+          onChange={port => onStorageChange({...storage, port: parseInt(port, 10)})}
+          invalid={0 < portValidationErrors.length}
+          value={storage.port.toString()}
+        />
+        {portValidationErrors.map((error, key) => (
+          <Helper key={key} level="error" inline={true}>
+            {translate(error.messageTemplate, error.parameters, error.plural)}
+          </Helper>
+        ))}
+      </Field>
       <TextField
         value={storage.username}
         label={translate('akeneo.automation.storage.username.label')}
