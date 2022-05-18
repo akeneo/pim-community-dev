@@ -185,6 +185,7 @@ class MigrateToUuidCommand extends Command
                         ON abje.job_instance_id = abji.id
                 WHERE abji.code=:code
                   AND abje.status=:status
+                  AND abje.start_time > NOW() - SUBTIME(NOW(),"24:0:0")
                 LIMIT 1
             ) AS missing
         SQL;

@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {action} from '@storybook/addon-actions';
 import {TagInput} from './TagInput.tsx';
 import {Section} from '../../../storybook/PreviewGallery';
 
@@ -35,7 +36,7 @@ Tags can be separated thanks to the following characters:
   <Story name="Standard">
     {args => {
       const [tags, setTags] = useState([]);
-      return <TagInput {...args} value={tags} onChange={setTags} />;
+      return <TagInput {...args} value={tags} onChange={setTags} onSubmit={action('submit')} />;
     }}
   </Story>
 </Canvas>

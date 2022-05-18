@@ -6,6 +6,16 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductIdFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetImageValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,80 +34,51 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
 
         // no locale, no scope, 1 category
         $this->createProduct('simple', [
-            'categories' => ['master'],
-            'values' => [
-                'a_metric' => [
-                    ['data' => ['amount' => 10, 'unit' => 'KILOWATT'], 'locale' => null, 'scope' => null]
-                ],
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetCategories(['master']),
+            new SetMeasurementValue('a_metric', null, null, 10, 'KILOWATT'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
 
         // localizable, categorized in 1 tree (master)
+        $path = $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'));
         $this->createProduct('localizable', [
-            'categories' => ['categoryB'],
-            'values' => [
-                'a_localizable_image' => [
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'en_US', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'fr_FR', 'scope' => null],
-                    ['data' => $this->getFileInfoKey($this->getFixturePath('akeneo.jpg')), 'locale' => 'zh_CN', 'scope' => null]
-                ]
-            ]
+            new SetCategories(['categoryB']),
+            new SetImageValue('a_localizable_image', null, 'en_US', $path),
+            new SetImageValue('a_localizable_image', null, 'fr_FR', $path),
+            new SetImageValue('a_localizable_image', null, 'zh_CN', $path),
         ]);
 
         // scopable, categorized in 1 tree (master)
         $this->createProduct('scopable', [
-            'categories' => ['categoryA1', 'categoryA2'],
-            'values' => [
-                'a_scopable_price' => [
-                    [
-                        'locale' => null,
-                        'scope' => 'ecommerce',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ],
-                    [
-                        'locale' => null,
-                        'scope' => 'tablet',
-                        'data' => [
-                            ['amount' => '78.77', 'currency' => 'CNY'],
-                            ['amount' => '10.50', 'currency' => 'EUR'],
-                            ['amount' => '11.50', 'currency' => 'USD'],
-                        ]
-                    ]
-                ]
-            ]
+            new SetCategories(['categoryA1', 'categoryA2']),
+            new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
+            new SetPriceCollectionValue('a_scopable_price', 'tablet', null, [
+                new PriceValue('78.77', 'CNY'),
+                new PriceValue('10.50', 'EUR'),
+                new PriceValue('11.50', 'USD'),
+            ]),
         ]);
 
         // localizable & scopable, categorized in 2 trees (master and master_china)
         $this->createProduct('localizable_and_scopable', [
-            'categories' => ['categoryA', 'master_china'],
-            'values' => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'Great description', 'locale' => 'en_US', 'scope' => 'ecommerce_china'],
-                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                    ['data' => 'hum...', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
-                ]
-            ]
+            new SetCategories(['categoryA', 'master_china']),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', 'Big description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'Medium description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'en_US', 'Great description'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Description moyenne'),
+            new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce_china', 'zh_CN', 'hum...'),
         ]);
 
         $this->createProduct('product_china', [
-            'categories' => ['master_china']
+            new SetCategories(['master_china'])
         ]);
 
         $this->createProduct('product_without_category', [
-            'values' => [
-                'a_yes_no' => [
-                    ['data' => true, 'locale' => null, 'scope' => null]
-                ]
-            ]
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
 
         $this->createProductModel(
@@ -128,18 +109,12 @@ class SuccessListProductEndToEnd extends AbstractProductTestCase
         );
 
         $this->createVariantProduct('product_with_parent', [
-            'categories' => ['master'],
-            'parent' => 'prod_mod_optA',
-            'values' => [
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => true,
-                    ]
-                ]
-            ]
+            new SetCategories(['master']),
+            new ChangeParent('prod_mod_optA'),
+            new SetBooleanValue('a_yes_no', null, null, true)
         ]);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     public function testDefaultPaginationFirstPageListProductsWithCount()
@@ -493,27 +468,20 @@ JSON;
     public function testListProductsWithQualityScores()
     {
         $product1 = $this->createProduct('simple_with_family_and_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
         $product2 = $this->createProduct('simple_with_no_family', [
-            'categories' => ['master'],
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetCategories(['master']),
+            new SetTextValue('a_text', null, null, 'Text')
         ]);
         $product3 = $this->createProduct('simple_with_no_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [],
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
         ]);
+
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         ($this->get('Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluateProducts'))(
             $this->get(ProductIdFactory::class)->createCollection([
@@ -570,27 +538,19 @@ JSON;
     public function testListProductsWithCompletenesses()
     {
         $this->createProduct('simple_with_family_and_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetCategories(['master']),
+            new SetFamily('familyA'),
+            new SetTextValue('a_text', null, null, 'Text'),
         ]);
         $this->createProduct('simple_with_no_family', [
-            'categories' => ['master'],
-            'values' => [
-                'a_text' => [
-                    ['data' => 'Text', 'locale' => null, 'scope' => null]
-                ]
-            ],
+            new SetCategories(['master']),
+            new SetTextValue('a_text', null, null, 'Text'),
         ]);
         $this->createProduct('simple_with_no_values', [
-            'categories' => ['master'],
-            'family' => 'familyA',
-            'values' => [],
+            new SetCategories(['master']),
+            new SetFamily('familyA')
         ]);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $values = '{
             "a_text": [{
@@ -827,6 +787,7 @@ JSON;
     {
         $this->createProduct('AN_UPPERCASE_IDENTIFIER', []);
         $this->createProduct('MY_OTHER_UPPERCASE_IDENTIFIER', []);
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();

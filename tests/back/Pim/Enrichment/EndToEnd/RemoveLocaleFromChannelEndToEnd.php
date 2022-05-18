@@ -6,6 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd;
 
 use Akeneo\Channel\Infrastructure\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -106,23 +107,13 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         ]);
         $this->createFamilyWithRequirement('jeans', $attribute, $ecommerceChannel);
 
-        $this->createProduct('blue_jean', 'jeans',
-            [
-            'values' => [
-                'a_scopable_localizable_text' => [
-                    ['data' => 'blue', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'bleu', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ]
-            ]
+        $this->createProduct('blue_jean', 'jeans', [
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'en_US', 'blue'),
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'fr_FR', 'bleu'),
         ]);
 
-
         $this->createProduct('yellow_jean', 'jeans', [
-            'values' => [
-                'a_scopable_localizable_text' => [
-                    ['data' => 'yellow_jean', 'locale' => 'fr_FR', 'scope' => 'ecommerce']
-                ]
-            ]
+            new SetTextValue('a_scopable_localizable_text', 'ecommerce', 'fr_FR', 'yellow_jean')
         ]);
     }
 

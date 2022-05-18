@@ -21,22 +21,21 @@ test('it allows tags to be created', () => {
   expect(handleChange).toHaveBeenCalledWith(['gucci']);
 });
 
-test('it handles on submit callback', () => {
+test('it can create tags using Enter and handles on submit callback', () => {
   const handleChange = jest.fn();
   const handleSubmit = jest.fn();
 
-  render(
-    <>
-      <label htmlFor="myInput">My label</label>
-      <TagInput id="myInput" value={['12']} onChange={handleChange} onSubmit={handleSubmit} />
-    </>
-  );
+  render(<TagInput value={['12']} onChange={handleChange} onSubmit={handleSubmit} />);
 
-  const input = screen.getByLabelText('My label');
-  userEvent.type(input, 'nice{space}');
+  const input = screen.getByRole('textbox');
+
+  userEvent.type(input, 'nice{enter}');
+
+  expect(handleChange).toHaveBeenCalledWith(['12', 'nice']);
+  expect(handleSubmit).not.toHaveBeenCalled();
+
   userEvent.type(input, '{enter}');
 
-  expect(handleChange).toHaveBeenCalled();
   expect(handleSubmit).toHaveBeenCalled();
 });
 
