@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class WebClientMigrationAuthorization implements MigrationAuthorization
 {
-    private const WEB_URL = 'https://storage.googleapis.com/sku-to-uuid-instances-list/list.json';
+    private const WEB_URL = 'https://storage.googleapis.com/sku-to-uuid-instances-list/list_be39cbf8-6201-4fd4-bf94-c951d6960200.json';
 
     public function __construct(private string $env, private LoggerInterface $logger, private string $clientName)
     {
