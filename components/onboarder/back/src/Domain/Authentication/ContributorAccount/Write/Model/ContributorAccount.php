@@ -2,6 +2,7 @@
 
 namespace Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model;
 
+use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ValueObject\AccessToken;
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
@@ -12,6 +13,7 @@ class ContributorAccount
         private Identifier $identifier,
         private Email $email,
         private ?Password $password,
+        private ?AccessToken $accessToken,
         private \DateTimeInterface $createdAt,
         private ?\DateTimeInterface $lastLoggedAt,
     ) {
@@ -23,6 +25,7 @@ class ContributorAccount
             Identifier::generate(),
             Email::fromString($email),
             null,
+            AccessToken::generate(),
             new \DateTimeImmutable(),
             null,
         );
@@ -36,6 +39,11 @@ class ContributorAccount
     public function getPassword(): ?Password
     {
         return $this->password;
+    }
+
+    public function getAccessToken(): ?AccessToken
+    {
+        return $this->accessToken;
     }
 
     public function getCreatedAt(): \DateTimeInterface
