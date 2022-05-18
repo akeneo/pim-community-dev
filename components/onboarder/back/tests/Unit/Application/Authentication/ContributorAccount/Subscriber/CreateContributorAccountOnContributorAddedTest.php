@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier\Subscriber;
+namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccount;
-use Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccountHandler;
-use Akeneo\OnboarderSerenity\Application\Supplier\Subscriber\CreateContributorAccountOnContributorAdded;
+use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccount;
+use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
+use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use PHPUnit\Framework\TestCase;

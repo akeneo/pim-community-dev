@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\OnboarderSerenity\Application\Supplier\Subscriber;
+namespace Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber;
 
-use Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccount;
-use Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccountHandler;
+use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccount;
+use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event\ContributorAdded;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
