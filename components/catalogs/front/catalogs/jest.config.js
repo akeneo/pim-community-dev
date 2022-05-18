@@ -28,7 +28,7 @@ module.exports = {
         '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
     },
     collectCoverageFrom: [
-      '<rootDir>/src/**/*.{ts,tsx}',
+      '<rootDir>/src/component/**/*.{ts,tsx}',
     ],
     coverageThreshold: {
         global: {
