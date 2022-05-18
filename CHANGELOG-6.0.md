@@ -1,5 +1,9 @@
 # 6.0.x
 
+# 6.0.29
+
+- PIM-10450 remove DQI deprecated table pimee_data_quality_insights_dictionary_depr
+
 # 6.0.28 (2022-05-13)
 
 # 6.0.27 (2022-05-10)
