@@ -15,6 +15,10 @@ namespace Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindValueKeysByAttributeTypeInterface;
+use Akeneo\Channel\API\Query\Channel;
+use Akeneo\Channel\API\Query\FindChannels;
+use Akeneo\Channel\API\Query\FindLocales;
+use Akeneo\Channel\API\Query\Locale;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -25,10 +29,14 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInterface
 {
-    private ?array $cachedResult = null;
+    /** @var array<string, string> */
+    private array $cachedResult = [];
 
-    public function __construct(private Connection $sqlConnection)
-    {
+    public function __construct(
+        private Connection $sqlConnection,
+        private FindLocales $findLocales,
+        private FindChannels $findChannels,
+    ) {
     }
 
     /**
@@ -46,39 +54,45 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
 
     private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
+        $attributes = $this->findAttributesByFamilyIdentifierAndTypes($assetFamilyIdentifier, $attributeTypes);
+        $locales = $this->findLocales->findAllActivated();
+        $channels = $this->findChannels->findAll();
+
+        $valueKeysByAttributeType = [];
+
+        foreach($attributes as $attribute) {
+            if ('1' === $attribute['value_per_channel']
+                && '1' === $attribute['value_per_locale']
+            ) {
+                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels)];
+            } elseif (
+                '1' === $attribute['value_per_channel']
+                && '0' === $attribute['value_per_locale']
+            ) {
+                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateScopableValueKeys($attribute['identifier'], $channels)];
+            } elseif (
+                '0' === $attribute['value_per_channel']
+                && '1' === $attribute['value_per_locale']
+            ) {
+                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisableValueKeys($attribute['identifier'], $locales)];
+            } else {
+                $valueKeysByAttributeType[] = $attribute['identifier'];
+            }
+        }
+
+        return $valueKeysByAttributeType;
+    }
+
+    private function findAttributesByFamilyIdentifierAndTypes(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
+    {
         $query = <<<SQL
             SELECT
-                CONCAT(
-                    mask.identifier,
-                    IF(mask.value_per_channel, CONCAT('_', mask.channel_code), ''),
-                    IF(mask.value_per_locale, CONCAT('_', mask.locale_code), '')
-                 ) as `key`
-            FROM (
-                SELECT
-                    a.identifier,
-                    a.value_per_channel,
-                    a.value_per_locale,
-                    COALESCE(c.code, locale_channel.channel_code) as channel_code,
-                    COALESCE(l.code, locale_channel.locale_code) as locale_code
-                FROM
-                    akeneo_asset_manager_attribute as a
-                    LEFT JOIN pim_catalog_channel c ON value_per_channel = 1 AND value_per_locale = 0
-                    LEFT JOIN pim_catalog_locale l ON value_per_channel = 0 AND value_per_locale = 1 AND is_activated = 1
-                    LEFT JOIN (
-                        SELECT
-                            c.code as channel_code,
-                            l.code as locale_code
-                        FROM
-                            pim_catalog_channel c
-                            JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
-                            JOIN pim_catalog_locale l ON l.id = locale_id
-                        WHERE
-                            l.is_activated = 1
-                    ) as locale_channel ON value_per_channel = 1 AND value_per_locale = 1
-                WHERE
-                    a.asset_family_identifier = :asset_family_identifier
-                    AND a.attribute_type IN (:types)
-                ) as mask;
+                attribute.identifier,
+                attribute.value_per_channel,
+                attribute.value_per_locale
+            FROM akeneo_asset_manager_attribute as attribute
+            WHERE attribute.asset_family_identifier = :asset_family_identifier
+            AND attribute.attribute_type IN (:types)
 SQL;
 
         $statement = $this->sqlConnection->executeQuery(
@@ -92,7 +106,45 @@ SQL;
             ]
         );
 
-        return $statement->fetchFirstColumn();
+        return $statement->fetchAllAssociative();
+    }
+
+    /**
+     * @param $channels Channel[];
+     */
+    private function generateLocalisabeAndScopableValueKeys(string $attributeIdentifier, array $channels): array
+    {
+        $valueKeys = [];
+
+        foreach($channels as $channel) {
+            foreach($channel->getLocaleCodes() as $localeCode) {
+                $valueKeys[] = sprintf('%s_%s_%s', $attributeIdentifier, $channel->getCode(), $localeCode);
+            }
+        }
+
+        return $valueKeys;
+    }
+
+    /**
+     * @param $channels Channel[];
+     */
+    private function generateScopableValueKeys(string $attributeIdentifier, array $channels): array
+    {
+        return array_map(
+            static fn (Channel $channel) => sprintf('%s_%s', $attributeIdentifier, $channel->getCode()),
+            $channels
+        );
+    }
+
+    /**
+     * @param $locales Locale[];
+     */
+    private function generateLocalisableValueKeys(string $attributeIdentifier, array $locales): array
+    {
+        return array_map(
+            static fn (Locale $locale) => sprintf('%s_%s', $attributeIdentifier, $locale->getCode()),
+            $locales
+        );
     }
 
     private function getCacheKey(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): string

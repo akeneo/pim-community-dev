@@ -290,6 +290,8 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysByAttributeType
         arguments:
             - '@database_connection'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindLocales'
+            - '@Akeneo\Channel\Infrastructure\Query\Cache\CachedFindChannels'
 
     akeneo_assetmanager.infrastructure.persistence.query.get_attribute_type:
         class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlGetAttributeType
