@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\UIBundle\VersionStrategy;
 
 use Akeneo\Platform\Bundle\UIBundle\VersionStrategy\CacheBusterVersionStrategy;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 class CacheBusterVersionStrategySpec extends ObjectBehavior

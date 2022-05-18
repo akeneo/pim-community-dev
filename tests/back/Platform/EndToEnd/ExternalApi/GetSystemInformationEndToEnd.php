@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetSystemInformationEndToEnd extends ApiTestCase
 {
-    private string $versionClass;
-
     /**
      * @group ce
      */
     public function test_to_get_system_information_through_the_api(): void
     {
+        putenv('PIM_EDITION=COMMUNITY_EDITION');
+
         $apiConnectionEcommerce = $this->createConnection('ecommerce', 'Ecommerce');
         $apiClient = $this->createAuthenticatedClient(
             [],
@@ -36,8 +36,8 @@ class GetSystemInformationEndToEnd extends ApiTestCase
         Assert::assertCount(2, $content);
         Assert::assertSame(
             [
-                'version' => strtolower(constant(sprintf('%s::VERSION', $this->versionClass))),
-                'edition' => strtolower(constant(sprintf('%s::EDITION', $this->versionClass))),
+                'version' => 'master',
+                'edition' => 'ce',
             ],
             $content
         );
@@ -46,12 +46,5 @@ class GetSystemInformationEndToEnd extends ApiTestCase
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->versionClass = $this->getParameter('pim_catalog.version.class');
     }
 }

@@ -147,7 +147,7 @@ $rules = [
             'Akeneo\Platform\Component\Webhook\EventDataBuilderInterface',
             'Akeneo\Platform\Component\Webhook\EventDataCollection',
             'Akeneo\Platform\Component\EventQueue\BulkEvent',
-            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
 
             'Psr\Log\LoggerInterface',
             'Psr\Http\Message\ResponseInterface',
@@ -231,7 +231,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application\RandomCodeGeneratorInterface',
 
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
-            'Akeneo\Platform\VersionProviderInterface',
+            'Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Marketplace'),
 

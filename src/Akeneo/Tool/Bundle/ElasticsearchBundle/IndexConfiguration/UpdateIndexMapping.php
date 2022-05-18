@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
 
-use Akeneo\Platform\CommunityVersion;
+use Akeneo\Platform\Bundle\PimVersionBundle\Version\CommunityVersion;
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
 use Ramsey\Uuid\Uuid;
@@ -28,7 +28,7 @@ final class UpdateIndexMapping
     public function updateIndexMapping(Client $client, string $indexNameOrAlias, Loader $indexConfiguration): void
     {
         // We don't care about the index name anymore as we use alias
-        $newIndexName = strtolower($indexNameOrAlias . '_' . str_replace('.', '_', CommunityVersion::VERSION) . '_' . Uuid::uuid4());
+        $newIndexName = strtolower($indexNameOrAlias . '_' . Uuid::uuid4());
 
         $this
             ->createIndexReadyForNewConfiguration($client->indices(), $newIndexName, $indexConfiguration)

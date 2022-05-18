@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\Twig\UpdateExtension;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
