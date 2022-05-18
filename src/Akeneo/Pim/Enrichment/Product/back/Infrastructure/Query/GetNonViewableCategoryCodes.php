@@ -41,7 +41,6 @@ class GetNonViewableCategoryCodes implements GetNonViewableCategoryCodesInterfac
         );
     }
 
-    // todo integration ? Spec ? behat ?
     /**
      * {@inheritDoc}
      */

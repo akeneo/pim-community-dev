@@ -130,16 +130,15 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
             ]
         );
         $this->messageBus->dispatch($command);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();  // Needed to update the product
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->clearDoctrineUoW();
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
+
         Assert::assertNotNull($product);
-        Assert::assertEqualsCanonicalizing('newParent', $product->getParent()->getCode());
-        // todo it keeps previous parent's category 'suppliers'. Is it expected behavior ?
-        // todo should we expect this ?
-//        Assert::assertEqualsCanonicalizing(['sales', 'samples'], $product->getCategoryCodes());
-        Assert::assertEqualsCanonicalizing(['sales', 'suppliers', 'samples'], $product->getCategoryCodes());
+        Assert::assertEquals('newParent', $product->getParent()->getCode());
+        Assert::assertEqualsCanonicalizing(['sales', 'samples'], $product->getCategoryCodes());
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
@@ -148,15 +147,12 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
             parentUserIntent: new ConvertToSimpleProduct(),
         );
         $this->messageBus->dispatch($command);
-        $this->clearDoctrineUoW();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
 
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertFalse($product->isVariant());
-        // todo it keeps previous parents' categories ['suppliers', 'samples']. Is it expected behavior ?
-        // todo should we expect this ?
-//        Assert::assertEqualsCanonicalizing([], $product->getCategoryCodes());
-        Assert::assertEqualsCanonicalizing(['samples', 'suppliers'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing([], $product->getCategoryCodes());
     }
 
     /** @test */
@@ -201,11 +197,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertEqualsCanonicalizing('newParent', $product->getParent()->getCode());
-
-        // todo it keeps previous parent categories 'suppliers'. is it expected ?
-        // todo should we expect this ?
-//        Assert::assertEqualsCanonicalizing(['print', 'samples'], $product->getCategoryCodes());
-        Assert::assertEqualsCanonicalizing(['print', 'suppliers', 'samples'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'samples'], $product->getCategoryCodes());
 
         $command = new UpsertProductCommand(
             userId: $this->getUserId('peter'),
@@ -219,10 +211,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         $product = $this->productRepository->findOneByIdentifier('variant_product');
         Assert::assertNotNull($product);
         Assert::assertFalse($product->isVariant());
-        // todo it keeps previous parents' categories ['suppliers', 'samples']. Is it expected behavior ?
-        // todo should we expect this ?
-//        Assert::assertEqualsCanonicalizing(['print', 'sales'], $product->getCategoryCodes());
-        Assert::assertEqualsCanonicalizing(['print', 'suppliers', 'samples', 'sales'], $product->getCategoryCodes());
+        Assert::assertEqualsCanonicalizing(['print', 'sales'], $product->getCategoryCodes());
     }
 
     /** @test */
@@ -249,9 +238,8 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
         Assert::assertEqualsCanonicalizing('accessories', $product->getFamily()->getCode());
     }
 
-    // todo: not sure the last 2 tests are interesting ?
     /** @test */
-    public function it_throws_an_exception_when_changing_family_and_parent_even_if_parents_have_same_family_variant()
+    public function it_throws_an_exception_when_updating_product_by_changing_family_and_parent_even_if_parents_have_same_family_variant()
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
@@ -304,7 +292,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
     }
 
     /** @test */
-    public function it_throws_an_exception_when_changing_family_and_parent_and_when_parents_have_different_family_variant()
+    public function it_throws_an_exception_when_updating_product_by_changing_family_and_changing_parent_with_different_family_variant()
     {
         $this->createAttribute('size', ['type' => AttributeTypes::OPTION_SIMPLE_SELECT]);
         $this->createAttributeOptions('size', ['S', 'M', 'L', 'XL']);
