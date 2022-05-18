@@ -117,23 +117,20 @@ const TagInput: FC<TagInputProps> = ({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
-        const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
-        if ('' !== inputCurrentValue) {
-          createTags([...value, ...[inputCurrentValue]]);
-        }
+      const inputCurrentValue = inputRef?.current?.value.trim() ?? '';
 
-        onSubmit?.();
+      if (Key.Enter === event.key && !isLastTagSelected && !readOnly) {
+        '' === inputCurrentValue ? onSubmit?.() : createTags([...value, ...[inputCurrentValue]]);
 
         return;
       }
 
       const isDeleteKeyPressed = [Key.Backspace.toString(), Key.Delete.toString()].includes(event.key);
       const tagsAreEmpty = value.length === 0;
-      const inputFieldIsNotEmpty = inputRef && inputRef.current && inputRef.current.value.trim() !== '';
 
-      if (!isDeleteKeyPressed || tagsAreEmpty || inputFieldIsNotEmpty) {
+      if (!isDeleteKeyPressed || tagsAreEmpty || '' !== inputCurrentValue) {
         setLastTagAsSelected(false);
+
         return;
       }
 
