@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -32,7 +33,7 @@ class BooleanSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('null_product', [
-            new SetBooleanValue('a_yes_no', null, null, null)
+            new ClearValue('a_yes_no', null, null)
         ]);
 
         $this->createProduct('empty_product', []);

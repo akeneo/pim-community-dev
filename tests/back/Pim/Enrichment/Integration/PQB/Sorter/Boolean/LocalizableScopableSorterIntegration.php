@@ -24,6 +24,8 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     {
         parent::setUp();
 
+        $this->activateLocaleForChannel('fr_FR', 'ecommerce');
+
         $this->createAttribute([
             'code'                => 'a_localizable_scopable_yes_no',
             'type'                => AttributeTypes::BOOLEAN,

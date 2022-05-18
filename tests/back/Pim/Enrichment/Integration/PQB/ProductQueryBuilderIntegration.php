@@ -91,7 +91,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
         $pqb->addFilter('A_FILE', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_IMAGE', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
-        $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
+        $pqb->addFilter('a_regexp', Operators::CONTAINS, '1', ['locale' => 'en_US']);
         $pqb->addFilter(
             'a_SCOPABLE_price',
             Operators::GREATER_THAN,
@@ -140,17 +140,21 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                 ),
                 new SetImageValue('a_localizable_image', null, 'en_US', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
                 new SetImageValue('a_localizable_image', null, 'fr_FR', $this->getFileInfoKey($this->getFixturePath('akeneo.jpg'))),
-                new SetTextValue('a_regexp', null, null, '\w+ .*'),
+                new SetTextValue('a_regexp', null, null, '10000'),
                 new SetPriceCollectionValue('a_scopable_price', 'ecommerce', null, [
                     new PriceValue(12, 'EUR'),
                     new PriceValue(14, 'USD'),
                 ]),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'fr_FR', 'Mon textarea localisé et scopable ecommerce'),
-                new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US', null),
+                //new ClearValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US'),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Mon textarea localisé et scopable tablet'),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'My localizable and scopable textearea tablet'),
             ]
         );
+
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     protected function createPQBWithoutFamilyFilter(): ProductQueryBuilderInterface
@@ -158,7 +162,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $pqb = $this->get('pim_catalog.query.product_query_builder_factory_for_reading_purpose')->create();
         $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
-        $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
+        $pqb->addFilter('a_regexp', Operators::CONTAINS, '1', ['locale' => 'en_US']);
         $pqb->addFilter(
             'a_scopable_price',
             Operators::GREATER_THAN,
@@ -181,7 +185,7 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
         $pqb->addFilter('family', Operators::IN_LIST, ['familyA']);
         $pqb->addFilter('a_file', Operators::STARTS_WITH, 'aken');
         $pqb->addFilter('a_localizable_image', Operators::CONTAINS, 'akeneo', ['locale' => 'en_US']);
-        $pqb->addFilter('a_regexp', Operators::CONTAINS, '+', ['locale' => 'en_US']);
+        $pqb->addFilter('a_regexp', Operators::CONTAINS, '1', ['locale' => 'en_US']);
         $pqb->addFilter(
             'a_scopable_price',
             Operators::GREATER_THAN,

@@ -173,6 +173,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
      */
     protected function createDataset(): void
     {
+        $this->createAdminUser();
         $this->createProductModel([
             'code'           => 'model-shoe',
             'family_variant' => 'shoe_size_color',
@@ -208,7 +209,7 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
             new SetCategories(['women']),
             new SetSimpleSelectValue('color', null, null, 'red'),
         ]);
-        $this->createVariantProduct('blue-m', [
+        $this->createProduct('blue-m', [
             new ChangeParent('model-m'),
             new SetCategories(['men']),
             new SetSimpleSelectValue('color', null, null, 'blue'),

@@ -268,6 +268,7 @@ class SearchOnAttributesAndCategoriesIntegration extends AbstractProductQueryBui
      */
     protected function createDataset(): void
     {
+        $this->createAdminUser();
         $this->createProductModel([
             'code'           => 'model-shoe',
             'family_variant' => 'shoe_size_color',

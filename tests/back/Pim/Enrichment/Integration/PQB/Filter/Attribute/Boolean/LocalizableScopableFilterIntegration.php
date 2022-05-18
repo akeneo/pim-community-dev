@@ -32,16 +32,16 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'en_US', true),
-            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'en_US', true),
-            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'fr_FR', true),
-            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'fr_FR', false),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'fr_FR', false),
         ]);
 
         $this->createProduct('product_two', [
-            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'en_US', true),
-            new SetBooleanValue('a_localizable_yes_no', 'tablet', 'en_US', true),
-            new SetBooleanValue('a_localizable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
         ]);
     }
 

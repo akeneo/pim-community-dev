@@ -8,12 +8,14 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\PriceValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetDateValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFileValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetNumberValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetPriceCollectionValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
@@ -85,8 +87,9 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->loadFixtures(
             'a_price',
             ['data' => [['amount' => 100, 'currency' => 'USD']], 'scope' => null, 'locale' => null],
-            // TODO use SetPriceValue when ready
-            new SetTextValue('a_price', null, null, 'coucou')
+            new SetPriceCollectionValue('a_price', null, null, [
+                new PriceValue(100, 'USD')
+            ])
         );
         $this->assert('a_price');
     }

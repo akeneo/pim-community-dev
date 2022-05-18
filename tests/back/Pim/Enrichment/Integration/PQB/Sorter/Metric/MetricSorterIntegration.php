@@ -32,7 +32,7 @@ class MetricSorterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('product_three', [
-            new SetMeasurementValue('a_metric', null, null, '-2.5654', 'KILOWATT')
+            new SetMeasurementValue('a_metric', null, null, '2.5654', 'KILOWATT')
         ]);
 
         $this->createProduct('empty_product', []);

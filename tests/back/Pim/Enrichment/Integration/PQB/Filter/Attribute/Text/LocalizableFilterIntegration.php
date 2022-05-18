@@ -38,7 +38,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->createProduct('cat', [
             new SetFamily('a_family'),
             new SetTextValue('a_localizable_text', null, 'en_US', 'black cat'),
-            new SetTextValue('a_localizable_text', null, 'fr_FR', 'black cat'),
+            new SetTextValue('a_localizable_text', null, 'fr_FR', 'chat noir'),
         ]);
 
         $this->createProduct('cattle', [
