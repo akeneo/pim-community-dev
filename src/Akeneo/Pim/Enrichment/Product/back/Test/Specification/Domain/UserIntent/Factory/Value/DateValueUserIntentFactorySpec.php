@@ -29,6 +29,17 @@ class DateValueUserIntentFactorySpec extends ObjectBehavior
             null,
             \DateTimeImmutable::createFromFormat('Y-m-d', '2022-05-20')
         ));
+
+        $this->create(AttributeTypes::DATE, 'a_date', [
+            'data' => '2022-05-20T00:00:00+00:00',
+            'locale' => null,
+            'scope' => null,
+        ])->shouldBeLike(new SetDateValue(
+            'a_date',
+            null,
+            null,
+            \DateTimeImmutable::createFromFormat('Y-m-d', '2022-05-20')
+        ));
     }
 
     function it_returns_clear_value()

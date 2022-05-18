@@ -20,11 +20,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 class DateValueUserIntentFactory implements ValueUserIntentFactory
 {
     use ValidateDataTrait;
-    private const PATTERN = '/^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})$/';
+    private const PATTERN = '/^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})(T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)(([-+](\d{2}):(\d{2})|Z)?))?$/';
 
     public function getSupportedAttributeTypes(): array
     {
-        return [AttributeTypes::BOOLEAN];
+        return [AttributeTypes::DATE];
     }
 
     public function create(string $attributeType, string $attributeCode, mixed $data): ValueUserIntent
@@ -43,11 +43,12 @@ class DateValueUserIntentFactory implements ValueUserIntentFactory
             throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);
         }
 
+        $formattedDate = \sprintf('%d-%d-%d', $matches['year'], $matches['month'] , $matches['day']);
         return new SetDateValue(
             $attributeCode,
             $data['scope'],
             $data['locale'],
-            \DateTimeImmutable::createFromFormat('Y-m-d', $data['data'])
+            \DateTimeImmutable::createFromFormat('Y-m-d', $formattedDate)
         );
     }
 }

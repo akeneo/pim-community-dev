@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Webmozart\Assert\Assert;
 
 /**
@@ -48,9 +47,6 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
             $attributeType = $attributeTypesByCode[$attributeCode] ?? null;
             // TODO: check what we do if null (throw exception)
             $factory = $this->valueUserIntentFactories[$attributeType] ?? null;
-            if (!\is_array($values)) {
-                throw InvalidPropertyTypeException::arrayExpected($attributeCode, static::class, $values);
-            }
             foreach ($values as $value) {
                 $valueUserIntents[] = $factory->create($attributeType, $attributeCode, $value);
             }
