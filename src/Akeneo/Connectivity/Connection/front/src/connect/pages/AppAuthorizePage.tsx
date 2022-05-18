@@ -3,7 +3,6 @@ import {useLocation} from 'react-router-dom';
 import {AuthorizeClientError} from '../components/AuthorizeClientError';
 import {AppWizard} from '../components/AppWizard/AppWizard';
 import {useHistory} from 'react-router';
-import {CatalogList} from '@akeneo-pim-community/catalogs';
 
 export const AppAuthorizePage: FC = () => {
     const history = useHistory();
@@ -21,7 +20,5 @@ export const AppAuthorizePage: FC = () => {
         return null;
     }
 
-    return <CatalogList />;
-
-    // return <AppWizard clientId={clientId} />;
+    return <AppWizard clientId={clientId} />;
 };

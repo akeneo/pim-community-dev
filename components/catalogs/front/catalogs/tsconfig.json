@@ -19,6 +19,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "declaration": true,
+    "sourceMap": true,
     "outDir": "lib",
     "incremental": true
   },
