@@ -1,0 +1,48 @@
+{
+  "name": "@akeneo-pim-community/catalogs",
+  "version": "1.0.0",
+  "license": "OSL-3.0",
+  "private": true,
+  "main": "lib/exports.js",
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.2.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.5.1",
+    "@types/node": "^16.11.36",
+    "@types/react": "^16.9.12",
+    "@types/react-dom": "^16.9.12",
+    "react": "^16.9.12",
+    "react-dom": "^16.9.12",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.6.4",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lib:build": "tsc -p ./tsconfig.build.json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
