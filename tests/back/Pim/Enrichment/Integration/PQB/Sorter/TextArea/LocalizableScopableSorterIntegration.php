@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\TextArea;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextareaValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,36 +32,25 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('cat', [
-            'values' => [
-                'a_localizable_scopable_text_area' => [
-                    ['data' => 'black cat', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'cat', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'chat noir', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'chat', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextareaValue('a_localizable_scopable_text_area', 'ecommerce', 'en_US', 'black cat'),
+            new SetTextareaValue('a_localizable_scopable_text_area','tablet', 'en_US','cat'),
+            new SetTextareaValue('a_localizable_scopable_text_area','ecommerce', 'fr_FR','chat noir'),
+            new SetTextareaValue('a_localizable_scopable_text_area','tablet', 'fr_FR','chat'),
+
         ]);
 
         $this->createProduct('cattle', [
-            'values' => [
-                'a_localizable_scopable_text_area' => [
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'cattle', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'bétail', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextareaValue('a_localizable_scopable_text_area','ecommerce','en_US', 'cattle'),
+            new SetTextareaValue('a_localizable_scopable_text_area','tablet','en_US', 'cattle'),
+            new SetTextareaValue('a_localizable_scopable_text_area','ecommerce','fr_FR', 'bétail'),
+            new SetTextareaValue('a_localizable_scopable_text_area','tablet','fr_FR', 'bétail'),
         ]);
 
         $this->createProduct('dog', [
-            'values' => [
-                'a_localizable_scopable_text_area' => [
-                    ['data' => 'just a dog...', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'dog', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => 'juste un chien...', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'chien', 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetTextareaValue('a_localizable_scopable_text_area', 'ecommerce','en_US', 'just a dog...'),
+            new SetTextareaValue('a_localizable_scopable_text_area', 'tablet','en_US', 'dog'),
+            new SetTextareaValue('a_localizable_scopable_text_area', 'ecommerce','fr_FR', 'juste un chien...'),
+            new SetTextareaValue('a_localizable_scopable_text_area', 'tablet','fr_FR', 'chien'),
         ]);
 
         $this->createProduct('empty_product', []);

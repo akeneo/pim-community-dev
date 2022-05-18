@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\PQB\Sorter\Boolean;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDirectionException;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use AkeneoTest\Pim\Enrichment\Integration\PQB\AbstractProductQueryBuilderTestCase;
 
@@ -31,25 +32,17 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
         ]);
 
         $this->createProduct('product_one', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => false, 'locale' => 'fr_FR', 'scope' => 'tablet']
-                ]
-            ]
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'fr_FR', false),
         ]);
 
         $this->createProduct('product_two', [
-            'values' => [
-                'a_localizable_scopable_yes_no' => [
-                    ['data' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => true, 'locale' => 'fr_FR', 'scope' => 'tablet'],
-                ]
-            ]
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'en_US', false),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'en_US', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'ecommerce', 'fr_FR', true),
+            new SetBooleanValue('a_localizable_scopable_yes_no', 'tablet', 'fr_FR', true),
         ]);
 
         $this->createProduct('empty_product', []);
