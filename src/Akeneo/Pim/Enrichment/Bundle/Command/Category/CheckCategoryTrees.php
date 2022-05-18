@@ -24,12 +24,9 @@ class CheckCategoryTrees extends Command
 {
     protected static $defaultName = 'pim:categories:check';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    public function __construct(
-        Connection         $connection,
-    )
+    public function __construct(Connection $connection)
     {
         parent::__construct();
         $this->connection = $connection;
@@ -60,7 +57,7 @@ class CheckCategoryTrees extends Command
                 "max level for tree dumping",
                 1)
             ->addOption(
-                'do-it',
+                'fix-trees',
                 null,
                 InputOption::VALUE_NONE,
                 'Whether we update the category trees in DB',
@@ -71,31 +68,23 @@ class CheckCategoryTrees extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(InputInterface $input, OutputInterface $output): bool
     {
-
         $dumpCorruptions = !!$input->getOption('dump-corruptions');
-
         $dumpFixedTrees = !!$input->getOption('dump-fixed-trees');
+        $dumpFixedTreesMaxLevel = $input->getOption('max-level');
+        $fixTrees = !!$input->getOption('fix-trees');
 
-        $dumpFixedTreesMaxLevel = $input->getOption("max-level");
-
-        $doIt = !!$input->getOption('do-it');
-
-        if ($doIt) {
+        if ($fixTrees) {
             $output->writeln("WILL update !! Ctrl-C Now if npt intended");
         }
 
-        //
-        // 1 - read all categories and build object trees
-        //
-
-        echo "Fetching all categories\n";
+        $output->writeln('Fetching all categories');
         $pool = $this->getAllCategories();
 
+        $output->writeln('Building trees');
         $roots = $pool->getRoots();
-
-        echo "Building trees\n";
+        /** @var Category $root */
         foreach ($roots as $root) {
             $root->link($pool);
         }
@@ -103,7 +92,6 @@ class CheckCategoryTrees extends Command
         $hasCorruptions = false;
 
         foreach ($roots as $root) {
-            $output->writeln("\n======================================");
             $output->writeln("Checking root id={$root->getId()} code={$root->getCode()}");
 
             $fixedTree = $root->reorder();
@@ -117,7 +105,6 @@ class CheckCategoryTrees extends Command
                 if ($dumpFixedTrees) {
                     $output->writeln($fixedTree->dumpNodes(0, $dumpFixedTreesMaxLevel));
                 }
-
             }
 
             $corruptionStatus = count($corruptions) ? 'CORRUPTED' : 'SANE';
@@ -125,22 +112,20 @@ class CheckCategoryTrees extends Command
             $hasCorruptions |= $rootHasCorruptions;
 
             $output->writeln(
-                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus} "
+                "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus}"
             );
 
-            if ($rootHasCorruptions && $doIt) {
-                    $output->writeln("UPDATING tree id={$root->getId()} !!");
-                    $this->doUpdate($fixedTree);
+            if ($rootHasCorruptions && $fixTrees) {
+                $output->writeln("UPDATING tree id={$root->getId()} !!");
+                $this->doUpdate($fixedTree);
             }
-
-
         }
 
-        if ($doIt && !$hasCorruptions) {
+        if ($fixTrees && !$hasCorruptions) {
             $output->writeln("Requested update but no corruption found => nothing wad done.");
         }
 
-        return $hasCorruptions ? 1 : 0;
+        return $hasCorruptions;
     }
 
     private function getAllCategories(): CategoriesPool
@@ -155,22 +140,19 @@ SQL;
         return new CategoriesPool($rows);
     }
 
-    private function doUpdate(Category $root) : void {
+    private function doUpdate(Category $root): void
+    {
         if (!$this->connection->beginTransaction()) {
-            throw new Exception("Could not start update transaction");
+            throw new \Exception("Could not start update transaction");
         }
 
         try {
             $root->doUpdate($this->connection);
-            if (!       $this->connection->commit()) {
+            if (!$this->connection->commit()) {
                 throw new Exception("Could not commit update transaction");
             }
         } catch (\Throwable $e) {
             $this->connection->rollBack();
         }
-
-
     }
-
-
 }

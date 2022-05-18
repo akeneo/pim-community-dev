@@ -6,42 +6,27 @@ use Doctrine\DBAL\Connection;
 
 class Category
 {
-    /** @var integer */
-    private $id;
+    private int $id;
 
-    /** @var integer */
-    private $parent_id;
+    private ?int $parent_id;
 
-    /** @var integer */
-    private $root_id;
+    private ?int $root_id;
 
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var integer */
-    private $lft;
+    private int $lft;
 
-    /** @var integer */
-    private $rgt;
+    private int $rgt;
 
-    /** @var integer */
-    private $lvl;
+    private int $lvl;
 
-    //
-    // links
-    //
+    private bool $isLinked;
 
-    /** @var boolean */
-    private $isLinked;
+    private ?Category $parent;
 
-    /** @var Category|null */
-    private $parent;
+    private ?Category $root;
 
-    /** @var Category|null */
-    private $root;
-
-    /** @Var array */
-    private $children;
+    private array $children;
 
     public function __construct(array $dbModel)
     {
@@ -64,11 +49,6 @@ class Category
     public function getId(): int
     {
         return $this->id;
-    }
-
-    public function getParentId(): ?int
-    {
-        return $this->parent_id;
     }
 
     public function getCode(): string
@@ -95,7 +75,6 @@ class Category
     {
         $this->rgt = $right;
     }
-
 
     public function getLevel(): int
     {
@@ -144,49 +123,47 @@ class Category
 
     public function reorder(int $left = 1, int $level = 0): Category
     {
-        $c = clone $this;
-        $c->children = [];
+        $category = clone $this;
+        $category->children = [];
 
         $right = $left;
         foreach ($this->children as $child) {
             $reorderedChild = $child->reorder($right + 1, $level + 1);
             $right = $reorderedChild->getRight();
-            $c->children[] = $reorderedChild;
+            $category->children[] = $reorderedChild;
         }
 
-        $c->setLeft($left);
-        $c->setRight($right + 1);
-        $c->setLevel($level);
+        $category->setLeft($left);
+        $category->setRight($right + 1);
+        $category->setLevel($level);
 
-        return $c;
+        return $category;
     }
 
     private function makeDiffError(string $message): string
     {
-        return "id={$this->id} code={$this->code}  : {$message}";
+        return "id={$this->id} code={$this->code} : {$message}";
     }
 
-    public function diff(Category $c): array
+    public function diff(Category $category): array
     {
         $diffs = [];
-        if ($this->lvl !== $c->getLevel()) {
-            $diffs[] = $this->makeDiffError("Level mismatch (has:{$this->lvl}, expected:{$c->getLevel()})");
+        if ($this->lvl !== $category->getLevel()) {
+            $diffs[] = $this->makeDiffError("Level mismatch (has:{$this->lvl}, expected:{$category->getLevel()})");
         }
-        if ($this->lft !== $c->getLeft()) {
-            $diffs[] = $this->makeDiffError("Left mismatch (has:{$this->lft}, expected:{$c->getLeft()})");
+        if ($this->lft !== $category->getLeft()) {
+            $diffs[] = $this->makeDiffError("Left mismatch (has:{$this->lft}, expected:{$category->getLeft()})");
         }
-        if ($this->rgt !== $c->getRight()) {
-            $diffs[] = $this->makeDiffError("Right mismatch (has:{$this->rgt}, expected:{$c->getRight()})");
-        }
-
-        if (count($this->children) !== count($c->getChildren())) {
-            $diffs[] = $this->makeDiffError("Children count mismatch (has:{count($this->children)}, expected:{count($c->getChildren()})");
+        if ($this->rgt !== $category->getRight()) {
+            $diffs[] = $this->makeDiffError("Right mismatch (has:{$this->rgt}, expected:{$category->getRight()})");
         }
 
-        //var_export($this->children);
+        if (count($this->children) !== count($category->getChildren())) {
+            $diffs[] = $this->makeDiffError("Children count mismatch (has:{count($this->children)}, expected:{count($category->children})");
+        }
 
         for ($i = 0; $i < count($this->children); $i++) {
-            $childrenDiffErrors = $this->children[$i]->diff($c->getChildAt($i));
+            $childrenDiffErrors = $this->children[$i]->diff($category->getChildAt($i));
 
             $childrenDiffErrorsWithContext = array_map(
                 function ($childDiff) use ($i) {
@@ -220,16 +197,14 @@ class Category
 
     public function doUpdate(Connection $connection)
     {
-        $connection->update(
-            "pim_catalog_category",
+        $connection->update('pim_catalog_category',
             [
-                "lvl" => $this->lvl,
-                "lft" => $this->lft,
-                "rgt" => $this->rgt,
+                'lvl' => $this->lvl,
+                'lft' => $this->lft,
+                'rgt' => $this->rgt,
             ], [
-            "id" => $this->id
-        ],
-
+                'id' => $this->id
+            ],
         );
 
         foreach ($this->children as $child) {
