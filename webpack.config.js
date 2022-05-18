@@ -45,9 +45,9 @@ const webpackConfig = {
     },
     moduleIds: 'hashed',
     minimizer: [new TerserPlugin({
-      cache: true,
+      // cache: true,
       parallel: true,
-      sourceMap: false,
+      // sourceMap: false,
       terserOptions: {
         ecma: 6,
         mangle: true,
