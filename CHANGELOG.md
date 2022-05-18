@@ -44,6 +44,7 @@
 - PIM-10435: Fix search_after requests with codes using uppercase accented characters
 - PIM-10440: Fix error adding records into a table attribute if the reference entity had uppercase characters in the code
 - PIM-10447: Fix memory leak during compute_family_variant_structure_changes job
+- PIM-10444: Fix thumbnail generation http queue and cancel request when leaving the page
 
 ## Improvements
 
