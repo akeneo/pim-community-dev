@@ -6,12 +6,17 @@ namespace Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Writ
 
 final class Password
 {
-    private function __construct(public string $password)
+    private function __construct(private string $password)
     {
     }
 
     public static function fromString(string $password): self
     {
         return new self($password);
+    }
+
+    public function __toString(): string
+    {
+        return $this->password;
     }
 }

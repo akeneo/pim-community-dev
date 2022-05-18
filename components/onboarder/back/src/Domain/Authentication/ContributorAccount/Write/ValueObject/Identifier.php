@@ -13,7 +13,7 @@ final class Identifier
         if (!Uuid::isValid($identifier)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'The supplier identifier must be a UUID, "%s" given.',
+                    'The identifier must be a UUID, "%s" given.',
                     $identifier,
                 ),
             );
