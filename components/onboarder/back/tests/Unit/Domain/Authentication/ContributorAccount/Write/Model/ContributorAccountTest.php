@@ -15,10 +15,11 @@ final class ContributorAccountTest extends TestCase
     public function itCreatesAContributorAccount(): void
     {
         $contributorAccount = ContributorAccount::fromEmail('contributor@example.com');
-        $this->assertTrue($contributorAccount->getEmail()->equals(Email::fromString('contributor@example.com')));
-        $this->assertNull($contributorAccount->getPassword());
-        $this->assertNull($contributorAccount->getLastLoggedAt());
-        $this->assertInstanceOf(AccessToken::class, $contributorAccount->getAccessToken());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $contributorAccount->getCreatedAt());
+        $this->assertTrue($contributorAccount->email()->equals(Email::fromString('contributor@example.com')));
+        $this->assertNull($contributorAccount->password());
+        $this->assertNull($contributorAccount->lastLoggedAt());
+        $this->assertInstanceOf(AccessToken::class, $contributorAccount->accessToken());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $contributorAccount->createdAt());
+        $this->assertInstanceOf(\DateTimeImmutable::class, $contributorAccount->accessTokenCreatedAt());
     }
 }

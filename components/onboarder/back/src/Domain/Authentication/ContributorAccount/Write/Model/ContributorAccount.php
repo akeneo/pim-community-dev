@@ -14,6 +14,7 @@ class ContributorAccount
         private Email $email,
         private ?Password $password,
         private ?AccessToken $accessToken,
+        private ?\DateTimeInterface $accessTokenCreatedAt,
         private \DateTimeInterface $createdAt,
         private ?\DateTimeInterface $lastLoggedAt,
     ) {
@@ -27,31 +28,42 @@ class ContributorAccount
             null,
             AccessToken::generate(),
             new \DateTimeImmutable(),
+            new \DateTimeImmutable(),
             null,
         );
     }
 
-    public function getEmail(): Email
+    public function identifier(): Identifier
+    {
+        return $this->identifier;
+    }
+
+    public function email(): Email
     {
         return $this->email;
     }
 
-    public function getPassword(): ?Password
+    public function password(): ?Password
     {
         return $this->password;
     }
 
-    public function getAccessToken(): ?AccessToken
+    public function accessToken(): ?AccessToken
     {
         return $this->accessToken;
     }
 
-    public function getCreatedAt(): \DateTimeInterface
+    public function accessTokenCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->accessTokenCreatedAt;
+    }
+
+    public function createdAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getLastLoggedAt(): ?\DateTimeInterface
+    public function lastLoggedAt(): ?\DateTimeInterface
     {
         return $this->lastLoggedAt;
     }

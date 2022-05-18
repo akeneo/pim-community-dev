@@ -2,9 +2,9 @@
 
 namespace Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount;
 
+use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Event\ContributorAccountCreated;
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
-use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ContributorAccountRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreateContributorAccountHandler

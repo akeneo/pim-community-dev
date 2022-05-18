@@ -29,8 +29,7 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@logger'
-
-    Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccountHandler: ~
+            - '@logger'
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:
@@ -188,10 +187,3 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
         tags:
             - { name: validator.constraint_validator }
-
-    #Event subscribers
-    Akeneo\OnboarderSerenity\Application\Supplier\Subscriber\CreateContributorAccountOnContributorAdded:
-        arguments:
-            - '@Akeneo\OnboarderSerenity\Application\Supplier\CreateContributorAccountHandler'
-        tags:
-            - 'kernel.event_subscriber'

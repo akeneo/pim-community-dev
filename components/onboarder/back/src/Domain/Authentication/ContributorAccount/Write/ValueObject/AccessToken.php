@@ -17,7 +17,7 @@ class AccessToken
         );
     }
 
-    public function getToken(): string
+    public function __toString(): string
     {
         return $this->token;
     }
