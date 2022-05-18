@@ -43,6 +43,8 @@ $rules = [
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Application'),
 
@@ -102,8 +104,8 @@ $rules = [
         [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Domain',
-            'Akeneo\OnboarderSerenity\Application\Supplier',
-            'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
+            'Akeneo\OnboarderSerenity\Application',
+            'Akeneo\OnboarderSerenity\Infrastructure',
             // PIM coupling
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
@@ -114,6 +116,7 @@ $rules = [
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\Context\ExecutionContextInterface',
             'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
+            'Symfony\Component\EventDispatcher\EventDispatcher',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 
