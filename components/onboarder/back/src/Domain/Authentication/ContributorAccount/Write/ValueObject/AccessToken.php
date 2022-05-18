@@ -13,7 +13,7 @@ class AccessToken
     public static function generate(): self
     {
         return new self(
-            base_convert(bin2hex(hash('sha256', uniqid((string) mt_rand(), true), true)), 16, 36)
+            base_convert(bin2hex(hash('sha256', uniqid((string) mt_rand(), true), true)), 16, 36),
         );
     }
 

@@ -27,7 +27,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 'id' => (string) $contributorAccount->identifier(),
                 'email' => (string) $contributorAccount->email(),
                 'access_token' => (string) $contributorAccount->accessToken(),
-                'access_token_created_at' => $contributorAccount->accessTokenCreatedAt() !== null ? ($contributorAccount->accessTokenCreatedAt())->format('Y-m-d H:i:s') : null,
+                'access_token_created_at' => null !== $contributorAccount->accessTokenCreatedAt() ? ($contributorAccount->accessTokenCreatedAt())->format('Y-m-d H:i:s') : null,
                 'created_at' => ($contributorAccount->createdAt())->format('Y-m-d H:i:s'),
             ],
         );

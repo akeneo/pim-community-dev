@@ -12,8 +12,7 @@ class CreateContributorAccountHandler
     public function __construct(
         private ContributorAccountRepository $contributorAccountRepository,
         private EventDispatcherInterface $eventDispatcher,
-    )
-    {
+    ) {
     }
 
     public function __invoke(CreateContributorAccount $command): void
