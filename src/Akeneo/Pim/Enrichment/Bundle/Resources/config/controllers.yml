@@ -75,6 +75,13 @@ services:
             - '@oro_security.security_facade'
             - '@validator'
 
+    Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
+        arguments:
+            - '@pim_api.repository.product'
+            - '@event_dispatcher'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.remover.product'
+
     pim_api.controller.product_model:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductModelController'
