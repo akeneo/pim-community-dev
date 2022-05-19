@@ -11,7 +11,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class LocalStorageHydrator implements StorageHydratorInterface
