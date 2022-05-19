@@ -76,7 +76,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
     private function addContributorAccountTable(): void
     {
         $sql = <<<SQL
-            CREATE TABLE `akeneo_onboarder_serenity_contributor_account` (
+            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_contributor_account` (
             `id` varchar(36) NOT NULL,
             `email` varchar(255) NOT NULL,
             `password` varchar(255) DEFAULT NULL,
