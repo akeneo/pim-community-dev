@@ -18,6 +18,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientInterface;
+use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
@@ -25,8 +26,11 @@ final class LocalStorageClientProvider implements StorageClientProviderInterface
 {
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
-        $normalizedStorage = $storage->normalize();
-        $dirname = dirname($normalizedStorage['file_path']);
+        if (!$storage instanceof LocalStorage) {
+            throw new \InvalidArgumentException('The provider only support LocalStorage');
+        }
+
+        $dirname = dirname($storage->getFilePath());
 
         return new FileSystemStorageClient(new Filesystem(new LocalFilesystemAdapter($dirname)));
     }

@@ -21,11 +21,8 @@ final class LocalStorage implements StorageInterface
     {
     }
 
-    public function normalize(): array
+    public function getFilePath(): string
     {
-        return [
-            'type' => self::TYPE,
-            'file_path' => $this->filePath,
-        ];
+        return $this->filePath;
     }
 }
