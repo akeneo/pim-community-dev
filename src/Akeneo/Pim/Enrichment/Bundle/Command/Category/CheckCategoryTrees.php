@@ -131,7 +131,7 @@ class CheckCategoryTrees extends Command
     private function getAllCategories(): CategoriesPool
     {
         $sql = <<< SQL
-SELECT id, parent_id, root, code, lvl, lft,rgt
+SELECT id, parent_id, root, code, lvl, lft, rgt
 FROM pim_catalog_category
 ORDER BY lft
 SQL;
@@ -149,7 +149,7 @@ SQL;
         try {
             $root->doUpdate($this->connection);
             if (!$this->connection->commit()) {
-                throw new Exception("Could not commit update transaction");
+                throw new \Exception("Could not commit update transaction");
             }
         } catch (\Throwable $e) {
             $this->connection->rollBack();

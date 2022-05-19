@@ -16,6 +16,11 @@ class CategoriesPool
         }
     }
 
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
     public function find(?int $id): ?Category
     {
         if (is_null($id)) {
@@ -28,6 +33,7 @@ class CategoriesPool
     public function getRoots(): iterable
     {
         $roots = [];
+        /** @var Category $category */
         foreach ($this->categories as $category) {
             if (is_null($category->getParentId())) {
                 $roots[] = clone $category;
@@ -40,6 +46,7 @@ class CategoriesPool
     public function findForParent(int $parent_id): iterable
     {
         $children = [];
+        /** @var Category $category */
         foreach ($this->categories as $category) {
             if ($category->getParentId() === $parent_id) {
                 $children[] = clone $category;

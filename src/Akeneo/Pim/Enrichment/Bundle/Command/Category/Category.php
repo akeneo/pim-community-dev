@@ -51,6 +51,16 @@ class Category
         return $this->id;
     }
 
+    public function getParentId(): ?int
+    {
+        return $this->parent_id;
+    }
+
+    public function getRootId(): ?int
+    {
+        return $this->root_id;
+    }
+
     public function getCode(): string
     {
         return $this->code;
@@ -81,6 +91,11 @@ class Category
         return $this->lvl;
     }
 
+    public function isLinked(): bool
+    {
+        return $this->isLinked;
+    }
+
     public function setLevel(int $level)
     {
         $this->lvl = $level;
@@ -91,8 +106,17 @@ class Category
         return $this->children;
     }
 
-    public function getChildAt(int $index): Category
+    public function addChild(Category $child)
     {
+        $this->children[] = $child;
+    }
+
+    public function getChildAt(int $index): ?Category
+    {
+        if (!isset($this->children[$index])) {
+            return null;
+        }
+
         return $this->children[$index];
     }
 
@@ -105,7 +129,7 @@ class Category
         $this->parent = $pool->find($this->parent_id);
         $this->root = $pool->find($this->root_id);
 
-        $unlinkedChildren = $pool->findForParent($this->id);
+        $unlinkedChildren = $pool->findForParent(1);
 
         // make sure that children are sorted by the lft property
         // this will make the ordering basis for (lft,rgt) reordering in ::reorder()
@@ -113,6 +137,7 @@ class Category
             return $c1->getLeft() - $c2->getLeft();
         });
 
+        /** @var Category $child */
         foreach ($unlinkedChildren as $child) {
             $child->link($pool);
             $this->children[] = &$child;
@@ -159,23 +184,31 @@ class Category
         }
 
         if (count($this->children) !== count($category->getChildren())) {
-            $diffs[] = $this->makeDiffError("Children count mismatch (has:{count($this->children)}, expected:{count($category->children})");
+            $diffs[] = $this->makeDiffError(
+                sprintf(
+                    'Children count mismatch (has:%s, expected:%s)',
+                    count($this->children),
+                    count($category->getChildren())
+                )
+            );
         }
 
         for ($i = 0; $i < count($this->children); $i++) {
-            $childrenDiffErrors = $this->children[$i]->diff($category->getChildAt($i));
+            if ($category->getChildAt($i)) {
+                $childrenDiffErrors = $this->children[$i]->diff($category->getChildAt($i));
 
-            $childrenDiffErrorsWithContext = array_map(
-                function ($childDiff) use ($i) {
-                    return "Child at index {$i}: ${childDiff}";
-                },
-                $childrenDiffErrors
-            );
+                $childrenDiffErrorsWithContext = array_map(
+                    function ($childDiff) use ($i) {
+                        return "Child at index {$i}: ${childDiff}";
+                    },
+                    $childrenDiffErrors
+                );
 
-            $diffs = array_merge(
-                $diffs,
-                $childrenDiffErrorsWithContext
-            );
+                $diffs = array_merge(
+                    $diffs,
+                    $childrenDiffErrorsWithContext
+                );
+            }
         }
 
         return $diffs;
