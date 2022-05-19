@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\PublicApi\Service;
+namespace Akeneo\Connectivity\Connection\ServiceApi\Service;
 
 use Akeneo\Connectivity\Connection\Application\Apps\AppRoleWithScopesFactoryInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppInterface;

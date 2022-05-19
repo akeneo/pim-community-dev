@@ -64,3 +64,7 @@ services:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedApp'
             - '@database_connection'
             - '@pim_user.repository.user'
+
+    Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppRemover:
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'
