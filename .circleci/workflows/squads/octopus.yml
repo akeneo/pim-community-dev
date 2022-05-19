@@ -8,9 +8,8 @@ workflows:
 
     octopus_pull_request:
         when:
-            and:
-                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-                - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
         jobs:
             - checkout_ce:
                   name: checkout
@@ -77,8 +76,9 @@ workflows:
 
     octopus_weekly_code_quality:
         when:
-            not:
-                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+            and:
+                - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+                - equal: [ "weekly_octopus_code_quality", << pipeline.schedule.name >> ]
         jobs:
             - checkout_ce
             - build_dev:
