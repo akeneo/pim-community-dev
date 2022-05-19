@@ -42,7 +42,12 @@ final class UpdateSupplierHandlerTest extends TestCase
                 [new ContributorAdded($identifier, 'contributor2@example.com')],
             );
 
-        $handler = new UpdateSupplierHandler($repository, $validatorSpy, new NullLogger(), $eventDispatcherSpy);
+        $handler = new UpdateSupplierHandler(
+            $repository,
+            $validatorSpy,
+            new NullLogger(),
+            $eventDispatcherSpy,
+        );
         ($handler)($command);
 
         $supplier = $repository->find($identifier);
@@ -73,7 +78,12 @@ final class UpdateSupplierHandlerTest extends TestCase
         $this->expectExceptionObject(new InvalidData($violationsSpy));
 
         $eventDispatcherSpy = $this->createMock(EventDispatcher::class);
-        $handler = new UpdateSupplierHandler(new InMemoryRepository(), $validatorSpy, new NullLogger(), $eventDispatcherSpy);
+        $handler = new UpdateSupplierHandler(
+            new InMemoryRepository(),
+            $validatorSpy,
+            new NullLogger(),
+            $eventDispatcherSpy,
+        );
         ($handler)($command);
     }
 

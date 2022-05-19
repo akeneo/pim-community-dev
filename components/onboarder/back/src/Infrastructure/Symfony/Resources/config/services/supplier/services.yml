@@ -29,7 +29,6 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@logger'
-            - '@logger'
 
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:

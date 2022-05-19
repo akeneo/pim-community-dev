@@ -18,21 +18,21 @@ final class ContributorAccountContext implements Context
     /**
      * @Then I should have ":contributorAccountEmails" contributor accounts
      */
-    public function iShouldHaveContributorAccounts(string $contributorAccountEmails)
+    public function iShouldHaveContributorAccounts(string $contributorAccountEmails): void
     {
         $emails = explode(';', $contributorAccountEmails);
 
         $contributorAccount0 = $this->contributorAccountRepository->findByEmail($emails[0]);
         $contributorAccount1 = $this->contributorAccountRepository->findByEmail($emails[1]);
 
-        Assert::assertSame($emails[0],(string) $contributorAccount0->email());
-        Assert::assertSame($emails[1],(string) $contributorAccount1->email());
+        Assert::assertSame($emails[0], (string) $contributorAccount0->email());
+        Assert::assertSame($emails[1], (string) $contributorAccount1->email());
 
         $this->assertContributorAccountIsValid($contributorAccount0);
         $this->assertContributorAccountIsValid($contributorAccount1);
     }
 
-    private function assertContributorAccountIsValid(ContributorAccount $contributorAccount)
+    private function assertContributorAccountIsValid(ContributorAccount $contributorAccount): void
     {
         Assert::assertNotNull($contributorAccount->accessToken());
         Assert::assertNotNull($contributorAccount->accessTokenCreatedAt());

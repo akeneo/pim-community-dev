@@ -12,7 +12,7 @@ use Doctrine\DBAL\Connection;
 class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 {
     /** @test */
-    public function itSavesASupplier(): void
+    public function itSavesAContributorAccount(): void
     {
         $repository = $this->get(ContributorAccountRepository::class);
         $contributorAccount = ContributorAccount::fromEmail('burger@example.com');

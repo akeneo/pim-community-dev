@@ -126,6 +126,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Domain',
             'Akeneo\OnboarderSerenity\Application\Supplier',
             'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
+            'Akeneo\OnboarderSerenity\Infrastructure\Authentication',
             // PIM coupling
             // External dependencies coupling
             'Behat',
