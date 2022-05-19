@@ -61,6 +61,7 @@ final class GetCatalogsAction
      */
     private function paginate(array $catalogs, int $page, int $limit): array
     {
+        /** @var array<mixed> $items */
         $items = $this->normalizer->normalize($catalogs, 'external_api');
 
         return $this->offsetPaginator->paginate($items, [
