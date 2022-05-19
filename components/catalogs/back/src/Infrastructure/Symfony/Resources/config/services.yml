@@ -2,6 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $offsetPaginator: '@pim_api.pagination.offset_hal_paginator'
 
     _instanceof:
         Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:

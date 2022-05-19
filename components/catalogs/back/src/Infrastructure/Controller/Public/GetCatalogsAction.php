@@ -7,8 +7,10 @@ namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
 use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUserIdTrait;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
+use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerIdQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
+use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +33,7 @@ final class GetCatalogsAction
         private NormalizerInterface $normalizer,
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
+        private PaginatorInterface $offsetPaginator,
     ) {
     }
 
@@ -38,17 +41,37 @@ final class GetCatalogsAction
     {
         $this->denyAccessUnlessGrantedToListCatalogs();
 
+        $page = (int) $request->query->get('page', 1);
         $limit = (int) $request->query->get('limit', 100);
-        $offset = (int) $request->query->get('offset', 0);
 
         $ownerId = $this->getCurrentUserId();
 
         try {
-            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerIdQuery($ownerId, $offset, $limit));
+            $catalogs = $this->queryBus->execute(new GetCatalogsByOwnerIdQuery($ownerId, $page, $limit));
         } catch (ValidationFailedException $e) {
             throw new BadRequestHttpException();
         }
 
-        return new JsonResponse($this->normalizer->normalize($catalogs, 'external_api'), Response::HTTP_OK);
+        return new JsonResponse($this->paginate($catalogs, $page, $limit), Response::HTTP_OK);
+    }
+
+    /**
+     * @param array<Catalog> $catalogs
+     * @return array<array-key, mixed>
+     */
+    private function paginate(array $catalogs, int $page, int $limit): array
+    {
+        $items = \array_map(fn (Catalog $catalog) => $this->normalizer->normalize($catalog, 'external_api'), $catalogs);
+
+        return $this->offsetPaginator->paginate($items, [
+            'query_parameters' => [
+                'page' => $page,
+                'limit' => $limit,
+            ],
+            'list_route_name' => 'akeneo_catalogs_public_get_catalogs',
+            'item_route_name' => 'akeneo_catalogs_public_get_catalog',
+            'item_route_parameter' => 'id',
+            'item_identifier_key' => 'id',
+        ], null);
     }
 }
