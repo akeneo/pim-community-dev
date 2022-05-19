@@ -26,7 +26,7 @@ https://docs.akeneo.com/master/install_pim/index.html
 ### Build the Docker image for local development
 
 ```bash
-docker build --target dev -t akeneo/pim-php-dev:7.0 .
+docker build --target dev -t akeneo/pim-php-dev:master .
 ```
 
 ## Upgrade instructions

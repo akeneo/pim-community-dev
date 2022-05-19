@@ -17,7 +17,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
     sh -c 'echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list' &&\
     apt-get update && \
     apt-get --yes install imagemagick \
-        libmagickcore-6.q16-2-extra \
+        libmagickcore-6.q16-6-extra \
         ghostscript \
         php8.0-fpm \
         php8.0-cli \
