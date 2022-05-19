@@ -25,12 +25,4 @@ class EmailTest extends TestCase
         static::assertInstanceOf(Email::class, $email);
         static::assertSame('foo@foo.bar', (string) $email);
     }
-    /** @test */
-    public function itCanCheckThatTwoEmailsAreEqual(): void
-    {
-        $email = Email::fromString('foo@foo.bar');
-
-        static::assertTrue($email->equals(Email::fromString('foo@foo.bar')));
-        static::assertFalse($email->equals(Email::fromString('bar@bar.foo')));
-    }
 }

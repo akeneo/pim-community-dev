@@ -13,7 +13,7 @@ class InMemoryRepository implements ContributorAccountRepository
 
     public function save(ContributorAccount $contributorAccount): void
     {
-        $this->contributorAccounts[(string) $contributorAccount->email()] = $contributorAccount;
+        $this->contributorAccounts[$contributorAccount->email()] = $contributorAccount;
     }
 
     public function findByEmail(string $email): ?ContributorAccount

@@ -14,6 +14,6 @@ class AccessTokenTest extends TestCase
     {
         $accessToken = AccessToken::generate();
         $this->assertInstanceOf(AccessToken::class, $accessToken);
-        $this->assertGreaterThan(0, (string) $accessToken);
+        $this->assertNotEmpty((string) $accessToken);
     }
 }

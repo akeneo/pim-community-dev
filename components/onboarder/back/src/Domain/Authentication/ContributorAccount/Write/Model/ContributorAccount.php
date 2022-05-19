@@ -33,38 +33,38 @@ class ContributorAccount
         );
     }
 
-    public function identifier(): Identifier
+    public function identifier(): string
     {
-        return $this->identifier;
+        return (string) $this->identifier;
     }
 
-    public function email(): Email
+    public function email(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
 
-    public function password(): ?Password
+    public function password(): ?string
     {
-        return $this->password;
+        return null === $this->password ? null : (string) $this->password;
     }
 
-    public function accessToken(): ?AccessToken
+    public function accessToken(): ?string
     {
-        return $this->accessToken;
+        return null === $this->accessToken ? null : (string) $this->accessToken;
     }
 
-    public function accessTokenCreatedAt(): ?\DateTimeInterface
+    public function accessTokenCreatedAt(): ?string
     {
-        return $this->accessTokenCreatedAt;
+        return $this->accessTokenCreatedAt?->format('Y-m-d H:i:s');
     }
 
-    public function createdAt(): \DateTimeInterface
+    public function createdAt(): string
     {
-        return $this->createdAt;
+        return $this->createdAt->format('Y-m-d H:i:s');
     }
 
-    public function lastLoggedAt(): ?\DateTimeInterface
+    public function lastLoggedAt(): ?string
     {
-        return $this->lastLoggedAt;
+        return $this->lastLoggedAt?->format('Y-m-d H:i:s');
     }
 }

@@ -21,11 +21,11 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
 
         $savedContributorAccount = $this->findContributorAccount('burger@example.com');
 
-        $this->assertSame((string) $contributorAccount->email(), $savedContributorAccount['email']);
-        $this->assertSame((string) $contributorAccount->identifier(), $savedContributorAccount['id']);
-        $this->assertSame((string) $contributorAccount->accessToken(), $savedContributorAccount['access_token']);
-        $this->assertSame($contributorAccount->createdAt()->format('Y-m-d H:i:s'), $savedContributorAccount['created_at']);
-        $this->assertSame($contributorAccount->accessTokenCreatedAt()->format('Y-m-d H:i:s'), $savedContributorAccount['access_token_created_at']);
+        $this->assertSame($contributorAccount->email(), $savedContributorAccount['email']);
+        $this->assertSame($contributorAccount->identifier(), $savedContributorAccount['id']);
+        $this->assertSame($contributorAccount->accessToken(), $savedContributorAccount['access_token']);
+        $this->assertSame($contributorAccount->createdAt(), $savedContributorAccount['created_at']);
+        $this->assertSame($contributorAccount->accessTokenCreatedAt(), $savedContributorAccount['access_token_created_at']);
     }
 
     private function findContributorAccount(string $email): ?array

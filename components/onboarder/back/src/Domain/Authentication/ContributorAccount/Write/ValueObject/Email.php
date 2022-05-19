@@ -22,9 +22,4 @@ final class Email
     {
         return $this->email;
     }
-
-    public function equals(self $email): bool
-    {
-        return $this->email === (string) $email;
-    }
 }
