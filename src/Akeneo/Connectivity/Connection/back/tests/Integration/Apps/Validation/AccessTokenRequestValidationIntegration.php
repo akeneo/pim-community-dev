@@ -245,7 +245,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
 
     private function expireCode(string $code): void
     {
-        $expirationTimestamp = time() - 1;
+        $expirationTimestamp = \time() - 1;
 
         $query = <<<SQL
         UPDATE pim_api_auth_code
