@@ -11,7 +11,6 @@ use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
-use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Test\Integration\Configuration;
@@ -111,7 +110,7 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         $this->createApp();
         $authCode = $this->getAuthCode();
 
-        \sleep(30);
+        $this->expireCode($authCode);
 
         $accessTokenRequest = new AccessTokenRequest($this->clientId, $authCode, 'authorization_code', '12345', '12345');
         $violations = $this->validator->validate($accessTokenRequest);
@@ -242,5 +241,26 @@ class AccessTokenRequestValidationIntegration extends WebTestCase
         ];
 
         $this->webMarketplaceApi->setApps($apps);
+    }
+
+    private function expireCode(string $code): void
+    {
+        $expirationTimestamp = time() - 1;
+
+        $query = <<<SQL
+        UPDATE pim_api_auth_code
+        SET expires_at = :expiration_timestamp
+        WHERE token = :auth_code
+        SQL;
+
+        $this->get('database_connection')->executeQuery(
+            $query,
+            [
+                'expiration_timestamp' => $expirationTimestamp,
+                'auth_code' => $code,
+            ]
+        );
+
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 }
