@@ -74,7 +74,7 @@ class CategorySpec extends ObjectBehavior
             ]),
             'child2' => new Category([
                 'id' => 3,
-                'parent_id' => 2,
+                'parent_id' => 1,
                 'root' => 1,
                 'code' => 'child2',
                 'lvl' => '1',
@@ -83,7 +83,7 @@ class CategorySpec extends ObjectBehavior
             ]),
             'child3' => new Category([
                 'id' => 4,
-                'parent_id' => 2,
+                'parent_id' => 1,
                 'root' => 1,
                 'code' => 'child3',
                 'lvl' => '1',
@@ -107,7 +107,7 @@ class CategorySpec extends ObjectBehavior
             ]),
             'child2' => new Category([
                 'id' => 3,
-                'parent_id' => 2,
+                'parent_id' => 1,
                 'root' => 1,
                 'code' => 'child2',
                 'lvl' => '1',
@@ -116,7 +116,7 @@ class CategorySpec extends ObjectBehavior
             ]),
             'child3' => new Category([
                 'id' => 4,
-                'parent_id' => 2,
+                'parent_id' => 1,
                 'root' => 1,
                 'code' => 'child3',
                 'lvl' => '2',
@@ -125,7 +125,7 @@ class CategorySpec extends ObjectBehavior
             ]),
             'child4' => new Category([
                 'id' => 5,
-                'parent_id' => 2,
+                'parent_id' => 1,
                 'root' => 1,
                 'code' => 'child4',
                 'lvl' => '1',

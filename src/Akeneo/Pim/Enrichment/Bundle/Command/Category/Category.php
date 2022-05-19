@@ -129,7 +129,7 @@ class Category
         $this->parent = $pool->find($this->parent_id);
         $this->root = $pool->find($this->root_id);
 
-        $unlinkedChildren = $pool->findForParent(1);
+        $unlinkedChildren = $pool->findForParent($this->id);
 
         // make sure that children are sorted by the lft property
         // this will make the ordering basis for (lft,rgt) reordering in ::reorder()

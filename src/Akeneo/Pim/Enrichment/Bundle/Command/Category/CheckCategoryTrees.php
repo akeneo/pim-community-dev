@@ -14,8 +14,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Checks whether categories treee are sane or corrupted
- *  - checkes that (lft,right,lvl) is consistent with (parent_id,root_id) <- consided uncorrupted
+ * Checks whether categories tree are sane or corrupted
+ *  - checks that (lft,right,lvl) is consistent with (parent_id,root_id) <- considered uncorrupted
  * @author    Weasels
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -68,7 +68,7 @@ class CheckCategoryTrees extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): bool
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $inputOptionDumpCorruptions = !!$input->getOption('dump-corruptions');
         $inputOptionDumpFixedOrder = !!$input->getOption('dump-fixed-order');
@@ -122,10 +122,10 @@ class CheckCategoryTrees extends Command
         }
 
         if ($inputOptionReorder && !$hasCorruptions) {
-            $output->writeln('Requested update but no corruption found => nothing wad done.');
+            $output->writeln('Requested update but no corruption found => nothing was done.');
         }
 
-        return $hasCorruptions;
+        return $hasCorruptions ? 1 : 0;
     }
 
     private function getAllCategories(): CategoriesPool
