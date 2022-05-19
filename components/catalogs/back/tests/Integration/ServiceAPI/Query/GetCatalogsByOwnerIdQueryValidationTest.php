@@ -36,13 +36,25 @@ class GetCatalogsByOwnerIdQueryValidationTest extends IntegrationTestCase
     public function validations(): array
     {
         return [
-            'offset is negative' => [
+            'page is negative' => [
                 'query' => new GetCatalogsByOwnerIdQuery(123, -1, 100),
-                'error' => 'This value should be either positive or zero.',
+                'error' => 'This value should be positive.',
+            ],
+            'page is zero' => [
+                'query' => new GetCatalogsByOwnerIdQuery(123, 0, 100),
+                'error' => 'This value should be positive.',
             ],
             'limit is negative' => [
+                'query' => new GetCatalogsByOwnerIdQuery(123, 1, -1),
+                'error' => 'This value should be between 1 and 100.',
+            ],
+            'limit is zero' => [
                 'query' => new GetCatalogsByOwnerIdQuery(123, 0, -1),
-                'error' => 'This value should be either positive or zero.',
+                'error' => 'This value should be between 1 and 100.',
+            ],
+            'limit is more than 100' => [
+                'query' => new GetCatalogsByOwnerIdQuery(123, 1, 101),
+                'error' => 'This value should be between 1 and 100.',
             ],
         ];
     }

@@ -25,6 +25,8 @@ final class GetCatalogsByOwnerIdHandler
      */
     public function __invoke(GetCatalogsByOwnerIdQuery $query): array
     {
-        return $this->storageQuery->execute($query->getOwnerId(), $query->getOffset(), $query->getLimit());
+        $offset = ($query->getPage() - 1) * $query->getLimit();
+
+        return $this->storageQuery->execute($query->getOwnerId(), $offset, $query->getLimit());
     }
 }

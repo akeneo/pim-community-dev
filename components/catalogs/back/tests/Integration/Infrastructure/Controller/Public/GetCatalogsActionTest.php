@@ -9,7 +9,6 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -58,8 +57,8 @@ class GetCatalogsActionTest extends IntegrationTestCase
             'GET',
             '/api/rest/v1/catalogs',
             [
+                'page' => 1,
                 'limit' => 2,
-                'offset' => 0,
             ],
             [],
             [
@@ -71,13 +70,13 @@ class GetCatalogsActionTest extends IntegrationTestCase
         $firstPagePayload = \json_decode($firstPageResponse->getContent(), true);
 
         Assert::assertEquals(200, $firstPageResponse->getStatusCode());
-        Assert::assertCount(2, $firstPagePayload);
+        Assert::assertCount(2, $firstPagePayload['_embedded']['items']);
 
-        Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $firstPagePayload[0]['id']);
-        Assert::assertSame('Store UK', $firstPagePayload[0]['name']);
-        Assert::assertSame(false, $firstPagePayload[0]['enabled']);
+        Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $firstPagePayload['_embedded']['items'][0]['id']);
+        Assert::assertSame('Store UK', $firstPagePayload['_embedded']['items'][0]['name']);
+        Assert::assertSame(false, $firstPagePayload['_embedded']['items'][0]['enabled']);
 
-        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $firstPagePayload[1]['id']);
+        Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $firstPagePayload['_embedded']['items'][1]['id']);
     }
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
@@ -115,8 +114,8 @@ class GetCatalogsActionTest extends IntegrationTestCase
             'GET',
             '/api/rest/v1/catalogs',
             [
+                'page' => -1,
                 'limit' => -1,
-                'offset' => -1,
             ],
             [],
             [

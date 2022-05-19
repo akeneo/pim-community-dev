@@ -123,7 +123,7 @@ class ApiContext implements Context
             uri: '/api/rest/v1/catalogs',
             parameters: [
                 'limit' => 2,
-                'offset' => 0,
+                'page' => 1,
             ],
         );
 
@@ -151,11 +151,11 @@ class ApiContext implements Context
     {
         $payload = \json_decode($this->response->getContent(), true);
 
-        Assert::assertCount(2, $payload);
+        Assert::assertCount(2, $payload['_embedded']['items']);
 
-        Assert::assertArrayHasKey('id', $payload[0]);
-        Assert::assertArrayHasKey('name', $payload[0]);
-        Assert::assertArrayHasKey('enabled', $payload[0]);
+        Assert::assertArrayHasKey('id', $payload['_embedded']['items'][0]);
+        Assert::assertArrayHasKey('name', $payload['_embedded']['items'][0]);
+        Assert::assertArrayHasKey('enabled', $payload['_embedded']['items'][0]);
     }
 
     /**

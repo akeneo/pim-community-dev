@@ -18,9 +18,9 @@ class GetCatalogsByOwnerIdQuery implements QueryInterface
 {
     public function __construct(
         private int $ownerId,
-        #[Assert\PositiveOrZero]
-        private int $offset,
-        #[Assert\PositiveOrZero]
+        #[Assert\Positive]
+        private int $page,
+        #[Assert\Range(min: 1, max: 100)]
         private int $limit,
     ) {
     }
@@ -35,8 +35,8 @@ class GetCatalogsByOwnerIdQuery implements QueryInterface
         return $this->limit;
     }
 
-    public function getOffset(): int
+    public function getPage(): int
     {
-        return $this->offset;
+        return $this->page;
     }
 }
