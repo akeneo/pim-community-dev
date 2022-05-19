@@ -204,7 +204,7 @@ akeneo_batch_job_execution | job_instance_id | NO | int | MUL
 akeneo_batch_job_execution | pid | YES | int |
 akeneo_batch_job_execution | user | YES | varchar(255) | MUL
 akeneo_batch_job_execution | status | NO | int | MUL
-akeneo_batch_job_execution | start_time | YES | datetime |
+akeneo_batch_job_execution | start_time | YES | datetime | MUL
 akeneo_batch_job_execution | end_time | YES | datetime |
 akeneo_batch_job_execution | create_time | YES | datetime |
 akeneo_batch_job_execution | updated_time | YES | datetime |
