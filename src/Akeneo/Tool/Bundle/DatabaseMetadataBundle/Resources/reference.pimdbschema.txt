@@ -30,6 +30,7 @@ akeneo_onboarder_pre_ref_product | BASE TABLE
 akeneo_onboarder_retailer_contact | BASE TABLE
 akeneo_onboarder_serenity_supplier | BASE TABLE
 akeneo_onboarder_serenity_supplier_contributor | BASE TABLE
+akeneo_onboarder_serenity_contributor_account | BASE TABLE
 akeneo_onboarder_supplier | BASE TABLE
 akeneo_onboarder_supplier_contact | BASE TABLE
 akeneo_onboarder_supplier_family | BASE TABLE
@@ -349,6 +350,13 @@ akeneo_onboarder_serenity_supplier_contributor | id | NO | bigint unsigned | PRI
 akeneo_onboarder_serenity_supplier_contributor | email | NO | varchar(255) | UNI
 akeneo_onboarder_serenity_supplier_contributor | created_at | NO | datetime |
 akeneo_onboarder_serenity_supplier_contributor | supplier_identifier | NO | char(36) | MUL
+akeneo_onboarder_serenity_contributor_account | id | NO | char(36) | PRI
+akeneo_onboarder_serenity_contributor_account | email | NO | varchar(255) | UNI
+akeneo_onboarder_serenity_contributor_account | password | YES | varchar(255) |
+akeneo_onboarder_serenity_contributor_account | access_token | YES | varchar(255) |
+akeneo_onboarder_serenity_contributor_account | access_token_created_at | YES | datetime |
+akeneo_onboarder_serenity_contributor_account | created_at | YES | datetime |
+akeneo_onboarder_serenity_contributor_account | last_logged_at | YES | datetime |
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
 akeneo_onboarder_supplier | sort_order | NO | int |
@@ -1016,6 +1024,8 @@ INDEX | akeneo_onboarder_serenity_supplier | UC_supplier_code | code
 INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | id
 INDEX | akeneo_onboarder_serenity_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
 INDEX | akeneo_onboarder_serenity_supplier_contributor | UC_supplier_contributor_email | email
+INDEX | akeneo_onboarder_serenity_contributor_account | PRIMARY | id
+INDEX | akeneo_onboarder_serenity_contributor_account | UC_akeneo_onboarder_serenity_contributor_account_email | email
 INDEX | akeneo_onboarder_supplier | PRIMARY | id
 INDEX | akeneo_onboarder_supplier | UNIQ_4BA928F877153098 | code
 INDEX | akeneo_onboarder_supplier_contact | akeneo_onboarder_supplier_fk_supplier | supplier_id
