@@ -3,9 +3,6 @@ services:
     Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
 
-    Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
-        class: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository
-
     # Queries
     Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
