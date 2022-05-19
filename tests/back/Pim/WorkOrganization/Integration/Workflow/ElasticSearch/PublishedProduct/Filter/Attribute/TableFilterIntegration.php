@@ -15,6 +15,9 @@ namespace AkeneoTestEnterprise\Pim\WorkOrganization\Integration\Workflow\Elastic
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetEnabled;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTableValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
@@ -80,32 +83,16 @@ class TableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
         $foo = $this->createProduct('foo', [
-            'categories' => ['categoryA'],
-            'values' => [
-                'nutrition' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' => null,
-                        'data' => [['ingredient' => 'sugar', 'quantity' => 10]]
-                    ]
-                ]
-            ]
+            new SetCategories(['categoryA']),
+            new SetTableValue('nutrition', null, 'en_US', [['ingredient' => 'sugar', 'quantity' => 10]])
         ]);
         $publishedProductManager->publish($foo);
 
-        $bar = $this->createProduct('bar', ['enabled' => true]);
+        $bar = $this->createProduct('bar', [new SetEnabled(true)]);
         $publishedProductManager->publish($bar);
 
         $baz = $this->createProduct('baz', [
-            'values' => [
-                'nutrition' => [
-                    [
-                        'locale' => 'en_US',
-                        'scope' => null,
-                        'data' => [['ingredient' => 'salt', 'quantity' => 5]]
-                    ]
-                ]
-            ]
+            new SetTableValue('nutrition', null, 'en_US', [['ingredient' => 'salt', 'quantity' => 5]])
         ]);
         $publishedProductManager->publish($baz);
         $this->esProductClient->refreshIndex();
