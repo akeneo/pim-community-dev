@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class CheckCategoryTrees extends Command
 {
-    protected static $defaultName = 'pim:categories:check';
+    protected static $defaultName = 'pim:categories:check-order';
 
     private Connection $connection;
 
@@ -45,22 +45,22 @@ class CheckCategoryTrees extends Command
                 'Whether we dump detected corruptions or not',
             )
             ->addOption(
-                'dump-fixed-trees',
+                'dump-fixed-order',
                 't',
                 InputOption::VALUE_NONE,
-                'Whether we dump the corrected trees or not',
+                'Whether we dump ordered categories or not',
             )
             ->addOption(
-                "max-level",
+                'max-level',
                 'm',
                 InputArgument::OPTIONAL,
-                "max level for tree dumping",
+                'Max level for tree dumping',
                 1)
             ->addOption(
-                'fix-trees',
+                'reorder',
                 null,
                 InputOption::VALUE_NONE,
-                'Whether we update the category trees in DB',
+                'Whether we update the categories in DB',
             )
             ->setDescription('Check all category trees against nested structure');
     }
@@ -70,13 +70,13 @@ class CheckCategoryTrees extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): bool
     {
-        $dumpCorruptions = !!$input->getOption('dump-corruptions');
-        $dumpFixedTrees = !!$input->getOption('dump-fixed-trees');
-        $dumpFixedTreesMaxLevel = $input->getOption('max-level');
-        $fixTrees = !!$input->getOption('fix-trees');
+        $inputOptionDumpCorruptions = !!$input->getOption('dump-corruptions');
+        $inputOptionDumpFixedOrder = !!$input->getOption('dump-fixed-order');
+        $inputArgumentMaxLevel = $input->getOption('max-level');
+        $inputOptionReorder = !!$input->getOption('reorder');
 
-        if ($fixTrees) {
-            $output->writeln("WILL update !! Ctrl-C Now if npt intended");
+        if ($inputOptionReorder) {
+            $output->writeln("Will update! Ctrl-C now if not intended.");
         }
 
         $output->writeln('Fetching all categories');
@@ -99,11 +99,11 @@ class CheckCategoryTrees extends Command
 
             $rootHasCorruptions = !!count($corruptions);
             if ($rootHasCorruptions) {
-                if ($dumpCorruptions) {
+                if ($inputOptionDumpCorruptions) {
                     $output->writeln($corruptions);
                 }
-                if ($dumpFixedTrees) {
-                    $output->writeln($fixedTree->dumpNodes(0, $dumpFixedTreesMaxLevel));
+                if ($inputOptionDumpFixedOrder) {
+                    $output->writeln($fixedTree->dumpNodes(0, $inputArgumentMaxLevel));
                 }
             }
 
@@ -115,14 +115,14 @@ class CheckCategoryTrees extends Command
                 "Root id={$root->getId()} code={$root->getCode()} is {$corruptionStatus}"
             );
 
-            if ($rootHasCorruptions && $fixTrees) {
-                $output->writeln("UPDATING tree id={$root->getId()} !!");
+            if ($rootHasCorruptions && $inputOptionReorder) {
+                $output->writeln("UPDATING tree id={$root->getId()}!");
                 $this->doUpdate($fixedTree);
             }
         }
 
-        if ($fixTrees && !$hasCorruptions) {
-            $output->writeln("Requested update but no corruption found => nothing wad done.");
+        if ($inputOptionReorder && !$hasCorruptions) {
+            $output->writeln('Requested update but no corruption found => nothing wad done.');
         }
 
         return $hasCorruptions;
@@ -143,13 +143,13 @@ SQL;
     private function doUpdate(Category $root): void
     {
         if (!$this->connection->beginTransaction()) {
-            throw new \Exception("Could not start update transaction");
+            throw new \Exception('Could not start update transaction');
         }
 
         try {
             $root->doUpdate($this->connection);
             if (!$this->connection->commit()) {
-                throw new \Exception("Could not commit update transaction");
+                throw new \Exception('Could not commit update transaction');
             }
         } catch (\Throwable $e) {
             $this->connection->rollBack();
