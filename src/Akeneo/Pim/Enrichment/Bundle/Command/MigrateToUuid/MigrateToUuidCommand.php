@@ -179,15 +179,21 @@ class MigrateToUuidCommand extends Command
     {
         $sql = <<<SQL
             SELECT EXISTS (
-                SELECT 1
-                FROM akeneo_batch_job_execution abje
-                    INNER JOIN akeneo_batch_job_instance abji 
-                        ON abje.job_instance_id = abji.id
-                WHERE abji.code=:code
-                  AND abje.status=:status
-                  AND abje.start_time > NOW() - SUBTIME(NOW(),"24:0:0")
-                LIMIT 1
-            ) AS missing
+                WITH
+                last_job_execution AS (
+                    SELECT abje.id, abje.updated_time, abje.create_time
+                    FROM akeneo_batch_job_execution abje
+                             INNER JOIN akeneo_batch_job_instance abji
+                                        ON abje.job_instance_id = abji.id
+                    WHERE abji.code=:code
+                      AND abje.status=:status
+                    ORDER BY create_time DESC
+                    LIMIT 1
+                )
+                SELECT * FROM last_job_execution WHERE
+                  (updated_time IS NOT NULL AND updated_time > SUBTIME(NOW(),"0:0:30"))
+                    OR (updated_time IS NULL AND create_time > SUBTIME(NOW(), "24:0:0"))
+            ) AS running
         SQL;
 
         return (bool) $this->connection->fetchOne($sql, [
