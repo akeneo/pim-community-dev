@@ -1025,7 +1025,7 @@ INDEX | akeneo_onboarder_serenity_supplier_contributor | PRIMARY | id
 INDEX | akeneo_onboarder_serenity_supplier_contributor | supplier_identifier_foreign_key | supplier_identifier
 INDEX | akeneo_onboarder_serenity_supplier_contributor | UC_supplier_contributor_email | email
 INDEX | akeneo_onboarder_serenity_contributor_account | PRIMARY | id
-INDEX | akeneo_onboarder_serenity_contributor_account | UC_akeneo_onboarder_serenity_contributor_account_email | email
+INDEX | akeneo_onboarder_serenity_contributor_account | UC_contributor_account_email | email
 INDEX | akeneo_onboarder_supplier | PRIMARY | id
 INDEX | akeneo_onboarder_supplier | UNIQ_4BA928F877153098 | code
 INDEX | akeneo_onboarder_supplier_contact | akeneo_onboarder_supplier_fk_supplier | supplier_id
@@ -1591,6 +1591,7 @@ UNIQUE CONSTRAINT | code | akeneo_measurement | code
 UNIQUE CONSTRAINT | supplier_supplier_reference | akeneo_onboarder_pre_ref_product | supplier_reference, supplier_id
 UNIQUE CONSTRAINT | UC_supplier_code | akeneo_onboarder_serenity_supplier | code
 UNIQUE CONSTRAINT | UC_supplier_contributor_email | akeneo_onboarder_serenity_supplier_contributor | email
+UNIQUE CONSTRAINT | UC_contributor_account_email | akeneo_onboarder_serenity_contributor_account | email
 UNIQUE CONSTRAINT | UNIQ_4BA928F877153098 | akeneo_onboarder_supplier | code
 UNIQUE CONSTRAINT | UNIQ_850CA3EC6B804D7 | akeneo_onboarder_supplier_user | email_field
 UNIQUE CONSTRAINT | attribute_identifier_index | akeneo_reference_entity_attribute | code, reference_entity_identifier

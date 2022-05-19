@@ -85,7 +85,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
             `created_at` datetime NOT NULL,
             `last_logged_at` datetime DEFAULT NULL,
             PRIMARY KEY (`id`),
-            CONSTRAINT `UC_akeneo_onboarder_serenity_contributor_account_email` UNIQUE (`email`)
+            CONSTRAINT `UC_contributor_account_email` UNIQUE (`email`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
