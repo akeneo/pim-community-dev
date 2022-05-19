@@ -20,8 +20,6 @@ services:
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\CheckRequirementsCommand:
         arguments:
-            - '%pim_catalog.version.class%'
-            - '%kernel.environment%'
             - '%kernel.project_dir%'
         tags:
             - { name: console.command }

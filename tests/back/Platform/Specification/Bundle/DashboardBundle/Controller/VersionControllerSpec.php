@@ -5,7 +5,7 @@ namespace Specification\Akeneo\Platform\Bundle\DashboardBundle\Controller;
 
 
 use Akeneo\Platform\Bundle\DashboardBundle\Controller\VersionController;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;

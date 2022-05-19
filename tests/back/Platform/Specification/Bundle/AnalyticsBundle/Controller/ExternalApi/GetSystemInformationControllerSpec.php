@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ExternalApi;
 
 use Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ExternalApi\GetSystemInformationController;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
