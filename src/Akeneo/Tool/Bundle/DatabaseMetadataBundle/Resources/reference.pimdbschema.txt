@@ -355,7 +355,7 @@ akeneo_onboarder_serenity_contributor_account | email | NO | varchar(255) | UNI
 akeneo_onboarder_serenity_contributor_account | password | YES | varchar(255) |
 akeneo_onboarder_serenity_contributor_account | access_token | YES | varchar(255) |
 akeneo_onboarder_serenity_contributor_account | access_token_created_at | YES | datetime |
-akeneo_onboarder_serenity_contributor_account | created_at | YES | datetime |
+akeneo_onboarder_serenity_contributor_account | created_at | NO | datetime |
 akeneo_onboarder_serenity_contributor_account | last_logged_at | YES | datetime |
 akeneo_onboarder_supplier | id | NO | int | PRI
 akeneo_onboarder_supplier | code | NO | varchar(50) | UNI
