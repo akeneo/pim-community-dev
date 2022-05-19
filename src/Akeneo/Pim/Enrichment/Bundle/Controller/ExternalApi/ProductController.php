@@ -313,6 +313,66 @@ class ProductController
         return new JsonResponse($this->normalizeProductsList($products, $query));
     }
 
+    public function listByUuidAction(Request $request): JsonResponse
+    {
+        $this->denyAccessUnlessAclIsGranted('pim_api_product_list');
+
+        $query = new ListProductsQuery();
+
+        if ($request->query->has('attributes')) {
+            $query->attributeCodes = explode(',', $request->query->get('attributes'));
+        }
+        if ($request->query->has('locales')) {
+            $query->localeCodes = explode(',', $request->query->get('locales'));
+        }
+        if ($request->query->has('search')) {
+            $query->search = json_decode($request->query->get('search'), true);
+            if (!is_array($query->search)) {
+                throw new BadRequestHttpException('Search query parameter should be valid JSON.');
+            }
+        }
+
+        $user = $this->tokenStorage->getToken()->getUser();
+        Assert::isInstanceOf($user, UserInterface::class);
+
+        $query->channelCode = $request->query->get('scope', null);
+        $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
+        $query->paginationType = $request->query->get('pagination_type', PaginationTypes::OFFSET);
+        $query->searchLocaleCode = $request->query->get('search_locale', null);
+        $query->withCount = $request->query->get('with_count', 'false');
+        $query->page = $request->query->get('page', 1);
+        $query->searchChannelCode = $request->query->get('search_scope', null);
+        $query->searchAfter = $request->query->get('search_after', null);
+        $query->userId = $user->getId();
+        $query->withAttributeOptions = $request->query->get('with_attribute_options', 'false');
+        $query->withQualityScores = $request->query->getAlpha('with_quality_scores', 'false');
+        $query->withCompletenesses = $request->query->getAlpha('with_completenesses', 'false');
+
+        try {
+            $this->listProductsQueryValidator->validate($query);
+            $products = $this->listProductsQueryHandler->handle($query); // in try block as PQB is doing validation also
+        } catch (InvalidQueryException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        } catch (BadRequest400Exception $e) {
+            $message = json_decode($e->getMessage(), true);
+            if (
+                null !== $message && isset($message['error']['root_cause'][0]['type'])
+                && 'illegal_argument_exception' === $message['error']['root_cause'][0]['type']
+                && 0 === strpos($message['error']['root_cause'][0]['reason'], 'Result window is too large, from + size must be less than or equal to:')
+            ) {
+                throw new DocumentedHttpException(
+                    Documentation::URL_DOCUMENTATION . 'pagination.html#search-after-type',
+                    'You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead',
+                    $e
+                );
+            }
+
+            throw new ServerErrorResponseException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return new JsonResponse($this->normalizeProductsList($products, $query, 'uuid'));
+    }
+
     /**
      * @param Request $request
      * @param string $code
@@ -827,7 +887,11 @@ class ProductController
             array_key_exists('parent', $data) && null === $data['parent'];
     }
 
-    private function normalizeProductsList(ConnectorProductList $connectorProductList, ListProductsQuery $query): array
+    private function normalizeProductsList(
+        ConnectorProductList $connectorProductList,
+        ListProductsQuery $query,
+        string $itemIdentifierKey = 'identifier'
+    ): array
     {
         $queryParameters = [
             'with_count' => $query->withCount,
@@ -868,7 +932,7 @@ class ProductController
                 'query_parameters' => $queryParameters,
                 'list_route_name' => 'pim_api_product_list',
                 'item_route_name' => 'pim_api_product_get',
-                'item_identifier_key' => 'identifier',
+                'item_identifier_key' => $itemIdentifierKey,
             ];
 
             $count = $query->withCountAsBoolean() ? $connectorProductList->totalNumberOfProducts() : null;

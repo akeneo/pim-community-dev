@@ -49,6 +49,7 @@ final class ConnectorProductNormalizer
         $completenesses = $connectorProduct->completenesses();
 
         $normalizedProduct =  [
+            'uuid' => $connectorProduct->uuid()->toString(),
             'identifier' => $connectorProduct->identifier(),
             'enabled' => $connectorProduct->enabled(),
             'family' => $connectorProduct->familyCode(),

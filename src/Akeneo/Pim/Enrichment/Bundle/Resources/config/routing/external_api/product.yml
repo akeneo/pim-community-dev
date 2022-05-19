@@ -5,7 +5,7 @@ pim_api_product_list:
 
 pim_api_product_uuid_list:
     path: /products-uuid
-    defaults: { _controller: pim_api.controller.product:listAction, _format: json }
+    defaults: { _controller: pim_api.controller.product:listByUuidAction, _format: json }
     methods: [GET]
 
 pim_api_product_get:
