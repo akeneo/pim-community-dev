@@ -2,8 +2,6 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        bind:
-            $offsetPaginator: '@pim_api.pagination.offset_hal_paginator'
 
     _instanceof:
         Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface:
@@ -36,3 +34,6 @@ services:
 
     Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
         alias: "oro_security.security_facade"
+
+    Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
+        alias: "pim_api.pagination.offset_hal_paginator"

@@ -10,7 +10,7 @@ use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Akeneo\Catalogs\ServiceAPI\Query\GetCatalogsByOwnerIdQuery;
 use Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface;
-use Akeneo\Tool\Component\Api\Pagination\PaginatorInterface;
+use Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +33,7 @@ final class GetCatalogsAction
         private NormalizerInterface $normalizer,
         private TokenStorageInterface $tokenStorage,
         private SecurityFacadeInterface $security,
-        private PaginatorInterface $offsetPaginator,
+        private OffsetHalPaginator $offsetPaginator,
     ) {
     }
 
@@ -61,7 +61,7 @@ final class GetCatalogsAction
      */
     private function paginate(array $catalogs, int $page, int $limit): array
     {
-        $items = \array_map(fn (Catalog $catalog) => $this->normalizer->normalize($catalog, 'external_api'), $catalogs);
+        $items = $this->normalizer->normalize($catalogs, 'external_api');
 
         return $this->offsetPaginator->paginate($items, [
             'query_parameters' => [
