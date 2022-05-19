@@ -34,6 +34,6 @@ final class LocalStorageHydrator implements StorageHydratorInterface
 
     public function supports(array $normalizedStorage): bool
     {
-        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === 'local';
+        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === LocalStorage::TYPE;
     }
 }

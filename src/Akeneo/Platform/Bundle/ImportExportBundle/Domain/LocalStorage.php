@@ -15,6 +15,8 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain;
 
 final class LocalStorage implements StorageInterface
 {
+    public const TYPE = 'local';
+
     public function __construct(private string $filePath)
     {
     }
@@ -22,7 +24,7 @@ final class LocalStorage implements StorageInterface
     public function normalize(): array
     {
         return [
-            'type' => 'local',
+            'type' => self::TYPE,
             'file_path' => $this->filePath,
         ];
     }
