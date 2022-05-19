@@ -39,6 +39,7 @@
 - PIM-10427: Fix display of boolean value in variant axis
 - PIM-10435: Fix search_after requests with codes using uppercase accented characters
 - PIM-10443: Search for system product grid filters in System > Users > Additional is now case insensitive
+- PIM-10459: Fix product grid selection
 
 ## Improvements
 
