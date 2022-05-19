@@ -6,8 +6,8 @@ namespace Akeneo\Catalogs\Infrastructure\Command;
 
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
-use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
-use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppRemover;
+use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
+use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;

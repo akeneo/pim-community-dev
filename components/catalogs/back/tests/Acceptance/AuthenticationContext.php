@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Connectivity\Connection\PublicApi\Model\ConnectedAppWithValidToken;
-use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
+use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
+use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Behat\Behat\Context\Context;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;

@@ -53,7 +53,7 @@ services:
 
     Akeneo\Connectivity\Connection\Infrastructure\Service\RandomCodeGenerator: ~
 
-    Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory:
+    Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory:
         arguments:
             - '@fos_oauth_server.storage'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider'
@@ -65,6 +65,6 @@ services:
             - '@database_connection'
             - '@pim_user.repository.user'
 
-    Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppRemover:
+    Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover:
         arguments:
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\DeleteAppHandler'

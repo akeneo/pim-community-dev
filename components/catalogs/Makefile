@@ -20,6 +20,11 @@ catalogs-tests:
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
 
+
+.PHONY: catalogs-fixtures
+catalogs-fixtures:
+	APP_ENV=dev $(PHP_RUN) bin/console akeneo:catalogs:fixtures
+
 # TESTS BACK
 
 .PHONY: catalogs-lint-back
