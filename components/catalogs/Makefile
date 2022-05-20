@@ -9,7 +9,11 @@ ifneq ($(CI),true)
 	PSALM_ARGS += --show-info=true
 endif
 
-# TESTS
+# Main targets
+
+.PHONY: catalogs-fixtures
+catalogs-fixtures:
+	APP_ENV=dev $(PHP_RUN) bin/console akeneo:catalogs:fixtures
 
 .PHONY: catalogs-tests
 catalogs-tests:
@@ -20,10 +24,8 @@ catalogs-tests:
 	$(MAKE) catalogs-lint-front
 	$(MAKE) catalogs-unit-front
 
-
-.PHONY: catalogs-fixtures
-catalogs-fixtures:
-	APP_ENV=dev $(PHP_RUN) bin/console akeneo:catalogs:fixtures
+.PHONY: catalogs-cs-fix
+catalogs-cs-fix: catalogs-lint-front_fix catalogs-lint-back_fix
 
 # TESTS BACK
 
@@ -52,7 +54,7 @@ catalogs-coupling-back:
 
 .PHONY: catalogs-unit-back
 catalogs-unit-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
@@ -60,18 +62,18 @@ catalogs-unit-back:
 
 .PHONY: catalogs-integration-back
 catalogs-integration-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration
 
 .PHONY: catalogs-acceptance-back
 catalogs-acceptance-back:
-	APP_ENV=test ${PHP_RUN} vendor/bin/behat --config $(CATALOGS_PATH)/back/behat.yml
+	APP_ENV=test $(PHP_RUN) vendor/bin/behat --config $(CATALOGS_PATH)/back/behat.yml
 
 .PHONY: catalogs-coverage-back
 catalogs-coverage-back:
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Unit \
@@ -79,7 +81,7 @@ catalogs-coverage-back:
 		--coverage-php coverage/Catalogs/Back/Global/unit.cov \
 		--coverage-html coverage/Catalogs/Back/Unit/ \
 		--coverage-filter $(CATALOGS_PATH)/back/src/
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+	XDEBUG_MODE=coverage APP_ENV=test $(PHP_RUN) vendor/bin/phpunit \
 		--configuration $(CATALOGS_PATH)/back/ \
 		--bootstrap $(CATALOGS_BOOTSTRAP_PATH) \
 		--testsuite Catalogs_Integration \
@@ -91,7 +93,7 @@ catalogs-coverage-back:
 	# download phpcov binary
 	$(DOCKER_COMPOSE) run -u www-data -w /srv/pim/var --rm php sh -c "test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && php phpcov.phar --version"
 	# Merge code coverages
-	${PHP_RUN} -d memory_limit=-1 var/phpcov.phar merge \
+	$(PHP_RUN) -d memory_limit=-1 var/phpcov.phar merge \
 		--html coverage/Catalogs/Back/Global/ \
 		coverage/Catalogs/Back/Global/
 
