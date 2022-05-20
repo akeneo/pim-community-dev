@@ -9,16 +9,16 @@ set -euo pipefail
 function execute_step {
     local -r script_name="$1"
 
-    if ! gsutil ls "gs://mig-ge-to-srnt/${SOURCE_PFID}/steps/$script_name.txt" ; then
-      echo "$script_name step starting for PFID \"$SOURCE_PFID\""
+    if ! gsutil ls "gs://mig-ge-to-srnt/${SOURCE_PFID}/steps/${script_name}.txt" ; then
+      echo "$script_name step starting for PFID \"${SOURCE_PFID}\""
 
       "$SCRIPT_PATH/migrate/$script_name.sh"
-      date "+%Y%m%d%H%M%S" > "/tmp/$script_name.txt"
-      gsutil cp "/tmp/$script_name.txt" "gs://mig-ge-to-srnt/${SOURCE_PFID}/steps/$script_name.txt"
+      date "+%Y%m%d%H%M%S" > "/tmp/${script_name}.txt"
+      gsutil cp "/tmp/${script_name}.txt" "gs://mig-ge-to-srnt/${SOURCE_PFID}/steps/${script_name}.txt"
 
-      echo "$script_name step done for PFID \"$SOURCE_PFID\""
+      echo "${script_name} step done for PFID \"${SOURCE_PFID}\""
     else
-      echo "$script_name step skipped because already done for PFID \"$SOURCE_PFID\""
+      echo "${script_name} step skipped because already done for PFID \"${SOURCE_PFID}\""
     fi
 
 }
@@ -35,12 +35,12 @@ fi;
 
 SCRIPT_PATH=$(dirname "$(realpath -s "$0")")
 
-echo "Starting migration for PFID \"$SOURCE_PFID\""
+echo "Starting migration for PFID \"${SOURCE_PFID}\""
 
 execute_step backup_data_from_instance
 execute_step delete_instance
 execute_step recreate_instance_srnt_infra
 TARGET_PFID="${SOURCE_PFID}" execute_step restore_data
 
-echo "Migration done for PFID \"$SOURCE_PFID\""
+echo "Migration done for PFID \"${SOURCE_PFID}\""
 
