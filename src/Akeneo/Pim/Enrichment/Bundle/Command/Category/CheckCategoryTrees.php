@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Command\Category;
 
-
 use Akeneo\Tool\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
