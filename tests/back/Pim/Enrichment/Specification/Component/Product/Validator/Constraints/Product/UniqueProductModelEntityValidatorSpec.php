@@ -4,11 +4,11 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntityValidator;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -19,10 +19,10 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
 {
     function let(
         ExecutionContextInterface $context,
-        IdentifiableObjectRepositoryInterface $objectRepository,
+        FindId $findId,
         UniqueValuesSet $uniqueValuesSet
     ) {
-        $this->beConstructedWith($objectRepository, $uniqueValuesSet);
+        $this->beConstructedWith($findId, $uniqueValuesSet);
 
         $this->initialize($context);
     }
@@ -32,9 +32,9 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
         $this->shouldHaveType(UniqueProductModelEntityValidator::class);
     }
 
-    function it_adds_violation_to_the_context_if_a_product_model_already_exist_in_the_database(
-        $context,
-        $objectRepository,
+    function it_adds_violation_to_the_context_if_a_product_model_already_exists_in_the_database(
+        ExecutionContextInterface $context,
+        FindId $findId,
         UniqueValuesSet $uniqueValuesSet,
         ProductModelInterface $productModel,
         ProductModelInterface $productModelInDatabase,
@@ -43,22 +43,22 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
         $constraint = new UniqueProductModelEntity();
 
         $productModel->getCode()->willReturn('code');
-        $objectRepository->findOneByIdentifier('code')->willReturn($productModelInDatabase);
+        $findId->fromIdentifier('code')->willReturn('40');
         $uniqueValuesSet->addValue(Argument::any(), $productModel)->willReturn(true);
 
-        $productModelInDatabase->getId()->willReturn(40);
         $productModel->getId()->willReturn(64);
 
         $context->buildViolation('The same identifier is already set on another product model')
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->atPath('code')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->ShouldBeCalled();
+        $constraintViolationBuilder->atPath('code')->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate($productModel, $constraint)->shouldReturn(null);
+        $this->validate($productModel, $constraint);
     }
 
     function it_adds_violation_to_the_context_if_a_product_model_already_exist_in_the_batch(
-        $context,
+        ExecutionContextInterface $context,
         UniqueValuesSet $uniqueValuesSet,
         ProductModelInterface $productModel,
         ConstraintViolationBuilderInterface $constraintViolationBuilder
@@ -70,28 +70,29 @@ class UniqueProductModelEntityValidatorSpec extends ObjectBehavior
         $uniqueValuesSet->addValue(Argument::any(), $productModel)->willReturn(false);
 
         $context->buildViolation('The same identifier is already set on another product model')
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->atPath('code')->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->ShouldBeCalled();
+        $constraintViolationBuilder->atPath('code')->shouldBeCalled()->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate($productModel, $constraint)->shouldReturn(null);
+        $this->validate($productModel, $constraint);
     }
 
     function it_does_nothing_if_the_product_model_does_not_exist_in_database(
-        $context,
-        $objectRepository,
+        ExecutionContextInterface $context,
+        FindId $findId,
         UniqueValuesSet $uniqueValuesSet,
         ProductModelInterface $productModel
     ) {
         $constraint = new UniqueProductModelEntity();
 
         $productModel->getCode()->willReturn('code');
-        $objectRepository->findOneByIdentifier('code')->willReturn(null);
+        $findId->fromIdentifier('code')->willReturn(null);
         $uniqueValuesSet->addValue(Argument::any(), $productModel)->willReturn(true);
 
-        $context->buildViolation('The same identifier is already set on another product')->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($productModel, $constraint)->shouldReturn(null);
+        $this->validate($productModel, $constraint);
     }
 
     function it_throws_an_exception_if_the_excepted_entity_is_not_a_product_model(

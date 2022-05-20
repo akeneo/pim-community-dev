@@ -185,6 +185,11 @@ services:
         arguments:
             - '@database_connection'
 
+    Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\SqlFindProductIdentifier'
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.enrichment.category.query.category_codes_by_product_model_codes:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\ProductModel\GetCategoryCodesByProductModelCodes'
         arguments:
