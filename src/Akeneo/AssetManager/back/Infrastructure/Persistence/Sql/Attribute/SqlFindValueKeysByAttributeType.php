@@ -44,19 +44,31 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
-        $cacheKey = $this->getCacheKey($assetFamilyIdentifier, $attributeTypes);
-        if (!isset($this->cachedResult[$cacheKey])) {
-            $this->cachedResult[$cacheKey] = $this->fetch($assetFamilyIdentifier, $attributeTypes);
-        }
+        return $this->fetch($assetFamilyIdentifier, $attributeTypes);
 
-        return $this->cachedResult[$cacheKey];
+//        $cacheKey = $this->getCacheKey($assetFamilyIdentifier, $attributeTypes);
+//        if (!isset($this->cachedResult[$cacheKey])) {
+//            $this->cachedResult[$cacheKey] = $this->fetch($assetFamilyIdentifier, $attributeTypes);
+//        }
+//
+//        return $this->cachedResult[$cacheKey];
     }
 
     private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
         $attributes = $this->findAttributesByFamilyIdentifierAndTypes($assetFamilyIdentifier, $attributeTypes);
+
+
+        $startDate = microtime(true);
         $locales = $this->findLocales->findAllActivated();
+        $endDate = microtime(true);
+        dump('Locales: ' . $endDate - $startDate);
+
+
+        $startDate = microtime(true);
         $channels = $this->findChannels->findAll();
+        $endDate = microtime(true);
+        dump('Channels: ' . $endDate - $startDate);
 
         $valueKeysByAttributeType = [];
 
@@ -64,23 +76,23 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
             if ('1' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels)];
+                $valueKeysByAttributeType[] = $this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '1' === $attribute['value_per_channel']
                 && '0' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateScopableValueKeys($attribute['identifier'], $channels)];
+                $valueKeysByAttributeType[] = $this->generateScopableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '0' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisableValueKeys($attribute['identifier'], $locales)];
+                $valueKeysByAttributeType[] = $this->generateLocalisableValueKeys($attribute['identifier'], $locales);
             } else {
-                $valueKeysByAttributeType[] = $attribute['identifier'];
+                $valueKeysByAttributeType[] = [$attribute['identifier']];
             }
         }
 
-        return $valueKeysByAttributeType;
+        return array_merge(...$valueKeysByAttributeType);
     }
 
     private function findAttributesByFamilyIdentifierAndTypes(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
@@ -95,6 +107,7 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
             AND attribute.attribute_type IN (:types)
 SQL;
 
+        $startDate = microtime(true);
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
@@ -105,8 +118,11 @@ SQL;
                 'types' => Connection::PARAM_STR_ARRAY
             ]
         );
+        $result = $statement->fetchAllAssociative();
+        $endDate = microtime(true);
+        dump('Attributes: ' . $endDate - $startDate);
 
-        return $statement->fetchAllAssociative();
+        return $result;
     }
 
     /**
@@ -118,7 +134,7 @@ SQL;
 
         foreach($channels as $channel) {
             foreach($channel->getLocaleCodes() as $localeCode) {
-                $valueKeys[] = sprintf('%s_%s_%s', $attributeIdentifier, $channel->getCode(), $localeCode);
+                $valueKeys[] = $attributeIdentifier . '_' . $channel->getCode() . '_' . $localeCode;
             }
         }
 
@@ -131,7 +147,7 @@ SQL;
     private function generateScopableValueKeys(string $attributeIdentifier, array $channels): array
     {
         return array_map(
-            static fn (Channel $channel) => sprintf('%s_%s', $attributeIdentifier, $channel->getCode()),
+            static fn (Channel $channel) => $attributeIdentifier . '_' . $channel->getCode(),
             $channels
         );
     }
@@ -142,7 +158,7 @@ SQL;
     private function generateLocalisableValueKeys(string $attributeIdentifier, array $locales): array
     {
         return array_map(
-            static fn (Locale $locale) => sprintf('%s_%s', $attributeIdentifier, $locale->getCode()),
+            static fn (Locale $locale) => $attributeIdentifier . '_' . $locale->getCode(),
             $locales
         );
     }
