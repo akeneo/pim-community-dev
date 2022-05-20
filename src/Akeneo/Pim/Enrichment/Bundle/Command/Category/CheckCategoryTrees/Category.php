@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Pim\Enrichment\Bundle\Command\Category;
+namespace Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees;
 
 use Doctrine\DBAL\Connection;
 

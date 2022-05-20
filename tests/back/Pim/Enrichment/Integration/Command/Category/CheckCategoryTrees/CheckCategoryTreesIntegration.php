@@ -1,9 +1,7 @@
 <?php
 
-namespace AkeneoTest\Pim\Enrichment\Integration\Command\Category;
+namespace AkeneoTest\Pim\Enrichment\Integration\Command\Category\CheckCategoryTrees;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\Category\Category;
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;

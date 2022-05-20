@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command\Category;
+namespace Specification\Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees;
 
-use Akeneo\Pim\Enrichment\Bundle\Command\Category\Category;
+use Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\Category;
 use PhpSpec\ObjectBehavior;
 
 class CategorySpec extends ObjectBehavior
