@@ -1,1 +1,2 @@
-export {CatalogEdit} from './CatalogEdit'
+/* istanbul ignore file */
+export {CatalogEdit} from './CatalogEdit';

@@ -8,6 +8,7 @@ use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppRemover;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
@@ -62,18 +63,20 @@ class CatalogFixtureCommand extends Command
             ]
         );
 
+        /** @var UserInterface|null $user */
         $user = $this->userRepository->findOneBy(['username' => $connectedApp->getUsername()]);
+        \assert(null !== $user);
 
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store US',
-            $user->getId(),
+            (int) $user->getId(),
         ));
 
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store FR',
-            $user->getId(),
+            (int) $user->getId(),
         ));
 
         return self::SUCCESS;

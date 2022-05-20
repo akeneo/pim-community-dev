@@ -13,5 +13,5 @@ test('it renders without error', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('CatalogList')).toBeInTheDocument();
+    expect(screen.getByText('CatalogEdit')).toBeInTheDocument();
 });
