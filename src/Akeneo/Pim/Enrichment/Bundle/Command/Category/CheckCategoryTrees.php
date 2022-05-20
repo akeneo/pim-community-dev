@@ -116,7 +116,7 @@ class CheckCategoryTrees extends Command
             );
 
             if ($rootHasCorruptions && $inputOptionReorder) {
-                $output->writeln("UPDATING tree id={$root->getId()}!");
+                $output->writeln("UPDATING tree id={$root->getId()} code={$root->getCode()}!");
                 $this->doUpdate($fixedTree);
             }
         }
