@@ -4,5 +4,6 @@ services:
       - '@akeneo_batch.job.job_registry'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler'
       - '@feature_flags'
+      - '@event_dispatcher'
     tags:
       - { name: kernel.event_subscriber }
