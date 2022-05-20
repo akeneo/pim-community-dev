@@ -47,23 +47,23 @@ class Version_7_0_20220520114800_add_start_time_index_on_job_execution_Integrati
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->reExecuteMigration(self::MIGRATION_LABEL);
 
-        Assert::assertTrue($this->indexExists('start_time_idx'));
+        Assert::assertTrue($this->indexExists());
     }
 
     private function dropIndexIfExists(): void
     {
-        if ($this->indexExists('start_time_idx')) {
+        if ($this->indexExists()) {
             $this->connection->executeQuery('ALTER TABLE akeneo_batch_job_execution DROP INDEX start_time_idx;');
         }
 
-        Assert::assertEquals(false, $this->indexExists('start_time_idx'));
+        Assert::assertEquals(false, $this->indexExists());
     }
 
-    private function indexExists(string $indexName): bool
+    private function indexExists(): bool
     {
         $indexes = $this->connection->executeQuery('SHOW INDEX FROM akeneo_batch_job_execution')->fetchAllAssociative();
         $indexesIndexedByName = array_column($indexes, null, 'Key_name');
 
-        return isset($indexesIndexedByName[$indexName]);
+        return isset($indexesIndexedByName['start_time_idx']);
     }
 }
