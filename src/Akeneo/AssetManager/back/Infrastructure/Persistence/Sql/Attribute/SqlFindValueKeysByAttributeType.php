@@ -44,32 +44,19 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
-        return $this->fetch($assetFamilyIdentifier, $attributeTypes);
+        $cacheKey = $this->getCacheKey($assetFamilyIdentifier, $attributeTypes);
+        if (!isset($this->cachedResult[$cacheKey])) {
+            $this->cachedResult[$cacheKey] = $this->fetch($assetFamilyIdentifier, $attributeTypes);
+        }
 
-//        $cacheKey = $this->getCacheKey($assetFamilyIdentifier, $attributeTypes);
-//        if (!isset($this->cachedResult[$cacheKey])) {
-//            $this->cachedResult[$cacheKey] = $this->fetch($assetFamilyIdentifier, $attributeTypes);
-//        }
-//
-//        return $this->cachedResult[$cacheKey];
+        return $this->cachedResult[$cacheKey];
     }
 
     private function fetch(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
     {
         $attributes = $this->findAttributesByFamilyIdentifierAndTypes($assetFamilyIdentifier, $attributeTypes);
-
-
-        $startDate = microtime(true);
         $locales = $this->findLocales->findAllActivated();
-        $endDate = microtime(true);
-        dump('Locales: ' . $endDate - $startDate);
-
-
-        $startDate = microtime(true);
         $channels = $this->findChannels->findAll();
-        $endDate = microtime(true);
-        dump('Channels: ' . $endDate - $startDate);
-
         $valueKeysByAttributeType = [];
 
         foreach($attributes as $attribute) {
@@ -107,7 +94,6 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
             AND attribute.attribute_type IN (:types)
 SQL;
 
-        $startDate = microtime(true);
         $statement = $this->sqlConnection->executeQuery(
             $query,
             [
@@ -118,11 +104,8 @@ SQL;
                 'types' => Connection::PARAM_STR_ARRAY
             ]
         );
-        $result = $statement->fetchAllAssociative();
-        $endDate = microtime(true);
-        dump('Attributes: ' . $endDate - $startDate);
 
-        return $result;
+        return $statement->fetchAllAssociative();
     }
 
     /**
