@@ -29,18 +29,37 @@ class CheckCategoryTreesIntegration extends TestCase
         $this->createCategory(['code' => 'child2', 'parent' => 'parent']);
         $this->createCategory(['code' => 'child3', 'parent' => 'parent']);
 
+        // Disorder the category trees
         $this->updateOrder('parent', 1, 8);
         $this->updateOrder('child1', 3, 2);
         $this->updateOrder('child2', 4, 7);
         $this->updateOrder('child3', 6, 7);
 
+        // After reordering, the category trees should be:
+        // code, level, left, right
+        // parent, 0, 1, 8
+        // child1, 1, 2, 3
+        // child2, 1, 4, 5
+        // child3, 1, 6, 7
         $output = $this->runCheckCategoryTreesCommand();
 
-//        $category = $this->getCategory('child1');
-//
-//        dump($category);
+        $this->assertStringContainsString('code=parent is CORRUPTED', $output);
 
-        $this->assertStringContainsString('test', $output);
+        $child1 = $this->getCategory('child1');
+        $this->assertSame('2', $child1['lft']);
+        $this->assertSame('3', $child1['rgt']);
+
+        $child2 = $this->getCategory('child2');
+        $this->assertSame('4', $child2['lft']);
+        $this->assertSame('5', $child2['rgt']);
+
+        $child3 = $this->getCategory('child3');
+        $this->assertSame('6', $child3['lft']);
+        $this->assertSame('7', $child3['rgt']);
+
+        // Verify that the category tree is now sane
+        $output = $this->runCheckCategoryTreesCommand();
+        $this->assertStringContainsString('code=parent is SANE', $output);
     }
 
     private function runCheckCategoryTreesCommand(): string
@@ -67,7 +86,7 @@ SELECT id, parent_id, root, code, lvl, lft, rgt
 FROM pim_catalog_category
 WHERE code = :code
 SQL;
-        return $this->getConnection()->executeQuery($sql, ['code' => $code])->fetchAll(FetchMode::ASSOCIATIVE);
+        return $this->getConnection()->executeQuery($sql, ['code' => $code])->fetch(FetchMode::ASSOCIATIVE);
     }
 
     private function updateOrder(string $code, int $left, int $right): array
