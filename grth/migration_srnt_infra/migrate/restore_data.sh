@@ -40,5 +40,5 @@ kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- bin/console pim:
 kubectl exec -i --namespace ${TARGET_PFID} ${FPM_TARGET_POD} -- bin/console pim:product-model:index --all -n
 
 echo "Copy bucket"
-gsutil rm -r gs://${TARGET_PFID}
+gsutil -m rm -a "gs://${TARGET_PFID}/**"
 gsutil -q -m rsync -r gs://mig-ge-to-srnt/${SOURCE_PFID}/backup/bucket gs://${TARGET_PFID}
