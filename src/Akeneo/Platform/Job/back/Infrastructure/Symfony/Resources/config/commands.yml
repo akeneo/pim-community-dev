@@ -1,0 +1,6 @@
+services:
+    Akeneo\Platform\Job\Infrastructure\Symfony\Command\UpdateJobFieldsToBeNotNullCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'console.command' }
