@@ -15,10 +15,12 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use Doctrine\Persistence\ObjectManager;
+use Monolog\Logger;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Command\Command;
@@ -40,70 +42,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class BatchCommand extends Command
 {
     protected static $defaultName = 'akeneo:batch:job';
+    protected static $defaultDescription = '[Internal] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance';
 
     const EXIT_SUCCESS_CODE = 0;
     const EXIT_ERROR_CODE = 1;
     const EXIT_WARNING_CODE = 2;
 
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    private ManagerRegistry $doctrine;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var Notifier */
-    private $notifier;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var string */
-    private $jobInstanceClass;
-
-    /** @var string */
-    private $jobExecutionClass;
-
     public function __construct(
-        LoggerInterface $logger,
-        BatchLogHandler $batchLogHandler,
-        JobRepositoryInterface $jobRepository,
-        ManagerRegistry $doctrine,
-        ValidatorInterface $validator,
-        Notifier $notifier,
-        JobRegistry $jobRegistry,
-        JobParametersFactory $jobParametersFactory,
-        JobParametersValidator $jobParametersValidator,
-        string $jobInstanceClass,
-        string $jobExecutionClass
+        private Logger $logger,
+        private BatchLogHandler $batchLogHandler,
+        private JobRepositoryInterface $jobRepository,
+        private ManagerRegistry $doctrine,
+        private ValidatorInterface $validator,
+        private Notifier $notifier,
+        private JobRegistry $jobRegistry,
+        private JobParametersFactory $jobParametersFactory,
+        private JobParametersValidator $jobParametersValidator,
+        private string $jobInstanceClass,
+        private string $jobExecutionClass
     ) {
         parent::__construct();
-
-        $this->logger = $logger;
-        $this->batchLogHandler = $batchLogHandler;
-        $this->jobRepository = $jobRepository;
-        $this->doctrine = $doctrine;
-        $this->validator = $validator;
-        $this->notifier = $notifier;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobParametersFactory = $jobParametersFactory;
-        $this->jobParametersValidator = $jobParametersValidator;
-        $this->jobInstanceClass = $jobInstanceClass;
-        $this->jobExecutionClass = $jobExecutionClass;
     }
 
     /**
@@ -112,9 +70,6 @@ class BatchCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription(
-                '[DEPRECATED] Please use "akeneo:batch:publish-job-to-queue" to launch a registered job instance'
-            )
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
             ->addOption(
@@ -155,13 +110,6 @@ class BatchCommand extends Command
             $this->logger->pushHandler(new ConsoleHandler($output));
         }
 
-        $code = $input->getArgument('code');
-        $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $code]);
-
-        if (null === $jobInstance) {
-            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
-        }
-
         // Override mail notifier recipient email
         if ($email = $input->getOption('email')) {
             $errors = $this->validator->validate($email, new Assert\Email());
@@ -173,7 +121,6 @@ class BatchCommand extends Command
             $this->notifier->setRecipientEmail($email);
         }
 
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
         $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
@@ -184,18 +131,8 @@ class BatchCommand extends Command
             throw new \InvalidArgumentException('Username option cannot be specified when launching a job execution.');
         }
 
-        if (null === $executionId) {
-            $job = $this->jobRegistry->get($jobInstance->getJobName());
-            $jobParameters = $this->createJobParameters($job, $jobInstance, $input);
-            $this->validateJobParameters($job, $jobInstance, $jobParameters, $code);
-            $jobExecution = $job->getJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
-
-            $username = $input->getOption('username');
-            if (null !== $username) {
-                $jobExecution->setUser($username);
-                $job->getJobRepository()->updateJobExecution($jobExecution);
-            }
-        } else {
+        if (null !== $executionId) {
+            /** @var JobExecution $jobExecution */
             $jobExecution = $this->getJobManager()->getRepository($this->jobExecutionClass)->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
@@ -207,6 +144,24 @@ class BatchCommand extends Command
             }
             if (null === $jobExecution->getExecutionContext()) {
                 $jobExecution->setExecutionContext(new ExecutionContext());
+            }
+            $jobInstance = $jobExecution->getJobInstance();
+        } else {
+            $code = $input->getArgument('code');
+            $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $code]);
+            if (null === $jobInstance) {
+                throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
+            }
+
+            $job = $this->jobRegistry->get($jobInstance->getJobName());
+            $jobParameters = $this->createJobParameters($job, $jobInstance, $input);
+            $this->validateJobParameters($job, $jobInstance, $jobParameters, $code);
+            $jobExecution = $job->getJobRepository()->createJobExecution($job, $jobInstance, $jobParameters);
+
+            $username = $input->getOption('username');
+            if (null !== $username) {
+                $jobExecution->setUser($username);
+                $job->getJobRepository()->updateJobExecution($jobExecution);
             }
         }
 
@@ -286,7 +241,7 @@ class BatchCommand extends Command
      * @param array[]         $exceptions
      * @param boolean         $verbose
      */
-    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose)
+    protected function writeExceptions(OutputInterface $output, array $exceptions, ?bool $verbose)
     {
         foreach ($exceptions as $exception) {
             $output->write(
@@ -304,28 +259,16 @@ class BatchCommand extends Command
         }
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
     protected function getJobManager(): EntityManagerInterface
     {
         return $this->jobRepository->getJobManager();
     }
 
-    /**
-     * @return EntityManagerInterface
-     */
-    protected function getDefaultEntityManager(): EntityManagerInterface
+    protected function getDefaultEntityManager(): ObjectManager
     {
         return $this->doctrine->getManager();
     }
 
-    /**
-     * @param JobInstance    $jobInstance
-     * @param InputInterface $input
-     *
-     * @return JobParameters
-     */
     protected function createJobParameters(JobInterface $job, JobInstance $jobInstance, InputInterface $input): JobParameters
     {
         $rawParameters = $jobInstance->getRawParameters();
@@ -333,23 +276,18 @@ class BatchCommand extends Command
         $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
 
         $rawParameters = array_merge($rawParameters, $config);
-        $jobParameters = $this->jobParametersFactory->create($job, $rawParameters);
 
-        return $jobParameters;
+        return $this->jobParametersFactory->create($job, $rawParameters);
     }
 
     /**
-     * @param JobInstance   $jobInstance
-     * @param JobParameters $jobParameters
-     * @param string        $code
-     *
      * @throws \RuntimeException
      */
     protected function validateJobParameters(JobInterface $job, JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
-        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
+        $this->getDefaultEntityManager()->merge($jobInstance);
         $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
 
         if (count($errors) > 0) {
@@ -365,11 +303,6 @@ class BatchCommand extends Command
         }
     }
 
-    /**
-     * @param ConstraintViolationList $errors
-     *
-     * @return string
-     */
     private function getErrorMessages(ConstraintViolationList $errors): string
     {
         $errorsStr = '';
@@ -382,17 +315,13 @@ class BatchCommand extends Command
     }
 
     /**
-     * @param string $data
-     *
      * @throws \InvalidArgumentException
-     *
-     * @return array
      */
-    private function decodeConfiguration($data): array
+    private function decodeConfiguration(string $data): array
     {
-        $config = json_decode($data, true);
+        $config = \json_decode($data, true);
 
-        switch (json_last_error()) {
+        switch (\json_last_error()) {
             case JSON_ERROR_DEPTH:
                 $error = 'Maximum stack depth exceeded';
                 break;

@@ -51,3 +51,5 @@
 ## New features
 
 ## BC Breaks
+
+- BH-1159: Refactor BatchCommand to use execution ID without batch code
