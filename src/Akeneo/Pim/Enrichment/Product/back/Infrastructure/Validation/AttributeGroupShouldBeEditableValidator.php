@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -35,7 +36,7 @@ final class AttributeGroupShouldBeEditableValidator extends ConstraintValidator
             $this->context->buildViolation(
                 $constraint->message,
                 [ '{{ attributeCode }}' => $valueUserIntent->attributeCode()]
-            )->addViolation();
+            )->setCode((string) ViolationCode::PERMISSION)->addViolation();
         }
     }
 }

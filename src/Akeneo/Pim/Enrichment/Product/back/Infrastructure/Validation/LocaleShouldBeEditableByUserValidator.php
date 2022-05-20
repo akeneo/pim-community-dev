@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 use Akeneo\Channel\API\Query\IsLocaleEditable;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ValueUserIntent;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -34,6 +35,7 @@ final class LocaleShouldBeEditableByUserValidator extends ConstraintValidator
         if (!empty($localeCode) && !$this->isLocaleEditable->forUserId($localeCode, $userId)) {
             $this->context
                 ->buildViolation($constraint->message, ['{{ locale_code }}' => $localeCode])
+                ->setCode((string) ViolationCode::PERMISSION)
                 ->addViolation();
         }
     }
