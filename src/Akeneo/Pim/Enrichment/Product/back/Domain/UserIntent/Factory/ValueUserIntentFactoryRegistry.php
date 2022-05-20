@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -13,8 +14,15 @@ use Webmozart\Assert\Assert;
  */
 class ValueUserIntentFactoryRegistry implements UserIntentFactory
 {
-    private iterable $valueUserIntentFactories;
+    /**
+     * @var array<string, ValueUserIntentFactory>
+     */
+    private array $valueUserIntentFactoriesWithAttributeType;
 
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param iterable<ValueUserIntentFactory> $valueUserIntentFactories
+     */
     public function __construct(
         private AttributeRepositoryInterface $attributeRepository,
         iterable $valueUserIntentFactories
@@ -23,7 +31,7 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
             Assert::isInstanceOf($valueUserIntentFactory, ValueUserIntentFactory::class);
             $attributeTypes = $valueUserIntentFactory->getSupportedAttributeTypes();
             foreach ($attributeTypes as $attributeType) {
-                $this->valueUserIntentFactories[$attributeType] = $valueUserIntentFactory;
+                $this->valueUserIntentFactoriesWithAttributeType[$attributeType] = $valueUserIntentFactory;
             }
         }
     }
@@ -36,17 +44,18 @@ class ValueUserIntentFactoryRegistry implements UserIntentFactory
     /**
      * @inerhitDoc
      */
-    public function create(string $fieldName, mixed $data): array
+    public function create(string $fieldName, mixed $data): UserIntent | array
     {
         Assert::isArray($data);
 
         $attributeTypesByCode = $this->attributeRepository->getAttributeTypeByCodes(\array_keys($data));
         $valueUserIntents = [];
         foreach ($data as $attributeCode => $values) {
-            // TODO: check what we do if null (throw exception)
             $attributeType = $attributeTypesByCode[$attributeCode] ?? null;
-            // TODO: check what we do if null (throw exception)
-            $factory = $this->valueUserIntentFactories[$attributeType] ?? null;
+            $factory = $this->valueUserIntentFactoriesWithAttributeType[$attributeType] ?? null;
+            if (null === $factory) {
+                throw new \InvalidArgumentException('Not implemented');
+            }
             foreach ($values as $value) {
                 $valueUserIntents[] = $factory->create($attributeType, $attributeCode, $value);
             }

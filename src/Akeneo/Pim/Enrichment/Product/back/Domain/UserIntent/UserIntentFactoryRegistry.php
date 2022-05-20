@@ -14,8 +14,15 @@ use Webmozart\Assert\Assert;
  */
 class UserIntentFactoryRegistry
 {
-    private iterable $userIntentFactories;
+    /**
+     * @var array<string, UserIntentFactory>
+     */
+    private array $userIntentFactoriesWithFieldName;
 
+    /**
+     * @param iterable<UserIntentFactory> $userIntentFactories
+     * @param string[] $ignoredFieldNames
+     */
     public function __construct(iterable $userIntentFactories, private array $ignoredFieldNames)
     {
         Assert::allString($ignoredFieldNames);
@@ -24,14 +31,19 @@ class UserIntentFactoryRegistry
             Assert::isInstanceOf($userIntentFactory, UserIntentFactory::class);
             $fieldNames = $userIntentFactory->getSupportedFieldNames();
             foreach ($fieldNames as $fieldName) {
-                $this->userIntentFactories[$fieldName] = $userIntentFactory;
+                $this->userIntentFactoriesWithFieldName[$fieldName] = $userIntentFactory;
             }
         }
     }
 
+    /**
+     * @param string $fieldName
+     * @param mixed $data
+     * @return UserIntent|UserIntent[]|null
+     */
     public function fromStandardFormatField(string $fieldName, mixed $data): UserIntent | array | null
     {
-        $factory = $this->userIntentFactories[$fieldName] ?? null;
+        $factory = $this->userIntentFactoriesWithFieldName[$fieldName] ?? null;
         if (null === $factory && \in_array($fieldName, $this->ignoredFieldNames)) {
             return null;
         }

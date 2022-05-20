@@ -7,6 +7,7 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\UserIntent\Factory;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedGroups;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProductModels;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\ReplaceAssociatedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 /**
@@ -23,17 +24,9 @@ class AssociationsUserIntentFactory implements UserIntentFactory
     }
 
     /**
-     * @param string $fieldName
-     * @param mixed $data
-     *
-     * example of $data
-     * ['PACK' => [
-    'groups' => [],
-    'product_models' => [],
-    'products' => [],
-    ],]
+     * @inerhitDoc
      */
-    public function create(string $fieldName, mixed $data): array
+    public function create(string $fieldName, mixed $data): UserIntent | array
     {
         if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
