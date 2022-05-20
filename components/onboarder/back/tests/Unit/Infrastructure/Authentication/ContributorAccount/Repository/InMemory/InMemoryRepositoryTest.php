@@ -24,7 +24,7 @@ final class InMemoryRepositoryTest extends TestCase
     }
 
     /** @test */
-    public function itReturnNullWhenContributorDoesNotExist(): void
+    public function itReturnsNullWhenContributorDoesNotExists(): void
     {
         $contributorAccountRepository = new InMemoryRepository();
 
