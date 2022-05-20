@@ -36,7 +36,7 @@ class DateValueUserIntentFactory implements ValueUserIntentFactory
         if (!is_string($data['data'])) {
             throw InvalidPropertyTypeException::stringExpected($attributeCode, static::class, $data['data']);
         }
-        if (!preg_match(static::PATTERN, $data['data'], $matches)) {
+        if (!preg_match(self::PATTERN, $data['data'], $matches)) {
             throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);
         }
         if (!\checkdate((int) $matches['month'], (int) $matches['day'], (int) $matches['year'])) {
@@ -44,11 +44,11 @@ class DateValueUserIntentFactory implements ValueUserIntentFactory
         }
 
         $formattedDate = \sprintf('%d-%d-%d', $matches['year'], $matches['month'] , $matches['day']);
-        return new SetDateValue(
-            $attributeCode,
-            $data['scope'],
-            $data['locale'],
-            \DateTimeImmutable::createFromFormat('Y-m-d', $formattedDate)
-        );
+        $dateTimeValue = \DateTimeImmutable::createFromFormat('Y-m-d', $formattedDate);
+        if (false === $dateTimeValue) {
+            throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);
+        }
+
+        return new SetDateValue($attributeCode, $data['scope'], $data['locale'], $dateTimeValue);
     }
 }

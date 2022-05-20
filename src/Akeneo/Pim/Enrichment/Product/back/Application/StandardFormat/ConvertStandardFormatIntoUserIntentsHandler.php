@@ -40,25 +40,4 @@ class ConvertStandardFormatIntoUserIntentsHandler
 
         return \array_filter($userIntents);
     }
-
-    private function isDataEmpty(mixed $data, string $attributeType): bool
-    {
-        if (null === $data
-            || [] === $data
-            || '' === $data
-            || [''] === $data
-            || [null] === $data) {
-            return true;
-        }
-
-        if ($attributeType === AttributeTypes::METRIC && (null === $data['amount']
-        || [] === $data['amount']
-        || '' === $data['amount']
-        || [''] === $data['amount']
-        || [null] === $data['amount'])) {
-            return true;
-        }
-
-        return false;
-    }
 }
