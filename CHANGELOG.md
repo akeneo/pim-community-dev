@@ -40,6 +40,7 @@
 - PIM-10435: Fix search_after requests with codes using uppercase accented characters
 - PIM-10443: Search for system product grid filters in System > Users > Additional is now case insensitive
 - PIM-10459: Fix product grid selection
+- PIM-10451: Add migration to add an index on start_time on the job_execution table
 
 ## Improvements
 
