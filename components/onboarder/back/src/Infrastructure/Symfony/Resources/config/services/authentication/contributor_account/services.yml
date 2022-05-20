@@ -5,6 +5,11 @@ services:
       - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
       - '@event_dispatcher'
 
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Infrastructure\Mailer\SendSwiftmailerEmail'
+      - '@router'
+
   #Repositories
   Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
     class: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
@@ -17,3 +22,13 @@ services:
       - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
     tags:
       - 'kernel.event_subscriber'
+
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+    tags:
+      - 'kernel.event_subscriber'
+
+  # Controllers
+  Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+    public: true
