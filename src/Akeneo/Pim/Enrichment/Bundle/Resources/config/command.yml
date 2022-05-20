@@ -46,9 +46,8 @@ services:
         tags:
             - { name: console.command }
 
-    Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees:
+    Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\CheckCategoryTrees:
         arguments:
             - '@database_connection'
-            - '@pim_catalog.repository.category'
         tags:
             - { name: console.command }
