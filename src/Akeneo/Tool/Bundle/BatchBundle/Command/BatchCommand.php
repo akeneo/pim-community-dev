@@ -146,6 +146,7 @@ class BatchCommand extends Command
                 $jobExecution->setExecutionContext(new ExecutionContext());
             }
             $jobInstance = $jobExecution->getJobInstance();
+            $job = $this->jobRegistry->get($jobInstance->getJobName());
         } else {
             $code = $input->getArgument('code');
             $jobInstance = $this->getJobManager()->getRepository($this->jobInstanceClass)->findOneBy(['code' => $code]);
