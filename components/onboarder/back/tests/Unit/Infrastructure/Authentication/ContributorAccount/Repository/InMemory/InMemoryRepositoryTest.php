@@ -11,14 +11,25 @@ use PHPUnit\Framework\TestCase;
 final class InMemoryRepositoryTest extends TestCase
 {
     /** @test */
-    public function itCreatesAndFindsAContributorAccount(): void
+    public function itSavesAndFindsAContributorAccount(): void
+    {
+        $contributorAccountRepository = new InMemoryRepository();
+
+        $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
+        $contributorAccountRepository->save(ContributorAccount::fromEmail('contributor@example.com'));
+
+        $contributorAccount = $contributorAccountRepository->findByEmail('momoss@example.com');
+
+        $this->assertSame($contributorAccount->email(), 'momoss@example.com');
+    }
+
+    /** @test */
+    public function itReturnNullWhenContributorDoesNotExist(): void
     {
         $contributorAccountRepository = new InMemoryRepository();
 
         $contributorAccountRepository->save(ContributorAccount::fromEmail('momoss@example.com'));
 
-        $contributorAccount = $contributorAccountRepository->findByEmail('momoss@example.com');
-
-        $this->assertSame($contributorAccount->email(), 'momoss@example.com');
+        $this->assertNull($contributorAccountRepository->findByEmail('yolo@example.com'));
     }
 }
