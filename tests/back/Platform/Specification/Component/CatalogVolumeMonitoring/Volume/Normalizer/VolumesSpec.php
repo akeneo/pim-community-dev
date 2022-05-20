@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\AverageMaxVolumesNormalizer;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer\CountVolumeNormalizer;
@@ -18,16 +19,22 @@ class VolumesSpec extends ObjectBehavior
     function let(
         CountVolumeNormalizer $countVolumeNormalizer,
         AverageMaxVolumesNormalizer $averageVolumeNormalizer,
+        FeatureFlags $featureFlags,
         CountQuery $countQuery1,
         CountQuery $countQuery2,
+        CountQuery $countQuery3,
         AverageMaxQuery $averageMaxQuery
     ) {
         $this->beConstructedWith(
             $countVolumeNormalizer,
             $averageVolumeNormalizer,
-            [$countQuery1, $countQuery2],
-            [$averageMaxQuery]
-        );
+            $featureFlags
+       );
+
+        $this->addCountVolumeQuery($countQuery1, null);
+        $this->addCountVolumeQuery($countQuery2, 'asset_manager');
+        $this->addCountVolumeQuery($countQuery2, 'product_rules');
+        $this->addAverageMaxVolumeQuery($averageMaxQuery, 'reference_entity');
     }
 
     function it_is_initializable()
@@ -35,7 +42,7 @@ class VolumesSpec extends ObjectBehavior
         $this->shouldHaveType(Volumes::class);
     }
 
-    function it_normalizes_volumes(
+    function it_normalizes_volumes_of_enabled_features(
         $countVolumeNormalizer,
         $averageVolumeNormalizer,
         $countQuery1,
@@ -43,8 +50,13 @@ class VolumesSpec extends ObjectBehavior
         $averageMaxQuery,
         CountVolume $countVolume1,
         CountVolume $countVolume2,
-        AverageMaxVolumes $averageMaxVolumes
+        AverageMaxVolumes $averageMaxVolumes,
+        FeatureFlags $featureFlags
     ) {
+        $featureFlags->isEnabled('asset_manager')->willReturn(true);
+        $featureFlags->isEnabled('product_rules')->willReturn(false);
+        $featureFlags->isEnabled('reference_entity')->willReturn(true);
+
         $countQuery1->fetch()->willReturn($countVolume1);
         $countQuery2->fetch()->willReturn($countVolume2);
         $averageMaxQuery->fetch()->willReturn($averageMaxVolumes);
@@ -85,4 +97,5 @@ class VolumesSpec extends ObjectBehavior
             ],
         ]);
     }
+
 }
