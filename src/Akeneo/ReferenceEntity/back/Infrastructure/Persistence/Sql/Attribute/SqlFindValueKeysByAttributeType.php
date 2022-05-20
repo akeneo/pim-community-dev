@@ -64,23 +64,23 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
             if ('1' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels)];
+                $valueKeysByAttributeType[] = $this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '1' === $attribute['value_per_channel']
                 && '0' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateScopableValueKeys($attribute['identifier'], $channels)];
+                $valueKeysByAttributeType[] = $this->generateScopableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '0' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType = [...$valueKeysByAttributeType, ...$this->generateLocalisableValueKeys($attribute['identifier'], $locales)];
+                $valueKeysByAttributeType[] = $this->generateLocalisableValueKeys($attribute['identifier'], $locales);
             } else {
-                $valueKeysByAttributeType[] = $attribute['identifier'];
+                $valueKeysByAttributeType[] = [$attribute['identifier']];
             }
         }
 
-        return $valueKeysByAttributeType;
+        return array_merge(...$valueKeysByAttributeType);
     }
 
     private function findAttributesByFamilyIdentifierAndTypes(ReferenceEntityIdentifier $referenceEntityIdentifier, array $attributeTypes): array

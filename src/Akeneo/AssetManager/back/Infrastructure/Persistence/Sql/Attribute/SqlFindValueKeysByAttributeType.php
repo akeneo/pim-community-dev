@@ -57,6 +57,7 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
         $attributes = $this->findAttributesByFamilyIdentifierAndTypes($assetFamilyIdentifier, $attributeTypes);
         $locales = $this->findLocales->findAllActivated();
         $channels = $this->findChannels->findAll();
+
         $valueKeysByAttributeType = [];
 
         foreach($attributes as $attribute) {
