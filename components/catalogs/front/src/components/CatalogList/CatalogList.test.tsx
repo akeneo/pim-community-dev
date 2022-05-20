@@ -2,16 +2,16 @@ import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {Dummy} from './Dummy';
+import {CatalogList} from './CatalogList';
 
-jest.unmock('./Dummy');
+jest.unmock('./CatalogList');
 
-test('it renders section without error', () => {
+test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <Dummy label='foo' />
+            <CatalogList />
         </ThemeProvider>
     );
 
-    expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('CatalogList')).toBeInTheDocument();
 });

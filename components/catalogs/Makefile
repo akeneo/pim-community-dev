@@ -100,9 +100,6 @@ catalogs-coverage-back:
 .PHONY: catalogs-lint-front
 catalogs-lint-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/product-selection-builder prettier --check
-		yarn workspace @akeneo-pim-community/product-selection-builder eslint
-		yarn workspace @akeneo-pim-community/product-selection-builder tsc --noEmit --strict
 		yarn workspace @akeneo-pim-community/catalogs prettier --check
 		yarn workspace @akeneo-pim-community/catalogs eslint
 		yarn workspace @akeneo-pim-community/catalogs tsc --noEmit --strict
@@ -111,7 +108,6 @@ catalogs-lint-front:
 .PHONY: catalogs-unit-front
 catalogs-unit-front:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/product-selection-builder jest --ci --coverage
 		yarn workspace @akeneo-pim-community/catalogs jest --ci --coverage
 	@<<- EOF
 
@@ -120,8 +116,6 @@ catalogs-unit-front:
 .PHONY: catalogs-lint-front_fix
 catalogs-lint-front_fix:
 	cat <<- EOF | docker-compose run -u node --rm -T node sh
-		yarn workspace @akeneo-pim-community/product-selection-builder eslint --fix
-		yarn workspace @akeneo-pim-community/product-selection-builder prettier --write
 		yarn workspace @akeneo-pim-community/catalogs eslint --fix
 		yarn workspace @akeneo-pim-community/catalogs prettier --write
 	@<<- EOF

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
-import {CatalogList} from './component/CatalogList';
-import {CatalogEdit} from './component/CatalogEdit';
+import {CatalogList} from './components/CatalogList';
+import {CatalogEdit} from './components/CatalogEdit';
 import {pimTheme} from 'akeneo-design-system';
 
 ReactDOM.render(

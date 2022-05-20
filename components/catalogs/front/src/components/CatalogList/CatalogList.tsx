@@ -1,13 +1,12 @@
 import React, {FC, PropsWithChildren} from 'react';
-import {Dummy} from './Dummy';
+import {Badge} from 'akeneo-design-system';
 
 type Props = {};
 
 const CatalogList: FC<PropsWithChildren<Props>> = () => {
     return (
         <>
-            <div>CatalogList</div>
-            <Dummy label="foo"/>
+            <Badge level='primary'>CatalogList</Badge>
         </>
     );
 };

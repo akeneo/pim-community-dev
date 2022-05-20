@@ -4,7 +4,12 @@
   {
     "tsBuildInfoFile": "tsconfig.build.tsbuildinfo",
     "module": "commonjs",
-    "noEmit": false,
+    "noEmit": false
   },
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx", "**/__mocks__/*", "tests/**"]
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "**/__mocks__/*",
+    "tests/**"
+  ]
 }
