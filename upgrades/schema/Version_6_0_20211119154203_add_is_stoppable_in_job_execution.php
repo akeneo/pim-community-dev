@@ -142,7 +142,7 @@ final class Version_6_0_20211119154203_add_is_stoppable_in_job_execution extends
             'is_stoppable column already exists in akeneo_batch_job_execution'
         );
 
-        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_stoppable TINYINT(1) DEFAULT 0");
+        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_stoppable TINYINT(1) DEFAULT 0 NOT NULL");
         $this->addSql("UPDATE akeneo_batch_job_execution SET is_stoppable = 1 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('"
             . implode("', '", self::STOPPABLE_JOB) . "'))");
     }

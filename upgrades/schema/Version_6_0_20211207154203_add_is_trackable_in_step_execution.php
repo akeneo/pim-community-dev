@@ -16,7 +16,7 @@ final class Version_6_0_20211207154203_add_is_trackable_in_step_execution extend
             'is_trackable column already exists in akeneo_batch_step_execution'
         );
 
-        $this->addSql('ALTER TABLE akeneo_batch_step_execution ADD is_trackable TINYINT(1) DEFAULT 0');
+        $this->addSql('ALTER TABLE akeneo_batch_step_execution ADD is_trackable TINYINT(1) DEFAULT 0 NOT NULL');
     }
 
     public function down(Schema $schema): void

@@ -29,7 +29,7 @@ final class Version_6_0_20211124154203_add_is_visible_in_job_execution extends A
             'is_visible column already exists in akeneo_batch_job_execution'
         );
 
-        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_visible TINYINT(1) DEFAULT 1");
+        $this->addSql("ALTER TABLE akeneo_batch_job_execution ADD is_visible TINYINT(1) DEFAULT 1 NOT NULL");
         $this->addSql("UPDATE akeneo_batch_job_execution SET is_visible = 0 WHERE job_instance_id IN (SELECT id FROM akeneo_batch_job_instance WHERE code IN ('"
             . implode("', '", self::NON_VISIBLE_JOBS) . "'))");
     }
