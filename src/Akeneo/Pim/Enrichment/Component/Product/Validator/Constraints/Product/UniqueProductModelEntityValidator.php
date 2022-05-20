@@ -2,12 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Query\FindId;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -21,18 +20,10 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UniqueProductModelEntityValidator extends ConstraintValidator
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $productModelRepository;
-
-    /** @var UniqueValuesSet */
-    private $uniqueValuesSet;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        UniqueValuesSet $uniqueValuesSet
+        private FindId $findId,
+        private UniqueValuesSet $uniqueValuesSet
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->uniqueValuesSet = $uniqueValuesSet;
     }
 
     /**
@@ -48,6 +39,10 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ProductModelInterface::class);
         }
 
+        if (null === $entity->getCode()) {
+            return;
+        }
+
         $identifierValue = $this->getIdentifierValue($entity);
         if (false === $this->uniqueValuesSet->addValue($identifierValue, $entity)) {
             $this->context->buildViolation($constraint->message)
@@ -60,7 +55,8 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
         /**
          * Then you check if it has not already been saved in the database
          */
-        if (null === $entityInDatabase = $this->productModelRepository->findOneByIdentifier($entity->getCode())) {
+        $idFromDatabase = $this->findId->fromIdentifier($entity->getCode());
+        if (null === $idFromDatabase) {
             return;
         }
 
@@ -68,7 +64,7 @@ class UniqueProductModelEntityValidator extends ConstraintValidator
          * We don't want to validate a product code if we update a product model because we have already validated the
          * product code during the creation
          */
-        if ($entity->getId() !== $entityInDatabase->getId()) {
+        if ((string) $entity->getId() !== $idFromDatabase) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('code')
                 ->addViolation();
