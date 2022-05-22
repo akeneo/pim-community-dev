@@ -13,10 +13,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
 {
-    public function __construct()
-    {
-    }
-
     public function validate($command, Constraint $constraint)
     {
         if (empty($command->{$constraint->privateKeyPropertyName}) || empty($command->{$constraint->certificatePropertyName})) {
