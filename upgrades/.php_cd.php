@@ -27,11 +27,11 @@ $rules = [
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionCommand',
             'Akeneo\Connectivity\Connection\Application\Settings\Command\CreateConnectionHandler',
-            'Akeneo\Connectivity\Connection\Domain\Apps\DTO\AsymmetricKeys',
             'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveAsymmetricKeysQuery',
+            'Akeneo\Connectivity\Connection\Infrastructure\Apps\AsymmetricKeysGenerator',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer',
             'Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer',
