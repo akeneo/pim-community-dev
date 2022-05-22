@@ -1,15 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation;
 
-use phpseclib\Crypt\RSA;
-use phpseclib\File\X509;
+use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Crypt\RSA;
+use phpseclib3\Exception\NoKeyLoadedException;
+use phpseclib3\File\X509;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
 {
+    public function __construct(private string $openSSLConfigPath)
+    {
+    }
+
     public function validate($command, Constraint $constraint)
     {
         if (empty($command->{$constraint->privateKeyPropertyName}) || empty($command->{$constraint->certificatePropertyName})) {
@@ -30,11 +37,21 @@ class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 ZIGGY;
 
-        $rsa = new RSA();
-        $x509 = new X509();
-        $rsa->loadKey($command->{$constraint->privateKeyPropertyName});
+        RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
+        try {
+            $rsa = PublicKeyLoader::load($command->{$constraint->privateKeyPropertyName});
+        } catch (NoKeyLoadedException $exception) {
+            $this->context
+                ->buildViolation($exception->getMessage())
+                ->atPath($constraint->privateKeyPropertyName)
+                ->addViolation();
+
+            return;
+        }
         $signedData = $rsa->sign($data);
 
+        $x509 = new X509();
+        $x509->setPublicKey($rsa->getPublicKey());
         $x509->loadX509($command->{$constraint->certificatePropertyName});
         $publicKey = $x509->getPublicKey();
 

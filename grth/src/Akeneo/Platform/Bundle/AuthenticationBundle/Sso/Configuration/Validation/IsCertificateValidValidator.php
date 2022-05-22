@@ -12,18 +12,9 @@
 namespace Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation;
 
 use Akeneo\Platform\Component\Authentication\Sso\Configuration\Application\CreateOrUpdateConfiguration;
-use phpseclib\File\X509;
+use phpseclib3\File\X509;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2022 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 /**
  * Validates that X509 certificates are well formatted and are not expired.
@@ -70,7 +61,7 @@ final class IsCertificateValidValidator extends ConstraintValidator
         string     $certificate,
         Constraint $constraint,
         bool       $doValidateDate
-    ) : void {
+    ): void {
         if (empty($certificate)) {
             return;
         }

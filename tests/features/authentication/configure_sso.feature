@@ -57,7 +57,6 @@ Feature: Configure the SSO
   Scenario: Reject a configuration with private certificate not matching the public certificate
     When I try to save a configuration with invalid certificate and private key pair
     Then I should have the following validation errors:
-      | path                       | message                                                  |
-      | serviceProviderCertificate | Service Provider certificate and private key must match. |
-      | serviceProviderPrivateKey  | Service Provider certificate and private key must match. |
+      | path                       | message            |
+      | serviceProviderPrivateKey  | Unable to read key |
 

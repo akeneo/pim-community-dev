@@ -84,3 +84,9 @@ services:
     Akeneo\Platform\Bundle\AuthenticationBundle\Sso\SamlACSErrorListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    Akeneo\Platform\Bundle\AuthenticationBundle\Sso\Configuration\Validation\MatchingCertificateAndPrivateKeyValidator:
+        arguments:
+            - '%openssl_config_path%'
+        tags:
+            - { name: validator.constraint_validator }
