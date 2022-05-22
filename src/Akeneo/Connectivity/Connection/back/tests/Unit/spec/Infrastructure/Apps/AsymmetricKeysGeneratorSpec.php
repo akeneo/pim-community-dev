@@ -13,6 +13,11 @@ use PhpSpec\ObjectBehavior;
  */
 class AsymmetricKeysGeneratorSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith('/srv/pim/config/openssl.cnf');
+    }
+
     public function it_is_an_asymmetric_keys_generator(): void
     {
         $this->shouldHaveType(AsymmetricKeysGenerator::class);
