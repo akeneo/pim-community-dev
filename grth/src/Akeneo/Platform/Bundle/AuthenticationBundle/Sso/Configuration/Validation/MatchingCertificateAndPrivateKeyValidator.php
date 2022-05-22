@@ -13,7 +13,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
 {
-    public function __construct(private string $openSSLConfigPath)
+    public function __construct()
     {
     }
 
@@ -37,7 +37,6 @@ class MatchingCertificateAndPrivateKeyValidator extends ConstraintValidator
  '----------------'  '----------------'  '----------------'  '----------------'  '----------------'
 ZIGGY;
 
-        RSA::setOpenSSLConfigPath($this->openSSLConfigPath);
         try {
             $rsa = PublicKeyLoader::load($command->{$constraint->privateKeyPropertyName});
         } catch (NoKeyLoadedException $exception) {
