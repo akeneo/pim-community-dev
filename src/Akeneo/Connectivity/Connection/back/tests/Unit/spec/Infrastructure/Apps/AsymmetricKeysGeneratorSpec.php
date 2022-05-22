@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps;
@@ -15,7 +16,7 @@ class AsymmetricKeysGeneratorSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('/srv/pim/config/openssl.cnf');
+        $this->beConstructedWith(__DIR__ . '/openssl.cnf');
     }
 
     public function it_is_an_asymmetric_keys_generator(): void
