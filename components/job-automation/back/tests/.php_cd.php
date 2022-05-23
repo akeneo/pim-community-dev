@@ -21,9 +21,28 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
+            'Webmozart\Assert\Assert',
+            'Akeneo\Platform\JobAutomation\Domain',
+        ],
+    )->in('Akeneo\Platform\JobAutomation\Application'),
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model',
+        ],
+    )->in('Akeneo\Platform\JobAutomation\Domain'),
+    $builder->only(
+        [
             'Symfony\Component',
             'Symfony\Contracts',
             'Akeneo\Tool\Component\Batch\Job',
+
+            'Akeneo\Platform\Bundle\ImportExportBundle\Domain',
+            'Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure',
+            'Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage',
+
+            'League\Flysystem\Filesystem',
+            'League\Flysystem\PhpseclibV2',
         ],
     )->in('Akeneo\Platform\JobAutomation\Infrastructure'),
 ];
