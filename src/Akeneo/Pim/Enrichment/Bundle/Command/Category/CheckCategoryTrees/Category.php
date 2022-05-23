@@ -36,9 +36,9 @@ class Category
         $this->parentId = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
         $this->rootId = $dbModel['root'] === null ? null : (int)$dbModel['root'];
 
+        $this->lvl = (int)$dbModel['lvl'];
         $this->lft = (int)$dbModel['lft'];
         $this->rgt = (int)$dbModel['rgt'];
-        $this->lvl = (int)$dbModel['lvl'];
 
         $this->isLinked = false;
         $this->parent = null;
@@ -120,7 +120,7 @@ class Category
         return $this->children[$index];
     }
 
-    public function link(CategoriesPool $pool)
+    public function link(CategoriesPool $pool): void
     {
         if ($this->isLinked) {
             return;
