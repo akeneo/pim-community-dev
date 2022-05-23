@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Queue;
@@ -6,8 +7,8 @@ namespace Akeneo\Tool\Bundle\BatchQueueBundle\tests\integration\Queue;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
-use Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
@@ -65,13 +66,14 @@ class ConsumeJobMessageIntegration extends TestCase
 
         $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground();
 
-        $jobExecutionProcessPid = $this->getJobExecutionProcessPid($daemonProcess->getPid());
+        $watchdogProcessPid = $this->getSubprocessPid($daemonProcess->getPid());
+        $batchCommandPid = $this->getSubprocessPid($watchdogProcessPid);
 
         sleep(5);
 
-        $killJobExecution = new Process(['kill', '-9', $jobExecutionProcessPid]);
+        $killJobExecution = new Process(['kill', '-9', $batchCommandPid]);
         $killJobExecution->run();
-        sleep(JobExecutionMessageHandler::HEALTH_CHECK_INTERVAL + 5);
+        sleep(JobExecutionWatchdogCommand::HEALTH_CHECK_INTERVAL + 5);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
@@ -79,23 +81,26 @@ class ConsumeJobMessageIntegration extends TestCase
         Assert::assertEquals(ExitStatus::FAILED, $row['exit_code']);
         Assert::assertNotNull($row['health_check_time']);
 
-        $this->jobExecutionRepository->clear();
-        $jobExecution = $this->jobExecutionRepository->find($jobExecution->getId());
+        $jobExecution = $this->jobExecutionRepository->findOneBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution);
 
         Assert::assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
         Assert::assertEquals(ExitStatus::FAILED, $jobExecution->getExitStatus()->getExitCode());
     }
 
-    public function testJobExecutionStatusResolverWhenDaemonAndJobExecutionCrash(): void
+    /**
+     * The UI must return a "failed" status when all the processes went down, like because of a pod crash
+     */
+    public function testJobExecutionStatusResolverWhenAllProcessesCrash(): void
     {
         $jobExecution = $this->createJobExecutionInQueue('infinite_loop_job');
 
         $daemonProcess = $this->jobLauncher->launchConsumerOnceInBackground();
 
-        $jobExecutionProcessPid = $this->getJobExecutionProcessPid($daemonProcess->getPid());
+        $watchdogProcessPid = $this->getSubprocessPid($daemonProcess->getPid());
+        $batchJobCommandPid = $this->getSubprocessPid($watchdogProcessPid);
 
-        $daemonProcess->stop(3,9);
+        $daemonProcess->stop(3, 9);
 
         // wait update of the job execution status in database
         while ($daemonProcess->isRunning()) {
@@ -103,11 +108,13 @@ class ConsumeJobMessageIntegration extends TestCase
         }
         sleep(2);
 
-        $killJobExecution = new Process(['kill', '-9', $jobExecutionProcessPid]);
+        $killWtachdog = new Process(['kill', '-9', $watchdogProcessPid]);
+        $killWtachdog->run();
+        $killJobExecution = new Process(['kill', '-9', $batchJobCommandPid]);
         $killJobExecution->run();
 
         // wait healtch check date expiration
-        sleep(JobExecutionMessageHandler::HEALTH_CHECK_INTERVAL + 2);
+        sleep(JobExecutionWatchdogCommand::HEALTH_CHECK_INTERVAL + 10);
 
         $row = $this->getJobExecutionDatabaseRow($jobExecution);
 
@@ -115,8 +122,7 @@ class ConsumeJobMessageIntegration extends TestCase
         Assert::assertEquals(ExitStatus::UNKNOWN, $row['exit_code']);
         Assert::assertNotNull($row['health_check_time']);
 
-        $this->jobExecutionRepository->clear();
-        $jobExecution = $this->jobExecutionRepository->find($jobExecution->getId());
+        $jobExecution = $this->jobExecutionRepository->findOneBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution);
 
         Assert::assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue());
@@ -127,7 +133,7 @@ class ConsumeJobMessageIntegration extends TestCase
         string $jobInstanceCode,
         ?string $user,
         array $configuration = []
-    ) : JobExecution {
+    ): JobExecution {
         $jobInstanceClass = $this->getParameter('akeneo_batch.entity.job_instance.class');
         $jobInstance = $this
             ->get('doctrine.orm.default_entity_manager')
@@ -140,13 +146,21 @@ class ConsumeJobMessageIntegration extends TestCase
 
         $jobParameters = $this->get('akeneo_batch.job_parameters_factory')->create($job, $configuration);
 
-        $errors = $this->get('akeneo_batch.job.job_parameters_validator')->validate($job, $jobParameters, ['Default', 'Execution']);
+        $errors = $this->get('akeneo_batch.job.job_parameters_validator')->validate(
+            $job,
+            $jobParameters,
+            ['Default', 'Execution']
+        );
 
         if (count($errors) > 0) {
             throw new \RuntimeException('JobExecution could not be created due to invalid job parameters.');
         }
 
-        $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution($job, $jobInstance, $jobParameters);
+        $jobExecution = $this->get('akeneo_batch.job_repository')->createJobExecution(
+            $job,
+            $jobInstance,
+            $jobParameters
+        );
         $jobExecution->setUser($user);
         $this->get('akeneo_batch.job_repository')->updateJobExecution($jobExecution);
 
@@ -157,16 +171,19 @@ class ConsumeJobMessageIntegration extends TestCase
     {
         $jobExecution = $this->createJobExecution($jobInstanceCode, 'mary');
         $options = ['email' => 'ziggy@akeneo.com', 'env' => $this->getParameter('kernel.environment')];
-        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
+        $jobExecutionMessage = DataMaintenanceJobExecutionMessage::createJobExecutionMessage(
+            $jobExecution->getId(),
+            $options
+        );
         $this->getQueue()->publish($jobExecutionMessage);
 
         return $jobExecution;
     }
 
     /**
-     * Returns the PID of the job execution process launched by the daemon process.
+     * Returns the child PID of a process.
      */
-    protected function getJobExecutionProcessPid(int $processPid): string
+    protected function getSubprocessPid(int $processPid): int
     {
         $count = 0;
         do {
@@ -174,7 +191,7 @@ class ConsumeJobMessageIntegration extends TestCase
             $pgrep->run();
             $output = trim($pgrep->getOutput());
             if ('' !== $output) {
-                return $output;
+                return (int)$output;
             }
 
             $count++;
