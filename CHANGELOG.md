@@ -47,9 +47,10 @@
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
+- BH-1159: Refactor BatchCommand to use execution ID without batch code
 
 ## New features
 
 ## BC Breaks
 
-- BH-1159: Refactor BatchCommand to use execution ID without batch code
+- BH-1159: Add `JobInterface::getJobRepository` method
