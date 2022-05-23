@@ -32,8 +32,6 @@ class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInter
 
     public function onfileCannotBeExported(FileCannotBeExported $event): void
     {
-        $this->jobExecution->addFailureException(
-            new \Exception(printf('Cannot export file to the remote server for the following reason: %s', $event->getReason()))
-        );
+        $this->jobExecution->addFailureException(new \Exception($event->getReason()));
     }
 }

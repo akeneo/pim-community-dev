@@ -41,7 +41,8 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
                     $fileToTransfer->getOutputFileName()
                 );
             } catch (\Exception $exception) {
-                $this->eventDispatcher->dispatch(new FileCannotBeExported($exception->getMessage()));
+                $message = $exception->getPrevious() ? $exception->getPrevious()->getMessage() : $exception->getMessage();
+                $this->eventDispatcher->dispatch(new FileCannotBeExported($message));
             }
         }
     }
