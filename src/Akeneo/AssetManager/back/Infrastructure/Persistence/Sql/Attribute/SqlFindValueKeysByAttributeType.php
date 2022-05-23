@@ -58,29 +58,29 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
         $locales = $this->findLocales->findAllActivated();
         $channels = $this->findChannels->findAll();
 
-        $valueKeysByAttributeType = [];
+        $valueKeys = [];
 
         foreach($attributes as $attribute) {
             if ('1' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType[] = $this->generateLocalisabeAndScopableValueKeys($attribute['identifier'], $channels);
+                $valueKeys[] = $this->generateScopableAndLocalizableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '1' === $attribute['value_per_channel']
                 && '0' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType[] = $this->generateScopableValueKeys($attribute['identifier'], $channels);
+                $valueKeys[] = $this->generateScopableValueKeys($attribute['identifier'], $channels);
             } elseif (
                 '0' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
-                $valueKeysByAttributeType[] = $this->generateLocalisableValueKeys($attribute['identifier'], $locales);
+                $valueKeys[] = $this->generateLocalizableValueKeys($attribute['identifier'], $locales);
             } else {
-                $valueKeysByAttributeType[] = [$attribute['identifier']];
+                $valueKeys[] = [$attribute['identifier']];
             }
         }
 
-        return array_merge(...$valueKeysByAttributeType);
+        return array_merge(...$valueKeys);
     }
 
     private function findAttributesByFamilyIdentifierAndTypes(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array
@@ -112,7 +112,7 @@ SQL;
     /**
      * @param $channels Channel[];
      */
-    private function generateLocalisabeAndScopableValueKeys(string $attributeIdentifier, array $channels): array
+    private function generateScopableAndLocalizableValueKeys(string $attributeIdentifier, array $channels): array
     {
         $valueKeys = [];
 
@@ -139,7 +139,7 @@ SQL;
     /**
      * @param $locales Locale[];
      */
-    private function generateLocalisableValueKeys(string $attributeIdentifier, array $locales): array
+    private function generateLocalizableValueKeys(string $attributeIdentifier, array $locales): array
     {
         return array_map(
             static fn (Locale $locale) => $attributeIdentifier . '_' . $locale->getCode(),
