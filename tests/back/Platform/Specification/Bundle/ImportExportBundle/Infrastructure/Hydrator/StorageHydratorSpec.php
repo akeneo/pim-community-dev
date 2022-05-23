@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\NoneStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

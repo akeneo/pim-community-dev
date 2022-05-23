@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\LocalStorage;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 class LocalStorageHydratorSpec extends ObjectBehavior
