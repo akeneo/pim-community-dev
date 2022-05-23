@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 interface FindValueKeysByAttributeTypeInterface
 {
     /**
-     * @param string[]                  $attributeTypes
+     * @param string[] $attributeTypes
      * @return string[]
      */
     public function find(AssetFamilyIdentifier $assetFamilyIdentifier, array $attributeTypes): array;
