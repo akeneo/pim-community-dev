@@ -34,8 +34,7 @@ class StorageClientProviderSpec extends ObjectBehavior
     public function it_returns_storage_client_from_file_to_transfer(
         FilesystemProvider $filesystemProvider,
         FilesystemOperator $filesystemOperator,
-    )
-    {
+    ) {
         $filesystemProvider->getFilesystem('local')->willReturn($filesystemOperator);
         $fileToTransfer = new FileToTransfer('fileKey', 'local', 'outputFileName');
         $this->getFromFileToTransfer($fileToTransfer)->shouldReturnAnInstanceOf(StorageClientInterface::class);
@@ -45,7 +44,7 @@ class StorageClientProviderSpec extends ObjectBehavior
         StorageClientProviderInterface $firstClientProvider,
         StorageClientProviderInterface $secondClientProvider,
         StorageClientInterface $secondClient,
-        StorageInterface $secondStorage
+        StorageInterface $secondStorage,
     ) {
         $firstClientProvider->supports($secondStorage)->willReturn(false);
         $secondClientProvider->supports($secondStorage)->willReturn(true);
