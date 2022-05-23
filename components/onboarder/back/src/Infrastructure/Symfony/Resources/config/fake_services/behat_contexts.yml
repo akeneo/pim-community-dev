@@ -5,3 +5,6 @@ services:
         - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\GetSupplierList'
         - '@Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler'
         - '@Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Test\Acceptance\Context\Authentication\ContributorAccountContext:
+        - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
