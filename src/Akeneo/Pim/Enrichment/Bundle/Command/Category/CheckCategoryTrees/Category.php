@@ -140,7 +140,7 @@ class Category
         /** @var Category $child */
         foreach ($unlinkedChildren as $child) {
             $child->link($pool);
-            $this->children[] = &$child;
+            $this->children[] = $child;
         }
 
         $this->isLinked = true;
