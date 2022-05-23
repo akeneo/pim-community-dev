@@ -18,8 +18,10 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use League\Flysystem\FilesystemOperator;
+use PhpSpec\ObjectBehavior;
 
-class StorageClientProviderSpec
+class StorageClientProviderSpec extends ObjectBehavior
 {
     public function let(
         FilesystemProvider $filesystemProvider,
@@ -29,36 +31,36 @@ class StorageClientProviderSpec
         $this->beConstructedWith($filesystemProvider, [$firstClientProvider, $secondClientProvider]);
     }
 
-    public function it_return_storage_client_from_file_to_transfer(FileToTransfer $fileToTransfer)
+    public function it_returns_storage_client_from_file_to_transfer(
+        FilesystemProvider $filesystemProvider,
+        FilesystemOperator $filesystemOperator,
+    )
     {
+        $filesystemProvider->getFilesystem('local')->willReturn($filesystemOperator);
+        $fileToTransfer = new FileToTransfer('fileKey', 'local', 'outputFileName');
         $this->getFromFileToTransfer($fileToTransfer)->shouldReturnAnInstanceOf(StorageClientInterface::class);
     }
 
     public function it_returns_first_client_provider_that_support_storage_configuration(
-        StorageInterface $storage,
         StorageClientProviderInterface $firstClientProvider,
         StorageClientProviderInterface $secondClientProvider,
-        StorageClientProviderInterface $thirdClientProvider,
-        StorageClientInterface $storageClient,
+        StorageClientInterface $secondClient,
+        StorageInterface $secondStorage
     ) {
-        $firstClientProvider->supports($storage)->willReturn(false);
-        $secondClientProvider->supports($storage)->willReturn(true);
-        $thirdClientProvider->supports($storage)->willReturn(false);
+        $firstClientProvider->supports($secondStorage)->willReturn(false);
+        $secondClientProvider->supports($secondStorage)->willReturn(true);
+        $secondClientProvider->getFromStorage($secondStorage)->shouldBeCalledOnce()->willReturn($secondClient);
 
-        $secondClientProvider->getFromStorage($storage)->shouldBeCalledOnce()->willReturn($storageClient);
-
-        $this->getFromStorage($storage)->willReturn($storageClient);
+        $this->getFromStorage($secondStorage)->shouldReturn($secondClient);
     }
 
     public function it_throws_an_exception_when_no_client_provider_support_the_storage_configuration(
         StorageInterface $storage,
         StorageClientProviderInterface $firstClientProvider,
         StorageClientProviderInterface $secondClientProvider,
-        StorageClientProviderInterface $thirdClientProvider,
     ) {
         $firstClientProvider->supports($storage)->willReturn(false);
         $secondClientProvider->supports($storage)->willReturn(false);
-        $thirdClientProvider->supports($storage)->willReturn(false);
 
         $this->shouldThrow(\RuntimeException::class)
             ->during('getFromStorage', [$storage]);
