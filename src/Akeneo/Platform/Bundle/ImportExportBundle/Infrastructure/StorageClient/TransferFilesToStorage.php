@@ -13,14 +13,14 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeExported;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class TransferFilesToStorage implements TransferFilesToStorageInterface
 {
     public function __construct(
         private StorageClientProvider $storageClientProvider,
         private TransferFile $transferFile,
-        private EventDispatcher $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
