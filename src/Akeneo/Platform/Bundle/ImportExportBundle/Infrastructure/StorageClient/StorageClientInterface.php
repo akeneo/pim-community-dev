@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
-
 interface StorageClientInterface
 {
     public function fileExists(string $filePath): bool;

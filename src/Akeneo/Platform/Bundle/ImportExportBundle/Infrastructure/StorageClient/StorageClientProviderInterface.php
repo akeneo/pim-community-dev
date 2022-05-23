@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
-
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 
 interface StorageClientProviderInterface

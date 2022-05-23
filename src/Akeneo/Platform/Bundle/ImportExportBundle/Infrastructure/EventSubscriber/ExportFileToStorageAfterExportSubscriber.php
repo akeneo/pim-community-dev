@@ -93,7 +93,8 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
                 $writtenFile->sourceKey(),
                 $writtenFile->sourceStorage(),
                 $writtenFile->outputFilepath(),
-            ), $writer->getWrittenFiles()
+            ),
+            $writer->getWrittenFiles()
         );
     }
 }
