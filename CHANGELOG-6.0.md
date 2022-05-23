@@ -1,5 +1,8 @@
 # 6.0.x
 
+## Bug fixes
+
+- PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
 
 # 6.0.28 (2022-05-13)
