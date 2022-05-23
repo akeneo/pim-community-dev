@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
 
