@@ -30,7 +30,7 @@ class UpdateJobExecutionStorageSummarySubscriber implements EventSubscriberInter
         ];
     }
 
-    public function onfileCannotBeExported(FileCannotBeExported $event): void
+    public function onFileCannotBeExported(FileCannotBeExported $event): void
     {
         $this->jobExecution->addFailureException(new \Exception($event->getReason()));
     }
