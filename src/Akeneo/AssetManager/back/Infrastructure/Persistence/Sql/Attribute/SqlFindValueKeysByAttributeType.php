@@ -60,7 +60,7 @@ class SqlFindValueKeysByAttributeType implements FindValueKeysByAttributeTypeInt
 
         $valueKeys = [];
 
-        foreach($attributes as $attribute) {
+        foreach ($attributes as $attribute) {
             if ('1' === $attribute['value_per_channel']
                 && '1' === $attribute['value_per_locale']
             ) {
@@ -116,8 +116,8 @@ SQL;
     {
         $valueKeys = [];
 
-        foreach($channels as $channel) {
-            foreach($channel->getLocaleCodes() as $localeCode) {
+        foreach ($channels as $channel) {
+            foreach ($channel->getLocaleCodes() as $localeCode) {
                 $valueKeys[] = $attributeIdentifier . '_' . $channel->getCode() . '_' . $localeCode;
             }
         }
