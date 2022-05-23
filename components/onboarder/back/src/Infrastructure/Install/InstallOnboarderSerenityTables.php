@@ -25,7 +25,7 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables']];
+        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables', 100]];
     }
 
     public function installOnboarderSerenityTables(): void
