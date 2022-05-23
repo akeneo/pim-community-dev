@@ -26,19 +26,25 @@ class CheckCategoryTreesIntegration extends TestCase
         $this->createCategory(['code' => 'child1', 'parent' => 'parent']);
         $this->createCategory(['code' => 'child2', 'parent' => 'parent']);
         $this->createCategory(['code' => 'child3', 'parent' => 'parent']);
+        $this->createCategory(['code' => 'child4', 'parent' => 'child3']);
+        $this->createCategory(['code' => 'child5', 'parent' => 'child3']);
 
         // Disorder the category trees
-        $this->updateOrder('parent', 1, 8);
+        $this->updateOrder('parent', 1, 3);
         $this->updateOrder('child1', 3, 2);
         $this->updateOrder('child2', 4, 7);
-        $this->updateOrder('child3', 6, 7);
+        $this->updateOrder('child3', 6, 10);
+        $this->updateOrder('child4', 8, 9);
+        $this->updateOrder('child5', 9, 10);
 
         // After reordering, the category trees should be:
         // code, level, left, right
         // parent, 0, 1, 8
         // child1, 1, 2, 3
         // child2, 1, 4, 5
-        // child3, 1, 6, 7
+        // child3, 1, 6, 11
+        // child4, 1, 7, 8
+        // child5, 1, 9, 10
         $output = $this->runCheckCategoryTreesCommand();
 
         $this->assertStringContainsString('code=parent is CORRUPTED', $output);
@@ -53,7 +59,15 @@ class CheckCategoryTreesIntegration extends TestCase
 
         $child3 = $this->getCategory('child3');
         $this->assertSame('6', $child3['lft']);
-        $this->assertSame('7', $child3['rgt']);
+        $this->assertSame('11', $child3['rgt']);
+
+        $child3 = $this->getCategory('child4');
+        $this->assertSame('7', $child3['lft']);
+        $this->assertSame('8', $child3['rgt']);
+
+        $child3 = $this->getCategory('child5');
+        $this->assertSame('9', $child3['lft']);
+        $this->assertSame('10', $child3['rgt']);
 
         // Verify that the category tree is now sane
         $output = $this->runCheckCategoryTreesCommand();

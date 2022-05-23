@@ -27,7 +27,7 @@ class CategoriesPool
             return null;
         }
 
-        return $this->categories[$id];
+        return $this->categories[$id] ?? null;
     }
 
     public function getRoots(): iterable
