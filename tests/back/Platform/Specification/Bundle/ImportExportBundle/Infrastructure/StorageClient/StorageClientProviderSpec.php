@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace AkeneoTest\Platform\Specification\Bundle\ImportExportBundle\Infrastructure\StorageClient;
+namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
