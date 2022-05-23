@@ -20,18 +20,18 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families'
         tags:
-            - { name: pim_volume_monitoring.persistence.count_query }
+            - { name: pim_volume_monitoring.persistence.count_query, feature: 'asset_manager' }
 
     pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_assets_per_asset_family:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAssetsPerAssetFamily
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family'
         tags:
-            - { name: pim_volume_monitoring.persistence.average_max_query }
+            - { name: pim_volume_monitoring.persistence.average_max_query, feature: 'asset_manager' }
 
     pimee.asset_manager.catalog_volume_monitoring.average_max_number_of_attributes_per_asset_family:
         class: Akeneo\Pim\Enrichment\AssetManager\Bundle\CatalogVolumeMonitoring\AverageMaxNumberOfAttributesPerAssetFamily
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family'
         tags:
-            - { name: pim_volume_monitoring.persistence.average_max_query }
+            - { name: pim_volume_monitoring.persistence.average_max_query, feature: 'asset_manager' }
