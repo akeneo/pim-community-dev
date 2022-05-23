@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bridge\Monolog\Handler\ConsoleHandler;
 use Symfony\Component\Console\Command\Command;
@@ -49,7 +50,7 @@ class BatchCommand extends Command
     const EXIT_WARNING_CODE = 2;
 
     public function __construct(
-        private Logger $logger,
+        private LoggerInterface $logger,
         private BatchLogHandler $batchLogHandler,
         private JobRepositoryInterface $jobRepository,
         private ManagerRegistry $doctrine,
@@ -106,7 +107,7 @@ class BatchCommand extends Command
     {
         $noLog = $input->getOption('no-log');
 
-        if (!$noLog) {
+        if (!$noLog and $this->logger instanceof Logger) {
             $this->logger->pushHandler(new ConsoleHandler($output));
         }
 
@@ -320,28 +321,6 @@ class BatchCommand extends Command
      */
     private function decodeConfiguration(string $data): array
     {
-        $config = \json_decode($data, true);
-
-        switch (\json_last_error()) {
-            case JSON_ERROR_DEPTH:
-                $error = 'Maximum stack depth exceeded';
-                break;
-            case JSON_ERROR_STATE_MISMATCH:
-                $error = 'Underflow or the modes mismatch';
-                break;
-            case JSON_ERROR_CTRL_CHAR:
-                $error = 'Unexpected control character found';
-                break;
-            case JSON_ERROR_SYNTAX:
-                $error = 'Syntax error, malformed JSON';
-                break;
-            case JSON_ERROR_UTF8:
-                $error = 'Malformed UTF-8 characters, possibly incorrectly encoded';
-                break;
-            default:
-                return $config;
-        }
-
-        throw new \InvalidArgumentException($error);
+        return \json_decode($data, true, 512, JSON_THROW_ON_ERROR);
     }
 }
