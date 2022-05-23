@@ -10,15 +10,14 @@ use Swift_Mailer;
 
 final class SendSwiftmailerEmail implements SendEmail
 {
-    public function __construct(
-        private Swift_Mailer $mailer,
-        private string $mailerUrl,
-    ) {
+    public function __construct(private Swift_Mailer $mailer)
+    {
     }
 
     public function __invoke(Email $email): void
     {
         $message = $this->mailer->createMessage();
+
         $message->setSubject($email->subject)
             ->setFrom($email->from) // Get the real from address
             ->setTo($email->to)
@@ -26,6 +25,7 @@ final class SendSwiftmailerEmail implements SendEmail
             ->setContentType('text/html')
             ->setBody($email->txtContent, 'text/plain')
             ->addPart($email->HtmlContent, 'text/html');
+
         $this->mailer->send($message);
     }
 }

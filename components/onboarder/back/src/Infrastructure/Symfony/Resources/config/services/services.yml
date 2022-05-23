@@ -2,4 +2,3 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Mailer\SendSwiftmailerEmail:
         arguments:
             - '@mailer'
-            - '%mailer_url%'
