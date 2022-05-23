@@ -19,7 +19,7 @@ final class SendSwiftmailerEmail implements SendEmail
         $message = $this->mailer->createMessage();
 
         $message->setSubject($email->subject)
-            ->setFrom($email->from) // Get the real from address
+            ->setFrom($email->from)
             ->setTo($email->to)
             ->setCharset('UTF-8')
             ->setContentType('text/html')

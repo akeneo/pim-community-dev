@@ -9,6 +9,7 @@ services:
     arguments:
       - '@Akeneo\OnboarderSerenity\Infrastructure\Mailer\SendSwiftmailerEmail'
       - '@router'
+      - '@twig'
 
   #Repositories
   Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:

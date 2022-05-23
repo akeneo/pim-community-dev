@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Welcome to Onboarder</title>
+    <style type="text/css">
+        {% include '@AkeneoOnboarderSerenity/Email/common.css' %}
+    </style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<center>
+    <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+        <tr>
+            <td align="center" valign="top" id="bodyCell">
+                <table border="0" cellpadding="30" cellspacing="0" class="templateContainer">
+                    <tr>
+                        <td align="center" valign="top">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td align="center" valign="top">
+                                        <img src="data:image/png;base64,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" class="OnboarderHeaderContainer-logo" />
+                                    </td>
+                                </tr>
+                                <tr class="AknWhiteBlock">
+                                    <td>
+                                        <p>
+                                            Hello <span class="AknOnboarderBlue">{{ contributorEmail }}</span>,<br>
+                                            you’ve been invited to use Akeneo Onboarder.<br>
+                                            Discover how to share your product information.<br>
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr class="AknWhiteBlock">
+                                    <td align="center" valign="center">
+                                        <a href="{{ url }}" title="Let's start!" class="AknButton AknButton--blue">Let's start!</a>
+                                        <p class="AknOnboarderGrey120 expiration-date">
+                                            This invitation will expire in 14 days.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" valign="top" style="padding-top: 0;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr class="AknGreyBlock">
+                                    <td valign="top">
+                                        <p>
+                                            Welcome to <span class="AknOnboarderBlue">Akeneo Onboarder</span>, our new solution to
+                                            easily manage your product data in one place.
+                                        </p>
+                                        <p>
+                                            Once you have accessed Akeneo Onboarder, you’ll be able to send your completed product
+                                            files following the needs defined with <span class="AknOnboarderBlue">michel@example.com</span>.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr class="AknFooter">
+                                    <td align="center" valign="center">
+                                        <p class="title">Ready to use it?</p>
+                                        <a href="{{ url }}" title="Onboard me" class="AknButton AknButton--white" >Let's start</a>
+                                        <p class="questions">
+                                            If you have any questions regarding Akeneo Onboarder,<br>
+                                            you can contact <a class="helpCenter" href="mailto:<michel@example.com>">michel@example.com</a>
+                                        <p class="smallText">
+                                            Copyright &copy; {{ "now"|date("Y") }} Akeneo, All rights reserved.<br><br>
+                                            You are receiving this email because you have been invited to use Akeneo Onboarder.<br>
+                                            As it is not direct marketing emails, you cannot unsubscribe from this email.
+                                        </p>
+                                        <p class="address smallText">
+                                            Our mailing address is:<br>
+                                            2, Place du Général Mellinet<br>
+                                            44100 Nantes, France
+                                        </p>
+                                        <p class="smallText">
+                                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKUAAAAiCAYAAAA+nhm6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAX9SURBVHgB7ZvrceM2EIDXN/c/SgVHVxC6giAVRB2IV0HUgegKrFQguQL7KhBdgS4VkK7A7mCDPS7MJQSQBE3Kj8E3g4EIYPHi4rWgAGYAERfabSASeU9gzR0pKEQi7wFsOGqXQCTy1mCbMipm5M3BU6JiRt4WdFPGPWbkzUA/B4hEzg0t09jNDUQiHi5gBrTSKe31zYh/XVxcFDBdmbQtSLQj/1m7Suf/DDOhy8u4vHtdzk/4pPA5IKPfup05fFR0Q5bYTznF/lLnsaYtgaeMAyvP5IgyM/jE0ARjOhPOxBeYBzUgTaLdGkbCW4RS/7wR5dHM+Mi+qccOo630Q/Flppf1x8B0/8AIuM60PSCfFPBau0u9vPyuXUK+fr7S7pZFUkofFfODMPUsgvW9dwgKAuGl32wBkp60qXZPZjmHiYjL93zQ8k2zCr3cqT6gWEIYaUhibA4YxHc9K1Zd6fkQcs2PaswgiJwXUkpzcsxxmlsXBfNiBs/D0NO7TreFpp2twafbu+VZb8FuY83EO+w5kHXIJR0yGy7XzOLHATKK61uKlebgGmicluLW/LzkMkz9lCe9rE/vRIX13l7WieTpQ5zUkTblMnKrTCOXmYRbPGWHI5QT++2TLtTI/DMIgDpCyC5E+IHDzKAkfrIzHB352XJPDrkSLYXmNhxFGkpfYKMMxMpR3kbEm7KefP1I/cPhO6wtFDapSLu28i7YoSzDUaeViKf67IUcYU8ASvSLctRpaVfexQ4DlLMnLxclBGA1JHTZX7pksW1OogG68JSXWfl1yZHimZeVe+RKu2+xPXBShxzJKCt86+pLbN5Fyf6O20NuadX1pR1WHomQR0ecr2+knHL0Z8mOFJjeS8p+YhKm2M9ONsQHtpeVIewgAGwrfRIoKxVMifBDV12wHv0n8QPkjIKRci4cdUg8cibfgxW+QMc2AtsHy0SEy77aggfRvsIT/zKYPXK+9md2vNX+AjzQnrKCfjLt7kxnYT3dK7sS0BxAhnIN74dHT3jF/qUn/sETvmff3DQRGfs/Og5o/7KfSiWk2ynXDRWHmbonjvwo3quUmr+hXV+XvIuVVV+be/aVJz7zhMNXahRrrYJhKJOWBw8dICoIPEVrrvtOzg5kB4XeBi08+cwCtU1MLtQ31E/f+LnrWtLEGWV2pmWFNe43f3bw7OtnnlkXVrm9YHtrcYfd1qLEFdj17r+yT6NdwThSCFfICrpHr49C/FYQ0JEgbn3OeFdNM9g38Xw5QMY78Hh1om0UzW4JvJ4pBuptT3wFgRilLMAylczM9ZiPJaxZnV5MiGKbZeoBzodRSNPWJ2grqQunomB9ks057AfUy2bF7n5Avi7GKqKU20794cuvu2+29z3CeaCvd/YwHjMyadO8GiLALzThxzEzdDDWElex/x/7XStLYsvxfj3n5yvdfxnZXrV77RdKUpkGr3a89D6Hyg1FfpCxh/PwHV4BK3TBj2QOWXalZ8XN+XE/5edyPZgBUwnF2bP/J/oN8hn7D2IGMm28HbEP98L5F/yoPMl8Smcmh/lWWDYtSGPsHBQwAWjZz7CxwS1EPJkyDiLNEd0mFZMm95SVu+qO3fbGlSg388gdHXIbIZeIcJ9Zit7ZjZBRIs6YZDptwdi2jWZWHFlZnMZzbNtiN458FbdxZYWd5AUBFZwDBRPBnbIfWG7LuG3lc+A0OXT3SeGRk6ayHbZva3JPvUuR5sB5lD45bNv3dlwnatMTl3e0+xcHKiWnlXU+YnPdSO7ltschJ22hJcsZWcPa1Q4YCtYjr8R5CLq9CagzNXTvqHeF9YtTPfJ7Trv2xK85/t4jR0qWWeUX2HENinU/k2LJK0lzvac8MnYZVHYu4ipsK+WSwwrogeuzx0aZTF0Sjqd6Vh7ZxJKVfW/fSqUcV0EIeDqSpyLo9mYs+Mm/mUTPzc6nB8OWxqEsIRIZQO8fx7BeEmgaTqB9ZUa/v8Hwm5Wrz/wHq8h0TPJvRqz3Dgk0Ru3kpCANRCJvBTaHD8Msh5xIJBjemx6iUkbeHegxt0QiLv4HsI5X0ZcGzxAAAAAASUVORK5CYII=" class="footerLogo" />
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</center>
+</body>
+</html>
