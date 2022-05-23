@@ -8,9 +8,9 @@ class Category
 {
     private int $id;
 
-    private ?int $parent_id;
+    private ?int $parentId;
 
-    private ?int $root_id;
+    private ?int $rootId;
 
     private string $code;
 
@@ -33,8 +33,8 @@ class Category
         $this->id = $dbModel['id'];
         $this->code = $dbModel['code'];
 
-        $this->parent_id = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
-        $this->root_id = $dbModel['root'] === null ? null : (int)$dbModel['root'];
+        $this->parentId = $dbModel['parent_id'] === null ? null : (int)$dbModel['parent_id'];
+        $this->rootId = $dbModel['root'] === null ? null : (int)$dbModel['root'];
 
         $this->lft = (int)$dbModel['lft'];
         $this->rgt = (int)$dbModel['rgt'];
@@ -53,12 +53,12 @@ class Category
 
     public function getParentId(): ?int
     {
-        return $this->parent_id;
+        return $this->parentId;
     }
 
     public function getRootId(): ?int
     {
-        return $this->root_id;
+        return $this->rootId;
     }
 
     public function getCode(): string
@@ -126,8 +126,8 @@ class Category
             return;
         }
 
-        $this->parent = $pool->find($this->parent_id);
-        $this->root = $pool->find($this->root_id);
+        $this->parent = $pool->find($this->parentId);
+        $this->root = $pool->find($this->rootId);
 
         $unlinkedChildren = $pool->findForParent($this->id);
 

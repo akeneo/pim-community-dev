@@ -43,12 +43,12 @@ class CategoriesPool
         return $roots;
     }
 
-    public function findForParent(int $parent_id): iterable
+    public function findForParent(int $parentId): iterable
     {
         $children = [];
         /** @var Category $category */
         foreach ($this->categories as $category) {
-            if ($category->getParentId() === $parent_id) {
+            if ($category->getParentId() === $parentId) {
                 $children[] = clone $category;
             }
         }
