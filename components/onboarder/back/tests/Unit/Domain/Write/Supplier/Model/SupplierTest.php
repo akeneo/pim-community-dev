@@ -28,25 +28,6 @@ final class SupplierTest extends TestCase
     }
 
     /** @test */
-    public function itStoresAContributorAddedDomainEventWhenCreatingASupplierWithAContributor(): void
-    {
-        $supplier = Supplier::create(
-            '44ce8069-8da1-4986-872f-311737f46f02',
-            'supplier_code',
-            'Supplier label',
-            ['foo@foo.foo', 'bar@bar.bar', 'baz@baz.baz'],
-        );
-
-        $expectedEvents = $supplier->events();
-
-        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[0]);
-        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[1]);
-        static::assertInstanceOf(ContributorAdded::class, $expectedEvents[2]);
-        // Check that there is no events anymore in the supplier object
-        static::assertCount(0, $supplier->events());
-    }
-
-    /** @test */
     public function itStoresAContributorDeletedAndAContributorAddedDomainEventsWhenUpdatingASupplierAfterRemovingAContributorAndAddingANewOne(): void
     {
         $supplier = Supplier::create(

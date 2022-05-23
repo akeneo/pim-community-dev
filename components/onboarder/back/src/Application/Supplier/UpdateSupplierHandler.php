@@ -47,14 +47,14 @@ final class UpdateSupplierHandler
             throw new SupplierDoesNotExist();
         }
 
-        $updatedSupplier = $supplier->update(
+        $supplier->update(
             $updateSupplier->label,
             $updateSupplier->contributorEmails,
         );
 
-        $this->repository->save($updatedSupplier);
+        $this->repository->save($supplier);
 
-        foreach ($updatedSupplier->events() as $event) {
+        foreach ($supplier->events() as $event) {
             $this->eventDispatcher->dispatch($event);
         }
 
@@ -69,10 +69,10 @@ final class UpdateSupplierHandler
                         'contributor_emails' => $supplier->contributors(),
                     ],
                     'new_values' => [
-                        'identifier' => $updatedSupplier->identifier(),
-                        'code' => $updatedSupplier->code(),
-                        'label' => $updatedSupplier->label(),
-                        'contributor_emails' => $updatedSupplier->contributors(),
+                        'identifier' => $supplier->identifier(),
+                        'code' => $supplier->code(),
+                        'label' => $supplier->label(),
+                        'contributor_emails' => $supplier->contributors(),
                     ],
                 ],
             ],
