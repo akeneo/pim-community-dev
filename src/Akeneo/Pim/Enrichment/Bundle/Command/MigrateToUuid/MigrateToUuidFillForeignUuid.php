@@ -60,6 +60,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         $logContext = $context->logContext;
 
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
+
             $processedItems = 0;
             $logContext->addContext('substep', $tableName);
 
@@ -68,40 +72,22 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 $logContext->toArray()
             );
 
-            while ($this->shouldContinue($context, $tableName, $columnNames[self::ID_COLUMN_INDEX], $columnNames[self::UUID_COLUMN_INDEX])) {
+            do {
+                $updatedRows = 0;
                 if (!$context->dryRun()) {
-                    $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
-                    $processedItems += self::BATCH_SIZE;
+                    $updatedRows = $this->fillMissingForeignUuidInsert($tableName, $columnNames[0], $columnNames[1]);
+                    $processedItems += $updatedRows;
                     $this->logger->notice(
                         \sprintf('Processed rows: %d', $processedItems),
                         $logContext->toArray(['processed_foreign_uuids_count' => $processedItems])
                     );
                 } else {
                     $this->logger->notice("Option --dry-run is set, will continue to next step.", $logContext->toArray());
-                    break;
                 }
-            }
+            } while ($updatedRows > 0);
         }
 
         return true;
-    }
-
-    private function shouldContinue(
-        Context $context,
-        string $tableName,
-        string $idColumnName,
-        string $uuidColumnName
-    ): bool {
-        if ($context->withStats()) {
-            $count = $this->getMissingForeignUuidCount($tableName, $uuidColumnName, $idColumnName);
-            if ($count > 0) {
-                return true;
-            }
-
-            return false;
-        }
-
-        return $this->shouldBeExecutedForTable($tableName, $uuidColumnName, $idColumnName);
     }
 
     private function shouldBeExecutedForTable(string $tableName, string $uuidColumnName, string $idColumnName): bool
@@ -163,7 +149,7 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         return (int) $this->connection->fetchOne($query);
     }
 
-    private function fillMissingForeignUuidInsert(string $tableName, string $idColumnName, string $uuidColumnName): void
+    private function fillMissingForeignUuidInsert(string $tableName, string $idColumnName, string $uuidColumnName): int
     {
         $sql = <<<SQL
             WITH batched_id AS (
@@ -202,6 +188,8 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
                 '{limit}' => self::BATCH_SIZE,
             ]
         ));
+
+        return (int) ($this->connection->executeQuery('SELECT ROW_COUNT()')->fetchOne() ?? 0);
     }
 
     private function getTablesWithoutProductTable(): array
