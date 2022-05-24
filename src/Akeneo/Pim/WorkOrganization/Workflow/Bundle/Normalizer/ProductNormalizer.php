@@ -94,7 +94,8 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $published = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForEntityWithValues(
             $product,
-            Attributes::OWN_PRODUCTS
+            Attributes::OWN_PRODUCTS,
+            true
         );
 
         $meta = [

@@ -195,11 +195,15 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
      *
      * @param CategoryAwareInterface $entity      the product
      * @param string                 $accessLevel the expected access level
+     * @param bool                   $onlyDefault if true, it will return only user groups with 'default' type
      *
      * @return array
      */
-    public function getGrantedUserGroupsForEntityWithValues(CategoryAwareInterface $entity, $accessLevel)
-    {
+    public function getGrantedUserGroupsForEntityWithValues(
+        CategoryAwareInterface $entity,
+        $accessLevel,
+        bool $onlyDefault = false
+    ) {
         $categories = $entity->getCategories();
         if (0 === count($categories)) {
             return [];
@@ -213,6 +217,12 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $qb->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true));
         $qb->leftJoin('ca.userGroup', 'ug');
         $qb->select('DISTINCT (ug.id) as id, ug.name');
+
+        if ($onlyDefault) {
+            $qb->andWhere($qb->expr()->eq('ug.type', ':userGroupType'));
+            $qb->setParameter('userGroupType', Group::TYPE_DEFAULT);
+        }
+
         $groups = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return $groups;
