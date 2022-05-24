@@ -199,7 +199,7 @@ final class Version_6_0_20211122154203_add_step_count_in_job_execution extends A
             'step_count column already exists in akeneo_batch_job_execution'
         );
 
-        $this->addSql('ALTER TABLE akeneo_batch_job_execution ADD step_count INT DEFAULT 1 NOT NULL');
+        $this->addSql('ALTER TABLE akeneo_batch_job_execution ADD step_count INT DEFAULT 1');
 
         foreach (self::STEP_COUNT_MAP as $stepCount => $jobNames) {
             $this->addSql(

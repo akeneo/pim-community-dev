@@ -18,9 +18,8 @@ class AkeneoJobExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $loader->load('commands.yml');
-        $loader->load('controllers.yml');
         $loader->load('handlers.yml');
+        $loader->load('controllers.yml');
         $loader->load('hydrators.yml');
         $loader->load('queries.yml');
         $loader->load('services.yml');
