@@ -13,6 +13,7 @@ extensions:
             jobInstanceCode: publish_product
             warning: pimee_enrich.mass_edit.product.operation.publish.warning
             icon: icon-publish
+        feature: published_product
 
     pimee-mass-product-edit-send-for-approval:
         module: pimee/mass-edit-form/product/send-for-approval
