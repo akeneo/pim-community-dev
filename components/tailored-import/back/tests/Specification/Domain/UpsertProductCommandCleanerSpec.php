@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredImport\Domain;
 
-use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 
 class UpsertProductCommandCleanerSpec extends ObjectBehavior
 {
@@ -59,5 +57,21 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
         );
 
         $this::removeInvalidUserIntents(['categoryUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
+    }
+
+    public function it_cleans_family_user_intent()
+    {
+        $invalidUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+            familyUserIntent: new SetFamily('a_family'),
+        );
+
+        $expectedUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+        );
+
+        $this::removeInvalidUserIntents(['familyUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
     }
 }

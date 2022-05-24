@@ -15,11 +15,13 @@ namespace Akeneo\Platform\TailoredImport\Domain;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\CategoryUserIntent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\FamilyUserIntent;
 
 class UpsertProductCommandCleaner
 {
     private const VALUE_USER_INTENTS_PATH = 'valueUserIntents';
     private const CATEGORY_USER_INTENT_PATH = 'categoryUserIntent';
+    private const FAMILY_USER_INTENT_PATH = 'familyUserIntent';
 
     public static function removeInvalidUserIntents(
         array $violationPropertyPaths,
@@ -27,10 +29,12 @@ class UpsertProductCommandCleaner
     ): UpsertProductCommand {
         $valueUserIntents = self::processValueUserIntents($violationPropertyPaths, $upsertProductCommand->valueUserIntents());
         $categoryUserIntent = self::processCategoryUserIntent($violationPropertyPaths, $upsertProductCommand->categoryUserIntent());
+        $familyUserIntent = self::processFamilyUserIntent($violationPropertyPaths, $upsertProductCommand->familyUserIntent());
 
         return new UpsertProductCommand(
             userId: $upsertProductCommand->userId(),
             productIdentifier: $upsertProductCommand->productIdentifier(),
+            familyUserIntent: $familyUserIntent,
             categoryUserIntent: $categoryUserIntent,
             valueUserIntents: $valueUserIntents,
         );
@@ -62,5 +66,20 @@ class UpsertProductCommandCleaner
         }
 
         return $categoryUserIntent;
+    }
+
+    private static function processFamilyUserIntent(array $violationPropertyPaths, ?FamilyUserIntent $familyUserIntent): ?FamilyUserIntent
+    {
+        if (null === $familyUserIntent) {
+            return null;
+        }
+
+        foreach ($violationPropertyPaths as $propertyPath) {
+            if (str_starts_with($propertyPath, self::FAMILY_USER_INTENT_PATH)) {
+                return null;
+            }
+        }
+
+        return $familyUserIntent;
     }
 }
