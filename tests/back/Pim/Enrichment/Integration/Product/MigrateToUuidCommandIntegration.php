@@ -43,6 +43,23 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->launchMigrationCommand();
     }
 
+    /** @test */
+    public function it_should_not_migrate_if_the_database_is_not_ready(): void
+    {
+        $this->clean();
+        $this->loadFixtures();
+
+        $this->removeTable('pim_one_time_task');
+        $foundException = false;
+        try {
+            $this->launchMigrationCommand();
+        } catch (\Exception) {
+            $foundException = true;
+        }
+        $this->assertTheIndexesDoNotExist();
+        Assert::assertTrue(true === $foundException, 'No issue were found during migration');
+    }
+
     private function assertTheIndexesDoNotExist(): void
     {
         foreach (MigrateToUuidStep::TABLES as $tableName => $tableProperties) {
@@ -511,5 +528,10 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->getContainer()->get('pim_comment.saver.comment')->save($comment);
 
         return $comment;
+    }
+
+    private function removeTable(string $tableName)
+    {
+        $this->connection->executeQuery(\strtr('DROP TABLE {tableName};', ['{tableName}' => $tableName]));
     }
 }

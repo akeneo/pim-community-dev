@@ -65,6 +65,13 @@ class MigrateToUuidCommand extends Command
         $withStats = $input->getOption('with-stats');
         $context = new Context($input->getOption('dry-run'), $withStats);
 
+        if (!$this->isDatabaseReady()) {
+            // As the migration can be run with a cron, the database can be not ready.
+            $this->logger->notice('The database is not ready. Skip the migration.');
+
+            return self::FAILURE;
+        }
+
         if ($this->isAlreadySuccessfull()) {
             $this->logger->notice('No step should be executed. Skip the migration.');
 
@@ -218,5 +225,24 @@ class MigrateToUuidCommand extends Command
             'code' => self::$defaultName,
             'status' => 'finished',
         ]);
+    }
+
+    private function tableExists(string $tableName): bool
+    {
+        $rows = $this->connection->fetchAllAssociative(
+            <<<SQL
+                SHOW TABLES LIKE :tableName
+            SQL,
+            ['tableName' => $tableName]
+        );
+
+        return count($rows) >= 1;
+    }
+
+    private function isDatabaseReady()
+    {
+        return $this->tableExists('pim_one_time_task') &&
+            $this->tableExists('akeneo_batch_job_execution') &&
+            $this->tableExists('akeneo_batch_job_instance');
     }
 }
