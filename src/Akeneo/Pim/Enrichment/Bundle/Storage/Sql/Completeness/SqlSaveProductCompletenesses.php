@@ -60,16 +60,6 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
-            $productIds = array_unique(array_map(function (ProductCompletenessWithMissingAttributeCodesCollection $productCompletenessCollection) {
-                return $productCompletenessCollection->productId();
-            }, $productCompletenessCollections));
-
-            $this->connection->executeQuery(
-                'DELETE FROM pim_catalog_completeness WHERE product_id IN (:product_ids)',
-                ['product_ids' => $productIds],
-                ['product_ids' => \Doctrine\DBAL\Connection::PARAM_STR_ARRAY]
-            );
-
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
@@ -80,12 +70,15 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 return;
             }
 
+            // TODO? Remove the former lines
+
             $insert = <<<SQL
-                        INSERT INTO pim_catalog_completeness
-                            (locale_id, channel_id, product_id, missing_count, required_count)
-                        VALUES
-                            $placeholders
-        SQL;
+                INSERT INTO pim_catalog_completeness
+                    (locale_id, channel_id, product_id, missing_count, required_count)
+                VALUES
+                    $placeholders
+                ON DUPLICATE KEY UPDATE missing_count = VALUES(missing_count), required_count = VALUES(required_count)
+            SQL;
 
             $stmt = $this->connection->prepare($insert);
 
