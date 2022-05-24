@@ -7,3 +7,5 @@ src/Akeneo/Pim/Automation/RuleEngine/front
 src/Akeneo/Pim/TableAttribute/front
 src/Akeneo/Platform/Job/front/process-tracker
 src/Oro/Bundle/ConfigBundle/front
+src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front
+components/**/front
