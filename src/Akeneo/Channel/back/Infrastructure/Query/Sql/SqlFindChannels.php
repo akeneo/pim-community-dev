@@ -45,7 +45,7 @@ final class SqlFindChannels implements FindChannels
         $results = $this->connection->executeQuery(
             $sql,
             ['channel_codes' => $codes],
-            ['channel_codes' => Connection::PARAM_STR_ARRAY]
+            ['channel_codes' => Connection::PARAM_STR_ARRAY],
         )->fetchAllAssociative();
         $channels = [];
 

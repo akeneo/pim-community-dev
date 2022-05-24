@@ -39,9 +39,24 @@ class CachedFindChannelsSpec extends ObjectBehavior
             ])
             ->shouldBeCalledOnce();
 
+        $findChannels
+            ->findbyCodes(['print'])
+            ->willReturn([
+                new Channel(
+                    'print',
+                    ['en_US', 'fr_FR'],
+                    LabelCollection::fromArray([
+                        'en_US' => 'Print',
+                    ]),
+                    ['USD']
+                ),
+            ])
+            ->shouldBeCalledOnce();
+
         $this->findbyCodes(['ecommerce', 'mobile']);
         $this->findbyCodes(['ecommerce', 'mobile']);
-        $this->findbyCodes(['ecommerce', 'mobile']);
+        $this->findbyCodes(['print']);
+        $this->findbyCodes(['print']);
     }
 
     public function it_finds_all_channels_and_caches_them(

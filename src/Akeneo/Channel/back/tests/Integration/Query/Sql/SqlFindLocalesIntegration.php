@@ -32,6 +32,19 @@ final class SqlFindLocalesIntegration extends TestCase
         $this->assertNull($unknownLocale);
     }
 
+    public function test_it_finds_locales_by_codes(): void
+    {
+        $results = $this->sqlFindLocales->findByCodes(['en_US', 'fr_FR']);
+
+        $this->assertIsArray($results);
+        $this->assertCount(2, $results);
+        $this->assertContainsOnlyInstancesOf(Locale::class, $results);
+
+        foreach ($results as $result) {
+            $this->assertTrue(in_array($result->getCode(), ['en_US', 'fr_FR']));
+        }
+    }
+
     public function test_it_finds_all_activated_locales(): void
     {
         $results = $this->sqlFindLocales->findAllActivated();

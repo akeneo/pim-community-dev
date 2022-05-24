@@ -28,6 +28,30 @@ class CachedFindLocalesSpec extends ObjectBehavior
         $this->find('en_US');
     }
 
+    public function it_finds_locales_by_codes_and_caches_them(
+        FindLocales $findLocales
+    ) {
+        $findLocales
+            ->findByCodes(['en_US', 'fr_FR'])
+            ->willReturn([
+                new Locale('en_US', true),
+                new Locale('fr_FR', true),
+            ])
+            ->shouldBeCalledOnce();
+
+        $findLocales
+            ->findByCodes(['en_GB'])
+            ->willReturn([
+                new Locale('en_GB', true),
+            ])
+            ->shouldBeCalledOnce();
+
+        $this->findByCodes(['en_US', 'fr_FR']);
+        $this->findByCodes(['en_US', 'fr_FR']);
+        $this->findByCodes(['en_GB']);
+        $this->findByCodes(['en_GB']);
+    }
+
     public function it_finds_all_activated_locales_and_caches_them(
         FindLocales $findLocales
     ) {

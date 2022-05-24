@@ -23,10 +23,10 @@ final class SqlFindLocales implements FindLocales
     {
         $sql = <<<SQL
             SELECT 
-                l.code AS localeCode, 
-                l.is_activated AS isActivated
-            FROM pim_catalog_locale l
-            WHERE l.code = :localeCode
+                locale.code AS localeCode, 
+                locale.is_activated AS isActivated
+            FROM pim_catalog_locale locale
+            WHERE locale.code = :localeCode
         SQL;
 
         $result = $this->connection->executeQuery($sql, ['localeCode' => $localeCode])->fetchAssociative();
@@ -41,6 +41,33 @@ final class SqlFindLocales implements FindLocales
         return null;
     }
 
+    public function findByCodes(array $codes): array
+    {
+        $sql = <<<SQL
+            SELECT 
+                locale.code AS localeCode, 
+                locale.is_activated AS isActivated
+            FROM pim_catalog_locale locale
+            WHERE locale.code IN (:locale_codes)
+        SQL;
+
+        $results = $this->connection->executeQuery(
+            $sql,
+            ['locale_codes' => $codes],
+            ['locale_codes' => Connection::PARAM_STR_ARRAY],
+        )->fetchAllAssociative();
+        $locales = [];
+
+        foreach ($results as $result) {
+            $locales[] = new Locale(
+                $result['localeCode'],
+                (bool) $result['isActivated']
+            );
+        }
+
+        return $locales;
+    }
+
     /**
      * @return Locale[]
      */
@@ -48,10 +75,10 @@ final class SqlFindLocales implements FindLocales
     {
         $sql = <<<SQL
             SELECT 
-                l.code AS localeCode, 
-                l.is_activated AS isActivated
-            FROM pim_catalog_locale l
-            WHERE l.is_activated = 1
+                locale.code AS localeCode, 
+                locale.is_activated AS isActivated
+            FROM pim_catalog_locale locale
+            WHERE locale.is_activated = 1
         SQL;
 
         $results = $this->connection->executeQuery($sql)->fetchAllAssociative();

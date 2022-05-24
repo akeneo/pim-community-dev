@@ -14,6 +14,7 @@ final class CachedFindLocales implements FindLocales, CachedQueryInterface
 {
     private ?array $indexedCache = null;
     private ?array $cache = null;
+    private array $cacheByCodes = [];
 
     public function __construct(
         private FindLocales $findLocales
@@ -27,6 +28,17 @@ final class CachedFindLocales implements FindLocales, CachedQueryInterface
         }
 
         return $this->indexedCache[$localeCode];
+    }
+
+    public function findByCodes(array $codes): array
+    {
+        $cacheKey = implode('', $codes);
+
+        if (empty($this->cacheByCodes[$cacheKey])) {
+            $this->cacheByCodes[$cacheKey] = $this->findLocales->findByCodes($codes);
+        }
+
+        return $this->cacheByCodes[$cacheKey];
     }
 
     public function findAllActivated(): array

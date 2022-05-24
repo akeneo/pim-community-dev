@@ -11,6 +11,13 @@ interface FindLocales
     public function find(string $localeCode): ?Locale;
 
     /**
+     * @param $codes string[]
+     *
+     * @return Locale[]
+     */
+    public function findByCodes(array $codes): array;
+
+    /**
      * @return Locale[]
      */
     public function findAllActivated(): array;
