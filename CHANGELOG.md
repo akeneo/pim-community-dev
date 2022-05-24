@@ -39,12 +39,18 @@
 - PIM-10427: Fix display of boolean value in variant axis
 - PIM-10435: Fix search_after requests with codes using uppercase accented characters
 - PIM-10443: Search for system product grid filters in System > Users > Additional is now case insensitive
+- PIM-10459: Fix product grid selection
+- PIM-10447: Do not hydrate product/model in UniqueEntityValidator
 
 ## Improvements
 
 - PIM-10293: add batch-size option to pim:completness:calculate command
 - PIM-10229: Enforce strict samesite policy for session cookies
+- Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
+- BH-1159: Refactor BatchCommand to use execution ID without batch code
 
 ## New features
 
 ## BC Breaks
+
+- BH-1159: Add `JobInterface::getJobRepository` method

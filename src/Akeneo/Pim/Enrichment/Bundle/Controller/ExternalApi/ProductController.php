@@ -266,7 +266,11 @@ class ProductController
             $query->localeCodes = explode(',', $request->query->get('locales'));
         }
         if ($request->query->has('search')) {
-            $query->search = json_decode($request->query->get('search'), true);
+            $search = $request->query->get('search');
+            if (!is_string($search)) {
+                throw new BadRequestHttpException('Invalid query parameters received: search must be a string.');
+            }
+            $query->search = json_decode($search, true);
             if (!is_array($query->search)) {
                 throw new BadRequestHttpException('Search query parameter should be valid JSON.');
             }
@@ -278,6 +282,9 @@ class ProductController
         $query->channelCode = $request->query->get('scope', null);
         $query->limit = $request->query->get('limit', $this->apiConfiguration['pagination']['limit_by_default']);
         $query->paginationType = $request->query->get('pagination_type', PaginationTypes::OFFSET);
+        if (!is_string($query->paginationType)) {
+            throw new BadRequestHttpException('Invalid query parameters received: pagination_type must be a string.');
+        }
         $query->searchLocaleCode = $request->query->get('search_locale', null);
         $query->withCount = $request->query->get('with_count', 'false');
         $query->page = $request->query->get('page', 1);

@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Product\Infrastructure\Validation;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
+use Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditable;
 use Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\AttributeGroupShouldBeEditableValidator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\IsAttributeEditable;
@@ -60,6 +61,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
             $constraintViolationBuilder
         );
 
+        $constraintViolationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(

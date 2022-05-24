@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\FetchRemoteFilesAfterExport;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;

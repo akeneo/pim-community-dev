@@ -7,7 +7,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Marketplace;
 use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\MarketplaceUrlGeneratorInterface;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 class MarketplaceUrlGeneratorSpec extends ObjectBehavior

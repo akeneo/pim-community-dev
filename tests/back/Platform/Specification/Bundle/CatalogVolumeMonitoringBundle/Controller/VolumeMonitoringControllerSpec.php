@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller\VolumeMonitoringController;
@@ -18,7 +19,8 @@ class VolumeMonitoringControllerSpec extends ObjectBehavior
     function let(
         CountVolumeNormalizer $countVolumeNormalizer,
         AverageMaxVolumesNormalizer $averageMaxVolumesNormalizer,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        FeatureFlags $featureFlags
     ) {
         $countVolumeNormalizer->normalize()->willReturn([]);
         $averageMaxVolumesNormalizer->normalize()->willReturn([]);
@@ -26,8 +28,7 @@ class VolumeMonitoringControllerSpec extends ObjectBehavior
             new Volumes(
                 $countVolumeNormalizer->getWrappedObject(),
                 $averageMaxVolumesNormalizer->getWrappedObject(),
-                [],
-                []
+                $featureFlags->getWrappedObject()
             ),
             $securityFacade
         );

@@ -119,6 +119,13 @@ $rules = [
 
         // PIM-10259: Add support for Arabic characters in PDF export
         'ArPHP\I18N\Arabic',
+
+        'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException',
+        'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
+        'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
+        'Akeneo\Pim\Enrichment\Product\API\MessageBus',
+        'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode'
+
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

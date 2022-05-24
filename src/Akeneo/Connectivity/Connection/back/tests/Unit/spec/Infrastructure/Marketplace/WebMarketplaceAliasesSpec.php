@@ -6,7 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

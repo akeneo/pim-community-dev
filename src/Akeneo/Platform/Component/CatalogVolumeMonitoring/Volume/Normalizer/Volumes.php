@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
 
@@ -14,55 +15,58 @@ use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
  */
 class Volumes
 {
-    /** @var AverageMaxVolumesNormalizer */
-    private $averageMaxVolumesNormalizer;
+    private array $countQueries = [];
+    private array $averageMaxQueries = [];
 
-    /** @var CountVolumeNormalizer */
-    private $countVolumesNormalizer;
-
-    /** @var array */
-    private $countQueries;
-
-    /** @var array */
-    private $averageMaxQueries;
-
-    /**
-     * @param CountVolumeNormalizer       $countVolumesNormalizer
-     * @param AverageMaxVolumesNormalizer $averageMaxVolumesNormalizer
-     * @param CountQuery[]                $countQueries
-     * @param AverageMaxQuery[]           $averageMaxQueries
-     */
     public function __construct(
-        CountVolumeNormalizer $countVolumesNormalizer,
-        AverageMaxVolumesNormalizer $averageMaxVolumesNormalizer,
-        iterable $countQueries = [],
-        iterable $averageMaxQueries = []
+        private CountVolumeNormalizer $countVolumesNormalizer,
+        private AverageMaxVolumesNormalizer $averageMaxVolumesNormalizer,
+        private FeatureFlags $featureFlags
     ) {
-        $this->countVolumesNormalizer = $countVolumesNormalizer;
-        $this->averageMaxVolumesNormalizer = $averageMaxVolumesNormalizer;
-        $this->countQueries = $countQueries;
-        $this->averageMaxQueries = $averageMaxQueries;
     }
 
     /**
      * Returns an array containing the volume values of the different entities.
      *
-     * @return array
      */
     public function volumes(): array
     {
         $data = [];
 
         foreach ($this->countQueries as $query) {
-            $queryResponse = $query->fetch();
+            if (null !== $query['feature'] && !$this->featureFlags->isEnabled($query['feature'])) {
+                continue;
+            }
+
+            $queryResponse = $query['query']->fetch();
             $data = array_merge($data, $this->countVolumesNormalizer->normalize($queryResponse));
         }
 
         foreach ($this->averageMaxQueries as $query) {
-            $queryResponse = $query->fetch();
+            if (null !== $query['feature'] && !$this->featureFlags->isEnabled($query['feature'])) {
+                continue;
+            }
+
+            $queryResponse = $query['query']->fetch();
             $data = array_merge($data, $this->averageMaxVolumesNormalizer->normalize($queryResponse));
         }
 
         return $data;
+    }
+
+    public function addCountVolumeQuery(CountQuery $query, ?string $feature): void
+    {
+        $this->countQueries[] = [
+            'query' => $query,
+            'feature' => $feature
+        ];
+    }
+
+    public function addAverageMaxVolumeQuery(AverageMaxQuery $query, ?string $feature): void
+    {
+        $this->averageMaxQueries[] = [
+            'query' => $query,
+            'feature' => $feature
+        ];
     }
 }

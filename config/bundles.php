@@ -57,4 +57,5 @@ return [
     Akeneo\Platform\Bundle\FrameworkBundle\PimFrameworkBundle::class => ['all' => true],
     Akeneo\Platform\Job\Infrastructure\Symfony\AkeneoJobBundle::class => ['all' => true],
     Akeneo\Catalogs\Infrastructure\Symfony\AkeneoCatalogsBundle::class => ['all' => true],
+    Akeneo\Platform\Bundle\PimVersionBundle\PimVersionBundle::class => ['all' => true],
 ];

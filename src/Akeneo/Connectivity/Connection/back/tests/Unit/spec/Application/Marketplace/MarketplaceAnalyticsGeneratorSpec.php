@@ -8,7 +8,7 @@ use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsG
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
 /**

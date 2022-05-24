@@ -1,0 +1,5 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler:
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\StorageHydrator'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFilesToStorage'

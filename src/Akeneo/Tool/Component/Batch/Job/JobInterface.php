@@ -18,18 +18,20 @@ interface JobInterface
 {
     const WORKING_DIRECTORY_PARAMETER = 'working_directory';
 
-    /**
-     * @return string the name of this job
-     */
-    public function getName();
+    public function getName(): string;
 
     /**
      * Run the {@link JobExecution} and update the meta information like status
      * and statistics as necessary. This method should not throw any exceptions
      * for failed execution. Clients should be careful to inspect the
      * {@link JobExecution} status to determine success or failure.
-     *
-     * @param JobExecution $execution a {@link JobExecution}
      */
-    public function execute(JobExecution $execution);
+    public function execute(JobExecution $execution): void;
+
+    /**
+     * Public getter for the {@link JobRepositoryInterface} that is needed to manage the
+     * state of the batch meta domain (jobs, steps, executions) during the life
+     * of a job.
+     */
+    public function getJobRepository(): JobRepositoryInterface;
 }

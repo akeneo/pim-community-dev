@@ -156,7 +156,7 @@ class IdFilter extends AbstractFieldFilter
 
         return \array_merge(
             $values,
-            \array_map(static fn (string $uuid): string => \sprintf('product_%s', $uuid), $uuids)
+            \array_map(static fn (string $uuid): string => \sprintf('product_%s', $uuid), \array_filter($uuids))
         );
     }
 }

@@ -162,8 +162,9 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
-            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
+            - '@pim_enrich.product.message_bus'
+            - '@Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier'
 
     pim_enrich.controller.rest.product_comment:
         public: true
