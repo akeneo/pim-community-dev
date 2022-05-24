@@ -170,13 +170,13 @@ jobs:
                     at: ~/
             -   run:
                     name: Setup missing directories
-                    command: mkdir -p ~/.cache/yarn
+                    command: mkdir -p ~/.cache/yarn ~/.cache/Cypress
             -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
-                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+                    command: sudo chown -R 1000:1000 ../project ~/.cache/yarn ~/.cache/Cypress
             -   run:
                     name: Change permissions on project dir
-                    command: sudo chmod -R 777 ../project ~/.cache/yarn
+                    command: sudo chmod -R 777 ../project ~/.cache/yarn ~/.cache/Cypress
             -   run:
                     name: Creating cache key for front dependencies
                     command: cat yarn.lock > ~/front-dependency.hash && date +%F >> ~/front-dependency.hash
