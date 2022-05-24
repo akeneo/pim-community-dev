@@ -25,7 +25,9 @@ const OperationPreviewData = ({isLoading, previewData, hasErrors}: PreviewDataPr
             {Array.isArray(data) ? (
               <Tags>
                 {data.map((previewDataElement, key) => (
-                  <Tag key={key}>{formatSampleData(translate, previewDataElement)}</Tag>
+                  <Tag key={key} tint="dark_blue">
+                    {formatSampleData(translate, previewDataElement)}
+                  </Tag>
                 ))}
               </Tags>
             ) : (

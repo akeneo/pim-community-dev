@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\SimpleSelect;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\TargetInterface;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\AttributeTarget;
 use Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\DataMappingUuid;
@@ -48,9 +49,8 @@ final class SimpleSelectValidator extends ConstraintValidator
                     ]),
                 ]),
                 'sources' => new Sources(false, $constraint->getColumnUuids()),
-                // TODO replace with SimpleSelectReplacementOperation::TYPE when back is merged
                 'operations' => new Operations([
-                    'simple_select_replacement',
+                    SimpleSelectReplacementOperation::TYPE,
                 ]),
                 'sample_data' => new SampleData(),
             ],

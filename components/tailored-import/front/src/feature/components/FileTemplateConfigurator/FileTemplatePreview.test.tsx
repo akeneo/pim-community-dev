@@ -65,7 +65,7 @@ test('it displays rows', async () => {
   expect(screen.getByText('16.644')).toBeInTheDocument();
 });
 
-test('it did not display cell not visible according to file structure', async () => {
+test('it does not display cell not visible according to file structure', async () => {
   const fileStructure: FileStructure = {
     header_row: 2,
     first_column: 1,
@@ -111,7 +111,7 @@ test('it did not display cell not visible according to file structure', async ()
   expect(screen.getByText('16.644')).toBeInTheDocument();
 });
 
-test('it displays row number', async () => {
+test('it displays row number & column letter', async () => {
   await renderWithProviders(
     <FileTemplatePreview
       fileTemplateInformation={{
@@ -130,4 +130,11 @@ test('it displays row number', async () => {
   expect(screen.getByText(fileStructure.header_row)).toBeInTheDocument();
   expect(screen.getByText('1')).toBeInTheDocument();
   expect(screen.getByText('2')).toBeInTheDocument();
+
+  expect(screen.getByText('A')).toBeInTheDocument();
+  expect(screen.getByText('B')).toBeInTheDocument();
+  expect(screen.getByText('C')).toBeInTheDocument();
+  expect(screen.getByText('D')).toBeInTheDocument();
+  expect(screen.getByText('E')).toBeInTheDocument();
+  expect(screen.getByText('F')).toBeInTheDocument();
 });

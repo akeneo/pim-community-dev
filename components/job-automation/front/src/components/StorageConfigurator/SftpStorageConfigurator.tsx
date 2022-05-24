@@ -14,18 +14,20 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
   return (
     <>
       <TextField
+        required={true}
         value={storage.file_path}
         label={translate('akeneo.automation.storage.file_path.label')}
         onChange={file_path => onStorageChange({...storage, file_path})}
         errors={filterErrors(validationErrors, '[file_path]')}
       />
       <TextField
+        required={true}
         value={storage.host}
         label={translate('akeneo.automation.storage.host.label')}
         onChange={host => onStorageChange({...storage, host})}
         errors={filterErrors(validationErrors, '[host]')}
       />
-      <Field label={translate('akeneo.automation.storage.port.label')}>
+      <Field label={`${translate('akeneo.automation.storage.port.label')} ${translate('pim_common.required_label')}`}>
         <NumberInput
           min={1}
           max={65535}
@@ -41,12 +43,14 @@ const SftpStorageConfigurator = ({storage, validationErrors, onStorageChange}: S
       </Field>
       <TextField
         value={storage.username}
+        required={true}
         label={translate('akeneo.automation.storage.username.label')}
         onChange={(username: string) => onStorageChange({...storage, username})}
         errors={filterErrors(validationErrors, '[username]')}
       />
       <TextField
         value={storage.password}
+        required={true}
         type="password"
         label={translate('akeneo.automation.storage.password.label')}
         onChange={(password: string) => onStorageChange({...storage, password})}
