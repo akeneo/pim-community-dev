@@ -9,7 +9,9 @@ parameters:
     pim_catalog_textarea: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Text\Text'
     pim_catalog_date: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Attribute\Date\Date'
 
-  akeneo.tailored_import.validation.property_target_constraints: []
+  akeneo.tailored_import.validation.property_target_constraints:
+    categories: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Categories\Categories'
+    family: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Target\Property\Family\Family'
 
   akeneo.tailored_import.validation.operation_constraints:
     clean_html_tags: 'Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation\CleanHTMLTagsOperation'

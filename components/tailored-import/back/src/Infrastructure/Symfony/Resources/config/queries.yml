@@ -2,7 +2,7 @@ parameters:
     akeneo.tailored_import.supported_system_properties:
         - 'categories'
 #        - 'enabled'
-#        - 'family'
+        - 'family'
 #        - 'parent'
 #        - 'family_variant'
 
