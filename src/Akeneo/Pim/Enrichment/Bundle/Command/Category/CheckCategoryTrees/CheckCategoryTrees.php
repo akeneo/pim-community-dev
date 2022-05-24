@@ -53,7 +53,8 @@ class CheckCategoryTrees extends Command
                 'm',
                 InputArgument::OPTIONAL,
                 'Max level for tree dumping',
-                1)
+                1
+            )
             ->addOption(
                 'reorder',
                 null,

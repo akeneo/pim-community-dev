@@ -220,7 +220,8 @@ class Category
         $rows = ["{$spaces}({$this->id},{$this->code},lvl={$this->lvl},lft={$this->lft},rgt={$this->rgt})"];
         if ($level < $maxLevel) {
             foreach ($this->children as $child) {
-                $rows = array_merge($rows,
+                $rows = array_merge(
+                    $rows,
                     $child->dumpNodes($level + 1)
                 );
             }
@@ -230,12 +231,14 @@ class Category
 
     public function doUpdate(Connection $connection)
     {
-        $connection->update('pim_catalog_category',
+        $connection->update(
+            'pim_catalog_category',
             [
                 'lvl' => $this->lvl,
                 'lft' => $this->lft,
                 'rgt' => $this->rgt,
-            ], [
+            ],
+            [
                 'id' => $this->id
             ],
         );
