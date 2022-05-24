@@ -4,3 +4,4 @@ parameters:
     - %rootDir%/../../../src/Akeneo/Platform/Job
   excludes_analyse:
     - %rootDir%/../../../src/Akeneo/Platform/Job/back/tests/Specification
+    - %rootDir%/../../../src/Akeneo/Platform/Job/front
