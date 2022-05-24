@@ -159,6 +159,9 @@
     "underscore": "1.12.1",
     "victory": "^33.1.6"
   },
+  "resolutions": {
+    "@types/react": "^16.14.0"
+  },
   "private": true,
   "workspaces": [
     "front-packages/shared",

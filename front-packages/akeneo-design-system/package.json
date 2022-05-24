@@ -32,6 +32,9 @@
     "html-to-draftjs": "^1.5.0",
     "react-draft-wysiwyg": "^1.12.13"
   },
+  "resolutions": {
+    "@types/react": "^16.14.0"
+  },
   "devDependencies": {
     "@storybook/addon-a11y": "^6.3.12",
     "@storybook/addon-actions": "^6.3.12",

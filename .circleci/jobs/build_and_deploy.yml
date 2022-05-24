@@ -189,7 +189,7 @@ jobs:
                     command: |
                         find << parameters.path_to_front_packages >>/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
                         find << parameters.path_to_front_packages >>/shared -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/shared.hash
-                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash
+                        echo "$(date +%F) << parameters.path_to_front_packages >>" | tee -a ~/akeneo-design-system.hash ~/shared.hash
             -   restore_cache:
                     name: Restore cache - front library DSM
                     key: front-packages-dsm-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/akeneo-design-system.hash" }}
@@ -205,8 +205,8 @@ jobs:
             -   run:
                     name: Build front libraries
                     command: |
-                        docker-compose run -u node --rm node yarn dsm:build
-                        docker-compose run -u node --rm node yarn shared:build
+                        [ ! -d "~/project/front-packages/akeneo-design-system/lib" ] && docker-compose run -u node --rm node yarn dsm:build
+                        [ ! -d "~/project/front-packages/shared/lib" ] && docker-compose run -u node --rm node yarn shared:build
             -   persist_to_workspace:
                     root: ~/
                     paths:
