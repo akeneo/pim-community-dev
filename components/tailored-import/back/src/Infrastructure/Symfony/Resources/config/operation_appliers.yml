@@ -26,3 +26,7 @@ services:
   Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\ConvertToDateOperationApplier:
     tags:
       - { name: akeneo.tailored_import.operation_applier, priority: 101 }
+
+  Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\SimpleSelectReplacementOperationApplier:
+    tags:
+      - { name: akeneo.tailored_import.operation_applier, priority: 101 }

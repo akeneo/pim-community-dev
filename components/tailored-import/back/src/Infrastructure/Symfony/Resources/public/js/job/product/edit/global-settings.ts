@@ -1,6 +1,6 @@
 import BaseView = require('pimui/js/view/base');
 import {GlobalSettings} from '@akeneo-pim-enterprise/tailored-import';
-import {formatParameters, ValidationError} from '@akeneo-pim-community/shared';
+import {formatParameters, getErrorsForPath, ValidationError} from '@akeneo-pim-community/shared';
 import {GlobalSettingsTab, GlobalSettingsTabProps} from '@akeneo-pim-enterprise/tailored-import';
 
 const __ = require('oro/translator');
@@ -27,7 +27,7 @@ class GlobalSettingsView extends BaseView {
     });
 
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
-      const errors = formatParameters(event.response.normalized_errors);
+      const errors = formatParameters(getErrorsForPath(event.response.normalized_errors, '[error_action]'));
       this.setValidationErrors(errors);
 
       if (errors.length > 0) {

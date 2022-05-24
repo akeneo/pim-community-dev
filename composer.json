@@ -75,6 +75,7 @@
             "Akeneo\\Test\\Channel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Channel/back/tests",
             "AkeneoEnterprise\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
             "Akeneo\\Platform\\JobAutomation\\Test\\": "components/job-automation/back/tests",
+            "Specification\\Akeneo\\Platform\\JobAutomation\\": "components/job-automation/back/tests/Specification",
             "Akeneo\\Catalogs\\Test\\": "vendor/akeneo/pim-community-dev/components/catalogs/back/tests"
         }
     },
@@ -87,6 +88,7 @@
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
         "league/flysystem-google-cloud-storage": "^2.3.0",
+        "league/flysystem-sftp": "^3.0",
         "phpseclib/phpseclib": "2.0.31",
         "tigitz/php-spellchecker": "0.4.0"
     },

@@ -23,6 +23,7 @@ services:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@validator'
             - '@logger'
+            - '@event_dispatcher'
 
     Akeneo\OnboarderSerenity\Application\Supplier\DeleteSupplierHandler:
         arguments:

@@ -2,7 +2,8 @@ import React, {SyntheticEvent} from 'react';
 import styled from 'styled-components';
 import {CloseIcon, IconButton, Table, useBooleanState, Pill} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
-import {Column, DataMapping, generateColumnName} from '../../models';
+import {Column, DataMapping, generateColumnName, isAttributeDataMapping} from '../../models';
+import {AttributeLabelCell} from './AttributeLabelCell';
 
 type DataMappingRowProps = {
   dataMapping: DataMapping;
@@ -14,7 +15,7 @@ type DataMappingRowProps = {
   onRemove: (uuid: string) => void;
 };
 
-const DataMappingCodeCell = styled(Table.Cell)`
+const PropertyLabelCell = styled(Table.Cell)`
   width: 50%;
 `;
 
@@ -56,7 +57,11 @@ const DataMappingRow = ({
   return (
     <>
       <Table.Row onClick={() => onSelect(dataMapping.uuid)} isSelected={isSelected}>
-        <DataMappingCodeCell>{dataMapping.target.code}</DataMappingCodeCell>
+        {isAttributeDataMapping(dataMapping) ? (
+          <AttributeLabelCell attributeCode={dataMapping.target.code} />
+        ) : (
+          <PropertyLabelCell>{translate(`pim_common.${dataMapping.target.code}`)}</PropertyLabelCell>
+        )}
         <Table.Cell>
           {sources.length === 0
             ? translate('akeneo.tailored_import.data_mapping_list.no_sources')

@@ -16,6 +16,8 @@ namespace Specification\Akeneo\Platform\TailoredImport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\AddCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
@@ -35,6 +37,7 @@ class ProductWriterSpec extends ObjectBehavior
     private const DEFAULT_COLUMN_CONFIGURATION = [
         ['label' => 'Sku', 'uuid' => '25621f5a-504f-4893-8f0c-9f1b0076e53e', 'index' => 0],
         ['label' => 'Name', 'uuid' => '2d9e967a-5efa-4a31-a254-99f7c50a145c', 'index' => 1],
+        ['label' => 'Categories', 'uuid' => 'd8ab5017-3338-400b-95af-9dc16500ebf8', 'index' => 2],
     ];
 
     private RowPayload $rowPayload;
@@ -44,131 +47,228 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         EventDispatcher $eventDispatcher
     ) {
-        $stepExecution->getSummaryInfo('item_position', 0)->willReturn(4);
-        $stepExecution->getSummaryInfo('create', 0)->willReturn(1);
-        $stepExecution->getSummaryInfo('process', 0)->willReturn(2);
-        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
-        $stepExecution->getSummaryInfo('skipped_no_diff', 0)->willReturn(0);
-
-        $stepExecution->incrementSummaryInfo('skipped_no_diff', 0)->shouldBeCalled();
-
         $this->rowPayload = new RowPayload(
             new Row([
                 '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'ref1',
                 '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'Produit 1',
+                'd8ab5017-3338-400b-95af-9dc16500ebf8' => 'clothes, shoes',
             ]),
             ColumnCollection::createFromNormalized(self::DEFAULT_COLUMN_CONFIGURATION),
             0
         );
         $this->beConstructedWith($messageBus, $eventDispatcher);
+
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
+        $stepExecution->getSummaryInfo('item_position', 0)->willReturn(1);
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(1);
+        $stepExecution->getSummaryInfo('process', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skipped_no_diff', 0)->willReturn(0);
+        $stepExecution->incrementSummaryInfo('skipped_no_diff', 0)->shouldBeCalled();
         $this->setStepExecution($stepExecution);
     }
 
-    public function it_execute_upsert_command(MessageBusInterface $messageBus)
-    {
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: []);
+    public function it_executes_an_upsert_command_without_user_intent(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: []);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
+
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_catch_legacy_violation_exception(
+    public function it_executes_an_upsert_command_with_value_user_intent(
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
-        ConstraintViolation $constraintViolation
     ) {
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
-
-        $constraintViolation->getParameters()->willReturn([]);
-        $constraintViolation->getMessage()->willReturn("error");
-        $constraintViolation->__toString()->willReturn("error");
-
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
-        $messageBus->dispatch($upsertProductCommand)->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_catch_violation_exception(
+    public function it_executes_an_upsert_command_with_category_user_intent(
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
-        ConstraintViolation $constraintViolation
     ) {
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_product']));
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', categoryUserIntent: new AddCategories(['clothes', 'shoes']));
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
 
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_product_when_legacy_violation_is_thrown(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $constraintViolation->getParameters()->willReturn([]);
+        $constraintViolation->getMessage()->willReturn('legacy error');
+        $constraintViolation->__toString()->willReturn('legacy error');
+
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new LegacyViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
+        $stepExecution->addWarning('legacy error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_product_when_empty_property_path_violation_is_thrown(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
         $constraintViolation->__toString()->willReturn('error');
+        $constraintViolation->getPropertyPath()->willReturn('');
 
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: "identifier", valueUserIntents: []);
-        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
-        $messageBus->dispatch($upsertProductCommand)->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
-        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
 
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_skip_value_on_violations(
+    public function it_should_skip_value_and_retry_when_violation_is_thrown(
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
-        ConstraintViolation $constraintViolation
+        ConstraintViolation $constraintViolation,
     ) {
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+            new SetTextValue('reference', null, null, 'ref1'),
+        ]);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
         $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
-
         $constraintViolation->getParameters()->willReturn([]);
         $constraintViolation->getMessage()->willReturn('error');
         $constraintViolation->__toString()->willReturn('error');
-        $constraintViolation->getPropertyPath()->willReturn('valueUserIntents[1]');
+        $constraintViolation->getPropertyPath()->willReturn('valueUserIntents[0]');
 
-        $valueUserIntents = [
-            new SetTextValue('name', null, null, value: 'A name'),
-            new SetTextValue('description', null, null, 'A description with error'),
-        ];
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
 
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
-        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('reference', null, null, 'ref1'),
+        ]);
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
-        $messageBus->dispatch($upsertProductCommand)->willThrow(
-            new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()]))
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_category_and_retry_when_violation_is_thrown(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $constraintViolation,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'ref1',
+            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
+            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
         );
-        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
 
-        unset($valueUserIntents[1]);
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+        $constraintViolation->getParameters()->willReturn([]);
+        $constraintViolation->getMessage()->willReturn('error');
+        $constraintViolation->__toString()->willReturn('error');
+        $constraintViolation->getPropertyPath()->willReturn('categoryUserIntent');
+
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
+        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
+
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+        ]);
         $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willReturn(new Envelope(new \stdClass()));
 
         $this->write([$this->rowPayload]);
     }
 
-    public function it_should_not_retry_when_value_still_the_same(
+    public function it_should_skip_product_when_violations_are_thrown_and_there_is_no_user_intent_remaining(
+        MessageBusInterface $messageBus,
+        StepExecution $stepExecution,
+        ConstraintViolation $valueConstraintViolation,
+        ConstraintViolation $categoryConstraintViolation,
+    ) {
+        $upsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'ref1',
+            categoryUserIntent: new SetCategories(['clothes', 'shoes']),
+            valueUserIntents: [new SetTextValue('name', null, null, 'Produit 1')],
+        );
+
+        $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+        $valueConstraintViolation->getParameters()->willReturn([]);
+        $valueConstraintViolation->getMessage()->willReturn('value error');
+        $valueConstraintViolation->__toString()->willReturn('value error');
+        $valueConstraintViolation->getPropertyPath()->willReturn('valueUserIntents[0]');
+        $categoryConstraintViolation->getParameters()->willReturn([]);
+        $categoryConstraintViolation->getMessage()->willReturn('category error');
+        $categoryConstraintViolation->__toString()->willReturn('category error');
+        $categoryConstraintViolation->getPropertyPath()->willReturn('categoryUserIntent');
+
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([
+            $valueConstraintViolation->getWrappedObject(),
+            $categoryConstraintViolation->getWrappedObject(),
+        ])));
+        $stepExecution->addWarning('value error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
+        $stepExecution->addWarning('category error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
+
+        $messageBus->dispatch()->shouldNotBeCalled();
+
+        $this->write([$this->rowPayload]);
+    }
+
+    public function it_should_skip_product_when_no_user_intent_have_been_cleaned(
         MessageBusInterface $messageBus,
         StepExecution $stepExecution,
         ConstraintViolation $constraintViolation
     ) {
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'ref1', valueUserIntents: [
+            new SetTextValue('name', null, null, 'Produit 1'),
+            new SetTextValue('reference', null, null, 'ref1'),
+        ]);
 
-        $constraintViolation->getParameters()->willReturn([]);
-        $constraintViolation->getMessage()->willReturn('error');
-        $constraintViolation->__toString()->willReturn('error');
-        $constraintViolation->getPropertyPath()->willReturn('wrong_property_path');
-
-        $valueUserIntents = [
-            new SetTextValue('name', null, null, value: 'A name'),
-            new SetTextValue('description', null, null, 'A description'),
-        ];
-
-        $upsertProductCommand = new UpsertProductCommand(userId: 1, productIdentifier: 'identifier', valueUserIntents: $valueUserIntents);
         $this->rowPayload->setUpsertProductCommand($upsertProductCommand);
+        $stepExecution->getJobParameters()->willReturn(new JobParameters(['error_action' => 'skip_value']));
+        $constraintViolation->getParameters()->willReturn([]);
+        $constraintViolation->getMessage()->willReturn('unknown error');
+        $constraintViolation->__toString()->willReturn('unknown error');
+        $constraintViolation->getPropertyPath()->willReturn('unknown');
 
-        $messageBus->dispatch($upsertProductCommand)
-            ->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])))
-            ->shouldBeCalledOnce();
-        $stepExecution->addWarning('error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1'], 0))->shouldBeCalled();
+        $messageBus->dispatch($upsertProductCommand)->shouldBeCalled()->willThrow(new ViolationsException(new ConstraintViolationList([$constraintViolation->getWrappedObject()])));
+        $stepExecution->addWarning('unknown error', [], new FileInvalidItem(['Sku' => 'ref1', 'Name' => 'Produit 1', 'Categories' => 'clothes, shoes'], 0))->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledOnce();
+        $stepExecution->getSummaryInfo('create', 0)->willReturn(0);
+        $stepExecution->getSummaryInfo('skip', 0)->willReturn(1);
 
         $this->write([$this->rowPayload]);
     }

@@ -23,6 +23,7 @@ const dataMapping: DataMapping = {
   sample_data: [],
   sources: [],
   target: {
+    attribute_type: 'pim_catalog_textarea',
     action_if_not_empty: 'set',
     channel: null,
     code: 'description',
@@ -42,6 +43,7 @@ test('it displays source configurator', async () => {
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 
@@ -72,6 +74,7 @@ test('it displays attribute errors when attribute is not found', async () => {
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 
@@ -96,6 +99,7 @@ test('it renders nothing if the configurator is unknown', async () => {
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 

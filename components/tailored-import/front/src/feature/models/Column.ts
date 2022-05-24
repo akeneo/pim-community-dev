@@ -27,4 +27,4 @@ const filterColumnsByUuids = (columns: Column[], uuids: string[]): Column[] =>
   columns.filter(({uuid}) => uuids.includes(uuid));
 
 export type {Column, ColumnIdentifier};
-export {generateColumnName, filterColumnsByUuids};
+export {generateColumnName, generateExcelColumnLetter, filterColumnsByUuids};

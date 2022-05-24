@@ -130,7 +130,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Helper>
             )}
             {isDropdownOpen && (
-              <Dropdown.Overlay onClose={closeDropdown} fullWidth={true}>
+              <Dropdown.Overlay dropdownOpenerVisible={true} onClose={closeDropdown} fullWidth={true}>
                 <Dropdown.ItemCollection
                   noResultTitle={translate('akeneo.tailored_import.data_mapping.operations.no_result')}
                   noResultIllustration={<SettingsIllustration />}

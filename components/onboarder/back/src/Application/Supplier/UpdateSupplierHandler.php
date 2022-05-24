@@ -9,6 +9,7 @@ use Akeneo\OnboarderSerenity\Application\Supplier\Exception\SupplierDoesNotExist
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class UpdateSupplierHandler
@@ -17,6 +18,7 @@ final class UpdateSupplierHandler
         private Repository $repository,
         private ValidatorInterface $validator,
         private LoggerInterface $logger,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -51,6 +53,10 @@ final class UpdateSupplierHandler
         );
 
         $this->repository->save($updatedSupplier);
+
+        foreach ($updatedSupplier->events() as $event) {
+            $this->eventDispatcher->dispatch($event);
+        }
 
         $this->logger->debug(
             sprintf('Supplier "%s" updated.', $supplier->code()),

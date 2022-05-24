@@ -7,13 +7,13 @@ import ListAsset, {
   getListAssetMainMediaThumbnail,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
-import loadImage from 'akeneoassetmanager/tools/image-loader';
+import addToLoadingQueue from 'akeneoassetmanager/tools/image-loader';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
 import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-preview';
 import {Card, Link} from 'akeneo-design-system';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
-import {useRouter} from '@akeneo-pim-community/shared';
+import {useRouter, useIsMounted} from '@akeneo-pim-community/shared';
 
 type AssetCardProps = {
   asset: ListAsset;
@@ -40,6 +40,7 @@ const AssetCard = ({
   const [, , refreshedUrl] = useRegenerate(imageUrl);
   const emptyMediaUrl = getMediaPreviewUrl(router, emptyMediaPreview());
   const assetLabel = getAssetLabel(asset, context.locale);
+  const isMounted = useIsMounted();
 
   const assetEditUrl = router.generate('akeneo_asset_manager_asset_edit', {
     assetFamilyIdentifier: asset.assetFamilyIdentifier,
@@ -47,22 +48,19 @@ const AssetCard = ({
     tab: 'enrich',
   });
 
-  let isDisplayed = true;
   useEffect(() => {
-    loadImage(refreshedUrl)
-      .then(() => {
-        if (isDisplayed) {
-          setUrl(refreshedUrl);
-        }
-      })
-      .catch(() => {
-        setUrl(emptyMediaUrl);
-      });
-
-    return () => {
-      isDisplayed = false;
-    };
-  }, [asset, context.channel, context.locale]);
+    if (isMounted()) {
+      addToLoadingQueue(refreshedUrl)
+        .then(() => {
+          if (isMounted()) {
+            setUrl(refreshedUrl);
+          }
+        })
+        .catch(() => {
+          setUrl(emptyMediaUrl);
+        });
+    }
+  }, []);
 
   const handleClick = useCallback(() => {
     onClick?.(asset.code);

@@ -1,6 +1,6 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from 'feature/tests';
 import {DataMappingRow} from './DataMappingRow';
 import {DataMapping} from '../../models';
 import userEvent from '@testing-library/user-event';
@@ -36,10 +36,10 @@ const columns = [
   },
 ];
 
-test('it calls handler when user selects the row', () => {
+test('it calls handler when user selects the row', async () => {
   const handleSelect = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
@@ -55,14 +55,14 @@ test('it calls handler when user selects the row', () => {
     </table>
   );
 
-  userEvent.click(screen.getByText('parent'));
+  userEvent.click(screen.getByText('pim_common.parent'));
   expect(handleSelect).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
 });
 
-test('it calls remove handler after confirming removal', () => {
+test('it calls remove handler after confirming removal', async () => {
   const handleRemove = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
@@ -84,10 +84,10 @@ test('it calls remove handler after confirming removal', () => {
   expect(handleRemove).toHaveBeenCalledWith('04839ab3-3ef3-4e80-8117-a2522552a20f');
 });
 
-test('it does not display a remove button on identifier data mapping', () => {
+test('it does not display a remove button on identifier data mapping', async () => {
   const handleRemove = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
@@ -106,8 +106,8 @@ test('it does not display a remove button on identifier data mapping', () => {
   expect(screen.queryByTitle('pim_common.remove')).not.toBeInTheDocument();
 });
 
-test('it displays a data mapping row', () => {
-  renderWithProviders(
+test('it displays a data mapping row', async () => {
+  await renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
@@ -124,14 +124,14 @@ test('it displays a data mapping row', () => {
   );
 
   expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-  expect(screen.getByText('parent')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
   expect(
     screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
   ).toBeInTheDocument();
 });
 
-test('it displays a pill when there is a validation error', () => {
-  renderWithProviders(
+test('it displays a pill when there is a validation error', async () => {
+  await renderWithProviders(
     <table>
       <tbody>
         <DataMappingRow
@@ -148,4 +148,56 @@ test('it displays a pill when there is a validation error', () => {
   );
 
   expect(screen.getByRole('alert')).toBeInTheDocument();
+});
+
+test('it displays the attribute label', async () => {
+  await renderWithProviders(
+    <table>
+      <tbody>
+        <DataMappingRow
+          dataMapping={{
+            ...dataMapping,
+            target: {
+              type: 'attribute',
+              code: 'description',
+              attribute_type: 'pim_catalog_textarea',
+              channel: null,
+              locale: null,
+              action_if_empty: 'skip',
+              action_if_not_empty: 'set',
+              source_configuration: null,
+            },
+          }}
+          onSelect={jest.fn()}
+          hasError={false}
+          columns={columns}
+          isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={jest.fn()}
+        />
+      </tbody>
+    </table>
+  );
+
+  expect(screen.getByText('English description')).toBeInTheDocument();
+});
+
+test('it displays the property label', async () => {
+  await renderWithProviders(
+    <table>
+      <tbody>
+        <DataMappingRow
+          dataMapping={dataMapping}
+          onSelect={jest.fn()}
+          hasError={false}
+          columns={columns}
+          isSelected={false}
+          isIdentifierDataMapping={false}
+          onRemove={jest.fn()}
+        />
+      </tbody>
+    </table>
+  );
+
+  expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
 });

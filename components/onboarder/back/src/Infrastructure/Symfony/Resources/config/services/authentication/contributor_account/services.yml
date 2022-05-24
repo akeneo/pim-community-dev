@@ -1,0 +1,19 @@
+services:
+  #Command handlers
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+      - '@event_dispatcher'
+
+  #Repositories
+  Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
+    class: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Repository\Sql\DatabaseRepository
+    arguments:
+      - '@database_connection'
+
+  #Event subscribers
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+    tags:
+      - 'kernel.event_subscriber'

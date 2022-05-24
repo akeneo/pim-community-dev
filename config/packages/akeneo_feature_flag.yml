@@ -22,4 +22,4 @@ akeneo_feature_flag:
         - { feature: 'restore_product', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'read_only_product_attribute', service: 'akeneo.feature_flag.service.only_serenity_feature' }
         - { feature: 'sso_configuration', service: 'akeneo.feature_flag.service.only_serenity_feature' }
-        - { feature: 'job_automation_remote_storage', service: 'akeneo.job_automation.feature_flag.is_remote_storage_enabled'}
+        - { feature: 'job_automation_remote_storage', service: 'akeneo.platform.import_export.feature_flag.is_remote_storage_enabled'}

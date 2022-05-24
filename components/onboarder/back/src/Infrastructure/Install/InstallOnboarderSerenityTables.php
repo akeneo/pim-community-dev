@@ -25,13 +25,14 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
 
     public static function getSubscribedEvents(): array
     {
-        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables']];
+        return [InstallerEvents::POST_DB_CREATE => ['installOnboarderSerenityTables', 100]];
     }
 
     public function installOnboarderSerenityTables(): void
     {
         $this->addSupplierTable();
         $this->addSupplierContributorTable();
+        $this->addContributorAccountTable();
         $this->addOnboarderSerenityXlsxSupplierImportJob();
     }
 
@@ -67,6 +68,25 @@ final class InstallOnboarderSerenityTables implements EventSubscriberInterface
                 REFERENCES `akeneo_onboarder_serenity_supplier` (identifier)
                 ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        SQL;
+
+        $this->connection->executeStatement($sql);
+    }
+
+    private function addContributorAccountTable(): void
+    {
+        $sql = <<<SQL
+            CREATE TABLE IF NOT EXISTS `akeneo_onboarder_serenity_contributor_account` (
+            `id` varchar(36) NOT NULL,
+            `email` varchar(255) NOT NULL,
+            `password` varchar(255) DEFAULT NULL,
+            `access_token` varchar(255) DEFAULT NULL,
+            `access_token_created_at` DATETIME DEFAULT NULL,
+            `created_at` datetime NOT NULL,
+            `last_logged_at` datetime DEFAULT NULL,
+            PRIMARY KEY (`id`),
+            CONSTRAINT `UC_contributor_account_email` UNIQUE (`email`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         SQL;
 
         $this->connection->executeStatement($sql);

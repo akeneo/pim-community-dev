@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMap
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
@@ -87,6 +88,42 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                     valueUserIntents: [
                         new SetSimpleSelectValue('brand', null, null, 'this is a brand'),
                         new SetSimpleSelectValue('color', 'ecommerce', 'fr_FR', 'this is a color'),
+                    ],
+                ),
+            ],
+            'it handles simple select attribute targets with replacement operation' => [
+                'row' => [
+                    '25621f5a-504f-4893-8f0c-9f1b0076e53e' => 'this-is-a-sku',
+                    '2d9e967a-5efa-4a31-a254-99f7c50a145c' => 'nike',
+                    '2d9e967a-4efa-4a31-a254-99f7c50a145c' => 'green',
+                ],
+                'data_mappings' => [
+                    $this->createIdentifierDataMapping('25621f5a-504f-4893-8f0c-9f1b0076e53e'),
+                    DataMapping::create(
+                        'b244c45c-d5ec-4993-8cff-7ccd04e82feb',
+                        AttributeTarget::create(
+                            'brand',
+                            'pim_catalog_simpleselect',
+                            null,
+                            null,
+                            'set',
+                            'skip',
+                            null,
+                        ),
+                        ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
+                        OperationCollection::create([
+                            new SimpleSelectReplacementOperation([
+                                "adidas" => ["nike", "reebok"],
+                            ]),
+                        ]),
+                        [],
+                    ),
+                ],
+                'expected' => new UpsertProductCommand(
+                    userId: 1,
+                    productIdentifier: 'this-is-a-sku',
+                    valueUserIntents: [
+                        new SetSimpleSelectValue('brand', null, null, 'adidas'),
                     ],
                 ),
             ],

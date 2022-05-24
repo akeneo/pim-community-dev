@@ -24,6 +24,7 @@ abstract class SqlIntegrationTestCase extends KernelTestCase
             DELETE FROM `akeneo_onboarder_serenity_supplier`;
             DELETE FROM `akeneo_onboarder_serenity_supplier_contributor`;
             DELETE FROM `akeneo_batch_job_execution`;
+            DELETE FROM `akeneo_onboarder_serenity_contributor_account`;
         SQL);
 
         $this->addOnboarderSerenityXlsxSupplierImportJob();

@@ -9,3 +9,6 @@ oneup_flysystem:
         archivist_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.archivist_adapter'
+        local_storage_adapter:
+            local:
+                location: '/'

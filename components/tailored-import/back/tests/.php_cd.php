@@ -21,7 +21,6 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
-            'Symfony\Component\Validator\ConstraintViolationInterface',
             'Webmozart\Assert\Assert',
             // TODO: Write more specific rules later
             'Akeneo\Pim\Enrichment\Product\API',

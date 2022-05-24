@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Authorization;
 
+use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -27,31 +28,14 @@ use Webmozart\Assert\Assert;
  */
 class CachedAuthorizationChecker implements AuthorizationCheckerInterface
 {
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
+    private LRUCache $cache;
 
-    /** @var array */
-    private $cachedResults;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface         $tokenStorage
-     */
     public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-        NormalizerInterface $normalizer
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private TokenStorageInterface $tokenStorage,
+        private NormalizerInterface $normalizer
     ) {
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->normalizer = $normalizer;
-        $this->cachedResults = [];
+        $this->cache = new LRUCache(20000);
     }
 
     /**
@@ -64,12 +48,11 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
         }
 
         $index = $this->getArgumentsAsIndex($attributes, $object);
-        if (!array_key_exists($index, $this->cachedResults)) {
-            $isGranted = $this->authorizationChecker->isGranted($attributes, $object);
-            $this->cachedResults[$index] = $isGranted;
-        }
+        $fetchNotFoundAuthorization = function (string $index) use ($attributes, $object): bool {
+            return $this->authorizationChecker->isGranted($attributes, $object);
+        };
 
-        return $this->cachedResults[$index];
+        return $this->cache->getForKey($index, $fetchNotFoundAuthorization);
     }
 
     /**

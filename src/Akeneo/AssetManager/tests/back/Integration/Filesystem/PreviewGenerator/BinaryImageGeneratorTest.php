@@ -64,7 +64,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_gets_a_preview_for_a_media_file_attribute()
     {
-        $data = $this->generateImage(10, 1);
+        $data = $this->generateJpegImage(10, 1);
         $this->binaryImageGenerator->supports('google-logo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate($data, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
@@ -80,7 +80,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_gets_a_preview_for_a_media_file_attribute_from_the_cache()
     {
-        $data = $this->generateImage(10, 1);
+        $data = $this->generateJpegImage(10, 1);
         $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate($data, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
 
@@ -100,7 +100,7 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_gets_a_preview_for_a_media_file_attribute_from_the_cache_removed()
     {
-        $data = $this->generateImage(10, 1);
+        $data = $this->generateJpegImage(10, 1);
 
         $this->binaryImageGenerator->supports('akeneo.png', $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
         $previewImage = $this->binaryImageGenerator->generate($data, $this->mediaFileAttribute, PreviewGeneratorRegistry::THUMBNAIL_TYPE);
@@ -150,17 +150,17 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
     /**
      * @test
      */
-    public function it_throws_an_error_when_the_file_size_is_too_big()
+    public function it_returns_default_preview_when_the_file_size_is_too_big()
     {
-        $data = $this->generateImage(16000, 100);
+        $data = $this->generatePngImage(22000, 0);
 
-        $this->expectException(CouldNotGeneratePreviewException::class);
-
-        $this->binaryImageGenerator->generate(
+        $defaultPreview = $this->binaryImageGenerator->generate(
             $data,
             $this->mediaFileAttribute,
             PreviewGeneratorRegistry::THUMBNAIL_TYPE,
         );
+
+        $this->assertSame('__root__/thumbnail/asset_manager/am_binary_image_thumbnail/pim_asset_manager.default_image.image', $defaultPreview);
     }
 
     /**
@@ -168,9 +168,10 @@ final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
      */
     public function it_throws_an_error_when_resolution_is_too_big()
     {
-        $data = $this->generateImage(16000, 1);
+        $data = $this->generatePngImage(16001, 9);
 
         $this->expectException(CouldNotGeneratePreviewException::class);
+        $this->expectExceptionMessage('Could not load image from string');
 
         $this->binaryImageGenerator->generate(
             $data,

@@ -12,3 +12,6 @@ oneup_flysystem:
         tailored_import_storage_adapter:
             custom:
                 service: 'akeneo_flysystem_adapter.googlecloudstorage.tailored_import_storage_adapter'
+        local_storage_adapter:
+            local:
+                location: '/'

@@ -26,6 +26,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Webmozart\Assert\Assert;
 
@@ -58,6 +59,11 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         $this->stepExecution->incrementSummaryInfo('skipped_no_diff', $skippedNoDiffDuringThisBatch);
     }
 
+    public function setStepExecution(StepExecution $stepExecution): void
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
     private function upsertProduct(RowPayload $rowPayload): void
     {
         try {
@@ -69,10 +75,7 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         } catch (LegacyViolationsException|ViolationsException $violationsException) {
             $this->addWarning($violationsException->violations(), $rowPayload);
 
-            if (
-                'skip_product' === $this->stepExecution->getJobParameters()->get('error_action')
-                || $violationsException instanceof LegacyViolationsException
-            ) {
+            if ($this->shouldSkipProduct($violationsException)) {
                 $this->stepExecution->incrementSummaryInfo('skip');
 
                 return;
@@ -105,29 +108,65 @@ class ProductWriter implements ItemWriterInterface, StepExecutionAwareInterface,
         return $formattedCells;
     }
 
-    public function setStepExecution(StepExecution $stepExecution): void
+    private function shouldSkipProduct(ViolationsException|LegacyViolationsException $violationsException): bool
     {
-        $this->stepExecution = $stepExecution;
+        if (
+            $violationsException instanceof LegacyViolationsException ||
+            'skip_product' === $this->stepExecution->getJobParameters()->get('error_action')
+        ) {
+            return true;
+        }
+
+        /** @var ConstraintViolationInterface $violation */
+        foreach ($violationsException->violations() as $violation) {
+            if ('' === $violation->getPropertyPath()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function upsertProductWithSkippedValues(
         RowPayload $rowPayload,
         ViolationsException $violationsException,
     ): void {
-        $initialUserIntentsCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
+        $userIntentCountBeforeClean = $this->getUserIntentCount($rowPayload);
+        $rowPayload = $this->removeInvalidUserIntents($rowPayload, $violationsException);
+        $userIntentCountAfterClean = $this->getUserIntentCount($rowPayload);
 
+        if (0 === $userIntentCountAfterClean || $userIntentCountAfterClean === $userIntentCountBeforeClean) {
+            $this->stepExecution->incrementSummaryInfo('skip');
+
+            return;
+        }
+
+        $this->upsertProduct($rowPayload);
+    }
+
+    private function removeInvalidUserIntents(
+        RowPayload $rowPayload,
+        ViolationsException $violationsException,
+    ): RowPayload {
         $rowPayload->setUpsertProductCommand(
             UpsertProductCommandCleaner::removeInvalidUserIntents(
-                $violationsException,
+                array_map(
+                    static fn (ConstraintViolationInterface $violation) => $violation->getPropertyPath(),
+                    iterator_to_array($violationsException->violations()),
+                ),
                 $rowPayload->getUpsertProductCommand(),
             ),
         );
 
-        if (count($rowPayload->getUpsertProductCommand()->valueUserIntents()) < $initialUserIntentsCount) {
-            $this->upsertProduct($rowPayload);
-        } else {
-            $this->stepExecution->incrementSummaryInfo('skip');
-        }
+        return $rowPayload;
+    }
+
+    private function getUserIntentCount(RowPayload $rowPayload): int
+    {
+        $valueUserIntentCount = count($rowPayload->getUpsertProductCommand()->valueUserIntents());
+        $categoryUserIntentCount = null === $rowPayload->getUpsertProductCommand()->categoryUserIntent() ? 0 : 1;
+
+        return $valueUserIntentCount + $categoryUserIntentCount;
     }
 
     private function calculateSkippedNoDiff(StepExecution $stepExecution): int

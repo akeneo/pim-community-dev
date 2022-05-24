@@ -19,7 +19,7 @@ jest.mock('../AddDataMappingDropdown', () => ({
         onDataMappingAdded({
           uuid: 'value',
           target: {
-            code: 'a_code',
+            code: 'categories',
             type: 'property',
             action_if_not_empty: 'set',
             action_if_empty: 'skip',
@@ -39,7 +39,7 @@ const dataMappings: DataMapping[] = [
   {
     uuid: '288d85cb-3ffb-432d-a422-d2c6810113ab',
     target: {
-      code: 'a_code',
+      code: 'parent',
       type: 'property',
       action_if_not_empty: 'set',
       action_if_empty: 'skip',
@@ -78,7 +78,7 @@ test('it can add a new data mapping', async () => {
   expect(handleDataMappingCreated).toBeCalledWith({
     uuid: 'value',
     target: {
-      code: 'a_code',
+      code: 'categories',
       type: 'property',
       action_if_not_empty: 'set',
       action_if_empty: 'skip',
@@ -94,7 +94,7 @@ test('it displays the data mapping', async () => {
     {
       uuid: 'value',
       target: {
-        code: 'a_code',
+        code: 'parent',
         type: 'property',
         action_if_not_empty: 'set',
         action_if_empty: 'skip',
@@ -104,9 +104,9 @@ test('it displays the data mapping', async () => {
       sample_data: [],
     },
     {
-      uuid: 'anoter_value',
+      uuid: 'another_value',
       target: {
-        code: 'another_code',
+        code: 'family',
         type: 'property',
         action_if_not_empty: 'set',
         action_if_empty: 'skip',
@@ -146,7 +146,7 @@ test('it displays the data mapping', async () => {
     />
   );
 
-  expect(screen.getByText('a_code')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
   expect(
     screen.getByText('akeneo.tailored_import.data_mapping.sources.title: Source 1 (A) Source 3 (C)')
   ).toBeInTheDocument();
@@ -167,7 +167,7 @@ test('it calls handler when row is selected', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('a_code'));
+  userEvent.click(screen.getByText('pim_common.parent'));
 
   expect(handleDataMappingSelected).toBeCalledWith('288d85cb-3ffb-432d-a422-d2c6810113ab');
 });

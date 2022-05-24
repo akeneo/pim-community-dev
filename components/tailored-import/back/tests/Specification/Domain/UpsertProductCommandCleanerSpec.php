@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Platform\TailoredImport\Domain;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -22,28 +23,9 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class UpsertProductCommandCleanerSpec extends ObjectBehavior
 {
-    public function it_removes_only_invalid_user_intents()
+    public function it_cleans_value_user_intents()
     {
-        $notAValueUserIntentConstraintViolation = new ConstraintViolation(
-            'Not a value user intent violation',
-            null,
-            [],
-            '',
-            'name',
-            ''
-        );
-        $descriptionConstraintViolation = new ConstraintViolation(
-            'error',
-            null,
-            [],
-            '',
-            'valueUserIntents[1]',
-            'A description with error'
-        );
-        $constraintViolationList = new ConstraintViolationList([$descriptionConstraintViolation]);
-        $violationsException = new ViolationsException($constraintViolationList);
-
-        $upsertProductCommand = new UpsertProductCommand(
+        $invalidUpsertProductCommand = new UpsertProductCommand(
             userId: 1,
             productIdentifier: 'identifier',
             valueUserIntents: [
@@ -60,6 +42,22 @@ class UpsertProductCommandCleanerSpec extends ObjectBehavior
             ]
         );
 
-        $this::removeInvalidUserIntents($violationsException, $upsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
+        $this::removeInvalidUserIntents(['valueUserIntents[1]'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
+    }
+
+    public function it_cleans_category_user_intent()
+    {
+        $invalidUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+            categoryUserIntent: new SetCategories(['unknown_category'])
+        );
+
+        $expectedUpsertProductCommand = new UpsertProductCommand(
+            userId: 1,
+            productIdentifier: 'identifier',
+        );
+
+        $this::removeInvalidUserIntents(['categoryUserIntent'], $invalidUpsertProductCommand)->shouldBeLike($expectedUpsertProductCommand);
     }
 }

@@ -7,7 +7,7 @@ akeneo.automation:
       sftp: SFTP
       none: None
     file_path.label: File path
-    host.label: URL
+    host.label: Host
     port.label: Port
     username.label: Login
     password.label: Password

@@ -6,6 +6,13 @@ namespace AkeneoTestEnterprise\Pim\Enrichment\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMultiReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleReferenceEntityValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\UserIntent;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityCollectionType;
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\AttributeType\ReferenceEntityType;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -108,12 +115,13 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             'code' => 'pm_1_empty',
             'family_variant' => 'attribute_at_common_level',
         ]);
-        $this->createProduct('variant_1_empty', [
-            'parent' => 'pm_1_empty',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
+        $this->createProduct(
+            'variant_1_empty',
+            [
+                new ChangeParent('pm_1_empty'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
-        ]);
+        );
         $this->createProductModel([
             'code' => 'pm_2_filled',
             'family_variant' => 'attribute_at_common_level',
@@ -121,12 +129,13 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
                 $attributeCode => [$nonEmptyData],
             ]
         ]);
-        $this->createProduct('variant_2_filled', [
-            'parent' => 'pm_2_filled',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
+        $this->createProduct(
+            'variant_2_filled',
+            [
+                new ChangeParent('pm_2_filled'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
-        ]);
+        );
 
         $this->createFamilyVariant([
             'code' => 'attribute_at_variant_level',
@@ -145,29 +154,34 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
             'family_variant' => 'attribute_at_variant_level',
         ]);
 
-        $this->createProduct('variant_3_empty', [
-            'parent' => 'pm_3',
-            'values' => [
-                'a_yes_no' => [['data' => true, 'scope' => null, 'locale' => null]],
+        $refEntityUserIntent = $this->createReferenceEntityUserIntentFromAttributeValue(
+            $attributeCode,
+            $nonEmptyData
+        );
+        $this->createProduct(
+            'variant_3_empty',
+            [
+                new ChangeParent('pm_3'),
+                new SetBooleanValue('a_yes_no', null, null, true)
             ]
-        ]);
-        $this->createProduct('variant_3_filled', [
-            'parent' => 'pm_3',
-            'values' => [
-                'a_yes_no' => [['data' => false, 'scope' => null, 'locale' => null]],
-                $attributeCode => [$nonEmptyData],
+        );
+        $this->createProduct(
+            'variant_3_filled',
+            [
+                new ChangeParent('pm_3'),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                $refEntityUserIntent
             ]
-        ]);
+        );
 
-        $this->createProduct('simple_product_empty', [
-            'family' => 'a_family',
-        ]);
-        $this->createProduct('simple_product_filled', [
-            'family' => 'a_family',
-            'values' => [
-                $attributeCode => [$nonEmptyData],
+        $this->createProduct('simple_product_empty', [new SetFamily('a_family')]);
+        $this->createProduct(
+            'simple_product_filled',
+            [
+                new SetFamily('a_family'),
+                $refEntityUserIntent
             ]
-        ]);
+        );
         $this->createProduct('simple_product_without_family', []);
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
@@ -243,13 +257,19 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
     }
 
-    private function createProduct(string $identifier, array $data): void
+    /**
+     * @param string $identifier
+     * @param array<UserIntent> $userIntents
+     * @return void
+     */
+    private function createProduct(string $identifier, array $userIntents): void
     {
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('pim_catalog.validator.product')->validate($product);
-        Assert::assertEmpty($violations, sprintf('The %s product is not valid: %s', $product->getIdentifier(), $violations));
-        $this->get('pim_catalog.saver.product')->save($product);
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $this->getUserId('admin'),
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->get('pim_enrich.product.message_bus')->dispatch($command);
     }
 
     private function createProductModel(array $data): void
@@ -259,5 +279,57 @@ class EmptyFilterWithProductsAndProductModelsIntegration extends TestCase
         $violations = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         Assert::assertEmpty($violations, sprintf('The %s product model is not valid: %s', $productModel->getCode(), $violations));
         $this->get('pim_catalog.saver.product_model')->save($productModel);
+    }
+
+    private function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
+    }
+
+    private function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param array $standardFormat
+     *      ex. ['data' => 'record', 'scope' => null, 'locale' => null]
+     *          ['data' => ['record1', 'record2'], 'scope' => null, 'locale' => null]
+     * @return SetSimpleReferenceEntityValue|SetMultiReferenceEntityValue
+     */
+    private function createReferenceEntityUserIntentFromAttributeValue(
+        string $attributeCode,
+        array $standardFormat
+    ): SetSimpleReferenceEntityValue|SetMultiReferenceEntityValue
+    {
+        Assert::assertArrayHasKey( 'data', $standardFormat, '"data" key missing in standard format');
+
+        $userIntent = null;
+        if (\is_string($standardFormat['data'])) {
+            $userIntent = new SetSimpleReferenceEntityValue(
+                $attributeCode,
+                $standardFormat['scope'] ?? null,
+                $standardFormat['locale'] ?? null,
+                $standardFormat['data']
+            );
+        } elseif (\is_array($standardFormat['data'])) {
+            $userIntent = new SetMultiReferenceEntityValue(
+                $attributeCode,
+                $standardFormat['scope'] ?? null,
+                $standardFormat['locale'] ?? null,
+                $standardFormat['data']
+            );
+        }
+
+        Assert::assertNotNull($userIntent, 'data must either be a string or an array of string');
+        return $userIntent;
     }
 }

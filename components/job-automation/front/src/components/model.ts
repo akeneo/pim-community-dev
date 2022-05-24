@@ -33,7 +33,7 @@ const getDefaultStorage = (jobType: JobType, storageType: StorageType): Storage 
     case 'local':
       return {
         type: 'local',
-        file_path: `${jobType}_%job_label%_%datetime%.xlsx`,
+        file_path: `/tmp/${jobType}_%job_label%_%datetime%.xlsx`,
       };
     case 'sftp':
       return {
