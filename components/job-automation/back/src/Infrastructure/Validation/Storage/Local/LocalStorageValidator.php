@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage as LocalStorageModel;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\FilePath;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -19,7 +20,7 @@ class LocalStorageValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'type' => new EqualTo('local'),
+                'type' => new EqualTo(LocalStorageModel::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
             ],
         ]));

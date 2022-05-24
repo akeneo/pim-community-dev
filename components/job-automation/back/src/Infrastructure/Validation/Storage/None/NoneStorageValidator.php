@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\None;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage as NoneStorageModel;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
@@ -18,7 +19,7 @@ class NoneStorageValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'type' => new EqualTo('none'),
+                'type' => new EqualTo(NoneStorageModel::TYPE),
             ],
         ]));
     }
