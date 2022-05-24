@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use League\Flysystem\FilesystemOperator;
 
 final class FileSystemStorageClient implements StorageClientInterface

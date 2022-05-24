@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberInterface
@@ -30,7 +31,8 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     public function __construct(
         private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
-        private FeatureFlags $featureFlags
+        private FeatureFlags $featureFlags,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -57,6 +59,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
             return;
         }
 
+        $this->eventDispatcher->addSubscriber(new UpdateJobExecutionStorageSummarySubscriber($jobExecution));
         $command = new TransferFilesToStorageCommand(
             $this->extractFileToTransfer($jobExecution),
             $jobParameters[self::STORAGE_KEY],
