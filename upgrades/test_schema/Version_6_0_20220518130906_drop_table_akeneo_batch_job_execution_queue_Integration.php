@@ -8,6 +8,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -55,11 +56,21 @@ class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_queue_Int
     public function test_it_throw_an_error_if_job_queue_is_not_empty(): void
     {
         $this->createJobQueueTable();
-        $this->queueJob();
+        $this->insertJobInQueue();
 
         $this->reExecuteMigrationWithExpectedError(self::MIGRATION_LABEL);
 
         Assert::assertTrue($this->jobQueueTableExists());
+    }
+
+    public function test_it_remove_job_queue_if_all_message_have_be_consumed(): void
+    {
+        $this->createJobQueueTable();
+        $this->insertJobAlreadyFinished();
+
+        $this->reExecuteMigration(self::MIGRATION_LABEL);
+
+        Assert::assertFalse($this->jobQueueTableExists());
     }
 
     private function createJobQueueTable(): void
@@ -69,15 +80,15 @@ class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_queue_Int
         }
 
         $this->get('database_connection')->executeQuery(<<<SQL
-        create table akeneo_batch_job_execution_queue
+        CREATE TABLE akeneo_batch_job_execution_queue
         (
-            id               int auto_increment primary key,
-            job_execution_id int          null,
-            options          json         null,
-            consumer         varchar(255) null,
-            create_time      datetime     null,
-            updated_time     datetime     null
-        ) collate = utf8mb4_unicode_ci;
+            id               INT auto_increment PRIMARY KEY,
+            job_execution_id INT          NULL,
+            options          JSON         NULL,
+            consumer         VARCHAR(255) NULL,
+            create_time      DATETIME     NULL,
+            updated_time     DATETIME     NULL
+        ) COLLATE = utf8mb4_unicode_ci;
         SQL);
     }
 
@@ -89,13 +100,19 @@ class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_queue_Int
                 ->rowCount();
     }
 
-    private function queueJob(): void
+    private function insertJobInQueue(): void
     {
         $this->connection->executeQuery(<<<SQL
             INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, consumer, create_time, updated_time, options) VALUES 
-            (1, 'consumer1', DATE_SUB(NOW(), INTERVAL 10 day), DATE_SUB(NOW(), INTERVAL 9 day), '{}'),
-            (2, null, DATE_SUB(NOW(), INTERVAL 10 day), null, '{}'),
-            (3, null, DATE_SUB(NOW(), INTERVAL 3 day), null, '{}');
+            (2, NULL, DATE_SUB(NOW(), INTERVAL 10 day), NULL, '{}')
+        SQL);
+    }
+
+    private function insertJobAlreadyFinished(): void
+    {
+        $this->connection->executeQuery(<<<SQL
+            INSERT INTO akeneo_batch_job_execution_queue (job_execution_id, consumer, create_time, updated_time, options) VALUES 
+            (1, 'consumer1', DATE_SUB(NOW(), INTERVAL 10 day), DATE_SUB(NOW(), INTERVAL 9 day), '{}')
         SQL);
     }
 
@@ -131,6 +148,7 @@ class Version_6_0_20220518130906_drop_table_akeneo_batch_job_execution_queue_Int
             $output,
             $status
         );
+
         Assert::assertEquals(1, $status, \json_encode($output));
     }
 }
