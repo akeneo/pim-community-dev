@@ -9,12 +9,12 @@ use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
-final class SendWelcomeEmailHandler
+class SendWelcomeEmailHandler
 {
     public function __construct(
         private SendEmail $sendEmail,
         private UrlGeneratorInterface $urlGenerator,
-        private Environment $twig
+        private Environment $twig,
     ) {
     }
 
@@ -30,8 +30,8 @@ final class SendWelcomeEmailHandler
             '@AkeneoOnboarderSerenity/Email/contributor-invitation.html.twig',
             [
                 'contributorEmail' => $command->contributorAccount->email(),
-                'url' => $setUpPasswordUrl
-            ]
+                'url' => $setUpPasswordUrl,
+            ],
         );
 
         $email = new Email(

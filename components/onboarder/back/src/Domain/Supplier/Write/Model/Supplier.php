@@ -54,8 +54,8 @@ final class Supplier
                     Identifier::fromString($this->identifier()),
                     $deletedContributorEmail,
                 ),
-                $deletedContributorEmails
-            )
+                $deletedContributorEmails,
+            ),
         );
 
         $newContributorEmails = $this->contributors->computeCreatedContributorEmails($contributorEmails);
@@ -67,8 +67,8 @@ final class Supplier
                     Identifier::fromString($this->identifier()),
                     $createdContributorEmail,
                 ),
-                $newContributorEmails
-            )
+                $newContributorEmails,
+            ),
         );
 
         $this->contributors = Contributors::fromEmails($contributorEmails);
