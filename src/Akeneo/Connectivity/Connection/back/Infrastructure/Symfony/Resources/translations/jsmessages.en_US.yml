@@ -140,7 +140,7 @@ akeneo_connectivity.connection:
                     not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
-                    pending: App not connected. Opening the App should fix the conection issue.
+                    pending: App not connected. Opening the App should fix the connection issues.
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
