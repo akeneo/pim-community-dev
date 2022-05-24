@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Process\Process;
 
@@ -23,6 +24,7 @@ class ConsumeJobMessageIntegration extends TestCase
 {
     private JobLauncher $jobLauncher;
     private JobExecutionRepository $jobExecutionRepository;
+    private EntityManager $em;
 
     /**
      * {@inheritdoc}
@@ -36,6 +38,7 @@ class ConsumeJobMessageIntegration extends TestCase
         $jobInstanceSaver = $this->get('akeneo_batch.saver.job_instance');
         $jobInstanceSaver->save($jobInstance);
 
+        $this->em = $this->get('doctrine.orm.entity_manager');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->jobExecutionRepository = $this->get('pim_enrich.repository.job_execution');
     }
@@ -81,6 +84,7 @@ class ConsumeJobMessageIntegration extends TestCase
         Assert::assertEquals(ExitStatus::FAILED, $row['exit_code']);
         Assert::assertNotNull($row['health_check_time']);
 
+        $this->em->clear(JobExecution::class);
         $jobExecution = $this->jobExecutionRepository->findOneBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution);
 
@@ -122,6 +126,7 @@ class ConsumeJobMessageIntegration extends TestCase
         Assert::assertEquals(ExitStatus::UNKNOWN, $row['exit_code']);
         Assert::assertNotNull($row['health_check_time']);
 
+        $this->em->clear(JobExecution::class);
         $jobExecution = $this->jobExecutionRepository->findOneBy(['id' => $jobExecution->getId()]);
         $jobExecution = $this->getJobExecutionManager()->resolveJobExecutionStatus($jobExecution);
 
