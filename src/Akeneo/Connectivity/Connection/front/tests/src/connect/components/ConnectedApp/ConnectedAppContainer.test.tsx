@@ -413,6 +413,69 @@ test('The connected app container does not render with permissions tab if there 
     ).not.toBeInTheDocument();
 });
 
+test('The connected app container renders the catalogs tab with the view only option', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, scopes: ['read_catalogs']}} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+
+    assertPageHeader();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs')
+    ).toBeInTheDocument();
+    expect(ConnectedAppSettings).toHaveBeenCalledWith(
+        expect.objectContaining({
+            connectedApp: {...connectedApp, scopes: ['read_catalogs']},
+        }),
+        {}
+    );
+    // TODO: replace by checking if CatalogList component have not been called
+    expect(screen.queryByText('catalog list')).not.toBeInTheDocument();
+
+    act(() => {
+        userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs'));
+    });
+
+    // TODO: replace by checking if CatalogList component have been called
+    expect(screen.queryByText('catalog list')).toBeInTheDocument();
+});
+
+test('The connected app container does not render with catalogs tab if there is no scope with catalog permission', async () => {
+    const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
+        'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':
+            {
+                json: {flowType: FlowType.DATA_DESTINATION, auditable: true},
+            },
+    };
+
+    mockFetchResponses({
+        ...fetchConnectedAppMonitoringSettings,
+    });
+
+    renderWithProviders(<ConnectedAppContainer connectedApp={{...connectedApp, scopes: ['read_catalog_structure']}} />);
+    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings'));
+
+    assertPageHeader();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.settings')
+    ).toBeInTheDocument();
+    expect(
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs')
+    ).not.toBeInTheDocument();
+});
+
 test('The connected app container saves permissions', async () => {
     const fetchConnectedAppMonitoringSettings: MockFetchResponses = {
         'akeneo_connectivity_connection_apps_rest_get_connected_app_monitoring_settings?connectionCode=some_connection_code':

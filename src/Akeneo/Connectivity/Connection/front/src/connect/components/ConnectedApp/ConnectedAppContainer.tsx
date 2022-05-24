@@ -17,6 +17,7 @@ import {MonitoringSettings} from '../../../model/Apps/monitoring-settings';
 import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMonitoring';
 import {DeveloperModeTag} from '../DeveloperModeTag';
 import isGrantedOnProduct from '../../is-granted-on-product';
+import isGrantedOnCatalog from '../../is-granted-on-catalog';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -24,6 +25,7 @@ type Props = {
 
 const settingsTabName = '#connected-app-tab-settings';
 const permissionsTabName = '#connected-app-tab-permissions';
+const catalogsTabName = '#connected-app-tab-catalogs';
 const errorMonitoringTabName = '#connected-app-tab-error-monitoring';
 
 export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
@@ -165,6 +167,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
     const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
 
     const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
+    const isAtLeastGrantedToViewCatalogs = isGrantedOnCatalog(connectedApp, 'view');
 
     return (
         <>
@@ -213,6 +216,17 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.permissions')}
                         </TabBar.Tab>
                     )}
+                    {isAtLeastGrantedToViewCatalogs && (
+                        <TabBar.Tab
+                            isActive={isCurrent(catalogsTabName)}
+                            onClick={() => {
+                                setActiveTab(catalogsTabName);
+                                switchTo(catalogsTabName);
+                            }}
+                        >
+                            {translate('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs')}
+                        </TabBar.Tab>
+                    )}
                     <TabBar.Tab
                         isActive={isCurrent(errorMonitoringTabName)}
                         onClick={() => {
@@ -244,6 +258,8 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                         onlyDisplayViewPermissions={!isGrantedOnProduct(connectedApp, 'edit')}
                     />
                 )}
+
+                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && <div>catalog list</div>}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
             </PageContent>
