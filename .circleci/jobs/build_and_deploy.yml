@@ -122,7 +122,7 @@ jobs:
                   command: yq delete --inplace docker-compose.yml services.mysql.ports
             -   run:
                     name: Setup missing directories
-                    command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer ~/.cache/yarn
+                    command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.composer
             - persist_to_workspace:
                   root: ~/
                   paths:
@@ -168,6 +168,9 @@ jobs:
         steps:
             -   attach_workspace:
                     at: ~/
+            -   run:
+                    name: Setup missing directories
+                    command: mkdir -p ~/.cache/yarn
             -   run:
                     name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
                     command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
