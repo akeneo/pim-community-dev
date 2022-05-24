@@ -110,7 +110,7 @@
         "jfcherng/php-diff": "^6.10",
         "justinrainbow/json-schema": "^5.2.11",
         "league/flysystem-google-cloud-storage": "^2.3.0",
-        "league/flysystem-sftp": "^3.0",
+        "league/flysystem-sftp-v3": "^3.0",
         "openspout/openspout": "^3.3.0",
         "phpseclib/phpseclib": "2.0.31",
         "symfony/password-hasher": "5.4.*",

@@ -20,9 +20,9 @@ use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage;
 use Akeneo\Platform\JobAutomation\Infrastructure\Security\Encrypter;
 use Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\RemoteStorageClientProviderInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\PhpseclibV2\ConnectionProvider;
-use League\Flysystem\PhpseclibV2\SftpAdapter;
-use League\Flysystem\PhpseclibV2\SftpConnectionProvider;
+use League\Flysystem\PhpseclibV3\ConnectionProvider;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 
 final class SftpStorageClientProvider implements RemoteStorageClientProviderInterface
 {

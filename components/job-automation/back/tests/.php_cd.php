@@ -55,7 +55,7 @@ $rules = [
             'Akeneo\UserManagement\ServiceApi',
 
             'League\Flysystem\Filesystem',
-            'League\Flysystem\PhpseclibV2',
+            'League\Flysystem\PhpseclibV3',
             'Twig\Environment',
         ],
     )->in('Akeneo\Platform\JobAutomation\Infrastructure'),
