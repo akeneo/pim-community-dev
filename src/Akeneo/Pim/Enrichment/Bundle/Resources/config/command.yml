@@ -60,3 +60,9 @@ services:
             - '%pim_job_product_batch_size%'
         tags:
             - { name: console.command }
+
+    Akeneo\Pim\Enrichment\Bundle\Command\Category\CheckCategoryTrees\CheckCategoryTrees:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
