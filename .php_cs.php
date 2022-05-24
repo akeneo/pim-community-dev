@@ -19,4 +19,10 @@ return (new PhpCsFixer\Config())
             ->in(__DIR__ . '/tests/features')
             ->in(__DIR__ . '/tests/back/Acceptance')
             ->in(__DIR__ . '/src')
+            ->exclude([
+                // There is a php file in the node_modules directory of these workspaces:
+                'Oro/Bundle/ConfigBundle/front',
+                'Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front',
+                'Akeneo/Platform/Job/front',
+            ])
     );
