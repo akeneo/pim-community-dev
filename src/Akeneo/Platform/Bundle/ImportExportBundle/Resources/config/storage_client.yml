@@ -1,0 +1,16 @@
+services:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFilesToStorage:
+    arguments:
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProvider'
+      - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFile'
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFile: ~
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProvider:
+    arguments:
+      - '@akeneo_file_storage.file_storage.filesystem_provider'
+      - !tagged pim_import_export.storage_client_provider
+
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Local\LocalStorageClientProvider:
+    tags:
+      - { name: pim_import_export.storage_client_provider }

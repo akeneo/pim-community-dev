@@ -15,6 +15,5 @@ services:
         arguments:
             - '@pim_volume_monitoring.volume.normalizer.count_volume'
             - '@pim_volume_monitoring.volume.normalizer.average_max_volumes'
-            - !tagged pim_volume_monitoring.persistence.count_query
-            - !tagged pim_volume_monitoring.persistence.average_max_query
+            - '@feature_flags'
 
