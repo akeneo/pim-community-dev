@@ -33,4 +33,7 @@ services:
             $messageBus: '@catalogs.query.bus'
 
     Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
-        alias: "oro_security.security_facade"
+        alias: 'oro_security.security_facade'
+
+    Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
+        alias: 'pim_api.pagination.offset_hal_paginator'
