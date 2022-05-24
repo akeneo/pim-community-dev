@@ -60,6 +60,10 @@ class MigrateToUuidFillForeignUuid implements MigrateToUuidStep
         $logContext = $context->logContext;
 
         foreach ($this->getTablesWithoutProductTable() as $tableName => $columnNames) {
+            if (!$this->tableExists($tableName)) {
+                continue;
+            }
+
             $processedItems = 0;
             $logContext->addContext('substep', $tableName);
 
