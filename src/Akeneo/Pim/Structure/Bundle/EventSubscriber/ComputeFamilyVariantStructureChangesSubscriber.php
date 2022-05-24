@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -26,38 +30,17 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private string $jobName;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
-    /** @var string */
-    private $jobName;
-
-    /** @var bool */
-    private $isFamilyVariantNew;
-
-    /**
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param JobLauncherInterface                  $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param string                                $jobName
-     */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        JobLauncherInterface $jobLauncher,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private TokenStorageInterface $tokenStorage,
+        private JobLauncherInterface $jobLauncher,
+        private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        private Connection $connection,
+        private LoggerInterface $logger,
         string $jobName
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->jobLauncher = $jobLauncher;
-        $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobName = $jobName;
-        $this->isFamilyVariantNew = true;
     }
 
     /**
@@ -66,25 +49,8 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'checkIsFamilyVariantNew',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
         ];
-    }
-
-    /**
-     * Method that checks if the given family variant is new. This information is then used in the
-     * `computeVariantStructureChanges` function to determine wether a job should be launched or not.
-     *
-     * @param GenericEvent $event
-     */
-    public function checkIsFamilyVariantNew(GenericEvent $event): void
-    {
-        $subject = $event->getSubject();
-        if (!$subject instanceof FamilyVariantInterface) {
-            return;
-        }
-
-        $this->isFamilyVariantNew = $this->isFamilyVariantNew($subject);
     }
 
     /**
@@ -97,7 +63,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        if ($this->isFamilyVariantNew) {
+        if ($event->getArgument('is_new')) {
             return;
         }
 
@@ -108,20 +74,43 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
-        $this->jobLauncher->launch($jobInstance, $user, [
-            'family_variant_codes' => [$familyVariant->getCode()]
-        ]);
+        try {
+            $this->ensureNoOtherJobExecutionIsRunning($jobInstance, $familyVariant);
+
+            $this->jobLauncher->launch($jobInstance, $user, [
+                'family_variant_codes' => [$familyVariant->getCode()]
+            ]);
+        } catch (AnotherJobStillRunningException $e) {
+        }
     }
 
-    /**
-     * Checks if the given family variant is new.
-     *
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return bool
-     */
-    private function isFamilyVariantNew(FamilyVariantInterface $familyVariant): bool
+    private function ensureNoOtherJobExecutionIsRunning(JobInstance $jobInstance, FamilyVariantInterface $familyVariant): void
     {
-        return null === $familyVariant->getId();
+        $query = <<<SQL
+        SELECT *
+        FROM akeneo_batch_job_execution abje,
+         JSON_TABLE(JSON_EXTRACT(abje.raw_parameters, '$.family_variant_codes'), '$[*]' COLUMNS (
+            `code` VARCHAR(100) PATH '$'
+             )) pmd_attribute_codes
+    WHERE job_instance_id = :instanceId
+        AND exit_code in ('UNKNOWN', 'EXECUTED')
+        AND code = :familyVariantCode;
+SQL;
+        $stmt = $this->connection->executeQuery(
+            $query,
+            [
+                'instanceId' => $jobInstance->getId(),
+                'familyVariantCode' => $familyVariant->getCode(),
+            ]
+        )->fetchAllAssociative();
+
+        if (\count($stmt) === 0) {
+            return;
+        }
+
+        $this->logger->warning('Another job execution is still running (id = {job_id})', ['message' => 'another_job_execution_is_still_running', 'job_id' => $stmt[0]['id']]);
+        // TODO: should we stop job execution kill when longer than 8h ?
+
+        throw new AnotherJobStillRunningException();
     }
 }
