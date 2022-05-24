@@ -16,7 +16,6 @@ import {useFeatureFlags} from '../../shared/feature-flags';
 import {DeveloperModeTag} from '../components/DeveloperModeTag';
 import {useTestApps} from '../hooks/use-test-apps';
 import {useAppDeveloperMode} from '../hooks/use-app-developer-mode';
-import {CatalogList} from '@akeneo-pim-community/catalogs';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -86,8 +85,6 @@ export const MarketplacePage: FC = () => {
             </ApplyButton>
         ) : null;
     };
-
-    return <CatalogList />;
 
     return (
         <>
