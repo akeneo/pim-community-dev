@@ -66,6 +66,7 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         );
 
         // pimee_workflow_published_product
+        $this->get('feature_flags')->enable('published_product');
         $this->get('pimee_workflow.manager.published_product')->publish($identifier1Product);
         Assert::assertSame(
             $productUuid,

@@ -108,7 +108,6 @@ extensions:
         module: oro/datagrid/actions-panel
         parent: pimee-published-product-index-mass-actions
         targetZone: actions-panel
-        feature: published_products
 
     pimee-published-product-index-pagination:
         module: oro/datagrid/pagination-input
