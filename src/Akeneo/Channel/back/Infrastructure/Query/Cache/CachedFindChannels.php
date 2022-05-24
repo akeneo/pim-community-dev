@@ -12,10 +12,22 @@ use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 final class CachedFindChannels implements FindChannels, CachedQueryInterface
 {
     private ?array $cache = null;
+    private array $cacheByCodes = [];
 
     public function __construct(
         private FindChannels $findChannels
     ) {
+    }
+
+    public function findByCodes(array $codes): array
+    {
+        $cacheKey = implode('', $codes);
+
+        if (empty($this->cacheByCodes[$cacheKey])) {
+            $this->cacheByCodes[$cacheKey] = $this->findChannels->findByCodes($codes);
+        }
+
+        return $this->cacheByCodes[$cacheKey];
     }
 
     public function findAll(): array

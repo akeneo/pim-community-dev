@@ -9,6 +9,13 @@ namespace Akeneo\Channel\API\Query;
 interface FindChannels
 {
     /**
+     * @param $codes string[]
+     *
+     * @return Channel[]
+     */
+    public function findByCodes(array $codes): array;
+
+    /**
      * @return Channel[]
      */
     public function findAll(): array;

@@ -20,6 +20,29 @@ final class SqlFindChannelsIntegration extends TestCase
         );
     }
 
+    public function test_it_finds_channels_by_codes(): void
+    {
+        $results = $this->sqlFindChannels->findByCodes(['print', 'mobile']);
+
+        $this->assertIsArray($results);
+        $this->assertCount(2, $results);
+        $this->assertContainsOnlyInstancesOf(Channel::class, $results);
+
+        $printChannel = current(array_filter($results, fn (Channel $channel) => $channel->getCode() === 'print'));
+
+        $this->assertContains('de_DE', $printChannel->getLocaleCodes());
+        $this->assertContains('en_US', $printChannel->getLocaleCodes());
+        $this->assertContains('fr_FR', $printChannel->getLocaleCodes());
+
+        $this->assertContains('USD', $printChannel->getActiveCurrencies());
+        $this->assertContains('EUR', $printChannel->getActiveCurrencies());
+
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('en_US'));
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('fr_FR'));
+        $this->assertEquals('Print', $printChannel->getLabels()->getLabel('de_DE'));
+        $this->assertEquals(null, $printChannel->getLabels()->getLabel('jp_JP'));
+    }
+
     public function test_it_finds_all_channels(): void
     {
         $results = $this->sqlFindChannels->findAll();
