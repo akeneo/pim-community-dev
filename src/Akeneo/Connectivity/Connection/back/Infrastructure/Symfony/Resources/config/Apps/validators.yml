@@ -11,6 +11,12 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustNotBeExpiredValidator:
+        arguments:
+            - '@fos_oauth_server.storage.default'
+        tags:
+            - { name: validator.constraint_validator }
+
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ClientIdMustHaveOngoingAuthorizationValidator:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Session\AppAuthorizationSession'
