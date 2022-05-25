@@ -36,13 +36,13 @@ class CatalogFixtureCommand extends Command
 
     protected function configure(): void
     {
-        $this->setHelp('This command allows you to create a user...');
+        $this->setHelp('This command allows you to create a catalog and the associated connected App.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ('dev' !== $this->env) {
-            $output->writeln('This command should be run in dev environment.');
+            $output->writeln('This command must be run in dev environment.');
 
             return self::INVALID;
         }
