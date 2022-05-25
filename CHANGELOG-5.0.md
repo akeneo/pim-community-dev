@@ -1,5 +1,7 @@
 # 5.0.x
 
+- PIM-10469: Fix code cast on forCode in EntityWithValuesDraftBuilder
+
 # 5.0.96 (2022-05-24)
 
 # 5.0.95 (2022-05-13)

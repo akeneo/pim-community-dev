@@ -58,6 +58,7 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $entityWithValuesDraftRepository,
         ProductInterface $product,
         ValueInterface $textValue,
+        ValueInterface $textValue2,
         ValueInterface $newTextValue,
         ComparatorInterface $textComparator,
         EntityWithValuesDraftInterface $productDraft,
@@ -70,13 +71,22 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
                 '<all_channels>' => [
                     '<all_locales>' => 'my product'
                 ]
+            ],
+            '1000' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my product'
+                ]
             ]
         ];
 
         $newValuesCollection->add($textValue);
+        $newValuesCollection->add($textValue2);
         $product->getValuesForVariation()->willReturn($newValuesCollection);
         $normalizer->normalize($newValuesCollection, 'standard')->willReturn([
             'name' => [
+                ['data' => 'product', 'locale' => null, 'scope' => null]
+            ],
+            '1000' => [
                 ['data' => 'product', 'locale' => null, 'scope' => null]
             ]
         ]);
@@ -86,18 +96,29 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $normalizer->normalize($originalValuesCollection, 'standard')->willReturn([
             'name' => [
                 ['data' => 'my product', 'locale' => null, 'scope' => null]
-            ]
+            ],
+            '1000' => [
+                ['data' => 'my product', 'locale' => null, 'scope' => null]
+            ],
         ]);
 
         $textAttribute = new Attribute('name', 'text', [], false, false, null, null, false, 'text', []);
         $getAttributes->forCode('name')->willReturn($textAttribute);
+        $textAttribute2 = new Attribute('1000', 'text', [], false, false, null, null, false, 'text', []);
+        $getAttributes->forCode('1000')->willReturn($textAttribute2);
         $comparatorRegistry->getAttributeComparator('text')->willReturn($textComparator);
         $textComparator->compare(
             ['data' => 'product', 'locale' => null, 'scope' => null],
             ['data' => 'my product', 'locale' => null, 'scope' => null]
         )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
 
+        $textComparator->compare(
+            ['data' => 'product', 'locale' => null, 'scope' => null],
+            ['data' => 'my product', 'locale' => null, 'scope' => null]
+        )->willReturn(['data' => 'product', 'locale' => null, 'scope' => null]);
+
         $valueFactory->createByCheckingData($textAttribute, null, null, 'product')->willReturn($newTextValue);
+        $valueFactory->createByCheckingData($textAttribute2, null, null, 'product')->willReturn($newTextValue);
 
         $newTextValue->getAttributeCode()->willReturn('text');
 
@@ -108,7 +129,10 @@ class EntityWithValuesDraftBuilderSpec extends ObjectBehavior
         $entityWithValuesDraftRepository->findUserEntityWithValuesDraft($product, 'mary')->willReturn($productDraft);
         $productDraft->setValues(new WriteValueCollection([$newTextValue->getWrappedObject()]))->shouldBeCalled();
         $productDraft->setChanges([
-            'values' => ['name' => [['data' => 'product', 'locale' => null, 'scope' => null]]]
+            'values' => [
+                'name' => [['data' => 'product', 'locale' => null, 'scope' => null]],
+                '1000' => [['data' => 'product', 'locale' => null, 'scope' => null]],
+            ]
         ])->shouldBeCalled();
         $productDraft->setAllReviewStatuses(EntityWithValuesDraftInterface::CHANGE_DRAFT)->shouldBeCalled();
 
