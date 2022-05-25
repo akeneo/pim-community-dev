@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-10451: Fix reference schema in order to take into account the index on start_time
+- PIM-10453: Fix reference schema in order to take into account the index on updated in pim_catalog_category table
 
 # 6.0.29
 
