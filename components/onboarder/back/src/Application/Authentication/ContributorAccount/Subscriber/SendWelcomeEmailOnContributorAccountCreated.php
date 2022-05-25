@@ -24,6 +24,11 @@ final class SendWelcomeEmailOnContributorAccountCreated implements EventSubscrib
 
     public function sendWelcomeEmail(ContributorAccountCreated $event): void
     {
-        ($this->sendWelcomeEmailHandler)(new SendWelcomeEmail($event->contributorAccount));
+        ($this->sendWelcomeEmailHandler)(
+            new SendWelcomeEmail(
+                $event->contributorAccount->accessToken(),
+                $event->contributorAccount->email(),
+            )
+        );
     }
 }

@@ -22,14 +22,14 @@ class SendWelcomeEmailHandler
     {
         $setUpPasswordUrl = $this->urlGenerator->generate(
             'onboarder_serenity_contributor_set_up_password',
-            ['token' => (string) $command->contributorAccount->accessToken()],
+            ['token' => $command->accessToken],
             UrlGeneratorInterface::ABSOLUTE_URL,
         );
 
         $htmlContent = $this->twig->render(
             '@AkeneoOnboarderSerenity/Email/contributor-invitation.html.twig',
             [
-                'contributorEmail' => $command->contributorAccount->email(),
+                'contributorEmail' => $command->email,
                 'url' => $setUpPasswordUrl,
             ],
         );
@@ -39,7 +39,7 @@ class SendWelcomeEmailHandler
             $htmlContent,
             $setUpPasswordUrl,
             'no-reply@akeneo.com', //To define
-            $command->contributorAccount->email(),
+            $command->email,
         );
         ($this->sendEmail)($email);
     }

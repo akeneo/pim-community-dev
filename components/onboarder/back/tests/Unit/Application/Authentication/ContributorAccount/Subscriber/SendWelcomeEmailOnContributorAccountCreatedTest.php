@@ -30,7 +30,7 @@ class SendWelcomeEmailOnContributorAccountCreatedTest extends TestCase
         $sendWelcomeEmailHandlerSpy
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new SendWelcomeEmail($contributorAccount));
+            ->with(new SendWelcomeEmail($contributorAccount->accessToken(), $contributorAccount->email()));
 
         $sut = new SendWelcomeEmailOnContributorAccountCreated($sendWelcomeEmailHandlerSpy);
 

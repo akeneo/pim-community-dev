@@ -6,7 +6,6 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Authentication\Contribu
 
 use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
-use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model;
 use Akeneo\OnboarderSerenity\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\Email;
 use PHPUnit\Framework\TestCase;
@@ -39,6 +38,6 @@ class SendWelcomeEmailHandlerTest extends TestCase
             ->with(new Email('Welcome', 'htmlContent', 'http://wwww.example.com', 'no-reply@akeneo.com', $contributorEmail));
 
         $sut = new SendWelcomeEmailHandler($sendEmail, $urlGenerator, $twig);
-        ($sut)(new SendWelcomeEmail(Model\ContributorAccount::fromEmail($contributorEmail)));
+        ($sut)(new SendWelcomeEmail('access-token', $contributorEmail));
     }
 }
