@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10457: Fixed inconsistency with column oro_user.consecutive_authentication_failure_counter when migrating from v6 to serenity
 - PIM-10449: Remove old table related to old queue system
 - PIM-10451: Add migration to add an index on start_time on the job_execution table
 - MW-373: Prepare the marketplace migration to another subdomain
