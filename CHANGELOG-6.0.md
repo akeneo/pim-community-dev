@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.29 (2022-05-25)
+
 ## Bug fixes
 
 - PIM-10451: Fix reference schema in order to take into account the index on start_time
