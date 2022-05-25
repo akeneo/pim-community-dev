@@ -136,12 +136,12 @@ class IndexProductCommand extends Command
 
     private function getAllProductIdentifiers(int $batchSize): iterable
     {
-        $formerId = 0;
+        $formerId = NULL;
         $sql = <<< SQL
-SELECT id, identifier
+SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier
 FROM pim_catalog_product
-WHERE id > :formerId
-ORDER BY id ASC
+WHERE (CASE WHEN :formerId IS NULL THEN TRUE ELSE uuid > :formerId END)
+ORDER BY uuid ASC
 LIMIT :limit
 SQL;
         while (true) {
@@ -152,7 +152,7 @@ SQL;
                     'limit' => $batchSize,
                 ],
                 [
-                    'formerId' => \PDO::PARAM_INT,
+                    'formerId' => \PDO::PARAM_STR,
                     'limit' => \PDO::PARAM_INT,
                 ]
             )->fetchAllAssociative();
@@ -161,8 +161,33 @@ SQL;
                 return;
             }
 
-            $formerId = (int)end($rows)['id'];
-            yield array_column($rows, 'identifier');
+            $formerId = end($rows)['uuid'];
+
+            $existingMysqlIdentifiers = array_column($rows, '_id');
+
+            $results = $this->productAndProductModelClient->search([
+                'query' => [
+                    'ids' => [
+                        'values' =>
+                            $existingMysqlIdentifiers
+                    ]
+                ],
+                '_source' => false,
+                'size' => $batchSize
+            ]);
+
+            $esIdentifiers = array_map(function($doc) {
+                return $doc['_id'];
+            }, $results["hits"]["hits"]);
+
+            $diff = array_reduce($rows,function($carry,$item) use($esIdentifiers){
+                if(!in_array($item['_id'],$esIdentifiers)){
+                    $carry[] = $item['identifier'];
+                }
+                return $carry;
+            },[]);
+
+            yield $diff;
         }
     }
 
