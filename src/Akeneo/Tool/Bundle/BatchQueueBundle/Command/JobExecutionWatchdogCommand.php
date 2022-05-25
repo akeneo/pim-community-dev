@@ -42,7 +42,7 @@ final class JobExecutionWatchdogCommand extends Command
     {
         $this
             ->setHidden(true)
-            ->addArgument('job_execution_id', InputArgument::OPTIONAL, 'Job execution ID')
+            ->addArgument('job_execution_id', InputArgument::REQUIRED, 'Job execution ID')
             ->addOption(
                 'username',
                 null,
@@ -86,12 +86,13 @@ final class JobExecutionWatchdogCommand extends Command
 
             $this->executeProcess($process, $jobExecutionId);
         } catch (\Throwable $t) {
-            $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
-            $this->logger->error($t->getTraceAsString());
+            $this->logger->error(
+                sprintf('An error occurred: %s', $t->getMessage()),
+                ['exception' => $t]
+            );
         } finally {
             // update status if the job execution failed due to an uncatchable error as a fatal error
-            $exitStatus = $this->executionManager->getExitStatus((int)$jobExecutionId);
-            if ($exitStatus && $exitStatus->isRunning()) {
+            if ($this->executionManager->getExitStatus((int)$jobExecutionId)?->isRunning()) {
                 $this->executionManager->markAsFailed($jobExecutionId);
             }
         }
