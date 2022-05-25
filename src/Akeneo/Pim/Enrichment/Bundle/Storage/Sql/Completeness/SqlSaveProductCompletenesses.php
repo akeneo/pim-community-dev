@@ -63,7 +63,8 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             // Clean completeness rows that do not concern existing channels or activated locales anymore
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $conditions = [];
-                $values = [$productCompletenessCollection->productId()];
+                $productId = $productCompletenessCollection->productId();
+                $values = [$productId];
                 foreach ($productCompletenessCollection as $productCompleteness) {
                     $conditions[] = '(?, ?)';
                     $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
@@ -90,7 +91,7 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 } else {
                     $this->connection->executeQuery(
                         'DELETE FROM pim_catalog_completeness WHERE product_id = ?',
-                        [$productCompletenessCollection->productId()]
+                        [$productId]
                     );
                 }
             }
