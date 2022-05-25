@@ -19,6 +19,8 @@ import {
   OperationPreviewData,
   OperationSampleData,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
+  MultiSelectReplacementOperationBlock,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   SPLIT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
@@ -43,6 +45,7 @@ const operationBlocks: {
   [CLEAN_HTML_TAGS_OPERATION_TYPE]: CleanHTMLTagsOperationBlock,
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
+  [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
 };
 
 type OperationsProps = {

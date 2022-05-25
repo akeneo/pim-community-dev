@@ -4,4 +4,5 @@ export * from './OperationBlockProps';
 export * from './OperationPreviewData';
 export * from './OperationSampleData';
 export * from './ReplacementValues';
+export * from './MultiSelectReplacementOperationBlock';
 export * from './SimpleSelectReplacementOperationBlock';

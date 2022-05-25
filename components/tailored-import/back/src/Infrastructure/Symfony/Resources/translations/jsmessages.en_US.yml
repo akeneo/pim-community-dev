@@ -57,8 +57,9 @@ akeneo.tailored_import:
         semicolon: Semicolon (;)
         pipe: Pipe (|)
       simple_select_replacement:
-        title: Replacement
-        edit: Edit replacement
+        title: Simple select replacement
+      multi_select_replacement:
+        title: Multi select replacement
       no_result: No operation available
       no_source: First, select a source, then you will have access to operations
       no_available:

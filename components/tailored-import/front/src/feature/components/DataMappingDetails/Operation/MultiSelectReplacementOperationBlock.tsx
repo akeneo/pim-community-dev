@@ -6,26 +6,26 @@ import {isReplacementValues, ReplacementValues} from './ReplacementValues';
 import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from './ReplacementModal';
 import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../hooks';
 
-const SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE = 'simple_select_replacement';
+const MULTI_SELECT_REPLACEMENT_OPERATION_TYPE = 'multi_select_replacement';
 
-type SimpleSelectReplacementOperation = {
-  type: typeof SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE;
+type MultiSelectReplacementOperation = {
+  type: typeof MULTI_SELECT_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
 
-const isSimpleSelectReplacementOperation = (operation?: any): operation is SimpleSelectReplacementOperation =>
+const isMultiSelectReplacementOperation = (operation?: any): operation is MultiSelectReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
-  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE === operation.type &&
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE === operation.type &&
   'mapping' in operation &&
   isReplacementValues(operation.mapping);
 
-const getDefaultSimpleSelectReplacementOperation = (): SimpleSelectReplacementOperation => ({
-  type: SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+const getDefaultMultiSelectReplacementOperation = (): MultiSelectReplacementOperation => ({
+  type: MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
 
-const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange, onRemove}: OperationBlockProps) => {
+const MultiSelectReplacementOperationBlock = ({targetCode, operation, onChange, onRemove}: OperationBlockProps) => {
   const translate = useTranslate();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState(false);
   const [isReplacementModalOpen, openReplacementModal, closeReplacementModal] = useBooleanState(false);
@@ -43,8 +43,8 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
     isReplacementModalOpen
   );
 
-  if (!isSimpleSelectReplacementOperation(operation)) {
-    throw new Error('SimpleSelectReplacementOperationBlock can only be used with SimpleSelectReplacementOperation');
+  if (!isMultiSelectReplacementOperation(operation)) {
+    throw new Error('MultiSelectReplacementOperationBlock can only be used with MultiSelectReplacementOperation');
   }
 
   const handleCancel = () => {
@@ -62,7 +62,7 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
 
   return (
     <Block
-      title={translate(`akeneo.tailored_import.data_mapping.operations.simple_select_replacement.title`)}
+      title={translate(`akeneo.tailored_import.data_mapping.operations.multi_select_replacement.title`)}
       actions={
         <>
           <Button level="tertiary" ghost={true} size="small" onClick={openReplacementModal}>
@@ -76,7 +76,7 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
               values={attributeOptions}
               itemsPerPage={OPTION_COLLECTION_PAGE_SIZE}
               totalItems={totalItems}
-              operationType={SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE}
+              operationType={MULTI_SELECT_REPLACEMENT_OPERATION_TYPE}
               initialMapping={operation.mapping}
               onConfirm={handleConfirm}
               onCancel={handleCancel}
@@ -106,8 +106,8 @@ const SimpleSelectReplacementOperationBlock = ({targetCode, operation, onChange,
 };
 
 export {
-  SimpleSelectReplacementOperationBlock,
-  getDefaultSimpleSelectReplacementOperation,
-  SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
+  MultiSelectReplacementOperationBlock,
+  getDefaultMultiSelectReplacementOperation,
+  MULTI_SELECT_REPLACEMENT_OPERATION_TYPE,
 };
-export type {SimpleSelectReplacementOperation};
+export type {MultiSelectReplacementOperation};
