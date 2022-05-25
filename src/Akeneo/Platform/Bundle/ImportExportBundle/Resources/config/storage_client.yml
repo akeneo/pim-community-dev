@@ -3,6 +3,7 @@ services:
     arguments:
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProvider'
       - '@Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFile'
+      - '@event_dispatcher'
 
   Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\TransferFile: ~
 

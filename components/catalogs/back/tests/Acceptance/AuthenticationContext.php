@@ -65,7 +65,7 @@ class AuthenticationContext implements Context
 
         /** @var KernelBrowser $client */
         $client = $this->container->get(KernelBrowser::class);
-        $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
         // The connected user is not derivated from the access token when in `test` env
         // We need to explicitly log in with it

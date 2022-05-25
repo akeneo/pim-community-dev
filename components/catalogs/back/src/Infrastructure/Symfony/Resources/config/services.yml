@@ -41,3 +41,6 @@ services:
     Akeneo\Catalogs\Infrastructure\Command\CatalogFixtureCommand:
         arguments:
             $env: '%kernel.environment%'
+
+    Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
+        alias: 'pim_api.pagination.offset_hal_paginator'

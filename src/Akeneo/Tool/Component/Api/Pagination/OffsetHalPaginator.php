@@ -33,6 +33,7 @@ class OffsetHalPaginator implements PaginatorInterface
         $this->resolver->setDefaults([
             'uri_parameters'      => [],
             'item_identifier_key' => 'code',
+            'item_route_parameter' => 'code',
         ]);
 
         $this->resolver->setRequired([
@@ -70,7 +71,8 @@ class OffsetHalPaginator implements PaginatorInterface
         $embedded = [];
         foreach ($items as $item) {
             $itemIdentifier = $item[$parameters['item_identifier_key']];
-            $itemUriParameters = array_merge($parameters['uri_parameters'], ['code' => $itemIdentifier]);
+            $itemRouteParameter = $parameters['item_route_parameter'];
+            $itemUriParameters = array_merge($parameters['uri_parameters'], [$itemRouteParameter => $itemIdentifier]);
 
             $itemLinks = [
                 $this->createLink($parameters['item_route_name'], $itemUriParameters, 'self')

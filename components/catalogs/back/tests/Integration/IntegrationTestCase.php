@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Test\Integration;
 
 use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -71,7 +69,7 @@ abstract class IntegrationTestCase extends WebTestCase
 
         /** @var KernelBrowser $client */
         $client = self::getContainer()->get(KernelBrowser::class);
-        $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
         // The connected user is not derivated from the access token when in `test` env
         // We need to explicitly log in with it
