@@ -26,6 +26,10 @@ acceptance-back: #Doc: launch PHPUnit acceptance tests for tailored export
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
+.PHONY: unit-front
+unit-front:
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export test:unit:run $(O)
+
 .PHONY: ci-front
 ci-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-export lint:check
