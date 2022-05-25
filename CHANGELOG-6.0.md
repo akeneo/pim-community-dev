@@ -1,5 +1,7 @@
 # 6.0.x
 
+# 6.0.29 (2022-05-25)
+
 ## Bug fixes
 
 - PIM-10457: Fixed inconsistency with column oro_user.consecutive_authentication_failure_counter when migrating from v6 to serenity
