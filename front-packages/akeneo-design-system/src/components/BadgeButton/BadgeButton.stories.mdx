@@ -1,0 +1,102 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
+import {BadgeButton} from './BadgeButton';
+import {Badge} from '../Badge/Badge';
+
+<Meta
+  title="Components/Buttons/BadgeButton"
+  component={BadgeButton}
+  argTypes={{
+    onClick: {action: 'Clicked'},
+    disabled: {control: {type: 'boolean'}},
+    children: {control: {type: 'text'}},
+  }}
+  args={{
+    children: 'Badge button',
+  }}
+/>
+
+# BadgeButton
+
+## Playground
+
+Use this playground to test the BadgeButton component
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <BadgeButton {...args}>
+          {args.children}
+        </BadgeButton>
+        );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With a badge
+
+<Canvas>
+  <Story name="With a badge">
+    {args => {
+      return (
+        <BadgeButton {...args}>
+          {args.children}
+          <Badge level="secondary">Badge</Badge>
+        </BadgeButton>
+        );
+    }}
+  </Story>
+</Canvas>
+
+## Disabled
+
+<Canvas>
+  <Story name="Disabled">
+    {args => {
+      return (
+        <BadgeButton {...args} disabled={true}>
+          {args.children}
+          <Badge level="secondary">Badge</Badge>
+        </BadgeButton>
+        );
+    }}
+  </Story>
+</Canvas>
+
+## Active by default
+
+<Canvas>
+  <Story name="Active by default">
+    {args => {
+      return (
+        <BadgeButton {...args} isActive={true}>
+          {args.children}
+          <Badge level="secondary">Badge</Badge>
+        </BadgeButton>
+        );
+    }}
+  </Story>
+</Canvas>
+
+## Usage with `href` prop
+
+<Canvas>
+  <Story name="Link">
+    {args => {
+      return (
+          <>
+            <BadgeButton {...args} href="https://google.com" target="_blank">
+              {args.children}
+              <Badge level="secondary">Badge</Badge>
+            </BadgeButton>
+            <BadgeButton {...args} disabled={true} href="https://google.com" target="_blank">
+              Disabled badge with a link
+              <Badge level="secondary">Badge</Badge>
+            </BadgeButton>
+          </>
+        );
+    }}
+  </Story>
+</Canvas>
