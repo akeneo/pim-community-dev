@@ -1,10 +1,13 @@
 # 5.0.x
 
+# 5.0.96 (2022-05-24)
+
 # 5.0.95 (2022-05-13)
 
 ## Bug fixes
 
 - PIM-10428: [Backport PIM-10049] Add custom strip filter to avoid segmentation fault
+- PIM-10439: Add CLI command in order to fix broken order on categories
 
 # 5.0.94 (2022-05-11)
 
