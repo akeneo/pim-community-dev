@@ -153,6 +153,7 @@ akeneo_connectivity.connection:
           authorizations:
             title: Autorisierungen
             information: 'Um mehr über App-Autorisierungen zu erfahren, schauen Sie sich unseren {{ link }} an.'
+            no_access_to_product_information: 'Diese verbundene App hat keinen Zugriff auf Ihre Produktinformationen.'
             information_link_anchor: Hilfe-Center-Artikel
             no_scope: Es wurden keine spezifischen Berechtigungen angefordert.
           authentication:
@@ -257,6 +258,7 @@ akeneo_connectivity.connection:
           reference_entity_record: Referenz Entitäten Datensätze
           asset_families: Asset-Familien
           assets: Assets
+          catalogs: Kataloge
         new: NEU
       error:
         sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
