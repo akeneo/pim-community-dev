@@ -6,6 +6,7 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplier;
 use Akeneo\OnboarderSerenity\Application\Supplier\CreateSupplierHandler;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
@@ -13,6 +14,7 @@ use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Query\InMemory\InMemorySupp
 use Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class CreateSupplierHandlerTest extends TestCase
 {
@@ -21,13 +23,24 @@ final class CreateSupplierHandlerTest extends TestCase
     {
         $supplierRepository = new InMemoryRepository();
         $supplierExists = new InMemorySupplierExists($supplierRepository);
+        $eventDispatcherSpy = $this->createMock(EventDispatcher::class);
 
-        $sut = new CreateSupplierHandler($supplierRepository, $supplierExists, new NullLogger());
+        $identifier = Identifier::fromString('01319d4c-81c4-4f60-a992-41ea3546824c');
+
+        $eventDispatcherSpy
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->withConsecutive(
+                [new ContributorAdded($identifier, 'contributor1@example.com')],
+                [new ContributorAdded($identifier, 'contributor2@example.com')],
+            );
+
+        $sut = new CreateSupplierHandler($supplierRepository, $supplierExists, $eventDispatcherSpy, new NullLogger());
         ($sut)(new CreateSupplier(
-            '01319d4c-81c4-4f60-a992-41ea3546824c',
+            (string) $identifier,
             'supplier_code',
             'Supplier label',
-            [],
+            ['contributor1@example.com', 'contributor2@example.com'],
         ));
 
         $supplier = $supplierRepository->find(
@@ -47,12 +60,13 @@ final class CreateSupplierHandlerTest extends TestCase
 
         $repository = new InMemoryRepository();
         $supplierExists = new InMemorySupplierExists($repository);
+        $eventDispatcher = $this->createMock(EventDispatcher::class);
 
         $repository->save(Supplier::create($identifier, 'code', 'label', []));
 
         $this->expectExceptionObject(new SupplierAlreadyExistsException('code'));
 
-        $sut = new CreateSupplierHandler($repository, $supplierExists, new NullLogger());
+        $sut = new CreateSupplierHandler($repository, $supplierExists, $eventDispatcher, new NullLogger());
         ($sut)(new CreateSupplier(
             '01319d4c-81c4-4f60-a992-41ea3546824c',
             'code',

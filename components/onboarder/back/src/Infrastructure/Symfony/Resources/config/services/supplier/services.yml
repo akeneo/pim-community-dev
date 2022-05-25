@@ -16,6 +16,7 @@ services:
         arguments:
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository'
             - '@Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists'
+            - '@event_dispatcher'
             - '@logger'
 
     Akeneo\OnboarderSerenity\Application\Supplier\UpdateSupplierHandler:
