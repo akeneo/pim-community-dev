@@ -272,6 +272,7 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
     public function testItDoesNotRunBackgroundJobWhenAFamilyVariantHasNotChanged()
     {
+        // is this test relevant?
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
         $this->assertCount(

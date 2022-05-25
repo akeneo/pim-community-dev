@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
@@ -31,6 +33,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
     private string $jobName;
+    private ?FamilyVariantInterface $previousFamilyVariant;
 
     public function __construct(
         private TokenStorageInterface $tokenStorage,
@@ -38,6 +41,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private Connection $connection,
         private LoggerInterface $logger,
+        private IdentifiableObjectRepositoryInterface $familyVariantRepository,
         string $jobName
     ) {
         $this->jobName = $jobName;
@@ -49,8 +53,18 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
+            StorageEvents::PRE_SAVE => 'getPreviousValue',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
         ];
+    }
+
+    public function getPreviousValue(GenericEvent $event): void
+    {
+        $familyVariant = $event->getSubject();
+        if (!$familyVariant instanceof FamilyVariantInterface) {
+            return;
+        }
+        $this->previousFamilyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant->getCode());
     }
 
     /**
@@ -63,7 +77,25 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        if ($event->getArgument('is_new')) {
+        $hasChanged = $this->hasFamilyVariantStructureBeenUpdated($familyVariant);
+//        $levels = $familyVariant->getNumberOfLevel();
+//        $isDirty = false;
+//        for ($i = 1; $i <= $levels; $i++) {
+//            $variantAttributeSets = $familyVariant->getVariantAttributeSet($i);
+//            if (!$isDirty && ($variantAttributeSets->getAttributes()->isDirty() || $variantAttributeSets->getAxes()->isDirty())) {
+//                $isDirty = true;
+//            }
+//        }
+//        if (!$isDirty && $familyVariant->getTranslations()->isDirty()) {
+//            $isDirty = $familyVariant->getTranslations()->isDirty();
+//        }
+//
+//        if (!$isDirty) {
+//            return;
+//        }
+////        $isDirty = $familyVariant['variantAttributeSets']['isDirty'];
+
+        if ($event->getArgument('is_new') || (!$event->getArgument('is_new') && !$hasChanged)) {
             return;
         }
 
@@ -112,5 +144,27 @@ SQL;
         // TODO: should we stop job execution kill when longer than 8h ?
 
         throw new AnotherJobStillRunningException();
+    }
+
+    private function hasFamilyVariantStructureBeenUpdated(FamilyVariantInterface $familyVariant): bool
+    {
+//        $previousFamilyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant->getCode());
+        $levels = $familyVariant->getNumberOfLevel();
+
+        for ($i = 1; $i <= $levels; $i++) {
+            $variantAttributeSets = $familyVariant->getVariantAttributeSet($i)->getAttributes()->getValues();
+            $formerVariantAttributeSets = $this->previousFamilyVariant?->getVariantAttributeSet($i)?->getAttributes()?->getValues() ?? [];
+
+            $formerAttributeSetCodes = \array_map(fn(Attribute $attribute) => $attribute->getCode(), $formerVariantAttributeSets);
+            $newAttributeSetCodes = \array_map(fn(Attribute $attribute) => $attribute->getCode(), $variantAttributeSets);
+
+            $hasChanges = \array_diff($formerAttributeSetCodes, $newAttributeSetCodes);
+
+            if (\count($hasChanges) > 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
