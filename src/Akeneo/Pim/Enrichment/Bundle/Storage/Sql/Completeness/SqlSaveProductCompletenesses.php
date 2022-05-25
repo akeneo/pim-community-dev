@@ -65,15 +65,25 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 $conditions = [];
                 $values = [$productCompletenessCollection->productId()];
                 foreach ($productCompletenessCollection as $productCompleteness) {
-                    $conditions[] = '(locale_id != ? OR channel_id != ?)';
+                    $conditions[] = '(?, ?)';
                     $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
                     $values[] = $channelIdsFromCode[$productCompleteness->channelCode()];
                 }
 
                 if ([] !== $conditions) {
+                    /**
+                     * Increasing the range_optimizer_max_mem_size allows to mitigate the full table scan. See
+                     * https://dev.mysql.com/doc/refman/8.0/en/range-optimization.html
+                     */
+                    $sql = <<<SQL
+                    DELETE /*+ SET_VAR( range_optimizer_max_mem_size = 50000000) */
+                    FROM pim_catalog_completeness
+                    WHERE product_id = ? AND (locale_id, channel_id) NOT IN ({conditions})
+                    SQL;
+
                     $this->connection->executeQuery(
-                        \strtr('DELETE FROM pim_catalog_completeness WHERE product_id = ? AND {conditions}', [
-                            '{conditions}' => \implode(' AND ', $conditions),
+                        \strtr($sql, [
+                            '{conditions}' => \implode(',', $conditions),
                         ]),
                         $values
                     );
