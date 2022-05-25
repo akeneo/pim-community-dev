@@ -32,6 +32,7 @@
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/system",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
-    "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front"
+    "vendor/akeneo/pim-community-dev/src/Oro/Bundle/ConfigBundle/front",
+    "vendor/akeneo/pim-community-dev/components/catalogs/front"
   ]
 }

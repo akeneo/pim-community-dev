@@ -35,5 +35,12 @@ services:
     Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface:
         alias: 'oro_security.security_facade'
 
+    Akeneo\UserManagement\Component\Repository\UserRepositoryInterface:
+        alias: 'pim_user.repository.user'
+
+    Akeneo\Catalogs\Infrastructure\Command\CatalogFixtureCommand:
+        arguments:
+            $env: '%kernel.environment%'
+
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'

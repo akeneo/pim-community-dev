@@ -31,6 +31,7 @@
     "shared:build": "yarn workspace @akeneo-pim-community/shared lib:build",
     "measurement:lint:check": "yarn workspace @akeneo-pim-community/measurement lint:check",
     "measurement:build": "yarn workspace @akeneo-pim-community/measurement lib:build",
+    "catalogs:build": "yarn workspace @akeneo-pim-community/catalogs lib:build",
     "process-tracker:lint:check": "yarn workspace @akeneo-pim-community/process-tracker lint:check",
     "process-tracker:build": "yarn workspace @akeneo-pim-community/process-tracker lib:build",
     "catalog-volume-monitoring:lint:check": "yarn workspace @akeneo-pim-community/catalog-volume-monitoring lint:check",
@@ -39,7 +40,7 @@
     "config:build": "yarn workspace @akeneo-pim-community/config lib:build",
     "packages:unit": "yarn workspace @akeneo-pim-community/shared test:unit:run && yarn workspace @akeneo-pim-community/measurement test:unit:run && yarn workspace @akeneo-pim-community/process-tracker test:unit:run && yarn workspace @akeneo-pim-community/catalog-volume-monitoring test:unit:run",
     "packages:lint:check": "yarn shared:lint:check && yarn measurement:lint:check && yarn process-tracker:lint:check && yarn catalog-volume-monitoring:lint:check && yarn config:lint:check",
-    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn config:build && yarn process-tracker:build",
+    "packages:build": "yarn dsm:build && yarn shared:build && yarn measurement:build && yarn catalog-volume-monitoring:build && yarn config:build && yarn process-tracker:build  && yarn catalogs:build",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run"
   },
@@ -175,6 +176,6 @@
     "src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment",
     "src/Akeneo/Platform/Bundle/CatalogVolumeMonitoringBundle/front",
     "src/Oro/Bundle/ConfigBundle/front",
-    "components/catalogs/front/product-selection-builder"
+    "components/catalogs/front"
   ]
 }
