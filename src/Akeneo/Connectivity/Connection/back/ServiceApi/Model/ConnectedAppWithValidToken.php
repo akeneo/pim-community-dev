@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\PublicApi\Model;
+namespace Akeneo\Connectivity\Connection\ServiceApi\Model;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
