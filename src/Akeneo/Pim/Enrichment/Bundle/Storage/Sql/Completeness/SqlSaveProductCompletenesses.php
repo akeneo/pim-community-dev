@@ -87,6 +87,11 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                         ]),
                         $values
                     );
+                } else {
+                    $this->connection->executeQuery(
+                        'DELETE FROM pim_catalog_completeness WHERE product_id = ?',
+                        [$productCompletenessCollection->productId()]
+                    );
                 }
             }
 
