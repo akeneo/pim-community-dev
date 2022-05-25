@@ -60,6 +60,26 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         $channelIdsFromCode = $this->channelIdsIndexedByChannelCodes();
 
         $deleteAndInsertFunction = function () use ($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode) {
+            // Clean completeness rows that do not concern existing channels or activated locales anymore
+            foreach ($productCompletenessCollections as $productCompletenessCollection) {
+                $conditions = [];
+                $values = [$productCompletenessCollection->productId()];
+                foreach ($productCompletenessCollection as $productCompleteness) {
+                    $conditions[] = '(locale_id != ? OR channel_id != ?)';
+                    $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
+                    $values[] = $channelIdsFromCode[$productCompleteness->channelCode()];
+                }
+
+                if ([] !== $conditions) {
+                    $this->connection->executeQuery(
+                        \strtr('DELETE FROM pim_catalog_completeness WHERE product_id = ? AND {conditions}', [
+                            '{conditions}' => \implode(' AND ', $conditions),
+                        ]),
+                        $values
+                    );
+                }
+            }
+
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
@@ -69,8 +89,6 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
             if (empty($placeholders)) {
                 return;
             }
-
-            // TODO? Remove the former lines
 
             $insert = <<<SQL
                 INSERT INTO pim_catalog_completeness
