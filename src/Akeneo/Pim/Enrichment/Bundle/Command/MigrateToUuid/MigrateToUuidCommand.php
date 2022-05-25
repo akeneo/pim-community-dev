@@ -69,7 +69,7 @@ class MigrateToUuidCommand extends Command
             // As the migration can be run with a cron, the database can be not ready.
             $this->logger->notice('The database is not ready. Skip the migration.');
 
-            return self::FAILURE;
+            return self::SUCCESS;
         }
 
         if ($this->isAlreadySuccessfull()) {
@@ -239,7 +239,7 @@ class MigrateToUuidCommand extends Command
         return count($rows) >= 1;
     }
 
-    private function isDatabaseReady()
+    private function isDatabaseReady(): bool
     {
         return $this->tableExists('pim_one_time_task') &&
             $this->tableExists('akeneo_batch_job_execution') &&

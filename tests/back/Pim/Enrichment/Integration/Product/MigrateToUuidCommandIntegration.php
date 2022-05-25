@@ -50,14 +50,8 @@ final class MigrateToUuidCommandIntegration extends AbstractMigrateToUuidTestCas
         $this->loadFixtures();
 
         $this->removeTable('pim_one_time_task');
-        $foundException = false;
-        try {
-            $this->launchMigrationCommand();
-        } catch (\Exception) {
-            $foundException = true;
-        }
+        $this->launchMigrationCommand();
         $this->assertTheIndexesDoNotExist();
-        Assert::assertTrue(true === $foundException, 'No issue were found during migration');
     }
 
     private function assertTheIndexesDoNotExist(): void
