@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
 use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
+use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
@@ -41,7 +40,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private Connection $connection,
         private LoggerInterface $logger,
-        private IdentifiableObjectRepositoryInterface $familyVariantRepository,
+        private FamilyVariantRepositoryInterface $familyVariantRepository,
         string $jobName
     ) {
         $this->jobName = $jobName;
@@ -107,7 +106,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
         try {
-            $this->ensureNoOtherJobExecutionIsRunning($jobInstance, $familyVariant);
+            $this->ensureNoOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode());
 
             $this->jobLauncher->launch($jobInstance, $user, [
                 'family_variant_codes' => [$familyVariant->getCode()]
@@ -116,32 +115,37 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         }
     }
 
-    private function ensureNoOtherJobExecutionIsRunning(JobInstance $jobInstance, FamilyVariantInterface $familyVariant): void
+    private function ensureNoOtherJobExecutionIsRunning(int $jobInstanceId, string $familyVariantCode): void
     {
         $query = <<<SQL
-        SELECT *
-        FROM akeneo_batch_job_execution abje,
-         JSON_TABLE(JSON_EXTRACT(abje.raw_parameters, '$.family_variant_codes'), '$[*]' COLUMNS (
-            `code` VARCHAR(100) PATH '$'
-             )) pmd_attribute_codes
-    WHERE job_instance_id = :instanceId
-        AND exit_code in ('UNKNOWN', 'EXECUTED')
-        AND code = :familyVariantCode;
+        SELECT EXISTS(
+            SELECT *
+               FROM akeneo_batch_job_execution abje
+               WHERE job_instance_id = :instanceId
+                   AND exit_code in ('UNKNOWN', 'EXECUTING')
+             AND :familyVariantCode MEMBER OF (JSON_EXTRACT(raw_parameters, '$.family_variant_codes'))
+            AND (health_check_time IS NULL OR health_check_time > SUBTIME(UTC_TIMESTAMP(), '0:0:10'))
+        );
 SQL;
         $stmt = $this->connection->executeQuery(
             $query,
             [
-                'instanceId' => $jobInstance->getId(),
-                'familyVariantCode' => $familyVariant->getCode(),
+                'instanceId' => $jobInstanceId,
+                'familyVariantCode' => $familyVariantCode,
             ]
-        )->fetchAllAssociative();
+        );
 
-        if (\count($stmt) === 0) {
+        if ((int) $stmt->fetchOne() === 0) {
             return;
         }
 
         $this->logger->warning('Another job execution is still running (id = {job_id})', ['message' => 'another_job_execution_is_still_running', 'job_id' => $stmt[0]['id']]);
-        // TODO: should we stop job execution kill when longer than 8h ?
+
+        // In case of an old job execution that has not been marked as failed.
+        /**if ($jobExecutionRunning->getUpdatedTime() < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)) {
+            $this->logger->info('Job execution "{job_id}" is outdated: let\'s mark it has failed.', ['message' => 'job_execution_outdated', 'job_id' => $jobExecutionRunning->getId()]);
+            $this->executionManager->markAsFailed($jobExecutionRunning->getId());
+        }*/
 
         throw new AnotherJobStillRunningException();
     }
@@ -165,6 +169,7 @@ SQL;
             }
         }
 
-        return false;
+        // TODO: change to return false;
+        return true;
     }
 }

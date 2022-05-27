@@ -3,8 +3,10 @@
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Result;
@@ -15,6 +17,7 @@ use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
@@ -132,21 +135,17 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_launch_a_job_if_another_job_is_already_running(
-        $tokenStorage,
-        $jobLauncher,
-        $jobInstanceRepository,
+        TokenStorageInterface $tokenStorage,
+        JobLauncherInterface $jobLauncher,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         FamilyVariantInterface $familyVariant,
-        GenericEvent $event,
         TokenInterface $token,
         UserInterface $user,
         JobInstance $jobInstance,
         Connection $connection,
         Result $result,
     ) {
-        $event->getArgument('is_new')->willReturn(false);
-        $event->hasArgument('unitary')->willReturn(true);
-        $event->getArgument('unitary')->willReturn(true);
-        $event->getSubject()->willReturn($familyVariant);
+        $event = new GenericEvent($familyVariant, ['is_new' => false, 'unitary' => true]);
         $familyVariant->getId()->willReturn(12);
 
         $tokenStorage->getToken()->willReturn($token);
