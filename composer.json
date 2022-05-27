@@ -92,7 +92,7 @@
         "symfony/config": "4.4.25",
         "symfony/dependency-injection": "4.4.25",
         "symfony/dotenv": "4.4.25",
-        "symfony/event-dispatcher": "4.4.25",
+        "symfony/event-dispatcher": "4.4.42",
         "symfony/filesystem": "4.4.25",
         "symfony/finder": "4.4.25",
         "symfony/flex": "^1.4",
