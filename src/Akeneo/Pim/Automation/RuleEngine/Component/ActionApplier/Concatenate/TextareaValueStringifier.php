@@ -58,11 +58,15 @@ final class TextareaValueStringifier extends AbstractValueStringifier implements
         }
 
         if ($targetAttribute->getType() === AttributeTypes::TEXTAREA) {
-            if ($targetAttribute->isWysiwygEnabled()) {
-                return str_replace(["\r", "\n"], '<br/>', $value->__toString());
+            $sourceAttribute = $this->attributeRepository->findOneByIdentifier($value->getAttributeCode());
+            $stringValue = (string) $value;
+            if ($sourceAttribute->isWysiwygEnabled() && $targetAttribute->isWysiwygEnabled()) {
+                return $stringValue;
             }
 
-            return html_entity_decode(strip_tags(trim(str_replace('</p>', PHP_EOL, $value->__toString()))));
+            return $targetAttribute->isWysiwygEnabled()
+                ? str_replace(["\r", "\n"], '<br/>', $stringValue)
+                : html_entity_decode(strip_tags(trim(str_replace('</p>', PHP_EOL, $stringValue))));
         }
 
         return html_entity_decode(strip_tags(trim(
