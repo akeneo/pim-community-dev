@@ -138,7 +138,6 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: 应用不再在 Akeneo App Store 上提供。请联系应用支持人员。
           manage_app: 管理应用
           open_app: 打开应用
-          pending: 应用未连接。打开应用后应该会修复该连接问题。
         flash:
           error: 抱歉，获取已连接应用的列表时出现错误。
       edit:
