@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as base
+FROM debian:11.3-slim as base
 
 ENV PHP_CONF_DATE_TIMEZONE=UTC \
     PHP_CONF_MAX_EXECUTION_TIME=60 \
