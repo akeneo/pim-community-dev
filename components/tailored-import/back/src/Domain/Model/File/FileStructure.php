@@ -26,6 +26,7 @@ class FileStructure
         private int $firstColumn,
         private int $headerLine,
         private int $productLine,
+        private int $uniqueIdentifierColumn,
         private ?string $sheetName,
     ) {
         Assert::greaterThanEq($firstColumn, 0);
@@ -34,6 +35,7 @@ class FileStructure
         Assert::lessThanEq($headerLine, self::MAXIMUM_HEADER_LINE);
         Assert::greaterThanEq($productLine, $headerLine);
         Assert::lessThanEq($productLine, self::MAXIMUM_FIRST_PRODUCT_LINE);
+        Assert::greaterThanEq($this->uniqueIdentifierColumn, 0);
         Assert::nullOrNotEmpty($sheetName);
     }
 
@@ -41,12 +43,14 @@ class FileStructure
         int $firstColumn,
         int $headerLine,
         int $productLine,
+        int $uniqueIdentifierColumn,
         ?string $sheetName,
     ): self {
         return new self(
             $firstColumn,
             $headerLine,
             $productLine,
+            $uniqueIdentifierColumn,
             $sheetName,
         );
     }
@@ -57,6 +61,7 @@ class FileStructure
             (int) $normalizedFileStructure['first_column'],
             (int) $normalizedFileStructure['header_row'],
             (int) $normalizedFileStructure['first_product_row'],
+            (int) $normalizedFileStructure['unique_identifier_column'],
             $normalizedFileStructure['sheet_name'],
         );
     }
@@ -79,5 +84,10 @@ class FileStructure
     public function getSheetName(): ?string
     {
         return $this->sheetName;
+    }
+
+    public function getUniqueIdentifierColumn(): int
+    {
+        return $this->uniqueIdentifierColumn;
     }
 }
