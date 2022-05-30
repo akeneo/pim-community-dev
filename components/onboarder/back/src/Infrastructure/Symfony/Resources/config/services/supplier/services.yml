@@ -1,10 +1,4 @@
 services:
-    akeneo.onboarder_serenity.feature:
-        class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
-        arguments:
-            - '%env(bool:FLAG_ONBOARDER_SERENITY_ENABLED)%'
-        public: true
-
     # Repositories
     Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository:
         class: Akeneo\OnboarderSerenity\Infrastructure\Supplier\Repository\Sql\DatabaseRepository

@@ -1,4 +1,11 @@
 services:
+  #feature flag
+  akeneo.onboarder_serenity_contributor_authentication.feature:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
+    public: true
+
   #Command handlers
   Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
     arguments:
@@ -20,6 +27,7 @@ services:
   Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
     arguments:
       - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+      - '@akeneo.onboarder_serenity_contributor_authentication.feature'
     tags:
       - 'kernel.event_subscriber'
 
