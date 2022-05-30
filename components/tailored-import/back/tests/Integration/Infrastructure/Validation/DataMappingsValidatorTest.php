@@ -161,27 +161,6 @@ final class DataMappingsValidatorTest extends AbstractValidationTest
                     ]
                 ],
             ],
-            'data mapping without identifier target' => [
-                'akeneo.tailored_import.validation.data_mappings.no_identifier_target_found',
-                '',
-                [
-                    [
-                        'uuid' => '018e1a5e-4d77-4a15-add8-f142111d4cd0',
-                        'target' => [
-                            'code' => 'categories',
-                            'type' => 'property',
-                            'action_if_not_empty' => 'add',
-                            'action_if_empty' => 'skip',
-                        ],
-                        'sources' => [
-                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc69',
-                            '9cecaeaf-d4d0-40be-9b78-53d5a1a5fc68',
-                        ],
-                        'operations' => [],
-                        'sample_data' => [],
-                    ]
-                ]
-            ],
             'data mappings with too many identifier target' => [
                 'akeneo.tailored_import.validation.data_mappings.too_many_identifier_target_found',
                 '',
