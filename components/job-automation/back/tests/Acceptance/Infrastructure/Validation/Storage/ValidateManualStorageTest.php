@@ -2,68 +2,68 @@
 
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\Storage;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage;
+use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Manual\ManualStorage;
 use Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\AbstractValidationTest;
 
-class ValidateLocalStorageTest extends AbstractValidationTest
+class ValidateManualStorageTest extends AbstractValidationTest
 {
     /**
-     * @dataProvider validLocalStorage
+     * @dataProvider validManualStorage
      */
-    public function testItDoesNotBuildViolationsWhenLocalStorageAreValid(array $value): void
+    public function testItDoesNotBuildViolationsWhenManualStorageAreValid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
+        $violations = $this->getValidator()->validate($value, new ManualStorage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
 
     /**
-     * @dataProvider invalidLocalStorage
+     * @dataProvider invalidManualStorage
      */
-    public function testItBuildViolationsWhenLocalStorageAreInvalid(
+    public function testItBuildViolationsWhenManualStorageAreInvalid(
         string $expectedErrorMessage,
         string $expectedErrorPath,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
+        $violations = $this->getValidator()->validate($value, new ManualStorage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }
 
-    public function validLocalStorage(): array
+    public function validManualStorage(): array
     {
         return [
-            'valid local storage' => [
+            'valid manual storage' => [
                 [
-                    'type' => 'local',
+                    'type' => 'manual',
                     'file_path' => '/tmp/products.xlsx',
                 ],
             ],
         ];
     }
 
-    public function invalidLocalStorage(): array
+    public function invalidManualStorage(): array
     {
         return [
             'invalid storage type' => [
-                'This value should be equal to "local".',
+                'This value should be equal to "manual".',
                 '[type]',
                 [
                     'type' => 'invalid',
                 ],
             ],
-            'local storage without file_path' => [
+            'manual storage without file_path' => [
                 'This field is missing.',
                 '[file_path]',
                 [
-                    'type' => 'local',
+                    'type' => 'manual',
                 ],
             ],
-            'local storage with additional fields' => [
+            'manual storage with additional fields' => [
                 'This field was not expected.',
                 '[additional]',
                 [
-                    'type' => 'local',
+                    'type' => 'manual',
                     'file_path' => '/tmp/products.xlsx',
                     'additional' => 'invalid',
                 ],

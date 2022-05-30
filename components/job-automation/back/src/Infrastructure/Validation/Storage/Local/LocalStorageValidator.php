@@ -14,8 +14,8 @@ class LocalStorageValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
-        if (!$constraint instanceof ManualStorage) {
-            throw new UnexpectedTypeException($constraint, ManualStorage::class);
+        if (!$constraint instanceof LocalStorage) {
+            throw new UnexpectedTypeException($constraint, LocalStorage::class);
         }
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
