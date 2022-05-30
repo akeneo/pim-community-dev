@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
@@ -24,24 +25,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class FetchRemoteFilesAfterExport implements EventSubscriberInterface
 {
-    private JobRegistry $jobRegistry;
-    private VersionProviderInterface $versionProvider;
-    private FilesystemProvider $filesystemProvider;
-    private FileFetcherInterface $fileFetcher;
-    private LoggerInterface $logger;
-
     public function __construct(
-        JobRegistry $jobRegistry,
-        VersionProviderInterface $versionProvider,
-        FilesystemProvider $filesystemProvider,
-        FileFetcherInterface $fileFetcher,
-        LoggerInterface $logger
+        private JobRegistry $jobRegistry,
+        private VersionProviderInterface $versionProvider,
+        private FilesystemProvider $filesystemProvider,
+        private FileFetcherInterface $fileFetcher,
+        private LoggerInterface $logger,
+        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
     ) {
-        $this->jobRegistry = $jobRegistry;
-        $this->versionProvider = $versionProvider;
-        $this->filesystemProvider = $filesystemProvider;
-        $this->fileFetcher = $fileFetcher;
-        $this->logger = $logger;
     }
 
     public static function getSubscribedEvents(): array
@@ -53,7 +44,12 @@ class FetchRemoteFilesAfterExport implements EventSubscriberInterface
 
     public function fetchRemoteFiles(JobExecutionEvent $event): void
     {
-        if ($this->versionProvider->isSaaSVersion()) {
+        $jobExecution = $event->getJobExecution();
+
+        if(
+            $this->versionProvider->isSaaSVersion() ||
+            $this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())
+        ) {
             return;
         }
 

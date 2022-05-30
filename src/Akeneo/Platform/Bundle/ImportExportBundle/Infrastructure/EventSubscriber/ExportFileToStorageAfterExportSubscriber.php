@@ -13,6 +13,7 @@ use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageCommand;
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\TransferFilesToStorageHandler;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
@@ -31,7 +32,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     public function __construct(
         private JobRegistry $jobRegistry,
         private TransferFilesToStorageHandler $transferFilesToStorageHandler,
-        private FeatureFlags $featureFlags,
+        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -45,16 +46,17 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
 
     public function exportFileToStorage(JobExecutionEvent $event): void
     {
-        if (!$this->featureFlags->isEnabled('job_automation_remote_storage')) {
+        $jobExecution = $event->getJobExecution();
+
+        if (!$this->remoteStorageFeatureFlag->isEnabled($jobExecution->getJobInstance()->getJobName())) {
             return;
         }
 
-        $jobExecution = $event->getJobExecution();
         if (JobInstance::TYPE_EXPORT !== $jobExecution->getJobInstance()->getType()) {
             return;
         }
 
-        $jobParameters = $jobExecution->getJobInstance()->getRawParameters();
+        $jobParameters = $jobExecution->getRawParameters();
         if (!array_key_exists(self::STORAGE_KEY, $jobParameters)) {
             return;
         }
