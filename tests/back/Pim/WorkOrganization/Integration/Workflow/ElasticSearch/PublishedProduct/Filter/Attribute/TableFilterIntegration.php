@@ -53,6 +53,7 @@ class TableFilterIntegration extends AbstractProductQueryBuilderTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
 
         $this->createAttribute([
             'code' => 'nutrition',

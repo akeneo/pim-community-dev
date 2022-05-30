@@ -55,6 +55,8 @@ class StatusFilterIntegration extends AbstractProductQueryBuilderTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
+
         $this->esProductClient = $this->get('akeneo_elasticsearch.client.published_product');
         $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 

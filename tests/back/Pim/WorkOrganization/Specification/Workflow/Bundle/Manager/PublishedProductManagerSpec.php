@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager;
 
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\Manager\PublishedProductManager;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -41,8 +42,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
         BulkSaverInterface $publishedProductBulkSaver,
         RemoverInterface $remover,
         BulkRemoverInterface $bulkRemover,
-        PublishedProductRepositoryInterface $repositoryWithoutPermission
+        PublishedProductRepositoryInterface $repositoryWithoutPermission,
+        FeatureFlags $featureFlags
     ) {
+        $featureFlags->isEnabled('published_product')->willReturn(true);
         $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $productRepository,
@@ -57,6 +60,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $remover,
             $bulkRemover,
             $repositoryWithoutPermission,
+            $featureFlags,
             [1, 1, 1]
         );
     }
