@@ -1,0 +1,6 @@
+akeneo_catalogs:
+    catalog_list:
+        catalogs_name: Catalogs name
+        status: Status
+        enabled: enabled
+        disabled: disabled

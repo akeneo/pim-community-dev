@@ -6,20 +6,33 @@ import {ThemeProvider} from 'styled-components';
 import {CatalogList} from './components/CatalogList';
 import {CatalogEdit} from './components/CatalogEdit';
 import {pimTheme} from 'akeneo-design-system';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {DependenciesContext} from '@akeneo-pim-community/shared';
+import translate from 'pimui/js/translator';
+
+const dependencies = {
+    translate,
+};
+
+const client = new QueryClient();
 
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={pimTheme}>
-            <Router>
-                <Switch>
-                    <Route path='/:id'>
-                        <CatalogEdit />
-                    </Route>
-                    <Route path='/'>
-                        <CatalogList />
-                    </Route>
-                </Switch>
-            </Router>
+            <QueryClientProvider client={client}>
+                <DependenciesContext.Provider value={dependencies}>
+                    <Router>
+                        <Switch>
+                            <Route path='/:id'>
+                                <CatalogEdit />
+                            </Route>
+                            <Route path='/'>
+                                <CatalogList owner='shopifi' />
+                            </Route>
+                        </Switch>
+                    </Router>
+                </DependenciesContext.Provider>
+            </QueryClientProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')
