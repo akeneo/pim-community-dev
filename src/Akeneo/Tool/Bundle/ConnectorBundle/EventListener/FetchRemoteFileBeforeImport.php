@@ -56,7 +56,6 @@ final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
             return;
         }
 
-        // get file path from jobparams[storage]
         $jobFileLocation = JobFileLocation::parseUrl($jobParameters->get('filePath'));
 
         if (true === $jobFileLocation->isRemote()) {
