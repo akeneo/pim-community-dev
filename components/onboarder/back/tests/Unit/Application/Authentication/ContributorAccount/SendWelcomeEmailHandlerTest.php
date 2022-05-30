@@ -6,11 +6,11 @@ namespace Akeneo\OnboarderSerenity\Test\Unit\Application\Authentication\Contribu
 
 use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmail;
 use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler;
+use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\Email;
+use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\EmailContent;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class SendWelcomeEmailHandlerTest extends TestCase
 {
@@ -19,25 +19,25 @@ class SendWelcomeEmailHandlerTest extends TestCase
     {
         $contributorEmail = 'jeanjacques@example.com';
 
-        $urlGenerator = $this->createMock(UrlGeneratorInterface::class);
-        $urlGenerator
+        $buildWelcomeEmail = $this->createMock(BuildWelcomeEmail::class);
+        $buildWelcomeEmail
             ->expects($this->once())
-            ->method('generate')
-            ->willReturn('http://wwww.example.com');
-
-        $twig = $this->createMock(Environment::class);
-        $twig
-            ->expects($this->once())
-            ->method('render')
-            ->willReturn('htmlContent');
+            ->method('__invoke')
+            ->willReturn(new EmailContent('htmlContent', 'textContent'));
 
         $sendEmail = $this->createMock(SendEmail::class);
         $sendEmail
             ->expects($this->once())
             ->method('__invoke')
-            ->with(new Email('Welcome', 'htmlContent', 'http://wwww.example.com', 'no-reply@akeneo.com', $contributorEmail));
+            ->with(new Email(
+                "You've received an invitation to contribute to onboarder",
+                'htmlContent',
+                'textContent',
+                'noreply@akeneo.com',
+                $contributorEmail,
+            ));
 
-        $sut = new SendWelcomeEmailHandler($sendEmail, $urlGenerator, $twig);
+        $sut = new SendWelcomeEmailHandler($sendEmail, $buildWelcomeEmail);
         ($sut)(new SendWelcomeEmail('access-token', $contributorEmail));
     }
 }

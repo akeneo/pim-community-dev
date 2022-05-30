@@ -78,6 +78,8 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Ramsey\Uuid\Uuid',
             'Symfony',
+            'Twig\Environment',
+            'Swift_Mailer',
         ],
     )->in('Akeneo\OnboarderSerenity\Infrastructure'),
 
@@ -117,6 +119,8 @@ $rules = [
             'Symfony\Component\Validator\Context\ExecutionContextInterface',
             'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
+            'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 

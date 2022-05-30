@@ -4,49 +4,26 @@ declare(strict_types=1);
 
 namespace Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount;
 
+use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\Email;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Twig\Environment;
 
 class SendWelcomeEmailHandler
 {
     public function __construct(
         private SendEmail $sendEmail,
-        private UrlGeneratorInterface $urlGenerator,
-        private Environment $twig,
+        private BuildWelcomeEmail $buildWelcomeEmail,
     ) {
     }
 
     public function __invoke(SendWelcomeEmail $command): void
     {
-        $setUpPasswordUrl = $this->urlGenerator->generate(
-            'onboarder_serenity_contributor_set_up_password',
-            ['token' => $command->accessToken],
-            UrlGeneratorInterface::ABSOLUTE_URL,
-        );
-
-        $htmlContent = $this->twig->render(
-            '@AkeneoOnboarderSerenity/Email/contributor-invitation.html.twig',
-            [
-                'contributorEmail' => $command->email,
-                'url' => $setUpPasswordUrl,
-            ],
-        );
-
-        $textContent = $this->twig->render(
-            '@AkeneoOnboarderSerenity/Email/contributor-invitation.txt.twig',
-            [
-                'contributorEmail' => $command->email,
-                'url' => $setUpPasswordUrl,
-            ],
-        );
-
+        $emailContent = ($this->buildWelcomeEmail)($command->accessToken, $command->email);
 
         $email = new Email(
             "You've received an invitation to contribute to onboarder",
-            $htmlContent,
-            $textContent,
+            $emailContent->htmlContent,
+            $emailContent->textContent,
             'noreply@akeneo.com',
             $command->email,
         );
