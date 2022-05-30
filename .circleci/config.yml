@@ -299,32 +299,6 @@ workflows:
                 requires:
                     - build_dev
 
-  nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - "4.0"
-      jobs:
-          - build_dev
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_dev
-          - test_back_phpunit:
-                requires:
-                    - build_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_dev
-          - back_behat_legacy:
-                requires:
-                    - build_dev
-
   on_demand:
       jobs:
         - ready_to_build?:
