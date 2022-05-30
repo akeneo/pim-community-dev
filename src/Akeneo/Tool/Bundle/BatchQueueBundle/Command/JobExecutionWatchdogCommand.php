@@ -15,7 +15,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 /**
- * The watchdog process is launched by the daemon consuming messages to run jobs. This watchdog process  launches itself a child process to run a single Akeneo job. 
+ * The watchdog process is launched by the daemon consuming messages to run jobs. This watchdog process  launches itself a child process to run a single Akeneo job.
  The daemon does not run directly the jobs:
  - the daemon is tenant agnostic whereas watchdog process is dedicated for a tenant
  - if the job die for unexpected reason, the job status is updated by the watchdog, which is possible as it can access to the database (tenant specific)
