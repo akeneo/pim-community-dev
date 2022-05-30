@@ -56,6 +56,9 @@ use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @author Pierre Allard <pierre.allard@akeneo.com>
+ *
+ * TODO: check why these tests hang out when not rn in separate processes
+ * @runTestsInSeparateProcesses
  */
 class ComputeTransformationsTest extends SqlIntegrationTestCase
 {
