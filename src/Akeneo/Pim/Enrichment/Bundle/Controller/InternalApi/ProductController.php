@@ -312,7 +312,7 @@ class ProductController
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
-            $product = $this->findProductOr404($id);
+            $product = $this->findProductOr404($uuid);
             $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
 
             return new JsonResponse($normalizedViolations, 400);
