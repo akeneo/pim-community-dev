@@ -342,13 +342,13 @@ class ProductController
         return $product;
     }
 
-    protected function findProductIdentifierOr404(int $id): string
+    protected function findProductIdentifierOr404(string $uuid): string
     {
-        $identifier = $this->findIdentifier->fromId($id);
+        $identifier = $this->findIdentifier->fromUuid($uuid);
 
         if (null === $identifier) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', $id)
+                sprintf('Product with uuid %s could not be found.', $uuid)
             );
         }
 
