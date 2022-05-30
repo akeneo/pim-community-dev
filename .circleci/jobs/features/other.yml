@@ -65,6 +65,7 @@ jobs:
             - run:
                   name: Asset Manager
                   command: PIM_CONTEXT=asset-manager make asset-manager-integration-back
+                  no_output_timeout: 60m
             - run:
                   name: Rules Engine
                   command: PIM_CONTEXT=rule-engine make rule-engine-integration-back
