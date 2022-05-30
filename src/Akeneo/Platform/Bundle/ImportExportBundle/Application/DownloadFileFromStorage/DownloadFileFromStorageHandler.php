@@ -24,7 +24,7 @@ final class DownloadFileFromStorageHandler
     public function handle(DownloadFileFromStorageCommand $command): string
     {
         $storage = $this->storageHydrator->hydrate($command->normalizedStorage);
-        if ($storage instanceof NoneStorage) {
+        if (null === $storage) {
             throw new \InvalidArgumentException('Unable to download file from none storage');
         }
 

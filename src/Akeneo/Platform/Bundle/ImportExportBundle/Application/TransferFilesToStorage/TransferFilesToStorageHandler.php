@@ -24,7 +24,7 @@ final class TransferFilesToStorageHandler
     public function handle(TransferFilesToStorageCommand $command)
     {
         $storage = $this->storageHydrator->hydrate($command->normalizedStorage);
-        if ($storage instanceof NoneStorage) {
+        if (null === $storage) {
             return;
         }
 
