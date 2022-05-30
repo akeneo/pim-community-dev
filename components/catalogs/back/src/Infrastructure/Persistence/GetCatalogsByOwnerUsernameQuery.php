@@ -25,7 +25,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
         $query = <<<SQL
             SELECT BIN_TO_UUID(akeneo_catalog.id) AS id, name, owner_id
             FROM akeneo_catalog
-            LEFT JOIN oro_user ON oro_user.id = akeneo_catalog.owner_id 
+            JOIN oro_user ON oro_user.id = akeneo_catalog.owner_id 
             WHERE oro_user.username = :owner_username
             ORDER BY akeneo_catalog.id
             LIMIT :offset, :limit
