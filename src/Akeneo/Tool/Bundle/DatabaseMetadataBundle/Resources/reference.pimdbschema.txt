@@ -258,6 +258,7 @@ akeneo_batch_warning | item | NO | longtext |
 akeneo_catalog | id | NO | binary(16) | PRI
 akeneo_catalog | name | NO | varchar(255) |
 akeneo_catalog | owner_id | NO | int | MUL
+akeneo_catalog | is_enabled | NO | tinyint |
 akeneo_catalog | created | NO | datetime |
 akeneo_catalog | updated | NO | datetime |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
