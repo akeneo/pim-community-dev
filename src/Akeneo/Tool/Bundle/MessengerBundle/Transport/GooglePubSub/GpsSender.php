@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 
 use Akeneo\Tool\Bundle\MessengerBundle\Ordering\OrderingKeySolver;
+use Akeneo\Tool\Bundle\MessengerBundle\Stamp\TenantIdStamp;
 use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\PubSub\Topic;
 use Symfony\Component\Messenger\Envelope;
@@ -18,15 +19,11 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
  */
 final class GpsSender implements SenderInterface
 {
-    private SerializerInterface $serializer;
-    private Topic $topic;
-    private OrderingKeySolver $orderingKeySolver;
-
-    public function __construct(Topic $topic, SerializerInterface $serializer, OrderingKeySolver $orderingKeySolver)
-    {
-        $this->topic = $topic;
-        $this->serializer = $serializer;
-        $this->orderingKeySolver = $orderingKeySolver;
+    public function __construct(
+        private Topic $topic,
+        private SerializerInterface $serializer,
+        private OrderingKeySolver $orderingKeySolver
+    ) {
     }
 
     public function send(Envelope $envelope): Envelope

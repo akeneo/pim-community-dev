@@ -50,11 +50,11 @@ final class GpsReceiver implements ReceiverInterface
             'headers' => $message->attributes(),
         ]);
 
-        return [
-            $envelope
-                ->with(new TransportMessageIdStamp($message->id()))
-                ->with(new NativeMessageStamp($message))
-        ];
+        $envelope = $envelope
+            ->with(new TransportMessageIdStamp($message->id()))
+            ->with(new NativeMessageStamp($message));
+
+        return [$envelope];
     }
 
     public function ack(Envelope $envelope): void
@@ -77,7 +77,7 @@ final class GpsReceiver implements ReceiverInterface
 
     private function getNativeMessage(Envelope $envelope): Message
     {
-        /** @var NativeMessageStamp */
+        /** @var NativeMessageStamp|null $nativeMessageStamp */
         if (null === $nativeMessageStamp = $envelope->last(NativeMessageStamp::class)) {
             throw new \LogicException('NativeMessageStamp should be present on the Envelope.');
         }
