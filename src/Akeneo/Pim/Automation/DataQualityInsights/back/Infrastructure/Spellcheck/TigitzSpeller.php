@@ -41,7 +41,11 @@ class TigitzSpeller implements SpellerInterface
     public function check(TextSource $source, LocaleCode $locale, array $context = []): TextCheckResultCollection
     {
         try {
-            $issues = $this->speller->check($source->getAsString(), [(string)$locale], $context);
+            $issues = $this->speller->check(
+                self::preprocessTextSource($source)->getAsString(),
+                [(string)$locale],
+                $context
+            );
         } catch (\Throwable $throwable) {
             throw new TextCheckFailedException($throwable->getMessage());
         }
@@ -108,4 +112,39 @@ class TigitzSpeller implements SpellerInterface
 
         return array_map('strval', $ignoredWords);
     }
+
+
+    /**
+     * Preprocess the source text so that aspell pipe mode instruction are ignored
+     *
+     * tigitz/spellchecked launches aspell in pipe mode
+     * in pipe mode some special characters at the beginning of the line are instructions for aspell
+     * see http://aspell.net/man-html/Through-A-Pipe.html#Through-A-Pipe
+     * users put these chars innocently at the beginning of lines
+     * we must tell aspell to not interpret them using the ^ symbol
+     *
+     * @param TextSource $source the text source to preprocess
+     * @return TextSource the result of the preprocessing
+     */
+    private static function preprocessTextSource(TextSource $source): TextSource
+    {
+        $text = $source->getAsString();
+
+        $lines = explode("\n", $text);
+
+        $prefixedLines = array_map(
+            function ($line) {
+                return strlen($line) ? "^$line" : $line;
+            },
+            $lines
+        );
+
+        $preprocessedText = implode(
+            "\n",
+            $prefixedLines
+        );
+
+        return new TextSource($preprocessedText, $source->getEncoding());
+    }
+
 }
