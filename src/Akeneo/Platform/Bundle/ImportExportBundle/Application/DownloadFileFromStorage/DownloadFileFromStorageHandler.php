@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\DownloadFileFromStorageInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 
 final class DownloadFileFromStorageHandler
