@@ -22,6 +22,6 @@ final class NoneStorageHydrator implements StorageHydratorInterface
 
     public function supports(array $normalizedStorage): bool
     {
-        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === 'none';
+        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === NoneStorage::TYPE;
     }
 }

@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class AuthorizationCodeMustBeValid extends Constraint
 {
     public string $message = 'invalid_grant';
+    public string $cause = 'Code is not valid';
 
     public function getTargets(): string
     {

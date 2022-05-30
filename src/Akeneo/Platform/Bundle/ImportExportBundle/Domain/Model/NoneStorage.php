@@ -11,4 +11,5 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model;
 
 final class NoneStorage implements StorageInterface
 {
+    public const TYPE = 'none';
 }

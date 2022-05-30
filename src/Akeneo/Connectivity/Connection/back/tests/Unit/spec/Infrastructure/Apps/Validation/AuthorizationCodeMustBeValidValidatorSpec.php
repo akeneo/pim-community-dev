@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AccessTokenRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustBeValid;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\AuthorizationCodeMustBeValidValidator;
 use OAuth2\IOAuth2GrantCode;
@@ -56,24 +55,8 @@ class AuthorizationCodeMustBeValidValidatorSpec extends ObjectBehavior
         $constraint = new AuthorizationCodeMustBeValid();
 
         $storage->getAuthCode('auth_code_1234')->willReturn(null);
-        $context->buildViolation('invalid_grant')->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
-        $this->validate('auth_code_1234', $constraint);
-    }
-
-    public function it_builds_a_violation_if_the_authorization_code_is_expired(
-        IOAuth2GrantCode $storage,
-        ExecutionContextInterface $context,
-        ConstraintViolationBuilderInterface $violationBuilder,
-        IOAuth2AuthCode $authCode
-    ): void {
-        $constraint = new AuthorizationCodeMustBeValid();
-        $authCode->getClientId()->willReturn('client_id');
-        $authCode->hasExpired()->willReturn(true);
-
-        $storage->getAuthCode('auth_code_1234')->willReturn($authCode);
-        $context->buildViolation('invalid_grant')->shouldBeCalled()->willReturn($violationBuilder);
+        $context->buildViolation($constraint->message)->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->setCause($constraint->cause)->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate('auth_code_1234', $constraint);

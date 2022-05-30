@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Acceptance;
 
-use Akeneo\Connectivity\Connection\PublicApi\Model\ConnectedAppWithValidToken;
-use Akeneo\Connectivity\Connection\PublicApi\Service\ConnectedAppFactory;
+use Akeneo\Connectivity\Connection\ServiceApi\Model\ConnectedAppWithValidToken;
+use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Behat\Behat\Context\Context;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -65,7 +65,7 @@ class AuthenticationContext implements Context
 
         /** @var KernelBrowser $client */
         $client = $this->container->get(KernelBrowser::class);
-        $client->setServerParameter('AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $connectedApp->getAccessToken());
 
         // The connected user is not derivated from the access token when in `test` env
         // We need to explicitly log in with it

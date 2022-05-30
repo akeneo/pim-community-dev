@@ -10,14 +10,17 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage\FileToTransfer;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Event\FileCannotBeExported;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class TransferFilesToStorage implements TransferFilesToStorageInterface
 {
     public function __construct(
         private StorageClientProvider $storageClientProvider,
-        private TransferFile $transferFile
+        private TransferFile $transferFile,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -30,12 +33,17 @@ final class TransferFilesToStorage implements TransferFilesToStorageInterface
         foreach ($filesToTransfer as $fileToTransfer) {
             $sourceStorage = $this->storageClientProvider->getFromFileToTransfer($fileToTransfer);
 
-            $this->transferFile->transfer(
-                $sourceStorage,
-                $destinationStorage,
-                $fileToTransfer->getFileKey(),
-                $fileToTransfer->getOutputFileName()
-            );
+            try {
+                $this->transferFile->transfer(
+                    $sourceStorage,
+                    $destinationStorage,
+                    $fileToTransfer->getFileKey(),
+                    $fileToTransfer->getOutputFileName()
+                );
+            } catch (\Exception $exception) {
+                $message = $exception->getPrevious() ? $exception->getPrevious()->getMessage() : $exception->getMessage();
+                $this->eventDispatcher->dispatch(new FileCannotBeExported($message));
+            }
         }
     }
 }

@@ -31,4 +31,13 @@ final class Catalog
     {
         return $this->ownerId;
     }
+
+    public function withNewName(string $name): self
+    {
+        return new self(
+            $this->id,
+            $name,
+            $this->ownerId,
+        );
+    }
 }

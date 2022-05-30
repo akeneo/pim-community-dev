@@ -138,7 +138,6 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: 앱이 Akeneo App Store 목록에 더 이상 없습니다. App 지원 팀에 문의해주십시오.
           manage_app: 앱 관리
           open_app: 앱 열기
-          pending: 앱이 연결되어 있지 않습니다. 앱을 열면 연결 문제를 해결할 수 있습니다.
         flash:
           error: 죄송합니다. 연결된 앱 목록을 가져오는 동안 오류가 발생했습니다.
       edit:

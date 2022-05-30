@@ -6,9 +6,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @group ce
- */
 class RootEndpointIntegration extends ApiTestCase
 {
     public function testGetEndpoint()
@@ -28,6 +25,9 @@ class RootEndpointIntegration extends ApiTestCase
             'route' => '/api/rest/v1/products',
             'methods' => ['GET'],
         ], $payload['routes']['pim_api_product_list']);
+
+        $this->assertArrayNotHasKey('akeneo_asset_manager_asset_families_rest_connector_get', $payload['routes']);
+        $this->assertArrayNotHasKey('akeneo_shared_catalog_product_list_rest', $payload['routes']);
     }
 
     /**
