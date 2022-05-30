@@ -54,11 +54,12 @@ abstract class IntegrationTestCase extends WebTestCase
     protected function logAs(string $username): void
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
+        \assert(null !== $user);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
     }
 
-    protected function getAuthenticatedClient(array $scopes = []): KernelBrowser
+    protected function getAuthenticatedPublicApiClient(array $scopes = []): KernelBrowser
     {
         $connectedAppFactory = self::getContainer()->get(ConnectedAppFactory::class);
         $connectedApp = $connectedAppFactory->createFakeConnectedAppWithValidToken(
@@ -74,6 +75,17 @@ abstract class IntegrationTestCase extends WebTestCase
         // The connected user is not derivated from the access token when in `test` env
         // We need to explicitly log in with it
         $this->logAs($connectedApp->getUsername());
+
+        return $client;
+    }
+
+    protected function getAuthenticatedInternalApiClient(string $username = 'admin'): KernelBrowser
+    {
+        /** @var KernelBrowser $client */
+        $client = self::getContainer()->get(KernelBrowser::class);
+
+        $this->createUser($username);
+        $this->logAs($username);
 
         return $client;
     }

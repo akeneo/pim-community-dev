@@ -63,6 +63,6 @@ final class CreateCatalogAction
             throw new \LogicException('The catalog must exist after its creation');
         }
 
-        return new JsonResponse($this->normalizer->normalize($catalog, 'external_api'), Response::HTTP_CREATED);
+        return new JsonResponse($this->normalizer->normalize($catalog, 'public'), Response::HTTP_CREATED);
     }
 }

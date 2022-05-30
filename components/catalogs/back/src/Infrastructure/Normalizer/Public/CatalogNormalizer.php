@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Infrastructure\Normalizer;
+namespace Akeneo\Catalogs\Infrastructure\Normalizer\Public;
 
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -21,7 +21,7 @@ class CatalogNormalizer implements NormalizerInterface, CacheableSupportsMethodI
 
     public function supportsNormalization(mixed $data, ?string $format = null): bool
     {
-        return $data instanceof Catalog && 'external_api' === $format;
+        return $data instanceof Catalog && 'public' === $format;
     }
 
     /**
