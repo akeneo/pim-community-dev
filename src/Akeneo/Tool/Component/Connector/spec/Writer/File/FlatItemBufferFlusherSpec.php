@@ -46,6 +46,13 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $this->filesystem->remove($this->directory);
     }
 
+    function it(FlatItemBuffer $buffer)
+    {
+        $buffer->count()->willReturn(0);
+
+        $this->flush($buffer, ['type' => 'csv'], $this->directory . 'output')->shouldReturn([]);
+    }
+
     function it_flushes_a_buffer_without_a_max_number_of_lines($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
@@ -54,6 +61,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write')->shouldBeCalled();
         $parameters->all()->willReturn([]);
 
+        $buffer->count()->willReturn(3);
         $buffer->key()->willReturn(0);
         $buffer->rewind()->willReturn();
         $buffer->valid()->willReturn(true, false);
@@ -144,6 +152,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
     function it_throws_an_exception_if_type_is_not_defined($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
+        $buffer->count()->willReturn(1);
 
         $stepExecution->getJobParameters()->willReturn($parameters);
         $parameters->all()->willReturn([]);
@@ -157,6 +166,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
     function it_throws_an_exception_if_type_is_not_recognized($columnSorter, FlatItemBuffer $buffer, StepExecution $stepExecution, JobParameters $parameters)
     {
         $columnSorter->sort(Argument::any(), [])->willReturn(['colA', 'colB']);
+        $buffer->count()->willReturn(1);
 
         $stepExecution->getJobParameters()->willReturn($parameters);
         $parameters->all()->willReturn([]);
