@@ -2,3 +2,4 @@ services:
     Akeneo\OnboarderSerenity\Infrastructure\Mailer\SendSwiftmailerEmail:
         arguments:
             - '@mailer'
+            - '@logger'

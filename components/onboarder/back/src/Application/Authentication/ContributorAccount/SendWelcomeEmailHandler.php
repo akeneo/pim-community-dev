@@ -34,11 +34,20 @@ class SendWelcomeEmailHandler
             ],
         );
 
+        $textContent = $this->twig->render(
+            '@AkeneoOnboarderSerenity/Email/contributor-invitation.txt.twig',
+            [
+                'contributorEmail' => $command->email,
+                'url' => $setUpPasswordUrl,
+            ],
+        );
+
+
         $email = new Email(
-            'Welcome', //To define
+            "You've received an invitation to contribute to onboarder",
             $htmlContent,
-            $setUpPasswordUrl,
-            'no-reply@akeneo.com', //To define
+            $textContent,
+            'noreply@akeneo.com',
             $command->email,
         );
         ($this->sendEmail)($email);

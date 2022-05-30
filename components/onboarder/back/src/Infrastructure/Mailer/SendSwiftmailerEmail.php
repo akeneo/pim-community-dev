@@ -6,11 +6,12 @@ namespace Akeneo\OnboarderSerenity\Infrastructure\Mailer;
 
 use Akeneo\OnboarderSerenity\Domain\Mailer\SendEmail;
 use Akeneo\OnboarderSerenity\Domain\Mailer\ValueObject\Email;
+use Psr\Log\LoggerInterface;
 use Swift_Mailer;
 
 final class SendSwiftmailerEmail implements SendEmail
 {
-    public function __construct(private Swift_Mailer $mailer)
+    public function __construct(private Swift_Mailer $mailer, private LoggerInterface $logger)
     {
     }
 
@@ -27,5 +28,7 @@ final class SendSwiftmailerEmail implements SendEmail
             ->addPart($email->htmlContent, 'text/html');
 
         $this->mailer->send($message);
+
+        $this->logger->info(sprintf('A welcome email has been sent to "%s"', $email->to));
     }
 }
