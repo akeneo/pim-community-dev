@@ -26,7 +26,7 @@ class DownloadFileFromLocalStorageTest extends AcceptanceTestCase
     {
         $this->getLocalFilesystem()->write('a_file_path', 'file content');
 
-        $storage = ['type' => 'local', 'file_path' => 'a_file_path'];
+        $storage = ['type' => 'local', 'file_path' => '/a_file_path'];
 
         $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
 

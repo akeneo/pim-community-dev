@@ -13,34 +13,27 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Acceptance\ImportExport\FakeServices;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 
 class FakeStorageClientProvider implements StorageClientProviderInterface
 {
-    private Filesystem $fileSystem;
-
-    public function __construct()
-    {
-        $this->fileSystem = new Filesystem(new InMemoryFilesystemAdapter());
+    public function __construct(
+        private Filesystem $fileSystem,
+    ) {
     }
 
     public function supports(StorageInterface $storage): bool
     {
-        return true;
+        return $storage instanceof LocalStorage;
     }
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
         return new FileSystemStorageClient($this->fileSystem);
-    }
-
-    public function getFilesystem(): Filesystem
-    {
-        return $this->fileSystem;
     }
 }

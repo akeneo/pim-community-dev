@@ -18,7 +18,7 @@ final class StorageHydrator implements StorageHydratorInterface
     {
     }
 
-    public function hydrate(array $normalizedStorage): StorageInterface
+    public function hydrate(array $normalizedStorage): ?StorageInterface
     {
         foreach ($this->storageHydrators as $storageHydrator) {
             if ($storageHydrator->supports($normalizedStorage)) {
