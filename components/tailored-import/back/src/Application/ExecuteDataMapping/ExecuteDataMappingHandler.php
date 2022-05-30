@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping;
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ClearValue;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\UserIntentRegistry\UserIntentRegistry;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
@@ -57,6 +58,12 @@ class ExecuteDataMappingHandler
                 $userIntents[] = $userIntentFactory->create(
                     $target,
                     $value,
+                );
+            } elseif ($target instanceof AttributeTarget && AttributeTarget::IF_EMPTY_CLEAR === $target->getActionIfEmpty()) {
+                $userIntents[] = new ClearValue(
+                    $target->getCode(),
+                    $target->getChannel(),
+                    $target->getLocale(),
                 );
             }
         }
