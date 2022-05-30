@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\Storage;
 
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage;
+use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\ManualStorage;
 use Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\AbstractValidationTest;
 
 class ValidateLocalStorageTest extends AbstractValidationTest
@@ -12,7 +12,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
      */
     public function testItDoesNotBuildViolationsWhenLocalStorageAreValid(array $value): void
     {
-        $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
+        $violations = $this->getValidator()->validate($value, new ManualStorage(['xlsx', 'xls']));
 
         $this->assertNoViolation($violations);
     }
@@ -25,7 +25,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
         string $expectedErrorPath,
         array $value,
     ): void {
-        $violations = $this->getValidator()->validate($value, new LocalStorage(['xlsx', 'xls']));
+        $violations = $this->getValidator()->validate($value, new ManualStorage(['xlsx', 'xls']));
 
         $this->assertHasValidationError($expectedErrorMessage, $expectedErrorPath, $violations);
     }

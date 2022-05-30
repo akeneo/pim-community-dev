@@ -3,6 +3,7 @@ parameters:
     none: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\None\NoneStorage'
     local: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage'
     sftp: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage'
+    manual: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Manual\ManualStorage'
 
 services:
   Akeneo\Platform\JobAutomation\Infrastructure\Validation\StorageValidator:

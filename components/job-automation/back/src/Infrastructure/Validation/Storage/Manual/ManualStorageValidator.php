@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local;
+namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Manual;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage as LocalStorageModel;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage as ManualStorageModel;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\FilePath;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-class LocalStorageValidator extends ConstraintValidator
+class ManualStorageValidator extends ConstraintValidator
 {
     public function validate($value, Constraint $constraint): void
     {
@@ -20,7 +20,7 @@ class LocalStorageValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'type' => new EqualTo(LocalStorageModel::TYPE),
+                'type' => new EqualTo(ManualStorageModel::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
             ],
         ]));
