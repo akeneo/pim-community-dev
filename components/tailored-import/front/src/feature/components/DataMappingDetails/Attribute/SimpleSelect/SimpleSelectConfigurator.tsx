@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isSimpleSelectTarget} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources, ClearIfEmpty} from '../../../../components';
 import {SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE} from '../../Operation';
@@ -30,7 +30,7 @@ const SimpleSelectConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
         isMultiSource={false}

@@ -1,14 +1,14 @@
 import React from 'react';
 import {Checkbox} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {AttributeTarget} from '../../../models';
+import {Target} from '../../../models';
 
-type ClearIfEmptyProps = {
-  target: AttributeTarget;
-  onTargetChange: (target: AttributeTarget) => void;
+type ClearIfEmptyProps<T> = {
+  target: T;
+  onTargetChange: (target: T) => void;
 };
 
-const ClearIfEmpty = ({target, onTargetChange}: ClearIfEmptyProps) => {
+const ClearIfEmpty = <T extends Target>({target, onTargetChange}: ClearIfEmptyProps<T>) => {
   const translate = useTranslate();
 
   const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>

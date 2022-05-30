@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isNumberTarget, NumberSourceConfiguration} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {DecimalSeparatorField} from '../../common/DecimalSeparatorField';
@@ -34,7 +34,7 @@ const NumberConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
         {attribute.decimals_allowed && (
           <DecimalSeparatorField
             value={target.source_configuration.decimal_separator}

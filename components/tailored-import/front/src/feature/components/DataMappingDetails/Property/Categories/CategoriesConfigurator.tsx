@@ -3,7 +3,7 @@ import {filterErrors} from '@akeneo-pim-community/shared';
 import {isCategoriesTarget} from './model';
 import {PropertyDataMappingConfiguratorProps, PropertyTarget} from '../../../../models';
 import {InvalidPropertyTargetError} from '../error/InvalidPropertyTargetError';
-import {PropertyTargetParameters, Operations, Sources, ActionIfNotEmpty} from '../../../../components';
+import {PropertyTargetParameters, Operations, Sources, ActionIfNotEmpty, ClearIfEmpty} from '../../../../components';
 import {SPLIT_OPERATION_TYPE} from '../../Operation';
 
 const CategoriesConfigurator = ({
@@ -24,6 +24,7 @@ const CategoriesConfigurator = ({
   return (
     <>
       <PropertyTargetParameters target={dataMapping.target} onTargetChange={onTargetChange}>
+        <ClearIfEmpty<PropertyTarget> target={target} onTargetChange={onTargetChange} />
         <ActionIfNotEmpty<PropertyTarget> target={target} onTargetChange={onTargetChange} />
       </PropertyTargetParameters>
       <Sources
