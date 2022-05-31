@@ -38,6 +38,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertNull($jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1'], $jobExecutionMessage->getOptions());
+        self::assertNull($jobExecutionMessage->tenantId());
     }
 
     public function test_it_returns_an_import_job_message(): void
@@ -56,6 +57,7 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
         self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
         self::assertEquals(new \DateTime('2021-03-10T15:37:23+01:00'), $jobExecutionMessage->getUpdatedTime());
         self::assertEquals(['option1' => 'value1', 'option2' => 'value2'], $jobExecutionMessage->getOptions());
+        self::assertNull($jobExecutionMessage->tenantId());
     }
 
     public function test_it_returns_an_export_job_message(): void
@@ -82,6 +84,29 @@ final class JobExecutionMessageFactoryIntegration extends TestCase
             'options' => ['option1' => 'value1'],
         ]);
         self::assertInstanceOf(DataMaintenanceJobExecutionMessage::class, $jobExecutionMessage);
+    }
+
+    public function test_it_returns_a_ui_job_message_with_tenant_id(): void
+    {
+        $_ENV['APP_TENANT_ID'] = 'foobar';
+        $this->testKernel = static::bootKernel(['debug' => false]);
+        $this->jobExecutionMessageFactory = $this->get('akeneo_batch_queue.factory.job_execution_message');
+
+        $jobExecution = $this->createJobExecution('update_product_value');
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromNormalized([
+            'id' => '215ee791-1c40-4c60-82fb-cb017d6bcb90',
+            'job_execution_id' => $jobExecution->getId(),
+            'created_time' => '2021-03-08T15:37:23+01:00',
+            'updated_time' => null,
+            'options' => ['option1' => 'value1'],
+        ]);
+        self::assertInstanceOf(UiJobExecutionMessage::class, $jobExecutionMessage);
+        self::assertEquals('215ee791-1c40-4c60-82fb-cb017d6bcb90', $jobExecutionMessage->getId()->toString());
+        self::assertEquals($jobExecution->getId(), $jobExecutionMessage->getJobExecutionId());
+        self::assertEquals(new \DateTime('2021-03-08T15:37:23+01:00'), $jobExecutionMessage->getCreateTime());
+        self::assertNull($jobExecutionMessage->getUpdatedTime());
+        self::assertEquals(['option1' => 'value1'], $jobExecutionMessage->getOptions());
+        self::assertEquals('foobar', $jobExecutionMessage->tenantId());
     }
 
     protected function createJobExecution(

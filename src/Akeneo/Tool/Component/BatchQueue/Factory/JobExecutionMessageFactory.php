@@ -33,7 +33,7 @@ class JobExecutionMessageFactory
         ObjectRepository $jobExecutionRepository,
         array $mappingJobMessageTypes,
         string $jobMessageTypeFallback,
-        private ?string $tenantId = null
+        private ?string $tenantId
     ) {
         Assert::classExists($jobMessageTypeFallback);
         Assert::subclassOf($jobMessageTypeFallback, JobExecutionMessageInterface::class);

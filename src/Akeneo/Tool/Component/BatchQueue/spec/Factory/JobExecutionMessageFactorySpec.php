@@ -25,7 +25,8 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
                 ImportJobExecutionMessage::class => ['import'],
                 ExportJobExecutionMessage::class => ['export', 'quick_export'],
             ],
-            DataMaintenanceJobExecutionMessage::class
+            DataMaintenanceJobExecutionMessage::class,
+            'my_tenant_id'
         );
     }
 
@@ -41,6 +42,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage = $this->buildFromJobInstance($jobInstance, 1, []);
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
         $jobExecutionMessage->getJobExecutionId()->shouldBe(1);
+        $jobExecutionMessage->tenantId()->shouldBe('my_tenant_id');
     }
 
     function it_builds_an_export_job_execution_message(JobInstance $jobInstance)
@@ -83,6 +85,7 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecutionMessage->getCreateTime()->shouldBeLike(new \DateTime('2021-03-08T15:37:23+01:00'));
         $jobExecutionMessage->getUpdatedTime()->shouldBeNull();
         $jobExecutionMessage->getOptions()->shouldBe(['option1' => 'value1']);
+        $jobExecutionMessage->tenantId()->shouldBe('my_tenant_id');
     }
 
     function it_builds_an_import_job_execution_message_from_normalized(
