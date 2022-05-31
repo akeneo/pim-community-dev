@@ -49,7 +49,6 @@ imports:
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
 
     # Job Automation
-    - { resource: ../../../vendor/akeneo/pim-community-dev/tests/back/Platform/Acceptance/ImportExport/Resources/config/services.yml }
     - { resource: ../../../components/job-automation/back/tests/Acceptance/Resources/config/services.yml }
 
 services:

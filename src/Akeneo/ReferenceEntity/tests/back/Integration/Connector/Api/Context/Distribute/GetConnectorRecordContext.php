@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Integration\Connector\Api\Context\Distribute;
 
 use Akeneo\ReferenceEntity\Common\Fake\Connector\InMemoryFindConnectorRecordByReferenceEntityAndCode;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
 use Akeneo\ReferenceEntity\Common\Fake\InMemoryMediaFileRepository;
 use Akeneo\ReferenceEntity\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\ReferenceEntity\Common\Helper\WebClientHelper;
@@ -39,6 +38,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\ReferenceEntity\Domain\Query\Record\Connector\ConnectorRecord;
 use Akeneo\ReferenceEntity\Domain\Repository\AttributeRepositoryInterface;
 use Akeneo\ReferenceEntity\Domain\Repository\ReferenceEntityRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
@@ -74,7 +74,7 @@ class GetConnectorRecordContext implements Context
     /** @var InMemoryMediaFileRepository */
     private $mediaFileRepository;
 
-    /** @var InMemoryFilesystemProviderStub */
+    /** @var FilesystemProvider */
     private $filesystemProvider;
 
     /** @var null|StreamedResponse */
@@ -95,7 +95,7 @@ class GetConnectorRecordContext implements Context
         ReferenceEntityRepositoryInterface $referenceEntityRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider,
+        FilesystemProvider $filesystemProvider,
         SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
