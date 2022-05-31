@@ -6,6 +6,7 @@ export type ConnectedApp = {
     logo: string | null;
     author: string | null;
     user_group_name: string;
+    connection_username: string;
     categories: string[];
     certified: boolean;
     partner: string | null;

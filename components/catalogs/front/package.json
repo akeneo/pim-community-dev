@@ -12,6 +12,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "lib:build": "tsc -p tsconfig.build.json",
@@ -50,8 +51,6 @@
     "@types/react": "^16.9.12",
     "react-scripts": "4.0.1",
     "typescript": "~4.4.4",
-    "web-vitals": "^0.2.4",
-    "pimui": "link:../../../public/bundles/pimui",
-    "translator-lib": "link:../../../public/bundles/pimui/lib/translator"
+    "web-vitals": "^0.2.4"
   }
 }

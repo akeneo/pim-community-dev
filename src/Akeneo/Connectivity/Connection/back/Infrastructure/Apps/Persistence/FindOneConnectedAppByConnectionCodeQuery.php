@@ -35,6 +35,7 @@ final class FindOneConnectedAppByConnectionCodeQuery implements FindOneConnected
             connected_app.certified,
             connected_app.connection_code,
             connected_app.user_group_name,
+            oro_user.username AS connection_username,
             IF(test_app.client_id IS NULL, FALSE, TRUE) AS is_test_app,
             IF(access_token.token IS NULL AND auth_code.token IS NOT NULL, TRUE, FALSE) AS is_pending,
             connected_app.has_outdated_scopes
@@ -44,6 +45,7 @@ final class FindOneConnectedAppByConnectionCodeQuery implements FindOneConnected
         LEFT JOIN pim_api_client AS client ON client.id = connection.client_id
         LEFT JOIN pim_api_access_token AS access_token ON client.id = access_token.client
         LEFT JOIN pim_api_auth_code AS auth_code ON client.id = auth_code.client_id
+        LEFT JOIN oro_user ON oro_user.id = connection.user_id
         WHERE connection_code = :connectionCode
         SQL;
 
