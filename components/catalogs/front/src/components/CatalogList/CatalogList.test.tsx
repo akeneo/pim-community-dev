@@ -5,13 +5,16 @@ import {pimTheme} from 'akeneo-design-system';
 import {CatalogList} from './CatalogList';
 
 jest.unmock('./CatalogList');
+jest.mock('../ErrorBoundary', () => ({
+    ErrorBoundary: ({children}: {children: any}) => <>{children}</>
+}) )
 
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogList />
+            <CatalogList owner={'willy'}/>
         </ThemeProvider>
     );
 
-    expect(screen.getByText('CatalogList')).toBeInTheDocument();
+    expect(screen.getByText('list willy')).toBeInTheDocument();
 });
