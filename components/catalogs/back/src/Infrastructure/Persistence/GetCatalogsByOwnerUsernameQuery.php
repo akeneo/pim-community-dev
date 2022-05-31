@@ -23,7 +23,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
     public function execute(string $ownerUsername, int $offset = 0, int $limit = 100): array
     {
         $query = <<<SQL
-            SELECT BIN_TO_UUID(akeneo_catalog.id) AS id, name, owner_id
+            SELECT BIN_TO_UUID(akeneo_catalog.id) AS id, name, owner_id, is_enabled
             FROM akeneo_catalog
             JOIN oro_user ON oro_user.id = akeneo_catalog.owner_id
             WHERE oro_user.username = :owner_username
@@ -48,6 +48,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             (string) $row['id'],
             (string) $row['name'],
             (int) $row['owner_id'],
+            (bool) $row['is_enabled'],
         ), $catalogs);
     }
 }

@@ -95,7 +95,8 @@ class CreateConnectedAppWithAuthorizationHandler
             $marketplaceApp,
             $appAuthorization->getAuthorizationScopes()->getScopes(),
             $connection->code(),
-            $group->getName()
+            $group->getName(),
+            $randomCode
         );
 
         if (!$this->permissionFeatureFlag->isEnabled()) {

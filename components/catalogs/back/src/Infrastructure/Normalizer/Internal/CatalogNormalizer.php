@@ -35,7 +35,7 @@ class CatalogNormalizer implements NormalizerInterface, CacheableSupportsMethodI
         return [
             'id' => $object->getId(),
             'name' => $object->getName(),
-            'enabled' => false,
+            'enabled' => $object->isEnabled(),
         ];
     }
 }

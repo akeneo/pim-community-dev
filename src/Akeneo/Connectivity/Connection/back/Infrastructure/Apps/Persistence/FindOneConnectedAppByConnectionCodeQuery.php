@@ -40,12 +40,12 @@ final class FindOneConnectedAppByConnectionCodeQuery implements FindOneConnected
             IF(access_token.token IS NULL AND auth_code.token IS NOT NULL, TRUE, FALSE) AS is_pending,
             connected_app.has_outdated_scopes
         FROM akeneo_connectivity_connected_app AS connected_app
-        LEFT JOIN akeneo_connectivity_test_app AS test_app ON test_app.client_id = connected_app.id
-        LEFT JOIN akeneo_connectivity_connection AS connection ON connection.code = connected_app.connection_code AND connected_app.connection_code = :connectionCode
-        LEFT JOIN pim_api_client AS client ON client.id = connection.client_id
+        JOIN akeneo_connectivity_connection AS connection ON connection.code = connected_app.connection_code AND connected_app.connection_code = :connectionCode
+        JOIN pim_api_client AS client ON client.id = connection.client_id
+        JOIN oro_user ON oro_user.id = connection.user_id
         LEFT JOIN pim_api_access_token AS access_token ON client.id = access_token.client
         LEFT JOIN pim_api_auth_code AS auth_code ON client.id = auth_code.client_id
-        LEFT JOIN oro_user ON oro_user.id = connection.user_id
+        LEFT JOIN akeneo_connectivity_test_app AS test_app ON test_app.client_id = connected_app.id
         WHERE connection_code = :connectionCode
         SQL;
 

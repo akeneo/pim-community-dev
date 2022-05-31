@@ -9,6 +9,7 @@ import {LegacyContext} from './legacy-context';
 import {ViewBuilder} from './pim-view/view-builder';
 import {FeatureFlagsContext, FeatureFlags} from '../shared/feature-flags';
 import {PermissionFormRegistryContext, PermissionFormRegistry} from '../shared/permission-form-registry';
+import {DependenciesContext} from '@akeneo-pim-community/shared';
 
 interface Props {
     router: RouterInterface;
@@ -22,27 +23,31 @@ interface Props {
 }
 
 const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Props>) => (
-    <RouterContext.Provider value={dependencies.router}>
-        <TranslateContext.Provider value={dependencies.translate}>
-            <NotifyContext.Provider value={dependencies.notify}>
-                <LegacyContext.Provider
-                    value={{
-                        viewBuilder: dependencies.viewBuilder,
-                    }}
-                >
-                    <UserContext.Provider value={dependencies.user}>
-                        <SecurityContext.Provider value={dependencies.security}>
-                            <FeatureFlagsContext.Provider value={dependencies.featureFlags}>
-                                <PermissionFormRegistryContext.Provider value={dependencies.permissionFormRegistry}>
-                                    {children}
-                                </PermissionFormRegistryContext.Provider>
-                            </FeatureFlagsContext.Provider>
-                        </SecurityContext.Provider>
-                    </UserContext.Provider>
-                </LegacyContext.Provider>
-            </NotifyContext.Provider>
-        </TranslateContext.Provider>
-    </RouterContext.Provider>
+    <DependenciesContext.Provider value={{
+        translate: dependencies.translate
+    }}>
+        <RouterContext.Provider value={dependencies.router}>
+            <TranslateContext.Provider value={dependencies.translate}>
+                <NotifyContext.Provider value={dependencies.notify}>
+                    <LegacyContext.Provider
+                        value={{
+                            viewBuilder: dependencies.viewBuilder,
+                        }}
+                    >
+                        <UserContext.Provider value={dependencies.user}>
+                            <SecurityContext.Provider value={dependencies.security}>
+                                <FeatureFlagsContext.Provider value={dependencies.featureFlags}>
+                                    <PermissionFormRegistryContext.Provider value={dependencies.permissionFormRegistry}>
+                                        {children}
+                                    </PermissionFormRegistryContext.Provider>
+                                </FeatureFlagsContext.Provider>
+                            </SecurityContext.Provider>
+                        </UserContext.Provider>
+                    </LegacyContext.Provider>
+                </NotifyContext.Provider>
+            </TranslateContext.Provider>
+        </RouterContext.Provider>
+    </DependenciesContext.Provider>
 );
 
 export const withDependencies = (Component: ElementType) => {
