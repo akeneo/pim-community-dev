@@ -15,7 +15,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
  */
 class ParentUserIntentFactory implements UserIntentFactory
 {
-
     public function getSupportedFieldNames(): array
     {
         return ['parent'];

@@ -54,8 +54,8 @@ class ValueUserIntentFactoryRegistrySpec extends ObjectBehavior
             ->willReturn($valueUserIntent2);
 
         $this->create('values', [
-            'a_text' => ['data' => 'bonjour', 'locale' => null, 'scope' => null],
-            'sku' => ['data' => 'my_sku'],
+            'a_text' => [['data' => 'bonjour', 'locale' => null, 'scope' => null]],
+            'sku' => [['data' => 'my_sku']],
         ])->shouldReturn([$valueUserIntent1, $valueUserIntent2]);
     }
 }

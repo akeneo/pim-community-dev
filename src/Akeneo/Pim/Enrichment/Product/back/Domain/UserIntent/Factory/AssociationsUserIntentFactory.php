@@ -32,7 +32,7 @@ class AssociationsUserIntentFactory implements UserIntentFactory
             throw InvalidPropertyTypeException::arrayExpected($fieldName, static::class, $data);
         }
         $userIntents = [];
-        foreach($data as $associationType => $associations) {
+        foreach ($data as $associationType => $associations) {
             if (!is_array($associations)) {
                 throw InvalidPropertyTypeException::arrayExpected(
                     'associations',

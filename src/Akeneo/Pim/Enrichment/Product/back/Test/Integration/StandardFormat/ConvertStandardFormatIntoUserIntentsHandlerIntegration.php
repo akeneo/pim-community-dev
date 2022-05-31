@@ -25,6 +25,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\Operation;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\Unit;
 use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use PHPUnit\Framework\Assert;
+use Prophecy\Argument;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 /**
@@ -64,18 +65,23 @@ class ConvertStandardFormatIntoUserIntentsHandlerIntegration extends EnrichmentP
 
         // get the value that was returned by the last message handler
         $handledStamp = $envelope->last(HandledStamp::class);
+
         Assert::assertEqualsCanonicalizing([
             new SetFamily('accessories'),
-            new SetMeasurementValue('measurement', 'e-commerce', 'fr_FR', 10, 'KILOGRAM'),
-            new SetTextValue('name', null, null, 'Bonjour'),
             new ReplaceAssociatedProducts('PACK', ['associated_product']),
             new ReplaceAssociatedProductModels('PACK', []),
             new ReplaceAssociatedGroups('PACK', ['RELATED']),
             new ReplaceAssociatedProducts('SUBSTITUTION', []),
             new ReplaceAssociatedProductModels('SUBSTITUTION', ['associated_product_model']),
             new ReplaceAssociatedGroups('SUBSTITUTION', []),
-            new ReplaceAssociatedQuantifiedProducts('bundle', [new QuantifiedEntity('associated_product', 12)]),
-            new ReplaceAssociatedQuantifiedProductModels('bundle', [new QuantifiedEntity('associated_product_model', 21)]),
+            new ReplaceAssociatedQuantifiedProducts('bundle', [
+                new QuantifiedEntity('associated_product', 12)
+            ]),
+            new ReplaceAssociatedQuantifiedProductModels('bundle', [
+                new QuantifiedEntity('associated_product_model', 21)
+            ]),
+            new SetTextValue('name', null, null, 'Bonjour'),
+            new SetMeasurementValue('measurement', 'e-commerce', 'fr_FR', 10, 'KILOGRAM'),
         ], $handledStamp->getResult());
     }
 
