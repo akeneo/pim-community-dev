@@ -229,7 +229,7 @@ SQL;
     {
         $formerId = NULL;
         $sql = <<< SQL
-SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier, updated
+SELECT CONCAT('product_',BIN_TO_UUID(uuid)) AS _id, BIN_TO_UUID(uuid) AS uuid, identifier, DATE_FORMAT(updated, '%Y-%m-%dT%TZ') AS updated
 FROM pim_catalog_product
 WHERE (CASE WHEN :formerId IS NULL THEN TRUE ELSE uuid > :formerId END)
 ORDER BY uuid ASC
@@ -259,12 +259,17 @@ SQL;
 
             $results = $this->productAndProductModelClient->search([
                 'query' => [
-                    'ids' => [
-                        'values' =>
-                            $existingMysqlIdentifiers
-                    ],
-                    'should' => [
-                        'entity_updated' => $existingMysqlUpdated
+                    'bool' => [
+                        'must' => [
+                            'ids' => [
+                                'values' => $existingMysqlIdentifiers
+                            ]
+                        ],
+                        'filter' => [
+                            'terms' => [
+                                'entity_updated' => $existingMysqlUpdated
+                            ]
+                        ]
                     ]
                 ],
                 '_source' => false,
