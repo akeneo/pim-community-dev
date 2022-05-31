@@ -1,4 +1,5 @@
 parameters:
+  #TODO: move validation to CE (except for sftp)
   akeneo.job_automation.validation.storage_constraint_classes:
     none: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\None\NoneStorage'
     local: 'Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Local\LocalStorage'

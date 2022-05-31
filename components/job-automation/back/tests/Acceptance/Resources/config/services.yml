@@ -1,0 +1,16 @@
+services:
+  oneup_flysystem.sftp_adapter:
+    class: League\Flysystem\InMemory\InMemoryFilesystemAdapter
+
+  oneup_flysystem.sftp_storage_filesystem:
+    class: League\Flysystem\Filesystem
+    arguments:
+      - '@oneup_flysystem.sftp_adapter'
+
+  Akeneo\Platform\JobAutomation\Infrastructure\StorageClient\Sftp\SftpStorageClientProvider:
+    class: AkeneoTest\Platform\Acceptance\ImportExport\FakeServices\FakeStorageClientProvider
+    arguments:
+      - '@oneup_flysystem.sftp_storage_filesystem'
+      - 'Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage'
+    tags:
+      - { name: pim_import_export.storage_client_provider }
