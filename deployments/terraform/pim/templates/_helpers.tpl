@@ -38,7 +38,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{-   range $key, $value := .Values.pim.extraLabels -}}
 {{-     $tagsArray = append $tagsArray (printf "%s:%s" $key $value) -}}
 {{-   end -}}
-{{-   $tagsArray | join "," -}}
+{{-   toJson $tagsArray -}}
 {{- end -}}
 
 {{/*
