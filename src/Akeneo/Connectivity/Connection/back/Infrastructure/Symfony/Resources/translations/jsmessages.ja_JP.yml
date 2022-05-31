@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: アセット
         new: 新規
       error:
-        sub_text: アプリ開発者またはAkeneoサポートに問い合わせてください
         app_not_found: client_id が既存のアプリと一致しません。
       constraint:
         client_id:

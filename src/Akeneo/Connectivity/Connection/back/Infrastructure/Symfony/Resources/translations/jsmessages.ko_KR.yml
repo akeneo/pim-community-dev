@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: 애셋
         new: 신규
       error:
-        sub_text: 앱 개발자 또는 Akeneo 지원 팀에 문의해주십시오
         app_not_found: 기존 앱 중 이 client_id와 일치하는 것이 없습니다.
       constraint:
         client_id:

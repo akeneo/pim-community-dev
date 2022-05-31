@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: zasoby
         new: NOWOŚĆ
       error:
-        sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
         app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
       constraint:
         client_id:

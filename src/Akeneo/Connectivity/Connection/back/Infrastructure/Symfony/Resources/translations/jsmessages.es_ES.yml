@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: activos
         new: NUEVO
       error:
-        sub_text: Póngase en contacto con el desarrollador de la aplicación o con el servicio de asistencia de Akeneo
         app_not_found: El client_id no coincide con ninguna aplicación existente.
       constraint:
         client_id:
