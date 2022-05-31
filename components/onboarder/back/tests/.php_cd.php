@@ -37,6 +37,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Domain',
 
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
@@ -109,6 +110,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Application',
             'Akeneo\OnboarderSerenity\Infrastructure',
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
