@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
@@ -12,6 +13,17 @@ use Ramsey\Uuid\UuidInterface;
  */
 interface JobExecutionMessageInterface
 {
+    public static function createJobExecutionMessage(
+        int $jobExecutionId,
+        array $options,
+        ?string $tenantId = null
+    ): JobExecutionMessageInterface;
+
+    public static function createJobExecutionMessageFromNormalized(
+        array $normalized,
+        ?string $tenantId = null
+    ): JobExecutionMessageInterface;
+
     public function getId(): UuidInterface;
 
     public function getJobExecutionId(): ?int;
@@ -21,4 +33,6 @@ interface JobExecutionMessageInterface
     public function getUpdatedTime(): ?\DateTime;
 
     public function getOptions(): array;
+
+    public function tenantId(): ?string;
 }

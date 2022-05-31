@@ -16,37 +16,30 @@ use Ramsey\Uuid\UuidInterface;
  */
 abstract class JobExecutionMessage implements JobExecutionMessageInterface
 {
-    private UuidInterface $id;
-    private int $jobExecutionId;
-    private \DateTime $createTime;
-    private ?\DateTime $updatedTime;
-    private array $options = [];
-
     private function __construct(
-        UuidInterface $id,
-        int $jobExecutionId,
-        \DateTime $createTime,
-        ?\DateTime $updatedTime,
-        array $options
+        private UuidInterface $id,
+        private int $jobExecutionId,
+        private \DateTime $createTime,
+        private ?\DateTime $updatedTime,
+        private array $options,
+        private ?string $tenantId
     ) {
-        $this->id = $id;
-        $this->jobExecutionId = $jobExecutionId;
-        $this->createTime = $createTime;
-        $this->updatedTime = $updatedTime;
-        $this->options = $options;
     }
 
     /**
      * Create a new JobExecutionMessage that has never been persisted into database.
      */
-    public static function createJobExecutionMessage(int $jobExecutionId, array $options): JobExecutionMessageInterface
-    {
+    public static function createJobExecutionMessage(
+        int $jobExecutionId,
+        array $options,
+        ?string $tenantId = null
+    ): JobExecutionMessageInterface {
         $createTime = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options);
+        return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options, $tenantId);
     }
 
-    public static function createJobExecutionMessageFromNormalized(array $normalized): JobExecutionMessageInterface
+    public static function createJobExecutionMessageFromNormalized(array $normalized, ?string $tenantId = null): JobExecutionMessageInterface
     {
         return new static(
             Uuid::fromString($normalized['id']),
@@ -55,7 +48,8 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
             null !== $normalized['updated_time']
                 ? new \DateTime($normalized['updated_time'], new \DateTimeZone('UTC'))
                 : null,
-            $normalized['options'] ?? []
+            $normalized['options'] ?? [],
+            $tenantId,
         );
     }
 
@@ -82,5 +76,10 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    public function tenantId(): ?string
+    {
+        return $this->tenantId;
     }
 }

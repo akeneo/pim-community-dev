@@ -44,8 +44,7 @@
             "Akeneo\\Test\\Pim\\Enrichment\\Product\\": "src/Akeneo/Pim/Enrichment/Product/back/Test",
             "Akeneo\\Test\\Pim\\Enrichment\\Category\\": "src/Akeneo/Pim/Enrichment/Category/back/Test",
             "Akeneo\\Test\\Channel\\": "src/Akeneo/Channel/back/tests",
-            "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests",
-            "spec\\Akeneo\\Tool\\Bundle\\MessengerBundle\\": "src/Akeneo/Tool/Bundle/MessengerBundle/spec"
+            "Akeneo\\Catalogs\\Test\\": "components/catalogs/back/tests"
         }
     },
     "require": {

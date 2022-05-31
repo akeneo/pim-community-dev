@@ -34,7 +34,12 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                 [$pathFinder->find(), $console, 'akeneo:batch:watchdog', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
-            $process = new Process($arguments);
+
+            $env = null !== $jobExecutionMessage->tenantId() ? [
+                'APP_TENANT_ID' => $jobExecutionMessage->tenantId(),
+            ] : null;
+
+            $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
 
             $this->logger->notice('Launching job watchdog for ID "{job_execution_id}".', [

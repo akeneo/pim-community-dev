@@ -32,7 +32,8 @@ class JobExecutionMessageFactory
     public function __construct(
         ObjectRepository $jobExecutionRepository,
         array $mappingJobMessageTypes,
-        string $jobMessageTypeFallback
+        string $jobMessageTypeFallback,
+        private ?string $tenantId = null
     ) {
         Assert::classExists($jobMessageTypeFallback);
         Assert::subclassOf($jobMessageTypeFallback, JobExecutionMessageInterface::class);
@@ -46,9 +47,10 @@ class JobExecutionMessageFactory
 
     public function buildFromJobInstance(JobInstance $jobInstance, int $jobExecutionId, array $options): JobExecutionMessageInterface
     {
+        /** @var string|JobExecutionMessageInterface $class */
         $class = $this->getJobMessageClass($jobInstance->getType() ?? '');
 
-        return $class::createJobExecutionMessage($jobExecutionId, $options);
+        return $class::createJobExecutionMessage($jobExecutionId, $options, $this->tenantId);
     }
 
     public function buildFromNormalized(array $normalized): JobExecutionMessageInterface
@@ -56,11 +58,12 @@ class JobExecutionMessageFactory
         Assert::integer($normalized['job_execution_id'] ?? null);
         $jobExecution = $this->jobExecutionRepository->find($normalized['job_execution_id']);
 
+        /** @var string|JobExecutionMessageInterface $class */
         $class = null !== $jobExecution
             ? $this->getJobMessageClass($jobExecution->getJobInstance()->getType() ?? '')
             : $this->jobMessageTypeFallback;
 
-        return $class::createJobExecutionMessageFromNormalized($normalized);
+        return $class::createJobExecutionMessageFromNormalized($normalized, $this->tenantId);
     }
 
     private function getJobMessageClass(string $type): string

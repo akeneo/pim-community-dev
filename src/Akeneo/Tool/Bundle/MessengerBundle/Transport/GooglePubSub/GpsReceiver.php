@@ -50,11 +50,11 @@ final class GpsReceiver implements ReceiverInterface
             'headers' => $message->attributes(),
         ]);
 
-        $envelope = $envelope
-            ->with(new TransportMessageIdStamp($message->id()))
-            ->with(new NativeMessageStamp($message));
-
-        return [$envelope];
+        return [
+            $envelope
+                ->with(new TransportMessageIdStamp($message->id()))
+                ->with(new NativeMessageStamp($message))
+        ];
     }
 
     public function ack(Envelope $envelope): void

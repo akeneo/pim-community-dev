@@ -13,6 +13,7 @@
 #
 parameters:
     pim_job_product_batch_size: 100
+    pim_tenant_id: '%env(default::string:APP_TENANT_ID)%'
 
 services:
     oro.cache.abstract:
