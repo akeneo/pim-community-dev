@@ -70,8 +70,3 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Persistence\SaveConnectedAppOutdatedScopesFlagQuery'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\Service\AuthorizationRequestNotifier'
             - '@Akeneo\Connectivity\Connection\Infrastructure\Apps\ScopeListComparator'
-
-    Akeneo\Connectivity\Connection\Application\Apps\Command\AddAclToRolesHandler:
-        arguments:
-            - '@oro_security.acl.manager'
-            - '@pim_user.repository.role'

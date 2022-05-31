@@ -3,6 +3,5 @@ services:
         arguments:
             - '@database_connection'
             - '@Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler'
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\AddAclToRolesHandler'
         tags:
             - {name: kernel.event_subscriber}

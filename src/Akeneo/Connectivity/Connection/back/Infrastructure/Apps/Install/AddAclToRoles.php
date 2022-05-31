@@ -1,7 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
+namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Install;
 
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,10 +13,11 @@ use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 
 /**
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddAclToRolesHandler
+final class AddAclToRoles
 {
     public function __construct(
         private AclManager $aclManager,
@@ -23,11 +25,14 @@ class AddAclToRolesHandler
     ) {
     }
 
-    public function handle(AddAclToRolesCommand $command): void
+    /**
+     * @param array<string> $roles
+     */
+    public function add(string $acl, array $roles): void
     {
-        $aclPrivilegeIdentityId = 'action:' . $command->getAcl();
+        $aclPrivilegeIdentityId = \sprintf('action:%s', $acl);
 
-        foreach ($command->getRoles() as $role) {
+        foreach ($roles as $role) {
             $role = $this->roleRepository->findOneByIdentifier($role);
             $privilege = new AclPrivilege();
             $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace\Install;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\AddAclToRolesCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\AddAclToRolesHandler;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysCommand;
 use Akeneo\Connectivity\Connection\Application\Apps\Command\GenerateAsymmetricKeysHandler;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
@@ -20,9 +18,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class InstallSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private DbalConnection                $dbalConnection,
+        private DbalConnection $dbalConnection,
         private GenerateAsymmetricKeysHandler $generateAsymmetricKeysHandler,
-        private AddAclToRolesHandler          $addAclToRoleHandler,
     ) {
     }
 
@@ -42,7 +39,5 @@ class InstallSubscriber implements EventSubscriberInterface
     public function loadFixtures(): void
     {
         $this->generateAsymmetricKeysHandler->handle(new GenerateAsymmetricKeysCommand());
-        $this->addAclToRoleHandler->handle(new AddAclToRolesCommand('akeneo_connectivity_connection_manage_apps', ['ROLE_ADMINISTRATOR']));
-        $this->addAclToRoleHandler->handle(new AddAclToRolesCommand('akeneo_connectivity_connection_open_apps', ['ROLE_ADMINISTRATOR']));
     }
 }

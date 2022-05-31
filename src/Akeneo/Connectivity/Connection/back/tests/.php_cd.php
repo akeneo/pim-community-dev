@@ -156,15 +156,6 @@ $rules = [
 
             'FOS\RestBundle\Context\Context',
             'FOS\RestBundle\Serializer\Serializer',
-
-            'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository',
-            'Doctrine\Common\Collections\ArrayCollection',
-            'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
-            'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
-            'Oro\Bundle\SecurityBundle\Model\AclPermission',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity',
-
         ]
     )->in('Akeneo\Connectivity\Connection\Application'),
 
@@ -201,15 +192,6 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\RoleInterface',
 
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-
-            'Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository',
-            'Doctrine\Common\Collections\ArrayCollection',
-            'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
-            'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
-            'Oro\Bundle\SecurityBundle\Model\AclPermission',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
-            'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity',
-
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
