@@ -24,7 +24,7 @@ class GetCatalogsByOwnerIdQuery implements GetCatalogsByOwnerIdQueryInterface
     public function execute(int $ownerId, int $offset = 0, int $limit = 100): array
     {
         $query = <<<SQL
-            SELECT BIN_TO_UUID(id) AS id, name, owner_id
+            SELECT BIN_TO_UUID(id) AS id, name, owner_id, is_enabled
             FROM akeneo_catalog
             WHERE owner_id = :owner_id
             ORDER BY id
@@ -48,6 +48,7 @@ class GetCatalogsByOwnerIdQuery implements GetCatalogsByOwnerIdQueryInterface
             (string) $row['id'],
             (string) $row['name'],
             (int) $row['owner_id'],
+            (bool) $row['is_enabled'],
         ), $catalogs);
     }
 }

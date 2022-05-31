@@ -25,12 +25,13 @@ final class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
         SELECT
             BIN_TO_UUID(catalog.id) AS id,
             catalog.name,
-            catalog.owner_id
+            catalog.owner_id,
+            catalog.is_enabled
         FROM akeneo_catalog catalog
         WHERE id = :id
         SQL;
 
-        /** @var array{id: string, name: string, owner_id: string}|false $row */
+        /** @var array{id: string, name: string, owner_id: string, is_enabled: string}|false $row */
         $row = $this->connection->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchAssociative();
@@ -43,6 +44,7 @@ final class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
             $row['id'],
             $row['name'],
             (int) $row['owner_id'],
+            (bool) $row['is_enabled'],
         );
     }
 }

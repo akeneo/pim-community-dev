@@ -7,6 +7,7 @@ namespace Akeneo\Catalogs\Infrastructure\Persistence;
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
 use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Types\Types;
 
 /**
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
@@ -21,8 +22,8 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
     public function execute(Catalog $catalog): void
     {
         $query = <<<SQL
-        INSERT INTO akeneo_catalog (id, name, owner_id)
-        VALUES (UUID_TO_BIN(:id), :name, :owner_id)
+        INSERT INTO akeneo_catalog (id, name, owner_id, is_enabled)
+        VALUES (UUID_TO_BIN(:id), :name, :owner_id, :is_enabled)
         ON DUPLICATE KEY UPDATE name = :name, updated = NOW()
         SQL;
 
@@ -32,6 +33,10 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
                 'id' => $catalog->getId(),
                 'name' => $catalog->getName(),
                 'owner_id' => $catalog->getOwnerId(),
+                'is_enabled' => $catalog->isEnabled(),
+            ],
+            [
+                'is_enabled' => Types::BOOLEAN,
             ]
         );
     }
