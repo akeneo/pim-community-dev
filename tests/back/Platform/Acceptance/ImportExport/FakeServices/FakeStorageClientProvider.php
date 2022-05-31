@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Acceptance\ImportExport\FakeServices;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
@@ -24,12 +23,13 @@ class FakeStorageClientProvider implements StorageClientProviderInterface
 {
     public function __construct(
         private Filesystem $fileSystem,
+        private string $storageClassName,
     ) {
     }
 
     public function supports(StorageInterface $storage): bool
     {
-        return $storage instanceof LocalStorage;
+        return $storage instanceof $this->storageClassName;
     }
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface

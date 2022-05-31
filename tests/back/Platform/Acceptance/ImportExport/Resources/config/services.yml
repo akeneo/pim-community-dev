@@ -3,5 +3,6 @@ services:
     class: AkeneoTest\Platform\Acceptance\ImportExport\FakeServices\FakeStorageClientProvider
     arguments:
       - '@oneup_flysystem.local_storage_filesystem'
+      - 'Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\LocalStorage'
     tags:
       - { name: pim_import_export.storage_client_provider }
