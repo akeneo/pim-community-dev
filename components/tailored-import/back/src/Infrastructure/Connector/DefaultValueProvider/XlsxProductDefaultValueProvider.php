@@ -41,6 +41,7 @@ class XlsxProductDefaultValueProvider implements DefaultValuesProviderInterface
             'header_row' => 1,
             'first_column' => 0,
             'first_product_row' => 2,
+            'unique_identifier_column' => 0,
             'sheet_name' => null,
         ];
 

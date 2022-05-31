@@ -154,13 +154,15 @@ class XlsxFlatFileIteratorTest extends AcceptanceTestCase
         int $headerLine = 1,
         int $firstColumn = 0,
         int $productLine = 2,
-        string $sheetName = 'Products'
+        string $sheetName = 'Products',
+        int $uniqueIdentifierColumn = 0
     ): XlsxFileIterator {
         $fileStructure = FileStructure::createFromNormalized([
             'header_row' => $headerLine,
             'first_column' => $firstColumn,
             'first_product_row' => $productLine,
             'sheet_name' => $sheetName,
+            'unique_identifier_column' => $uniqueIdentifierColumn
         ]);
 
         return $this->get('akeneo.tailored_import.spout.file_reader.factory')->create('xlsx', $filePath, $fileStructure);
