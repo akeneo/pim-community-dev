@@ -71,6 +71,14 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobExecutionWatchdogCommand:
+        arguments:
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@logger'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: console.command }
+
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
         arguments:
             - '@akeneo_batch_queue.factory.job_execution_message'
@@ -104,8 +112,6 @@ services:
 
     Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
         arguments:
-            - '@akeneo_batch.query.get_job_instance_code'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@logger'
             - '%kernel.project_dir%'
         tags:

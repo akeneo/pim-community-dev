@@ -14,6 +14,7 @@ final class Catalog
         private string $id,
         private string $name,
         private int $ownerId,
+        private bool $enabled,
     ) {
     }
 
@@ -32,12 +33,18 @@ final class Catalog
         return $this->ownerId;
     }
 
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
     public function withNewName(string $name): self
     {
         return new self(
             $this->id,
             $name,
             $this->ownerId,
+            $this->enabled,
         );
     }
 }
