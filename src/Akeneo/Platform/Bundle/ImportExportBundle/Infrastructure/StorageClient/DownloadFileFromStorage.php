@@ -44,16 +44,17 @@ final class DownloadFileFromStorage implements DownloadFileFromStorageInterface
         return $destinationFilePath;
     }
 
-    private function validateFileBeforeDownload(StorageClientInterface $storageClient, string $filePath): void {
+    private function validateFileBeforeDownload(StorageClientInterface $storageClient, string $filePath): void
+    {
         $fileExists = $storageClient->fileExists($filePath);
 
-        if(!$fileExists) {
+        if (!$fileExists) {
             throw new \RuntimeException(sprintf('The file "%s" is not present in the storage.', $filePath));
         }
 
         $fileSize = $storageClient->getFileSize($filePath);
 
-        if(self::MAX_FILE_SIZE < $fileSize) {
+        if (self::MAX_FILE_SIZE < $fileSize) {
             throw new \RuntimeException('The file is too large to be downloaded');
         }
     }

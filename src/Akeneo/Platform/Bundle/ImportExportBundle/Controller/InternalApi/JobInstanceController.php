@@ -7,6 +7,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -23,7 +24,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use League\Flysystem\FilesystemOperator;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,7 +71,8 @@ class JobInstanceController
         private FilesystemOperator $filesystem,
         private SecurityFacade $securityFacade,
         private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
-    ) {}
+    ) {
+    }
 
     /**
      * Get an import job profile
@@ -359,7 +360,7 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
-            if($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
+            if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
                 $rawParameters['storage'] = [
                     'type' => ManualStorage::TYPE,
                     'file_path' => $jobFileLocation->path(),

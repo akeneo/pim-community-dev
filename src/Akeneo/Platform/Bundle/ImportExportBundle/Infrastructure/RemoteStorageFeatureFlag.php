@@ -17,7 +17,7 @@ final class RemoteStorageFeatureFlag
 
     public function __construct(
         private FeatureFlags $featureFlags
-    ){
+    ) {
     }
 
     public function isEnabled(string $jobName): bool
