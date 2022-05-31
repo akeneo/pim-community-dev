@@ -75,6 +75,19 @@ services:
             - '@oro_security.security_facade'
             - '@validator'
 
+    pim_api.controller.get_product_by_uuid:
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\GetProductByUuidController'
+        public: true
+        arguments:
+            - '@pim_api.normalizer.uuid.connector_products'
+            - '@security.token_storage'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options'
+            - '@event_dispatcher'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
+            - '@oro_security.security_facade'
+
     Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\DeleteProductByUuidController:
         public: true
         arguments:

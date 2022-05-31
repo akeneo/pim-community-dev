@@ -10,6 +10,13 @@ pim_api_product_get:
     requirements:
         code: (.+$)(?<!/draft|/proposal)
 
+pim_api_product_get_by_uuid:
+    path: /products-uuid/{uuid}
+    defaults: { _controller: pim_api.controller.get_product_by_uuid:getAction, _format: json }
+    methods: [GET]
+    requirements:
+        code: (.+$)(?<!/draft|/proposal)
+
 pim_api_product_create:
     path: /products
     defaults: { _controller: pim_api.controller.product:createAction, _format: json }
