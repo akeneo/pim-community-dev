@@ -33,18 +33,22 @@ class PriceCollectionValueUserIntentFactory implements ValueUserIntentFactory
         if (null === $data['data'] || [] === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
-        foreach ($data['data'] as $measurement) {
-            $this->validateScalarArray($attributeCode, $measurement);
-            if (!array_key_exists('amount', $measurement)) {
+        foreach ($data['data'] as $price) {
+            $this->validateScalarArray($attributeCode, $price);
+            if (!array_key_exists('amount', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'amount', static::class, $data);
             }
-            if (!array_key_exists('currency', $measurement)) {
+            if (!array_key_exists('currency', $price)) {
                 throw InvalidPropertyTypeException::arrayKeyExpected($attributeCode, 'currency', static::class, $data);
             }
-            if (null === $measurement['amount'] || '' === $measurement['amount']) {
-                return new ClearValue($attributeCode, $data['scope'], $data['locale']);
+            if (null === $price['amount'] || '' === $price['amount']) {
+                continue;
             }
-            $priceValues[] = new PriceValue($measurement['amount'], $measurement['currency']);
+            $priceValues[] = new PriceValue($price['amount'], $price['currency']);
+        }
+
+        if ([] === $priceValues) {
+            return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
         return new SetPriceCollectionValue($attributeCode, $data['scope'], $data['locale'], $priceValues);
     }

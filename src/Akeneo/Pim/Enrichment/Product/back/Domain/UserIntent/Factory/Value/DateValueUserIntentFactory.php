@@ -43,7 +43,7 @@ class DateValueUserIntentFactory implements ValueUserIntentFactory
             throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);
         }
 
-        $formattedDate = \sprintf('%d-%d-%d', $matches['year'], $matches['month'] , $matches['day']);
+        $formattedDate = \sprintf('%d-%d-%d', $matches['year'], $matches['month'], $matches['day']);
         $dateTimeValue = \DateTimeImmutable::createFromFormat('Y-m-d', $formattedDate);
         if (false === $dateTimeValue) {
             throw InvalidPropertyException::dateExpected($attributeCode, 'yyyy-mm-dd', static::class, $data['data']);

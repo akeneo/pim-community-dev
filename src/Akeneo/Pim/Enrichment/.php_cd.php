@@ -121,9 +121,11 @@ $rules = [
         'ArPHP\I18N\Arabic',
 
         'Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException',
+        'Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException',
         'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
         'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
         'Akeneo\Pim\Enrichment\Product\API\MessageBus',
+        'Akeneo\Pim\Enrichment\Product\API\Query\GetUserIntentsFromStandardFormat',
         'Akeneo\Pim\Enrichment\Product\Domain\Model\ViolationCode'
 
     ])->in('Akeneo\Pim\Enrichment\Bundle'),

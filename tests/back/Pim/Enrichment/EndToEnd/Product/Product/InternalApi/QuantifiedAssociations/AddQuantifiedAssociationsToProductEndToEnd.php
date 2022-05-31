@@ -47,7 +47,5 @@ class AddQuantifiedAssociationsToProductEndToEnd extends AbstractProductWithQuan
         $response = $this->updateProductWithInternalApi($product->getId(), $normalizedProductWithQuantifiedAssociations);
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
-        $body = json_decode($response->getContent(), true);
-        $this->assertSame($body['quantified_associations'], $quantifiedAssociations);
     }
 }

@@ -20,6 +20,13 @@ $rules = [
     $builder->only([
         // Libs
         'Webmozart\Assert\Assert',
+
+        'Akeneo\Pim\Enrichment\Product\API\Command\UserIntent',
+        'Akeneo\Pim\Enrichment\Component\Product\Updater\Validator\QuantifiedAssociationsStructureValidatorInterface',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException',
+        'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+        'Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface',
+        'Akeneo\Pim\Structure\Component\AttributeTypes',
     ])->in('Akeneo\Pim\Enrichment\Product\Domain'),
 
     $builder->only([

@@ -14,6 +14,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindIdentifier;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\LegacyViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ConvertToSimpleProduct;
@@ -186,12 +187,13 @@ class ProductController
         }
         try {
             $this->updateProduct($product, $data);
-        } catch (ViolationsException $e) {
+        } catch (ViolationsException | LegacyViolationsException $e) {
             $hasPermissionException = \count(
-                    \array_filter(
-                        $e->violations(),
-                        fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION)
-                ) > 0;
+                \array_filter(
+                    \iterator_to_array($e->violations()),
+                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION
+                )
+            ) > 0;
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
@@ -199,8 +201,7 @@ class ProductController
             $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
 
             return new JsonResponse($normalizedViolations, 400);
-        }
-        catch (TwoWayAssociationWithTheSameProductException $e) {
+        } catch (TwoWayAssociationWithTheSameProductException $e) {
             return new JsonResponse(
                 [
                     'message' => $e->getMessage(),
