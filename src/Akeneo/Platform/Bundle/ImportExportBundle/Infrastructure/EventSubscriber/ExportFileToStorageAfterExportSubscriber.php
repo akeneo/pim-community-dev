@@ -76,7 +76,7 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
         $writtenFiles = [];
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
 
-        if(!$job instanceof JobWithStepsInterface) {
+        if (!$job instanceof JobWithStepsInterface) {
             return [];
         }
 
