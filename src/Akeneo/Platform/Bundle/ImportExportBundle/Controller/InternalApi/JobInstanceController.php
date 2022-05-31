@@ -4,6 +4,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\EncryptionDecryptionTrait;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
@@ -47,6 +48,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobInstanceController
 {
+    use EncryptionDecryptionTrait;
+
     protected IdentifiableObjectRepositoryInterface $repository;
     protected JobRegistry $jobRegistry;
     protected NormalizerInterface $jobInstanceNormalizer;
@@ -289,6 +292,16 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
+        if ($data['configuration']['storage']['type'] === 'sftp') {
+            $data['configuration']['storage']['password'] = $this->encrypt(
+                $data['configuration']['storage']['password'],
+                sprintf(
+                    '%s@%s:%s',
+                    $data['configuration']['storage']['username'],
+                    $data['configuration']['storage']['host'],
+                    $data['configuration']['storage']['port']
+                ));
+        }
 
         try {
             $this->eventDispatcher->dispatch(
