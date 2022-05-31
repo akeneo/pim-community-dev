@@ -111,15 +111,14 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $status->getValue()->willReturn(BatchStatus::STARTED);
         $exitStatus->isRunning()->willReturn(true);
 
-        $jobExecution->setStatus(Argument::any())->shouldNotBeCalled();
-        $jobExecution->setExitStatus(Argument::any())->shouldNotBeCalled();
+        $jobExecution->setStatus(Argument::type(BatchStatus::class))->shouldNotBeCalled();
+        $jobExecution->setExitStatus(Argument::type(ExitStatus::class))->shouldNotBeCalled();
 
         $this->resolveJobExecutionStatus($jobExecution);
     }
 
     function it_gets_exit_status(
         Connection $connection,
-        JobExecutionMessage $jobExecutionMessage,
         Statement $stmt,
         Result $result
     ) {
@@ -127,12 +126,11 @@ class JobExecutionManagerSpec extends ObjectBehavior
             ->prepare(Argument::type('string'))
             ->willReturn($stmt);
 
-        $jobExecutionMessage->getJobExecutionId()->willReturn(1);
         $stmt->bindValue('id', 1)->shouldBeCalled();
         $stmt->executeQuery()->shouldBeCalled()->willReturn($result);
         $result->fetchAssociative()->willReturn(['exit_code' => 'COMPLETED']);
 
-        $this->getExitStatus($jobExecutionMessage)->shouldBeLike(new ExitStatus('COMPLETED'));
+        $this->getExitStatus(1)->shouldBeLike(new ExitStatus('COMPLETED'));
     }
 
     function it_marks_as_failed(Connection $connection, Statement $stmt)
@@ -145,27 +143,24 @@ class JobExecutionManagerSpec extends ObjectBehavior
         $stmt->bindValue('status', BatchStatus::FAILED)->shouldBeCalled();
         $stmt->bindValue('exit_code', ExitStatus::FAILED)->shouldBeCalled();
         $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
-        $stmt->execute()->shouldBeCalled();
+        $stmt->executeStatement()->shouldBeCalled();
 
         $this->markAsFailed(1);
     }
 
     function it_updates_healthcheck(
         Connection $connection,
-        JobExecutionMessage $jobExecutionMessage,
         Statement $stmt
     ) {
         $connection
             ->prepare(Argument::type('string'))
             ->willReturn($stmt);
 
-        $jobExecutionMessage->getJobExecutionId()->willReturn(1);
-
         $stmt->bindValue('id', 1)->shouldBeCalled();
         $stmt->bindValue('health_check_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
         $stmt->bindValue('updated_time', Argument::type(\DateTime::class), Types::DATETIME_MUTABLE)->shouldBeCalled();
-        $stmt->execute()->shouldBeCalled();
+        $stmt->executeStatement()->shouldBeCalled();
 
-        $this->updateHealthCheck($jobExecutionMessage);
+        $this->updateHealthCheck(1);
     }
 }
