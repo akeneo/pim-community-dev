@@ -13,18 +13,12 @@ type Data = {
 }[];
 
 export const useCatalogs = (owner: string): Result => {
-    return useQuery<Data, string|null, Data>(
-        ['catalogs_list', owner],
-        async (): Promise<Data> => {
-            const response = await fetch(
-                '/rest/catalogs?owner=' + owner,
-                {
-                    'headers': {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                }
-            );
-            return await response.json();
-        }
-    );
+    return useQuery<Data, string | null, Data>(['catalogs_list', owner], async (): Promise<Data> => {
+        const response = await fetch('/rest/catalogs?owner=' + owner, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+        });
+        return await response.json();
+    });
 };
