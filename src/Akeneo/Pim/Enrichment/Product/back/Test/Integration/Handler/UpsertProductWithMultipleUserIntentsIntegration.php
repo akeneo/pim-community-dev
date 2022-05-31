@@ -156,7 +156,7 @@ final class UpsertProductWithMultipleUserIntentsIntegration extends EnrichmentPr
     }
 
     /** @test */
-    public function it_applies_change_parent_and_add_categories_usert_intents()
+    public function it_applies_change_parent_and_add_categories_user_intents()
     {
         $this->createProductModel('oldParent', 'color_variant_accessories', [
             'categories' => ['suppliers'],
