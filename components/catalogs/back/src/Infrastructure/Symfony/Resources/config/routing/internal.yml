@@ -1,0 +1,4 @@
+akeneo_catalogs_internal_get_catalogs_by_owner:
+    path: '/rest/catalogs'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAllCatalogsByOwnerAction
+    methods: [ GET ]

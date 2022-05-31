@@ -33,7 +33,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItGetsPaginatedCatalogsByOwnerId(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $user = $this->tokenStorage->getToken()->getUser();
         $userId = $user->getId();
 
@@ -81,7 +81,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->client->request(
             'GET',
@@ -100,7 +100,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
 
     public function testItGetsBadRequestWithWrongPagination(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
         $user = $this->tokenStorage->getToken()->getUser();
         $userId = $user->getId();
 

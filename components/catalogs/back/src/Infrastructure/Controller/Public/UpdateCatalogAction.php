@@ -70,7 +70,7 @@ final class UpdateCatalogAction
             throw new \LogicException('The catalog must exist after its update');
         }
 
-        return new JsonResponse($this->normalizer->normalize($catalog, 'external_api'), Response::HTTP_OK);
+        return new JsonResponse($this->normalizer->normalize($catalog, 'public'), Response::HTTP_OK);
     }
 
     private function notFound(string $id): NotFoundHttpException

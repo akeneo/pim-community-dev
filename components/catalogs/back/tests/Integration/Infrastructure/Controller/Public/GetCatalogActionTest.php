@@ -33,7 +33,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItFindsTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -62,7 +62,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->client->request(
             'GET',
@@ -81,7 +81,7 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
 
         $this->client->request(
             'GET',
@@ -107,7 +107,7 @@ class GetCatalogActionTest extends IntegrationTestCase
             $anotherUserId,
         ));
 
-        $this->client = $this->getAuthenticatedClient(['read_catalogs']);
+        $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);
 
         $this->client->request(
             'GET',
