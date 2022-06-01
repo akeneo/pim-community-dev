@@ -6,6 +6,7 @@ SHELL := /bin/bash
 IMAGE_TAG ?= master
 CI ?= 0
 PIM_CONTEXT ?=0
+USE_EDITION_FLAG ?= false
 
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
@@ -16,6 +17,7 @@ TYPE_LONG ?= serenity
 ENV_NAME ?= dev
 
 BUCKET ?= serenity-edition-dev
+
 ifeq ($(TYPE),grth)
 	TYPE_LONG := growth_edition
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
@@ -25,6 +27,19 @@ ifeq ($(TYPE),tria)
 	TYPE_LONG := pim_trial
 	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/../$(TYPE))
 	BUCKET := trial-edition-dev
+endif
+
+# Active EditionFlag mode (All editions runs a srnt images and a ENV vars is set on pods for Symfony to know wich Feature Flag to enable)
+# USE_EDITION_FLAG is compute by Terraform to set pfid=srnt-${instance-name} for all edition
+# USE_EDITION_FLAG is compute by Terraform to set editionFlag.enabled=true in tf-helm-pim-values.tpl
+# editionFlag.enabled=true in values.yml is compute by HELM to add PIM_EDITION:<editionflag> in env-configmap.yaml
+
+ifeq ($(USE_EDITION_FLAG),true)
+	TYPE := srnt
+	PIM_SRC_PATH := $(realpath $(DEPLOYMENT_DIR)/..)
+	BUCKET := serenity-edition-dev
+
+#We don't hardcode TYPE_LONG to keep proper edition specific PRODUCT_REFERENCE_TYPE & PRODUCT_REFERENCE_CODE 
 endif
 
 PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
@@ -67,6 +82,7 @@ ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
 endif
+
 TF_INPUT_FALSE ?=
 TF_AUTOAPPROVE ?=
 
@@ -244,6 +260,18 @@ ifeq ($(TYPE),tria)
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.hotjar_id "2672696"
 	yq w -i $(INSTANCE_DIR)/values.yaml free_trial.heap_id "2875170433"
 endif
+
+ifeq ($(USE_EDITION_FLAG),true)
+ifeq ($(INSTANCE_NAME_PREFIX),pimci)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+endif
+# Tricks to use OR like statement in ifeq -> https://stackoverflow.com/questions/7656425/makefile-ifeq-logical-or
+ifneq (,$(filter $(INSTANCE_NAME_PREFIX),pimup pimci-pr pimci-pr-ge pimci-pr-ft))
+	echo "[DEGUG ADAM] Enter in ifneq trick"
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+endif
+
 	@echo "cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml"
 	cat $(DEPLOYMENT_DIR)/terraform/pim/values.yaml
 	@echo "cat $(INSTANCE_DIR)/values.yaml"
@@ -321,6 +349,10 @@ endif
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
 
+ifeq ($(USE_EDITION_FLAG),true)
+	yq w -j -P -i  ${INSTANCE_DIR}/main.tf.json  'module.pim.use_edition_flag' true
+endif
+	
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform pim and monitoring source to deploy infra with a custom git version
 	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"

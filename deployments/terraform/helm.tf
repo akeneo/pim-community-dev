@@ -36,6 +36,7 @@ resource "local_file" "helm_pim_config" {
 
       pim = {
         type                            = local.type
+        use_edition_flag                = var.use_edition_flag
         product_reference_code          = var.product_reference_code
         product_reference_type          = var.product_reference_type
         product_reference_size          = var.product_reference_size

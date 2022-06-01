@@ -1,0 +1,176 @@
+client-to-clone-srnt: &client-to-clone-srnt
+client-to-clone-grth: &client-to-clone-grth
+
+workflows:
+    feature-flag-ge-tria_deployments_pull_request:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /.*GE2EE.*/
+                              - /SDO-.*/
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - checkout
+            - build_srnt_with_flags:
+                  name: "[srnt] Build with Flags"
+                  requires:
+                      - "[srnt] Test helm generated k8s files"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - "[srnt] Build with Flags"
+            - test_deploy_with_flags:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy with flags"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[srnt] Test cronjobs existence"
+            - create_release_candidate?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy with flags"
+            - release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Create release candidate"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Create release candidate?"
+            - test_deploy_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[srnt] Test cronjobs existence"
+            - test_upgrade_from_last_release:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test upgrade from last release"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Test deploy last release"
+            - deploy_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags?"
+                  type: approval
+                  filters:
+                      branches:
+                          only:
+                              - /.*GE2EE.*/
+                              - /SDO-.*/
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+            - deploy_pr_environment_with_flags:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags?"
+                      - "[srnt] Build with Flags"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+            - pull_request_success:
+                  requires:
+                      - "[srnt] Test deploy with flags"
+                      - "[grth] Test deploy with flags"
+                      - "[tria] Test deploy with flags"
+                      - "[srnt] Test upgrade from last release"
+                      - "[grth] Test upgrade from last release"
+
+    feature-flag-ge-tria_pr_deployments_only:
+        when:
+            not:
+                equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        jobs:
+            - ready_to_build?:
+                  type: approval
+                  filters:
+                      branches:
+                          ignore:
+                              - "master"
+            - checkout:
+                  requires:
+                      - ready_to_build?
+            - test_helm_generated_k8s_files:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test helm generated k8s files"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - checkout
+            - build_srnt_with_flags:
+                  name: "[srnt] Build with Flags"
+                  requires:
+                      - "[srnt] Test helm generated k8s files"
+            - test_cronjobs_existence:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Test cronjobs existence"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt"]
+                  requires:
+                      - "[srnt] Build with Flags"
+            - deploy_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+            - deploy_pr_environment_with_flags:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags?"
+                      - "[srnt] Build with Flags"
+            - delete_pr_environment?:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"
+                  type: approval
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Deploy PR environment with flags"
+            - delete_pr_environment:
+                  name: "[<< matrix.PRODUCT_TYPE >>] Delete PR environment"
+                  matrix:
+                      parameters:
+                          PRODUCT_TYPE: ["srnt", "grth", "tria"]
+                  requires:
+                      - "[<< matrix.PRODUCT_TYPE >>] Delete PR environment?"

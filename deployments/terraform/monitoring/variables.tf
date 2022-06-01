@@ -46,3 +46,9 @@ variable "monitoring_url" {
   type = string
   default = "/monitoring/services_status"
 }
+
+variable "use_edition_flag" {
+  type        = bool
+  default     = false
+  description = "If set to true , it will hardcode srnt-.. in pfid"
+}

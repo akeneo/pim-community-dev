@@ -1,3 +1,6 @@
+editionFlag:
+  enabled: ${pim.use_edition_flag}
+
 image:
   pim:
     tag: ${pim.version}
