@@ -47,13 +47,13 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'checkIsNewFamilyVariant',
+            StorageEvents::PRE_SAVE => 'recordIsNewFamilyVariant',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
             StorageEvents::POST_SAVE_ALL => 'bulkComputeVariantStructureChanges',
         ];
     }
 
-    public function checkIsNewFamilyVariant(GenericEvent $event): void
+    public function recordIsNewFamilyVariant(GenericEvent $event): void
     {
         $familyVariant = $event->getSubject();
         if (!$familyVariant instanceof FamilyVariantInterface) {
@@ -78,7 +78,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         }
 
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-        if ($this->noOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode())) {
+        if ($this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())) {
             $user = $this->tokenStorage->getToken()->getUser();
             $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => [$familyVariant->getCode()]]);
         }
@@ -102,7 +102,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
                 fn (FamilyVariantInterface $familyVariant): bool =>
                     !($this->isFamilyVariantNew[$familyVariant->getCode()] ?? false)
                     && $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
-                    && $this->noOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode())
+                    && $this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())
             )
         ));
 
@@ -115,7 +115,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => $familyVariantCodesToCompute]);
     }
 
-    private function noOtherJobExecutionIsRunning(int $jobInstanceId, string $familyVariantCode): bool
+    private function noOtherJobExecutionIsPending(int $jobInstanceId, string $familyVariantCode): bool
     {
         /**
          * status 2 = STARTING
