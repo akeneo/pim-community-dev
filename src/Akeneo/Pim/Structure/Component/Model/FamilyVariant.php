@@ -6,6 +6,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Webmozart\Assert\Assert;
 
 /**
  * A variant in a family defines the structure for the products with variants:
@@ -34,6 +35,9 @@ class FamilyVariant implements FamilyVariantInterface
 
     /** @var Collection */
     private $translations;
+
+    /** @var string[] */
+    private array $events = [];
 
     public function __construct()
     {
@@ -145,6 +149,62 @@ class FamilyVariant implements FamilyVariantInterface
     public function addVariantAttributeSet(VariantAttributeSetInterface $variantAttributeSet): void
     {
         $this->variantAttributeSets->add($variantAttributeSet);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAxesForLevel(int $level, array $axes): void
+    {
+        Assert::allIsInstanceOf($axes, AttributeInterface::class);
+        if (null === $attributeSet = $this->getVariantAttributeSet($level)) {
+            $attributeSet = new VariantAttributeSet();
+            $attributeSet->setLevel($level);
+            $this->addVariantAttributeSet($attributeSet);
+        }
+
+        $formerAxeIds = $attributeSet->getAxes()->map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId()
+        )->toArray();
+        $newAxeIds = \array_map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId(),
+            $axes
+        );
+        sort($formerAxeIds);
+        sort($newAxeIds);
+
+        if ($formerAxeIds !== $newAxeIds) {
+            $this->events[] = FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT;
+            $attributeSet->setAxes($axes);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateAttributesForLevel(int $level, array $attributes): void
+    {
+        Assert::allIsInstanceOf($attributes, AttributeInterface::class);
+        if (null === $attributeSet = $this->getVariantAttributeSet($level)) {
+            $attributeSet = new VariantAttributeSet();
+            $attributeSet->setLevel($level);
+            $this->addVariantAttributeSet($attributeSet);
+        }
+
+        $formerAttributeIds = $attributeSet->getAttributes()->map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId()
+        )->toArray();
+        $newAttributeIds = \array_map(
+            static fn (AttributeInterface $attribute): int => $attribute->getId(),
+            $attributes
+        );
+        sort($formerAttributeIds);
+        sort($newAttributeIds);
+
+        if ($formerAttributeIds !== $newAttributeIds) {
+            $this->events[] = FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT;
+            $attributeSet->setAttributes($attributes);
+        }
     }
 
     /**
@@ -291,5 +351,16 @@ class FamilyVariant implements FamilyVariantInterface
             AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
             AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function releaseEvents(): array
+    {
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
     }
 }
