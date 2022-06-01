@@ -4,6 +4,15 @@ declare(strict_types=1);
 
 namespace AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace;
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2022 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 use Akeneo\Connectivity\Connection\Application\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
 
