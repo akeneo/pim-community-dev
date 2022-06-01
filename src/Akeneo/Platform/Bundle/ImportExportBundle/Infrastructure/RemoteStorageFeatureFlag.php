@@ -6,7 +6,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure;
 
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlags;
 
-final class RemoteStorageFeatureFlag
+class RemoteStorageFeatureFlag
 {
     private const JOB_INSTANCE_SUPPORTS_STORAGE = [
         'xlsx_product_import',

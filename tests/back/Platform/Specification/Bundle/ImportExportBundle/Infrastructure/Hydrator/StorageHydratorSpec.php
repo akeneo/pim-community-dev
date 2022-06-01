@@ -43,9 +43,9 @@ class StorageHydratorSpec extends ObjectBehavior
 
     public function it_hydrates_with_the_first_supported_hydrator(StorageHydratorInterface $noneHydrator)
     {
-        $noneHydrator->hydrate(['type' => 'none'])->willReturn(new NoneStorage());
+        $noneHydrator->hydrate(['type' => 'none'])->willReturn(null);
 
-        $this->hydrate(['type' => 'none'])->shouldBeLike(new NoneStorage());
+        $this->hydrate(['type' => 'none'])->shouldBeLike(null);
     }
 
     public function it_throws_an_exception_when_no_hydrator_supports_hydration()
