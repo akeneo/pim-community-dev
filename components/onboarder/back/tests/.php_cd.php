@@ -134,6 +134,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
             'Akeneo\OnboarderSerenity\Infrastructure\Authentication',
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',

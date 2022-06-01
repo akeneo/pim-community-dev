@@ -6,13 +6,22 @@ namespace Akeneo\OnboarderSerenity\Test\Acceptance\Context\Authentication;
 
 use Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
 use Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag;
 use Behat\Behat\Context\Context;
 use PHPUnit\Framework\Assert;
 
 final class ContributorAccountContext implements Context
 {
-    public function __construct(private InMemoryRepository $contributorAccountRepository)
+    public function __construct(private InMemoryRepository $contributorAccountRepository, private FakeFeatureFlag $contributorAuthenticationFeatureFlag)
     {
+    }
+
+    /**
+     * @BeforeScenario @onboarder-serenity-contributor-authentication-enabled
+     */
+    public function enableOnboarderSerenityContributorAuthentication(): void
+    {
+        $this->contributorAuthenticationFeatureFlag->enable();
     }
 
     /**

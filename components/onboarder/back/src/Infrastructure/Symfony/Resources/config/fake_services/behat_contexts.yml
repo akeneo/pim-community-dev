@@ -8,3 +8,4 @@ services:
 
     Akeneo\OnboarderSerenity\Test\Acceptance\Context\Authentication\ContributorAccountContext:
         - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+        - '@akeneo.onboarder_serenity_contributor_authentication.feature'
