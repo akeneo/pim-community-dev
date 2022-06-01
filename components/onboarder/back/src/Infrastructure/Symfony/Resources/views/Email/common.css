@@ -48,7 +48,6 @@ body, #bodyTable{
 }
 .AknButton--white {
     font-family:'Lato-Heavy', "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: bold;
     background-color: #FFFFFF;
     border: 1px solid #FFFFFF;
     color: #4CA8E0 !important;
