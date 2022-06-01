@@ -3,11 +3,11 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {
-  getDefaultMultiSelectReplacementOperation,
-  MultiSelectReplacementOperationBlock,
-} from './MultiSelectReplacementOperationBlock';
+  getDefaultSimpleSelectReplacementOperation,
+  SimpleSelectReplacementOperationBlock,
+} from './SimpleSelectReplacementOperationBlock';
 
-jest.mock('../../../hooks/useAttributeOptions', () => ({
+jest.mock('../../../../hooks/useAttributeOptions', () => ({
   useAttributeOptions: (
     _attributeCode: string,
     searchValue: string,
@@ -44,25 +44,31 @@ jest.mock('../../../hooks/useAttributeOptions', () => ({
   ],
 }));
 
-test('it can get the default multi select replacement operation', () => {
-  expect(getDefaultMultiSelectReplacementOperation()).toEqual({
-    type: 'multi_select_replacement',
+test('it can get the default simple select replacement operation', () => {
+  expect(getDefaultSimpleSelectReplacementOperation()).toEqual({
+    type: 'simple_select_replacement',
     mapping: {},
   });
 });
 
-test('it displays a multi_select_replacement operation block', () => {
+test('it displays a simple_select_replacement operation block', () => {
   renderWithProviders(
-    <MultiSelectReplacementOperationBlock
+    <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'multi_select_replacement', mapping: {}}}
+      operation={{type: 'simple_select_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.multi_select_replacement.title')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.simple_select_replacement.title')
   ).toBeInTheDocument();
 });
 
@@ -70,11 +76,17 @@ test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
 
   renderWithProviders(
-    <MultiSelectReplacementOperationBlock
+    <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'multi_select_replacement', mapping: {}}}
+      operation={{type: 'simple_select_replacement', mapping: {}}}
       onChange={jest.fn()}
       onRemove={handleRemove}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
@@ -84,7 +96,7 @@ test('it can be removed using the remove button', () => {
 
   userEvent.click(screen.getByText('pim_common.delete'));
 
-  expect(handleRemove).toHaveBeenCalledWith('multi_select_replacement');
+  expect(handleRemove).toHaveBeenCalledWith('simple_select_replacement');
 });
 
 test('it opens a replacement modal and handles change', async () => {
@@ -96,18 +108,24 @@ test('it opens a replacement modal and handles change', async () => {
   }));
 
   renderWithProviders(
-    <MultiSelectReplacementOperationBlock
+    <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'multi_select_replacement', mapping: {}}}
+      operation={{type: 'simple_select_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
   userEvent.click(screen.getByText('pim_common.edit'));
 
   expect(
-    screen.getByText('akeneo.tailored_import.data_mapping.operations.multi_select_replacement.title')
+    screen.getByText('akeneo.tailored_import.data_mapping.operations.simple_select_replacement.title')
   ).toBeInTheDocument();
 
   const [blackMapping] = screen.getAllByPlaceholderText(
@@ -121,7 +139,7 @@ test('it opens a replacement modal and handles change', async () => {
   });
 
   expect(handleChange).toHaveBeenCalledWith({
-    type: 'multi_select_replacement',
+    type: 'simple_select_replacement',
     mapping: {
       black: ['noir', 'noir foncé'],
     },
@@ -132,11 +150,17 @@ test('it does not call handler when cancelling', () => {
   const handleChange = jest.fn();
 
   renderWithProviders(
-    <MultiSelectReplacementOperationBlock
+    <SimpleSelectReplacementOperationBlock
       targetCode="brand"
-      operation={{type: 'multi_select_replacement', mapping: {}}}
+      operation={{type: 'simple_select_replacement', mapping: {}}}
       onChange={handleChange}
       onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
@@ -146,19 +170,25 @@ test('it does not call handler when cancelling', () => {
   expect(handleChange).not.toHaveBeenCalled();
 });
 
-test('it throws an error if the operation is not a multi select replacement operation', () => {
+test('it throws an error if the operation is not a simple select replacement operation', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
 
   expect(() => {
     renderWithProviders(
-      <MultiSelectReplacementOperationBlock
+      <SimpleSelectReplacementOperationBlock
         targetCode="brand"
         operation={{type: 'clean_html_tags'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
+        isLastOperation={false}
+        previewData={{
+          isLoading: false,
+          hasError: false,
+          data: ['<p>Hello</p>', '<p>World</p>'],
+        }}
       />
     );
-  }).toThrowError('MultiSelectReplacementOperationBlock can only be used with MultiSelectReplacementOperation');
+  }).toThrowError('SimpleSelectReplacementOperationBlock can only be used with SimpleSelectReplacementOperation');
 
   mockedConsole.mockRestore();
 });

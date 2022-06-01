@@ -8,6 +8,7 @@ import {ActionIfNotEmpty} from './ActionIfNotEmpty';
 const setValueTarget: MultiSelectTarget = {
   code: 'brand_collection',
   type: 'attribute',
+  attribute_type: 'pim_catalog_multiselect',
   locale: null,
   channel: null,
   source_configuration: null,
@@ -18,6 +19,7 @@ const setValueTarget: MultiSelectTarget = {
 const addValueTarget: MultiSelectTarget = {
   code: 'tshirt_style',
   type: 'attribute',
+  attribute_type: 'pim_catalog_multiselect',
   locale: null,
   channel: null,
   source_configuration: null,

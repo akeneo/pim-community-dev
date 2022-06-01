@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Block, Button, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import {isReplacementValues, ReplacementValues} from '../../../../models';
+import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../../hooks';
 import {OperationBlockProps} from './OperationBlockProps';
-import {isReplacementValues, ReplacementValues} from './ReplacementValues';
-import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from './ReplacementModal';
-import {OPTION_COLLECTION_PAGE_SIZE, useAttributeOptions} from '../../../hooks';
+import {getDefaultReplacementValueFilter, ReplacementModal, ReplacementValueFilter} from '../ReplacementModal';
 
 const MULTI_SELECT_REPLACEMENT_OPERATION_TYPE = 'multi_select_replacement';
 

@@ -8,6 +8,7 @@ import {MeasurementTarget} from '../Attribute';
 const skipValueTarget: MeasurementTarget = {
   code: 'power',
   type: 'attribute',
+  attribute_type: 'pim_catalog_metric',
   locale: null,
   channel: null,
   source_configuration: {
@@ -21,6 +22,7 @@ const skipValueTarget: MeasurementTarget = {
 const clearValueTarget: MeasurementTarget = {
   code: 'power',
   type: 'attribute',
+  attribute_type: 'pim_catalog_metric',
   locale: null,
   channel: null,
   source_configuration: {

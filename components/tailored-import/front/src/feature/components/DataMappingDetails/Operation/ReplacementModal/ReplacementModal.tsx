@@ -28,8 +28,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {MappedFilterDropdown, MappedFilterValue} from './MappedFilterDropdown';
 import {isDefaultReplacementValueFilter, ReplacementValueFilter} from './ReplacementValueFilter';
-import {filterEmptyValues, ReplacementValues} from '../ReplacementValues';
-import {OperationType} from '../../../../models/Operation';
+import {filterEmptyValues, OperationType, ReplacementValues} from '../../../../models';
 
 const Container = styled.div`
   width: 100%;
