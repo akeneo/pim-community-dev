@@ -161,11 +161,13 @@ class FamilyVariant implements FamilyVariantInterface
             $attributeSet = new VariantAttributeSet();
             $attributeSet->setLevel($level);
             $this->addVariantAttributeSet($attributeSet);
+            $formerAxeIds = [];
+        } else {
+            $formerAxeIds = $attributeSet->getAxes()->map(
+                static fn(AttributeInterface $attribute): int => $attribute->getId()
+            )->toArray();
         }
 
-        $formerAxeIds = $attributeSet->getAxes()->map(
-            static fn (AttributeInterface $attribute): int => $attribute->getId()
-        )->toArray();
         $newAxeIds = \array_map(
             static fn (AttributeInterface $attribute): int => $attribute->getId(),
             $axes
@@ -189,11 +191,13 @@ class FamilyVariant implements FamilyVariantInterface
             $attributeSet = new VariantAttributeSet();
             $attributeSet->setLevel($level);
             $this->addVariantAttributeSet($attributeSet);
+            $formerAttributeIds = [];
+        } else {
+            $formerAttributeIds = $attributeSet->getAttributes()->map(
+                static fn(AttributeInterface $attribute): int => $attribute->getId()
+            )->toArray();
         }
 
-        $formerAttributeIds = $attributeSet->getAttributes()->map(
-            static fn (AttributeInterface $attribute): int => $attribute->getId()
-        )->toArray();
         $newAttributeIds = \array_map(
             static fn (AttributeInterface $attribute): int => $attribute->getId(),
             $attributes

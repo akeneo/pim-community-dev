@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * The job is not launched if:
  *  - no changes on level's attribute list
  *  - no changes in the axes
- *  - a previous job is in progress
+ *  - a previous job concerning this family variant is about to start
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -106,6 +106,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             )
         ));
 
+        $this->isFamilyVariantNew = [];
         if ([] === $familyVariantCodesToCompute) {
             return;
         }
