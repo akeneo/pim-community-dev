@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredImport\Domain\Model\File;
 
 use Akeneo\Platform\TailoredImport\Domain\Exception\MismatchedFileHeadersException;
+use Akeneo\Platform\TailoredImport\Domain\Exception\MissingJobConfigurationException;
 use Akeneo\Platform\TailoredImport\Domain\Model\ColumnCollection;
 use Webmozart\Assert\Assert;
 
@@ -42,6 +43,10 @@ class FileHeaderCollection implements \Countable, \IteratorAggregate
     {
         $fileHeaderIterator = $this->getIterator();
         $columnIterator = $columnCollection->getIterator();
+
+        if (0 === $columnIterator->count()) {
+            throw new MissingJobConfigurationException();
+        }
 
         if ($fileHeaderIterator->count() !== $columnIterator->count()) {
             throw new MismatchedFileHeadersException($columnCollection->getLabels(), array_map(fn (FileHeader $fileHeader) => $fileHeader->getLabel(), $this->fileHeaders));
