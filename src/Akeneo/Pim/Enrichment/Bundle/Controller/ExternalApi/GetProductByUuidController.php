@@ -6,12 +6,11 @@ namespace Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Uuid\SqlGetConnectorProducts;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\Uuid\SqlGetConnectorProductsWithOptions;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithCompletenessesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Uuid\GetProductsWithCompletenesses;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Uuid\GetProductsWithQualityScores;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\Uuid\ConnectorProductNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Ramsey\Uuid\Uuid;
@@ -36,8 +35,8 @@ class GetProductByUuidController
         private SqlGetConnectorProducts $getConnectorProducts,
         private SqlGetConnectorProductsWithOptions $getConnectorProductsWithOptions,
         private EventDispatcherInterface $eventDispatcher,
-        private GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        private GetProductsWithCompletenessesInterface $getProductsWithCompletenesses,
+        private GetProductsWithQualityScores $getProductsWithQualityScores,
+        private GetProductsWithCompletenesses $getProductsWithCompletenesses,
         private SecurityFacade $security,
     ) {
     }
@@ -65,18 +64,15 @@ class GetProductByUuidController
             $this->eventDispatcher->dispatch(new ReadProductsEvent(1));
 
             if ($request->query->getAlpha('with_quality_scores', 'false') === 'true') {
-                // TODO it uses uuid at some point
                 $product = $this->getProductsWithQualityScores->fromConnectorProduct($product);
             }
             if ($request->query->getAlpha('with_completenesses', 'false') === 'true') {
-                // TODO it uses uuid at some point
                 $product = $this->getProductsWithCompletenesses->fromConnectorProduct($product);
             }
         } catch (ObjectNotFoundException $e) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist or you do not have permission to access it.', $productUuid->toString()));
         }
 
-        // TODO make this works with uuids
         $normalizedProduct = $this->connectorProductNormalizer->normalizeConnectorProduct($product);
 
         return new JsonResponse($normalizedProduct);

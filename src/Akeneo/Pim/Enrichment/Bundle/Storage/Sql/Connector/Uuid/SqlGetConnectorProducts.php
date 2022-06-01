@@ -24,7 +24,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SqlGetConnectorProducts implements GetConnectorProducts
+final class SqlGetConnectorProducts implements GetConnectorProducts
 {
     public function __construct(
         private GetValuesAndPropertiesFromProductUuids $getValuesAndPropertiesFromProductUuids,
@@ -66,8 +66,6 @@ class SqlGetConnectorProducts implements GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList
     {
-
-        // TODO check it gets groups and categories
         $rows = array_replace_recursive(
             $this->getValuesAndPropertiesFromProductUuids->fetchByProductUuids($productUuids),
             $this->fetchAssociationsIndexedByProductUuids($productUuids),

@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GetProductByUuidEndToEnd extends AbstractProductTestCase
 {
 
-    public function SKIPOKtest_it_gets_a_product_with_attribute_options_simple_select()
+    public function test_it_gets_a_product_with_attribute_options_simple_select()
     {
         /** @var Product $product */
         $product = $this->createProduct('product', [
@@ -75,7 +75,7 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $expectedProduct);
     }
 
-    public function SKIPOKtest_it_gets_a_product_with_attribute_options_multi_select()
+    public function test_it_gets_a_product_with_attribute_options_multi_select()
     {
         /** @var Product $product */
         $product = $this->createProduct('product', [
@@ -138,7 +138,7 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
     /**
      * @group critical
      */
-    public function SKIPOKtest_it_gets_a_product()
+    public function test_it_gets_a_product()
     {
         /** @var Product $product */
         $product = $this->createProduct('product', [
@@ -180,7 +180,7 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $standardProduct);
     }
 
-    public function SKIPOKtest_it_throws_a_404_response_when_the_product_is_not_found()
+    public function test_it_throws_a_404_response_when_the_product_is_not_found()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -239,7 +239,7 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $expectedProduct);
     }
 
-    public function SKIPtest_it_gets_a_product_with_completenesses()
+    public function test_it_gets_a_product_with_completenesses()
     {
         /** @var Product $product */
         $product = $this->createProduct('product', [
@@ -291,7 +291,7 @@ class GetProductByUuidEndToEnd extends AbstractProductTestCase
         $this->assertResponse($response, $expectedProduct);
     }
 
-    public function SKIPtestAccessDeniedWhenRetrievingProductWithoutTheAcl()
+    public function testAccessDeniedWhenRetrievingProductWithoutTheAcl()
     {
         /** @var Product $product */
         $product = $this->createProduct('product', [new SetFamily('familyA')]);

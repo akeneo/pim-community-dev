@@ -21,9 +21,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
  */
 final class ConnectorProduct
 {
-
-    // TODO uuid should be of type string or Ramsey\Uuid ?
-
     /**
      * @param string $uuid
      * @param string $identifier
@@ -277,7 +274,7 @@ final class ConnectorProduct
     }
 
     //todo rename with uuids
-    public function associatedProductIdentifiers(): array
+    public function associatedProductUuids(): array
     {
         $associatedProducts = [];
         foreach ($this->associations as $associations) {
@@ -298,7 +295,7 @@ final class ConnectorProduct
     }
 
     //todo rename with uuids
-    public function associatedWithQuantityProductIdentifiers()
+    public function associatedWithQuantityProductUuids()
     {
         $associatedWithQuantityProducts = array_map(function ($quantifiedAssociations) {
             return array_column($quantifiedAssociations['products'], 'uuid');
@@ -390,7 +387,7 @@ final class ConnectorProduct
     }
 
     //todo rename with uuids
-    public function filterAssociatedWithQuantityProductsByProductIdentifiers(array $productUuidsToFilter): ConnectorProduct
+    public function filterAssociatedWithQuantityProductsByProductUuids(array $productUuidsToFilter): ConnectorProduct
     {
         $filteredQuantifiedAssociations = [];
         foreach ($this->quantifiedAssociations as $associationType => $quantifiedAssociation) {
@@ -425,7 +422,7 @@ final class ConnectorProduct
     }
 
     //todo rename with uuids
-    public function filterAssociatedProductsByProductIdentifiers(array $productIdentifiersToFilter): ConnectorProduct
+    public function filterAssociatedProductsByProductUuids(array $productIdentifiersToFilter): ConnectorProduct
     {
         $filteredAssociations = [];
         foreach ($this->associations as $associationType => $association) {
