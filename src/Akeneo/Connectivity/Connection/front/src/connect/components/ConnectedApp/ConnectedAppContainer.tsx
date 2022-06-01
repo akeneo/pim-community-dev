@@ -260,7 +260,9 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     />
                 )}
 
-                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && <CatalogList owner={connectedApp.connection_username} />}
+                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && (
+                    <CatalogList owner={connectedApp.connection_username} />
+                )}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
             </PageContent>

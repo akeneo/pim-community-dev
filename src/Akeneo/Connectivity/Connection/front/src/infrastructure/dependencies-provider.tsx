@@ -23,9 +23,11 @@ interface Props {
 }
 
 const DependenciesProvider = ({children, ...dependencies}: PropsWithChildren<Props>) => (
-    <DependenciesContext.Provider value={{
-        translate: dependencies.translate
-    }}>
+    <DependenciesContext.Provider
+        value={{
+            translate: dependencies.translate,
+        }}
+    >
         <RouterContext.Provider value={dependencies.router}>
             <TranslateContext.Provider value={dependencies.translate}>
                 <NotifyContext.Provider value={dependencies.notify}>
