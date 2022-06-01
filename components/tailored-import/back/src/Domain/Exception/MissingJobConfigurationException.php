@@ -17,7 +17,7 @@ class MissingJobConfigurationException extends \Exception
 {
     public function __construct()
     {
-        $message = 'Import structure has not been configured for this Job';
+        $message = 'Import structure has not been configured for this job';
         parent::__construct($message);
     }
 }
