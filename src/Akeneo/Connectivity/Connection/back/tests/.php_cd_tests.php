@@ -35,6 +35,27 @@ $rules = [
             'GuzzleHttp',
         ]
     )->in('spec\Akeneo\Connectivity\Connection'),
+
+    $builder->only(
+        [
+            // Mandatory
+            'PHPUnit',
+            'Akeneo\Test',
+
+            // Internal
+            'Akeneo\Connectivity\Connection',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+
+            // Symfony
+            'Symfony\Component',
+            'Symfony\Contracts',
+
+            // Dependencies
+            'FOS',
+            'Doctrine',
+            'Ramsey\Uuid\Uuid',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Tests\Integration'),
 ];
 
 $config = new Configuration($rules, $finder);
