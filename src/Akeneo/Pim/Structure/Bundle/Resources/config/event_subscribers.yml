@@ -14,7 +14,6 @@ services:
             - '@akeneo_batch.job.job_instance_repository'
             - '@database_connection'
             - '@logger'
-            - '@pim_catalog.repository.family_variant'
             - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
         tags:
             - { name: kernel.event_subscriber }

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Exception\AnotherJobStillRunningException;
-use Akeneo\Pim\Structure\Component\Model\Attribute;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
-use Akeneo\Pim\Structure\Component\Repository\FamilyVariantRepositoryInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -20,10 +17,10 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * When a family variant is saved, we need to update all product models and variant products that belong
  * to this family variant because the structure of the family variant could have changed.
- *
- * So we may need to remove values or move values from some level to another.
- *
- * We make sure we do not run this job for new family variants.
+ * The job is not launched if:
+ *  - no changes on level's attribute list
+ *  - no changes in the axes
+ *  - a previous job is in progress
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -31,8 +28,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
-    private string $jobName;
-    private ?FamilyVariantInterface $previousFamilyVariant;
+    /** @var array<string, bool> */
+    private array $isFamilyVariantNew = [];
 
     public function __construct(
         private TokenStorageInterface $tokenStorage,
@@ -40,10 +37,8 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         private IdentifiableObjectRepositoryInterface $jobInstanceRepository,
         private Connection $connection,
         private LoggerInterface $logger,
-        private FamilyVariantRepositoryInterface $familyVariantRepository,
-        string $jobName
+        private string $jobName
     ) {
-        $this->jobName = $jobName;
     }
 
     /**
@@ -52,23 +47,22 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'getPreviousValue',
+            StorageEvents::PRE_SAVE => 'checkIsNewFamilyVariant',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
+            StorageEvents::POST_SAVE_ALL => 'bulkComputeVariantStructureChanges',
         ];
     }
 
-    public function getPreviousValue(GenericEvent $event): void
+    public function checkIsNewFamilyVariant(GenericEvent $event): void
     {
         $familyVariant = $event->getSubject();
         if (!$familyVariant instanceof FamilyVariantInterface) {
             return;
         }
-        $this->previousFamilyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant->getCode());
+
+        $this->isFamilyVariantNew[$familyVariant->getCode()] = null === $familyVariant->getId();
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function computeVariantStructureChanges(GenericEvent $event): void
     {
         $familyVariant = $event->getSubject();
@@ -76,100 +70,86 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
-        $hasChanged = $this->hasFamilyVariantStructureBeenUpdated($familyVariant);
-//        $levels = $familyVariant->getNumberOfLevel();
-//        $isDirty = false;
-//        for ($i = 1; $i <= $levels; $i++) {
-//            $variantAttributeSets = $familyVariant->getVariantAttributeSet($i);
-//            if (!$isDirty && ($variantAttributeSets->getAttributes()->isDirty() || $variantAttributeSets->getAxes()->isDirty())) {
-//                $isDirty = true;
-//            }
-//        }
-//        if (!$isDirty && $familyVariant->getTranslations()->isDirty()) {
-//            $isDirty = $familyVariant->getTranslations()->isDirty();
-//        }
-//
-//        if (!$isDirty) {
-//            return;
-//        }
-////        $isDirty = $familyVariant['variantAttributeSets']['isDirty'];
-
-        if ($event->getArgument('is_new') || (!$event->getArgument('is_new') && !$hasChanged)) {
+        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')
+            || ($event->hasArgument('is_new') && $event->getArgument('is_new'))
+            || !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
+        ) {
             return;
         }
 
-        if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')) {
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        if ($this->noOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode())) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => [$familyVariant->getCode()]]);
+        }
+    }
+
+    public function bulkComputeVariantStructureChanges(GenericEvent $event): void
+    {
+        $familyVariants = $event->getSubject();
+        if (!is_array($familyVariants)
+            || [] === $familyVariants
+            || !current($familyVariants) instanceof FamilyVariantInterface
+        ) {
+            return;
+        }
+
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+        $familyVariantCodesToCompute = \array_values(\array_map(
+            static fn (FamilyVariantInterface $familyVariant): string => $familyVariant->getCode(),
+            \array_filter(
+                $familyVariants,
+                fn (FamilyVariantInterface $familyVariant): bool =>
+                    !($this->isFamilyVariantNew[$familyVariant->getCode()] ?? false)
+                    && $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
+                    && $this->noOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode())
+            )
+        ));
+
+        if ([] === $familyVariantCodesToCompute) {
             return;
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-
-        try {
-            $this->ensureNoOtherJobExecutionIsRunning($jobInstance->getId(), $familyVariant->getCode());
-
-            $this->jobLauncher->launch($jobInstance, $user, [
-                'family_variant_codes' => [$familyVariant->getCode()]
-            ]);
-        } catch (AnotherJobStillRunningException $e) {
-        }
+        $this->jobLauncher->launch($jobInstance, $user, ['family_variant_codes' => $familyVariantCodesToCompute]);
     }
 
-    private function ensureNoOtherJobExecutionIsRunning(int $jobInstanceId, string $familyVariantCode): void
+    private function noOtherJobExecutionIsRunning(int $jobInstanceId, string $familyVariantCode): bool
     {
+        /**
+         * status 2 = STARTING
+         * The check on the create_time is a security in case we have ghost job that are never started.
+         */
         $query = <<<SQL
-        SELECT EXISTS(
-            SELECT *
-               FROM akeneo_batch_job_execution abje
-               WHERE job_instance_id = :instanceId
-                   AND exit_code in ('UNKNOWN', 'EXECUTING')
-             AND :familyVariantCode MEMBER OF (JSON_EXTRACT(raw_parameters, '$.family_variant_codes'))
-            AND (health_check_time IS NULL OR health_check_time > SUBTIME(UTC_TIMESTAMP(), '0:0:10'))
-        );
-SQL;
-        $stmt = $this->connection->executeQuery(
+        SELECT id
+        FROM akeneo_batch_job_execution abje
+        WHERE job_instance_id = :instanceId
+            AND status = 2
+            AND :familyVariantCode MEMBER OF (JSON_EXTRACT(raw_parameters, '$.family_variant_codes'))
+            AND create_time > DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)
+        ORDER BY id DESC
+        LIMIT 1
+        SQL;
+        $jobId = $this->connection->executeQuery(
             $query,
-            [
-                'instanceId' => $jobInstanceId,
-                'familyVariantCode' => $familyVariantCode,
-            ]
-        );
+            ['instanceId' => $jobInstanceId, 'familyVariantCode' => $familyVariantCode]
+        )->fetchOne();
 
-        if ((int) $stmt->fetchOne() === 0) {
-            return;
+        if (false === $jobId) {
+            return true;
         }
 
-        $this->logger->warning('Another job execution is still running (id = {job_id})', ['message' => 'another_job_execution_is_still_running', 'job_id' => $stmt[0]['id']]);
+        $this->logger->notice(
+            'ComputeFamilyVariantStructureChangesSubscriber: Another job execution is still running (id = {job_id})',
+            ['message' => 'another_job_execution_is_still_running', 'job_id' => $jobId]
+        );
 
-        // In case of an old job execution that has not been marked as failed.
-        /**if ($jobExecutionRunning->getUpdatedTime() < new \DateTime(self::OUTDATED_JOB_EXECUTION_TIME)) {
-            $this->logger->info('Job execution "{job_id}" is outdated: let\'s mark it has failed.', ['message' => 'job_execution_outdated', 'job_id' => $jobExecutionRunning->getId()]);
-            $this->executionManager->markAsFailed($jobExecutionRunning->getId());
-        }*/
-
-        throw new AnotherJobStillRunningException();
+        return false;
     }
 
-    private function hasFamilyVariantStructureBeenUpdated(FamilyVariantInterface $familyVariant): bool
+    private function variantAttributeSetOfFamilyVariantIsUpdated(FamilyVariantInterface $familyVariant): bool
     {
-//        $previousFamilyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant->getCode());
-        $levels = $familyVariant->getNumberOfLevel();
-
-        for ($i = 1; $i <= $levels; $i++) {
-            $variantAttributeSets = $familyVariant->getVariantAttributeSet($i)->getAttributes()->getValues();
-            $formerVariantAttributeSets = $this->previousFamilyVariant?->getVariantAttributeSet($i)?->getAttributes()?->getValues() ?? [];
-
-            $formerAttributeSetCodes = \array_map(fn(Attribute $attribute) => $attribute->getCode(), $formerVariantAttributeSets);
-            $newAttributeSetCodes = \array_map(fn(Attribute $attribute) => $attribute->getCode(), $variantAttributeSets);
-
-            $hasChanges = \array_diff($formerAttributeSetCodes, $newAttributeSetCodes);
-
-            if (\count($hasChanges) > 0) {
-                return true;
-            }
-        }
-
-        // TODO: change to return false;
-        return true;
+        // Warning: releaseEvents can be called only once by family variant (events are cleared after the first call)
+        return \in_array(FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT, $familyVariant->releaseEvents());
     }
 }
