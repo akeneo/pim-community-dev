@@ -46,8 +46,78 @@ class SaveProductCompletenessesIntegration extends TestCase
         );
     }
 
+    public function test_that_it_saves_completenesses_given_a_product_id_during_uuid_migration()
+    {
+        $this->simulateUuidMigration();
+
+        $productId = $this->createProduct('a_great_product');
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, [])
+        ]);
+        $this->executeSave($collection);
+
+        $dbCompletenesses = $this->getCompletenessesFromDB($productId);
+        Assert::assertCount(1, $dbCompletenesses);
+        Assert::assertEquals(
+            [
+                'channel_code' => 'ecommerce',
+                'locale_code' => 'en_US',
+                'missing_count' => 0,
+                'required_count' => 5,
+            ],
+            $dbCompletenesses['ecommerce-en_US']
+        );
+    }
+
     public function test_that_it_saves_completenesses()
     {
+        $productId = $this->createProduct('a_great_product');
+
+        $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
+            new ProductCompletenessWithMissingAttributeCodes('ecommerce', 'en_US', 5, ['a_text']),
+            new ProductCompletenessWithMissingAttributeCodes(
+                'tablet',
+                'fr_FR',
+                10,
+                [
+                    'a_localized_and_scopable_text_area',
+                    'a_yes_no',
+                    'a_multi_select',
+                    'a_file',
+                    'a_price',
+                    'a_number_float',
+                ]
+            ),
+        ]);
+
+        $this->executeSave($collection);
+
+        $dbCompletenesses = $this->getCompletenessesFromDB($productId);
+        Assert::assertCount(2, $dbCompletenesses);
+        Assert::assertEquals(
+            [
+                'channel_code' => 'ecommerce',
+                'locale_code' => 'en_US',
+                'missing_count' => 1,
+                'required_count' => 5,
+            ],
+            $dbCompletenesses['ecommerce-en_US']
+        );
+        Assert::assertEquals(
+            [
+                'channel_code' => 'tablet',
+                'locale_code' => 'fr_FR',
+                'missing_count' => 6,
+                'required_count' => 10,
+            ],
+            $dbCompletenesses['tablet-fr_FR']
+        );
+    }
+
+    public function test_that_it_saves_completenesses_during_a_uuid_migration()
+    {
+        $this->simulateUuidMigration();
+
         $productId = $this->createProduct('a_great_product');
 
         $collection = new ProductCompletenessWithMissingAttributeCodesCollection($productId, [
@@ -126,5 +196,18 @@ SQL;
         }
 
         return $results;
+    }
+
+    private function simulateUuidMigration(): void
+    {
+        $this->get('database_connection')->executeQuery(<<<SQL
+            INSERT INTO `pim_one_time_task` (`code`, `status`, `start_time`, `values`) 
+            VALUES (:code, :status, NOW(), :values)
+            ON DUPLICATE KEY UPDATE status='started', start_time=NOW();
+        SQL, [
+            'code' => 'pim:product:migrate-to-uuid',
+            'status' => 'started',
+            'values' => \json_encode((object) []),
+        ]);
     }
 }

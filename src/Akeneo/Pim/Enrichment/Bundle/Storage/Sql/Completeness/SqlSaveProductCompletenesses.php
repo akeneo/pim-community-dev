@@ -96,6 +96,12 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
                 }
             }
 
+            if ($this->uuidMigrationIsInProgress()) {
+                $this->useBasicInsertsUpdates($productCompletenessCollections, $localeIdsFromCode, $channelIdsFromCode);
+
+                return;
+            }
+
             $numberCompletenessRow = 0;
             foreach ($productCompletenessCollections as $productCompletenessCollection) {
                 $numberCompletenessRow += count($productCompletenessCollection);
@@ -214,6 +220,92 @@ final class SqlSaveProductCompletenesses implements SaveProductCompletenesses
         } finally {
             $this->connection->executeQuery('UNLOCK TABLES');
             $this->connection->executeQuery(sprintf('SET autocommit=%d', $formerAutocommitValue));
+        }
+    }
+
+    private function uuidMigrationIsInProgress(): bool
+    {
+        $status = $this->connection->executeQuery(
+            'SELECT status FROM pim_one_time_task WHERE code = ?',
+            ['pim:product:migrate-to-uuid']
+        )->fetchOne();
+
+        return 'started' === $status;
+    }
+
+    private function useBasicInsertsUpdates(
+        array $productCompletenessCollections,
+        array $localeIdsFromCode,
+        array $channelIdsFromCode
+    ): void {
+        $sql = <<<SQL
+            SELECT CONCAT(locale_id, '-', channel_id, '-', product_id), id
+            FROM pim_catalog_completeness
+            WHERE (locale_id, channel_id, product_id) IN ({conditions})
+        SQL;
+
+        $values = [];
+        $conditions = [];
+        foreach ($productCompletenessCollections as $productCompletenessCollection) {
+            foreach ($productCompletenessCollection as $productCompleteness) {
+                $conditions[] = '(?, ?, ?)';
+                $values[] = $localeIdsFromCode[$productCompleteness->localeCode()];
+                $values[] = $channelIdsFromCode[$productCompleteness->channelCode()];
+                $values[] = $productCompletenessCollection->productId();
+            }
+        }
+
+        $indexedCompletenessIds = $this->connection->executeQuery(
+            \strtr($sql, ['{conditions}' => join(',', $conditions)]),
+            $values
+        )->fetchAllKeyValue();
+
+        $insertPlaceholders = [];
+        $insertValues = [];
+        foreach ($productCompletenessCollections as $productCompletenessCollection) {
+            foreach ($productCompletenessCollection as $productCompleteness) {
+                $localeId = $localeIdsFromCode[$productCompleteness->localeCode()];
+                $channelId = $channelIdsFromCode[$productCompleteness->channelCode()];
+                $productId = $productCompletenessCollection->productId();
+
+                $completenessId = $indexedCompletenessIds[$localeId . '-' . $channelId . '-' . $productId] ?? null;
+                if (null === $completenessId) {
+                    // Insert
+                    $insertPlaceholders[] = '(?, ?, ?, ?, ?)';
+                    $insertValues[] = $localeId;
+                    $insertValues[] = $channelId;
+                    $insertValues[] = $productId;
+                    $insertValues[] = count($productCompleteness->missingAttributeCodes());
+                    $insertValues[] = $productCompleteness->requiredCount();
+                } else {
+                    // Update
+                    $update = <<<SQL
+                        UPDATE pim_catalog_completeness SET
+                            missing_count = ?,
+                            required_count = ?
+                        WHERE locale_id = ? AND channel_id = ? AND product_id = ?
+                    SQL;
+                    $this->connection->executeQuery($update, [
+                        count($productCompleteness->missingAttributeCodes()),
+                        $productCompleteness->requiredCount(),
+                        $localeId,
+                        $channelId,
+                        $productId,
+                    ]);
+                }
+            }
+        }
+
+        if ([] !== $insertValues) {
+            $insertPlaceholders = join(',', $insertPlaceholders);
+            $insert = <<<SQL
+                INSERT INTO pim_catalog_completeness
+                    (locale_id, channel_id, product_id, missing_count, required_count)
+                VALUES
+                    $insertPlaceholders
+            SQL;
+
+            $this->connection->executeQuery($insert, $insertValues);
         }
     }
 }
