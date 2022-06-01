@@ -78,6 +78,11 @@ class TigitzSpeller implements SpellerInterface
                 throw new TextCheckFailedException('A check text issue must have an offset and a line.');
             }
 
+            // this is because we send to aspell an additional "^" character at the beginning of each line
+            // to prevent interpretation of an eventual special character at the beginning of the line
+            // see function self::preprocessTextSource
+            $offset--;
+
             $lineNumber = $this->lineNumberCalculator->compute($source, $line, $offset, $issue->getWord());
             $globalOffset = $this->globalOffsetCalculator->compute($source, $lineNumber, $offset);
 
@@ -146,5 +151,4 @@ class TigitzSpeller implements SpellerInterface
 
         return new TextSource($preprocessedText, $source->getEncoding());
     }
-
 }
