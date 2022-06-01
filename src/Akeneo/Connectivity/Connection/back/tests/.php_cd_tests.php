@@ -56,6 +56,29 @@ $rules = [
             'Ramsey\Uuid\Uuid',
         ]
     )->in('Akeneo\Connectivity\Connection\Tests\Integration'),
+
+    $builder->only(
+        [
+            // Mandatory
+            'PHPUnit',
+            'Akeneo\Test',
+
+            // Internal
+            'Akeneo\Connectivity\Connection',
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags',
+
+            // Symfony
+            'Symfony\Component',
+            'Symfony\Contracts',
+            'Symfony\Bundle\FrameworkBundle\KernelBrowser',
+
+            // Dependencies
+            'FOS',
+            'Doctrine',
+            'Ramsey\Uuid\Uuid',
+            'GuzzleHttp',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Tests\EndToEnd'),
 ];
 
 $config = new Configuration($rules, $finder);
