@@ -61,14 +61,14 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
 
         $resultFirstPage = $this->query->execute($owner->getUserIdentifier(), 0, 2);
         $expectedFirstPage = [
-            new Catalog($idUK, 'Store UK', $ownerId),
-            new Catalog($idUS, 'Store US', $ownerId),
+            new Catalog($idUK, 'Store UK', $ownerId, false),
+            new Catalog($idUS, 'Store US', $ownerId, false),
         ];
         $this->assertEquals($expectedFirstPage, $resultFirstPage);
 
         $resultSecondPage = $this->query->execute($owner->getUserIdentifier(), 2, 2);
         $expectedSecondPage = [
-            new Catalog($idFR, 'Store FR', $ownerId),
+            new Catalog($idFR, 'Store FR', $ownerId, false),
         ];
         $this->assertEquals($expectedSecondPage, $resultSecondPage);
     }

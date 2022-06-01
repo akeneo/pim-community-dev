@@ -20,6 +20,9 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
     ) {
     }
 
+    /**
+     * @return array<Catalog>
+     */
     public function execute(string $ownerUsername, int $offset = 0, int $limit = 100): array
     {
         $query = <<<SQL
@@ -44,7 +47,7 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             ]
         )->fetchAllAssociative();
 
-        return \array_map(fn ($row) => new Catalog(
+        return \array_map(static fn ($row) => new Catalog(
             (string) $row['id'],
             (string) $row['name'],
             (int) $row['owner_id'],

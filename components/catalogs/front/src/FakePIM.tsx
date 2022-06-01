@@ -1,24 +1,6 @@
-import React, {FC, PropsWithChildren, useCallback, useEffect, useState} from 'react';
+import React, {FC, PropsWithChildren} from 'react';
 import styled from 'styled-components';
-import {
-    AkeneoIcon,
-    Breadcrumb,
-    Button,
-    CommonStyle,
-    getColor,
-    getFontSize,
-    ImportXlsxIllustration,
-    TabBar,
-    useTabBar,
-} from 'akeneo-design-system';
-import {
-    filterErrors,
-    NotificationLevel,
-    useNotify,
-    useRoute,
-    useTranslate,
-    ValidationError,
-} from '@akeneo-pim-community/shared';
+import {AkeneoIcon, Breadcrumb, CommonStyle, getColor, getFontSize, ImportXlsxIllustration} from 'akeneo-design-system';
 
 const Container = styled.div`
     display: flex;

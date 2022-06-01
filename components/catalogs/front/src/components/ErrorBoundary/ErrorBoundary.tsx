@@ -1,22 +1,22 @@
-import React, {ErrorInfo} from 'react';
+import React, {ReactNode} from 'react';
 
-export class ErrorBoundary extends React.Component<unknown, {hasError: boolean}> {
+type State = {
+    hasError: boolean;
+};
+
+export class ErrorBoundary extends React.Component<unknown, State> {
     constructor(props: unknown) {
         super(props);
         this.state = {hasError: false};
     }
 
-    static getDerivedStateFromError(error: Error) {
+    static getDerivedStateFromError(): State {
         return {hasError: true};
     }
 
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        // Vous pouvez aussi enregistrer l'erreur au sein d'un service de rapport.
-        // logErrorToMyService(error, errorInfo);
-    }
-
-    render() {
+    render(): ReactNode {
         if (this.state.hasError) {
+            // @todo
             return <h1>Something went wrong.</h1>;
         }
 

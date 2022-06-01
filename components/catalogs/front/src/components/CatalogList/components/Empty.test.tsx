@@ -1,17 +1,17 @@
-jest.unmock('./CatalogEdit');
+jest.unmock('./Empty');
 
 import React from 'react';
 import {render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {CatalogEdit} from './CatalogEdit';
+import {Empty} from './Empty';
 
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogEdit />
+            <Empty />
         </ThemeProvider>
     );
 
-    expect(screen.getByText('CatalogEdit')).toBeInTheDocument();
+    expect(screen.getByText('akeneo_catalogs.catalog_list.empty')).toBeInTheDocument();
 });
