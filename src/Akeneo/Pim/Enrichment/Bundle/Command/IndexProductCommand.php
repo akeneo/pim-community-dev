@@ -96,24 +96,15 @@ class IndexProductCommand extends Command
             $chunkedProductIdentifiers = $this->getAllProductIdentifiers($batchSize);
             $productCount = 0;
         } elseif(true === $input->getOption('diff')) {
-            $diffProductIdentifiers = [];
-            $listIdentifiers = '';
-            foreach($this->getDiffProductIdentifiers($batchSize) as $identifiers){
-                if(!empty($identifiers)){
-                    $diffProductIdentifiers[] = $identifiers;
-                }
-            }
-            if(count($diffProductIdentifiers)===0){
-                $output->writeln('No diff between MySql and Elasticsearch');
-            } else {
-                foreach($diffProductIdentifiers as $record){
-                    foreach($record as $array => $identifier){
-                        $listIdentifiers = $listIdentifiers.$identifier.',';
+            /*foreach($this->getDiffProductIdentifiers($batchSize) as $identifiers => $arrayIds){
+                if(!empty($arrayIds)){
+                    foreach($arrayIds as $id){
+                        $output->write($id.',');
                     }
                 }
-                $output->writeln('diff exists with '.$listIdentifiers);
-            }
-            return 0;
+            }*/
+            $chunkedProductIdentifiers = $this->getDiffProductIdentifiers($batchSize);
+            $productCount = 0;
         } elseif (!empty($input->getArgument('identifiers'))) {
             $requestedIdentifiers = $input->getArgument('identifiers');
             $existingIdentifiers = $this->getExistingProductIdentifiers($requestedIdentifiers);
