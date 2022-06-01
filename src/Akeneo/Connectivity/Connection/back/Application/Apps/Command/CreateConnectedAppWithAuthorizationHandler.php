@@ -10,12 +10,11 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectedAppIn
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInterface;
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
-use Akeneo\Connectivity\Connection\Domain\Apps\Event\UserGroupCreatedWithAllPermissionsByDefaultEvent;
+use Akeneo\Connectivity\Connection\Domain\Apps\Event\AppUserGroupCreated;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
-use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,7 +35,6 @@ class CreateConnectedAppWithAuthorizationHandler
         private ClientProviderInterface $clientProvider,
         private CreateConnectedAppInterface $createConnectedApp,
         private EventDispatcherInterface $eventDispatcher,
-        private FeatureFlag $permissionFeatureFlag,
     ) {
     }
 
@@ -98,9 +96,7 @@ class CreateConnectedAppWithAuthorizationHandler
             $group->getName()
         );
 
-        if (!$this->permissionFeatureFlag->isEnabled()) {
-            $this->eventDispatcher->dispatch(new UserGroupCreatedWithAllPermissionsByDefaultEvent($group->getName()));
-        }
+        $this->eventDispatcher->dispatch(new AppUserGroupCreated($group->getName()), AppUserGroupCreated::class);
     }
 
     private function generateRandomCode(int $maxLength = 30, string $prefix = ''): string
