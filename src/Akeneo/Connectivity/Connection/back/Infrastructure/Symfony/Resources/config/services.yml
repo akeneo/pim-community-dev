@@ -14,3 +14,12 @@ services:
         arguments:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases.inner'
             - '@pim_catalog.version_provider'
+
+    AkeneoEnterprise\Connectivity\Connection\Infrastructure\Apps\Subscriber\AddAllPermissionToAppUserGroup:
+        arguments:
+            - '@feature_flags'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupAttributeGroupPermissionsSaver'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupLocalePermissionsSaver'
+            - '@Akeneo\Pim\Permission\Bundle\Saver\UserGroupCategoryPermissionsSaver'
+        tags:
+            - { name: kernel.event_subscriber }
