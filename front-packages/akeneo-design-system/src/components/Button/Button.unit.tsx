@@ -122,3 +122,15 @@ test('it renders children with icon', () => {
   expect(screen.getByText('My button')).toBeInTheDocument();
   expect(screen.getByTestId('children-icon')).toBeInTheDocument();
 });
+
+test('it renders children with a uppercased label', () => {
+  render(<Button capitalizedLabel={false}>My button</Button>);
+
+  expect(screen.getByText('My button')).toHaveStyle({'text-transform': 'uppercase'});
+});
+
+test('it renders children with a capitalized label', () => {
+  render(<Button capitalizedLabel={true}>My button</Button>);
+
+  expect(screen.getByText('My button')).toHaveStyle({'text-transform': 'capitalize'});
+});

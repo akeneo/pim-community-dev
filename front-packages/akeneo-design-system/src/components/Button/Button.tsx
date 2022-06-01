@@ -59,6 +59,11 @@ type ButtonProps = Override<
      * Children of the button.
      */
     children?: ReactNode;
+
+    /**
+     * Should the label button be capitalized
+     */
+    capitalizedLabel?: boolean;
   }
 >;
 
@@ -106,6 +111,7 @@ const Container = styled.button<
     ghost: boolean;
     disabled: boolean;
     size: ButtonSize;
+    capitalizedLabel: boolean;
   } & AkeneoThemedProps
 >`
   display: inline-flex;
@@ -114,7 +120,7 @@ const Container = styled.button<
   border-width: 1px;
   font-size: ${getFontSize('default')};
   font-weight: 400;
-  text-transform: uppercase;
+  text-transform: ${({capitalizedLabel}) => (capitalizedLabel ? 'capitalize' : 'uppercase')};
   border-radius: 16px;
   border-style: ${({ghost}) => (ghost ? 'solid' : 'none')};
   padding: ${({size}) => (size === 'small' ? '0 10px' : '0 15px')};
@@ -151,6 +157,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       children,
       onClick,
       type = 'button',
+      capitalizedLabel = false,
       ...rest
     }: ButtonProps,
     forwardedRef: Ref<HTMLButtonElement>
@@ -177,6 +184,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={type}
         onClick={handleAction}
         href={disabled ? undefined : href}
+        capitalizedLabel={capitalizedLabel}
         {...rest}
       >
         {React.Children.map(children, child => {

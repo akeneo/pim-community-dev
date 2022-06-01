@@ -1,6 +1,6 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs';
 import {Button} from './Button';
-import {ArrowDownIcon} from '../../icons';
+import {ArrowDownIcon, UploadIcon} from '../../icons';
 
 <Meta
   title="Components/Buttons/Button"
@@ -177,6 +177,25 @@ If you want your button to act like a <LinkTo kind="Components/Link" story="Stan
           </Button>
           <Button level="secondary" size="small">
             Small <ArrowDownIcon />
+          </Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With a capitalized label
+
+<Canvas>
+  <Story name="With a capitalized label">
+    {() => {
+      return (
+        <>
+          <Button ghost={false} capitalizedLabel={true}>
+            <UploadIcon /> Upload button
+          </Button>
+          <Button ghost={true} capitalizedLabel={true}>
+              Ghost
           </Button>
         </>
       );
