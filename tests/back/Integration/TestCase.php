@@ -6,10 +6,13 @@ namespace Akeneo\Test\Integration;
 
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -180,5 +183,71 @@ abstract class TestCase extends KernelTestCase
         $this->get('pim_user.saver.user')->save($user);
 
         return $user;
+    }
+
+    protected function createProduct(string $identifier, array $userIntents): ProductInterface
+    {
+        $userId = ($this->getUserId('peter') !== 0)
+            ? $this->getUserId('peter')
+            : $this->createUser('peter', ['ROLE_USER'], ['IT support'])->getId();
+
+        $command = UpsertProductCommand::createFromCollection(
+            userId: $userId,
+            productIdentifier: $identifier,
+            userIntents: $userIntents
+        );
+        $this->messageBus->dispatch($command);
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->clearDoctrineUoW();
+
+        return $product;
+    }
+
+    protected function createUser(string $username, array $stringRoles, array $groupNames): UserInterface
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername($username);
+        $user->setFirstName($username);
+        $user->setLastName($username);
+        $user->setPassword('password');
+        $user->setEmail($username . '@example.com');
+
+        $groups = $this->get('pim_user.repository.group')->findAll();
+        foreach ($groups as $group) {
+            if (\in_array($group->getName(), $groupNames)) {
+                $user->addGroup($group);
+            }
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            if (\in_array($role->getRole(), $stringRoles)) {
+                $user->addRole($role);
+            }
+        }
+
+        $violations = $this->get('validator')->validate($user);
+        Assert::assertSame(0, $violations->count(), (string) $violations);
+        $this->get('pim_user.saver.user')->save($user);
+
+        return $user;
+    }
+
+    protected function getUserId(string $username): int
+    {
+        $query = <<<SQL
+            SELECT id FROM oro_user WHERE username = :username
+        SQL;
+        $stmt = $this->get('database_connection')->executeQuery($query, ['username' => $username]);
+        $id = $stmt->fetchOne();
+        Assert::assertNotNull($id);
+
+        return \intval($id);
+    }
+
+    protected function clearDoctrineUoW(): void
+    {
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 }
