@@ -113,44 +113,25 @@ class JobInstanceController
     }
 
     /**
-     * Get an import job profile
-     *
-     * @param string $identifier
-     *
      * @AclAncestor("pim_importexport_import_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getImportAction($identifier)
+    public function getImportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
 
     /**
-     * Get an export job profile
-     *
-     * @param string $identifier
-     *
      * @AclAncestor("pim_importexport_export_profile_show")
-     *
-     * @return JsonResponse
      */
-    public function getExportAction($identifier)
+    public function getExportAction(string $identifier): JsonResponse
     {
         return $this->getAction($identifier);
     }
 
     /**
-     * Edit an import job profile
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
      * @AclAncestor("pim_importexport_import_profile_edit")
-     *
-     * @return Response
      */
-    public function putImportAction(Request $request, $identifier)
+    public function putImportAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -160,16 +141,9 @@ class JobInstanceController
     }
 
     /**
-     * Edit an export job profile
-     *
-     * @param Request $request
-     * @param string  $identifier
-     *
      * @AclAncestor("pim_importexport_export_profile_edit")
-     *
-     * @return Response
      */
-    public function putExportAction(Request $request, $identifier)
+    public function putExportAction(Request $request, string $identifier): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -179,15 +153,9 @@ class JobInstanceController
     }
 
     /**
-     * Delete an export job profile
-     *
-     * @param string $code
-     *
      * @AclAncestor("pim_importexport_import_profile_remove")
-     *
-     * @return Response
      */
-    public function deleteImportAction(Request $request, $code)
+    public function deleteImportAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -197,15 +165,9 @@ class JobInstanceController
     }
 
     /**
-     * Delete an export job profile
-     *
-     * @param string $code
-     *
      * @AclAncestor("pim_importexport_export_profile_remove")
-     *
-     * @return Response
      */
-    public function deleteExportAction(Request $request, $code)
+    public function deleteExportAction(Request $request, string $code): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
@@ -321,14 +283,7 @@ class JobInstanceController
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
 
-    /**
-     * Delete a job profile
-     *
-     * @param string $code
-     *
-     * @return Response
-     */
-    protected function deleteAction($code): Response
+    protected function deleteAction(string $code): Response
     {
         $jobInstance = $this->getJobInstance($code);
         if ($this->objectFilter->filterObject($jobInstance, 'pim.internal_api.job_instance.delete')) {
@@ -341,14 +296,7 @@ class JobInstanceController
     }
 
     /**
-     * Launch a job
-     *
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws AccessDeniedHttpException
-     *
-     * @return Response
      */
     protected function launchAction(Request $request, string $code): Response
     {
@@ -423,30 +371,24 @@ class JobInstanceController
     }
 
     /**
-     * Get a job instance
-     *
-     * @param string $code
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JobInstance
      */
-    protected function getJobInstance($code)
+    protected function getJobInstance(string $code): JobInstance
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
             throw new NotFoundHttpException(sprintf('%s entity not found', JobInstance::class));
         }
 
-        $job = $this->jobRegistry->get($jobInstance->getJobName());
-
-        if (null === $job) {
+        try {
+            $this->jobRegistry->get($jobInstance->getJobName());
+        } catch(\Exception) {
             throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
-                        'Connector: %s<br />' .
-                        'Type: %s<br />' .
-                        'Alias: %s',
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
                     $jobInstance->getType(),
                     $jobInstance->getConnector(),
                     $jobInstance->getType(),
@@ -459,15 +401,9 @@ class JobInstanceController
     }
 
     /**
-     * Get an array of job names
-     *
-     * @param Request $request
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      */
-    public function getJobNamesAction(Request $request)
+    public function getJobNamesAction(Request $request): JsonResponse
     {
         $jobType = $request->query->get('jobType');
         $choices = [];
@@ -480,15 +416,7 @@ class JobInstanceController
         return new JsonResponse($choices);
     }
 
-    /**
-     * Aggregate validation errors
-     *
-     * @param JobInstance $jobInstance
-     * @param array|null  $groups
-     *
-     * @return array
-     */
-    protected function getValidationErrors(JobInstance $jobInstance, $groups = null)
+    protected function getValidationErrors(JobInstance $jobInstance, ?array $groups = null): array
     {
         $rawParameters = $jobInstance->getRawParameters();
         $parametersViolations = [];
@@ -530,14 +458,7 @@ class JobInstanceController
         return $errors;
     }
 
-    /**
-     * Normalize the job errors
-     *
-     * @param JobInstance $jobInstance
-     *
-     * @return array
-     */
-    protected function normalizeJobInstance(JobInstance $jobInstance)
+    protected function normalizeJobInstance(JobInstance $jobInstance): array
     {
         $normalizedJobInstance = $this->jobInstanceNormalizer->normalize($jobInstance, 'standard');
 
@@ -568,29 +489,17 @@ class JobInstanceController
     }
 
     /**
-     * Create an import profile
-     *
      * @AclAncestor("pim_importexport_import_profile_create")
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createImportAction(Request $request)
+    public function createImportAction(Request $request): Response
     {
         return $this->createAction($request, 'import');
     }
 
     /**
-     * Create an export profile
-     *
      * @AclAncestor("pim_importexport_export_profile_create")
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
-    public function createExportAction(Request $request)
+    public function createExportAction(Request $request): Response
     {
         return $this->createAction($request, 'export');
     }
@@ -640,15 +549,7 @@ class JobInstanceController
         return new JsonResponse(['code' => $data['code']]);
     }
 
-    /**
-     * Create a job profile with a given type
-     *
-     * @param Request $request
-     * @param string  $type
-     *
-     * @return Response
-     */
-    protected function createAction(Request $request, string $type)
+    protected function createAction(Request $request, string $type): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');

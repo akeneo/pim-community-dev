@@ -81,7 +81,7 @@ class JobRegistry
      *
      * @throws UndefinedJobException
      *
-     * @return JobInterface
+     * @return JobInterface[]
      */
     public function allByType($jobType)
     {
@@ -98,12 +98,7 @@ class JobRegistry
             );
         }
 
-        return array_map(
-            function ($job) {
-                return $job['job'];
-            },
-            $jobs
-        );
+        return array_map(fn ($job)  => $job['job'], $jobs);
     }
 
     /**
@@ -111,7 +106,7 @@ class JobRegistry
      *
      * @throws UndefinedJobException
      *
-     * @return JobInterface[]
+     * @return JobInterface[][]
      */
     public function allByTypeGroupByConnector($jobType)
     {
