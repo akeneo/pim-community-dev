@@ -7,7 +7,6 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\Uuid;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductCompletenesses;
-use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -24,7 +23,7 @@ final class GetProductsWithCompletenesses
 
     public function fromConnectorProduct(ConnectorProduct $product): ConnectorProduct
     {
-        return $product->buildWithCompletenesses($this->getProductCompletenesses->fromProductUuid(Uuid::fromString($product->uuid())));
+        return $product->buildWithCompletenesses($this->getProductCompletenesses->fromProductUuid($product->uuid()));
     }
 
     public function fromConnectorProductList(
@@ -33,7 +32,7 @@ final class GetProductsWithCompletenesses
         array $locales = []
     ): ConnectorProductList {
         $productUuids = array_map(
-            fn (ConnectorProduct $connectorProduct): UuidInterface => Uuid::fromString($connectorProduct->uuid()),
+            fn (ConnectorProduct $connectorProduct): UuidInterface => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 
@@ -47,7 +46,7 @@ final class GetProductsWithCompletenesses
             $connectorProductList->totalNumberOfProducts(),
             array_map(
                 fn (ConnectorProduct $product) =>
-                    $product->buildWithCompletenesses($productCompletenesses[$product->uuid()]),
+                    $product->buildWithCompletenesses($productCompletenesses[$product->uuid()->toString()]),
                 $connectorProductList->connectorProducts()
             )
         );

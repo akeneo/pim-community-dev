@@ -30,6 +30,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         );
         $this->get('pim_enrich.product.message_bus')->dispatch($command);
 
+        // TODO in the futur there may be no mention of identifier, even in tests. How to retrieve product then?
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
     }
 

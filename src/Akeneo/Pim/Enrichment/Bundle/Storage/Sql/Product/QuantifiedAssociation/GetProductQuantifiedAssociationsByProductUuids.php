@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\QuantifiedAssociation;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\FindQuantifiedAssociationTypeCodesInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Query\QuantifiedAssociation\GetIdMappingFromProductUuidsQueryInterface;
 use Doctrine\DBAL\Connection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -14,7 +13,6 @@ final class GetProductQuantifiedAssociationsByProductUuids
 {
     public function __construct(
         private Connection $connection,
-        private GetIdMappingFromProductUuidsQueryInterface $getIdMappingFromProductUuidsQuery,
         private FindQuantifiedAssociationTypeCodesInterface $findQuantifiedAssociationTypeCodes
     ) {
     }
@@ -55,7 +53,7 @@ final class GetProductQuantifiedAssociationsByProductUuids
     {
         $query = <<<SQL
 SELECT
-    p.uuid,
+    BIN_TO_UUID(p.uuid) as uuid,
     JSON_MERGE_PRESERVE(COALESCE(pm2.quantified_associations, '{}'), COALESCE(pm1.quantified_associations, '{}'), COALESCE(p.quantified_associations, '{}')) AS all_quantified_associations
 FROM pim_catalog_product p
 LEFT JOIN pim_catalog_product_model pm1 ON p.product_model_id = pm1.id
@@ -88,8 +86,7 @@ SQL;
                 $validQuantifiedAssociationTypeCodes
             );
             if (!empty($associationWithUuids)) {
-                $productUuid = $row['uuid'];
-                $results[$productUuid] = $associationWithUuids;
+                $results[$row['uuid']] = $associationWithUuids;
             }
         }
 
@@ -100,16 +97,6 @@ SQL;
         array $allQuantifiedAssociationsWithProductUuid,
         array $validQuantifiedAssociationTypeCodes
     ) {
-        $productUuids = [];
-        foreach ($allQuantifiedAssociationsWithProductUuid as $quantifiedAssociationWithUuid) {
-            if (empty($quantifiedAssociationWithUuid)) {
-                continue;
-            }
-            $productUuids = array_merge($productUuids, $this->productUuids($quantifiedAssociationWithUuid));
-        }
-
-        $productUuidMapping = $this->getIdMappingFromProductUuidsQuery->execute($productUuids);
-
         $result = [];
         foreach ($allQuantifiedAssociationsWithProductUuid as $associationTypeCode => $associationWithUuids) {
             if (empty($associationWithUuids) || !is_string($associationTypeCode)) {
@@ -122,12 +109,6 @@ SQL;
 
             $uniqueQuantifiedAssociations = [];
             foreach ($associationWithUuids['products'] as $associationWithProductUuid) {
-//                try {
-//                    $identifier = $productUuidMapping->getIdentifier($associationWithProductUuid['uuid']);
-//                } catch (\Exception $exception) {
-//                    continue;
-//                }
-
                 $productUuid = $associationWithProductUuid['uuid'];
 
                 $uniqueQuantifiedAssociations[$productUuid] = [
@@ -141,15 +122,5 @@ SQL;
         }
 
         return $result;
-    }
-
-    private function productUuids(array $quantifiedAssociationWithProductUuid): array
-    {
-        return \array_map(
-            function (array $quantifiedAssociations) {
-                return $quantifiedAssociations['uuid'];
-            },
-            $quantifiedAssociationWithProductUuid['products'] ?? []
-        );
     }
 }

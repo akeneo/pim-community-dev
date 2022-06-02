@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * This read model is dedicated to export product data for the connector, such as the API.
@@ -22,7 +23,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 final class ConnectorProduct
 {
     /**
-     * @param string $uuid
+     * @param UuidInterface $uuid
      * @param string $identifier
      * @param \DateTimeImmutable $createdDate
      * @param \DateTimeImmutable $updatedDate
@@ -39,7 +40,7 @@ final class ConnectorProduct
      * @param ProductCompletenessCollection|null $completenesses
      */
     public function __construct(
-        private string $uuid,
+        private UuidInterface $uuid,
         private string $identifier,
         private \DateTimeImmutable $createdDate,
         private \DateTimeImmutable $updatedDate,
@@ -57,7 +58,7 @@ final class ConnectorProduct
     ) {
     }
 
-    public function uuid(): string
+    public function uuid(): UuidInterface
     {
         return $this->uuid;
     }

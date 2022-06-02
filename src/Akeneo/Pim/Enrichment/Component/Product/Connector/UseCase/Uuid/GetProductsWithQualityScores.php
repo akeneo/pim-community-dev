@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorPr
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\Uuid\ConnectorProductList;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 
 final class GetProductsWithQualityScores
 {
@@ -26,7 +27,7 @@ final class GetProductsWithQualityScores
         }
 
         return $product->buildWithQualityScores(
-            $this->getProductScoresQuery->byProductUuid(Uuid::fromString($product->uuid()))
+            $this->getProductScoresQuery->byProductUuid($product->uuid())
         );
     }
 
@@ -39,7 +40,7 @@ final class GetProductsWithQualityScores
         $productsQualityScores = $this->getProductsQualityScores($connectorProductList);
 
         $productsWithQualityScores = array_map(function (ConnectorProduct $product) use ($productsQualityScores, $channel, $locales) {
-            if (isset($productsQualityScores[$product->uuid()])) {
+            if (isset($productsQualityScores[$product->uuid()->toString()])) {
                 $productQualityScores = $this->filterProductQualityScores($productsQualityScores[$product->identifier()], $channel, $locales);
                 return $product->buildWithQualityScores($productQualityScores);
             }
@@ -64,7 +65,7 @@ final class GetProductsWithQualityScores
     private function getProductsQualityScores(ConnectorProductList $connectorProductList): array
     {
         $productUuids = array_map(
-            fn (ConnectorProduct $connectorProduct) => Uuid::fromString($connectorProduct->uuid()),
+            fn (ConnectorProduct $connectorProduct): UuidInterface => $connectorProduct->uuid(),
             $connectorProductList->connectorProducts()
         );
 

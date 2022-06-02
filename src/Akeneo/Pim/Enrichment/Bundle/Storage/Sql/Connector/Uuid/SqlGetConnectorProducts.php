@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Uuid\GetConnectorProducts;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 /**
@@ -105,7 +106,7 @@ final class SqlGetConnectorProducts implements GetConnectorProducts
             $row = $rows[$uuid->toString()];
 
             $products[] = new ConnectorProduct(
-                $row['uuid'],
+                Uuid::fromString($row['uuid']),
                 $row['identifier'],
                 $row['created'],
                 $row['updated'],

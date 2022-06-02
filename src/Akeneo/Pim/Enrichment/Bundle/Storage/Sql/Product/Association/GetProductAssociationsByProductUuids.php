@@ -51,7 +51,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      associated_product.uuid as associated_product_uuid
+                      BIN_TO_UUID(associated_product.uuid) as associated_product_uuid
                   FROM pim_catalog_product product
                        CROSS JOIN pim_catalog_association_type association_type
                        LEFT JOIN pim_catalog_association product_association ON product_association.owner_uuid = product.uuid AND association_type.id = product_association.association_type_id
@@ -63,7 +63,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      associated_product.uuid as associated_product_uuid
+                      BIN_TO_UUID(associated_product.uuid) as associated_product_uuid
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model_association product_model_association ON product_model_association.owner_id = product_model.id
@@ -76,7 +76,7 @@ FROM (
                   SELECT
                       product.uuid as product_uuid,
                       association_type.code as association_type_code,
-                      associated_product.uuid as associated_product_uuid
+                      BIN_TO_UUID(associated_product.uuid) as associated_product_uuid
                   FROM pim_catalog_product product
                        INNER JOIN pim_catalog_product_model child_product_model ON child_product_model.id = product.product_model_id
                        INNER JOIN pim_catalog_product_model product_model ON product_model.id = child_product_model.parent_id
