@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 class GetProductAssociationsByProductUuidsIntegration extends TestCase
 {
     /**
-     * @var ProductInterface[] ['productIdentifier' => $product]
+     * @var ProductInterface[]
      */
     private array $productList;
     public function setUp(): void
