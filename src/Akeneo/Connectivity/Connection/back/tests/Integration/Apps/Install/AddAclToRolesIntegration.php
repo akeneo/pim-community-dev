@@ -35,7 +35,7 @@ class AddAclToRolesIntegration extends TestCase
         $token = new UsernamePasswordToken($user->getUsername(), null, 'main', $user->getRoles());
 
         $isAllowed = $this->accessDecisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', 'akeneo_connectivity_connection_manage_apps'));
-        $this->assertEquals(false, $isAllowed);
+        $this->assertFalse($isAllowed);
 
         $this->addAclToRoles->add('akeneo_connectivity_connection_manage_apps', ['ROLE_ADMINISTRATOR']);
 
