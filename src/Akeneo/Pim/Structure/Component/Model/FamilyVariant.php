@@ -176,7 +176,7 @@ class FamilyVariant implements FamilyVariantInterface
         sort($newAxeIds);
 
         if ($formerAxeIds !== $newAxeIds) {
-            $this->events[] = FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT;
+            $this->events[] = FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL;
             $attributeSet->setAxes($axes);
         }
     }
@@ -206,7 +206,7 @@ class FamilyVariant implements FamilyVariantInterface
         sort($newAttributeIds);
 
         if ($formerAttributeIds !== $newAttributeIds) {
-            $this->events[] = FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT;
+            $this->events[] = FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL;
             $attributeSet->setAttributes($attributes);
         }
     }

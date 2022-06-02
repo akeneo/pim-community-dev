@@ -272,7 +272,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $color = new Attribute();
         $color->setId(1);
         $this->updateAxesForLevel(1, [$color]);
-        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL]);
         $this->releaseEvents()->shouldReturn([]);
 
         $this->updateAxesForLevel(1, [$color]);
@@ -281,7 +281,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $size = new Attribute();
         $size->setId(2);
         $this->updateAxesForLevel(1, [$size]);
-        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL]);
     }
 
     function it_returns_events_when_attributes_of_level_are_updated()
@@ -291,7 +291,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $color = new Attribute();
         $color->setId(1);
         $this->updateAttributesForLevel(1, [$color]);
-        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
         $this->releaseEvents()->shouldReturn([]);
 
         $this->updateAttributesForLevel(1, [$color]);
@@ -300,6 +300,6 @@ class FamilyVariantSpec extends ObjectBehavior
         $size = new Attribute();
         $size->setId(2);
         $this->updateAttributesForLevel(1, [$size]);
-        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $this->releaseEvents()->shouldReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
     }
 }

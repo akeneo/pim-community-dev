@@ -43,7 +43,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            StorageEvents::PRE_SAVE => 'checkIsNewFamilyVariant',
+            StorageEvents::PRE_SAVE => 'recordIsNewFamilyVariant',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
             StorageEvents::POST_SAVE_ALL => 'bulkComputeVariantStructureChanges',
         ]);
@@ -70,7 +70,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
 
         $familyVariant->getId()->willReturn(12);
         $familyVariant->getCode()->willReturn('family_variant_one');
-        $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
 
         $connection->executeQuery(Argument::cetera())->willReturn($result);
         $result->fetchOne()->willReturn(false);
@@ -140,7 +140,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
     ) {
         $event = new GenericEvent($familyVariant->getWrappedObject(), ['is_new' => false, 'unitary' => true]);
         $familyVariant->getId()->willReturn(12);
-        $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $familyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -187,13 +187,13 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
 
         $familyVariant1->getId()->willReturn(12);
         $familyVariant1->getCode()->willReturn('family_variant_one');
-        $familyVariant1->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $familyVariant1->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
         $familyVariant2->getId()->willReturn(13);
         $familyVariant2->getCode()->willReturn('family_variant_two');
-        $familyVariant2->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $familyVariant2->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
         $newFamilyVariant->getId()->willReturn(null);
         $newFamilyVariant->getCode()->willReturn('new_family_variant');
-        $newFamilyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT]);
+        $newFamilyVariant->releaseEvents()->willReturn([FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL]);
 
         $connection->executeQuery(Argument::any(), ['instanceId' => 124, 'familyVariantCode' => 'family_variant_one'])
             ->willReturn($result);
@@ -209,7 +209,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
             'family_variant_codes' => ['family_variant_two']
         ])->shouldBeCalledOnce();
 
-        $this->checkIsNewFamilyVariant(new GenericEvent($newFamilyVariant->getWrappedObject()));
+        $this->recordIsNewFamilyVariant(new GenericEvent($newFamilyVariant->getWrappedObject()));
         $this->bulkComputeVariantStructureChanges($event);
     }
 }
