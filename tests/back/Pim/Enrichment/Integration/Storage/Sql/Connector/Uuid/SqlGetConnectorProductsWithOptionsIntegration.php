@@ -16,9 +16,21 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Uuid\GetConnectorProducts;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValueWithLinkedData;
 use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Association\AssociateProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\ChangeParent;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\Groups\SetGroups;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProductModels;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\AssociateQuantifiedProducts;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\QuantifiedAssociation\QuantifiedEntity;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetBooleanValue;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetCategories;
+use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\Assert;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -34,6 +46,8 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->messageBus = $this->get('pim_enrich.product.message_bus');
+
         $this->createQuantifiedAssociationType('PRODUCT_SET');
         $this->createQuantifiedAssociationType('ANOTHER_PRODUCT_SET');
 
@@ -59,68 +73,32 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ]
         );
 
-        $this->createVariantProduct('apollon_A_false', [
-            'categories' => ['categoryB', 'categoryC'],
-            'parent' => 'amor',
-            'values' => [
-                'a_simple_select' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'optionA',
-                    ],
-                ],
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
-            'quantified_associations' => [
-                'PRODUCT_SET' => [
-                    'product_models' => [['identifier' => 'amor', 'quantity' => 4]],
-                ],
+        $this->productA = $this->createProduct(
+            'apollon_A_false',
+            [
+                new SetCategories(['categoryB', 'categoryC']),
+                new ChangeParent('amor'),
+                new SetSimpleSelectValue('a_simple_select', null, null, 'optionA'),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                new AssociateQuantifiedProductModels('PRODUCT_SET', [new QuantifiedEntity('amor', 4)])
             ]
-        ]);
+        );
 
-        $this->createVariantProduct('apollon_B_false', [
-            'categories' => ['categoryA1'],
-            'parent' => 'amor',
-            'groups' => ['groupA', 'groupB'],
-            'values' => [
-                'a_simple_select' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'optionB',
-                    ],
-                ],
-                'a_yes_no' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => false,
-                    ],
-                ],
-            ],
-            'associations' => [
-                'X_SELL' => [
-                    'products' => ['apollon_A_false'],
-                    'product_models' => ['amor'],
-                    'groups' => ['groupB']
-                ]
-            ],
-            'quantified_associations' => [
-                'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
-                ],
-                'ANOTHER_PRODUCT_SET' => [
-                    'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
-                ],
+        $this->productB = $this->createProduct(
+            'apollon_B_false',
+            [
+                new SetCategories(['categoryA1']),
+                new ChangeParent('amor'),
+                new SetGroups(['groupA', 'groupB']),
+                new SetSimpleSelectValue('a_simple_select', null, null, 'optionB'),
+                new SetBooleanValue('a_yes_no', null, null, false),
+                new AssociateProducts('X_SELL', ['apollon_A_false']),
+                new AssociateProductModels('X_SELL', ['amor']),
+                new AssociateGroups('X_SELL', ['groupB']),
+                new AssociateQuantifiedProducts('PRODUCT_SET', [new QuantifiedEntity('apollon_A_false', 6)]),
+                new AssociateQuantifiedProductModels('ANOTHER_PRODUCT_SET', [new QuantifiedEntity('amor', 2)]),
             ]
-        ]);
+        );
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
@@ -128,275 +106,17 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
     /**
      * @group ce
      */
-    public function test_get_product_from_the_PQB()
+    public function test_get_product_from_a_uuid()
     {
-        $query = $this->getQuery();
-        $pqb = $this->get('pim_catalog.query.product_query_builder_search_after_size_factory_external_api')->create(['limit' => 10]);
-
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
-
-        $product = $query->fromProductQueryBuilder($pqb, (int) $userId, null, null, null);
-
-        $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
-        )->fetch();
-        $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
-        )->fetch();
-
-
-        $expectedProducts = new ConnectorProductList(2, [
-            new ConnectorProduct(
-                Uuid::fromString($productDataAppolonA['uuid']),
-                'apollon_A_false',
-                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
-                true,
-                'familyA',
-                ['categoryA2', 'categoryB', 'categoryC'],
-                [],
-                'amor',
-                [
-                    'X_SELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => ['groupA'],
-                    ],
-                    'UPSELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'PACK' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ]
-                ],
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [],
-                        'product_models' => [['identifier' => 'amor', 'quantity' => 4]],
-                    ],
-                ],
-                [],
-                new ReadValueCollection([
-                    new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
-                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('a_yes_no', false),
-                    ScalarValue::value('a_number_float', '12.5000'),
-                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ]),
-                null,
-                null
-            ),
-            new ConnectorProduct(
-                Uuid::fromString($productDataAppolonB['uuid']),
-                'apollon_B_false',
-                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
-                true,
-                'familyA',
-                ['categoryA1', 'categoryA2'],
-                ['groupA', 'groupB'],
-                'amor',
-                [
-                    'X_SELL' => [
-                        'products' => ['apollon_A_false'],
-                        'product_models' => ['amor'],
-                        'groups' => ['groupA', 'groupB'],
-                    ],
-                    'UPSELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'PACK' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ]
-                ],
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
-                        'product_models' => [],
-                    ],
-                    'ANOTHER_PRODUCT_SET' => [
-                        'products' => [],
-                        'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
-                    ],
-                ],
-                [],
-                new ReadValueCollection([
-                    new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
-                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                    ScalarValue::value('a_yes_no', false),
-                    ScalarValue::value('a_number_float', '12.5000'),
-                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ]),
-                null,
-                null
-            ),
-        ]);
-
-        Assert::assertEquals($expectedProducts, $product);
-    }
-
-    /**
-     * @group ce
-     */
-    public function test_get_product_from_the_PQB_by_filtering_on_values()
-    {
-        $query = $this->getQuery();
-        $pqb = $this->get('pim_catalog.query.product_query_builder_search_after_size_factory_external_api')->create(['limit' => 10]);
-
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
-
-        $product = $query->fromProductQueryBuilder(
-            $pqb,
-            (int) $userId,
-            ['a_price', 'a_localized_and_scopable_text_area', 'attribute_code'],
-            'tablet',
-            ['fr_FR']
-        );
-
-        $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
-        )->fetch();
-        $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
-        )->fetch();
-
-
-        $expectedProducts = new ConnectorProductList(2, [
-            new ConnectorProduct(
-                Uuid::fromString($productDataAppolonA['uuid']),
-                'apollon_A_false',
-                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
-                true,
-                'familyA',
-                ['categoryA2', 'categoryB', 'categoryC'],
-                [],
-                'amor',
-                [
-                    'X_SELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => ['groupA'],
-                    ],
-                    'UPSELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'PACK' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ]
-                ],
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [],
-                        'product_models' => [['identifier' => 'amor', 'quantity' => 4]],
-                    ],
-                ],
-                [],
-                new ReadValueCollection([
-                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ]),
-                null,
-                null
-            ),
-            new ConnectorProduct(
-                Uuid::fromString($productDataAppolonB['uuid']),
-                'apollon_B_false',
-                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
-                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
-                true,
-                'familyA',
-                ['categoryA1', 'categoryA2'],
-                ['groupA', 'groupB'],
-                'amor',
-                [
-                    'X_SELL' => [
-                        'products' => ['apollon_A_false'],
-                        'product_models' => ['amor'],
-                        'groups' => ['groupA', 'groupB'],
-                    ],
-                    'UPSELL' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'PACK' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'products' => [],
-                        'product_models' => [],
-                        'groups' => []
-                    ]
-                ],
-                [
-                    'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
-                        'product_models' => [],
-                    ],
-                    'ANOTHER_PRODUCT_SET' => [
-                        'products' => [],
-                        'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
-                    ],
-                ],
-                [],
-                new ReadValueCollection([
-                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ]),
-                null,
-                null
-            ),
-        ]);
-
-        Assert::assertEquals($expectedProducts, $product);
-    }
-
-    /**
-     * @group ce
-     */
-    public function test_get_product_from_an_identifier()
-    {
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+        $userId = $this->getUserId('admin');
 
         $query = $this->getQuery();
-        $product = $query->fromProductIdentifier('apollon_B_false', (int) $userId);
+        $product = $query->fromProductUuid($this->productB->getUuid(), (int) $userId);
 
         $productData = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE uuid = :product_uuid',
+            ['product_uuid' => [$this->productB->getUuid()->getBytes()]],
+            ['product_uuid' => Connection::PARAM_STR_ARRAY]
         )->fetch();
 
         $expectedProduct = new ConnectorProduct(
@@ -411,7 +131,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             'amor',
             [
                 'X_SELL' => [
-                    'products' => ['apollon_A_false'],
+                    'products' => [$this->productA->getUuid()->toString()],
                     'product_models' => ['amor'],
                     'groups' => ['groupA', 'groupB'],
                 ],
@@ -433,7 +153,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ],
             [
                 'PRODUCT_SET' => [
-                    'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                    'products' => [['quantity' => 6, 'uuid' => $this->productA->getUuid()->toString()]],
                     'product_models' => [],
                 ],
                 'ANOTHER_PRODUCT_SET' => [
@@ -457,23 +177,25 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
     }
 
     /**
-     * @group ce
+     * @TODOgroup ce
      */
-    public function test_get_product_from_identifiers()
+    public function test_get_product_from_uuids()
     {
         $query = $this->getQuery();
 
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+        $userId = $this->getUserId('admin');
 
-        $product = $query->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'], (int) $userId, null, null, null);
+        $connectorProductList = $query->fromProductUuids([$this->productA->getUuid(), $this->productB->getUuid()], (int) $userId, null, null, null);
 
         $productDataAppolonA = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE uuid = :product_uuid',
+            ['product_uuid' => [$this->productA->getUuid()->getBytes()]],
+            ['product_uuid' => Connection::PARAM_STR_ARRAY]
         )->fetch();
         $productDataAppolonB = $this->get('database_connection')->executeQuery(
-            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+            'SELECT BIN_TO_UUID(uuid) AS uuid, created, updated FROM pim_catalog_product WHERE uuid = :product_uuid',
+            ['product_uuid' => [$this->productB->getUuid()->getBytes()]],
+            ['product_uuid' => Connection::PARAM_STR_ARRAY]
         )->fetch();
 
 
@@ -539,7 +261,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 'amor',
                 [
                     'X_SELL' => [
-                        'products' => ['apollon_A_false'],
+                        'products' => [$this->productA->getUuid()->toString()],
                         'product_models' => ['amor'],
                         'groups' => ['groupA', 'groupB'],
                     ],
@@ -561,7 +283,7 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ],
                 [
                     'PRODUCT_SET' => [
-                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'products' => [['quantity' => 6, 'uuid' => $this->productA->getUuid()->toString()]],
                         'product_models' => [],
                     ],
                     'ANOTHER_PRODUCT_SET' => [
@@ -582,18 +304,16 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             ),
         ]);
 
-        Assert::assertEquals($expectedProducts, $product);
+        Assert::assertEquals($expectedProducts, $connectorProductList);
     }
 
     public function test_it_throws_an_exception_when_product_is_not_found()
     {
         $this->expectException(ObjectNotFoundException::class);
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+        $userId = $this->getUserId('admin');
 
         $query = $this->getQuery();
-        $query->fromProductIdentifier('foo', (int) $userId);
+        $query->fromProductUuid(Uuid::fromString('54c44059-8683-4d07-9137-aba55b2e7440'), (int) $userId);
     }
 
     public function test_it_returns_empty_associations_if_there_is_no_association_type()
@@ -601,12 +321,10 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type_translation');
         $this->get('database_connection')->executeQuery('DELETE FROM pim_catalog_association_type');
 
-        $userId = $this
-            ->get('database_connection')
-            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+        $userId = $this->getUserId('admin');
 
         $query = $this->getQuery();
-        $product = $query->fromProductIdentifier('apollon_B_false', (int)$userId);
+        $product = $query->fromProductUuid($this->productB->getUuid(), (int)$userId);
 
         Assert::assertSame([], $product->associations());
     }
@@ -674,6 +392,6 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
 
     private function getQuery(): GetConnectorProducts
     {
-        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_identifiers_with_options');
+        return $this->get('akeneo.pim.enrichment.product.connector.get_product_from_uuids_with_options');
     }
 }
