@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: 资产
         new: 新
       error:
-        sub_text: 请联系应用开发者或 Akeneo 支持
         app_not_found: client_id 与任何现有的应用都不匹配。
       constraint:
         client_id:

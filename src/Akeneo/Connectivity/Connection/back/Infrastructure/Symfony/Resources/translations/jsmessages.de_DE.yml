@@ -260,7 +260,6 @@ akeneo_connectivity.connection:
           catalogs: Kataloge
         new: NEU
       error:
-        sub_text: Bitte kontaktieren Sie den App-Entwickler oder den Akeneo-Support
         app_not_found: Die client_id stimmt nicht mit einer existierenden App überein.
       constraint:
         client_id:

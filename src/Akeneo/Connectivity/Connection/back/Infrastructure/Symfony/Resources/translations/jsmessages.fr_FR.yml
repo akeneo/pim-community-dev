@@ -249,7 +249,6 @@ akeneo_connectivity.connection:
           asset_families: les familles de ressources
           assets: les ressources
       error:
-        sub_text: Veuillez contacter le développeur de l'application ou le support d'Akeneo
         app_not_found: Le "client_id" ne correspond à aucune app connue.
       constraint:
         client_id:
