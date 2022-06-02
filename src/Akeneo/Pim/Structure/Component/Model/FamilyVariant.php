@@ -164,7 +164,7 @@ class FamilyVariant implements FamilyVariantInterface
             $formerAxeIds = [];
         } else {
             $formerAxeIds = $attributeSet->getAxes()->map(
-                static fn(AttributeInterface $attribute): int => $attribute->getId()
+                static fn (AttributeInterface $attribute): int => $attribute->getId()
             )->toArray();
         }
 
@@ -194,7 +194,7 @@ class FamilyVariant implements FamilyVariantInterface
             $formerAttributeIds = [];
         } else {
             $formerAttributeIds = $attributeSet->getAttributes()->map(
-                static fn(AttributeInterface $attribute): int => $attribute->getId()
+                static fn (AttributeInterface $attribute): int => $attribute->getId()
             )->toArray();
         }
 
