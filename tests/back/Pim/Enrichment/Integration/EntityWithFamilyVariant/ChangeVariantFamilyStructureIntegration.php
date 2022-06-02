@@ -287,7 +287,19 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
 
         $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+        $this->assertCount(
+            0,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
 
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'labels' => ['en_US' => 'test'],
+        ]);
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        $this->get('doctrine.orm.default_entity_manager')->clear();
         $this->assertCount(
             0,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
@@ -301,14 +313,44 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
 
-        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size_color');
-        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
-            'labels' => ['en_US' => 'test'],
-        ]);
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'level' => 1,
+                        'attributes' => ['size'],
+                        'axes' => ['eu_shoes_size'],
+                    ],
+                ],
+            ]
+        );
         $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
 
+        $this->get('doctrine.orm.default_entity_manager')->clear();
         $this->assertCount(
-            0,
+            1,
+            $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
+        );
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('shoes_size');
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'level' => 1,
+                        'attributes' => ['size', 'weight'],
+                        'axes' => ['eu_shoes_size'],
+                    ],
+                ],
+            ]
+        );
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+        $this->assertCount(
+            1,
             $this->jobExecutionObserver->jobExecutionsWithJobName('compute_family_variant_structure_changes')
         );
     }
@@ -326,13 +368,9 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
             [
                 'variant_attribute_sets' => [
                     [
-                        'level'      => 1,
-                        'attributes' => [
-                            'size',
-                        ],
-                        'axes'       => [
-                            'eu_shoes_size',
-                        ],
+                        'level' => 1,
+                        'attributes' => ['size'],
+                        'axes' => ['eu_shoes_size'],
                     ],
                 ],
             ]
