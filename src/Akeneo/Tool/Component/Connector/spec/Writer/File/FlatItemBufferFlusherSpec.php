@@ -46,7 +46,7 @@ class FlatItemBufferFlusherSpec extends ObjectBehavior
         $this->filesystem->remove($this->directory);
     }
 
-    function it(FlatItemBuffer $buffer)
+    function it_should_not_create_file_if_buffer_is_empty(FlatItemBuffer $buffer)
     {
         $buffer->count()->willReturn(0);
 
