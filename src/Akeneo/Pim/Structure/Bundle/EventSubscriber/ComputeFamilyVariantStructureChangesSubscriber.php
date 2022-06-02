@@ -151,6 +151,9 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     private function variantAttributeSetOfFamilyVariantIsUpdated(FamilyVariantInterface $familyVariant): bool
     {
         // Warning: releaseEvents can be called only once by family variant (events are cleared after the first call)
-        return \in_array(FamilyVariantInterface::ATTRIBUTE_SET_IS_UPDATED_EVENT, $familyVariant->releaseEvents());
+        $events = $familyVariant->releaseEvents();
+
+        return \in_array(FamilyVariantInterface::AXES_WERE_UPDATED_ON_LEVEL, $events)
+            || \in_array(FamilyVariantInterface::ATTRIBUTES_WERE_UPDATED_ON_LEVEL, $events);
     }
 }

@@ -15,7 +15,8 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * For now the events are a list of strings, but they can be converted to object when needed.
      */
-    public const ATTRIBUTE_SET_IS_UPDATED_EVENT = 'ATTRIBUTE_SET_IS_UPDATED';
+    public const AXES_WERE_UPDATED_ON_LEVEL = 'AXES_WAS_UPDATED_ON_LEVEL';
+    public const ATTRIBUTES_WERE_UPDATED_ON_LEVEL = 'AXES_WAS_UPDATED_ON_LEVEL';
 
     /**
      * @return null|int
