@@ -1,9 +1,5 @@
-import React, {FC, PropsWithChildren} from 'react';
+import React, {FC} from 'react';
 
-type Props = {
-    owner: string;
-};
-
-const List: FC<PropsWithChildren<Props>> = ({owner}) => <>[list {owner}]</>;
+const List: FC = () => <>[List]</>;
 
 export {List};
