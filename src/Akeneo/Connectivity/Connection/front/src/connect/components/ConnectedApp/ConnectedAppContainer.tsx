@@ -18,6 +18,7 @@ import {ConnectedAppErrorMonitoring} from './ErrorMonitoring/ConnectedAppErrorMo
 import {DeveloperModeTag} from '../DeveloperModeTag';
 import isGrantedOnProduct from '../../is-granted-on-product';
 import isGrantedOnCatalog from '../../is-granted-on-catalog';
+import {CatalogList} from '@akeneo-pim-community/catalogs';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -259,7 +260,9 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                     />
                 )}
 
-                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && <div>catalog list</div>}
+                {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && (
+                    <CatalogList owner={connectedApp.connection_username} />
+                )}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
             </PageContent>

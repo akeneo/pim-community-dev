@@ -88,6 +88,7 @@ class GetAppConfirmationQueryIntegration extends TestCase
                 'http://www.example.com/path/to/logo',
                 'author',
                 'userGroup_' . $appPublicId,
+                'username_' . $appPublicId,
                 [],
                 false,
                 'partner'

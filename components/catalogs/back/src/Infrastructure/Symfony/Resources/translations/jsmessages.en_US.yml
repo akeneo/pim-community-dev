@@ -1,0 +1,8 @@
+akeneo_catalogs:
+    catalog_list:
+        catalogs_name: Catalogs name
+        status: Status
+        enabled: enabled
+        disabled: disabled
+        empty: There is no catalog
+        more_information: Check out our Help center for more information.

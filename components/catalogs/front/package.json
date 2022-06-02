@@ -12,6 +12,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0"
   },
+  "proxy": "http://localhost:8080",
   "scripts": {
     "start": "react-scripts start",
     "lib:build": "tsc -p tsconfig.build.json",

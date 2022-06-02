@@ -19,8 +19,13 @@ final class CreateConnectedApp implements CreateConnectedAppInterface
     ) {
     }
 
-    public function execute(MarketplaceApp $marketplaceApp, array $scopes, string $connectionCode, string $userGroupName): ConnectedApp
-    {
+    public function execute(
+        MarketplaceApp $marketplaceApp,
+        array $scopes,
+        string $connectionCode,
+        string $userGroupName,
+        string $connectionUsername
+    ): ConnectedApp {
         $app = new ConnectedApp(
             $marketplaceApp->getId(),
             $marketplaceApp->getName(),
@@ -29,6 +34,7 @@ final class CreateConnectedApp implements CreateConnectedAppInterface
             $marketplaceApp->getLogo(),
             $marketplaceApp->getAuthor(),
             $userGroupName,
+            $connectionUsername,
             $marketplaceApp->getCategories(),
             $marketplaceApp->isCertified(),
             $marketplaceApp->getPartner()

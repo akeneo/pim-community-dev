@@ -26,6 +26,7 @@ const connectedApp = {
     logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
     author: 'Author A',
     user_group_name: 'app_123456abcde',
+    connection_username: 'Connection Username',
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,

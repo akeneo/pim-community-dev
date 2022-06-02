@@ -68,7 +68,8 @@ final class ConnectedAppFactory
             $app,
             $scopes,
             $connection->code(),
-            $group->getName()
+            $group->getName(),
+            $code,
         );
 
         $user = $this->findConnectionUser($code);

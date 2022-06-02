@@ -42,7 +42,7 @@ class CreateConnectedAppQueryIntegration extends TestCase
 
     public function test_it_persists_an_app(): void
     {
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $connection = $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
         $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $this->query->execute(
@@ -54,6 +54,7 @@ class CreateConnectedAppQueryIntegration extends TestCase
                 'app logo',
                 'app author',
                 'app_123456abcdef',
+                $connection->username(),
                 ['e-commerce'],
                 false,
                 'akeneo'
