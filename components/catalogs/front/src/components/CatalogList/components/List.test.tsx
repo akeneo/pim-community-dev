@@ -8,7 +8,7 @@ import {List} from './List';
 import {useCatalogs} from '../hooks/useCatalogs';
 
 test('it renders without error', () => {
-    (useCatalogs as jest.Mock).mockReturnValue({
+    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
         isLoading: false,
         isError: false,
         data: [
@@ -18,7 +18,8 @@ test('it renders without error', () => {
                 enabled: true,
             },
         ],
-    });
+        error: null,
+    }));
 
     render(
         <ThemeProvider theme={pimTheme}>
@@ -30,11 +31,12 @@ test('it renders without error', () => {
 });
 
 test('it renders with no catalogs', () => {
-    (useCatalogs as jest.Mock).mockReturnValue({
+    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
         isLoading: false,
         isError: false,
         data: [],
-    });
+        error: null,
+    }));
 
     render(
         <ThemeProvider theme={pimTheme}>
@@ -42,15 +44,16 @@ test('it renders with no catalogs', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('Empty')).toBeInTheDocument();
+    expect(screen.getByText('[Empty]')).toBeInTheDocument();
 });
 
 test('it renders nothing when catalogs are in loading', () => {
-    (useCatalogs as jest.Mock).mockReturnValue({
+    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
         isLoading: true,
         isError: false,
         data: [],
-    });
+        error: null,
+    }));
 
     const {container} = render(
         <ThemeProvider theme={pimTheme}>
@@ -62,11 +65,33 @@ test('it renders nothing when catalogs are in loading', () => {
 });
 
 test('it throws an error when the API call failed', () => {
-    (useCatalogs as jest.Mock).mockReturnValue({
+    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
         isLoading: false,
         isError: true,
         data: [],
-    });
+        error: null,
+    }));
+
+    // mute the error in the output
+    jest.spyOn(console, 'error');
+    (console.error as jest.Mock).mockImplementation(() => {});
+
+    expect(() => {
+        render(
+            <ThemeProvider theme={pimTheme}>
+                <List owner={'username'} />
+            </ThemeProvider>
+        );
+    }).toThrow(Error);
+});
+
+test('it throws an error when data field is undefined', () => {
+    (useCatalogs as unknown as jest.MockedFunction<typeof useCatalogs>).mockImplementation(() => ({
+        isLoading: false,
+        isError: true,
+        data: undefined,
+        error: null,
+    }));
 
     // mute the error in the output
     jest.spyOn(console, 'error');

@@ -17,5 +17,5 @@ test('it renders without error', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('list willy')).toBeInTheDocument();
+    expect(screen.getByText('[list willy]')).toBeInTheDocument();
 });
