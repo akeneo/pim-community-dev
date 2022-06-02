@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Bundle\EventSubscriber;
 
+use Akeneo\Pim\Structure\Bundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -99,6 +100,23 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
         $jobInstanceRepository->findOneByIdentifier('compute_family_variant_structure_changes')
             ->willReturn($jobInstance);
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->computeVariantStructureChanges($event);
+    }
+
+    function it_does_not_compute_variant_structure_when_job_launching_is_disabled(
+        SimpleJobLauncher $jobLauncher,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $familyVariant->getId()->willReturn(150);
+        $familyVariant->getCode()->willReturn('my_family_variant');
+        $event = new GenericEvent($familyVariant->getWrappedObject(), [
+            'is_new' => false,
+            'unitary' => true,
+            ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true,
+        ]);
+
         $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
 
         $this->computeVariantStructureChanges($event);
@@ -210,6 +228,22 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         ])->shouldBeCalledOnce();
 
         $this->recordIsNewFamilyVariant(new GenericEvent($newFamilyVariant->getWrappedObject()));
+        $this->bulkComputeVariantStructureChanges($event);
+    }
+
+    function it_does_not_compute_bulk_variant_structure_when_job_launching_is_disabled(
+        SimpleJobLauncher $jobLauncher,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $familyVariant->getId()->willReturn(150);
+        $familyVariant->getCode()->willReturn('my_family_variant');
+        $event = new GenericEvent(
+            [$familyVariant],
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+        );
+
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
         $this->bulkComputeVariantStructureChanges($event);
     }
 }

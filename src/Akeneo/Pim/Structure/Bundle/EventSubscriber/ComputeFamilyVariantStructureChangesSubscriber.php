@@ -28,6 +28,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
+    public const DISABLE_JOB_LAUNCHING = 'DISABLE_JOB_LAUNCHING';
+
     /** @var TokenStorageInterface */
     private $tokenStorage;
     /** @var JobLauncherInterface */
@@ -48,14 +50,6 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     /** @var array<string, bool> */
     private array $isFamilyVariantNew = [];
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param JobLauncherInterface $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface $jobInstanceRepository
-     * @param Connection $connection
-     * @param LoggerInterface $logger
-     * @param string $jobName
-     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
@@ -106,6 +100,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
 
         if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')
             || ($event->hasArgument('is_new') && $event->getArgument('is_new'))
+            || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
             || !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
         ) {
             return;
@@ -124,6 +119,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         if (!is_array($familyVariants)
             || [] === $familyVariants
             || !current($familyVariants) instanceof FamilyVariantInterface
+            || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
         ) {
             return;
         }
