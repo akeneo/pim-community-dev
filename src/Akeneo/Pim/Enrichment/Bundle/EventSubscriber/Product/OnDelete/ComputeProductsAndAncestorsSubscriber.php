@@ -179,7 +179,7 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
     private function elasticsearchShouldBeRefreshed(array $products): bool
     {
         foreach ($products as $product) {
-            if (10 > time() - $product->getCreated()->getTimestamp()) {
+            if (null !== $product->getCreated() && 10 > time() - $product->getCreated()->getTimestamp()) {
                 return true;
             }
         }

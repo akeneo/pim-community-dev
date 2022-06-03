@@ -49,11 +49,12 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $indexer->removeFromProductIdsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_deletes_a_single_product_from_the_index(ProductAndAncestorsIndexer $indexer)
+    function it_deletes_a_single_product_from_the_index(ProductAndAncestorsIndexer $indexer, Client $esClient)
     {
         $product = new Product();
         $product->setCreated(new \DateTime('1970-01-01'));
         $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
+        $esClient->refreshIndex()->shouldNotBeCalled();
 
         $indexer->removeFromProductIdsAndReindexAncestors([42], [], [])->shouldBeCalled();
     }
