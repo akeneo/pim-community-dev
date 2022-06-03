@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication\ContributorAccount\Controller;
+namespace Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 

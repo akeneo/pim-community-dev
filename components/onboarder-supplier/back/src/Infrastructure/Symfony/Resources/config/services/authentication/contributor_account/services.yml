@@ -1,0 +1,4 @@
+services:
+    # Controllers
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+        public: true

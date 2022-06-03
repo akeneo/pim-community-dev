@@ -19,7 +19,7 @@ class SupplierManagement extends ReactController {
     }
 
     routeGuardToUnmount() {
-        return /^onboarder_serenity_supplier_/;
+        return /^onboarder_serenity_retailer_supplier_/;
     }
 
     renderRoute() {

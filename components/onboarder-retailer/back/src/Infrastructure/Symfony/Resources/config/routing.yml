@@ -1,8 +1,3 @@
 onboarder_serenity_retailer_supplier:
     resource: '@AkeneoOnboarderSerenityRetailerBundle/Resources/config/routing/supplier.yml'
     prefix: /supplier
-
-# TODO: move into supplier application
-onboarder_serenity_supplier_authentication:
-    resource: '@AkeneoOnboarderSerenityRetailerBundle/Resources/config/routing/authentication.yml'
-    prefix: /authentication
