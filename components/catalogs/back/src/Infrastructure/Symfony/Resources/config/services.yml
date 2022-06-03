@@ -1,5 +1,5 @@
 parameters:
-    akeneo_catalog.max_limit: 15
+    akeneo_catalog.max_limit_per_user: 15
 
 services:
     _defaults:
@@ -50,4 +50,4 @@ services:
 
     Akeneo\Catalogs\Infrastructure\Service\GetCatalogsNumberLimit:
         arguments:
-            - '%akeneo_catalog.max_limit%'
+            - '%akeneo_catalog.max_limit_per_user%'
