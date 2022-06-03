@@ -69,6 +69,7 @@ services:
         arguments:
             - '@akeneo.pim.enrichment.elasticsearch.indexer.product_and_ancestors'
             - '@database_connection'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
         tags:
             - { name: kernel.event_subscriber }
 
