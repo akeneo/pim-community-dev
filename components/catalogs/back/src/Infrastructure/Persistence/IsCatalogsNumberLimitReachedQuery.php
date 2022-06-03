@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Domain\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Service\GetCatalogsNumberLimit;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -16,7 +15,7 @@ class IsCatalogsNumberLimitReachedQuery implements IsCatalogsNumberLimitReachedQ
 {
     public function __construct(
         private Connection $connection,
-        private GetCatalogsNumberLimit $getCatalogsNumberLimit
+        private int $limit,
     ) {
     }
 
@@ -30,6 +29,6 @@ class IsCatalogsNumberLimitReachedQuery implements IsCatalogsNumberLimitReachedQ
 
         $catalogCount = (int) $this->connection->executeQuery($sql, ['owner_id' => $ownerId])->fetchOne();
 
-        return $catalogCount >= $this->getCatalogsNumberLimit->getLimit();
+        return $catalogCount >= $this->limit;
     }
 }

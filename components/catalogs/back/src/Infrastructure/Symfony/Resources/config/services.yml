@@ -48,6 +48,6 @@ services:
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'
 
-    Akeneo\Catalogs\Infrastructure\Service\GetCatalogsNumberLimit:
+    Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery:
         arguments:
-            - '%akeneo_catalog.max_limit%'
+            $limit: '%akeneo_catalog.max_limit%'
