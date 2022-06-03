@@ -1,0 +1,17 @@
+acceptance:
+  suites:
+    onboarder_serenity_acceptance:
+      paths:
+        - '%paths.base%/features'
+      contexts:
+        - Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext
+        - Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\Authentication\ContributorAccountContext
+
+  extensions:
+    Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+    FriendsOfBehat\SymfonyExtension:
+      kernel:
+        path: src/Kernel.php
+        class: Kernel
+        environment: test_fake
+        debug: false

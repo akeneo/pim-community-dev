@@ -1,0 +1,15 @@
+Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplier:
+  properties:
+    label:
+      - NotBlank:
+          allowNull: true
+      - Length:
+          max: 200
+    contributorEmails:
+      - Unique: ~
+      - All:
+          - Email: ~
+          - Length:
+              max: 255
+          - Akeneo\OnboarderSerenity\Retailer\Application\Supplier\Validation\UniqueContributorEmail: ~
+

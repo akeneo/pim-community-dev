@@ -24,7 +24,7 @@ $rules = [
             'Symfony\Component\DependencyInjection\ContainerAwareInterface',
             'Symfony\Component\DependencyInjection\ContainerInterface',
             // Onboarder Serenity dependencies:
-            'Akeneo\OnboarderSerenity\Infrastructure\Install\InstallOnboarderSerenityTables',
+            'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables',
 
             // Dangerous dependencies, migrations shouldn't rely on services
             'Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId',

@@ -1,6 +1,0 @@
-services:
-    Akeneo\OnboarderSerenity\Infrastructure\Install\InstallOnboarderSerenityTables:
-        arguments:
-            - '@database_connection'
-        tags:
-            - { name: kernel.event_subscriber }

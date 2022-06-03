@@ -79,7 +79,7 @@
   "workspaces": [
     "components/tailored-export/front",
     "components/tailored-import/front",
-    "components/onboarder/front",
+    "components/onboarder-retailer/front",
     "components/job-automation/front",
     "grth/src/Akeneo/Pim/TableAttribute/front",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",

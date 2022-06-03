@@ -1,0 +1,11 @@
+services:
+    Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\SupplierContext:
+        - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
+        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\CreateSupplierHandler'
+        - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierList'
+        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler'
+        - '@Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler'
+
+    Akeneo\OnboarderSerenity\Retailer\Test\Acceptance\Context\Authentication\ContributorAccountContext:
+        - '@Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
+        - '@akeneo.onboarder_serenity_contributor_authentication.feature'

@@ -1,0 +1,7 @@
+onboarder_serenity_retailer_supplier:
+    resource: '@AkeneoOnboarderSerenityRetailerBundle/Resources/config/routing/supplier.yml'
+    prefix: /supplier
+
+onboarder_serenity_authentication:
+    resource: '@AkeneoOnboarderSerenityBundle/Resources/config/routing/authentication.yml'
+    prefix: /authentication

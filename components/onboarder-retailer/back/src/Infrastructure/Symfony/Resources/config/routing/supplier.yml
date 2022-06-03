@@ -1,0 +1,63 @@
+onboarder_serenity_supplier_list:
+    path: /
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\SupplierList
+        _feature: onboarder_serenity
+    methods: [GET]
+
+onboarder_serenity_supplier_create:
+    path: /
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\SupplierCreate
+        _feature: onboarder_serenity
+    methods: [POST]
+
+onboarder_serenity_supplier_export:
+    path: /export
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\ExportSupplier
+        _feature: onboarder_serenity
+    methods: [GET]
+
+onboarder_serenity_supplier_edit:
+    path: /{identifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\GetSupplier
+        _feature: onboarder_serenity
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [GET]
+
+onboarder_serenity_supplier_delete:
+    path: /{identifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\SupplierDelete
+        _feature: onboarder_serenity
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [DELETE]
+
+onboarder_serenity_supplier_update:
+    path: /{identifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\SupplierUpdate
+        _feature: onboarder_serenity
+    requirements:
+        identifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [PUT]
+
+onboarder_serenity_supplier_download_import_template:
+    path: /download-import-template
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate
+        _feature: onboarder_serenity
+    methods: [GET]
+
+onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier:
+    path: /supplier-contributors-belonging-to-another-supplier/{supplierIdentifier}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\GetSupplierContributorsBelongingToAnotherSupplier
+        _feature: onboarder_serenity
+    requirements:
+        supplierIdentifier: '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+    methods: [GET]
