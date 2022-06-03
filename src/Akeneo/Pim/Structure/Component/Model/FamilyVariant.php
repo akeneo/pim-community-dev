@@ -164,12 +164,12 @@ class FamilyVariant implements FamilyVariantInterface
             $formerAxeIds = [];
         } else {
             $formerAxeIds = $attributeSet->getAxes()->map(
-                static fn (AttributeInterface $attribute): int => $attribute->getId()
+                static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0
             )->toArray();
         }
 
         $newAxeIds = \array_map(
-            static fn (AttributeInterface $attribute): int => $attribute->getId(),
+            static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
             $axes
         );
         sort($formerAxeIds);
@@ -194,12 +194,12 @@ class FamilyVariant implements FamilyVariantInterface
             $formerAttributeIds = [];
         } else {
             $formerAttributeIds = $attributeSet->getAttributes()->map(
-                static fn (AttributeInterface $attribute): int => $attribute->getId()
+                static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0
             )->toArray();
         }
 
         $newAttributeIds = \array_map(
-            static fn (AttributeInterface $attribute): int => $attribute->getId(),
+            static fn (AttributeInterface $attribute): int => $attribute->getId() ?? 0,
             $attributes
         );
         sort($formerAttributeIds);
