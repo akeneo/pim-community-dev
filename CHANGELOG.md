@@ -46,6 +46,7 @@
 - PIM-10447: Fix memory leak during compute_family_variant_structure_changes job
 - PIM-10444: Fix thumbnail generation http queue and cancel request when leaving the page
 - PIM-10463: Fix textarea stringifier for rich textarea on source and target
+- PIM-10473: Fix record codes filter by comparing lowercase
 
 ## Improvements
 
