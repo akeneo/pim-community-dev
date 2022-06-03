@@ -1,6 +1,3 @@
-parameters:
-    pim_tenant_id: '%env(default::string:APP_TENANT_ID)%'
-
 services:
     pim_framework.service.pim_url:
         class: Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl
