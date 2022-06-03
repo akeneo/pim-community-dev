@@ -7,6 +7,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 class MaxLimitValidator extends ConstraintValidator
 {
     public function __construct(

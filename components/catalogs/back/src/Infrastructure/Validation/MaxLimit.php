@@ -4,6 +4,9 @@ namespace Akeneo\Catalogs\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor
+ */
 #[\Attribute]
 class MaxLimit extends Constraint
 {
