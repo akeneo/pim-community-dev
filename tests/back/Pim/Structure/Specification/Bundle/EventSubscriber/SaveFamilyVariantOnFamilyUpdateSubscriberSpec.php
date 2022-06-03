@@ -78,7 +78,10 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $validator->validate($familyVariants2)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
 
-        $bulkFamilyVariantSaver->saveAll([$familyVariants1, $familyVariants2])->shouldBeCalled();
+        $bulkFamilyVariantSaver->saveAll(
+            [$familyVariants1, $familyVariants2],
+            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true]
+        )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
@@ -119,7 +122,10 @@ class SaveFamilyVariantOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $validator->validate($familyVariants2)->willReturn($constraintViolationList2);
         $validator->validate($familyVariants3)->willReturn($constraintViolationList3);
 
-        $bulkFamilyVariantSaver->saveAll([$familyVariants3])->shouldBeCalled();
+        $bulkFamilyVariantSaver->saveAll(
+            [$familyVariants3],
+            [ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true]
+        )->shouldBeCalled();
 
         $event->getSubject()->willReturn($family);
         $event->hasArgument('unitary')->willReturn(true);
