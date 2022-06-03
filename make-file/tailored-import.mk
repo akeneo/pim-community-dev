@@ -34,8 +34,9 @@ endif
 lint-front:
 	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import lint:check
 
+.PHONY: unit-front
 unit-front:
-	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import test:unit:run
+	$(YARN_RUN) workspace @akeneo-pim-enterprise/tailored-import test:unit:run $(O)
 
 .PHONY: ci-back
 ci-back: lint-back coupling-back unit-back acceptance-back integration-back

@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react';
 import styled from 'styled-components';
-import {Checkbox, SectionTitle} from 'akeneo-design-system';
+import {SectionTitle} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyTarget} from '../../models';
 
@@ -26,9 +26,6 @@ type PropertyTargetParametersProps = {
 const PropertyTargetParameters = ({children, target, onTargetChange}: PropertyTargetParametersProps) => {
   const translate = useTranslate();
 
-  const handleClearIfEmptyChange = (clearIfEmpty: boolean) =>
-    onTargetChange({...target, action_if_empty: clearIfEmpty ? 'clear' : 'skip'});
-
   return (
     <TargetParametersContainer>
       <SectionTitle sticky={0}>
@@ -36,12 +33,7 @@ const PropertyTargetParameters = ({children, target, onTargetChange}: PropertyTa
           {translate('akeneo.tailored_import.data_mapping.target.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      <Container>
-        <Checkbox checked={'clear' === target.action_if_empty} onChange={handleClearIfEmptyChange}>
-          {translate('akeneo.tailored_import.data_mapping.target.clear_if_empty')}
-        </Checkbox>
-        {children}
-      </Container>
+      <Container>{children}</Container>
     </TargetParametersContainer>
   );
 };

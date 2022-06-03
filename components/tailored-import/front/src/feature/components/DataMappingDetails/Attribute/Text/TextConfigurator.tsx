@@ -1,7 +1,7 @@
 import React from 'react';
 import {filterErrors} from '@akeneo-pim-community/shared';
 import {isTextTarget} from './model';
-import {AttributeDataMappingConfiguratorProps} from '../../../../models';
+import {AttributeDataMappingConfiguratorProps, AttributeTarget} from '../../../../models';
 import {InvalidAttributeTargetError} from '../error/InvalidAttributeTargetError';
 import {AttributeTargetParameters, Operations, Sources} from '../../../../components';
 import {CLEAN_HTML_TAGS_OPERATION_TYPE} from '../../Operation';
@@ -31,7 +31,7 @@ const TextConfigurator = ({
         validationErrors={filterErrors(validationErrors, '[target]')}
         onTargetChange={onTargetChange}
       >
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
         isMultiSource={false}

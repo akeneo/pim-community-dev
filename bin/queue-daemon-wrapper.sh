@@ -5,7 +5,8 @@ set -e
 
 log_as_monolog() {
     currentDate=$(date +"%G-%m-%d %T.%N")
-    logWithMessage=$(printf '{"channel": "queue-daemon-wrapper","context": {"message": "%s"},"datetime": {"date": "%s","timezone": "Etc/UTC","timezone_type": "3"},"level": "250","level_name": "INFO"}' "$1" "${currentDate}")
+    msg=$(echo "$1" | sed 's/"/\\"/g')
+    logWithMessage=$(printf '{"channel": "queue-daemon-wrapper","context": {"message": "%s"},"datetime": {"date": "%s","timezone": "Etc/UTC","timezone_type": "3"},"level": "250","level_name": "INFO"}' "${msg}" "${currentDate}")
     echo "${logWithMessage}" >&2
 }
 
@@ -17,12 +18,20 @@ catch() {
     exit 0
 }
 
+start_job() {
+  bin/console $@ 2>&1 | while read line
+  do
+    log_as_monolog "$line"
+  done
+}
+
 trap 'catch' SIGTERM
 
 log_as_monolog "Start loop $@"
 
 while true; do
-    bin/console $@ &
+    args=$@
+    start_job $args &
     pid=$!
     wait $pid
 done

@@ -39,6 +39,7 @@ test('it displays source configurator', async () => {
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 
@@ -69,6 +70,7 @@ test('it displays property errors when property is not valid', async () => {
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 
@@ -91,6 +93,7 @@ test('it displays property not valid when configuration is not found', async () 
       onTargetChange={jest.fn()}
       onRefreshSampleData={jest.fn()}
       onSourcesChange={jest.fn()}
+      onOperationsChange={jest.fn()}
     />
   );
 

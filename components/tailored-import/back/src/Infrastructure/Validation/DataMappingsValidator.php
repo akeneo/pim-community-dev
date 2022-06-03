@@ -62,7 +62,7 @@ class DataMappingsValidator extends ConstraintValidator
         }
 
         $this->validateDataMappingUuidsAreUnique($dataMappings);
-        $this->validateThereIsOneDataMappingTargetingAnIdentifier($dataMappings);
+        $this->validateThereIsNotTooManyIdentifier($dataMappings);
     }
 
     private function validateDataMappingUuidsAreUnique(array $dataMappings): void
@@ -82,7 +82,7 @@ class DataMappingsValidator extends ConstraintValidator
         }
     }
 
-    private function validateThereIsOneDataMappingTargetingAnIdentifier(array $dataMappings): void
+    private function validateThereIsNotTooManyIdentifier(array $dataMappings): void
     {
         $attributeTargetCodes = array_reduce($dataMappings, function ($targetCodes, $dataMapping) {
             if ('attribute' === $dataMapping['target']['type']) {
@@ -101,15 +101,8 @@ class DataMappingsValidator extends ConstraintValidator
 
         $dataMappingTargetingAnIdentifierCount = $targetedIdentifierAttribute ? $countByTargetCode[$targetedIdentifierAttribute->code()] : 0;
 
-        switch (true) {
-            case 0 === $dataMappingTargetingAnIdentifierCount:
-                $this->context->buildViolation(DataMappings::NO_IDENTIFIER_TARGET_FOUND)
-                    ->addViolation();
-                break;
-            case 1 < $dataMappingTargetingAnIdentifierCount:
-                $this->context->buildViolation(DataMappings::TOO_MANY_IDENTIFIER_TARGET_FOUND)
-                    ->addViolation();
-                break;
+        if (1 < $dataMappingTargetingAnIdentifierCount) {
+            $this->context->buildViolation(DataMappings::TOO_MANY_IDENTIFIER_TARGET_FOUND)->addViolation();
         }
     }
 

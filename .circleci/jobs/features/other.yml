@@ -61,6 +61,7 @@ jobs:
             - run:
                   name: Data Quality
                   command: PIM_CONTEXT=data-quality-insights make data-quality-insights-integration-back
+                  no_output_timeout: 60m
             - run:
                   name: Asset Manager
                   command: PIM_CONTEXT=asset-manager make asset-manager-integration-back

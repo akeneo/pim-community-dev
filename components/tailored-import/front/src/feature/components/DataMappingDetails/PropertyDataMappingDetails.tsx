@@ -8,7 +8,7 @@ import {
   PropertyDataMapping,
   PropertyTarget,
 } from '../../models';
-import {CategoriesConfigurator} from './Property';
+import {CategoriesConfigurator, FamilyConfigurator} from './Property';
 import {Helper} from 'akeneo-design-system';
 import {PropertyNotValid} from './PropertyNotValid';
 
@@ -16,6 +16,7 @@ const propertyDataMappingConfigurators: {
   [propertyCode: string]: FunctionComponent<PropertyDataMappingConfiguratorProps>;
 } = {
   categories: CategoriesConfigurator,
+  family: FamilyConfigurator,
 };
 
 type PropertyDataMappingDetailsProps = {

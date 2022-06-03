@@ -37,11 +37,13 @@ config:
                     module: pim/controller/redirect
                 teamwork_assistant_project_show:
                     module: pim/controller/template
+                    feature: teamwork_assistant
                 pimee_catalog_rule_rule_index:
                     module: pim/controller/common/index
                     aclResourceId: pimee_catalog_rule_rule_view_permissions
                     config:
                         entity: rule
+                    feature: product_rules
                 pimee_workflow_published_product_index:
                     module: pimee/controller/published-product/index
                     aclResourceId: pimee_workflow_published_product_index
@@ -49,6 +51,7 @@ config:
                         gridExtension: pimee-published-product-index
                         gridName: published-product-grid
                         title: Published products
+                    feature: published_product
 
     map:
         '*':

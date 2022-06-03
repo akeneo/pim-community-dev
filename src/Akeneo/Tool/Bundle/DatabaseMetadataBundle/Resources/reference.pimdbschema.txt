@@ -258,6 +258,7 @@ akeneo_batch_warning | item | NO | longtext |
 akeneo_catalog | id | NO | binary(16) | PRI
 akeneo_catalog | name | NO | varchar(255) |
 akeneo_catalog | owner_id | NO | int | MUL
+akeneo_catalog | is_enabled | NO | tinyint |
 akeneo_catalog | created | NO | datetime |
 akeneo_catalog | updated | NO | datetime |
 akeneo_communication_channel_viewed_announcements | announcement_id | NO | varchar(100) | PRI
@@ -488,14 +489,14 @@ pim_api_access_token | client | YES | int | MUL
 pim_api_access_token | user | YES | int | MUL
 pim_api_access_token | token | NO | varchar(255) | UNI
 pim_api_access_token | expires_at | YES | int |
-pim_api_access_token | scope | YES | varchar(255) |
+pim_api_access_token | scope | YES | varchar(1000) |
 pim_api_auth_code | id | NO | int | PRI
 pim_api_auth_code | client_id | YES | int | MUL
 pim_api_auth_code | user_id | YES | int | MUL
 pim_api_auth_code | token | NO | varchar(255) | UNI
 pim_api_auth_code | redirect_uri | NO | longtext |
 pim_api_auth_code | expires_at | YES | int |
-pim_api_auth_code | scope | YES | varchar(255) |
+pim_api_auth_code | scope | YES | varchar(1000) |
 pim_api_client | id | NO | int | PRI
 pim_api_client | random_id | NO | varchar(255) |
 pim_api_client | redirect_uris | NO | longtext |
@@ -508,7 +509,7 @@ pim_api_refresh_token | client | YES | int | MUL
 pim_api_refresh_token | user | YES | int | MUL
 pim_api_refresh_token | token | NO | varchar(255) | UNI
 pim_api_refresh_token | expires_at | YES | int |
-pim_api_refresh_token | scope | YES | varchar(255) |
+pim_api_refresh_token | scope | YES | varchar(1000) |
 pim_catalog_association | id | NO | int | PRI
 pim_catalog_association | association_type_id | NO | int | MUL
 pim_catalog_association | owner_id | NO | int | MUL

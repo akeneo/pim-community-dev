@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class WebClientMigrationAuthorization implements MigrationAuthorization
 {
-    private const WEB_URL = 'https://storage.googleapis.com/sku-to-uuid-instances-list/list_be39cbf8-6201-4fd4-bf94-c951d6960200.json';
+    private const BLACKLIST_URL = 'https://storage.googleapis.com/sku-to-uuid-instances-list/list_2cdc822e-bc1f-48c5-940d-b95815abce6e.json';
 
     public function __construct(private string $env, private LoggerInterface $logger, private string $clientName)
     {
@@ -38,7 +38,7 @@ final class WebClientMigrationAuthorization implements MigrationAuthorization
 
 
         // Unique URL prevents cache
-        $uniqueUrl = \sprintf('%s?%s', self::WEB_URL, (Uuid::uuid4())->toString());
+        $uniqueUrl = \sprintf('%s?%s', self::BLACKLIST_URL, (Uuid::uuid4())->toString());
 
         $client = new Client();
         try {
@@ -68,8 +68,8 @@ final class WebClientMigrationAuthorization implements MigrationAuthorization
             return false;
         }
 
-        $authorizedClients = \array_column($decodedResponse, 'name');
-        if (!\in_array($this->clientName, $authorizedClients)) {
+        $unauthorizedClients = \array_column($decodedResponse, 'name');
+        if (\in_array($this->clientName, $unauthorizedClients)) {
             $this->logger->notice(
                 \sprintf('The "%s" client is not authorized to run the migration', $this->clientName),
                 ['clientName' => $this->clientName]

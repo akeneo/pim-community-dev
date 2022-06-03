@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CleanHTMLTagsOperation
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToDateOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToMeasurementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\ConvertToNumberOperation;
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SplitOperation;
@@ -58,6 +59,7 @@ class OperationCollectionHydrator implements OperationCollectionHydratorInterfac
                 CleanHTMLTagsOperation::TYPE => new CleanHTMLTagsOperation(),
                 SplitOperation::TYPE => new SplitOperation($normalizedOperation['separator']),
                 SimpleSelectReplacementOperation::TYPE => new SimpleSelectReplacementOperation($normalizedOperation['mapping']),
+                MultiSelectReplacementOperation::TYPE => new MultiSelectReplacementOperation($normalizedOperation['mapping']),
                 default => throw new \InvalidArgumentException(sprintf('Unsupported "%s" Operation type', $normalizedOperation['type'])),
             },
             $normalizedOperations,

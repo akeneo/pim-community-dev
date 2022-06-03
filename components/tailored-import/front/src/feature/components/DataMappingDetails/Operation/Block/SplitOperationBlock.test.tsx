@@ -18,6 +18,12 @@ test('it displays a split operation block', () => {
       operation={{type: 'split', separator: ','}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
@@ -33,6 +39,12 @@ test('it can be removed using the remove button', () => {
       operation={{type: 'split', separator: ','}}
       onChange={jest.fn()}
       onRemove={handleRemove}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
@@ -54,6 +66,12 @@ test('it can change the separator', () => {
       operation={{type: 'split', separator: ','}}
       onChange={handleChange}
       onRemove={jest.fn()}
+      isLastOperation={false}
+      previewData={{
+        isLoading: false,
+        hasError: false,
+        data: ['<p>Hello</p>', '<p>World</p>'],
+      }}
     />
   );
 
@@ -74,6 +92,12 @@ test('it throws an error if the operation is not a split operation', () => {
         operation={{type: 'clean_html_tags'}}
         onChange={jest.fn()}
         onRemove={jest.fn()}
+        isLastOperation={false}
+        previewData={{
+          isLoading: false,
+          hasError: false,
+          data: ['<p>Hello</p>', '<p>World</p>'],
+        }}
       />
     );
   }).toThrowError('SplitOperationBlock can only be used with SplitOperation');

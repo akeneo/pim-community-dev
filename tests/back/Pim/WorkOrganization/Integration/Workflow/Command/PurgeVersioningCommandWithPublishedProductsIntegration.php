@@ -61,6 +61,7 @@ class PurgeVersioningCommandWithPublishedProductsIntegration extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->get('feature_flags')->enable('published_product');
 
         $this->getConnection()->executeQuery('DELETE FROM pim_versioning_version');
     }

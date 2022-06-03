@@ -31,7 +31,7 @@ provider "mailgun" {
 
 locals {
   type                            = var.types[var.product_reference_type]
-  pfid                            = "${local.type}-${var.instance_name}"
+  pfid                            = var.use_edition_flag ? "srnt-${var.instance_name}" : "${local.type}-${var.instance_name}"
   monitoring_authentication_token = var.monitoring_authentication_token != "" ? var.monitoring_authentication_token : random_string.monitoring_authentication_token.result
 }
 

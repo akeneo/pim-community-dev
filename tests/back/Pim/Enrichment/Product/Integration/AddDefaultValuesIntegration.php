@@ -42,6 +42,8 @@ class AddDefaultValuesIntegration extends TestCase
      */
     public function it_does_not_add_default_values_when_publishing_a_product()
     {
+        $this->get('feature_flags')->enable('published_product');
+
         $originalProduct = $this->get('pim_catalog.repository.product')->findOneByIdentifier('original');
         $publishedProduct = $this->get('pimee_workflow.manager.published_product')->publish($originalProduct);
 

@@ -36,6 +36,7 @@ resource "local_file" "helm_pim_config" {
 
       pim = {
         type                            = local.type
+        use_edition_flag                = var.use_edition_flag
         product_reference_code          = var.product_reference_code
         product_reference_type          = var.product_reference_type
         product_reference_size          = var.product_reference_size
@@ -239,7 +240,7 @@ resource "local_file" "helm_pim_config" {
         innodb_buffer_pool_size = format(
           "%d%s", ceil(
             trimsuffix(local.helm-default-values.mysql.mysql.innodbBufferPoolSize, local.mysql-memory-unit) +
-            758 * local.tshirt-size-index
+            1024 * local.tshirt-size-index
           ),
           local.mysql-memory-unit
         )
@@ -248,7 +249,7 @@ resource "local_file" "helm_pim_config" {
             memory = format(
               "%d%s", ceil(
                 trimsuffix(local.helm-default-values.mysql.mysql.resources.limits.memory, local.k8s-memory-unit) +
-                1024 * local.tshirt-size-index
+                1024 * local.tshirt-size-index * 130 / 100
               ),
               local.k8s-memory-unit
             )

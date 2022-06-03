@@ -183,3 +183,9 @@ variable "types" {
     "pim_trial_instance"      = "tria"
   }
 }
+
+variable "use_edition_flag" {
+  type        = bool
+  default     = false
+  description = "If set to true , it will hardcode srnt-.. in pfid"
+}

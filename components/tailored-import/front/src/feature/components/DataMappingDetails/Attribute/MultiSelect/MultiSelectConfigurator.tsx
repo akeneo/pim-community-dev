@@ -31,7 +31,7 @@ const MultiSelectConfigurator = ({
         onTargetChange={onTargetChange}
       >
         <ActionIfNotEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
-        <ClearIfEmpty target={target} onTargetChange={onTargetChange} />
+        <ClearIfEmpty<AttributeTarget> target={target} onTargetChange={onTargetChange} />
       </AttributeTargetParameters>
       <Sources
         isMultiSource={true}

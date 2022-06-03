@@ -49,3 +49,7 @@ output "monitoring_authentication_token" {
   value     = local.monitoring_authentication_token
   sensitive = true
 }
+
+output "use_edition_flag" {
+  value = var.use_edition_flag
+}

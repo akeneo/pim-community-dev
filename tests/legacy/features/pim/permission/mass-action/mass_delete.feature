@@ -81,6 +81,7 @@ Feature: Delete many products at once that I own
     Then I should see product black_sandal
     But I should not see product blue_sandal
 
+  @published-product-feature-enabled
   Scenario: Failed to mass delete a selection of products with at least one published product
     Given the following products:
       | sku        | categories                      |

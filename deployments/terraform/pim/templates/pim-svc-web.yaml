@@ -22,7 +22,8 @@ metadata:
           "check_certificate_expiration": "true",
           "include_content": "true",
           "days_warning": 30,
-          "days_critical": 7
+          "days_critical": 7,
+          "tags": {{ include "pim.extraLabelsAsDatadogTags" . }}
         }]
       ]
 spec:

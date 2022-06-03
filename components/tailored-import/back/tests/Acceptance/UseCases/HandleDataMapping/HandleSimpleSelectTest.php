@@ -15,12 +15,9 @@ namespace Akeneo\Platform\TailoredImport\Test\Acceptance\UseCases\HandleDataMapp
 
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetSimpleSelectValue;
-use Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\ExecuteDataMappingQuery;
 use Akeneo\Platform\TailoredImport\Domain\Model\DataMapping;
-use Akeneo\Platform\TailoredImport\Domain\Model\DataMappingCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
-use Akeneo\Platform\TailoredImport\Domain\Model\Row;
 use Akeneo\Platform\TailoredImport\Domain\Model\Target\AttributeTarget;
 use PHPUnit\Framework\Assert;
 
@@ -113,7 +110,7 @@ final class HandleSimpleSelectTest extends HandleDataMappingTestCase
                         ['2d9e967a-5efa-4a31-a254-99f7c50a145c'],
                         OperationCollection::create([
                             new SimpleSelectReplacementOperation([
-                                "adidas" => ["nike", "reebok"],
+                                'adidas' => ['nike', 'reebok'],
                             ]),
                         ]),
                         [],

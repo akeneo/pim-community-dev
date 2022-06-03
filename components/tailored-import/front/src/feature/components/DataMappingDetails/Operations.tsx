@@ -16,7 +16,6 @@ import {
   CleanHTMLTagsOperationBlock,
   SplitOperationBlock,
   OperationBlockProps,
-  OperationPreviewData,
   OperationSampleData,
   CLEAN_HTML_TAGS_OPERATION_TYPE,
   MultiSelectReplacementOperationBlock,
@@ -100,7 +99,7 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
             onRefreshSampleData={handleRefreshSampleData}
             loadingSampleData={loadingSampleData}
           />
-          {dataMapping.operations.map(operation => {
+          {dataMapping.operations.map((operation, index) => {
             const OperationBlock = operationBlocks[operation.type] ?? null;
 
             if (null === OperationBlock) {
@@ -114,6 +113,12 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
                 key={operation.type}
                 targetCode={dataMapping.target.code}
                 operation={operation}
+                previewData={{
+                  data: previewData,
+                  isLoading: previewDataIsLoading,
+                  hasError: previewDataHasError,
+                }}
+                isLastOperation={index === dataMapping.operations.length - 1}
                 onChange={handleOperationChange}
                 onRemove={handleOperationRemove}
               />
@@ -150,13 +155,6 @@ const Operations = ({dataMapping, compatibleOperations, onOperationsChange, onRe
               </Dropdown.Overlay>
             )}
           </Dropdown>
-          {dataMapping.operations.length > 0 && (
-            <OperationPreviewData
-              isLoading={previewDataIsLoading}
-              previewData={previewData}
-              hasErrors={previewDataHasError}
-            />
-          )}
         </OperationBlocksContainer>
       )}
     </OperationsContainer>

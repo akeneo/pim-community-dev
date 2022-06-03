@@ -3,6 +3,10 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, IconButtonProps, placeholderStyle, Preview} from 'akeneo-design-system';
 
 const PreviewContent = styled.div<{isLoading: boolean; isEmpty: boolean; hasError: boolean} & AkeneoThemedProps>`
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  height: 18px;
+
   ${({isEmpty}) =>
     isEmpty &&
     css`

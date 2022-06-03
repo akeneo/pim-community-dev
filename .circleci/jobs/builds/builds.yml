@@ -575,3 +575,67 @@ jobs:
                   root: ~/
                   paths:
                       - project
+
+    build_srnt_with_flags:
+        environment:
+            <<: *envVarsDeployDev
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        working_directory: ~/project
+        steps:
+            - skip_job:
+                  skip: << pipeline.parameters.skip_build >>
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - change_pim_onboarder_branch_steps
+            - set_gcloud_config_dev
+            - install_yq
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      IMAGE_TAG=${CIRCLE_SHA1}
+                      IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                      IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                      RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+
+                      echo "Image tag: ${IMAGE_TAG}"
+                      echo "Serenity release name: ${RELEASE_NAME}"
+            - run:
+                  name: Enable Edition Flag for next deployment
+                  command: |
+                      echo "Set EditionFlag variable for Makefile and Terraform to deploy all editions type as Serenity Infra"
+                      echo "-> export USE_EDITION_FLAG=true"
+                      echo export USE_EDITION_FLAG=true >> $BASH_ENV
+
+                      echo "[DEBUG] Check deployments/terraform/pim/values.yaml -> editionFlag.enabled=$(yq r deployments/terraform/pim/values.yaml editionFlag.enabled)"
+            - run:
+                  name: Build the Serenity Edition prod image
+                  command: make -C deployments/ php-image-prod
+            - run:
+                  name: Push the Serenity Edition prod image on docker registry
+                  command: make -C deployments/ push-php-image-prod
+            - run:
+                  name: Push Terraform modules to GCS
+                  command: |
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/serenity-edition-dev/${IMAGE_TAG}/
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
+                      echo export USE_EDITION_FLAG=true >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
