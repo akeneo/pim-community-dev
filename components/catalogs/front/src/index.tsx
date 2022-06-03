@@ -59,7 +59,10 @@ ReactDOM.render(
                                     <FakeCatalogEditContainer />
                                 </Route>
                                 <Route path='/'>
-                                    <CatalogList owner='app_cbza17p7cr48gog4c8gg84gw8' onCatalogClick={handleCatalogClick} />
+                                    <CatalogList
+                                        owner='app_cbza17p7cr48gog4c8gg84gw8'
+                                        onCatalogClick={handleCatalogClick}
+                                    />
                                 </Route>
                             </Switch>
                         </Router>

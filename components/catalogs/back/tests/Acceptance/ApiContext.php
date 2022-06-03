@@ -51,7 +51,7 @@ class ApiContext implements Context
         $commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getId(),
+            $user->getUserIdentifier(),
         ));
     }
 
@@ -72,17 +72,17 @@ class ApiContext implements Context
         $commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getId(),
+            $user->getUserIdentifier(),
         ));
         $commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
-            $user->getId(),
+            $user->getUserIdentifier(),
         ));
         $commandBus->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
-            $user->getId(),
+            $user->getUserIdentifier(),
         ));
     }
 

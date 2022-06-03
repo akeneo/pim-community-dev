@@ -42,7 +42,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getId(),
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
         ));
 
         $this->client->request(
@@ -72,7 +72,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $this->tokenStorage->getToken()->getUser()->getId(),
+            $this->tokenStorage->getToken()->getUser()->getUserIdentifier(),
         ));
 
         $this->client->request(

@@ -71,7 +71,7 @@ class GetCatalogsByOwnerActionTest extends IntegrationTestCase
         Assert::assertSame('27c53e59-ee6a-4215-a8f1-2fccbb67ba0d', $payload[0]['id']);
         Assert::assertSame('Store UK', $payload[0]['name']);
         Assert::assertSame(false, $payload[0]['enabled']);
-        Assert::assertSame('admin', $payload[0]['ownerUsername']);
+        Assert::assertSame('admin', $payload[0]['owner_username']);
 
         Assert::assertSame('db1079b6-f397-4a6a-bae4-8658e64ad47c', $payload[1]['id']);
         Assert::assertSame('ed30425c-d9cf-468b-8bc7-fa346f41dd07', $payload[2]['id']);

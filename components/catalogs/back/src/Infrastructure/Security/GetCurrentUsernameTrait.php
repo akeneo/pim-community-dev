@@ -28,6 +28,6 @@ trait GetCurrentUsernameTrait
             throw new \LogicException(\sprintf('User should be an instance of %s', UserInterface::class));
         }
 
-        return (string) $user->getUserIdentifier();
+        return $user->getUserIdentifier();
     }
 }

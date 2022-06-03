@@ -32,7 +32,7 @@ final class FindOneCatalogByIdQuery implements FindOneCatalogByIdQueryInterface
         WHERE catalog.id = :id
         SQL;
 
-        /** @var array{id: string, name: string, owner_id: string, is_enabled: string}|false $row */
+        /** @var array{id: string, name: string, owner_username: string, is_enabled: string}|false $row */
         $row = $this->connection->executeQuery($query, [
             'id' => Uuid::fromString($id)->getBytes(),
         ])->fetchAssociative();

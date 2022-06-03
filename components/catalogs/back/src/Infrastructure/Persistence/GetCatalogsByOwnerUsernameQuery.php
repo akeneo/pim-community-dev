@@ -38,7 +38,8 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             LIMIT :offset, :limit
         SQL;
 
-        $catalogs = $this->connection->executeQuery(
+        /** @var array<array{id: string, name: string, owner_username: string, is_enabled: string}> $rows */
+        $rows = $this->connection->executeQuery(
             $query,
             [
                 'owner_username' => $ownerUsername,
@@ -56,6 +57,6 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
             $row['name'],
             $row['owner_username'],
             (bool) $row['is_enabled'],
-        ), $catalogs);
+        ), $rows);
     }
 }

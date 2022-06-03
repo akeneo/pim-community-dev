@@ -11,12 +11,15 @@ const productSelectionTabName = '#connected-app-catalog-product-selection';
 
 const Edit: FC<PropsWithChildren<Props>> = ({id}) => {
     const translate = useTranslate();
-    const [activeTab, setActiveTab] = useSessionStorageState(productSelectionTabName, 'pim_connectedAppCatalog_activeTab');
+    const [activeTab, setActiveTab] = useSessionStorageState(
+        productSelectionTabName,
+        'pim_connectedAppCatalog_activeTab'
+    );
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
     return (
         <>
-            <TabBar moreButtonTitle="More">
+            <TabBar moreButtonTitle='More'>
                 <TabBar.Tab
                     isActive={isCurrent(productSelectionTabName)}
                     onClick={() => {
@@ -28,9 +31,7 @@ const Edit: FC<PropsWithChildren<Props>> = ({id}) => {
                 </TabBar.Tab>
             </TabBar>
 
-            {isCurrent(productSelectionTabName) && (
-                <div>product selection for catalog {id}</div>
-            )}
+            {isCurrent(productSelectionTabName) && <div>product selection for catalog {id}</div>}
         </>
     );
 };

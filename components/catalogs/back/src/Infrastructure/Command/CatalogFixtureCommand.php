@@ -70,13 +70,13 @@ class CatalogFixtureCommand extends Command
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store US',
-            (int) $user->getId(),
+            $user->getUserIdentifier(),
         ));
 
         $this->commandBus->execute(new CreateCatalogCommand(
             Uuid::uuid4()->toString(),
             'Store FR',
-            (int) $user->getId(),
+            $user->getUserIdentifier(),
         ));
 
         return self::SUCCESS;

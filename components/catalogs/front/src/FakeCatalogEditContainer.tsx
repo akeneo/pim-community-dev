@@ -7,9 +7,7 @@ type Props = {};
 const FakeCatalogEditContainer: FC<PropsWithChildren<Props>> = () => {
     const {id} = useParams<{id: string}>();
 
-    return (
-        <CatalogEdit id={id} />
-    );
+    return <CatalogEdit id={id} />;
 };
 
 export {FakeCatalogEditContainer};

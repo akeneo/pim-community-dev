@@ -26,7 +26,12 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
     ): void {
         $query = <<<SQL
         INSERT INTO akeneo_catalog (id, name, owner_id, is_enabled)
-        VALUES (UUID_TO_BIN(:id), :name, :owner_id, :is_enabled)
+        VALUES (
+            UUID_TO_BIN(:id),
+            :name,
+            (SELECT id FROM oro_user WHERE username = :owner_username LIMIT 1),
+            :is_enabled
+        )
         ON DUPLICATE KEY UPDATE name = :name, updated = NOW()
         SQL;
 
@@ -35,7 +40,7 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
             [
                 'id' => $id,
                 'name' => $name,
-                'owner_id' => $ownerUsername,
+                'owner_username' => $ownerUsername,
                 'is_enabled' => $enabled,
             ],
             [

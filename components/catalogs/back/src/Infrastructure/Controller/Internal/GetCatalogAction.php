@@ -33,7 +33,7 @@ final class GetCatalogAction
         $catalog = $this->findOneCatalogByIdQuery->execute($catalogId);
 
         if (null === $catalog) {
-            throw new NotFoundHttpException(sprintf('catalog "%s" does not exist.', $catalogId));
+            throw new NotFoundHttpException(\sprintf('catalog "%s" does not exist.', $catalogId));
         }
 
         return new JsonResponse($this->normalizer->normalize($catalog, 'internal'));
