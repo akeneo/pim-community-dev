@@ -31,9 +31,8 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
 
     public function testItGetsPaginatedCatalogsByOwnerUsername(): void
     {
-        $owner = $this->createUser('owner');
-        $ownerId = $owner->getId();
-        $anotherUserId = $this->createUser('another_user')->getId();
+        $this->createUser('owner');
+        $this->createUser('another_user');
         $idUS = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
         $idFR = 'ed30425c-d9cf-468b-8bc7-fa346f41dd07';
         $idUK = '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d';
@@ -41,34 +40,34 @@ class GetCatalogsByOwnerUsernameQueryTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             $idUS,
             'Store US',
-            $ownerId,
+            'owner',
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             $idFR,
             'Store FR',
-            $ownerId,
+            'owner',
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             $idJP,
             'Store JP',
-            $anotherUserId,
+            'another_user',
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             $idUK,
             'Store UK',
-            $ownerId,
+            'owner',
         ));
 
-        $resultFirstPage = $this->query->execute($owner->getUserIdentifier(), 0, 2);
+        $resultFirstPage = $this->query->execute('owner', 0, 2);
         $expectedFirstPage = [
-            new Catalog($idUK, 'Store UK', $ownerId, false),
-            new Catalog($idUS, 'Store US', $ownerId, false),
+            new Catalog($idUK, 'Store UK', 'owner', false),
+            new Catalog($idUS, 'Store US', 'owner', false),
         ];
         $this->assertEquals($expectedFirstPage, $resultFirstPage);
 
-        $resultSecondPage = $this->query->execute($owner->getUserIdentifier(), 2, 2);
+        $resultSecondPage = $this->query->execute('owner', 2, 2);
         $expectedSecondPage = [
-            new Catalog($idFR, 'Store FR', $ownerId, false),
+            new Catalog($idFR, 'Store FR', 'owner', false),
         ];
         $this->assertEquals($expectedSecondPage, $resultSecondPage);
     }

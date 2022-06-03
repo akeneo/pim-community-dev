@@ -12,11 +12,11 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2022 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-trait GetCurrentUserIdTrait
+trait GetCurrentUsernameTrait
 {
     private TokenStorageInterface $tokenStorage;
 
-    private function getCurrentUserId(): int
+    private function getCurrentUsername(): string
     {
         $user = $this->tokenStorage->getToken()?->getUser();
 
@@ -28,6 +28,6 @@ trait GetCurrentUserIdTrait
             throw new \LogicException(\sprintf('User should be an instance of %s', UserInterface::class));
         }
 
-        return (int) $user->getId();
+        return (string) $user->getUserIdentifier();
     }
 }

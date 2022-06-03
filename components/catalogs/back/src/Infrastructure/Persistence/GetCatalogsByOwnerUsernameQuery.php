@@ -26,11 +26,15 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
     public function execute(string $ownerUsername, int $offset = 0, int $limit = 100): array
     {
         $query = <<<SQL
-            SELECT BIN_TO_UUID(akeneo_catalog.id) AS id, name, owner_id, is_enabled
-            FROM akeneo_catalog
-            JOIN oro_user ON oro_user.id = akeneo_catalog.owner_id
+            SELECT
+                BIN_TO_UUID(catalog.id) AS id,
+                catalog.name,
+                catalog.is_enabled,
+                oro_user.username AS owner_username
+            FROM akeneo_catalog catalog
+            JOIN oro_user ON oro_user.id = catalog.owner_id
             WHERE oro_user.username = :owner_username
-            ORDER BY akeneo_catalog.id
+            ORDER BY catalog.id
             LIMIT :offset, :limit
         SQL;
 
@@ -48,9 +52,9 @@ class GetCatalogsByOwnerUsernameQuery implements GetCatalogsByOwnerUsernameQuery
         )->fetchAllAssociative();
 
         return \array_map(static fn ($row) => new Catalog(
-            (string) $row['id'],
-            (string) $row['name'],
-            (int) $row['owner_id'],
+            $row['id'],
+            $row['name'],
+            $row['owner_username'],
             (bool) $row['is_enabled'],
         ), $catalogs);
     }

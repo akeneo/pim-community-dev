@@ -12,5 +12,10 @@ use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
  */
 interface UpsertCatalogQueryInterface
 {
-    public function execute(Catalog $catalog): void;
+    public function execute(
+        string $id,
+        string $name,
+        string $ownerUsername,
+        bool $enabled,
+    ): void;
 }

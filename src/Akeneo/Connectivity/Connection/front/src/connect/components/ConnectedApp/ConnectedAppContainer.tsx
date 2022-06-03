@@ -1,4 +1,4 @@
-import React, {FC, useCallback, useEffect, useState} from 'react';
+import React, {FC, MouseEvent, useCallback, useEffect, useState} from 'react';
 import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
@@ -165,6 +165,15 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
         [monitoringSettings, setMonitoringSettings, setHasUnsavedChanges]
     );
 
+    const handleCatalogClick = (catalogId: string) => {
+        const catalogEditUrl = generateUrl('akeneo_connectivity_connection_connect_connected_apps_catalogs_edit', {
+            connectionCode: connectedApp.connection_code,
+            catalogId: catalogId,
+        });
+
+        history.push(catalogEditUrl);
+    };
+
     const tag = connectedApp.is_test_app ? <DeveloperModeTag /> : null;
 
     const isAtLeastGrantedToViewProducts = isGrantedOnProduct(connectedApp, 'view');
@@ -184,7 +193,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                             <Translate id='pim_common.delete' />
                         </DropdownLink>
                     </SecondaryActionsDropdownButton>,
-                    <SaveButton key={0} />,
+                    <SaveButton key={1} />,
                 ]}
                 userButtons={<UserButtons />}
                 state={<FormState />}
@@ -261,7 +270,7 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 )}
 
                 {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && (
-                    <CatalogList owner={connectedApp.connection_username} />
+                    <CatalogList owner={connectedApp.connection_username} onCatalogClick={handleCatalogClick} />
                 )}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}

@@ -100,11 +100,11 @@ class GetCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotBelongToCurrentUser(): void
     {
-        $anotherUserId = $this->createUser('willy-mesnage')->getId();
+        $this->createUser('willy-mesnage');
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $anotherUserId,
+            'willy-mesnage',
         ));
 
         $this->client = $this->getAuthenticatedPublicApiClient(['read_catalogs']);

@@ -2,15 +2,11 @@ import {ConnectedApp} from '../../model/Apps/connected-app';
 import {useEffect, useState} from 'react';
 import {useFetchConnectedApp} from './use-fetch-connected-app';
 import {useFeatureFlags} from '../../shared/feature-flags';
-
-enum Error {
-    NotFound = 'NOT_FOUND',
-    Forbidden = 'FORBIDDEN',
-}
+import {HttpError} from '../../model/http-error.enum';
 
 type Result = {
     loading: boolean;
-    error: Error | null;
+    error: HttpError | null;
     payload: ConnectedApp | null;
 };
 
@@ -27,7 +23,7 @@ export const useConnectedApp = (connectionCode: string): Result => {
         if (!featureFlag.isEnabled('marketplace_activate')) {
             setResult({
                 loading: false,
-                error: Error.Forbidden,
+                error: HttpError.Forbidden,
                 payload: null,
             });
             return;
@@ -44,7 +40,7 @@ export const useConnectedApp = (connectionCode: string): Result => {
             } catch (e) {
                 setResult({
                     loading: false,
-                    error: e === '403 Forbidden' ? Error.Forbidden : Error.NotFound,
+                    error: e === '403 Forbidden' ? HttpError.Forbidden : HttpError.NotFound,
                     payload: null,
                 });
             }

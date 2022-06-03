@@ -7,9 +7,10 @@ import {Status} from './Status';
 
 type Props = {
     owner: string;
+    onCatalogClick: (catalogId: string) => void;
 };
 
-const List: FC<PropsWithChildren<Props>> = ({owner}) => {
+const List: FC<PropsWithChildren<Props>> = ({owner, onCatalogClick}) => {
     const translate = useTranslate();
 
     const catalogs = useCatalogs(owner);
@@ -31,7 +32,7 @@ const List: FC<PropsWithChildren<Props>> = ({owner}) => {
                 </Table.Header>
                 <Table.Body>
                     {catalogs.data.map(catalog => (
-                        <Table.Row key={catalog.id}>
+                        <Table.Row key={catalog.id} onClick={() => onCatalogClick(catalog.id)}>
                             <Table.Cell>{catalog.name}</Table.Cell>
                             <Table.Cell>
                                 <Status enabled={catalog.enabled} />

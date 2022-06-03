@@ -6,3 +6,6 @@ akeneo_catalogs:
         disabled: disabled
         empty: There is no catalog
         more_information: Check out our Help center for more information.
+    catalog_edit:
+        tabs:
+            product_selection: Product selection

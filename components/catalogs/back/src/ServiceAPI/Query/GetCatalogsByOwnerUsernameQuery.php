@@ -14,10 +14,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @implements QueryInterface<array<Catalog>>
  */
-class GetCatalogsByOwnerIdQuery implements QueryInterface
+class GetCatalogsByOwnerUsernameQuery implements QueryInterface
 {
     public function __construct(
-        private int $ownerId,
+        private string $ownerUsername,
         #[Assert\Positive]
         private int $page,
         #[Assert\Range(min: 1, max: 100)]
@@ -25,9 +25,9 @@ class GetCatalogsByOwnerIdQuery implements QueryInterface
     ) {
     }
 
-    public function getOwnerId(): int
+    public function getOwnerUsername(): string
     {
-        return $this->ownerId;
+        return $this->ownerUsername;
     }
 
     public function getLimit(): int
