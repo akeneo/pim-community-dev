@@ -27,3 +27,8 @@ akeneo_catalogs_public_get_product_identifiers:
     path: '/api/rest/v1/catalogs/{id}/product-identifiers'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductIdentifiersAction
     methods: [ GET ]
+
+akeneo_catalogs_public_get_product_uuids:
+    path: '/api/rest/v1/catalogs/{id}/product-uuids'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Public\GetProductUuidsAction
+    methods: [ GET ]

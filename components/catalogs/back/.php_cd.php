@@ -88,6 +88,13 @@ $rules = [
             'Doctrine\Common\Collections\Collection',
             'Akeneo\Category\Api\FindCategoryTrees',
             'Akeneo\Category\Api\CategoryTree',
+
+            // @todo remove CXP-1186
+            'Akeneo\Pim\Enrichment\Component\Product\Query',
+            'Akeneo\Pim\Enrichment\Bundle\Elasticsearch',
+            'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
+            'Akeneo\Tool\Component\StorageUtils\Cursor\CursorFactoryInterface',
+            'Symfony\Component\OptionsResolver',
         ]
     )->in('Akeneo\Catalogs\Infrastructure'),
 
