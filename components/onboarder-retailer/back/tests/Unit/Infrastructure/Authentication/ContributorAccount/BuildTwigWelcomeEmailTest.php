@@ -33,14 +33,14 @@ final class BuildTwigWelcomeEmailTest extends TestCase
             ->method('render')
             ->withConsecutive(
                 [
-                    '@AkeneoOnboarderSerenity/Email/contributor-invitation.html.twig',
+                    '@AkeneoOnboarderSerenityRetailer/Email/contributor-invitation.html.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com',
                     ],
                 ],
                 [
-                    '@AkeneoOnboarderSerenity/Email/contributor-invitation.txt.twig',
+                    '@AkeneoOnboarderSerenityRetailer/Email/contributor-invitation.txt.twig',
                     [
                         'contributorEmail' => $contributorEmail,
                         'url' => 'http://wwww.example.com',

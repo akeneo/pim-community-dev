@@ -16,7 +16,7 @@ const useSuppliers = (search: string, page: number): [SupplierRow[], number, () 
     const notify = useNotify();
     const translate = useTranslate();
 
-    const getSuppliersRoute = useRoute('onboarder_serenity_supplier_list');
+    const getSuppliersRoute = useRoute('onboarder_serenity_retailer_supplier_list');
     const loadSuppliers = useCallback(async () => {
         const response = await fetch(`${getSuppliersRoute}?page=${page}&search=${search}`, {
             method: 'GET',

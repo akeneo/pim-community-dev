@@ -3,7 +3,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
-import {SupplierApp} from '@akeneo-pim-enterprise/onboarder';
+import {SupplierApp} from '@akeneo-pim-enterprise/onboarder-retailer';
 
 const mediator = require('oro/mediator');
 

@@ -12,9 +12,9 @@ const Container = styled.div``;
 const SecondaryActions = () => {
     const translate = useTranslate();
     const [isDropdownOpen, openDropdown, closeDropdown] = useBooleanState();
-    const exportRoute = useRoute('onboarder_serenity_supplier_export');
+    const exportRoute = useRoute('onboarder_serenity_retailer_supplier_export');
     const importRoute = '#' + useRoute('pim_importexport_import_profile_index');
-    const downloadTemplateRoute = useRoute('onboarder_serenity_supplier_download_import_template');
+    const downloadTemplateRoute = useRoute('onboarder_serenity_retailer_supplier_download_import_template');
 
     return (
         <Dropdown>

@@ -1,5 +1,5 @@
 {
-  "name": "@akeneo-pim-enterprise/onboarder",
+  "name": "@akeneo-pim-enterprise/onboarder-retailer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

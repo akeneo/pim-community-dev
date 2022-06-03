@@ -3,8 +3,8 @@ import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} f
 import {Supplier} from '../models';
 
 const useSupplier = (identifier: string) => {
-    const getSupplierRoute = useRoute('onboarder_serenity_supplier_edit', {identifier});
-    const saveSupplierRoute = useRoute('onboarder_serenity_supplier_edit', {identifier});
+    const getSupplierRoute = useRoute('onboarder_serenity_retailer_supplier_edit', {identifier});
+    const saveSupplierRoute = useRoute('onboarder_serenity_retailer_supplier_update', {identifier});
     const [originalSupplier, setOriginalSupplier] = useState<Supplier | null>(null);
     const [supplier, setSupplier] = useState<Supplier | null>(null);
     const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);

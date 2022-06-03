@@ -26,7 +26,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
         );
 
         $htmlContent = $this->twig->render(
-            '@AkeneoOnboarderSerenity/Email/contributor-invitation.html.twig',
+            '@AkeneoOnboarderSerenityRetailer/Email/contributor-invitation.html.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,
@@ -34,7 +34,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
         );
 
         $textContent = $this->twig->render(
-            '@AkeneoOnboarderSerenity/Email/contributor-invitation.txt.twig',
+            '@AkeneoOnboarderSerenityRetailer/Email/contributor-invitation.txt.twig',
             [
                 'contributorEmail' => $email,
                 'url' => $setUpPasswordUrl,

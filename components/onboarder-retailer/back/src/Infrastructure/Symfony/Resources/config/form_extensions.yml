@@ -5,7 +5,7 @@ extensions:
         position: 100
         config:
             title: Onboarder
-            to: onboarder_serenity_supplier_list
+            to: onboarder_serenity_retailer_supplier_list
         feature: onboarder_serenity
 
     pim-menu-onboarder-column:
@@ -36,5 +36,5 @@ extensions:
         position: 10
         config:
             title: onboarder.supplier.supplier_list.menu_item
-            to: onboarder_serenity_supplier_list
+            to: onboarder_serenity_retailer_supplier_list
         feature: onboarder_serenity

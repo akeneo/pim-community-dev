@@ -19,7 +19,7 @@ const ContributorList = ({supplierIdentifier, contributors, setContributors}: Pr
     const filteredContributors = useFilteredContributors(contributors, searchValue);
     const [contributorsBelongingToAnotherSupplier, setContributorsBelongingToAnotherSupplier] = useState<string[]>([]);
     const getContributorsBelongingToAnotherSupplierRoute = useRoute(
-        'onboarder_serenity_get_supplier_contributors_belonging_to_another_supplier',
+        'onboarder_serenity_retailer_get_supplier_contributors_belonging_to_another_supplier',
         {supplierIdentifier, emails: JSON.stringify(contributors)}
     );
 

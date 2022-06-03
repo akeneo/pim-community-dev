@@ -16,7 +16,7 @@ const StyledField = styled(Field)`
 const CreateSupplier = ({onSupplierCreated, createButtonlabel}: CreateSupplierProps) => {
     const [isOpen, openModal, closeModal] = useBooleanState(false);
     const translate = useTranslate();
-    const saveRoute = useRoute('onboarder_serenity_supplier_create');
+    const saveRoute = useRoute('onboarder_serenity_retailer_supplier_create');
     const notify = useNotify();
     const [code, setCode] = useState('');
     const [label, setLabel] = useState('');

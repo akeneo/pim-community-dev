@@ -12,7 +12,7 @@ type Props = {
 const DeleteSupplier = ({identifier, onSupplierDeleted, onCloseModal}: Props) => {
     const translate = useTranslate();
     const notify = useNotify();
-    const deleteRoute = useRoute('onboarder_serenity_supplier_delete', {identifier});
+    const deleteRoute = useRoute('onboarder_serenity_retailer_supplier_delete', {identifier});
 
     const deleteSupplier = async () => {
         const response = await fetch(deleteRoute, {method: 'DELETE'});
