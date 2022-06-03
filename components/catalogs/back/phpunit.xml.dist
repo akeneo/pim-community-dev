@@ -20,6 +20,10 @@
         <server name="KERNEL_CLASS" value="Kernel" force="true" />
     </php>
 
+    <extensions>
+        <extension class="Akeneo\Test\PHPUnitDoctrineTransactionBundle\PHPUnit\Extension"/>
+    </extensions>
+
     <groups>
         <exclude>
             <group>skip</group>

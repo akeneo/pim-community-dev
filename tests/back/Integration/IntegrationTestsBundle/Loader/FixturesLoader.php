@@ -14,6 +14,7 @@ use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
+use Akeneo\Test\PHPUnitDoctrineTransactionBundle\Doctrine\StaticRegistry;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
@@ -128,19 +129,26 @@ class FixturesLoader implements FixturesLoaderInterface
 
     public function load(Configuration $configuration): void
     {
-        $this->deleteAllDocumentsInElasticsearch();
-        $this->databaseSchemaHandler->reset();
+        $experimentalTestDatabaseIsEnabled = (bool) getenv('EXPERIMENTAL_TEST_DATABASE');
 
+        $this->deleteAllDocumentsInElasticsearch();
         $this->resetFilesystem();
 
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
-            $this->restoreDatabase($dumpFile);
+            if ($experimentalTestDatabaseIsEnabled) {
+                $this->restoreExperimentalTestDatabase($dumpFile);
+            } else {
+                $this->databaseSchemaHandler->reset();
+                $this->restoreDatabase($dumpFile);
+            }
+
             $this->indexProductModels();
             $this->indexProducts();
         } else {
+            $this->databaseSchemaHandler->reset();
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
             $this->purgeMessengerEvents();
@@ -388,6 +396,25 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function restoreDatabase($filepath): void
     {
         $this->dbConnection->exec(file_get_contents($filepath));
+    }
+
+    protected function restoreExperimentalTestDatabase(string $filepath): void
+    {
+        try {
+            $this->restoreDatabase($filepath);
+        } catch (\Doctrine\DBAL\Exception $e) {
+            // The database is not empty, an integrity constraint violation was thrown on an unique key.
+            // When using the experimental test database, it's because the test was not started from an empty
+            // database as it should have. It happens when the previous test exited early.
+            // We assume it will happen only once, so we truncate all tables and insert again.
+            if ('23000' === $e->getPrevious()?->getCode()) {
+                $this->databaseSchemaHandler->reset();
+                StaticRegistry::reset();
+                $this->restoreDatabase($filepath);
+            } else {
+                throw $e;
+            }
+        }
     }
 
     /**

@@ -36,6 +36,7 @@
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "src/Akeneo/Connectivity/Connection/tests/",
             "AkeneoTest\\": "tests/back",
             "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\PHPUnitDoctrineTransactionBundle\\": "tests/back/Integration/PHPUnitDoctrineTransactionBundle/",
             "Akeneo\\Test\\": "tests/back/",
             "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",

@@ -11,6 +11,7 @@ services:
       XDEBUG_CONFIG: 'client_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
+      EXPERIMENTAL_TEST_DATABASE: '${EXPERIMENTAL_TEST_DATABASE:-0}'
     volumes:
       - './:/srv/pim'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
