@@ -28,11 +28,11 @@ class LRUCachedGetExistingAttributeOptionsSpec extends ObjectBehavior
     function it_gets_existing_options_by_performing_an_sql_query_if_the_cache_is_not_hit(
         GetExistingAttributeOptionCodes $sqlQuery
     ) {
-        $sqlQuery->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2']])
+        $sqlQuery->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2', '3.000']])
                  ->shouldBeCalledOnce()
                  ->willReturn(['attribute_1' => ['option2']]);
 
-        $this->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2']])
+        $this->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2', '3.000']])
              ->shouldReturn(['attribute_1' => ['option2']]);
     }
 
