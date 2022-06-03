@@ -28,7 +28,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberInterface
 {
-    public const DISABLE_JOB_LAUNCHING = 'DISABLE_JOB_LAUNCHING';
+    public const DISABLE_JOB_LAUNCHING = 'DISABLE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
+    public const FORCE_JOB_LAUNCHING = 'FORCE_COMPUTE_FAMILY_VARIANT_STRUCTURE_CHANGES_LAUNCHING';
 
     /** @var array<string, bool> */
     private array $isFamilyVariantNew = [];
@@ -72,10 +73,11 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
+        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
         if (!$event->hasArgument('unitary') || false === $event->getArgument('unitary')
             || ($event->hasArgument('is_new') && $event->getArgument('is_new'))
             || ($event->hasArgument(self::DISABLE_JOB_LAUNCHING) && $event->getArgument(self::DISABLE_JOB_LAUNCHING))
-            || !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
+            || (!$forceJobLaunching && !$this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
         ) {
             return;
         }
@@ -98,6 +100,8 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
+        $forceJobLaunching = $event->hasArgument(self::FORCE_JOB_LAUNCHING) && $event->getArgument(self::FORCE_JOB_LAUNCHING);
+
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
         $familyVariantCodesToCompute = \array_values(\array_map(
             static fn (FamilyVariantInterface $familyVariant): string => $familyVariant->getCode(),
@@ -105,7 +109,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
                 $familyVariants,
                 fn (FamilyVariantInterface $familyVariant): bool =>
                     !($this->isFamilyVariantNew[$familyVariant->getCode()] ?? false)
-                    && $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant)
+                    && ($forceJobLaunching || $this->variantAttributeSetOfFamilyVariantIsUpdated($familyVariant))
                     && $this->noOtherJobExecutionIsPending($jobInstance->getId(), $familyVariant->getCode())
             )
         ));
