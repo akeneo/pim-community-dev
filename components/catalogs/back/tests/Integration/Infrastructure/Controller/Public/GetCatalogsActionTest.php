@@ -40,17 +40,17 @@ class GetCatalogsActionTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $userId
+            $userId,
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             'ed30425c-d9cf-468b-8bc7-fa346f41dd07',
             'Store FR',
-            $userId
+            $userId,
         ));
         $this->commandBus->execute(new CreateCatalogCommand(
             '27c53e59-ee6a-4215-a8f1-2fccbb67ba0d',
             'Store UK',
-            $userId
+            $userId,
         ));
 
         $this->client->request(
@@ -107,7 +107,7 @@ class GetCatalogsActionTest extends IntegrationTestCase
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $userId
+            $userId,
         ));
 
         $this->client->request(

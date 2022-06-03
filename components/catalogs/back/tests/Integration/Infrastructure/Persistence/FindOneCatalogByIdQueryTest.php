@@ -33,14 +33,10 @@ class FindOneCatalogByIdQueryTest extends IntegrationTestCase
     {
         $owner = $this->createUser('test');
         $id = 'db1079b6-f397-4a6a-bae4-8658e64ad47c';
-        $this->commandBus->execute(new CreateCatalogCommand(
-            $id,
-            'Store US',
-            $owner->getId(),
-        ));
+        $this->commandBus->execute(new CreateCatalogCommand($id, 'Store US', $owner->getId()));
 
         $result = $this->query->execute($id);
-        $expected = new Catalog($id, 'Store US', $owner->getId());
+        $expected = new Catalog($id, 'Store US', $owner->getId(), false);
 
         $this->assertEquals($expected, $result);
     }

@@ -88,7 +88,7 @@ endif
 	# Scope Mapper unit tests
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Structure/Specification/Component/Security/
 	$(PHP_RUN) vendor/bin/phpspec run tests/back/Pim/Enrichment/Specification/Component/Security/
-	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Component/Security/
+	$(PHP_RUN) vendor/bin/phpspec run tests/back/Channel/Specification/Infrastructure/Component/Security/
 
 connectivity-connection-critical-e2e: var/tests/behat/connectivity/connection
 	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature

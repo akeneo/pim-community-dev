@@ -138,7 +138,6 @@ akeneo_connectivity.connection:
           not_listed_on_the_appstore: Aplikacja nie jest już dostępna w sklepie z aplikacjami Akeneo. Skontaktuj się z pomocą techniczną aplikacji.
           manage_app: Zarządzaj aplikacją
           open_app: Otwórz aplikację
-          pending: Aplikacja nie jest połączona. Otwarcie aplikacji powinno rozwiązać problem z połączeniem.
         flash:
           error: Przepraszamy, podczas pobierania listy połączonych aplikacji wystąpił błąd.
       edit:
@@ -259,7 +258,6 @@ akeneo_connectivity.connection:
           assets: zasoby
         new: NOWOŚĆ
       error:
-        sub_text: Skontaktuj się z twórcą aplikacji lub pomocą Akeneo
         app_not_found: Atrybut client_id nie odpowiada żadnej istniejącej aplikacji.
       constraint:
         client_id:

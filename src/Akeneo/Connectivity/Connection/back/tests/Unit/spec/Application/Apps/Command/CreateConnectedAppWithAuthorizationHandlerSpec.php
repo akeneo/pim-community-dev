@@ -13,19 +13,21 @@ use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateConnectionInte
 use Akeneo\Connectivity\Connection\Application\Apps\Service\CreateUserInterface;
 use Akeneo\Connectivity\Connection\Application\User\CreateUserGroupInterface;
 use Akeneo\Connectivity\Connection\Domain\Apps\DTO\AppAuthorization;
+use Akeneo\Connectivity\Connection\Domain\Apps\Event\AppUserGroupCreated;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequestException;
 use Akeneo\Connectivity\Connection\Domain\Apps\Model\ConnectedApp;
 use Akeneo\Connectivity\Connection\Domain\Apps\ValueObject\ScopeList;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\ConnectionWithCredentials;
-use Akeneo\Connectivity\Connection\Domain\Settings\Model\Read\User;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -46,6 +48,7 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
         AppRoleWithScopesFactoryInterface $appRoleWithScopesFactory,
         ClientProviderInterface $clientProvider,
         CreateConnectedAppInterface $createApp,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $this->beConstructedWith(
             $validator,
@@ -57,6 +60,7 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
             $appRoleWithScopesFactory,
             $clientProvider,
             $createApp,
+            $eventDispatcher,
         );
     }
 
@@ -204,7 +208,7 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->during('handle', [$command]);
     }
 
-    public function it_create_a_connection_when_everything_is_valid(
+    public function it_creates_a_connection_when_everything_is_valid(
         ValidatorInterface $validator,
         GetAppQueryInterface $getAppQuery,
         AppAuthorizationSessionInterface $appAuthorizationSession,
@@ -219,8 +223,9 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
         Client $client,
         GroupInterface $userGroup,
         RoleInterface $role,
-        User $user,
-        ConnectionWithCredentials $connection
+        ConnectionWithCredentials $connection,
+        FeatureFlag $permissionFeatureFlag,
+        EventDispatcherInterface $eventDispatcher,
     ): void {
         $command = new CreateConnectedAppWithAuthorizationCommand('an_app_id');
 
@@ -256,6 +261,9 @@ class CreateConnectedAppWithAuthorizationHandlerSpec extends ObjectBehavior
             ->execute($app, ['a_scope'], 'random_connection_code', 'a_group')
             ->willReturn($connectedApp)
             ->shouldBeCalled();
+
+        $permissionFeatureFlag->isEnabled()->willReturn(true);
+        $eventDispatcher->dispatch(new AppUserGroupCreated('a_group'), AppUserGroupCreated::class)->shouldBeCalled();
 
         $this->handle($command);
     }

@@ -6,7 +6,7 @@ module.exports = {
         },
     },
     moduleDirectories: [
-        '<rootDir>/../../../../node_modules/',
+        '<rootDir>/../../../node_modules/',
     ],
     setupFilesAfterEnv: [
         '<rootDir>/tests/setup.ts',
@@ -28,7 +28,7 @@ module.exports = {
         '\\.(svg|css)$': '<rootDir>/tests/test-file-stub.ts',
     },
     collectCoverageFrom: [
-      '<rootDir>/src/**/*.{ts,tsx}',
+      '<rootDir>/src/components/**/*.{ts,tsx}',
     ],
     coverageThreshold: {
         global: {

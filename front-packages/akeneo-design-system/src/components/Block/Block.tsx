@@ -76,6 +76,7 @@ const BlockTitle = styled.div`
   align-items: center;
   justify-content: space-between;
   min-height: 24px;
+  color: ${getColor('grey', 140)};
 `;
 
 const BlockContent = styled.div<
@@ -83,8 +84,7 @@ const BlockContent = styled.div<
 >`
   overflow-wrap: break-word;
   white-space: break-spaces;
-  color: ${getColor('grey', 140)};
-  margin-top: ${({$height, isCollapsable}) => (0 === $height && isCollapsable ? 0 : 5)}px;
+  margin-top: ${({$height, isCollapsable}) => (0 === $height && isCollapsable ? 0 : 10)}px;
   ${({isCollapsable, $height, $overflow, shouldAnimate}) =>
     isCollapsable &&
     css`
@@ -109,10 +109,8 @@ const Container = styled.div<AkeneoThemedProps>`
   font-family: inherit;
   font-size: ${getFontSize('default')};
   font-weight: 400;
-
   background-color: ${getColor('white')};
   border-color: ${getColor('grey', 80)};
-  color: ${getColor('grey', 140)};
 
   &:hover {
     background-color: ${getColor('grey', 20)};
@@ -171,7 +169,6 @@ const Block = React.forwardRef<HTMLButtonElement, BlockProps>(
       >
         <BlockTitle>
           {title}
-
           <ActionsContainer>
             {actions}
             {!isCollapsable ? null : (

@@ -140,7 +140,7 @@ akeneo_connectivity.connection:
                     not_listed_on_the_appstore: App no longer listed on the Akeneo App Store. Please contact the App support.
                     manage_app: Manage app
                     open_app: Open App
-                    pending: App not connected. Opening the App should fix the conection issue.
+                    pending: App not connected. Opening the App should fix the connection issues.
                 flash:
                     error: Sorry, an error occured while fetching the connected apps list.
             edit:
@@ -263,7 +263,7 @@ akeneo_connectivity.connection:
                     catalogs: catalogs
                 new: NEW
             error:
-                sub_text: Please contact the app developer or Akeneo support
+                sub_text: Please, contact the App support.
                 app_not_found: The client_id does not match any existing app.
             constraint:
                 client_id:
@@ -276,6 +276,8 @@ akeneo_connectivity.connection:
                 redirect_uri:
                     not_blank: The redirect_uri is required.
                     must_be_url: The redirect_uri is not a valid url.
+                scope:
+                    too_long: The scope list must not contain more than 1000 characters.
     connections: Connections
     secondary_actions:
         title: Other actions

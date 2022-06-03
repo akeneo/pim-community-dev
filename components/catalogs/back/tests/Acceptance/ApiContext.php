@@ -51,7 +51,7 @@ class ApiContext implements Context
         $commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
             'Store US',
-            $user->getId()
+            $user->getId(),
         ));
     }
 

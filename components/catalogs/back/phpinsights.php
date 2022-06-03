@@ -36,6 +36,8 @@ return [
         SlevomatCodingStandard\Sniffs\ControlStructures\DisallowYodaComparisonSniff::class,
         SlevomatCodingStandard\Sniffs\TypeHints\DisallowMixedTypeHintSniff::class,
         SlevomatCodingStandard\Sniffs\Functions\UnusedParameterSniff::class,
+        SlevomatCodingStandard\Sniffs\TypeHints\PropertyTypeHintSniff::class,
+        PHP_CodeSniffer\Standards\Generic\Sniffs\CodeAnalysis\EmptyStatementSniff::class,
 
         /**
          * Should we discuss?

@@ -39,6 +39,7 @@ $rules = [
             'Akeneo\Catalogs\Infrastructure',
 
             'Symfony\Component\Config',
+            'Symfony\Component\Console',
             'Symfony\Component\DependencyInjection',
             'Symfony\Component\EventDispatcher',
             'Symfony\Component\HttpFoundation',
@@ -52,6 +53,8 @@ $rules = [
             'Akeneo\Platform\Bundle\FrameworkBundle\Security\SecurityFacadeInterface',
             'Akeneo\Tool\Component\Api',
             'Akeneo\UserManagement\Component\Model\UserInterface',
+            'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
+            'Akeneo\Connectivity\Connection\ServiceApi',
 
             // @todo remove
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperInterface',

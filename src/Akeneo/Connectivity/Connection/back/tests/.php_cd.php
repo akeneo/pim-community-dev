@@ -120,6 +120,7 @@ $rules = [
             'Akeneo\Connectivity\Connection\Application',
 
             // Exceptions
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\Constraint',
             'Symfony\Component\Validator\ConstraintValidator',
@@ -140,6 +141,7 @@ $rules = [
             'Akeneo\UserManagement\Component\Model\RoleInterface',
             'Akeneo\UserManagement\Component\Repository\UserRepositoryInterface',
 
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl',
             'Akeneo\Platform\Component\EventQueue\BulkEventInterface',
             'Akeneo\Platform\Component\EventQueue\EventInterface',
@@ -185,7 +187,11 @@ $rules = [
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface',
             'Akeneo\Connectivity\Connection\Infrastructure\Apps\Security\ScopeMapperRegistry',
 
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+
             'Akeneo\UserManagement\Component\Model\RoleInterface',
+
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\Apps'),
 
