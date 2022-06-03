@@ -27,6 +27,7 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
         php8.0-zip \
         php8.0-xml \
         php8.0-gd \
+        php8.0-grpc \
         php8.0-curl \
         php8.0-mbstring \
         php8.0-bcmath \
