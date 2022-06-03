@@ -15,7 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class GetProductUuidsQuery implements QueryInterface
 {
     public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
         private string $catalogId,
+        #[Assert\Uuid]
         private ?string $searchAfter = null,
         #[Assert\Range(min: 1, max: 1000)]
         private int $limit = 100,
