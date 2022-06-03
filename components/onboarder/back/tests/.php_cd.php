@@ -37,6 +37,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Domain',
 
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
@@ -78,6 +79,8 @@ $rules = [
             'Psr\Log\LoggerInterface',
             'Ramsey\Uuid\Uuid',
             'Symfony',
+            'Twig\Environment',
+            'Swift_Mailer',
         ],
     )->in('Akeneo\OnboarderSerenity\Infrastructure'),
 
@@ -107,6 +110,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Application',
             'Akeneo\OnboarderSerenity\Infrastructure',
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
             'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             // External dependencies coupling
             'PHPUnit\Framework',
@@ -117,6 +121,8 @@ $rules = [
             'Symfony\Component\Validator\Context\ExecutionContextInterface',
             'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
             'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
+            'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Test\Unit'),
 
@@ -128,6 +134,7 @@ $rules = [
             'Akeneo\OnboarderSerenity\Infrastructure\Supplier',
             'Akeneo\OnboarderSerenity\Infrastructure\Authentication',
             // PIM coupling
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag',
             // External dependencies coupling
             'Behat',
             'PHPUnit\Framework',

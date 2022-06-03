@@ -1,9 +1,21 @@
 services:
+  #feature flag
+  akeneo.onboarder_serenity_contributor_authentication.feature:
+    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag
+    arguments:
+      - '%env(bool:FLAG_ONBOARDER_SERENITY_CONTRIBUTOR_AUTHENTICATION_ENABLED)%'
+    public: true
+
   #Command handlers
   Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler:
     arguments:
       - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
       - '@event_dispatcher'
+
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Infrastructure\Mailer\SendSwiftmailerEmail'
+      - '@Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail'
 
   #Repositories
   Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
@@ -15,5 +27,22 @@ services:
   Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
     arguments:
       - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\CreateContributorAccountHandler'
+      - '@akeneo.onboarder_serenity_contributor_authentication.feature'
     tags:
       - 'kernel.event_subscriber'
+
+  Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\SendWelcomeEmailOnContributorAccountCreated:
+    arguments:
+      - '@Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\SendWelcomeEmailHandler'
+    tags:
+      - 'kernel.event_subscriber'
+
+  # Controllers
+  Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword:
+    public: true
+
+  Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\BuildWelcomeEmail:
+    class: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\BuildTwigWelcomeEmail
+    arguments:
+      - '@router'
+      - '@twig'

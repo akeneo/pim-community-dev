@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Akeneo\OnboarderSerenity\Application\Supplier;
 
 use Akeneo\OnboarderSerenity\Domain\Supplier\Read\SupplierExists;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Exception\SupplierAlreadyExistsException;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Model\Supplier;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Repository;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Code;
+use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class CreateSupplierHandler
 {
     public function __construct(
         private Repository $supplierRepository,
         private SupplierExists $supplierExists,
+        private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger,
     ) {
     }
@@ -46,6 +50,13 @@ final class CreateSupplierHandler
                 $createSupplier->contributorEmails,
             ),
         );
+
+        foreach ($createSupplier->contributorEmails as $contributorEmail) {
+            $this->eventDispatcher->dispatch(new ContributorAdded(
+                Identifier::fromString($createSupplier->identifier),
+                $contributorEmail,
+            ));
+        }
 
         $this->logger->debug(
             sprintf('Supplier "%s" created.', $createSupplier->code),

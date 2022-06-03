@@ -1,0 +1,6 @@
+onboarder_serenity_contributor_set_up_password:
+    path: /set-up-password/{token}
+    defaults:
+        _controller: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Controller\SetUpPassword
+        _feature: onboarder_serenity_contributor_authentication
+    methods: [GET]

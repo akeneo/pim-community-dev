@@ -29,11 +29,6 @@ final class Supplier
         $this->code = Code::fromString($code);
         $this->label = Label::fromString($label);
         $this->contributors = Contributors::fromEmails($contributorEmails);
-
-        $this->events = array_merge($this->events, array_map(fn (string $contributorEmail) => new ContributorAdded(
-            Identifier::fromString($this->identifier()),
-            $contributorEmail,
-        ), $contributorEmails));
     }
 
     public static function create(string $identifier, string $code, string $label, array $contributorEmails): self
@@ -46,26 +41,37 @@ final class Supplier
         );
     }
 
-    public function update(string $label, array $contributorEmails): self
+    public function update(string $label, array $contributorEmails): void
     {
-        $supplier = new self(
-            (string) $this->identifier,
-            (string) $this->code,
-            $label,
-            $contributorEmails,
+        $this->label = Label::fromString($label);
+
+        $deletedContributorEmails = $this->contributors->computeDeletedContributorEmails($contributorEmails);
+
+        $this->events = array_merge(
+            $this->events,
+            array_map(
+                fn (string $deletedContributorEmail) => new ContributorDeleted(
+                    Identifier::fromString($this->identifier()),
+                    $deletedContributorEmail,
+                ),
+                $deletedContributorEmails,
+            ),
         );
 
-        $this->events = array_merge($this->events, array_map(fn (string $deletedContributorEmail) => new ContributorDeleted(
-            Identifier::fromString($this->identifier()),
-            $deletedContributorEmail,
-        ), $this->contributors->computeDeletedContributorEmails($contributorEmails)));
+        $newContributorEmails = $this->contributors->computeCreatedContributorEmails($contributorEmails);
 
-        $this->events = array_merge($this->events, array_map(fn (string $createdContributorEmail) => new ContributorAdded(
-            Identifier::fromString($this->identifier()),
-            $createdContributorEmail,
-        ), $this->contributors->computeCreatedContributorEmails($contributorEmails)));
+        $this->events = array_merge(
+            $this->events,
+            array_map(
+                fn (string $createdContributorEmail) => new ContributorAdded(
+                    Identifier::fromString($this->identifier()),
+                    $createdContributorEmail,
+                ),
+                $newContributorEmails,
+            ),
+        );
 
-        return $supplier;
+        $this->contributors = Contributors::fromEmails($contributorEmails);
     }
 
     public function identifier(): string

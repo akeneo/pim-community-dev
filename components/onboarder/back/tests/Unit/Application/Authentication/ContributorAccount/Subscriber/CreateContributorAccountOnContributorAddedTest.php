@@ -7,6 +7,7 @@ use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Creat
 use Akeneo\OnboarderSerenity\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\OnboarderSerenity\Domain\Supplier\Write\ValueObject\Identifier;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use PHPUnit\Framework\TestCase;
 
 class CreateContributorAccountOnContributorAddedTest extends TestCase
@@ -34,7 +35,15 @@ class CreateContributorAccountOnContributorAddedTest extends TestCase
             ->method('__invoke')
             ->with(new CreateContributorAccount('contrib1@example.com'));
 
-        $sut = new CreateContributorAccountOnContributorAdded($createContributorAccountHandlerSpy);
+        $sut = new CreateContributorAccountOnContributorAdded(
+            $createContributorAccountHandlerSpy,
+            new class implements FeatureFlag {
+                public function isEnabled(): bool
+                {
+                    return true;
+                }
+            },
+        );
 
         $sut->contributorAdded($contributorAddedEvent);
     }
