@@ -14,8 +14,7 @@ final class Version_7_0_20220518134914_set_not_null_fields_for_job_and_step_exec
         $this->addSql("ALTER TABLE akeneo_batch_job_execution MODIFY COLUMN is_stoppable TINYINT(1) DEFAULT 0 NOT NULL");
         $this->addSql("ALTER TABLE akeneo_batch_job_execution MODIFY COLUMN step_count INT DEFAULT 1 NOT NULL");
         $this->addSql("ALTER TABLE akeneo_batch_job_execution MODIFY COLUMN is_visible TINYINT(1) DEFAULT 1 NOT NULL");
-
-        $this->addSql("ALTER TABLE akeneo_batch_step_execution SET is_trackable TINYINT(1) DEFAULT 0 NOT NULL");
+        $this->addSql("ALTER TABLE akeneo_batch_step_execution MODIFIY COLUMN is_trackable TINYINT(1) DEFAULT 0 NOT NULL");
     }
 
     public function down(Schema $schema): void
