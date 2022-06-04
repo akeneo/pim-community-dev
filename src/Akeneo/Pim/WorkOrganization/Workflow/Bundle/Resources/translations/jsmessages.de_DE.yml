@@ -149,7 +149,7 @@ pimee_enrich.entity.product:
       published: Veröffentlicht
       revert: Wiederherstellen
     attribute:
-      can_be_updated_by_rules: "]-Inf, 1]Dieses Attribut kann durch <span>eine Regel</span>|]1, +Inf[Dieses Attribut kann durch <span>{{ count }} Regeln</span> aktualisiert werden"
+      can_be_updated_by_rules: "]-Inf, 1]Dieses Attribut kann durch <span>eine Regel</span> aktualisiert werden|]1, +Inf[Dieses Attribut kann durch <span>{{ count }} Regeln</span> aktualisiert werden"
       can_be_updated_by_rules_readonly: "]-Inf, 1]Dieses Attribut kann durch eine Regel aktualisiert werden|]1, +Inf[Dieses Attribut kann durch {{ count }} Regeln aktualisiert werden"
       value_updated: Dieser Wert wird durch den aktuellen Entwurf aktualisiert.
     meta:
