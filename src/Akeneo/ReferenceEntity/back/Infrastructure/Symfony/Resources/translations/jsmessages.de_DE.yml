@@ -57,7 +57,7 @@ pim_reference_entity:
         confirm: Sind Sie sicher, dass Sie diese Entität löschen möchten?
     index:
       grid:
-        count: '{0} Keine Refrenzentität|{1} {{ count }} Refrenzentität|]1,Inf] {{ count }} Refrenzentitäten'
+        count: '{0} Keine Referenzentität|{1} {{ count }} Referenzentität|]1,Inf] {{ count }} Referenzentitäten'
         help:
           title: 'Willkommen bei den Referenz Entitäten!'
           description_part_one: Anreicherung relevanter Informationen zu Produkten (z.B. Marken, Hersteller, Farben, Materialien, Inhaltsstoffe....).
