@@ -9,7 +9,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
 
-class StaticConnectionFactory extends ConnectionFactory
+class ConnectionDecoratorFactory extends ConnectionFactory
 {
     private ConnectionFactory $decorated;
 
@@ -31,19 +31,26 @@ class StaticConnectionFactory extends ConnectionFactory
     ): Connection {
         $originalConnection = $this->decorated->createConnection($params, $config, $eventManager, $mappingTypes);
 
+        if (!StaticDoctrineRegistry::isExperimentalTestDatabaseEnabled()) {
+            return $originalConnection;
+        }
+
         $class = get_class($originalConnection);
 
         /** @var Connection $connection */
         $connection = new $class(
             $originalConnection->getParams(),
-            new StaticDriver($originalConnection->getDriver()),
+            new DriverDecorator($originalConnection->getDriver()),
             $originalConnection->getConfiguration(),
             $originalConnection->getEventManager(),
         );
 
-        if (StaticRegistry::isEnabled()) {
-            $connection->beginTransaction();
+        // Make sure we use savepoints to be able to easily roll-back nested transactions
+        if ($connection->getDriver()->getDatabasePlatform()->supportsSavepoints()) {
+            $connection->setNestTransactionsWithSavepoints(true);
         }
+
+        $connection->beginTransaction();
 
         return $connection;
     }

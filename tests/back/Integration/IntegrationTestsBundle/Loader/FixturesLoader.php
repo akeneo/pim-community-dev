@@ -14,7 +14,8 @@ use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
-use Akeneo\Test\PHPUnitDoctrineTransactionBundle\Doctrine\StaticRegistry;
+use Akeneo\Test\PHPUnitDoctrineTransactionBundle\Doctrine\StaticDoctrineRegistry;
+use Akeneo\Test\PHPUnitDoctrineTransactionBundle\PHPUnit\DoctrineTransactionExtension;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
@@ -129,8 +130,6 @@ class FixturesLoader implements FixturesLoaderInterface
 
     public function load(Configuration $configuration): void
     {
-        $experimentalTestDatabaseIsEnabled = (bool) getenv('EXPERIMENTAL_TEST_DATABASE');
-
         $this->deleteAllDocumentsInElasticsearch();
         $this->resetFilesystem();
 
@@ -138,7 +137,7 @@ class FixturesLoader implements FixturesLoaderInterface
         $fixturesHash = $this->getHashForFiles($files);
         $dumpFile = $this->sqlDumpDirectory . $fixturesHash . '.sql';
         if (file_exists($dumpFile)) {
-            if ($experimentalTestDatabaseIsEnabled) {
+            if (StaticDoctrineRegistry::isExperimentalTestDatabaseEnabled()) {
                 $this->restoreExperimentalTestDatabase($dumpFile);
             } else {
                 $this->databaseSchemaHandler->reset();
@@ -409,7 +408,7 @@ class FixturesLoader implements FixturesLoaderInterface
             // We assume it will happen only once, so we truncate all tables and insert again.
             if ('23000' === $e->getPrevious()?->getCode()) {
                 $this->databaseSchemaHandler->reset();
-                StaticRegistry::reset();
+                StaticDoctrineRegistry::reset();
                 $this->restoreDatabase($filepath);
             } else {
                 throw $e;

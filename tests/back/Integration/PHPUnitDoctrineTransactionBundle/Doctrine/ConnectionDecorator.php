@@ -7,7 +7,7 @@ namespace Akeneo\Test\PHPUnitDoctrineTransactionBundle\Doctrine;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\ParameterType;
 
-class StaticConnection implements Driver\Connection
+class ConnectionDecorator implements Driver\Connection
 {
     private Driver\Connection $decorated;
 
@@ -53,8 +53,11 @@ class StaticConnection implements Driver\Connection
         try {
             return $this->decorated->beginTransaction();
         } catch (\PDOException $e) {
-            // we can ignore errors due to deep nested transactions
-            return true;
+            if ($e->getMessage() === 'There is already an active transaction') {
+                return true;
+            }
+
+            throw $e;
         }
     }
 
@@ -68,8 +71,15 @@ class StaticConnection implements Driver\Connection
         try {
             return $this->decorated->rollBack();
         } catch (\PDOException $e) {
-            // we can ignore errors due to deep nested transactions
-            return true;
+            // It happens that the opened transaction was automatically commited by mysql
+            // For example, "TRUNCATE TABLE x" will commit the transaction.
+            // see https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
+            // When it happens, it's normal we can't rollback anymore so we can ignore the error.
+            if ($e->getMessage() === 'There is no active transaction') {
+                return true;
+            }
+
+            throw $e;
         }
     }
 

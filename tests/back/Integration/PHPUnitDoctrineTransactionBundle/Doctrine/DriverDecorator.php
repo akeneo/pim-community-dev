@@ -10,7 +10,7 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\VersionAwarePlatformDriver;
 
-class StaticDriver implements Driver, VersionAwarePlatformDriver
+class DriverDecorator implements Driver, VersionAwarePlatformDriver
 {
     private Driver $decorated;
 
@@ -27,7 +27,7 @@ class StaticDriver implements Driver, VersionAwarePlatformDriver
     ): Driver\Connection {
         $connection = $this->decorated->connect($params, $username, $password, $driverOptions);
 
-        return StaticRegistry::registerConnection($connection, $params);
+        return StaticDoctrineRegistry::registerConnection($connection, $params);
     }
 
     public function getDatabasePlatform(): AbstractPlatform
