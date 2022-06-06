@@ -4,14 +4,41 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
+use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
+use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
+use Akeneo\Pim\Enrichment\Component\Error\Normalizer\ConstraintViolationNormalizer;
 use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
+use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
+use Akeneo\Platform\Bundle\NotificationBundle\Email\MailNotifier;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoRepository;
+use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
+use Akeneo\Tool\Component\FileStorage\File\FileStorer;
+use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
+use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use AkeneoTest\Pim\Enrichment\Integration\Fixture\EntityBuilder;
+use Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -56,6 +83,74 @@ abstract class TestCase extends KernelTestCase
         /** @var FilePersistedFeatureFlags $featureFlags*/
         $featureFlags = $this->get('feature_flags');
         $featureFlags->deleteFile();
+
+        self::getContainer()->set('pim_catalog.builder.product', new class() implements ProductBuilderInterface {
+            public function createProduct($identifier = null, $familyCode = null) {
+                throw new \Exception();
+            }
+            public function addOrReplaceValue(
+                EntityWithValuesInterface $entityWithValues,
+                AttributeInterface $attribute,
+                ?string $localeCode,
+                ?string $scopeCode,
+                $data
+            ): ValueInterface {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.saver.product', new class() implements SaverInterface, BulkSaverInterface {
+            public function save($object, array $options = []) {
+                throw new \Exception();
+            }
+            public function saveAll(array $objects, array $options = []) {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.updater.product', new class() implements ObjectUpdaterInterface {
+            public function update($object, array $data, array $options = []) {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.factory.product_model', new class() implements SimpleFactoryInterface {
+            public function create() {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.updater.product_model',new class() implements ObjectUpdaterInterface {
+            public function update($object, array $data, array $options = []) {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.saver.product_model', new class() implements SaverInterface, BulkSaverInterface {
+            public function save($object, array $options = []) {
+                throw new \Exception();
+            }
+            public function saveAll(array $objects, array $options = []) {
+                throw new \Exception();
+            }
+        });
+        self::getContainer()->set('pim_catalog.validator.product', $this->createMock(ValidatorInterface::class));
+        self::getContainer()->set('pim_catalog.factory.category', $this->createMock(SimpleFactoryInterface::class));
+        self::getContainer()->set('pim_catalog.updater.category', $this->createMock(SimpleFactoryInterface::class));
+        self::getContainer()->set('pim_catalog.saver.category', $this->createMock(CategorySaver::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product', $this->createMock(ProductIndexer::class));
+        self::getContainer()->set('pim_catalog.elasticsearch.indexer.product_model', $this->createMock(ProductModelIndexer::class));
+        self::getContainer()->set('akeneo_measure.installer.measurement_installer', $this->createMock(MeasurementInstaller::class));
+        self::getContainer()->set('akeneo_integration_tests.launcher.job_launcher', $this->createMock(JobLauncher::class));
+        self::getContainer()->set('pim_catalog.repository.locale', $this->createMock(LocaleRepository::class));
+        self::getContainer()->set('pim_catalog.repository.channel', $this->createMock(ChannelRepository::class));
+        self::getContainer()->set('pim_internal_api_serializer', self::getContainer()->get('serializer'));
+        self::getContainer()->set('pim_enrich.normalizer.violation', $this->createMock(ConstraintViolationNormalizer::class));
+        self::getContainer()->set('pim_catalog.localization.factory.number', $this->createMock(NumberFactory::class));
+        self::getContainer()->set('pim_enrich.normalizer.file', $this->createMock(FileNormalizer::class));
+        self::getContainer()->set('pim_notification.email.email_notifier', $this->createMock(MailNotifier::class));
+        self::getContainer()->set('pim_enrich.repository.job_execution', $this->createMock(JobExecutionRepository::class));
+        self::getContainer()->set('pim_datagrid.repository.datagrid_view', $this->createMock(DatagridViewRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_locale', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_attribute', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_category', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.validator.unique_value_set', $this->createMock(UniqueValuesSet::class));
+
     }
 
     /**

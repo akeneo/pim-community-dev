@@ -1,5 +1,27 @@
 parameters:
     akeneo_file_storage.form.type.file_info.class: Akeneo\Tool\Bundle\FileStorageBundle\Form\Type\FileInfoType
+    pim_catalog.localization.localizer.number.class: Akeneo\Tool\Component\Localization\Localizer\NumberLocalizer
+    pim_catalog.localization.localizer.date.class: Akeneo\Tool\Component\Localization\Localizer\DateLocalizer
+    pim_catalog.localization.constraint.number_format.class:           Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormat
+    pim_catalog.localization.validator.constraint.number_format.class: Akeneo\Tool\Component\Localization\Validator\Constraints\NumberFormatValidator
+    pim_catalog.localization.constraint.date_format.class:             Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormat
+    pim_catalog.localization.validator.constraint.date_format.class:   Akeneo\Tool\Component\Localization\Validator\Constraints\DateFormatValidator
+
+    pim_catalog.localization.factory.date.class:     Akeneo\Tool\Component\Localization\Factory\DateFactory
+    pim_catalog.localization.factory.datetime.class: Akeneo\Tool\Component\Localization\Factory\DateTimeFactory
+    pim_catalog.localization.factory.number.class:   Akeneo\Tool\Component\Localization\Factory\NumberFactory
+
+    pim_catalog.localization.factory.date.formats:
+        en_US: 'MM/dd/yyyy'
+        fr_FR: 'dd/MM/yyyy'
+        it_IT: 'dd/MM/yyyy'
+    pim_catalog.localization.factory.datetime.formats:
+        en_US: 'MM/dd/yyyy hh:mm a'
+        fr_FR: 'dd/MM/yyyy HH:mm'
+        it_IT: 'dd/MM/yyyy HH:mm'
+    pim_catalog.localization.factory.currency.formats:
+        en_US: '¤#,##0.00'
+        fr_FR: '#,##0.00 ¤'
 
 services:
     akeneo_file_storage.form.type.file_info:
@@ -8,3 +30,55 @@ services:
             - '%akeneo_file_storage.model.file_info.class%'
         tags:
             - { name: form.type, alias: akeneo_file_storage_file_info }
+
+    pim_catalog.localization.localizer.number:
+        class: '%pim_catalog.localization.localizer.number.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.number'
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_catalog.localization.localizer }
+
+    pim_catalog.localization.validator.constraint.number_format:
+        class: '%pim_catalog.localization.validator.constraint.number_format.class%'
+        arguments:
+            - '%pim_catalog.localization.decimal_separators%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_localization_number_format }
+
+    pim_catalog.localization.validator.constraint.date_format:
+        class: '%pim_catalog.localization.validator.constraint.date_format.class%'
+        arguments:
+            - '@pim_catalog.localization.factory.date'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_localization_date_format }
+
+    pim_catalog.localization.localizer.date:
+        class: '%pim_catalog.localization.localizer.date.class%'
+        arguments:
+            - '@validator'
+            - '@pim_catalog.localization.factory.date'
+            - ['pim_catalog_date']
+        tags:
+            - { name: pim_catalog.localization.localizer }
+
+    pim_catalog.localization.factory.currency:
+        class: '%pim_catalog.localization.factory.number.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.currency.formats%'
+
+    pim_catalog.localization.factory.number:
+        class: '%pim_catalog.localization.factory.number.class%'
+        arguments:
+            - []
+
+    pim_catalog.localization.factory.date:
+        class: '%pim_catalog.localization.factory.date.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.date.formats%'
+
+    pim_catalog.localization.factory.datetime:
+        class: '%pim_catalog.localization.factory.datetime.class%'
+        arguments:
+            - '%pim_catalog.localization.factory.datetime.formats%'

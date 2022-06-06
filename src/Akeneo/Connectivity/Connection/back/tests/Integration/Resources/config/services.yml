@@ -11,3 +11,57 @@ services:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag
     akeneo_connectivity.connection.app_developer_mode.feature:
         class: Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag
+    pim_catalog.builder.product:
+        synthetic: true
+    pim_catalog.updater.product:
+        synthetic: true
+    pim_catalog.saver.product:
+        synthetic: true
+    pim_catalog.factory.product_model:
+        synthetic: true
+    pim_catalog.saver.product_model:
+        synthetic: true
+    pim_catalog.updater.product_model:
+        synthetic: true
+    pim_catalog.validator.product:
+        synthetic: true
+    pim_catalog.factory.category:
+        synthetic: true
+    pim_catalog.updater.category:
+        synthetic: true
+    pim_catalog.saver.category:
+        synthetic: true
+    pim_catalog.elasticsearch.indexer.product:
+        synthetic: true
+    pim_catalog.elasticsearch.indexer.product_model:
+        synthetic: true
+    akeneo_measure.installer.measurement_installer:
+        synthetic: true
+    akeneo_integration_tests.launcher.job_launcher:
+        synthetic: true
+    pim_catalog.repository.locale:
+        synthetic: true
+    pim_catalog.repository.channel:
+        synthetic: true
+    pim_internal_api_serializer:
+        synthetic: true
+    pim_enrich.normalizer.violation:
+        synthetic: true
+    pim_catalog.localization.factory.number:
+        synthetic: true
+    pim_enrich.normalizer.file:
+        synthetic: true
+    pim_notification.email.email_notifier:
+        synthetic: true
+    pim_enrich.repository.job_execution:
+        synthetic: true
+    pim_datagrid.repository.datagrid_view:
+        synthetic: true
+    pim_catalog.repository.cached_locale:
+        synthetic: true
+    pim_catalog.repository.cached_attribute:
+        synthetic: true
+    pim_catalog.repository.cached_category:
+        synthetic: true
+    pim_catalog.validator.unique_value_set:
+        synthetic: true

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment;
 
 use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -42,7 +41,7 @@ class ProductLoader
         $this->messageBus = $messageBus;
     }
 
-    public function create($identifier, array $data): ProductInterface
+    public function create($identifier, array $data)
     {
         $family = isset($data['family']) ? $data['family'] : null;
 
@@ -54,7 +53,7 @@ class ProductLoader
         return $product;
     }
 
-    public function update(ProductInterface $product, array $data): void
+    public function update($product, array $data): void
     {
         $this->updater->update($product, $data);
 

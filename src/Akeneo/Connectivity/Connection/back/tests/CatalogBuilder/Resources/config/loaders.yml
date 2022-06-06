@@ -35,13 +35,20 @@ services:
             - '@pim_catalog.saver.family'
             - '@validator'
 
+    # TODO easy decoupling
+    akeneo_connectivity.connection.factory.family_variant:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.family_variant.class%'
+
     akeneo_connectivity.connection.fixtures.structure.family_variant:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Structure\FamilyVariantLoader'
         arguments:
-            - '@pim_catalog.factory.family_variant'
+            - '@akeneo_connectivity.connection.factory.family_variant'
             - '@pim_catalog.updater.family_variant'
             - '@validator'
             - '@pim_catalog.saver.family_variant'
+
 
     akeneo_connectivity.connection.fixtures.enrichment.product:
         class: 'Akeneo\Connectivity\Connection\Tests\CatalogBuilder\Enrichment\ProductLoader'
