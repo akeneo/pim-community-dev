@@ -26,7 +26,7 @@ class DatabaseRepository implements ContributorAccountRepository
                 access_token_created_at,
                 created_at
             )
-            VALUES (:id, :email, :access_token, :access_token_created_at, :created_at)
+            VALUES (:id, :email, :password, :access_token, :access_token_created_at, :created_at)
         SQL;
 
         $this->connection->executeStatement(
@@ -34,6 +34,7 @@ class DatabaseRepository implements ContributorAccountRepository
             [
                 'id' => $contributorAccount->identifier(),
                 'email' => $contributorAccount->email(),
+                'password' => $contributorAccount->password(),
                 'access_token' => $contributorAccount->accessToken(),
                 'access_token_created_at' => $contributorAccount->accessTokenCreatedAt(),
                 'created_at' => $contributorAccount->createdAt(),
