@@ -12,10 +12,10 @@ class ContributorAccount
     private function __construct(
         private Identifier $identifier,
         private Email $email,
+        private \DateTimeInterface $createdAt,
         private ?Password $password,
         private ?AccessToken $accessToken,
         private ?\DateTimeInterface $accessTokenCreatedAt,
-        private \DateTimeInterface $createdAt,
         private ?\DateTimeInterface $lastLoggedAt,
     ) {
     }
@@ -25,11 +25,31 @@ class ContributorAccount
         return new self(
             Identifier::generate(),
             Email::fromString($email),
+            new \DateTimeImmutable(),
             null,
             AccessToken::generate(),
             new \DateTimeImmutable(),
-            new \DateTimeImmutable(),
             null,
+        );
+    }
+
+    public static function hydrate(
+        string $identifier,
+        string $email,
+        string $createdAt,
+        ?string $password,
+        ?string $accessToken,
+        ?string $accessTokenCreatedAt,
+        ?string $lastLoggedAt,
+    ): self {
+        return new self(
+            Identifier::fromString($identifier),
+            Email::fromString($email),
+            new \DateTimeImmutable($createdAt),
+            null !== $password ? Password::fromString($password) : null,
+            null !== $accessToken ? AccessToken::fromString($accessToken) : null,
+            null !== $accessTokenCreatedAt ? new \DateTimeImmutable($accessTokenCreatedAt) : null,
+            null !== $lastLoggedAt ? new \DateTimeImmutable($lastLoggedAt) : null,
         );
     }
 
