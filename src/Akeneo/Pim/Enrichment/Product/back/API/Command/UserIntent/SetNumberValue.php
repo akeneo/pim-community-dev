@@ -18,7 +18,6 @@ final class SetNumberValue implements ValueUserIntent
         private ?string $localeCode,
         private string $value
     ) {
-        Assert::numeric($value);
     }
 
     public function attributeCode(): string

@@ -56,10 +56,4 @@ class SetNumberValueSpec extends ObjectBehavior
         $this->beConstructedWith('name_string_float', 'ecommerce', 'en_US', '33.33');
         $this->value()->shouldReturn('33.33');
     }
-
-    function it_throws_exception_when_value_is_not_numeric()
-    {
-        $this->beConstructedWith('name', 'ecommerce', 'en_US', 'value');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
 }
