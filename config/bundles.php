@@ -98,6 +98,7 @@ return [
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
     Akeneo\OnboarderSerenity\Retailer\Infrastructure\Symfony\AkeneoOnboarderSerenityRetailerBundle::class => ['all' => true],
+    Akeneo\OnboarderSerenity\Supplier\Infrastructure\Symfony\AkeneoOnboarderSerenitySupplierBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['all' => true],
     Akeneo\Platform\JobAutomation\Infrastructure\Symfony\AkeneoJobAutomationBundle::class => ['all' => true],
 

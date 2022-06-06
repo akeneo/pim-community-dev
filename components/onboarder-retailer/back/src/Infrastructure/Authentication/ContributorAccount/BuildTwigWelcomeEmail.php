@@ -20,7 +20,7 @@ class BuildTwigWelcomeEmail implements BuildWelcomeEmail
     public function __invoke(string $accessToken, string $email): EmailContent
     {
         $setUpPasswordUrl = $this->urlGenerator->generate(
-            'onboarder_serenity_contributor_set_up_password',
+            'onboarder_serenity_supplier_contributor_set_up_password',
             ['token' => $accessToken],
             UrlGeneratorInterface::ABSOLUTE_URL,
         );

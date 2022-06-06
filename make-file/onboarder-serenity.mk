@@ -2,7 +2,7 @@ DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
 .PHONY: lint-back-retailer
-lint-back-retailer:
+lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Onboarder Serenity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder-retailer/back/tests/phpstan.neon
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=components/onboarder-retailer/back/tests/.php_cs.php components/onboarder-retailer/back
 
@@ -10,26 +10,26 @@ lint-back-retailer:
 lint-back: lint-back-retailer #Doc: Run PHPStan and PHPCSFixer for Onboarder Serenity
 
 .PHONY: fix-phpcs-retailer
-fix-phpcs-retailer:
+fix-phpcs-retailer: #Doc: Run PHP-CS-Fixer for the retailer part of Onboarder Serenity
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder-retailer/back/tests/.php_cs.php components/onboarder-retailer/back
 
 .PHONY: fix-phpcs
 fix-phpcs: fix-phpcs-retailer #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 
 .PHONY: lint-front-retailer
-lint-front-retailer:
+lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:check
 
 lint-front: lint-front-retailer #Doc: Run Prettier and Eslint for Onboarder Serenity
 
 .PHONY: fix-frontcs-retailer
-fix-frontcs-retailer:
+fix-frontcs-retailer: #Doc: Run front fix code style for the retailer part of Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:fix
 
 fix-frontcs: fix-frontcs-retailer #Doc: Fix front CS for Onboarder Serenity
 
 .PHONY: coupling-retailer
-coupling-retailer:
+coupling-retailer: #Doc: Run coupling detector for the retailer part of Onboarder Serenity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=components/onboarder-retailer/back/tests/.php_cd.php components/onboarder-retailer/back
 
 .PHONY: coupling
@@ -37,7 +37,7 @@ coupling: coupling-retailer #Doc: Run coupling detector for Onboarder Serenity
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=upgrades/.php_cd.php upgrades/schema
 
 .PHONY: coupling-list-unused-requirements-retailer
-coupling-list-unused-requirements-retailer:
+coupling-list-unused-requirements-retailer: #Doc: List unused coupling detector requirements for the retailer part of Onboarder Serenity
 	$(PHP_RUN) vendor/bin/php-coupling-detector list-unused-requirements --config-file=components/onboarder-retailer/back/tests/.php_cd.php components/onboarder-retailer/back
 
 .PHONY: coupling-list-unused-requirements
