@@ -1,5 +1,5 @@
 parameters:
-    akeneo_catalog.max_limit_per_user: 15
+    akeneo_catalog.max_limit: 15
 
 services:
     _defaults:
@@ -48,6 +48,6 @@ services:
     Akeneo\Tool\Component\Api\Pagination\OffsetHalPaginator:
         alias: 'pim_api.pagination.offset_hal_paginator'
 
-    Akeneo\Catalogs\Infrastructure\Service\GetCatalogsNumberLimit:
+    Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery:
         arguments:
-            - '%akeneo_catalog.max_limit_per_user%'
+            $limit: '%akeneo_catalog.max_limit%'
