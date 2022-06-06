@@ -276,7 +276,7 @@ jobs:
     #    Deploy k8s environment with the release (IMAGE_TAG) define in previous jobs
     #    Adaptation of test_deploy for deployment with edition flags
     #    With EditionFlag we build only a srnt image so we have to migrate editions specific values that were  previously setup and persisted at the builds stage.
-    #    These values are set at the begining of the job at "Define value for cloud-customer files creation" step , with also active EditionFlags with yq
+    #    These values are set at the beginning of the job at "Define value for cloud-customer files creation" step , with also active EditionFlags with yq
     test_deploy_with_flags:
         parameters:
             PRODUCT_TYPE:
