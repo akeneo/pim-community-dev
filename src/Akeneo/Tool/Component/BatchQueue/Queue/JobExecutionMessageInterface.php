@@ -19,10 +19,7 @@ interface JobExecutionMessageInterface
         ?string $tenantId = null
     ): JobExecutionMessageInterface;
 
-    public static function createJobExecutionMessageFromNormalized(
-        array $normalized,
-        ?string $tenantId = null
-    ): JobExecutionMessageInterface;
+    public static function createJobExecutionMessageFromNormalized(array $normalized): JobExecutionMessageInterface;
 
     public function getId(): UuidInterface;
 

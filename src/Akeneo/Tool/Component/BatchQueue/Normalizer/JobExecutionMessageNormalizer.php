@@ -28,6 +28,9 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return $data instanceof JobExecutionMessageInterface;
     }
 
+    /**
+     * @param JobExecutionMessageInterface $jobExecutionMessage
+     */
     public function normalize($jobExecutionMessage, $format = null, array $context = []): array
     {
         Assert::implementsInterface($jobExecutionMessage, JobExecutionMessageInterface::class);
@@ -35,6 +38,7 @@ final class JobExecutionMessageNormalizer implements NormalizerInterface, Denorm
         return [
             'id' => $jobExecutionMessage->getId()->toString(),
             'job_execution_id' => $jobExecutionMessage->getJobExecutionId(),
+            'tenant_id' => $jobExecutionMessage->tenantId(),
             'created_time' => $jobExecutionMessage->getCreateTime()->format('c'),
             'updated_time' => null !== $jobExecutionMessage->getUpdatedTime() ?
                 $jobExecutionMessage->getUpdatedTime()->format('c')

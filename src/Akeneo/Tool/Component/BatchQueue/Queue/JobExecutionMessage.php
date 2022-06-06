@@ -39,7 +39,7 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
         return new static(Uuid::uuid4(), $jobExecutionId, $createTime, null, $options, $tenantId);
     }
 
-    public static function createJobExecutionMessageFromNormalized(array $normalized, ?string $tenantId = null): JobExecutionMessageInterface
+    public static function createJobExecutionMessageFromNormalized(array $normalized): JobExecutionMessageInterface
     {
         return new static(
             Uuid::fromString($normalized['id']),
@@ -49,7 +49,7 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
                 ? new \DateTime($normalized['updated_time'], new \DateTimeZone('UTC'))
                 : null,
             $normalized['options'] ?? [],
-            $tenantId,
+            $normalized['tenant_id'],
         );
     }
 

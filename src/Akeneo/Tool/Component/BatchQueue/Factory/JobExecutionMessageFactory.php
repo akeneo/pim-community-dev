@@ -63,7 +63,7 @@ class JobExecutionMessageFactory
             ? $this->getJobMessageClass($jobExecution->getJobInstance()->getType() ?? '')
             : $this->jobMessageTypeFallback;
 
-        return $class::createJobExecutionMessageFromNormalized($normalized, $this->tenantId);
+        return $class::createJobExecutionMessageFromNormalized($normalized);
     }
 
     private function getJobMessageClass(string $type): string
