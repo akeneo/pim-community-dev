@@ -22,7 +22,7 @@ Feature: Export products and product models
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And the names of the exported files of "csv_product_grid_context_quick_export" should be "product_models_export_grid_context_en_US_ecommerce.csv"
+    And the names of the exported files of "csv_product_grid_context_quick_export" should be "2_product_models_export_grid_context_en_US_ecommerce.csv"
 
   Scenario: Successfully export the grid columns for quick export product models
     When I display in the products grid the columns ID, Label, Model description
