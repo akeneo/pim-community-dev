@@ -31,9 +31,6 @@ class NumberValueUserIntentFactory implements ValueUserIntentFactory
         if (null === $data['data'] || '' === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
-        if (!\is_string($data['data']) || !is_numeric($data['data'])) {
-            throw InvalidPropertyTypeException::integerExpected($attributeCode, static::class, $data['data']);
-        }
 
         return new SetNumberValue($attributeCode, $data['scope'], $data['scope'], $data['data']);
     }

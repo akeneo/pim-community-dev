@@ -45,22 +45,4 @@ class NumberValueUserIntentFactorySpec extends ObjectBehavior
             'scope' => 'ecommerce',
         ])->shouldBeLike(new ClearValue('a_number', 'ecommerce', 'fr_FR'));
     }
-
-    function it_throws_an_exception_if_data_is_not_valid()
-    {
-        $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', [AttributeTypes::NUMBER, 'a_number', ['value']]);
-
-        $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', [AttributeTypes::NUMBER, 'a_number', ['data' => 'coucou', 'locale' => 'fr_FR']]);
-
-        $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', [AttributeTypes::NUMBER, 'a_number', ['data' => 'coucou', 'scope' => 'ecommerce']]);
-
-        $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', [AttributeTypes::NUMBER, 'a_number', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]);
-
-        $this->shouldThrow(InvalidPropertyTypeException::class)
-            ->during('create', [AttributeTypes::NUMBER, 'a_number', ['data' => 'je suis number', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]);
-    }
 }
