@@ -20,7 +20,7 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             type: integer
             id: true
             generator:
-                 strategy: AUTO
+                strategy: AUTO
         code:
             type: string
             length: 100
