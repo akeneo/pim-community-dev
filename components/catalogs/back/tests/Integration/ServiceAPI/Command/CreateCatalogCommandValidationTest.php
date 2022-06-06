@@ -23,17 +23,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->isCatalogsNumberLimitReachedQuery = new class() implements IsCatalogsNumberLimitReachedQueryInterface {
-            public bool $reached = false;
-            public function willReturn(bool $reached): void
-            {
-                $this->reached = $reached;
-            }
-            public function execute($ownerId): bool
-            {
-                return $this->reached;
-            }
-        };
+        $this->isCatalogsNumberLimitReachedQuery = $this->createMock(IsCatalogsNumberLimitReachedQueryInterface::class);
 
         self::getContainer()->set(
             MaxNumberOfCatalogsPerUserValidator::class,
@@ -94,7 +84,7 @@ class CreateCatalogCommandValidationTest extends IntegrationTestCase
 
     public function testItValidatesThatTheLimitOfCatalogsByUserIsNotReached(): void
     {
-        $this->isCatalogsNumberLimitReachedQuery->willReturn(true);
+        $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(true);
 
         $violations = self::getContainer()->get(ValidatorInterface::class)->validate(
             new CreateCatalogCommand(

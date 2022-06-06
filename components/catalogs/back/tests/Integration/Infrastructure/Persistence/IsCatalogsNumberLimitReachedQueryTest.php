@@ -28,7 +28,7 @@ class IsCatalogsNumberLimitReachedQueryTest extends IntegrationTestCase
 
         $this->query = self::getContainer()->get(IsCatalogsNumberLimitReachedQuery::class);
         $this->upsertQuery = self::getContainer()->get(UpsertCatalogQuery::class);
-        $this->catalogsNumberMaxLimit = self::getContainer()->getParameter('akeneo_catalog.max_limit');
+        $this->catalogsNumberMaxLimit = self::getContainer()->getParameter('akeneo_catalog.max_number_of_catalogs_per_user');
     }
 
     public function testItReturnsTrueWhenTheCatalogsNumberLimitIsReached(): void

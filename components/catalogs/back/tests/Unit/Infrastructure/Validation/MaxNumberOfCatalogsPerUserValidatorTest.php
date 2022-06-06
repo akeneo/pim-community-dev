@@ -20,17 +20,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
 
     protected function setUp(): void
     {
-        $this->isCatalogsNumberLimitReachedQuery = new class() implements IsCatalogsNumberLimitReachedQueryInterface {
-            public bool $reached = false;
-            public function willReturn(bool $reached): void
-            {
-                $this->reached = $reached;
-            }
-            public function execute($ownerId): bool
-            {
-                return $this->reached;
-            }
-        };
+        $this->isCatalogsNumberLimitReachedQuery = $this->createMock(IsCatalogsNumberLimitReachedQueryInterface::class);
 
         parent::setUp();
     }
@@ -42,7 +32,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
 
     public function testItValidates(): void
     {
-        $this->isCatalogsNumberLimitReachedQuery->willReturn(false);
+        $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(false);
 
         $classWithOwnerIdGetter = new class implements GetOwnerIdInterface {
             public function getOwnerId(): int
@@ -58,7 +48,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
 
     public function testItDoesNotValidate(): void
     {
-        $this->isCatalogsNumberLimitReachedQuery->willReturn(true);
+        $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(true);
 
         $classWithOwnerIdGetter = new class implements GetOwnerIdInterface {
             public function getOwnerId(): int
@@ -75,7 +65,7 @@ class MaxNumberOfCatalogsPerUserValidatorTest extends ConstraintValidatorTestCas
 
     public function testItThrowsAnExceptionIfValueNotImplementsGetOwnerIdInterface(): void
     {
-        $this->isCatalogsNumberLimitReachedQuery->willReturn(false);
+        $this->isCatalogsNumberLimitReachedQuery->method('execute')->willReturn(false);
 
         $classWithoutOwnerIdGetter = new class {
         };
