@@ -23,6 +23,13 @@ services:
     arguments:
       - '@database_connection'
 
+  # Queries
+  Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Read\GetContributorAccountByAccessToken:
+    public: true
+    class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication\ContributorAccount\Query\Sql\DatabaseGetContributorAccountByAccessToken
+    arguments:
+      - '@database_connection'
+
   #Event subscribers
   Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Subscriber\CreateContributorAccountOnContributorAdded:
     arguments:
