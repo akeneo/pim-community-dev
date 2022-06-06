@@ -124,7 +124,7 @@ class ProductDatasource extends Datasource
     private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
     {
         $defaultNormalizedItem = [
-            'id'               => $item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+            'id'               => $item instanceof ProductInterface && get_class($item) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
                 ? $item->getUuid()->toString()
                 : $item->getId(),
             'dataLocale'       => $this->getParameters()['dataLocale'],
