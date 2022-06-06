@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\OnboarderSerenity\Infrastructure\Install\InstallOnboarderSerenityTables;
+use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Install\InstallOnboarderSerenityTables;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 

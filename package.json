@@ -33,7 +33,7 @@
     "tailored-export:build": "yarn workspace @akeneo-pim-enterprise/tailored-export lib:build",
     "tailored-import:build": "yarn workspace @akeneo-pim-enterprise/tailored-import lib:build",
     "job-automation:build": "yarn workspace @akeneo-pim-enterprise/job-automation lib:build",
-    "onboarder:build": "yarn workspace @akeneo-pim-enterprise/onboarder lib:build",
+    "onboarder:build": "yarn workspace @akeneo-pim-enterprise/onboarder-retailer lib:build",
     "generate-models": "yarn generate-asset-manager-models && yarn workspace @akeneo-pim-community/communication-channel generate-models",
     "packages:build": "yarn workspace pim-community-dev packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn workspace pim-community-dev packages:unit && yarn enterprise-packages:unit",
@@ -79,7 +79,7 @@
   "workspaces": [
     "components/tailored-export/front",
     "components/tailored-import/front",
-    "components/onboarder/front",
+    "components/onboarder-retailer/front",
     "components/job-automation/front",
     "grth/src/Akeneo/Pim/TableAttribute/front",
     "src/Akeneo/Pim/Automation/DataQualityInsights/front",

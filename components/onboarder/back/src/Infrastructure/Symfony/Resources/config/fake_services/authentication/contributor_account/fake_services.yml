@@ -1,8 +1,0 @@
-services:
-  #feature flag
-  akeneo.onboarder_serenity_contributor_authentication.feature:
-    class: Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\FakeFeatureFlag
-
-  # Repositories
-  Akeneo\OnboarderSerenity\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository:
-    class: Akeneo\OnboarderSerenity\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository

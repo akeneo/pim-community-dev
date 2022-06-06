@@ -1,0 +1,30 @@
+services:
+    # Repositories
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Repository\InMemory\InMemoryRepository
+
+    # Queries
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierList:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplierList
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierExists:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierExists
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplier:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetSupplier
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetAllSuppliersWithContributors:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemoryGetAllSuppliersWithContributors
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
+
+    Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier:
+        class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Query\InMemory\InMemorySupplierContributorsBelongingToAnotherSupplier
+        arguments:
+            - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'

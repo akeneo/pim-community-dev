@@ -1,0 +1,82 @@
+onboarder:
+    menu_block_title: Onboarder
+    supplier:
+        breadcrumb:
+            root: Onboarder
+            suppliers: Suppliers
+        supplier_create:
+            modal:
+                title: Supplier
+                code:
+                    label: Code
+                label:
+                    label: Label
+            create_button:
+                label: Create your first supplier
+            notification:
+                title: The supplier has been created.
+                content: You can now edit it in the supplier management section.
+            error:
+                unknown_error: An error occured while creating the supplier.
+                supplier_already_exists: 'A supplier with code "{{ supplierCode }}" already exists.'
+        supplier_list:
+            menu_item: Suppliers
+            title: "]-Inf, 1]{{ count }} supplier|]1, Inf[{{ count }} suppliers"
+            no_supplier: There are no suppliers yet.
+            search_by_supplier: Search by Supplier
+            no_search_result: There are no suppliers matching this search.
+            notification:
+                error:
+                    title: We are not able to display the supplier list.
+                    content: Sorry about this inconvenience, please try again in a few moments.
+            dropdown:
+                export_suppliers: Export suppliers
+                download_template: Download template
+                import_suppliers: Import suppliers
+            columns:
+                supplier: Supplier
+                number_of_contributors: Number of contributors
+                actions: Actions
+        supplier_delete:
+            sucess_message: The supplier was successfully deleted
+            modal:
+                title: Supplier
+                confirmation_question: Are you sure you want to delete this supplier?
+                warning: By deleting this supplier, any unsaved enrichment will be lost.
+                unknown_error: An error occured while deleting the supplier.
+        supplier_edit:
+            tabs:
+                configuration: Configuration
+                contributors: Contributors
+                product_files: Product files
+            configuration_form:
+                code: Code
+                label: Supplier label (required)
+            contributors_form:
+                info: 'Add contributors to give them access to Akeneo Onboarder. You can fill in an adress list with separators: space, comma, semicolon & line break.'
+                invalid_emails_warning: Some emails are invalid and won’t be added.
+                emails_belonging_to_other_suppliers_warning: A contributor can only belong to one supplier. When you save this supplier, all emails shown as warnings will be deleted.
+                add_contributors: Add contributors
+                add_button: Add
+                search_by_email_address: Search by email address
+                columns:
+                    email: Email address
+                no_contributor: There are no contributors yet.
+                result_counter: '{0} No result|{1} {{ count }} result|]1,Inf] {{ count }} results'
+                notification:
+                    email_error:
+                        title: We were not able to add this contributor.
+                        content: "The email {{ emailAddress }} is invalid : {{ message }}"
+                    contributor_email_already_exists:
+                        title: We were not able to add this contributor.
+                        content: The email {{ emailAddress }} is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience.
+            loading_error: An error occured while loading the supplier.
+            success_message: The supplier was successfully updated.
+            update_error: An error occured while updating the supplier.
+            delete_label: Delete this supplier
+
+pim_title:
+    onboarder_serenity_retailer_supplier_list: Suppliers
+    onboarder_serenity_retailer_supplier_edit: Edit a supplier
+
+batch_jobs.onboarder_serenity_xlsx_supplier_import.label: Onboarder Serenity Supplier import in XLSX
