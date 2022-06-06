@@ -211,7 +211,7 @@ akeneo_batch_job_execution | job_instance_id | NO | int | MUL
 akeneo_batch_job_execution | pid | YES | int |
 akeneo_batch_job_execution | user | YES | varchar(255) | MUL
 akeneo_batch_job_execution | status | NO | int | MUL
-akeneo_batch_job_execution | start_time | YES | datetime |
+akeneo_batch_job_execution | start_time | YES | datetime | MUL
 akeneo_batch_job_execution | end_time | YES | datetime |
 akeneo_batch_job_execution | create_time | YES | datetime |
 akeneo_batch_job_execution | updated_time | YES | datetime |
@@ -981,6 +981,7 @@ INDEX | akeneo_batch_job_execution | IDX_62738477593D6954 | job_instance_id
 INDEX | akeneo_batch_job_execution | is_visible_idx | is_visible
 INDEX | akeneo_batch_job_execution | job_instance_id_user_status_is_visible_idx | job_instance_id, user, status, is_visible
 INDEX | akeneo_batch_job_execution | PRIMARY | id
+INDEX | akeneo_batch_job_execution | start_time_idx | start_time
 INDEX | akeneo_batch_job_execution | status_idx | status
 INDEX | akeneo_batch_job_execution | user_idx | user
 INDEX | akeneo_batch_job_instance | code_idx | code
