@@ -49,7 +49,7 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
                 ? new \DateTime($normalized['updated_time'], new \DateTimeZone('UTC'))
                 : null,
             $normalized['options'] ?? [],
-            $normalized['tenant_id'],
+            $normalized['tenant_id'] ?? null,
         );
     }
 
