@@ -15,7 +15,7 @@ final class FreeTrialVersion implements PimVersion
     const EDITION_NAME = 'Free Trial Edition';
 
     /** @staticvar string **/
-    private const EDITION_CODE = 'TRIAL_EDITION';
+    private const EDITION_CODE = 'pim_trial_instance';
 
     public function versionCodename(): string
     {
