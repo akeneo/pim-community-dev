@@ -17,6 +17,11 @@ class AccessToken
         );
     }
 
+    public static function fromString(string $accessToken): self
+    {
+        return new self($accessToken);
+    }
+
     public function __toString(): string
     {
         return $this->token;
