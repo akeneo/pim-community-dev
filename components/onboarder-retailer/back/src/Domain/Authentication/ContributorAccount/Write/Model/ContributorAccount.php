@@ -53,6 +53,13 @@ class ContributorAccount
         );
     }
 
+    public function setPassword(string $password): self
+    {
+        $this->password = Password::fromString($password);
+
+        return $this;
+    }
+
     public function identifier(): string
     {
         return (string) $this->identifier;
