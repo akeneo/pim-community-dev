@@ -9,7 +9,7 @@ Feature: Export products and product models
     And I am logged in as "Julia"
     And I am on the products grid
 
-  Scenario: Successfully export 2 files on quick export
+  Scenario: Successfully export 1 file on quick export
     When I display in the products grid the columns ID, Label, Model description
     And I search "amor"
     And I select row amor
@@ -22,7 +22,6 @@ Feature: Export products and product models
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And I should see "products_export_grid_context_en_US_ecommerce.csv" on the "Download generated files" dropdown button
     And I should see "product_models_export_grid_context_en_US_ecommerce.csv" on the "Download generated files" dropdown button
 
   Scenario: Successfully export the grid columns for quick export product models
