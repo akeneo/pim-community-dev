@@ -265,7 +265,7 @@ resource "local_file" "helm_pim_config" {
             memory = format(
               "%d%s", ceil(
                 trimsuffix(local.helm-default-values.mysql.mysql.resources.limits.memory, local.k8s-memory-unit) +
-                1024 * local.tshirt-size-index
+                1024 * local.tshirt-size-index * 130 / 100
               ),
               local.k8s-memory-unit
             )
