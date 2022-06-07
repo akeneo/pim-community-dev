@@ -29,7 +29,6 @@ class MeasurementValueUserIntentFactory implements ValueUserIntentFactory
     {
         $this->validateValueStructure($attributeCode, $data);
 
-        // TODO: should we check nullable on both data and data values ?
         if (null === $data['data'] || '' === $data['data']) {
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }

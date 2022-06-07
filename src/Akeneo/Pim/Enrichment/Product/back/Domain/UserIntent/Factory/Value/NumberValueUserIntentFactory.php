@@ -32,6 +32,6 @@ class NumberValueUserIntentFactory implements ValueUserIntentFactory
             return new ClearValue($attributeCode, $data['scope'], $data['locale']);
         }
 
-        return new SetNumberValue($attributeCode, $data['scope'], $data['scope'], $data['data']);
+        return new SetNumberValue($attributeCode, $data['scope'], $data['locale'], $data['data']);
     }
 }
