@@ -16,16 +16,16 @@ namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use PhpSpec\ObjectBehavior;
 
-class ManualStorageHydratorSpec extends ObjectBehavior
+class ManualUploadStorageHydratorSpec extends ObjectBehavior
 {
-    public function it_supports_only_manual_storage()
+    public function it_supports_only_manual_upload_storage()
     {
         $this->supports(['type' => 'manual_upload', 'file_path' => 'a_file_path'])->shouldReturn(true);
         $this->supports(['type' => 'none'])->shouldReturn(false);
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
     }
 
-    public function it_hydrates_a_manual_storage()
+    public function it_hydrates_a_manual_upload_storage()
     {
         $this->hydrate(['type' => 'manual_upload', 'file_path' => 'a_file_path'])->shouldBeLike(new ManualUploadStorage('a_file_path'));
     }
