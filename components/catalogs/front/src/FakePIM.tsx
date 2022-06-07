@@ -1,6 +1,7 @@
-import React, {FC, PropsWithChildren} from 'react';
+import React, {FC, PropsWithChildren, useCallback} from 'react';
 import styled from 'styled-components';
 import {AkeneoIcon, Breadcrumb, CommonStyle, getColor, getFontSize, ImportXlsxIllustration} from 'akeneo-design-system';
+import {useHistory} from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -37,10 +38,16 @@ const Page = styled.div`
 `;
 
 const FakePIM: FC<PropsWithChildren<{}>> = ({children}) => {
+    const history = useHistory();
+
+    const handleAkeneoIconClick = useCallback(() => {
+        history.push('/');
+    }, [history]);
+
     return (
         <Container>
             <Menu>
-                <AkeneoIcon size={36} />
+                <AkeneoIcon size={36} onClick={handleAkeneoIconClick} />
             </Menu>
             <Page>
                 <Header>

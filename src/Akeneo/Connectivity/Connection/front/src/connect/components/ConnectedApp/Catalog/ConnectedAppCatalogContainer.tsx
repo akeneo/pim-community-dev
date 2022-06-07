@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useRef} from 'react';
 import {AppIllustration, Breadcrumb} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../../shared/translate';
 import {ConnectedApp} from '../../../../model/Apps/connected-app';
@@ -20,12 +20,18 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const connectedAppsListHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps')}`;
     const connectedAppHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
-        connectionCode: connectedApp.connection_code
+        connectionCode: connectedApp.connection_code,
     })}`;
+    const catalogEditRef = useRef();
 
     const SaveButton = () => {
         return (
-            <ApplyButton onClick={() => {}} classNames={['AknButtonList-item']}>
+            <ApplyButton
+                onClick={() => {
+                    catalogEditRef.current.save();
+                }}
+                classNames={['AknButtonList-item']}
+            >
                 <Translate id='pim_common.save' />
             </ApplyButton>
         );
@@ -46,9 +52,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
         <>
             <PageHeader
                 breadcrumb={breadcrumb}
-                buttons={[
-                    <SaveButton key={0} />,
-                ]}
+                buttons={[<SaveButton key={0} />]}
                 userButtons={<UserButtons />}
                 imageSrc={connectedApp.logo ?? undefined}
                 imageIllustration={connectedApp.logo ? undefined : <AppIllustration />}
@@ -58,7 +62,7 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
             </PageHeader>
 
             <PageContent>
-                <CatalogEdit id={catalog.id} />
+                <CatalogEdit id={catalog.id} ref={catalogEditRef} />
             </PageContent>
         </>
     );

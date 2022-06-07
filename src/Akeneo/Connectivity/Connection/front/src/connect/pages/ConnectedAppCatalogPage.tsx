@@ -9,9 +9,13 @@ import {useCatalog} from '@akeneo-pim-community/catalogs/lib/hooks/useCatalog';
 
 export const ConnectedAppCatalogPage: FC = () => {
     const translate = useTranslate();
-    const {connectionCode, catalogId} = useParams<{connectionCode: string, catalogId: string}>();
+    const {connectionCode, catalogId} = useParams<{connectionCode: string; catalogId: string}>();
 
-    const {loading: connectedAppLoading, error: connectedAppError, payload: connectedApp} = useConnectedApp(connectionCode);
+    const {
+        loading: connectedAppLoading,
+        error: connectedAppError,
+        payload: connectedApp,
+    } = useConnectedApp(connectionCode);
     const {isLoading: catalogLoading, isError: isCatalogError, data: catalog} = useCatalog(catalogId);
 
     if (connectedAppLoading || catalogLoading) {
@@ -19,19 +23,23 @@ export const ConnectedAppCatalogPage: FC = () => {
     }
 
     if (HttpError.Forbidden === connectedAppError) {
-        return <FullScreenError
-            title={translate('error.exception', {status_code: '403'})}
-            message={translate('error.forbidden')}
-            code={403}
-        />;
+        return (
+            <FullScreenError
+                title={translate('error.exception', {status_code: '403'})}
+                message={translate('error.forbidden')}
+                code={403}
+            />
+        );
     }
 
     if (HttpError.NotFound === connectedAppError) {
-        return <FullScreenError
-            title={translate('error.exception', {status_code: '404'})}
-            message={translate('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')}
-            code={404}
-        />;
+        return (
+            <FullScreenError
+                title={translate('error.exception', {status_code: '404'})}
+                message={translate('akeneo_connectivity.connection.connect.connected_apps.edit.not_found')}
+                code={404}
+            />
+        );
     }
 
     if (null === connectedApp || undefined === catalog) {
@@ -39,11 +47,13 @@ export const ConnectedAppCatalogPage: FC = () => {
     }
 
     if (catalog.owner_username !== connectedApp.connection_username) {
-        return <FullScreenError
-            title={translate('error.exception', {status_code: '404'})}
-            message={translate('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')}
-            code={404}
-        />;
+        return (
+            <FullScreenError
+                title={translate('error.exception', {status_code: '404'})}
+                message={translate('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')}
+                code={404}
+            />
+        );
     }
 
     // @todo manage useCatalog 403/404 errors
