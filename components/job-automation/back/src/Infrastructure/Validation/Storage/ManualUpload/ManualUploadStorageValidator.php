@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\ManualUpload;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\FilePath;
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\ManualUpload\ManualUploadStorage as ManualStorageConstraint;
 use Symfony\Component\Validator\Constraint;
@@ -21,7 +21,7 @@ class ManualUploadStorageValidator extends ConstraintValidator
 
         $this->context->getValidator()->inContext($this->context)->validate($value, new Collection([
             'fields' => [
-                'type' => new EqualTo(ManualStorage::TYPE),
+                'type' => new EqualTo(ManualUploadStorage::TYPE),
                 'file_path' => new FilePath($constraint->getFilePathSupportedFileExtensions()),
             ],
         ]));

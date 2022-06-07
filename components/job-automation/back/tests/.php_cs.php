@@ -24,6 +24,7 @@ return (new PhpCsFixer\Config())
             ->name('*.php')
             ->notName('*Spec.php')
             ->notName('*Integration.php')
+            ->notName('*Acceptance.php')
             ->in(__DIR__ . '/')
             ->in(__DIR__ . '/../src')
     );
