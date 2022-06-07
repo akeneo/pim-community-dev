@@ -21,6 +21,7 @@ services:
     arguments:
       - '@Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository'
       - '@security.user_password_hasher'
+      - '@validator'
       - '@logger'
 
   #Repositories
