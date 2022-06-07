@@ -21,6 +21,6 @@ class InMemoryFindProductId implements FindId
     {
         $product = $this->productRepository->findOneByIdentifier($identifier);
 
-        return $product ? (string)$product->getId() : null;
+        return $product ? (string)$product->getUuid() : null;
     }
 }

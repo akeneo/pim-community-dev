@@ -64,7 +64,7 @@ class MigrateToUuidCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->columnExists('pim_catalog_association', 'owner_id')) {
+        if (!$this->columnExists('pim_catalog_category_product', 'product_id')) {
             $output->writeln('Migration cannot be ran on a fresh install');
 
             return self::SUCCESS;

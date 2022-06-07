@@ -474,7 +474,7 @@ class StepExecution
         if (is_object($data)) {
             $id = '[unknown]';
             if (\method_exists($data, 'getUuid')
-                && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProductInterface'
+                && get_class($data) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct'
             ) {
                 $id = $data->getUuid()->toString();
             } elseif (\method_exists($data, 'getId')) {
