@@ -28,6 +28,7 @@ $rules = [
 
             // External dependencies coupling
             'Ramsey\Uuid\Uuid',
+            'Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Domain'),
 
@@ -41,11 +42,12 @@ $rules = [
 
             // External dependencies coupling
             'Psr\Log\LoggerInterface',
+            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
+            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
-            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\EventDispatcher\EventSubscriberInterface',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Application'),
 
@@ -116,12 +118,13 @@ $rules = [
             'PHPUnit\Framework',
             'Psr\Log\NullLogger',
             'Ramsey\Uuid\Uuid',
+            'Symfony\Component\EventDispatcher\EventDispatcher',
+            'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher',
+            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\Context\ExecutionContextInterface',
             'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
-            'Symfony\Component\EventDispatcher\EventDispatcher',
-            'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Test\Unit'),
