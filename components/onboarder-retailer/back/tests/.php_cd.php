@@ -45,6 +45,7 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
+            'Symfony\Component\Validator\Exception\UnexpectedTypeException',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Constraint',
