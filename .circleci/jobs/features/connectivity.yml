@@ -90,7 +90,7 @@ jobs:
                     command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: Integration back
-                    command: CI=false make connectivity-connection-integration-back
+                    command: EXPERIMENTAL_TEST_DATABASE=1 CI=false make connectivity-connection-integration-back
             -   store_test_results:
                     path: var/tests/phpunit
 
@@ -120,7 +120,7 @@ jobs:
                     command: APP_ENV=test O="--withoutFixtures" make database
             -   run:
                     name: End to end back
-                    command: CI=false make connectivity-connection-e2e-back
+                    command: EXPERIMENTAL_TEST_DATABASE=1 CI=false make connectivity-connection-e2e-back
             -   store_test_results:
                     path: var/tests/phpunit
 
