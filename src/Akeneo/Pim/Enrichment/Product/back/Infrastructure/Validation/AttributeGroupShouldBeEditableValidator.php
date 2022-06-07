@@ -36,7 +36,9 @@ final class AttributeGroupShouldBeEditableValidator extends ConstraintValidator
             $this->context->buildViolation(
                 $constraint->message,
                 [ '{{ attributeCode }}' => $valueUserIntent->attributeCode()]
-            )->setCode((string) ViolationCode::PERMISSION)->addViolation();
+            )
+                ->setCode((string) (ViolationCode::buildGlobalViolationCode(ViolationCode::USER_CANNOT_EDIT_ATTRIBUTE, ViolationCode::PERMISSION)))
+                ->addViolation();
         }
     }
 }
