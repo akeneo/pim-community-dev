@@ -17,6 +17,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
     {
         $repository = $this->get(ContributorAccountRepository::class);
         $contributorAccount = ContributorAccount::fromEmail('burger@example.com');
+        $contributorAccount->setPassword('P@$$w0rd');
         $repository->save($contributorAccount);
         $repository->save(ContributorAccount::fromEmail('jambon@example.com'));
 
@@ -27,6 +28,7 @@ class DatabaseRepositoryIntegration extends SqlIntegrationTestCase
         $this->assertSame($contributorAccount->accessToken(), $savedContributorAccount['access_token']);
         $this->assertSame($contributorAccount->createdAt(), $savedContributorAccount['created_at']);
         $this->assertSame($contributorAccount->accessTokenCreatedAt(), $savedContributorAccount['access_token_created_at']);
+        $this->assertNotNull($contributorAccount->password(), $savedContributorAccount['password']);
     }
 
     /** @test */

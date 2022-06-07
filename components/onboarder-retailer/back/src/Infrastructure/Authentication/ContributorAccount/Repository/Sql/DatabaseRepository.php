@@ -18,8 +18,15 @@ class DatabaseRepository implements ContributorAccountRepository
     public function save(ContributorAccount $contributorAccount): void
     {
         $sql = <<<SQL
-            REPLACE INTO `akeneo_onboarder_serenity_contributor_account` (id, email, access_token, access_token_created_at, created_at)
-            VALUES (:id, :email, :access_token, :access_token_created_at, :created_at)
+            REPLACE INTO `akeneo_onboarder_serenity_contributor_account` (
+                id,
+                email,
+                password,
+                access_token,
+                access_token_created_at,
+                created_at
+            )
+            VALUES (:id, :email, :password, :access_token, :access_token_created_at, :created_at)
         SQL;
 
         $this->connection->executeStatement(
@@ -27,6 +34,7 @@ class DatabaseRepository implements ContributorAccountRepository
             [
                 'id' => $contributorAccount->identifier(),
                 'email' => $contributorAccount->email(),
+                'password' => $contributorAccount->password(),
                 'access_token' => $contributorAccount->accessToken(),
                 'access_token_created_at' => $contributorAccount->accessTokenCreatedAt(),
                 'created_at' => $contributorAccount->createdAt(),

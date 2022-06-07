@@ -44,4 +44,16 @@ final class ContributorAccountTest extends TestCase
         $this->assertSame('2022-06-06 12:52:44', $contributorAccount->createdAt());
         $this->assertNull($contributorAccount->lastLoggedAt());
     }
+
+    /** @test */
+    public function itUpdatesTheContributorAccountPassword(): void
+    {
+        $contributorAccount = ContributorAccount::fromEmail('contributor@example.com');
+
+        $contributorAccount->setPassword('P@$$w0rdfoo');
+
+        static::assertSame('P@$$w0rdfoo', $contributorAccount->password());
+        static::assertNull($contributorAccount->accessToken());
+        static::assertNull($contributorAccount->accessTokenCreatedAt());
+    }
 }
