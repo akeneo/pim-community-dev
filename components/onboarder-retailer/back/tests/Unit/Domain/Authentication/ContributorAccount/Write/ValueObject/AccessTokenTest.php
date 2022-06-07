@@ -16,4 +16,12 @@ class AccessTokenTest extends TestCase
         $this->assertInstanceOf(AccessToken::class, $accessToken);
         $this->assertNotEmpty((string) $accessToken);
     }
+
+    /** @test */
+    public function itCanBeCreatedFromAString(): void
+    {
+        $accessToken = AccessToken::fromString('an-access-token');
+        $this->assertInstanceOf(AccessToken::class, $accessToken);
+        $this->assertSame('an-access-token', (string) $accessToken);
+    }
 }

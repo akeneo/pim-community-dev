@@ -6,6 +6,7 @@ namespace Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication\Contri
 
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount;
+use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 
 class InMemoryRepository implements ContributorAccountRepository
 {
@@ -20,6 +21,17 @@ class InMemoryRepository implements ContributorAccountRepository
     {
         if (array_key_exists($email, $this->contributorAccounts)) {
             return $this->contributorAccounts[$email];
+        }
+
+        return null;
+    }
+
+    public function find(Identifier $identifier): ?ContributorAccount
+    {
+        foreach ($this->contributorAccounts as $contributorAccount) {
+            if ((string) $identifier === $contributorAccount->identifier()) {
+                return $contributorAccount;
+            }
         }
 
         return null;
