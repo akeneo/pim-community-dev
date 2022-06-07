@@ -76,9 +76,5 @@ services:
             - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrateToUuidReindexElasticsearch'
             - '@monolog.logger'
             - '@database_connection'
-            - '@Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrationAuthorization'
         tags:
             - { name: 'console.command' }
-
-    Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\MigrationAuthorization:
-        class: Akeneo\Pim\Enrichment\Bundle\Command\MigrateToUuid\DummyMigrationAuthorization
