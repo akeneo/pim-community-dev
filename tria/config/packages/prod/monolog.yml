@@ -5,10 +5,16 @@ monolog:
       level:      '%env(LOGGING_LEVEL)%'
       path:       'php://stderr'
       formatter:  'monolog.formatter.json'
-      channels:   ['!event_api', '!business_event', '!api_requests']
+      channels:   ['!event_api', '!business_event', '!api_requests', '!onboarder_serenity']
     event_and_business_api:
       type: stream
       path: 'php://stderr'
       level: info
       channels: ['event_api','business_event']
+      formatter: 'monolog.formatter.json'
+    onboarder_serenity:
+      type: stream
+      path: 'php://stderr'
+      level: info
+      channels: ['onboarder_serenity']
       formatter: 'monolog.formatter.json'
