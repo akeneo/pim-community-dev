@@ -380,9 +380,7 @@ class JobInstanceController
             throw new NotFoundHttpException(sprintf('%s entity not found', JobInstance::class));
         }
 
-        try {
-            $this->jobRegistry->get($jobInstance->getJobName());
-        } catch(\Exception) {
+        if (!$this->jobRegistry->has($jobInstance->getJobName())) {
             throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
