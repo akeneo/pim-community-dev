@@ -53,5 +53,7 @@ final class ContributorAccountTest extends TestCase
         $contributorAccount->setPassword('P@$$w0rdfoo');
 
         static::assertSame('P@$$w0rdfoo', $contributorAccount->password());
+        static::assertNull($contributorAccount->accessToken());
+        static::assertNull($contributorAccount->accessTokenCreatedAt());
     }
 }
