@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use PhpSpec\ObjectBehavior;
 
 class NoneStorageHydratorSpec extends ObjectBehavior
@@ -26,6 +27,6 @@ class NoneStorageHydratorSpec extends ObjectBehavior
 
     public function it_returns_null()
     {
-        $this->hydrate(['type' => 'none'])->shouldReturn(null);
+        $this->hydrate(['type' => 'none'])->shouldBeLike(new NoneStorage());
     }
 }
