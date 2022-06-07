@@ -20,12 +20,15 @@ final class Version_7_0_20220429131804_execute_uuid_migration extends AbstractMi
 
     public function up(Schema $schema): void
     {
+        $this->addSql('SELECT "disable migration warning"');
+
         $kernel = new \Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
         $input = new ArrayInput([
             'command' => 'pim:product:migrate-to-uuid',
+            '--wait-for-dqi' => false,
         ]);
         $output = new BufferedOutput();
         $exitCode = $application->run($input, $output);
