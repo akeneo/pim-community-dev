@@ -21,5 +21,6 @@ monolog:
       type: stream
       path: 'php://stderr'
       level: info
-      channels: ['onboarder_serenity']
+      channels: 'onboarder_serenity'
       formatter: 'monolog.formatter.json'
+      include_stacktraces: true

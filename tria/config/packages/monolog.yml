@@ -1,2 +1,2 @@
 monolog:
-  channels: ['event_api', 'business_event', 'job_event', 'pim_api_acl', 'api_requests', 'onboarder_serenity']
+  channels: ['event_api', 'business_event', 'job_event', 'pim_api_acl', 'api_requests']
