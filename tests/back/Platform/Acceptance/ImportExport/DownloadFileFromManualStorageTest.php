@@ -26,7 +26,7 @@ class DownloadFileFromManualStorageTest extends AcceptanceTestCase
     {
         $this->getJobFilesystem()->write('a_file_path', 'file content');
 
-        $storage = ['type' => 'manual', 'file_path' => 'a_file_path'];
+        $storage = ['type' => 'manual_upload', 'file_path' => 'a_file_path'];
 
         $this->getHandler()->handle(new DownloadFileFromStorageCommand($storage, '/tmp/job_name/'));
 

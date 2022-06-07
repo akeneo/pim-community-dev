@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use PhpSpec\ObjectBehavior;
 
 class ManualStorageHydratorSpec extends ObjectBehavior
 {
     public function it_supports_only_manual_storage()
     {
-        $this->supports(['type' => 'manual', 'file_path' => 'a_file_path'])->shouldReturn(true);
+        $this->supports(['type' => 'manual_upload', 'file_path' => 'a_file_path'])->shouldReturn(true);
         $this->supports(['type' => 'none'])->shouldReturn(false);
         $this->supports(['type' => 'unknown'])->shouldReturn(false);
     }
 
     public function it_hydrates_a_manual_storage()
     {
-        $this->hydrate(['type' => 'manual', 'file_path' => 'a_file_path'])->shouldBeLike(new ManualStorage('a_file_path'));
+        $this->hydrate(['type' => 'manual_upload', 'file_path' => 'a_file_path'])->shouldBeLike(new ManualUploadStorage('a_file_path'));
     }
 }

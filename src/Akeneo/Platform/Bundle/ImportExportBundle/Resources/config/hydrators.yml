@@ -13,6 +13,6 @@ services:
     tags:
       - { name: pim_import_export.hydrator.storage }
 
-  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\ManualStorageHydrator:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator\ManualUploadStorageHydrator:
     tags:
       - { name: pim_import_export.hydrator.storage }

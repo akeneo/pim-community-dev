@@ -8,19 +8,19 @@ declare(strict_types=1);
  */
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\StorageInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 
-final class ManualStorageHydrator implements StorageHydratorInterface
+final class ManualUploadStorageHydrator implements StorageHydratorInterface
 {
     public function hydrate(array $normalizedStorage): StorageInterface
     {
-        return new ManualStorage($normalizedStorage['file_path']);
+        return new ManualUploadStorage($normalizedStorage['file_path']);
     }
 
     public function supports(array $normalizedStorage): bool
     {
-        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === ManualStorage::TYPE;
+        return array_key_exists('type', $normalizedStorage) && $normalizedStorage['type'] === ManualUploadStorage::TYPE;
     }
 }

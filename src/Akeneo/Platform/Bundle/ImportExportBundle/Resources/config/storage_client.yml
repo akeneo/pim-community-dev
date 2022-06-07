@@ -16,7 +16,7 @@ services:
     tags:
       - { name: pim_import_export.storage_client_provider }
 
-  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\Manual\ManualStorageClientProvider:
+  Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\ManualUpload\ManualUploadStorageClientProvider:
     arguments:
       - '@oneup_flysystem.jobs_storage_filesystem'
     tags:

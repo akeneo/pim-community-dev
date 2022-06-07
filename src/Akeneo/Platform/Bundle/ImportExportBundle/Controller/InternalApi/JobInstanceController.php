@@ -4,7 +4,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualStorage;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
@@ -360,13 +360,12 @@ class JobInstanceController
             }
 
             $rawParameters = $jobInstance->getRawParameters();
+            $rawParameters['filePath'] = $jobFileLocation->url();
             if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
                 $rawParameters['storage'] = [
-                    'type' => ManualStorage::TYPE,
+                    'type' => ManualUploadStorage::TYPE,
                     'file_path' => $jobFileLocation->path(),
                 ];
-            } else {
-                $rawParameters['filePath'] = $jobFileLocation->url();
             }
 
             $jobInstance->setRawParameters($rawParameters);
