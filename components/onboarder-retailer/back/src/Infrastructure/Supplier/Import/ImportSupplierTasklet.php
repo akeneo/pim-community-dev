@@ -41,7 +41,7 @@ final class ImportSupplierTasklet implements TaskletInterface
         private JobRepositoryInterface $jobRepository,
         private EventDispatcherInterface $eventDispatcher,
         private GetIdentifierFromCode $getSupplierIdentifierFromSupplierCode,
-        private LoggerInterface $logger,
+        private LoggerInterface $onboarderSerenityLogger,
     ) {
     }
 
@@ -70,7 +70,7 @@ final class ImportSupplierTasklet implements TaskletInterface
                     $this->stepExecution->incrementSummaryInfo('process');
                 }
             } catch (InvalidItemException $e) {
-                $this->logger->info(
+                $this->onboarderSerenityLogger->info(
                     sprintf(
                         'An error occurred while importing a supplier: "%s"',
                         $e->getMessage(),
@@ -81,7 +81,7 @@ final class ImportSupplierTasklet implements TaskletInterface
 
                 continue;
             } catch (\Exception $e) {
-                $this->logger->error(
+                $this->onboarderSerenityLogger->error(
                     sprintf(
                         'An unhandled exception has been thrown while creating suppliers: "%s"',
                         $e->getMessage(),

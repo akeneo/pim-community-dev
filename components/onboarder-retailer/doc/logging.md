@@ -10,7 +10,7 @@ In Onboarder Serenity back-end, we log through [the Symfony logger](https://symf
 a [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, backed-up by [Monolog](https://seldaek.github.io/monolog/)
 which provides additional functionalities, like separation of logs by channels, more configuration options, etc…
 
-To use the logger, we simply need to inject the `Psr\Log\LoggerInterface` service, as you can see in the following example.
+To use the logger, we simply need to inject the `Psr\Log\LoggerInterface` service and use `$onboarderSerenityLogger` as argument to follow the right syntax: `Psr\Log\LoggerInterface $<camelCased channel name>`, [more information here](https://symfony.com/doc/current/logging/channels_handlers.html#how-to-autowire-logger-channels), as you can see in the following example.
 
 ```php
 <?php
@@ -23,15 +23,17 @@ use Psr\Log\LoggerInterface;
 
 class Bar
 {
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(private LoggerInterface $onboarderSerenityLogger)
     {}
 
     public function __invoke(): void
     {
-        $this->logger->log('A very useful log!');
+        $this->onboarderSerenityLogger->log('A very useful log!');
     }
 }
 ```
+
+PS: our `onboarder_serenity` monolog channel is defined into `monolog` configuration, you can [found it there](https://github.com/akeneo/pim-enterprise-dev/blob/c9d3d2e3e2f8d12ea40a9e4da4476b3ca1356dd1/config/packages/prod/monolog.yml#L20-L25)
 
 ### Where to log
 
@@ -70,7 +72,7 @@ and you will lose a part of it.
 Logging example with context:
 
 ```php
-$this->logger->info(
+$this->onboarderSerenityLogger->info(
     'A log message',
     [
         'supplier_code' => $supplierCode,
@@ -92,7 +94,7 @@ As a summary, when you want to log an exception, it should be done as follows:
 try {
     $someService->thatIsDoingSomething();
 } catch (\Throwable $anExceptionThatShouldNotHaveBeenThrown) {
-    $this->logger->error(
+    $this->onboarderSerenityLogger->error(
         'A message that explains what happened that should not have',   // This can be a custom message if the error is anticipated,
         [                                                               //  or just the caught exception message
             'exception' => $anExceptionThatShouldNotHaveBeenThrown,             // It is mandatory to have both parameters

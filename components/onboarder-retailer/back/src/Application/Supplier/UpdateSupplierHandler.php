@@ -17,7 +17,7 @@ final class UpdateSupplierHandler
     public function __construct(
         private Repository $repository,
         private ValidatorInterface $validator,
-        private LoggerInterface $logger,
+        private LoggerInterface $onboarderSerenityLogger,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -32,7 +32,7 @@ final class UpdateSupplierHandler
         $supplier = $this->repository->find(Identifier::fromString($updateSupplier->identifier));
 
         if (null === $supplier) {
-            $this->logger->info(
+            $this->onboarderSerenityLogger->info(
                 'Attempt to update a supplier that does not exist.',
                 [
                     'data' => [
@@ -58,7 +58,7 @@ final class UpdateSupplierHandler
             $this->eventDispatcher->dispatch($event);
         }
 
-        $this->logger->debug(
+        $this->onboarderSerenityLogger->debug(
             sprintf('Supplier "%s" updated.', $supplier->code()),
             [
                 'data' => [

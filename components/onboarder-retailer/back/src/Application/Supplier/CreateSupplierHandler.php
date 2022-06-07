@@ -20,14 +20,14 @@ final class CreateSupplierHandler
         private Repository $supplierRepository,
         private SupplierExists $supplierExists,
         private EventDispatcherInterface $eventDispatcher,
-        private LoggerInterface $logger,
+        private LoggerInterface $onboarderSerenityLogger,
     ) {
     }
 
     public function __invoke(CreateSupplier $createSupplier): void
     {
         if ($this->supplierExists->fromCode(Code::fromString($createSupplier->code))) {
-            $this->logger->info(
+            $this->onboarderSerenityLogger->info(
                 sprintf('Attempt to create a supplier "%s" that does already exist.', $createSupplier->code),
                 [
                     'data' => [
@@ -58,7 +58,7 @@ final class CreateSupplierHandler
             ));
         }
 
-        $this->logger->debug(
+        $this->onboarderSerenityLogger->debug(
             sprintf('Supplier "%s" created.', $createSupplier->code),
             [
                 'data' => [
