@@ -141,7 +141,7 @@ class JobRegistry
     {
         return array_filter(
             $this->jobs,
-            static fn (array $job) => null === $job['feature'] || $this->featureFlags->isEnabled($job['feature'])
+            fn (array $job) => null === $job['feature'] || $this->featureFlags->isEnabled($job['feature'])
         );
     }
 }
