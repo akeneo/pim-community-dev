@@ -2,3 +2,10 @@ onboarder:
     supplier:
         contributor:
             email_already_exists: This email is already used for another supplier and we do not support yet multiple suppliers having the same contributor. Sorry about the inconvenience.
+        contributor_account:
+            validation:
+                min_password_length: The password should have 8 characters at least.
+                max_password_length: The password should not exceed 255 characters.
+                should_contain_an_uppercase_letter: The password should have at least one uppercase letter.
+                should_contain_a_lowercase_letter: The password should have at least one lowercase letter.
+                should_contain_a_digit: The password should have at least one number.

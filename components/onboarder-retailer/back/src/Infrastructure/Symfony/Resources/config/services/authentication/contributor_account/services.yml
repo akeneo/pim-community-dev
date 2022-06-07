@@ -55,3 +55,8 @@ services:
     arguments:
       - '@router'
       - '@twig'
+
+  # Validators
+  Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Validation\PasswordValidator:
+    tags:
+      - { name: validator.constraint_validator }
