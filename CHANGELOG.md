@@ -41,6 +41,7 @@
 - PIM-10443: Search for system product grid filters in System > Users > Additional is now case insensitive
 - PIM-10459: Fix product grid selection
 - PIM-10447: Do not hydrate product/model in UniqueEntityValidator
+- PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
 - PIM-10475: Fix option existence validation for numeric option codes
 
 ## Improvements
