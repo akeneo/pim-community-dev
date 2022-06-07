@@ -8,11 +8,13 @@ use Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAcco
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ContributorAccountRepository;
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UpdatePasswordHandler
 {
     public function __construct(
         private ContributorAccountRepository $contributorAccountRepository,
+        private UserPasswordHasherInterface $passwordHasher,
         private LoggerInterface $logger,
     ) {
     }
@@ -35,7 +37,11 @@ final class UpdatePasswordHandler
             throw new ContributorAccountDoesNotExist();
         }
 
-        $contributorAccount->setPassword($updatePassword->plainTextPassword);
+        $hashedPassword = $this->passwordHasher->hashPassword(
+            $contributorAccount,
+            $updatePassword->plainTextPassword,
+        );
+        $contributorAccount->setPassword($hashedPassword);
 
         $this->contributorAccountRepository->save($contributorAccount);
     }
