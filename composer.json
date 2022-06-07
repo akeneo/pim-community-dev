@@ -115,6 +115,7 @@
         "phpstan/phpstan-symfony": "^1.1.0",
         "phpstan/phpstan-webmozart-assert": "^1.1.0",
         "phpunit/phpunit": "^9.5",
+        "psr/simple-cache": "^2.0",
         "sebastian/exporter": "^4.0.0",
         "sensiolabs/behat-page-object-extension": "^2.3.3",
         "symfony/debug-bundle": "^5.4.0",
