@@ -11,12 +11,14 @@ use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\W
 use Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication\ContributorAccount\Repository\InMemory\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher;
 
 final class UpdatePasswordHandlerTest extends TestCase
 {
     /** @test */
     public function itUpdatesTheContributorPassword(): void
     {
+        $passwordHasher = $this->createMock(UserPasswordHasher::class);
         $contributorAccount = ContributorAccount::hydrate(
             'b8b13d0b-496b-4a7c-a574-0d522ba90752',
             'contributor@example.com',
@@ -36,11 +38,11 @@ final class UpdatePasswordHandlerTest extends TestCase
             'P@ssw0rd*foo',
         );
 
-        $sut = new UpdatePasswordHandler($contributorAccountRepository, new NullLogger());
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $passwordHasher, new NullLogger());
 
         try {
+            $passwordHasher->expects($this->once())->method('hashPassword');
             ($sut)($updatePassword);
-            static::assertTrue(true);
         } catch (ContributorAccountDoesNotExist) {
             static::fail('ContributorAccountDoesNotExist exception should not have been thrown.');
         }
@@ -49,6 +51,7 @@ final class UpdatePasswordHandlerTest extends TestCase
     /** @test */
     public function itThrowsAnExceptionIfTheContributorAccountCannotBeFound(): void
     {
+        $passwordHasher = $this->createMock(UserPasswordHasher::class);
         $contributorAccountRepository = new InMemoryRepository();
 
         $updatePassword = new UpdatePassword(
@@ -56,7 +59,7 @@ final class UpdatePasswordHandlerTest extends TestCase
             'P@ssw0rd*foo',
         );
 
-        $sut = new UpdatePasswordHandler($contributorAccountRepository, new NullLogger());
+        $sut = new UpdatePasswordHandler($contributorAccountRepository, $passwordHasher, new NullLogger());
 
         try {
             ($sut)($updatePassword);

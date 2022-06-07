@@ -6,8 +6,9 @@ use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\W
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ValueObject\Email;
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ValueObject\Identifier;
 use Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\ValueObject\Password;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
-class ContributorAccount
+class ContributorAccount implements PasswordAuthenticatedUserInterface
 {
     private function __construct(
         private Identifier $identifier,
@@ -72,11 +73,6 @@ class ContributorAccount
         return (string) $this->email;
     }
 
-    public function password(): ?string
-    {
-        return null === $this->password ? null : (string) $this->password;
-    }
-
     public function accessToken(): ?string
     {
         return null === $this->accessToken ? null : (string) $this->accessToken;
@@ -95,5 +91,10 @@ class ContributorAccount
     public function lastLoggedAt(): ?string
     {
         return $this->lastLoggedAt?->format('Y-m-d H:i:s');
+    }
+
+    public function getPassword(): ?string
+    {
+        return null === $this->password ? null : (string) $this->password;
     }
 }
