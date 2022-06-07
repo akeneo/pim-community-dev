@@ -1,9 +1,8 @@
 <?php
 
-namespace Akeneo\Catalogs\Infrastructure\Validation;
+namespace Akeneo\Catalogs\ServiceAPI\Validation;
 
-use Akeneo\Catalogs\Domain\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
-use Akeneo\Catalogs\Domain\Validation\GetOwnerIdInterface;
+use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;

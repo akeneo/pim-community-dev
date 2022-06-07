@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Unit\Infrastructure\Validation;
 
-use Akeneo\Catalogs\Domain\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
-use Akeneo\Catalogs\Domain\Validation\GetOwnerIdInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
-use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
+use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Validation\GetOwnerIdInterface;
+use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUser;
+use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**

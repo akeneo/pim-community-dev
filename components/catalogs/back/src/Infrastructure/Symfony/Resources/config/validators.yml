@@ -1,5 +1,5 @@
 services:
-    Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator:
+    Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUserValidator:
         arguments:
             - '@Akeneo\Catalogs\Infrastructure\Persistence\IsCatalogsNumberLimitReachedQuery'
         tags:

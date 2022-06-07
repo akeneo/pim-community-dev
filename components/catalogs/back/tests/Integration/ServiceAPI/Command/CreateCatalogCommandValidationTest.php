@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\Test\Integration\ServiceAPI\Command;
 
-use Akeneo\Catalogs\Domain\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
+use Akeneo\Catalogs\ServiceAPI\Persistence\IsCatalogsNumberLimitReachedQueryInterface;
+use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUserValidator;
 use Akeneo\Catalogs\Test\Integration\IntegrationTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 

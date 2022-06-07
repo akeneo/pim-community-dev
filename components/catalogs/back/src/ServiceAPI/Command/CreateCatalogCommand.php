@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Catalogs\ServiceAPI\Command;
 
-use Akeneo\Catalogs\Domain\Validation\GetOwnerIdInterface;
-use Akeneo\Catalogs\Infrastructure\Validation\MaxNumberOfCatalogsPerUser;
+use Akeneo\Catalogs\ServiceAPI\Validation\GetOwnerIdInterface;
+use Akeneo\Catalogs\ServiceAPI\Validation\MaxNumberOfCatalogsPerUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

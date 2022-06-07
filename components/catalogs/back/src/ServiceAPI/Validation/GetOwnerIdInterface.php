@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Validation;
+namespace Akeneo\Catalogs\ServiceAPI\Validation;
 
 interface GetOwnerIdInterface
 {

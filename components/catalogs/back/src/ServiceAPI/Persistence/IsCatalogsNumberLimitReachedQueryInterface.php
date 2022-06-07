@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Catalogs\Domain\Persistence;
+namespace Akeneo\Catalogs\ServiceAPI\Persistence;
 
 interface IsCatalogsNumberLimitReachedQueryInterface
 {
