@@ -68,8 +68,8 @@ services:
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_values_to_index_for_channel_and_locale:
        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
        arguments:
-           - '@database_connection'
            - '@akeneo_assetmanager.infrastructure.persistence.query.find_activated_locales_per_channels'
+           - '@akeneo_assetmanager.infrastructure.persistence.repository.attribute'
 
     akeneo_assetmanager.infrastructure.search.elasticsearch.asset.query.find_searchable_assets:
        class: Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindSearchableAssets
