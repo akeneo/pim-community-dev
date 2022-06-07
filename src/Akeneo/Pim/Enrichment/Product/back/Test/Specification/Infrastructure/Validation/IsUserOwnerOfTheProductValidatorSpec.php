@@ -93,7 +93,7 @@ class IsUserOwnerOfTheProductValidatorSpec extends ObjectBehavior
         $getOwnedCategories->forUserId(['master', 'print'], 1)->willReturn([]);
         $context->buildViolation($constraint->message)->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('userId')->shouldBeCalledOnce()->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode('3')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate($command, $constraint);

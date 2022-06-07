@@ -182,16 +182,46 @@ class ProductController
         $data = json_decode($request->getContent(), true);
         try {
             $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
-        } catch (ObjectNotFoundException $e) {
+        } catch (ObjectNotFoundException) {
             throw new BadRequestHttpException();
         }
         try {
             $this->updateProduct($product, $data);
         } catch (ViolationsException | LegacyViolationsException $e) {
+            $isNotOwnerException = \count(
+                \array_filter(
+                    \iterator_to_array($e->violations()),
+                    fn (ConstraintViolationInterface $violation): bool => ViolationCode::containsViolationCode((int) $violation->getCode(), ViolationCode::USER_IS_NOT_OWNER)
+                )
+            ) > 0;
+            if ($isNotOwnerException) {
+                try {
+                    $this->updateDraft($product, $data);
+                } catch (TwoWayAssociationWithTheSameProductException $e) {
+                    return new JsonResponse(
+                        ['message' => $e->getMessage(), 'global' => true],
+                        Response::HTTP_UNPROCESSABLE_ENTITY
+                    );
+                }
+
+                $violations = $this->validator->validate($product);
+                $violations->addAll($this->localizedConverter->getViolations());
+
+                if (0 === $violations->count()) {
+                    $this->productSaver->save($product);
+
+                    return new JsonResponse();
+                }
+
+                $normalizedViolations = $this->normalizeViolations($violations, $product);
+
+                return new JsonResponse($normalizedViolations, 400);
+            }
+
             $hasPermissionException = \count(
                 \array_filter(
                     \iterator_to_array($e->violations()),
-                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() === (string) ViolationCode::PERMISSION
+                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() & (string) ViolationCode::PERMISSION > 0
                 )
             ) > 0;
             if ($hasPermissionException) {
@@ -417,6 +447,35 @@ class ProductController
             $userIntents
         );
         $this->commandMessageBus->dispatch($command);
+    }
+
+    /**
+     * Updates product or draft with the provided request data. The product should be updated through the service API
+     * so this is only used for draft.
+     */
+    protected function updateDraft(ProductInterface $product, array $data): void
+    {
+        $values = $this->productValueConverter->convert($data['values']);
+
+        $values = $this->localizedConverter->convertToDefaultFormats($values, [
+            'locale' => $this->userContext->getUiLocale()->getCode()
+        ]);
+
+        $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
+
+        if (!empty($dataFiltered)) {
+            $data = array_replace($data, $dataFiltered);
+        } else {
+            $data['values'] = [];
+        }
+
+        // don't filter during creation, because identifier is needed
+        // but not sent by the frontend during creation (it sends the sku in the values)
+        if (null !== $product->getId() && $product->isVariant()) {
+            $data = $this->productAttributeFilter->filter($data);
+        }
+
+        $this->productUpdater->update($product, $data);
     }
 
     /**

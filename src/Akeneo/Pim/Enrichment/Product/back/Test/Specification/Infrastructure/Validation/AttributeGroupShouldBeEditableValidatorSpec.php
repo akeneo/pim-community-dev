@@ -61,7 +61,7 @@ class AttributeGroupShouldBeEditableValidatorSpec extends ObjectBehavior
             $constraintViolationBuilder
         );
 
-        $constraintViolationBuilder->setCode((string) ViolationCode::PERMISSION)->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode('5')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalledOnce();
 
         $this->validate(
