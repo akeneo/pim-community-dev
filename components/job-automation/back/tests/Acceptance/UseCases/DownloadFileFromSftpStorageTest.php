@@ -23,7 +23,7 @@ class DownloadFileFromSftpStorageTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function itDownloadsFileFromSftpStorage(): void
+    public function it_downloads_file_from_sftp_storage(): void
     {
         $this->getSftpFilesystem()->write('a_file_path', 'file content');
 
