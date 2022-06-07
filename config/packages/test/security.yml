@@ -9,3 +9,7 @@ security:
             logout:         false
             remember_me:    false
             anonymous:      true
+
+    password_hashers:
+        Akeneo\OnboarderSerenity\Retailer\Domain\Authentication\ContributorAccount\Write\Model\ContributorAccount:
+            algorithm: plaintext # disable hashing (only do this in tests!)
