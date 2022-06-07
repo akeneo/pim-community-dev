@@ -34,7 +34,7 @@ class DatabaseRepository implements ContributorAccountRepository
             [
                 'id' => $contributorAccount->identifier(),
                 'email' => $contributorAccount->email(),
-                'password' => $contributorAccount->password(),
+                'password' => $contributorAccount->getPassword(),
                 'access_token' => $contributorAccount->accessToken(),
                 'access_token_created_at' => $contributorAccount->accessTokenCreatedAt(),
                 'created_at' => $contributorAccount->createdAt(),

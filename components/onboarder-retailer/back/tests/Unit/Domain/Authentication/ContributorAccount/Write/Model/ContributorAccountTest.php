@@ -14,7 +14,7 @@ final class ContributorAccountTest extends TestCase
     {
         $contributorAccount = ContributorAccount::fromEmail('contributor@example.com');
         $this->assertEquals('contributor@example.com', $contributorAccount->email());
-        $this->assertNull($contributorAccount->password());
+        $this->assertNull($contributorAccount->getPassword());
         $this->assertNull($contributorAccount->lastLoggedAt());
         $this->assertIsString($contributorAccount->accessToken());
         $this->assertIsString($contributorAccount->createdAt());
@@ -35,7 +35,7 @@ final class ContributorAccountTest extends TestCase
         );
         $this->assertSame('b8b13d0b-496b-4a7c-a574-0d522ba90752', $contributorAccount->identifier());
         $this->assertSame('contributor@example.com', $contributorAccount->email());
-        $this->assertSame('P@ssw0rd*', $contributorAccount->password());
+        $this->assertSame('P@ssw0rd*', $contributorAccount->getPassword());
         $this->assertSame(
             '1vn466x20fr44wk40w0s88c40c0owwso0sgoksko0kgcggk848',
             $contributorAccount->accessToken(),
@@ -52,7 +52,7 @@ final class ContributorAccountTest extends TestCase
 
         $contributorAccount->setPassword('P@$$w0rdfoo');
 
-        static::assertSame('P@$$w0rdfoo', $contributorAccount->password());
+        static::assertSame('P@$$w0rdfoo', $contributorAccount->getPassword());
         static::assertNull($contributorAccount->accessToken());
         static::assertNull($contributorAccount->accessTokenCreatedAt());
     }
