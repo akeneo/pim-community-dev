@@ -10,7 +10,13 @@ In Onboarder Serenity back-end, we log through [the Symfony logger](https://symf
 a [PSR-3](https://www.php-fig.org/psr/psr-3/) compatible logger, backed-up by [Monolog](https://seldaek.github.io/monolog/)
 which provides additional functionalities, like separation of logs by channels, more configuration options, etc…
 
-To use the logger, we simply need to inject the `Psr\Log\LoggerInterface` service and use `$onboarderSerenityLogger` as argument to follow the right syntax: `Psr\Log\LoggerInterface $<camelCased channel name>`, [more information here](https://symfony.com/doc/current/logging/channels_handlers.html#how-to-autowire-logger-channels), as you can see in the following example.
+To use the logger, we simply need to inject the `@monolog.logger.onboarder_serenity` service, as you can see in the following example.
+
+```yaml
+Foo\Bar:
+    arguments:
+        - '@monolog.logger.onboarder_serenity'
+```
 
 ```php
 <?php
@@ -23,12 +29,12 @@ use Psr\Log\LoggerInterface;
 
 class Bar
 {
-    public function __construct(private LoggerInterface $onboarderSerenityLogger)
+    public function __construct(private LoggerInterface $logger)
     {}
 
     public function __invoke(): void
     {
-        $this->onboarderSerenityLogger->log('A very useful log!');
+        $this->logger->log('A very useful log!');
     }
 }
 ```
@@ -72,7 +78,7 @@ and you will lose a part of it.
 Logging example with context:
 
 ```php
-$this->onboarderSerenityLogger->info(
+$this->logger->info(
     'A log message',
     [
         'supplier_code' => $supplierCode,
@@ -94,7 +100,7 @@ As a summary, when you want to log an exception, it should be done as follows:
 try {
     $someService->thatIsDoingSomething();
 } catch (\Throwable $anExceptionThatShouldNotHaveBeenThrown) {
-    $this->onboarderSerenityLogger->error(
+    $this->logger->error(
         'A message that explains what happened that should not have',   // This can be a custom message if the error is anticipated,
         [                                                               //  or just the caught exception message
             'exception' => $anExceptionThatShouldNotHaveBeenThrown,             // It is mandatory to have both parameters

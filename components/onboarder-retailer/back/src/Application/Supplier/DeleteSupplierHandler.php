@@ -12,7 +12,7 @@ final class DeleteSupplierHandler
 {
     public function __construct(
         private Repository $supplierRepository,
-        private LoggerInterface $onboarderSerenityLogger,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -22,7 +22,7 @@ final class DeleteSupplierHandler
             Identifier::fromString($deleteSupplier->identifier),
         );
 
-        $this->onboarderSerenityLogger->info(
+        $this->logger->info(
             sprintf('Supplier "%s" deleted.', $deleteSupplier->identifier),
         );
     }

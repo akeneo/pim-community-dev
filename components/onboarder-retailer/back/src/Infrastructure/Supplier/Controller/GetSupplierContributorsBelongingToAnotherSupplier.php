@@ -13,7 +13,7 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
 {
     public function __construct(
         private SupplierContributorsBelongingToAnotherSupplier $supplierContributorsBelongToAnotherSupplier,
-        private LoggerInterface $onboarderSerenityLogger,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -27,7 +27,7 @@ final class GetSupplierContributorsBelongingToAnotherSupplier
         try {
             $emails = \json_decode($urlEncodedEmails, true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
-            $this->onboarderSerenityLogger->warning(
+            $this->logger->warning(
                 sprintf(
                     'The following error occurred while decoding contributor emails: "%s"',
                     $e->getMessage(),

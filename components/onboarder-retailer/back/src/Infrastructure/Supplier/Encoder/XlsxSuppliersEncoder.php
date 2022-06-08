@@ -16,7 +16,7 @@ final class XlsxSuppliersEncoder implements SuppliersEncoder
 {
     private const HEADERS = ['supplier_code', 'supplier_label', 'contributor_emails'];
 
-    public function __construct(private LoggerInterface $onboarderSerenityLogger)
+    public function __construct(private LoggerInterface $logger)
     {
     }
 
@@ -46,7 +46,7 @@ final class XlsxSuppliersEncoder implements SuppliersEncoder
                 );
             }
         } catch (IOException|WriterNotOpenedException $e) {
-            $this->onboarderSerenityLogger->error(
+            $this->logger->error(
                 sprintf(
                     'An error occurred while encoding suppliers: "%s"',
                     $e->getMessage(),

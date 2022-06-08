@@ -11,7 +11,7 @@ use Swift_Mailer;
 
 final class SendSwiftmailerEmail implements SendEmail
 {
-    public function __construct(private Swift_Mailer $mailer, private LoggerInterface $onboarderSerenityLogger)
+    public function __construct(private Swift_Mailer $mailer, private LoggerInterface $logger)
     {
     }
 
@@ -29,6 +29,6 @@ final class SendSwiftmailerEmail implements SendEmail
 
         $this->mailer->send($message);
 
-        $this->onboarderSerenityLogger->info(sprintf('A welcome email has been sent to "%s"', $email->to));
+        $this->logger->info(sprintf('A welcome email has been sent to "%s"', $email->to));
     }
 }
