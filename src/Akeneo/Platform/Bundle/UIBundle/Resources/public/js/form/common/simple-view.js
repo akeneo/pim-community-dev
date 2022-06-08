@@ -7,13 +7,22 @@
  */
 'use strict';
 
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/form', 'require-context'], function (
+define([
+  'jquery',
+  'underscore',
+  'backbone',
+  'oro/translator',
+  'pim/form',
+  'require-context',
+  'pim/feature-flags'
+], function (
   $,
   _,
   Backbone,
   __,
   BaseForm,
-  requireContext
+  requireContext,
+  FeatureFlags
 ) {
   return BaseForm.extend({
     config: {},
@@ -45,6 +54,19 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/form', 'requi
       this.template = requireContext(this.config.template);
 
       this.listenTo(this.getRoot(), 'grid:third_column:toggle', this.toggleThirdColumn.bind(this));
+
+      if (FeatureFlags.isEnabled('free_trial')) {
+        Object.values(this.extensions).forEach((extension) => {
+          if (extension.parent && [
+            'pim-user-edit-form-general-tab-content',
+            'pim-user-edit-form-password-tab-content',
+            'pim-user-profile-form-general-tab-content',
+            'pim-user-profile-form-password-tab-content'
+          ].includes(extension.parent.code)) {
+            extension.readOnly = true;
+          }
+        });
+      }
 
       return BaseForm.prototype.configure.apply(this, arguments);
     },
