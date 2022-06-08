@@ -11,19 +11,19 @@ services:
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierExists'
             - '@event_dispatcher'
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
 
     Akeneo\OnboarderSerenity\Retailer\Application\Supplier\UpdateSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
             - '@validator'
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
             - '@event_dispatcher'
 
     Akeneo\OnboarderSerenity\Retailer\Application\Supplier\DeleteSupplierHandler:
         arguments:
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Repository'
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
 
     # Queries
     Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetSupplierList:
@@ -99,7 +99,7 @@ services:
         public: true
         arguments:
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\SupplierContributorsBelongingToAnotherSupplier'
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
 
     Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Controller\DownloadImportSupplierTemplate:
         public: true
@@ -110,7 +110,7 @@ services:
     Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder\SuppliersEncoder:
         class: Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier\Encoder\XlsxSuppliersEncoder
         arguments:
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
 
     # Import
     onboarder_serenity.job.xlsx_supplier_import:
@@ -142,7 +142,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@event_dispatcher'
             - '@Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Read\GetIdentifierFromCode'
-            - '@logger'
+            - '@monolog.logger.onboarder_serenity'
 
     onboarder_serenity.connector.supplier.reader.file.xlsx:
         class: '%pim_connector.reader.file.xlsx.class%'
