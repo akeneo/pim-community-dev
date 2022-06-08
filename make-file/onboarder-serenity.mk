@@ -20,13 +20,21 @@ fix-phpcs: fix-phpcs-retailer #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:check
 
-lint-front: lint-front-retailer #Doc: Run Prettier and Eslint for Onboarder Serenity
+.PHONY: lint-front-supplier
+lint-front-supplier: #Doc: Run Prettier and Eslint for the supplier part of Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:check
+
+lint-front: lint-front-retailer lint-front-supplier #Doc: Run Prettier and Eslint for Onboarder Serenity
 
 .PHONY: fix-frontcs-retailer
 fix-frontcs-retailer: #Doc: Run front fix code style for the retailer part of Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder-retailer/front lint:fix
 
-fix-frontcs: fix-frontcs-retailer #Doc: Fix front CS for Onboarder Serenity
+.PHONY: fix-frontcs-supplier
+fix-frontcs-supplier: #Doc: Run front fix code style for the supplier part of Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder-supplier/front lint:fix
+
+fix-frontcs: fix-frontcs-retailer fix-frontcs-supplier #Doc: Fix front CS for Onboarder Serenity
 
 .PHONY: coupling-retailer
 coupling-retailer: #Doc: Run coupling detector for the retailer part of Onboarder Serenity
@@ -47,9 +55,16 @@ coupling-list-unused-requirements: coupling-list-unused-requirements-retailer #D
 unit-back: #Doc: Run unit back tests for Onboarder Serenity
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Unit_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
 
-.PHONY: unit-front
-unit-front: #Doc: Run unit front tests for Onboarder Serenity
+.PHONY: unit-front-retailer
+unit-front-retailer: #Doc: Run unit front tests for the retailer part of Onboarder Serenity
 	$(YARN_RUN) run --cwd=components/onboarder-retailer/front test:unit:run
+
+.PHONY: unit-front-supplier
+unit-front-supplier: #Doc: Run unit front tests for the supplier part of Onboarder Serenity
+	$(YARN_RUN) run --cwd=components/onboarder-supplier/front test:unit:run
+
+.PHONY: unit-front
+unit-front: unit-front-retailer unit-front-supplier #Doc: Run unit front tests for Onboarder Serenity
 
 .PHONY: acceptance-back
 acceptance-back: #Doc: Run Behat acceptance back tests for Onboarder Serenity
