@@ -111,7 +111,7 @@ class AssociationsNormalizer implements NormalizerInterface, CacheableSupportsMe
         }
 
         $data = array_map(function ($association) {
-            $association['products'] = array_unique($association['products']);
+            $association['products'] = array_values(array_unique($association['products']));
             return $association;
         }, $data);
 
