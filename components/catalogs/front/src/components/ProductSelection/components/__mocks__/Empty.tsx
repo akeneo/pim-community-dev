@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
 
-const Empty: FC = () => <div>[Empty]</div>;
+const Empty: FC = () => <>[Empty]</>;
 
 export {Empty};

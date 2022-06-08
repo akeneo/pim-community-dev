@@ -49,7 +49,7 @@ class CatalogFixtureCommand extends Command
 
         try {
             $this->connectedAppRemover->remove('555d7447-2dab-474e-9026-f5d33c401b74');
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
         }
 
         $connectedApp = $this->connectedAppFactory->createFakeConnectedAppWithValidToken(

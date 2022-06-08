@@ -1,11 +1,18 @@
+import userEvent from '@testing-library/user-event';
+
 jest.unmock('./Edit');
+jest.unmock('./TabBar');
 
 import React, {useEffect, useState} from 'react';
-import {render, screen} from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {Edit} from './Edit';
+
+jest.mock('../../ProductSelection', () => ({
+    ProductSelection: () => <>[ProductSelection]</>,
+}));
 
 // todo : find a way to unmock useSessionStorageState to remove these lines
 type StateType = any;
@@ -39,5 +46,17 @@ test('it renders without error', () => {
         </ThemeProvider>
     );
 
-    expect(screen.getByText('product selection for catalog 123e4567-e89b-12d3-a456-426614174000')).toBeInTheDocument();
+    expect(screen.getByText('[ProductSelection]')).toBeInTheDocument();
+});
+
+test('it switch between tabs', () => {
+    render(
+        <ThemeProvider theme={pimTheme}>
+            <Edit id={'123e4567-e89b-12d3-a456-426614174000'} />
+        </ThemeProvider>
+    );
+
+    // @todo click on another tab
+    act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.product_selection')));
+    expect(screen.getByText('[ProductSelection]')).toBeInTheDocument();
 });

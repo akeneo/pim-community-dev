@@ -103,7 +103,7 @@ test('it throws an error when the API call failed', () => {
         isLoading: false,
         isError: true,
         data: [],
-        error: null,
+        error: Error(),
     }));
 
     // mute the error in the output

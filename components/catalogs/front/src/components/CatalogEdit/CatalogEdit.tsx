@@ -1,4 +1,4 @@
-import React, {forwardRef, FC, PropsWithRef, useImperativeHandle, ForwardedRef} from 'react';
+import React, {forwardRef, PropsWithRef, useImperativeHandle} from 'react';
 import {Edit} from './components/Edit';
 import {ErrorBoundary} from '../ErrorBoundary';
 

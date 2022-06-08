@@ -11,7 +11,7 @@ const FakeCatalogListContainer: FC<PropsWithChildren<Props>> = () => {
         history.push('/' + catalogId);
     };
 
-    return <CatalogList owner='shopify' onCatalogClick={handleCatalogClick} />;
+    return <CatalogList owner='shopifi' onCatalogClick={handleCatalogClick} />;
 };
 
 export {FakeCatalogListContainer};

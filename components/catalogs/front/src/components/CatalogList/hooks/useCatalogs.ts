@@ -6,16 +6,16 @@ type Data = {
     enabled: boolean;
     owner_username: string;
 }[];
-type Error = string | null;
+type ResultError = Error | null;
 type Result = {
     isLoading: boolean;
     isError: boolean;
     data: Data | undefined;
-    error: Error;
+    error: ResultError;
 };
 
 export const useCatalogs = (owner: string): Result => {
-    return useQuery<Data, Error, Data>(['catalogs_list', owner], async () => {
+    return useQuery<Data, ResultError, Data>(['catalogs_list', owner], async () => {
         const response = await fetch('/rest/catalogs?owner=' + owner, {
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',

@@ -20,7 +20,7 @@ const List: FC<PropsWithChildren<Props>> = ({owner, onCatalogClick}) => {
     }
 
     if (catalogs.isError || undefined === catalogs.data) {
-        throw new Error(catalogs.error || undefined);
+        throw new Error(catalogs.error?.message || undefined);
     }
 
     return (

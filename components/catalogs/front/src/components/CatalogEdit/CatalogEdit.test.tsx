@@ -22,6 +22,7 @@ test('it renders without error', () => {
 
 test('it calls save from parent component', () => {
     const logger = jest.spyOn(console, 'log');
+    logger.mockImplementation(() => {});
 
     const ref: {current: CatalogEditRef | null} = {
         current: null

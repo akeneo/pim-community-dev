@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
 
-const Edit: FC = () => <>[Edit]</>;
+const Edit: FC = () => <div>[Edit]</div>;
 
 export {Edit};

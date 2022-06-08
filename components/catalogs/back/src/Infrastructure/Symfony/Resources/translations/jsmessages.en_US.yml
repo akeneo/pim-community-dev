@@ -9,3 +9,7 @@ akeneo_catalogs:
     catalog_edit:
         tabs:
             product_selection: Product selection
+            more: More
+    product_selection:
+        empty: Add selection criteria to create your product selection
+        more_information: Check out our Help center for more information.
