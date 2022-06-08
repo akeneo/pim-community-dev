@@ -49,6 +49,6 @@ Feature: Export published products
     And I wait for the "csv_clothing_mobile_published_product_export" job to finish
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;PACK-groups;PACK-products;PACK-product_models;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;SUBSTITUTION-product_models;UPSELL-groups;UPSELL-products;UPSELL-product_models;X_SELL-groups;X_SELL-products;X_SELL-product_models
+      sku;categories;enabled;family;groups;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;rating;side_view;size
       tee-white;winter_collection;1;tees;;;;;white;;Weiß t-shirt;Tee;Tshirt blanc;;;;10.00;15.00;;;XL;;;;;;;;;
       """
