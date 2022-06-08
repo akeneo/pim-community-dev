@@ -35,9 +35,12 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
 
-            $env = null !== $jobExecutionMessage->tenantId() ? [
-                'APP_TENANT_ID' => $jobExecutionMessage->tenantId(),
-            ] : null;
+            $env = [
+                'SYMFONY_DOTENV_VARS' => false,
+            ];
+            if (null !== $jobExecutionMessage->tenantId()) {
+                $env['APP_TENANT_ID'] = $jobExecutionMessage->tenantId();
+            };
 
             $process = new Process($arguments, null, $env);
             $process->setTimeout(null);
