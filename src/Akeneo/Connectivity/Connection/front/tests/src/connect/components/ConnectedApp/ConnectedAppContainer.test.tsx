@@ -111,7 +111,7 @@ const connectedApp = {
     logo: 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
     author: 'Author A',
     user_group_name: 'app_123456abcde',
-    connection_username: 'Connection Username',
+    connection_username: 'connection_username',
     categories: ['e-commerce', 'print'],
     certified: false,
     partner: null,
@@ -453,7 +453,12 @@ test('The connected app container renders the catalogs tab with the view only op
         userEvent.click(screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.tabs.catalogs'));
     });
 
-    expect(CatalogList).toHaveBeenCalled();
+    expect(CatalogList).toHaveBeenCalledWith(
+        expect.objectContaining({
+            connection_username: 'connection_username',
+        }),
+        {}
+    );
 });
 
 test('The connected app container does not render with catalogs tab if there is no scope with catalog permission', async () => {

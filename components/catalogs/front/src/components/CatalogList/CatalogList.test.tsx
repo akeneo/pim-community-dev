@@ -13,7 +13,7 @@ jest.mock('../ErrorBoundary', () => ({
 test('it renders without error', () => {
     render(
         <ThemeProvider theme={pimTheme}>
-            <CatalogList owner={'willy'} />
+            <CatalogList owner={'willy'} onCatalogClick={() => {}} />
         </ThemeProvider>
     );
 

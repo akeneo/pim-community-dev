@@ -1,9 +1,9 @@
-jest.unmock('./useCatalogs');
+jest.unmock('./useCatalog');
 
 import {renderHook} from '@testing-library/react-hooks';
-import {useCatalogs} from './useCatalogs';
+import {useCatalog} from './useCatalog';
 import fetchMock from 'jest-fetch-mock';
-import {ReactQueryWrapper} from '../../../../tests/ReactQueryWrapper';
+import {ReactQueryWrapper} from '../../tests/ReactQueryWrapper';
 
 test('it fetches the API response', async () => {
     fetchMock.mockResponseOnce(
@@ -17,7 +17,7 @@ test('it fetches the API response', async () => {
         ])
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useCatalogs('shopifi'), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useCatalog('123e4567-e89b-12d3-a456-426614174000'), {wrapper: ReactQueryWrapper});
 
     expect(result.current).toMatchObject({
         isLoading: true,
@@ -28,7 +28,7 @@ test('it fetches the API response', async () => {
 
     await waitForNextUpdate();
 
-    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs?owner=shopifi', expect.any(Object));
+    expect(fetchMock).toHaveBeenCalledWith('/rest/catalogs/123e4567-e89b-12d3-a456-426614174000', expect.any(Object));
     expect(result.current).toMatchObject({
         isLoading: false,
         isError: false,

@@ -42,6 +42,17 @@ export const ConnectedAppCatalogPage: FC = () => {
         );
     }
 
+    if (isCatalogError) {
+        // @todo manage more precisely useCatalog 4XX errors
+        return (
+            <FullScreenError
+                title={translate('error.exception', {status_code: '404'})}
+                message={translate('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')}
+                code={404}
+            />
+        );
+    }
+
     if (null === connectedApp || undefined === catalog) {
         throw Error('Connected app and catalog should not be null');
     }
@@ -55,8 +66,6 @@ export const ConnectedAppCatalogPage: FC = () => {
             />
         );
     }
-
-    // @todo manage useCatalog 403/404 errors
 
     return <ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />;
 };

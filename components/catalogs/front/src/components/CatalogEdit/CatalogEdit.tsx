@@ -1,15 +1,15 @@
-import React, {forwardRef, FC, PropsWithChildren, useImperativeHandle} from 'react';
+import React, {forwardRef, FC, PropsWithRef, useImperativeHandle, ForwardedRef} from 'react';
 import {Edit} from './components/Edit';
 import {ErrorBoundary} from '../ErrorBoundary';
 
-type Ref = {
+type CatalogEditRef = {
     save: () => void;
-};
+} | null;
 type Props = {
     id: string;
 };
 
-const CatalogEdit: FC<PropsWithChildren<Props>> = forwardRef<Ref, Props>(({id}, ref) => {
+const CatalogEdit = forwardRef<CatalogEditRef, PropsWithRef<Props>>(({id}, ref) => {
     useImperativeHandle(ref, () => ({
         save() {
             console.log('Catalog ' + id + ' saved.');
@@ -24,3 +24,4 @@ const CatalogEdit: FC<PropsWithChildren<Props>> = forwardRef<Ref, Props>(({id}, 
 });
 
 export {CatalogEdit};
+export type {CatalogEditRef};

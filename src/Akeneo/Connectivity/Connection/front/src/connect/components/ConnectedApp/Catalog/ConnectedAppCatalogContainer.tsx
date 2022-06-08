@@ -7,7 +7,7 @@ import {useRouter} from '../../../../shared/router/use-router';
 import {ApplyButton, PageContent, PageHeader} from '../../../../common';
 import {UserButtons} from '../../../../shared/user';
 import {DeveloperModeTag} from '../../DeveloperModeTag';
-import {CatalogEdit} from '@akeneo-pim-community/catalogs';
+import {CatalogEdit, CatalogEditRef} from '@akeneo-pim-community/catalogs';
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -22,13 +22,13 @@ export const ConnectedAppCatalogContainer: FC<Props> = ({connectedApp, catalog})
     const connectedAppHref = `#${generateUrl('akeneo_connectivity_connection_connect_connected_apps_edit', {
         connectionCode: connectedApp.connection_code,
     })}`;
-    const catalogEditRef = useRef();
+    const catalogEditRef = useRef<CatalogEditRef>(null);
 
     const SaveButton = () => {
         return (
             <ApplyButton
                 onClick={() => {
-                    catalogEditRef.current.save();
+                    catalogEditRef.current && catalogEditRef.current.save();
                 }}
                 classNames={['AknButtonList-item']}
             >
