@@ -6,9 +6,9 @@ use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Job\StoppableJobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -18,9 +18,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInterface, CacheableSupportsMethodInterface
+class JobExecutionNormalizer implements NormalizerInterface, NormalizerAwareInterface, CacheableSupportsMethodInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     protected TranslatorInterface $translator;
     protected NormalizerInterface $jobInstanceNormalizer;
@@ -41,15 +41,6 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($jobExecution, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot normalize job execution of "%s" because injected serializer is not a normalizer',
-                    $jobExecution->getLabel()
-                )
-            );
-        }
-
         $jobInstance = $jobExecution->getJobInstance();
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $isRunning = $jobExecution->isRunning();
@@ -78,7 +69,7 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
      * As JobExecution::getStepExecutions() might return something else than an array,
      * (like a PersistentCollection) we use a foreach instead of an array_map
      *
-     * @param array|Traversable $stepExecutions
+     * @param array $stepExecutions
      * @param string            $format
      * @param array             $context
      *
@@ -88,7 +79,7 @@ class JobExecutionNormalizer implements NormalizerInterface, SerializerAwareInte
     {
         $result = [];
         foreach ($stepExecutions as $stepExecution) {
-            $result[] = $this->serializer->normalize($stepExecution, $format, $context);
+            $result[] = $this->normalizer->normalize($stepExecution, $format, $context);
         }
 
         return $result;

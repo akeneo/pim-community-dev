@@ -16,6 +16,7 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
+use Akeneo\Tool\Component\Batch\Job\JobWithStepsInterface;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Step\ItemStep;
@@ -72,6 +73,9 @@ final class ExportFileToStorageAfterExportSubscriber implements EventSubscriberI
     {
         $writtenFiles = [];
         $job = $this->jobRegistry->get($jobExecution->getJobInstance()->getJobName());
+        if (!$job instanceof JobWithStepsInterface) {
+            return [];
+        }
 
         foreach ($job->getSteps() as $step) {
             if (!$step instanceof ItemStep) {
