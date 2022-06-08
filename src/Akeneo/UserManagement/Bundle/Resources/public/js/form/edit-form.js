@@ -4,13 +4,23 @@
  */
 'use strict';
 
-define(['pim/form/common/edit-form', 'pim/user-context'], function (BaseEditForm, UserContext) {
+define([
+  'pim/form/common/edit-form',
+  'pim/user-context',
+  'pim/feature-flags'
+], function (BaseEditForm, UserContext, FeatureFlags) {
   return BaseEditForm.extend({
     /**
      * {@inheritdoc}
      */
     configure: function () {
       this.on('pim_enrich:form:entity:post_fetch', this._refreshUserContext);
+
+      if (FeatureFlags.isEnabled('free_trial')) {
+        Object.values(this.extensions).forEach((extension) => {
+          extension.readOnly = true;
+        });
+      }
 
       return BaseEditForm.prototype.configure.apply(this, arguments);
     },
