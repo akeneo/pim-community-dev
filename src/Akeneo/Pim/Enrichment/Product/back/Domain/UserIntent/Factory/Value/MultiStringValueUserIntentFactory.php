@@ -26,6 +26,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
         return [
             AttributeTypes::OPTION_MULTI_SELECT,
             AttributeTypes::REFERENCE_ENTITY_COLLECTION,
+            AttributeTypes::REFERENCE_DATA_MULTI_SELECT,
             AttributeTypes::ASSET_COLLECTION,
         ];
     }
@@ -40,7 +41,7 @@ class MultiStringValueUserIntentFactory implements ValueUserIntentFactory
 
         return match ($attributeType) {
             AttributeTypes::OPTION_MULTI_SELECT => new SetMultiSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            AttributeTypes::REFERENCE_ENTITY_COLLECTION => new SetMultiReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::REFERENCE_ENTITY_COLLECTION, AttributeTypes::REFERENCE_DATA_MULTI_SELECT => new SetMultiReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::ASSET_COLLECTION => new SetAssetValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };

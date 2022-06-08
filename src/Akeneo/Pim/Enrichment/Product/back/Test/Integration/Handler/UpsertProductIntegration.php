@@ -215,17 +215,6 @@ final class UpsertProductIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throws_an_exception_when_a_measurement_amount_is_not_numeric(): void
-    {
-        $this->expectException(ViolationsException::class);
-        $this->expectExceptionMessage('This value should be of type numeric.');
-        $command = new UpsertProductCommand(userId: $this->getUserId('admin'), productIdentifier: 'identifier', valueUserIntents: [
-            new SetMeasurementValue('a_metric', null, null, 'michel', 'KILOWATT'),
-        ]);
-        $this->messageBus->dispatch($command);
-    }
-
-    /** @test */
     public function it_throws_an_exception_when_a_measurement_unit_is_unknown(): void
     {
         $this->expectException(LegacyViolationsException::class);

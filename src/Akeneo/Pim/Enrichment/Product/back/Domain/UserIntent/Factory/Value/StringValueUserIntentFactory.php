@@ -34,7 +34,8 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::FILE,
             AttributeTypes::OPTION_SIMPLE_SELECT,
             AttributeTypes::IMAGE,
-            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT,
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT
         ];
     }
 
@@ -54,7 +55,7 @@ class StringValueUserIntentFactory implements ValueUserIntentFactory
             AttributeTypes::FILE => new SetFileValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::OPTION_SIMPLE_SELECT => new SetSimpleSelectValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             AttributeTypes::IMAGE => new SetImageValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
-            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT => new SetSimpleReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
+            AttributeTypes::REFERENCE_ENTITY_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT => new SetSimpleReferenceEntityValue($attributeCode, $data['scope'], $data['locale'], $data['data']),
             default => throw new \InvalidArgumentException('Not implemented')
         };
     }

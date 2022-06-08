@@ -27,11 +27,6 @@ Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand:
         - Akeneo\Pim\Enrichment\Product\Infrastructure\Validation\IsUserOwnerOfTheProduct:
               groups: [IsOwner]
 
-Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetMeasurementValue:
-    properties:
-        amount:
-            - Type: numeric
-
 Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetFamily:
     properties:
         familyCode:

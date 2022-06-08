@@ -142,7 +142,7 @@ class ProductController
             );
 
             if (isset($data['values'])) {
-                $this->updateProduct($product, $data);
+                $this->createProduct($product, $data);
             }
         } else {
             $product = $this->productBuilder->createProduct(
@@ -210,7 +210,13 @@ class ProductController
                 if (0 === $violations->count()) {
                     $this->productSaver->save($product);
 
-                    return new JsonResponse();
+                    $normalizedProduct = $this->normalizer->normalize(
+                        $product,
+                        'internal_api',
+                        $this->getNormalizationContext()
+                    );
+
+                    return new JsonResponse($normalizedProduct);
                 }
 
                 $normalizedViolations = $this->normalizeViolations($violations, $product);
@@ -221,14 +227,18 @@ class ProductController
             $hasPermissionException = \count(
                 \array_filter(
                     \iterator_to_array($e->violations()),
-                    fn (ConstraintViolationInterface $violation): bool => $violation->getCode() & (string) ViolationCode::PERMISSION > 0
+                    function (ConstraintViolationInterface $violation): bool {
+                        return \is_int($violation->getCode()) && ViolationCode::containsViolationCode((int)$violation->getCode(), ViolationCode::PERMISSION);
+                    }
                 )
             ) > 0;
             if ($hasPermissionException) {
                 throw new AccessDeniedHttpException();
             }
             $product = $this->findProductOr404($id);
-            $normalizedViolations = $this->normalizeViolations($e->violations(), $product);
+            $violations = $e->violations();
+            $violations->addAll($this->localizedConverter->getViolations());
+            $normalizedViolations = $this->normalizeViolations($violations, $product);
 
             return new JsonResponse($normalizedViolations, 400);
         } catch (TwoWayAssociationWithTheSameProductException $e) {
@@ -239,7 +249,22 @@ class ProductController
                 Response::HTTP_UNPROCESSABLE_ENTITY
             );
         }
-        return new JsonResponse();
+
+        $localizedConverterViolations = $this->localizedConverter->getViolations();
+        if (\count($localizedConverterViolations) > 0) {
+            $normalizedViolations = $this->normalizeViolations($localizedConverterViolations, $product);
+
+            return new JsonResponse($normalizedViolations, 400);
+        }
+
+        $product = $this->findProductOr404($id);
+        $normalizedProduct = $this->normalizer->normalize(
+            $product,
+            'internal_api',
+            $this->getNormalizationContext()
+        );
+
+        return new JsonResponse($normalizedProduct);
     }
 
     /**
@@ -443,10 +468,31 @@ class ProductController
         $userId = $this->userContext->getUser()?->getId();
         $command = UpsertProductCommand::createFromCollection(
             $userId,
-            $product->getIdentifier(),
+            $product->getIdentifier() ?? '',
             $userIntents
         );
         $this->commandMessageBus->dispatch($command);
+    }
+
+    protected function createProduct(ProductInterface $product, array $data)
+    {
+        $values = $this->productValueConverter->convert($data['values']);
+        $values = $this->localizedConverter->convertToDefaultFormats($values, [
+            'locale' => $this->userContext->getUiLocale()->getCode()
+        ]);
+        $dataFiltered = $this->emptyValuesFilter->filter($product, ['values' => $values]);
+        if (!empty($dataFiltered)) {
+            $data = array_replace($data, $dataFiltered);
+        } else {
+            $data['values'] = [];
+        }
+        // don't filter during creation, because identifier is needed
+        // but not sent by the frontend during creation (it sends the sku in the values)
+        if (null !== $product->getId() && $product->isVariant()) {
+            $data = $this->productAttributeFilter->filter($data);
+        }
+
+        $this->productUpdater->update($product, $data);
     }
 
     /**
