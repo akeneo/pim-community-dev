@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Hydrator;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -42,9 +43,9 @@ class StorageHydratorSpec extends ObjectBehavior
 
     public function it_hydrates_with_the_first_supported_hydrator(StorageHydratorInterface $noneHydrator)
     {
-        $noneHydrator->hydrate(['type' => 'none'])->willReturn(null);
+        $noneHydrator->hydrate(['type' => 'none'])->willReturn(new NoneStorage());
 
-        $this->hydrate(['type' => 'none'])->shouldBeLike(null);
+        $this->hydrate(['type' => 'none'])->shouldBeLike(new NoneStorage());
     }
 
     public function it_throws_an_exception_when_no_hydrator_supports_hydration()

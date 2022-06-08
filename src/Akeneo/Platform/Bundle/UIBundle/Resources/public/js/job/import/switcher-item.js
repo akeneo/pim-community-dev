@@ -36,7 +36,7 @@ define(['oro/translator', 'pim/edition', 'pim/form'], function (__, pimEdition, 
     render: function () {
       this.$el.empty();
       const {configuration} = this.getRoot().getFormData();
-      const storageType = configuration['storage']['type'] ?? 'none';
+      const storageType = configuration.storage?.type ?? 'none';
       if (pimEdition.isCloudEdition() && this.config.hideForCloudEdition && storageType === 'none') {
         return;
       }

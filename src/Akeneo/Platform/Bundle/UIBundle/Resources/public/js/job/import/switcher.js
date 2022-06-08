@@ -87,7 +87,7 @@ define(['underscore', 'pim/form', 'pim/template/import/switcher'], function (
     registerAction: function (actionToRegister) {
       const actionExist = this.actions.some(action => action.code === actionToRegister.code);
       this.actions = actionExist
-          ? this.actions.map(action => action.code === actionToRegister ? actionToRegister: action)
+          ? this.actions.map(action => action.code === actionToRegister ? actionToRegister : action)
           : [...this.actions, actionToRegister]
 
       this.render();
