@@ -58,7 +58,7 @@ final class CreateSupplierHandler
             ));
         }
 
-        $this->logger->info(
+        $this->logger->debug(
             sprintf('Supplier "%s" created.', $createSupplier->code),
             [
                 'data' => [

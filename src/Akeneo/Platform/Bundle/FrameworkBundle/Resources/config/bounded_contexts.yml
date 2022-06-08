@@ -8,8 +8,8 @@ parameters:
 
         'Akeneo\FreeTrial': 'FreeTrial'
 
-        'Akeneo\Onboarder': 'Onboarder'
         'Akeneo\OnboarderSerenity': 'Onboarder Serenity'
+        'Akeneo\Onboarder': 'Onboarder'
 
         'Akeneo\Pim\Automation\DataQualityInsights': 'Data Quality Insights'
         'Akeneo\Pim\Automation\RuleEngine': 'Rule Engine'
