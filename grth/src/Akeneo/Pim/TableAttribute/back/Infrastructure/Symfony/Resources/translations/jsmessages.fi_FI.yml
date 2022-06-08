@@ -1,0 +1,11 @@
+pim_table_attribute:
+  form:
+    attribute:
+      tab:
+        table_structure: Taulukon rakenne
+      empty_title: Taulukon rakenne on tyhjä
+    product:
+      no_rows_title: "Sinun {{ attributeLabel }} taulukko on tyhjä."
+      no_rows_subtitle: Lisää rivejä tietojen tallentamiseksi
+  product_edit_form:
+    add_rows: Lisää rivejä
