@@ -47,17 +47,8 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
             ]);
             $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
-            $process->run(function ($type, $buffer) {
-                $message = $buffer;
-                $context = [];
-                $level = Process::ERR === $type ? 'error' : 'info';
-                $logData = \json_decode($buffer, true);
-                if (null !== $logData) {
-                    $message = $logData['message'];
-                    $context = $logData['context'] ?? [];
-                    $level = $logData['level_name'] ?? 'error';
-                }
-                $this->logger->$level($message, $context);
+            $process->run(function ($type, $buffer): void {
+                \fwrite(Process::ERR === $type ? \STDERR : \STDOUT, $buffer);
             });
         } catch (\Throwable $t) {
             $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
