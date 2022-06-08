@@ -2,11 +2,11 @@ import React, {createContext, FC, useContext, useState} from 'react';
 
 type User = {
     email: string;
-}
+};
 
 type ContextType = {
     user: User | null;
-    updateUser: (user: User |  null) => void;
+    updateUser: (user: User | null) => void;
     isAuthenticated: boolean;
 };
 
@@ -18,8 +18,8 @@ const UserContextProvider: FC = ({children}) => {
     const state: ContextType = {
         user,
         updateUser,
-        isAuthenticated: user !== null,
-    }
+        isAuthenticated: null !== user,
+    };
 
     return <UserContext.Provider value={state}>{children}</UserContext.Provider>;
 };

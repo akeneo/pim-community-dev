@@ -1,17 +1,15 @@
 import React, {FC} from 'react';
-import styled from "styled-components";
-import {getColor} from "akeneo-design-system";
+import styled from 'styled-components';
+import {getColor} from 'akeneo-design-system';
 
 const UnauthenticatedContainer: FC = ({children}) => {
     return (
         <Container>
             <LeftColumn>
-                <Content>
-                    {children}
-                </Content>
+                <Content>{children}</Content>
             </LeftColumn>
             <RightColumn>
-                <Illustration src="/assets/images/Factory.svg"/>
+                <Illustration src="/assets/images/Factory.svg" />
             </RightColumn>
         </Container>
     );
