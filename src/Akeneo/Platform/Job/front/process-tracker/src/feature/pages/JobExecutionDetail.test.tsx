@@ -3,7 +3,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {screen} from '@testing-library/react';
 import {JobExecutionDetail} from './JobExecutionDetail';
 import {JobExecution} from '../models';
-import {useParams} from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 
 beforeEach(() => {
@@ -90,8 +89,6 @@ jest.mock('../hooks/useJobExecution', () => ({
   },
 }));
 
-jest.mock('react-router-dom', () => ({useParams: jest.fn()}));
-
 jest.mock('@akeneo-pim-community/shared/lib/components/PimView', () => ({
   PimView: () => <></>,
 }));
@@ -111,41 +108,38 @@ jest.mock('../components/common/StopJobAction', () => ({
 }));
 
 test('it renders the job execution detail page without a job', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '23'}));
-  renderWithProviders(<JobExecutionDetail />);
+  renderWithProviders(<JobExecutionDetail jobExecutionId="23" />);
+
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
 });
 test('it renders the job execution detail page', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '24'}));
-  renderWithProviders(<JobExecutionDetail />);
+  renderWithProviders(<JobExecutionDetail jobExecutionId="24" />);
+
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
   expect(screen.getByText('akeneo_job.job_status.STARTED 1/1')).toBeInTheDocument();
 });
 
 test('it renders the job execution export detail page', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '25'}));
+  renderWithProviders(<JobExecutionDetail jobExecutionId="25" />);
 
-  renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
   expect(screen.getByText('akeneo_job.job_status.STARTED 1/1')).toBeInTheDocument();
 });
 
 test('it renders the job execution import detail page', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '26'}));
+  renderWithProviders(<JobExecutionDetail jobExecutionId="26" />);
 
-  renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
   expect(screen.getByText('akeneo_job.job_status.STARTED 1/1')).toBeInTheDocument();
 });
 
 test('it stops the job execution', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '27'}));
+  renderWithProviders(<JobExecutionDetail jobExecutionId="26" />);
 
-  renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
   expect(screen.getByText('stop job')).toBeInTheDocument();
@@ -155,9 +149,8 @@ test('it stops the job execution', () => {
 });
 
 test('it can show every downloadable files', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '27'}));
+  renderWithProviders(<JobExecutionDetail jobExecutionId="27" />);
 
-  renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('pim_menu.tab.activity')).toBeInTheDocument();
   expect(screen.getByText('pim_menu.item.job_tracker')).toBeInTheDocument();
   expect(screen.getByText('pim_enrich.entity.job_execution.module.download.output')).toBeInTheDocument();
@@ -166,9 +159,8 @@ test('it can show every downloadable files', () => {
 });
 
 test('it displays an error if needed', () => {
-  useParams.mockImplementation(() => ({jobExecutionId: '28'}));
+  renderWithProviders(<JobExecutionDetail jobExecutionId="28" />);
 
-  renderWithProviders(<JobExecutionDetail />);
   expect(screen.getByText('not found')).toBeInTheDocument();
   expect(screen.getByText('404')).toBeInTheDocument();
 });
