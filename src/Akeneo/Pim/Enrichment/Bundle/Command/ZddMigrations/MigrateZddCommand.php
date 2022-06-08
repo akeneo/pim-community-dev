@@ -49,7 +49,7 @@ class MigrateZddCommand extends Command
 
         $migrationCount = 0;
         /** @var ZddMigration $zddMigration */
-        foreach($this->zddMigrations as $zddMigration) {
+        foreach ($this->zddMigrations as $zddMigration) {
             if (!$this->isMigrated($zddMigration)) {
                 try {
                     $this->logger->notice(
