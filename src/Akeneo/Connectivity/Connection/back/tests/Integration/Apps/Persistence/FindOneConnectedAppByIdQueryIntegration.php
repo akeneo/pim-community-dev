@@ -45,7 +45,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
 
     public function test_it_can_retrieve_an_app(): void
     {
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $connection = $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
         $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $createdApp = new ConnectedApp(
@@ -56,6 +56,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
             'app logo',
             'app author',
             'app_123456abcdef',
+            $connection->username(),
             ['e-commerce'],
             false,
             'akeneo'
@@ -69,7 +70,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
 
     public function test_it_can_retrieve_a_connected_app_by_id_related_to_a_test_app(): void
     {
-        $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
+        $connection = $this->connectionLoader->createConnection('bynder', 'Bynder', FlowType::OTHER, false);
         $this->userGroupLoader->create(['name' => 'app_123456abcdef']);
 
         $createdApp = new ConnectedApp(
@@ -80,6 +81,7 @@ class FindOneConnectedAppByIdQueryIntegration extends TestCase
             'app logo',
             'app author',
             'app_123456abcdef',
+            $connection->username(),
             ['e-commerce'],
             false,
             'akeneo',

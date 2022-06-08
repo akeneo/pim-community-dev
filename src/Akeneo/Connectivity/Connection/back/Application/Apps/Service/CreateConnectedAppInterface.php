@@ -16,5 +16,11 @@ interface CreateConnectedAppInterface
     /**
      * @param string[] $scopes
      */
-    public function execute(MarketplaceApp $marketplaceApp, array $scopes, string $connectionCode, string $userGroupName): ConnectedApp;
+    public function execute(
+        MarketplaceApp $marketplaceApp,
+        array $scopes,
+        string $connectionCode,
+        string $userGroupName,
+        string $connectionUsername
+    ): ConnectedApp;
 }

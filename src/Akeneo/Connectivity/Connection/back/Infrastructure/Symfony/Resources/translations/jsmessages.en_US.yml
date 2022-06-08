@@ -148,6 +148,7 @@ akeneo_connectivity.connection:
                 tabs:
                     settings: Settings
                     permissions: Permissions
+                    catalogs: Catalogs
                     error_monitoring: Error monitoring
                 settings:
                     monitoring:

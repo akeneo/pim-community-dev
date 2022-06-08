@@ -77,6 +77,7 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
 
         $this->handle(new FlagAppContainingOutdatedScopesCommand(
@@ -105,6 +106,7 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
 
         $this->handle(new FlagAppContainingOutdatedScopesCommand(
@@ -133,6 +135,7 @@ class FlagAppContainingOutdatedScopesHandlerSpec extends ObjectBehavior
             'a/path/to/a/logo',
             'an_author',
             'a_group',
+            'an_username',
         );
 
         $this->handle(new FlagAppContainingOutdatedScopesCommand(

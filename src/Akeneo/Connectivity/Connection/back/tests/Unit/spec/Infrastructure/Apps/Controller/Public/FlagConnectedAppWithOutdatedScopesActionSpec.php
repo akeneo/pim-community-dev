@@ -106,6 +106,7 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
             'path/to/logo',
             'author',
             'user_group_name',
+            'an_username',
         );
 
         $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);
@@ -140,6 +141,7 @@ class FlagConnectedAppWithOutdatedScopesActionSpec extends ObjectBehavior
             'path/to/logo',
             'author',
             'user_group_name',
+            'an_username',
         );
 
         $findOneConnectedAppByUserIdQuery->execute(42)->willReturn($connectedApp);

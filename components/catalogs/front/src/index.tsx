@@ -6,20 +6,58 @@ import {ThemeProvider} from 'styled-components';
 import {CatalogList} from './components/CatalogList';
 import {CatalogEdit} from './components/CatalogEdit';
 import {pimTheme} from 'akeneo-design-system';
+import {QueryClient, QueryClientProvider} from 'react-query';
+import {MicroFrontendDependenciesProvider} from '@akeneo-pim-community/shared';
+import {FakePIM} from './FakePIM';
+
+const routes = {
+    pim_user_user_rest_get_current: {
+        tokens: [['text', '/rest/user/']],
+        defaults: [],
+        requirements: [],
+        hosttokens: [],
+        methods: ['GET'],
+        schemes: [],
+    },
+    pim_user_security_rest_get: {
+        tokens: [['text', '/rest/security/']],
+        defaults: [],
+        requirements: {
+            method: 'GET',
+        },
+        hosttokens: [],
+        methods: [],
+        schemes: [],
+    },
+};
+
+const client = new QueryClient();
 
 ReactDOM.render(
     <React.StrictMode>
         <ThemeProvider theme={pimTheme}>
-            <Router>
-                <Switch>
-                    <Route path='/:id'>
-                        <CatalogEdit />
-                    </Route>
-                    <Route path='/'>
-                        <CatalogList />
-                    </Route>
-                </Switch>
-            </Router>
+            <QueryClientProvider client={client}>
+                <MicroFrontendDependenciesProvider
+                    routes={routes}
+                    translations={{
+                        locale: 'en_US',
+                        messages: {},
+                    }}
+                >
+                    <FakePIM>
+                        <Router>
+                            <Switch>
+                                <Route path='/:id'>
+                                    <CatalogEdit />
+                                </Route>
+                                <Route path='/'>
+                                    <CatalogList owner='shopifi' />
+                                </Route>
+                            </Switch>
+                        </Router>
+                    </FakePIM>
+                </MicroFrontendDependenciesProvider>
+            </QueryClientProvider>
         </ThemeProvider>
     </React.StrictMode>,
     document.getElementById('root')

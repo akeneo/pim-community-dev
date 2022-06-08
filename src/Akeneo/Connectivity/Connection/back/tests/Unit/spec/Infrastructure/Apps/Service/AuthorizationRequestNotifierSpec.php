@@ -53,6 +53,7 @@ class AuthorizationRequestNotifierSpec extends ObjectBehavior
             'http://www.example.com/path/to/logo/a',
             'author A',
             'app_123456abcdef',
+            'username_1234',
             ['category A1', 'category A2'],
             false,
             'partner A',

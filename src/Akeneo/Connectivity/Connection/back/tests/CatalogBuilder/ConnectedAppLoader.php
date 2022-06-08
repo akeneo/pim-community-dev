@@ -124,7 +124,7 @@ SQL;
             $app->getName(),
             ' ',
             [$group->getName()],
-            [$role->getRole()]
+            [$role->getRole()],
         );
         $userId = $user->id();
         $connection = $this->createConnection->execute(
@@ -138,7 +138,8 @@ SQL;
             $app,
             $scopes,
             $connection->code(),
-            $group->getName()
+            $group->getName(),
+            $code,
         );
 
         $user = $this->findConnectionUser($code);

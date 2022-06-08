@@ -33,7 +33,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
     public function testItUpdatesTheCatalog(): void
     {
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -67,7 +67,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsForbiddenWhenMissingPermissions(): void
     {
-        $this->client = $this->getAuthenticatedClient([]);
+        $this->client = $this->getAuthenticatedPublicApiClient([]);
 
         $this->commandBus->execute(new CreateCatalogCommand(
             'db1079b6-f397-4a6a-bae4-8658e64ad47c',
@@ -95,7 +95,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
 
     public function testItReturnsNotFoundWhenCatalogDoesNotExist(): void
     {
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
@@ -128,7 +128,7 @@ class UpdateCatalogActionTest extends IntegrationTestCase
             $anotherUserId,
         ));
 
-        $this->client = $this->getAuthenticatedClient([
+        $this->client = $this->getAuthenticatedPublicApiClient([
             'read_catalogs',
             'write_catalogs',
             'delete_catalogs',
