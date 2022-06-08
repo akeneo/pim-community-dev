@@ -24,7 +24,7 @@ class TransferFilesToSftpStorageTest extends AcceptanceTestCase
     /**
      * @test
      */
-    public function itTransfersFilesToSftpStorage(): void
+    public function it_transfers_files_to_sftp_storage(): void
     {
         $this->getLocalFilesystem()->write('file_key1', 'file1 content');
         $this->getCatalogFilesystem()->write('file_key2', 'file2 content');
