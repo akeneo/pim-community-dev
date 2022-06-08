@@ -7,11 +7,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'pim/form', 'pim/template/import/switcher'], function (
-  _,
-  BaseForm,
-  template
-) {
+define(['underscore', 'pim/form', 'pim/template/import/switcher'], function (_, BaseForm, template) {
   return BaseForm.extend({
     className: 'AknButtonList',
     template: _.template(template),
@@ -87,8 +83,8 @@ define(['underscore', 'pim/form', 'pim/template/import/switcher'], function (
     registerAction: function (actionToRegister) {
       const actionExist = this.actions.some(action => action.code === actionToRegister.code);
       this.actions = actionExist
-          ? this.actions.map(action => action.code === actionToRegister ? actionToRegister : action)
-          : [...this.actions, actionToRegister]
+        ? this.actions.map(action => (action.code === actionToRegister ? actionToRegister : action))
+        : [...this.actions, actionToRegister];
 
       this.render();
     },
