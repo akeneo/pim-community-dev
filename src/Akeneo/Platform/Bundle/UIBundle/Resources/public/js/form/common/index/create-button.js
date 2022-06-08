@@ -16,7 +16,8 @@ define([
   'routing',
   'pim/dialogform',
   'pim/form-builder',
-], function ($, _, __, BaseForm, template, Routing, DialogForm, FormBuilder) {
+  'pim/feature-flags'
+], function ($, _, __, BaseForm, template, Routing, DialogForm, FormBuilder, FeatureFlags) {
   return BaseForm.extend({
     template: _.template(template),
     dialog: null,
@@ -34,6 +35,12 @@ define([
      * {@inheritdoc}
      */
     render: function () {
+      if (FeatureFlags.isEnabled('free_trial') && this.code === 'pim-user-index-create-button') {
+        this.$el.remove();
+
+        return this;
+      }
+
       this.$el.html(
         this.template({
           title: __(this.config.title),
