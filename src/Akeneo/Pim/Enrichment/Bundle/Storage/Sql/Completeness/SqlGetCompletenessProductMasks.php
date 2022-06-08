@@ -73,7 +73,6 @@ FROM filtered_product
     LEFT JOIN pim_catalog_family family ON product.family_id = family.id
     LEFT JOIN pim_catalog_product_model pm1 ON product.product_model_id = pm1.id
     LEFT JOIN pim_catalog_product_model pm2 ON pm1.parent_id = pm2.id
-GROUP BY product.identifier
 SQL;
 
         $rows = array_map(
