@@ -1,23 +1,11 @@
 import React from 'react';
 import styled, {ThemeProvider} from "styled-components";
 import {CommonStyle, onboarderTheme} from 'akeneo-design-system';
-import {QueryClient, QueryClientProvider} from 'react-query';
+import {QueryClientProvider} from 'react-query';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Authentication} from "./Authentication";
-import {Authenticated} from "./Authenticated";
 import {UserContextProvider} from "./contexts";
-
-const queryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-            refetchOnWindowFocus: false,
-        },
-        mutations: {
-            retry: false,
-        },
-    },
-});
+import {queryClient} from "./api";
 
 function App() {
   return (
@@ -29,11 +17,6 @@ function App() {
                             <Route path={`/(set-up-password|login)/`}>
                                 <Container>
                                     <Authentication/>
-                                </Container>
-                            </Route>
-                            <Route path="/">
-                                <Container>
-                                    <Authenticated/>
                                 </Container>
                             </Route>
                         </Switch>
