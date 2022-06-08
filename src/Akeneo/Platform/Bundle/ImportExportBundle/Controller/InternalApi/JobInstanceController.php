@@ -371,6 +371,13 @@ class JobInstanceController
             $jobInstance->setRawParameters($rawParameters);
         }
 
+        /** TODO remove it when we will migrate to storage unification */
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
+            $rawParameters = $jobInstance->getRawParameters();
+            $rawParameters['filePath'] = 'fake_path.zip';
+            $jobInstance->setRawParameters($rawParameters);
+        }
+
         $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
         $errors = $this->getValidationErrors($jobInstance, $validationGroups);
         if (count($errors) > 0) {
