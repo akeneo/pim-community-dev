@@ -35,7 +35,7 @@ class ValidateManualStorageTest extends AbstractValidationTest
         return [
             'valid manual storage' => [
                 [
-                    'type' => 'manual',
+                    'type' => 'manual_upload',
                     'file_path' => '/tmp/products.xlsx',
                 ],
             ],
@@ -46,7 +46,7 @@ class ValidateManualStorageTest extends AbstractValidationTest
     {
         return [
             'invalid storage type' => [
-                'This value should be equal to "manual".',
+                'This value should be equal to "manual_upload".',
                 '[type]',
                 [
                     'type' => 'invalid',
@@ -56,14 +56,14 @@ class ValidateManualStorageTest extends AbstractValidationTest
                 'This field is missing.',
                 '[file_path]',
                 [
-                    'type' => 'manual',
+                    'type' => 'manual_upload',
                 ],
             ],
             'manual storage with additional fields' => [
                 'This field was not expected.',
                 '[additional]',
                 [
-                    'type' => 'manual',
+                    'type' => 'manual_upload',
                     'file_path' => '/tmp/products.xlsx',
                     'additional' => 'invalid',
                 ],
