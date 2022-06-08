@@ -12,6 +12,7 @@ while ! docker-compose exec mysql mysql --protocol TCP -uroot -proot -e "show da
         echo "We have been waiting for MySQL too long already; failing." >&2
         exit 1
     fi;
+    echo $COUNTER
     sleep 1
 done
 
@@ -25,6 +26,7 @@ while ! docker-compose exec elasticsearch curl -s -k --fail "http://elasticsearc
         echo "We have been waiting for Elasticsearch too long already; failing." >&2
         exit 1
     fi;
+    echo $COUNTER
     sleep 1
 done
 
