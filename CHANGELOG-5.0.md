@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.98 (2022-06-08)
+
 ## Bug fixes
 
 - PIM-10477: [Backport PIM-10220] Fixed issues where association has NaN error
