@@ -222,17 +222,6 @@ services:
             - '@akeneo_batch.job.job_stopper'
 
     ### Category
-    pim_connector.step.csv_category.import:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'import'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.file.csv_category'
-            - '@pim_connector.processor.denormalization.category'
-            - '@pim_connector.writer.database.category'
-            - 1
-            - '@akeneo_batch.job.job_stopper'
 
     pim_connector.step.csv_category.export:
         class: '%pim_connector.step.item_step.class%'

@@ -36,11 +36,11 @@ services:
         class: '%pim_api.normalizer.collection.class%'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
-
-    pim_api.normalizer.file:
-        class: '%pim_api.normalizer.file.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.file'
-            - '@router'
-        tags:
-            - { name: pim_external_api_serializer.normalizer, priority: 90 }
+#
+#    pim_api.normalizer.file:
+#        class: '%pim_api.normalizer.file.class%'
+#        arguments:
+#            - '@pim_catalog.normalizer.standard.file'
+#            - '@router'
+#        tags:
+#            - { name: pim_external_api_serializer.normalizer, priority: 90 }

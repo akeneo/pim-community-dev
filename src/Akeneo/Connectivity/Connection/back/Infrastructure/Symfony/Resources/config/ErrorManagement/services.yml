@@ -9,4 +9,4 @@ services:
     akeneo_connectivity.connection.exception_serializer:
         class: FOS\RestBundle\Serializer\SymfonySerializerAdapter
         arguments:
-            - '@pim_domain_error_serializer'
+            - '@serializer'

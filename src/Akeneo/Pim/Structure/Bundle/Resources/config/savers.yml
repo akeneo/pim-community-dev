@@ -1,3 +1,6 @@
+parameters:
+    pim_catalog.saver.base.class: Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+
 services:
     pim_catalog.saver.attribute:
         class: 'Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Saver\AttributeSaver'

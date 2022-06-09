@@ -26,8 +26,8 @@ class PimUserExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('context.yml');
         $loader->load('controllers.yml');
-        $loader->load('datagrid_actions.yml');
-        $loader->load('datagrid_listeners.yml');
+//        $loader->load('datagrid_actions.yml');
+//        $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
@@ -43,9 +43,9 @@ class PimUserExtension extends Extension
         $loader->load('twig.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
-        $loader->load('view_elements.yml');
-        $loader->load('view_elements/user.yml');
-        $loader->load('view_elements/group.yml');
+//        $loader->load('view_elements.yml');
+//        $loader->load('view_elements/user.yml');
+//        $loader->load('view_elements/group.yml');
         $loader->load('readers.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');

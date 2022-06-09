@@ -40,16 +40,16 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\CloseSessionListener'
         tags:
             - { name: kernel.event_subscriber }
-
-    stof_doctrine_extensions.event_listener.locale:
-        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener'
-        arguments:
-            - '@security.token_storage'
-            - '@pim_enrich.event_listener.add_locale'
-            - '@pim_catalog.context.catalog'
-            - '@pim_user.context.user'
-        tags:
-            - { name: kernel.event_subscriber }
+#
+#    stof_doctrine_extensions.event_listener.locale:
+#        class: 'Akeneo\Platform\Bundle\UIBundle\EventListener\UserContextListener'
+#        arguments:
+#            - '@security.token_storage'
+#            - '@pim_enrich.event_listener.add_locale'
+#            - '@pim_catalog.context.catalog'
+#            - '@pim_user.context.user'
+#        tags:
+#            - { name: kernel.event_subscriber }
 
     security.authentication.form_entry_point:
         abstract: true
