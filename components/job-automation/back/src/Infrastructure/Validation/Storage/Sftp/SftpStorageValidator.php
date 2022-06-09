@@ -2,8 +2,8 @@
 
 namespace Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp;
 
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\Validation\FilePath;
 use Akeneo\Platform\JobAutomation\Domain\Model\SftpStorage as SftpStorageModel;
-use Akeneo\Platform\JobAutomation\Infrastructure\Validation\FilePath;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
