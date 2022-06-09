@@ -9,6 +9,7 @@ use Google\Cloud\Firestore\CollectionReference;
 use Google\Cloud\Firestore\FirestoreClient;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class FirestoreContextFetcherIntegration extends TestCase
 {
@@ -102,6 +103,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
         ]);
 
         $this->firestoreContextFetcher = new FirestoreContextFetcher(
+            logger: new NullLogger(),
             googleProjectId: $_ENV['GOOGLE_CLOUD_PROJECT'],
             collection: self::TEST_COLLECTION,
             cacheTtl: 5
@@ -113,6 +115,7 @@ final class FirestoreContextFetcherIntegration extends TestCase
         foreach ($this->firestoreCollection()->documents() as $document) {
             $document->reference()->delete();
         }
+        \apcu_clear_cache();
     }
 
     private function firestoreCollection(): CollectionReference
