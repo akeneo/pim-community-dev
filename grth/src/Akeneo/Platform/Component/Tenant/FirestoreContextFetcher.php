@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Tenant;
 
+use Google\Cloud\Core\Exception\GoogleException;
 use Google\Cloud\Firestore\FirestoreClient;
 
 final class FirestoreContextFetcher implements TenantContextFetcherInterface
@@ -12,34 +13,48 @@ final class FirestoreContextFetcher implements TenantContextFetcherInterface
 
     public function __construct(
         private string $googleProjectId,
-        private string $collection = self::TENANT_COLLECTION
+        private string $collection = self::TENANT_COLLECTION,
+        private int $cacheTtl = 30
     ) {
     }
 
     /**
-     * @throws \Google\Cloud\Core\Exception\GoogleException
      * @throws \JsonException
      */
     public function getTenantContext(string $tenantId): array
     {
-        $db = new FirestoreClient(
-            [
-                'projectId' => $this->googleProjectId,
-            ]
-        );
+        return \json_decode(json: $this->fetchContext($tenantId), associative: true, flags: \JSON_THROW_ON_ERROR);
+    }
 
-        $docRef = $db->collection($this->collection)->document($tenantId);
-        $snapshot = $docRef->snapshot();
+    /**
+     * @throws GoogleException
+     */
+    private function fetchContext(string $tenantId): string
+    {
+        $cacheKey = \sprintf('%s.%s', $this->collection, $tenantId);
+        $values = \apcu_fetch($cacheKey);
 
-        if (!$snapshot->exists()) {
-            throw new \RuntimeException(sprintf('Unable to fetch context for the "%s" tenant ID', $tenantId));
+        if (false === $values) {
+            $db = new FirestoreClient(
+                [
+                    'projectId' => $this->googleProjectId,
+                ]
+            );
+
+            $docRef = $db->collection($this->collection)->document($tenantId);
+            $snapshot = $docRef->snapshot();
+
+            if (!$snapshot->exists()) {
+                throw new \RuntimeException(sprintf('Unable to fetch context for the "%s" tenant ID', $tenantId));
+            }
+
+            $values = $snapshot->data()['values'] ?? null;
+            if (!\is_string($values)) {
+                throw new \RuntimeException(sprintf('Unable to fetch context for the "%s" tenant ID', $tenantId));
+            }
+            \apcu_store($cacheKey, $values, $this->cacheTtl);
         }
 
-        $values = $snapshot->data()['values'] ?? null;
-        if (!\is_string($values)) {
-            throw new \RuntimeException(sprintf('Unable to fetch context for the "%s" tenant ID', $tenantId));
-        }
-
-        return \json_decode(json: $values, associative: true, flags: \JSON_THROW_ON_ERROR);
+        return $values;
     }
 }
