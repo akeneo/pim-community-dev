@@ -7,6 +7,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductMode
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\ProductModel\OnDelete\ComputeProductAndAncestorsSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -20,9 +21,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
 {
-    public function let(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
-    {
-        $this->beConstructedWith($productModelDescendantsAndAncestorsIndexer);
+    public function let(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        Client $esClient
+    ) {
+        $this->beConstructedWith($productModelDescendantsAndAncestorsIndexer, $esClient);
     }
 
     function it_is_initializable()
@@ -45,10 +48,26 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
 
     function it_removes_product_model_from_index(
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
-        ProductModelInterface $productModel
+        ProductModelInterface $productModel,
+        Client $esClient
     ) {
+        $productModel->getCreated()->willReturn(new \DateTime('1970-01-01'));
         $event = new RemoveEvent($productModel->getWrappedObject(), 12, ['unitary' => true]);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12])->shouldBeCalled();
+        $esClient->refreshIndex()->shouldNotBeCalled();
+
+        $this->onProductModelRemove($event);
+    }
+
+    function it_refreshes_index_before_removing_product_model_from_index(
+        ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
+        ProductModelInterface $productModel,
+        Client $esClient
+    ) {
+        $productModel->getCreated()->willReturn((new \DateTime('now'))->modify("- 1 second"));
+        $event = new RemoveEvent($productModel->getWrappedObject(), 12, ['unitary' => true]);
+        $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12])->shouldBeCalled();
+        $esClient->refreshIndex()->shouldBeCalledOnce();
 
         $this->onProductModelRemove($event);
     }
@@ -78,10 +97,14 @@ class ComputeProductAndAncestorsSubscriberSpec extends ObjectBehavior
     function it_bulk_removes_product_models_from_index(
         ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer,
         ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
+        ProductModelInterface $productModel2,
+        Client $esClient
     ) {
+        $productModel1->getCreated()->willReturn((new \DateTime('now'))->modify("- 1 hour"));
+        $productModel2->getCreated()->willReturn((new \DateTime('now'))->modify("- 1 second"));
         $event = new RemoveEvent([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()], [12, 14]);
         $productModelDescendantsAndAncestorsIndexer->removeFromProductModelIds([12, 14])->shouldBeCalled();
+        $esClient->refreshIndex()->shouldBeCalledOnce();
 
         $this->onProductModelRemoveAll($event);
     }

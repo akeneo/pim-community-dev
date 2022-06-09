@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexe
 use Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete\ComputeProductsAndAncestorsSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
@@ -15,9 +16,9 @@ use Ramsey\Uuid\Uuid;
 
 class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 {
-    function let(ProductAndAncestorsIndexer $indexer, Connection $connection)
+    function let(ProductAndAncestorsIndexer $indexer, Connection $connection, Client $esClient)
     {
-        $this->beConstructedWith($indexer, $connection);
+        $this->beConstructedWith($indexer, $connection, $esClient);
     }
 
     function it_is_initializable()
@@ -48,9 +49,24 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $indexer->removeFromProductIdsAndReindexAncestors(Argument::cetera())->shouldNotBeCalled();
     }
 
-    function it_deletes_a_single_product_from_the_index(ProductAndAncestorsIndexer $indexer)
+    function it_deletes_a_single_product_from_the_index(ProductAndAncestorsIndexer $indexer, Client $esClient)
     {
-        $this->deleteProduct(new RemoveEvent(new Product(), 42, ['unitary' => true]));
+        $product = new Product();
+        $product->setCreated(new \DateTime('1970-01-01'));
+        $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
+        $esClient->refreshIndex()->shouldNotBeCalled();
+
+        $indexer->removeFromProductIdsAndReindexAncestors([42], [], [])->shouldBeCalled();
+    }
+
+    function it_refreshes_index_before_deleting_a_single_product(
+        ProductAndAncestorsIndexer $indexer,
+        Client $esClient
+    ) {
+        $product = new Product();
+        $product->setCreated((new \DateTime('now'))->modify("- 1 second"));
+        $this->deleteProduct(new RemoveEvent($product, 42, ['unitary' => true]));
+        $esClient->refreshIndex()->shouldBeCalledOnce();
 
         $indexer->removeFromProductIdsAndReindexAncestors([42], [], [])->shouldBeCalled();
     }
@@ -66,6 +82,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $subProductModel->setParent($rootProductModel);
         $variantProduct = new Product();
         $variantProduct->setParent($subProductModel);
+        $variantProduct->setCreated(new \DateTime('1970-01-01'));
 
         $indexer->removeFromProductIdsAndReindexAncestors(
             [100],
@@ -83,7 +100,8 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
 
     function it_deletes_multiple_products_from_the_index(
         ProductAndAncestorsIndexer $indexer,
-        Connection $connection
+        Connection $connection,
+        Client $esClient
     ) {
         $rootProductModel = new ProductModel();
         $rootProductModel->setCode('root');
@@ -93,12 +111,14 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
         $variantProduct = new Product();
         $variantProduct->setParent($subProductModel1);
         $variantProduct->setId(44);
+        $variantProduct->setCreated(new \DateTime('1970-01-01'));
         $subProductModel2 = new ProductModel();
         $subProductModel2->setCode('sub2');
         $subProductModel2->setParent($rootProductModel);
         $otherVariantProduct = new Product();
         $otherVariantProduct->setParent($subProductModel2);
         $otherVariantProduct->setId(56);
+        $otherVariantProduct->setCreated((new \DateTime('now'))->modify("- 1 second"));
 
         $indexer->removeFromProductIdsAndReindexAncestors(
             [44, 56],
@@ -116,6 +136,7 @@ class ComputeProductsAndAncestorsSubscriberSpec extends ObjectBehavior
                 '386f0ec8-4e4c-4028-acd7-e1195a13a3b5',
                 '57e9847a-6c56-4403-9f1f-abde22ecb0a4',
             ]);
+        $esClient->refreshIndex()->shouldBeCalledOnce();
 
         $event = new RemoveEvent(
             [$variantProduct, $otherVariantProduct],

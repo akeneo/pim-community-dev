@@ -91,10 +91,9 @@ class Select2Decorator extends ElementDecorator
      */
     public function open()
     {
-        $openerElement = $this->find('css', '.select2-arrow');
-        if (null === $openerElement) {
-            $openerElement = $this->find('css', '.select2-search-field');
-        }
+        $openerElement = $this->spin(function () {
+            return $this->find('css', '.select2-arrow') ?? $this->find('css', '.select2-search-field');
+        }, 'Could not find opener element');
 
         if (!$this->element->hasClass('select2-dropdown-open')) {
             $openerElement->click();
