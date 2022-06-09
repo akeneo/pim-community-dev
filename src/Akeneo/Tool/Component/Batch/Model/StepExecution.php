@@ -56,7 +56,7 @@ class StepExecution
     /** @var \DateTime */
     private $startTime;
 
-    /** @var \DateTime */
+    /** @var \DateTime | null */
     private $endTime;
 
     /* @var ExecutionContext $executionContext */
@@ -158,7 +158,7 @@ class StepExecution
     /**
      * Returns the time that this execution ended
      *
-     * @return \DateTime time that this execution ended
+     * @return \DateTime | null time that this execution ended
      */
     public function getEndTime()
     {

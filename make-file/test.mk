@@ -27,6 +27,7 @@ lint-back:
 	$(DOCKER_COMPOSE) run --rm php rm -rf var/cache/dev
 	APP_ENV=dev $(DOCKER_COMPOSE) run -e APP_DEBUG=1 --rm php bin/console cache:warmup
 	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Pim --level 2
+	$(DOCKER_COMPOSE) run --rm php php -d memory_limit=1G vendor/bin/phpstan analyse src/Akeneo/Platform/Bundle/ImportExportBundle --level 5
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	$(MAKE) connectivity-connection-lint-back
 	$(MAKE) communication-channel-lint-back

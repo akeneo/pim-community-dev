@@ -258,7 +258,6 @@ akeneo_connectivity.connection:
           assets: assets
         new: NIEUW
       error:
-        sub_text: Neem contact op met de ontwikkelaar of met de helpdesk van Akeneo
         app_not_found: De klant_id komt niet overeen met een bestaande app.
       constraint:
         client_id:

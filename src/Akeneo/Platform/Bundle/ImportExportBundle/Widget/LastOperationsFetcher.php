@@ -6,9 +6,11 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Widget;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetJobExecutionTracking;
 use Akeneo\Platform\Bundle\ImportExportBundle\Query\GetLastOperationsInterface;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -54,7 +56,7 @@ class LastOperationsFetcher
      */
     public function fetch(): array
     {
-        $user = $this->tokenStorage->getToken()->getUser();
+        $user = $this->getUser();
         $canViewAllJobs = $this->securityFacade->isGranted('pim_enrich_job_tracker_view_all_jobs');
         $operations = $this->lastOperations->execute($canViewAllJobs ? null : $user);
 
@@ -84,5 +86,15 @@ class LastOperationsFetcher
         }
 
         return $operations;
+    }
+
+    private function getUser(): UserInterface
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (!$user instanceof UserInterface) {
+            throw new \RuntimeException('The User object must implement the UserInterface interface.');
+        }
+
+        return $user;
     }
 }

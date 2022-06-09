@@ -31,6 +31,7 @@ class JobInstaller implements EventSubscriberInterface
         CREATE INDEX user_idx ON akeneo_batch_job_execution (user);
         CREATE INDEX status_idx ON akeneo_batch_job_execution (status);
         CREATE INDEX code_idx ON akeneo_batch_job_instance (code);
+        CREATE INDEX start_time_idx ON akeneo_batch_job_execution (start_time);
         CREATE INDEX is_visible_idx ON akeneo_batch_job_execution (is_visible);
         CREATE INDEX job_instance_id_user_status_is_visible_idx ON akeneo_batch_job_execution (job_instance_id, user, status, is_visible);
 SQL;
