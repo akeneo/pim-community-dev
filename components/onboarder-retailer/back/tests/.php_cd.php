@@ -124,8 +124,6 @@ $rules = [
             'Symfony\Component\Routing\Generator\UrlGeneratorInterface',
             'Symfony\Component\Validator\ConstraintViolationList',
             'Symfony\Component\Validator\Validator\ValidatorInterface',
-            'Symfony\Component\Validator\Context\ExecutionContextInterface',
-            'Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface',
             'Twig\Environment',
         ],
     )->in('Akeneo\OnboarderSerenity\Retailer\Test\Unit'),

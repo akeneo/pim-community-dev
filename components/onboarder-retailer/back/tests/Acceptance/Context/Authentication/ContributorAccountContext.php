@@ -60,7 +60,7 @@ final class ContributorAccountContext implements Context
     }
 
     /**
-     * @Given I update the contributor account with email ":email" by updating the password to ":password"
+     * @When I update the contributor account with email ":email" by updating the password to ":password"
      */
     public function iUpdateTheContributorAccountPassword(string $email, string $password): void
     {
@@ -68,28 +68,18 @@ final class ContributorAccountContext implements Context
         try {
             ($this->updatePasswordHandler)(new UpdatePassword($contributorAccount->identifier(), $password));
         } catch (InvalidPassword $e) {
-            $this->normalizeValidationErrors($e);
+            $this->storeValidationErrors($e);
         }
     }
 
     /**
-     * @Given the contributor account with email ":email" should have ":password" as password
+     * @Then the contributor account with email ":email" should have ":password" as password
      */
     public function theContributorAccountShouldHaveAsPassword(string $email, string $password): void
     {
         $contributorAccount = $this->contributorAccountRepository->findByEmail($email);
 
         Assert::assertNotNull($contributorAccount->getPassword());
-    }
-
-    /**
-     * @Given the contributor account with email ":email" must not be set
-     */
-    public function theContributorAccountPasswordMustNotBeSet(string $email): void
-    {
-        $contributorAccount = $this->contributorAccountRepository->findByEmail($email);
-
-        Assert::assertNull($contributorAccount->getPassword());
     }
 
     /**
@@ -107,7 +97,7 @@ final class ContributorAccountContext implements Context
         Assert::assertNotNull($contributorAccount->createdAt());
     }
 
-    private function normalizeValidationErrors(InvalidPassword $e): void
+    private function storeValidationErrors(InvalidPassword $e): void
     {
         $errors = [];
         foreach ($e->violations() as $violation) {
