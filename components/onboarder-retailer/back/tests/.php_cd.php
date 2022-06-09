@@ -134,6 +134,9 @@ $rules = [
         [
             // Onboarder coupling
             'Akeneo\OnboarderSerenity\Retailer\Domain',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\Exception\InvalidPassword',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePassword',
+            'Akeneo\OnboarderSerenity\Retailer\Application\Authentication\ContributorAccount\UpdatePasswordHandler',
             'Akeneo\OnboarderSerenity\Retailer\Application\Supplier',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Supplier',
             'Akeneo\OnboarderSerenity\Retailer\Infrastructure\Authentication',
