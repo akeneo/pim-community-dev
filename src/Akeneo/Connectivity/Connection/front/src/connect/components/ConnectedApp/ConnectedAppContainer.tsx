@@ -1,4 +1,4 @@
-import React, {FC, MouseEvent, useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {AppIllustration, Breadcrumb, DangerIcon, Helper, TabBar, useTabBar} from 'akeneo-design-system';
 import {Translate, useTranslate} from '../../../shared/translate';
 import {ConnectedApp} from '../../../model/Apps/connected-app';
@@ -19,6 +19,11 @@ import {DeveloperModeTag} from '../DeveloperModeTag';
 import isGrantedOnProduct from '../../is-granted-on-product';
 import isGrantedOnCatalog from '../../is-granted-on-catalog';
 import {CatalogList} from '@akeneo-pim-community/catalogs';
+import styled from 'styled-components';
+
+const ConnectedAppCatalogList = styled.div`
+    margin-top: 10px;
+`;
 
 type Props = {
     connectedApp: ConnectedApp;
@@ -270,7 +275,9 @@ export const ConnectedAppContainer: FC<Props> = ({connectedApp}) => {
                 )}
 
                 {isCurrent(catalogsTabName) && isAtLeastGrantedToViewCatalogs && (
-                    <CatalogList owner={connectedApp.connection_username} onCatalogClick={handleCatalogClick} />
+                    <ConnectedAppCatalogList>
+                        <CatalogList owner={connectedApp.connection_username} onCatalogClick={handleCatalogClick} />
+                    </ConnectedAppCatalogList>
                 )}
 
                 {isCurrent(errorMonitoringTabName) && <ConnectedAppErrorMonitoring connectedApp={connectedApp} />}
