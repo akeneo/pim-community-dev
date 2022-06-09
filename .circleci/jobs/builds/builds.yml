@@ -1,4 +1,5 @@
 envVarsDeployDev: &envVarsDeployDev
+envVarsDeployUCS: &envVarsDeployUCS
 executor-machine: &executor-machine
 
 orbs:
@@ -635,6 +636,148 @@ jobs:
                       echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
                       echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                       echo export USE_EDITION_FLAG=true >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+
+    build_ucs:
+        environment:
+            <<: *envVarsDeployUCS
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        working_directory: ~/project
+        steps:
+            - skip_job:
+                  skip: << pipeline.parameters.skip_build >>
+            - attach_workspace:
+                  at: ~/
+            - add_ssh_keys:
+                  fingerprints:
+                      - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+            - change_pim_onboarder_branch_steps
+            - set_gcloud_config_ucs
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      TYPE="srnt"
+                      TYPE_LONG="serenity"
+                      IMAGE_TAG=${CIRCLE_SHA1}
+                      IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                      IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                      RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                      PRODUCT_REFERENCE_TYPE="serenity_instance"
+                      PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                      DEPLOYMENT_HASH=$(find deployments-ucs -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f1)
+
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
+
+                      echo "Image tag: ${IMAGE_TAG}"
+                      echo "Serenity release name: ${RELEASE_NAME}"
+                      echo "Deployement hash: ${DEPLOYMENT_HASH}"
+            - run:
+                  name: Build the Serenity Edition prod image
+                  command: make -C deployments-ucs/ pim-image-prod
+            - run:
+                  name: Push the Serenity Edition prod image on docker registry
+                  command: make -C deployments-ucs/ push-pim-image-prod
+            - run:
+                  name: Push Terraform modules to GCS
+                  command: |
+                      BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export TYPE=${TYPE} > persisted_env_vars
+                      echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> persisted_env_vars
+            - persist_to_workspace:
+                  root: ~/
+                  paths:
+                      - project/persisted_env_vars
+
+    build_ucs_env_vars:
+        parameters:
+            PRODUCT_TYPE:
+                type: string
+                default: "srnt"
+        environment:
+            <<: *envVarsDeployUCS
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        working_directory: ~/project
+        steps:
+            - attach_workspace:
+                  at: ~/
+            - set_gcloud_config_ucs
+            - run:
+                  name: Define value for next steps
+                  command: |
+                      TYPE=<< parameters.PRODUCT_TYPE >>
+                      TYPE_LONG=serenity
+                      PRODUCT_REFERENCE_TYPE="${TYPE_LONG}_instance"
+                      PRODUCT_REFERENCE_CODE="${TYPE_LONG}_${ENV_NAME}"
+                      # TODO : FIND A WAY TO GET THE LAST IMAGE
+                      IMAGE_TAG=d3aa671c587f83eb319450ea64501c6d1781015c
+                      IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                      IMAGE_TAG_DATE=20220606095005
+                      RELEASE_NAME=v20220606095005
+                      DEPLOYMENT_HASH=$(find deployments-ucs -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum | cut -d' ' -f1)
+
+                      echo export TYPE=${TYPE} >> $BASH_ENV
+                      echo export TYPE_LONG=${TYPE_LONG} >> $BASH_ENV
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> $BASH_ENV
+
+                      echo "Type: ${TYPE}"
+                      echo "Type long: ${TYPE_LONG}"
+                      echo "Image tag: ${IMAGE_TAG}"
+                      echo "Product reference type: ${PRODUCT_REFERENCE_TYPE}"
+                      echo "Product reference code: ${PRODUCT_REFERENCE_CODE}"
+                      echo "Deployement hash: ${DEPLOYMENT_HASH}"
+            - run:
+                  name: Push Terraform modules to GCS
+                  command: |
+                      STATUS_CODE=0
+                      # Push only if directories doesn't exist
+                      gsutil ls gs://akecld-blackhawk-sandbox-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/ > /dev/null 2>&1 || STATUS_CODE=1
+                      if [[ "${STATUS_CODE}" == "1" ]]; then
+                          echo "BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/"
+                          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments-ucs/ gs://${GOOGLE_PROJECT_ID}-terraform-modules/serenity-edition-dev/${DEPLOYMENT_HASH}/
+                      fi
+            - run:
+                  name: Persist env vars for next jobs
+                  command: |
+                      echo export TYPE=${TYPE} > persisted_env_vars
+                      echo export TYPE_LONG=${TYPE_LONG} >> persisted_env_vars
+                      echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                      echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                      echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                      echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
+                      echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                      echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+                      echo export DEPLOYMENT_HASH=${DEPLOYMENT_HASH} >> persisted_env_vars
             - persist_to_workspace:
                   root: ~/
                   paths:
