@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\DownloadFileFromStorage;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\DownloadFileFromStorageInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 
 final class DownloadFileFromStorageHandler
@@ -23,7 +24,7 @@ final class DownloadFileFromStorageHandler
     public function handle(DownloadFileFromStorageCommand $command): string
     {
         $storage = $this->storageHydrator->hydrate($command->normalizedStorage);
-        if (null === $storage) {
+        if ($storage instanceof NoneStorage) {
             throw new \InvalidArgumentException('Unable to download file from none storage');
         }
 
