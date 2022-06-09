@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnDelete;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductAndAncestorsIndexer;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\DBAL\Connection;
@@ -29,7 +30,8 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
 
     public function __construct(
         private ProductAndAncestorsIndexer $productAndAncestorsIndexer,
-        private Connection $connection
+        private Connection $connection,
+        private Client $esClient
     ) {
     }
 
@@ -92,6 +94,10 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             return;
         }
 
+        if ($this->elasticsearchShouldBeRefreshed([$product])) {
+            $this->esClient->refreshIndex();
+        }
+
         $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
             [$event->getSubjectId()],
             $this->productUuidsCache,
@@ -110,6 +116,10 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
                 // TODO TIP-987 Remove this when decoupling PublishedProduct from Enrichment
                 && get_class($product) !== 'Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct';
         });
+
+        if ($this->elasticsearchShouldBeRefreshed($products)) {
+            $this->esClient->refreshIndex();
+        }
 
         if (!empty($products)) {
             $this->productAndAncestorsIndexer->removeFromProductIdsAndReindexAncestors(
@@ -157,5 +167,23 @@ final class ComputeProductsAndAncestorsSubscriber implements EventSubscriberInte
             fn (string $uuid): UuidInterface => Uuid::fromString($uuid),
             $result
         );
+    }
+
+    /**
+     * PIM-10467: If a product is created then deleted very quickly, ES can not have the product yet because
+     * it is refreshed every second. We take 10 seconds by security in case of overload.
+     *
+     * @param ProductInterface[] $products
+     * @return bool
+     */
+    private function elasticsearchShouldBeRefreshed(array $products): bool
+    {
+        foreach ($products as $product) {
+            if (null !== $product->getCreated() && 10 > time() - $product->getCreated()->getTimestamp()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
