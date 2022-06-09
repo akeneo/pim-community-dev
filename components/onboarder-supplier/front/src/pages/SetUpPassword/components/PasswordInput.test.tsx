@@ -10,7 +10,7 @@ test('The password is hidden by default', async () => {
     assertPasswordIsHidden();
 });
 
-test('The password can be displayed and hide', async () => {
+test('The password can be displayed and hidden', async () => {
     renderWithProviders(<PasswordInput onChange={() => {}} value="my password" />);
 
     let showPasswordIcon = screen.getByTestId('show-password');
