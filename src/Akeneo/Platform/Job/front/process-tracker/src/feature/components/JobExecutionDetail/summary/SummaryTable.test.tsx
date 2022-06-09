@@ -12,7 +12,12 @@ const jobExecution: JobExecution = {
   },
   status: 'success',
   isRunning: false,
-  failures: [],
+  failures: [
+    'a job failure',
+    {
+      label: 'another job failure',
+    },
+  ],
   isStoppable: true,
   tracking: {
     error: false,
@@ -73,8 +78,8 @@ const jobExecution: JobExecution = {
       startedAt: '14',
       endedAt: '15',
       warnings: [],
-      errors: ['an error'],
-      failures: ['a failure'],
+      errors: ['a step error'],
+      failures: ['a step failure'],
     },
     {
       job: 'product_export',
@@ -101,6 +106,8 @@ test('it displays a summary table', () => {
   expect(screen.getByText('batch_jobs.default_steps.Export file to export')).toBeInTheDocument();
   expect(screen.getByText('IN_PROGRESS')).toBeInTheDocument();
   expect(screen.getByText('12')).toBeInTheDocument();
-  expect(screen.getByText('an error')).toBeInTheDocument();
-  expect(screen.getByText('a failure')).toBeInTheDocument();
+  expect(screen.getByText('a step error')).toBeInTheDocument();
+  expect(screen.getByText('a step failure')).toBeInTheDocument();
+  expect(screen.getByText('a job failure')).toBeInTheDocument();
+  expect(screen.getByText('another job failure')).toBeInTheDocument();
 });

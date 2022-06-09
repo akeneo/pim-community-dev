@@ -16,6 +16,8 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 
 final class StorageClientProvider
 {
+    private const LOCAL_FILESYSTEM_NAME = 'localFilesystem';
+
     /**
      * @param iterable<StorageClientProviderInterface> $storageClientProviders
      */
@@ -39,5 +41,10 @@ final class StorageClientProvider
         }
 
         throw new \RuntimeException(sprintf('No storage client found for storage "%s"', get_class($storage)));
+    }
+
+    public function getLocalStorageClient(): StorageClientInterface
+    {
+        return new FileSystemStorageClient($this->filesystemProvider->getFilesystem(self::LOCAL_FILESYSTEM_NAME));
     }
 }
