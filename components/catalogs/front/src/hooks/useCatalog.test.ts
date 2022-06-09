@@ -17,7 +17,9 @@ test('it fetches the API response', async () => {
         ])
     );
 
-    const {result, waitForNextUpdate} = renderHook(() => useCatalog('123e4567-e89b-12d3-a456-426614174000'), {wrapper: ReactQueryWrapper});
+    const {result, waitForNextUpdate} = renderHook(() => useCatalog('123e4567-e89b-12d3-a456-426614174000'), {
+        wrapper: ReactQueryWrapper,
+    });
 
     expect(result.current).toMatchObject({
         isLoading: true,

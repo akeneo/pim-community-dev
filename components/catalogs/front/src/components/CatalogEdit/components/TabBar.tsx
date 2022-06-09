@@ -7,8 +7,8 @@ enum Tabs {
 }
 
 type Props = {
-    isCurrent: (tab: string) => boolean,
-    switchTo: (tab: string) => void,
+    isCurrent: (tab: string) => boolean;
+    switchTo: (tab: string) => void;
 };
 
 const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo}) => {

@@ -12,17 +12,17 @@ const Edit: FC<PropsWithChildren<Props>> = () => {
     const [activeTab, setActiveTab] = useSessionStorageState<string>(Tabs.PRODUCT_SELECTION, 'pim_catalog_activeTab');
     const [isCurrent, switchTo] = useTabBar(activeTab);
 
-    const handleSwitchTo = useCallback((tab: string) => {
-        setActiveTab(tab);
-        switchTo(tab);
-    }, [setActiveTab, switchTo]);
+    const handleSwitchTo = useCallback(
+        (tab: string) => {
+            setActiveTab(tab);
+            switchTo(tab);
+        },
+        [setActiveTab, switchTo]
+    );
 
     return (
         <>
-            <TabBar
-                isCurrent={isCurrent}
-                switchTo={handleSwitchTo}
-            />
+            <TabBar isCurrent={isCurrent} switchTo={handleSwitchTo} />
 
             {isCurrent(Tabs.PRODUCT_SELECTION) && <ProductSelection />}
         </>

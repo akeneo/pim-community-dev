@@ -25,7 +25,7 @@ test('it calls save from parent component', () => {
     logger.mockImplementation(() => {});
 
     const ref: {current: CatalogEditRef | null} = {
-        current: null
+        current: null,
     };
 
     render(

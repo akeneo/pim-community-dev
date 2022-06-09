@@ -44,7 +44,7 @@ const Menu = styled.div`
 const MenuButton = styled.div`
     align-items: center;
     border-left-width: 0px;
-    border: 0 solid #9452BA;
+    border: 0 solid #9452ba;
     color: ${getColor('brand', 100)};
     cursor: pointer;
     display: flex;

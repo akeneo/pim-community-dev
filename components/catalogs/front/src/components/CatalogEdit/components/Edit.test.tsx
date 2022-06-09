@@ -16,10 +16,7 @@ jest.mock('../../ProductSelection', () => ({
 
 // todo : find a way to unmock useSessionStorageState to remove these lines
 type StateType = any;
-(useSessionStorageState as jest.Mock).mockImplementation((
-    defaultValue: StateType,
-    key: string
-) => {
+(useSessionStorageState as jest.Mock).mockImplementation((defaultValue: StateType, key: string) => {
     const storageValue = sessionStorage.getItem(key) as string;
     const [value, setValue] = useState<StateType>(null !== storageValue ? JSON.parse(storageValue) : defaultValue);
 
