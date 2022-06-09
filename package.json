@@ -141,7 +141,7 @@
     "formik": "^2.0.6",
     "jquery": "^3.6.0",
     "json-schema-ref-parser": "^7.1.2",
-    "json-schema-to-typescript": "^7.1.0",
+    "json-schema-to-typescript": "^10.1.5",
     "less": "^3.9.0",
     "lodash": "^4.17.0",
     "luxon": "^1.26.0",
