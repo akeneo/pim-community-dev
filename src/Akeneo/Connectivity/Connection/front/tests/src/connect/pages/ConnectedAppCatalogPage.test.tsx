@@ -21,7 +21,7 @@ jest.mock('@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogConta
 jest.mock('@src/connect/hooks/use-connected-app');
 jest.mock('@akeneo-pim-community/catalogs/lib/hooks/useCatalog');
 
-test('The connected app catalog page displays nothing while loading connected app', async () => {
+test('The connected app catalog page displays nothing while loading connected app', () => {
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: true, error: null, payload: null}));
     (useCatalog as jest.Mock).mockImplementation(() => ({isLoading: false, isError: false, data: {}}));
 
@@ -30,7 +30,7 @@ test('The connected app catalog page displays nothing while loading connected ap
     expect(ConnectedAppCatalogContainer).not.toHaveBeenCalled();
 });
 
-test('The connected app catalog page displays nothing while loading catalog', async () => {
+test('The connected app catalog page displays nothing while loading catalog', () => {
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: null, payload: {}}));
     (useCatalog as jest.Mock).mockImplementation(() => ({isLoading: true, isError: false, data: undefined}));
 
@@ -57,14 +57,14 @@ test('The connected app catalog page renders with a connected app', async () => 
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        connection_username: 'willy'
+        connection_username: 'willy',
     };
 
     const catalog = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Store FR',
         enabled: true,
-        owner_username: 'willy'
+        owner_username: 'willy',
     };
 
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: null, payload: connectedApp}));
@@ -107,7 +107,9 @@ test('The connected app catalog page renders with not found catalog', async () =
     (useCatalog as jest.Mock).mockImplementation(() => ({isLoading: false, isError: true, data: undefined}));
 
     renderWithProviders(<ConnectedAppCatalogPage />);
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found'));
+    await waitFor(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+    );
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
     expect(
@@ -134,21 +136,23 @@ test('The connected app catalog page renders with different usernames', async ()
         categories: ['e-commerce', 'print'],
         certified: false,
         partner: null,
-        connection_username: 'admin'
+        connection_username: 'admin',
     };
 
     const catalog = {
         id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Store FR',
         enabled: true,
-        owner_username: 'willy'
+        owner_username: 'willy',
     };
 
     (useConnectedApp as jest.Mock).mockImplementation(() => ({loading: false, error: null, payload: connectedApp}));
     (useCatalog as jest.Mock).mockImplementation(() => ({isLoading: false, isError: false, data: catalog}));
 
     renderWithProviders(<ConnectedAppCatalogPage />);
-    await waitFor(() => screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found'));
+    await waitFor(() =>
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+    );
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
     expect(

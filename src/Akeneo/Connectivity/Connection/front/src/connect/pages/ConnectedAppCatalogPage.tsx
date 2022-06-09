@@ -47,7 +47,9 @@ export const ConnectedAppCatalogPage: FC = () => {
         return (
             <FullScreenError
                 title={translate('error.exception', {status_code: '404'})}
-                message={translate('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')}
+                message={translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found'
+                )}
                 code={404}
             />
         );
@@ -61,7 +63,9 @@ export const ConnectedAppCatalogPage: FC = () => {
         return (
             <FullScreenError
                 title={translate('error.exception', {status_code: '404'})}
-                message={translate('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')}
+                message={translate(
+                    'akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found'
+                )}
                 code={404}
             />
         );

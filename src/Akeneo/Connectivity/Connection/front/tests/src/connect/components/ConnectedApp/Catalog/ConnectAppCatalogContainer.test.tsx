@@ -11,12 +11,14 @@ beforeEach(() => {
 
 jest.mock('@akeneo-pim-community/catalogs', () => ({
     ...jest.requireActual('@akeneo-pim-community/catalogs'),
-    CatalogEdit: jest.fn(forwardRef<CatalogEditRef>(() => {
-        return <>Catalog Edit</>;
-    })),
+    CatalogEdit: jest.fn(
+        forwardRef<CatalogEditRef>(() => {
+            return <>Catalog Edit</>;
+        })
+    ),
 }));
 
-test('The catalog container renders', async () => {
+test('The catalog container renders', () => {
     const connectedApp = {
         id: '12345',
         name: 'App A',
@@ -38,12 +40,10 @@ test('The catalog container renders', async () => {
         id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Store FR',
         enabled: true,
-        owner_username: 'willy'
+        owner_username: 'willy',
     };
 
-    renderWithProviders(
-        <ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />
-    );
+    renderWithProviders(<ConnectedAppCatalogContainer connectedApp={connectedApp} catalog={catalog} />);
 
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryAllByText('Store FR')).toHaveLength(2);
