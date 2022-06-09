@@ -22,8 +22,5 @@ return (new PhpCsFixer\Config())
     ->setFinder(
         PhpCsFixer\Finder::create()
             ->name('*.php')
-            ->notName('*Spec.php')
-            ->notName('*Integration.php')
-            ->in(__DIR__ . '/')
             ->in(__DIR__ . '/../src')
     );

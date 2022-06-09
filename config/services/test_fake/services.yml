@@ -48,6 +48,9 @@ imports:
     # FeatureFlag
     - { resource: ../../../vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/FeatureFlagBundle/Resources/config/test_fake_services.yml }
 
+    # Job Automation
+    - { resource: ../../../components/job-automation/back/tests/Acceptance/Resources/config/services.yml }
+
 services:
     akeneo_integration_tests.doctrine.connection.connection_closer:
         class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
