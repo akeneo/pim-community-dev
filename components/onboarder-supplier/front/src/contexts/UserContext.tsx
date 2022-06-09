@@ -1,4 +1,4 @@
-import React, {createContext, FC, useContext, useState} from 'react';
+import React, {createContext, useContext, useState, ReactElement} from 'react';
 
 type User = {
     email: string;
@@ -12,7 +12,7 @@ type ContextType = {
 
 const UserContext = createContext<ContextType>({user: null, updateUser: () => {}, isAuthenticated: false});
 
-const UserContextProvider: FC = ({children}) => {
+const UserContextProvider = ({children}: {children: ReactElement}) => {
     const [user, updateUser] = useState<User | null>(null);
 
     const state: ContextType = {

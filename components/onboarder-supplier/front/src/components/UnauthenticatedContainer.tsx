@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
+import React, {ReactElement} from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
 
-const UnauthenticatedContainer: FC = ({children}) => {
+const UnauthenticatedContainer = ({children}: {children: ReactElement[]}) => {
     return (
         <Container>
             <LeftColumn>

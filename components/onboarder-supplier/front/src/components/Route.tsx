@@ -1,15 +1,15 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
-import {Route as ReactRoute, RouteProps as ReactRouteProps, Redirect} from 'react-router';
+import {Redirect, Route as ReactRoute, RouteProps as ReactRouteProps} from 'react-router';
 import {useUserContext} from '../contexts';
 
-type RouteProps = {
+type RouteProps = ReactRouteProps & {
     privateRoute?: boolean;
 };
 
 const loginPath = '/login';
 
-const Route: React.FC<RouteProps & ReactRouteProps> = ({privateRoute = true, ...props}) => {
+const Route = ({privateRoute = true, ...props}: RouteProps) => {
     const location = useLocation();
     const {isAuthenticated} = useUserContext();
 
