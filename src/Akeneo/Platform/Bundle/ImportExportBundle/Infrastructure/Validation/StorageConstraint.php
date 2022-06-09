@@ -13,7 +13,7 @@ abstract class StorageConstraint extends Constraint
         parent::__construct();
     }
 
-    /** @param string[] */
+    /** @param string[] $filePathSupportedFileExtensions */
     public function setFilePathSupportedFileExtensions(array $filePathSupportedFileExtensions): void
     {
         $this->filePathSupportedFileExtensions = $filePathSupportedFileExtensions;
