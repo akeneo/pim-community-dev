@@ -65,3 +65,22 @@ services:
         synthetic: true
     pim_catalog.validator.unique_value_set:
         synthetic: true
+    pim_catalog.repository.cached_attribute_option:
+        synthetic: true
+    pim_catalog.repository.cached_family:
+        synthetic: true
+    pim_catalog.repository.cached_channel:
+        synthetic: true
+    pim_catalog.repository.cached_currency:
+        synthetic: true
+    pim_catalog.factory.attribute_option:
+        synthetic: true
+    pim_catalog.factory.association_type:
+        synthetic: true
+    pim_catalog.repository.group:
+        synthetic: true
+    pim_catalog.factory.group:
+        synthetic: true
+    pim_catalog.updater.group:
+        synthetic: true
+

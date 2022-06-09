@@ -7,6 +7,7 @@ namespace Akeneo\Test\Integration;
 use Akeneo\Channel\Infrastructure\Doctrine\Repository\ChannelRepository;
 use Akeneo\Channel\Infrastructure\Doctrine\Repository\LocaleRepository;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\CategorySaver;
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\GroupRepository;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductIndexer;
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelIndexer;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
@@ -16,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\FileNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\GroupUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\UniqueValuesSet;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\Internal\Test\FilePersistedFeatureFlags;
@@ -27,6 +29,7 @@ use Akeneo\Tool\Bundle\FileStorageBundle\Doctrine\ORM\Repository\FileInfoReposit
 use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Akeneo\Tool\Component\FileStorage\File\FileStorer;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
+use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactory;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -149,8 +152,16 @@ abstract class TestCase extends KernelTestCase
         self::getContainer()->set('pim_catalog.repository.cached_locale', $this->createMock(BaseCachedObjectRepository::class));
         self::getContainer()->set('pim_catalog.repository.cached_attribute', $this->createMock(BaseCachedObjectRepository::class));
         self::getContainer()->set('pim_catalog.repository.cached_category', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_attribute_option', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_family', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_channel', $this->createMock(BaseCachedObjectRepository::class));
+        self::getContainer()->set('pim_catalog.repository.cached_currency', $this->createMock(BaseCachedObjectRepository::class));
         self::getContainer()->set('pim_catalog.validator.unique_value_set', $this->createMock(UniqueValuesSet::class));
-
+        self::getContainer()->set('pim_catalog.factory.attribute_option', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_catalog.factory.association_type', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_catalog.factory.group', $this->createMock(SimpleFactory::class));
+        self::getContainer()->set('pim_catalog.repository.group', $this->createMock(GroupRepository::class));
+        self::getContainer()->set('pim_catalog.updater.group', $this->createMock(GroupUpdater::class));
     }
 
     /**

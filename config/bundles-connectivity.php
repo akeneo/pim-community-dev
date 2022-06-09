@@ -60,6 +60,6 @@ return [
             Akeneo\Tool\Bundle\ElasticsearchBundle\AkeneoElasticsearchBundle::class => ['all' => true],
             Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle::class => ['all' => true], // Needed for user
-//            Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle::class => ['all' => true], // Need for user
+            Akeneo\Tool\Bundle\ConnectorBundle\PimConnectorBundle::class => ['all' => true], // Need for user
             Akeneo\Pim\Structure\Bundle\AkeneoPimStructureBundle::class => ['all' => true],
 ];
