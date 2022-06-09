@@ -56,7 +56,7 @@ final class PasswordValidatorTest extends TestCase
         $executionContext
             ->expects($this->once())
             ->method('buildViolation')
-            ->with('onboarder.supplier.contributor_account.validation.should_contain_an_uppercase_letter')
+            ->with('onboarder.supplier.contributor_account.validation.must_contain_an_uppercase_letter')
             ->willReturn($violationsBuilder)
         ;
         $violationsBuilder->expects($this->once())->method('addViolation');
@@ -74,7 +74,7 @@ final class PasswordValidatorTest extends TestCase
         $executionContext
             ->expects($this->once())
             ->method('buildViolation')
-            ->with('onboarder.supplier.contributor_account.validation.should_contain_a_lowercase_letter')
+            ->with('onboarder.supplier.contributor_account.validation.must_contain_a_lowercase_letter')
             ->willReturn($violationsBuilder)
         ;
         $violationsBuilder->expects($this->once())->method('addViolation');
@@ -92,7 +92,7 @@ final class PasswordValidatorTest extends TestCase
         $executionContext
             ->expects($this->once())
             ->method('buildViolation')
-            ->with('onboarder.supplier.contributor_account.validation.should_contain_a_digit')
+            ->with('onboarder.supplier.contributor_account.validation.must_contain_a_digit')
             ->willReturn($violationsBuilder)
         ;
         $violationsBuilder->expects($this->once())->method('addViolation');
