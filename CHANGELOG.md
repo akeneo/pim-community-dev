@@ -48,6 +48,7 @@
 - PIM-10229: Enforce strict samesite policy for session cookies
 - Improvement: Use Debian Bullseye (v11) in Dockerfiles for akeneo/pim-php-dev:master
 - BH-1159: Refactor BatchCommand to use execution ID without batch code
+- BH-1159: Add tenant ID for batch processing
 
 ## New features
 
