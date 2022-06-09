@@ -2,7 +2,6 @@ import React, {forwardRef} from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '../../../../../test-utils';
-import {CatalogEdit, CatalogEditRef} from '@akeneo-pim-community/catalogs';
 import {ConnectedAppCatalogContainer} from '@src/connect/components/ConnectedApp/Catalog/ConnectedAppCatalogContainer';
 
 beforeEach(() => {
@@ -10,12 +9,7 @@ beforeEach(() => {
 });
 
 jest.mock('@akeneo-pim-community/catalogs', () => ({
-    ...jest.requireActual('@akeneo-pim-community/catalogs'),
-    CatalogEdit: jest.fn(
-        forwardRef<CatalogEditRef>(() => {
-            return <>Catalog Edit</>;
-        })
-    ),
+    CatalogEdit: forwardRef(() => <div>[Catalog Edit]</div>),
 }));
 
 test('The catalog container renders', () => {
@@ -47,11 +41,5 @@ test('The catalog container renders', () => {
 
     expect(screen.queryByText('App A')).toBeInTheDocument();
     expect(screen.queryAllByText('Store FR')).toHaveLength(2);
-
-    expect(CatalogEdit).toHaveBeenCalledWith(
-        expect.objectContaining({
-            id: '123e4567-e89b-12d3-a456-426614174000',
-        }),
-        {}
-    );
+    expect(screen.queryByText('[Catalog Edit]')).toBeInTheDocument();
 });

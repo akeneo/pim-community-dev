@@ -455,7 +455,7 @@ test('The connected app container renders the catalogs tab with the view only op
 
     expect(CatalogList).toHaveBeenCalledWith(
         expect.objectContaining({
-            connection_username: 'connection_username',
+            owner: 'connection_username',
         }),
         {}
     );

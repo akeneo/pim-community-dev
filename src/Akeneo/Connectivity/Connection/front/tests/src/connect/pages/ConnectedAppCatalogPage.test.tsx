@@ -108,12 +108,12 @@ test('The connected app catalog page renders with not found catalog', async () =
 
     renderWithProviders(<ConnectedAppCatalogPage />);
     await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')
     );
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')
     ).toBeInTheDocument();
     expect(ConnectedAppCatalogContainer).not.toHaveBeenCalled();
 });
@@ -151,12 +151,12 @@ test('The connected app catalog page renders with different usernames', async ()
 
     renderWithProviders(<ConnectedAppCatalogPage />);
     await waitFor(() =>
-        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+        screen.getByText('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')
     );
 
     expect(screen.queryByText('error.exception', {exact: false})).toBeInTheDocument();
     expect(
-        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.catalogs.edit.not_found')
+        screen.queryByText('akeneo_connectivity.connection.connect.connected_apps.edit.catalogs.edit.not_found')
     ).toBeInTheDocument();
     expect(ConnectedAppCatalogContainer).not.toHaveBeenCalled();
 });
