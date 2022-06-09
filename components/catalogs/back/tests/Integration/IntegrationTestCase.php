@@ -92,7 +92,7 @@ abstract class IntegrationTestCase extends WebTestCase
         $token = $this->logAs($username);
 
         $session = self::getContainer()->get('session');
-        $session->set('_security_main', serialize($token));
+        $session->set('_security_main', \serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
