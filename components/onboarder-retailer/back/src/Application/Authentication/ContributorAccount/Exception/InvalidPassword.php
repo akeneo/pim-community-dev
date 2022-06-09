@@ -10,7 +10,6 @@ final class InvalidPassword extends \Exception
 {
     public function __construct(private ConstraintViolationListInterface $violations)
     {
-        parent::__construct();
     }
 
     public function violations(): ConstraintViolationListInterface
