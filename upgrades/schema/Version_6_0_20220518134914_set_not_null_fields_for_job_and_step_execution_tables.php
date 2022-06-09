@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Platform\VersionProviderInterface;
+use Akeneo\Platform\Bundle\PimVersionBundle\VersionProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 final class Version_6_0_20220518134914_set_not_null_fields_for_job_and_step_execution_tables extends AbstractMigration implements ContainerAwareInterface
