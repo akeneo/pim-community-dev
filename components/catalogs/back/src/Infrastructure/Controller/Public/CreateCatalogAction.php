@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
-use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUserIdTrait;
+use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Command\CreateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class CreateCatalogAction
 {
     use DenyAccessUnlessGrantedTrait;
-    use GetCurrentUserIdTrait;
+    use GetCurrentUsernameTrait;
 
     public function __construct(
         private CommandBus $commandBus,
@@ -46,13 +46,13 @@ final class CreateCatalogAction
         $payload = \json_decode((string) $request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $catalogId = Uuid::uuid4()->toString();
-        $userId = $this->getCurrentUserId();
+        $username = $this->getCurrentUsername();
 
         try {
             $this->commandBus->execute(new CreateCatalogCommand(
                 $catalogId,
                 $payload['name'] ?? '',
-                $userId,
+                $username,
             ));
         } catch (ValidationFailedException $e) {
             throw new ViolationHttpException($e->getViolations());

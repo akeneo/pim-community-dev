@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Persistence;
 
 use Akeneo\Catalogs\Application\Persistence\UpsertCatalogQueryInterface;
-use Akeneo\Catalogs\ServiceAPI\Model\Catalog;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 
@@ -19,21 +18,30 @@ final class UpsertCatalogQuery implements UpsertCatalogQueryInterface
     {
     }
 
-    public function execute(Catalog $catalog): void
-    {
+    public function execute(
+        string $id,
+        string $name,
+        string $ownerUsername,
+        bool $enabled
+    ): void {
         $query = <<<SQL
         INSERT INTO akeneo_catalog (id, name, owner_id, is_enabled)
-        VALUES (UUID_TO_BIN(:id), :name, :owner_id, :is_enabled)
+        VALUES (
+            UUID_TO_BIN(:id),
+            :name,
+            (SELECT id FROM oro_user WHERE username = :owner_username LIMIT 1),
+            :is_enabled
+        )
         ON DUPLICATE KEY UPDATE name = :name, updated = NOW()
         SQL;
 
         $this->connection->executeQuery(
             $query,
             [
-                'id' => $catalog->getId(),
-                'name' => $catalog->getName(),
-                'owner_id' => $catalog->getOwnerId(),
-                'is_enabled' => $catalog->isEnabled(),
+                'id' => $id,
+                'name' => $name,
+                'owner_username' => $ownerUsername,
+                'is_enabled' => $enabled,
             ],
             [
                 'is_enabled' => Types::BOOLEAN,

@@ -12,6 +12,7 @@ test('it fetches the API response', async () => {
                 id: '123e4567-e89b-12d3-a456-426614174000',
                 name: 'store US',
                 enabled: true,
+                owner_username: 'willy',
             },
         ])
     );
@@ -36,6 +37,7 @@ test('it fetches the API response', async () => {
                 id: '123e4567-e89b-12d3-a456-426614174000',
                 name: 'store US',
                 enabled: true,
+                owner_username: 'willy',
             },
         ],
         error: null,

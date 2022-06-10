@@ -114,3 +114,9 @@ akeneo_connectivity_connection_connect_connected_apps_open:
     path: '/connect/connected-apps/{connectionCode}/open'
     requirements:
         connectionCode: '[a-zA-Z0-9_-]+'
+
+akeneo_connectivity_connection_connect_connected_apps_catalogs_edit:
+    path: '/connect/connected-apps/{connectionCode}/catalogs/{catalogId}'
+    requirements:
+        connectionCode: '[a-zA-Z0-9_-]+'
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'

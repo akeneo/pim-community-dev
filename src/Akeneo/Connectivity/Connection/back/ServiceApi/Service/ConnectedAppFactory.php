@@ -90,7 +90,7 @@ final class ConnectedAppFactory
         return App::fromWebMarketplaceValues([
             'id' => $id,
             'name' => $code,
-            'logo' => 'http://example.com/logo.png',
+            'logo' => '/bundles/akeneoconnectivityconnection/img/app-prototype.png',
             'author' => 'Akeneo',
             'url' => 'http://marketplace.akeneo.com/foo',
             'categories' => ['ecommerce'],

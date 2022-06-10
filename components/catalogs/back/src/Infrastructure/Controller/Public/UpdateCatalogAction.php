@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Catalogs\Infrastructure\Controller\Public;
 
 use Akeneo\Catalogs\Infrastructure\Security\DenyAccessUnlessGrantedTrait;
-use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUserIdTrait;
+use Akeneo\Catalogs\Infrastructure\Security\GetCurrentUsernameTrait;
 use Akeneo\Catalogs\ServiceAPI\Command\UpdateCatalogCommand;
 use Akeneo\Catalogs\ServiceAPI\Messenger\CommandBus;
 use Akeneo\Catalogs\ServiceAPI\Messenger\QueryBus;
@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 final class UpdateCatalogAction
 {
     use DenyAccessUnlessGrantedTrait;
-    use GetCurrentUserIdTrait;
+    use GetCurrentUsernameTrait;
 
     public function __construct(
         private CommandBus $commandBus,
@@ -48,8 +48,8 @@ final class UpdateCatalogAction
             throw $this->notFound($id);
         }
 
-        $userId = $this->getCurrentUserId();
-        if (null === $catalog || $catalog->getOwnerId() !== $userId) {
+        $username = $this->getCurrentUsername();
+        if (null === $catalog || $catalog->getOwnerUsername() !== $username) {
             throw $this->notFound($id);
         }
 
