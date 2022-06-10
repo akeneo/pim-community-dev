@@ -31,9 +31,7 @@ final class GetCategoryTreesAction
         }
 
         $trees = $this->findCategoryTrees->execute();
-        $normalizedTrees = array_map(function ($tree) {
-            return $tree->normalize();
-        }, $trees);
+        $normalizedTrees = array_map(static fn ($tree) => $tree->normalize(), $trees);
 
         return new JsonResponse($normalizedTrees);
     }
