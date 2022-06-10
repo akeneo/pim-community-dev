@@ -2,9 +2,9 @@
 
 namespace Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\Subscriber;
 
+use Akeneo\OnboarderSerenity\Retailer\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccount;
 use Akeneo\OnboarderSerenity\Supplier\Application\Authentication\ContributorAccount\CreateContributorAccountHandler;
-use Akeneo\OnboarderSerenity\Supplier\Domain\Supplier\Write\Event\ContributorAdded;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
