@@ -18,7 +18,7 @@ class Client
 {
     private Topic $topic;
     private ?Subscription $subscription = null;
-    private array $subscriptionOptions = [];
+    private array $subscriptionOptions;
 
     /**
      * @param string $dsn Must be `gps:`
@@ -35,7 +35,7 @@ class Client
         string $dsn,
         array $options = []
     ): self {
-        if (0 !== strpos($dsn, 'gps:')) {
+        if (!str_starts_with($dsn, 'gps:')) {
             throw new \InvalidArgumentException(sprintf('DSN "%s" is invalid.', $dsn));
         }
 

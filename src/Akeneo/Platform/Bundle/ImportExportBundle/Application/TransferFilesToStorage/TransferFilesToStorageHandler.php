@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Application\TransferFilesToStorage;
 
-use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\NoneStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageHydratorInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Domain\TransferFilesToStorageInterface;
 
@@ -24,7 +23,7 @@ final class TransferFilesToStorageHandler
     public function handle(TransferFilesToStorageCommand $command)
     {
         $storage = $this->storageHydrator->hydrate($command->normalizedStorage);
-        if ($storage instanceof NoneStorage) {
+        if (null === $storage) {
             return;
         }
 

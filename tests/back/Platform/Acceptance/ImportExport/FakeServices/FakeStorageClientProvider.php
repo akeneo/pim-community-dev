@@ -18,29 +18,22 @@ use Akeneo\Platform\Bundle\ImportExportBundle\Domain\StorageClientInterface;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\FileSystemStorageClient;
 use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\StorageClient\StorageClientProviderInterface;
 use League\Flysystem\Filesystem;
-use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 
 class FakeStorageClientProvider implements StorageClientProviderInterface
 {
-    private Filesystem $fileSystem;
-
-    public function __construct()
-    {
-        $this->fileSystem = new Filesystem(new InMemoryFilesystemAdapter());
+    public function __construct(
+        private Filesystem $fileSystem,
+        private string $storageClassName,
+    ) {
     }
 
     public function supports(StorageInterface $storage): bool
     {
-        return true;
+        return $storage instanceof $this->storageClassName;
     }
 
     public function getFromStorage(StorageInterface $storage): StorageClientInterface
     {
         return new FileSystemStorageClient($this->fileSystem);
-    }
-
-    public function getFilesystem(): Filesystem
-    {
-        return $this->fileSystem;
     }
 }

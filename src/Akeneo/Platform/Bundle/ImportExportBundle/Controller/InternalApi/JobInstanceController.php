@@ -4,8 +4,10 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface;
+use Akeneo\Platform\Bundle\ImportExportBundle\Domain\Model\ManualUploadStorage;
 use Akeneo\Platform\Bundle\ImportExportBundle\Event\JobInstanceEvents;
 use Akeneo\Platform\Bundle\ImportExportBundle\Exception\JobInstanceCannotBeUpdatedException;
+use Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Form\FormProviderInterface;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
@@ -47,69 +49,29 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class JobInstanceController
 {
-    protected IdentifiableObjectRepositoryInterface $repository;
-    protected JobRegistry $jobRegistry;
-    protected NormalizerInterface $jobInstanceNormalizer;
-    protected ObjectUpdaterInterface $updater;
-    protected SaverInterface $saver;
-    protected RemoverInterface $remover;
-    protected ValidatorInterface $validator;
-    protected JobParametersValidator $jobParameterValidator;
-    protected JobParametersFactory $jobParamsFactory;
-    protected JobLauncherInterface $jobLauncher;
-    protected TokenStorageInterface $tokenStorage;
-    protected RouterInterface $router;
-    protected FormProviderInterface $formProvider;
-    protected ObjectFilterInterface $objectFilter;
-    protected NormalizerInterface $constraintViolationNormalizer;
-    protected JobInstanceFactory $jobInstanceFactory;
-    protected EventDispatcherInterface $eventDispatcher;
-    protected CollectionFilterInterface $inputFilter;
-    protected FilesystemOperator $filesystem;
-    protected SecurityFacade $securityFacade;
-
     public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
-        JobRegistry $jobRegistry,
-        NormalizerInterface $jobInstanceNormalizer,
-        ObjectUpdaterInterface $updater,
-        SaverInterface $saver,
-        RemoverInterface $remover,
-        ValidatorInterface $validator,
-        JobParametersValidator $jobParameterValidator,
-        JobParametersFactory $jobParamsFactory,
-        JobLauncherInterface $jobLauncher,
-        TokenStorageInterface $tokenStorage,
-        RouterInterface $router,
-        FormProviderInterface $formProvider,
-        ObjectFilterInterface $objectFilter,
-        NormalizerInterface $constraintViolationNormalizer,
-        JobInstanceFactory $jobInstanceFactory,
-        EventDispatcherInterface $eventDispatcher,
-        CollectionFilterInterface $inputFilter,
-        FilesystemOperator $filesystem,
-        SecurityFacade $securityFacade
+        private IdentifiableObjectRepositoryInterface $repository,
+        private JobRegistry $jobRegistry,
+        private NormalizerInterface $jobInstanceNormalizer,
+        private ObjectUpdaterInterface $updater,
+        private SaverInterface $saver,
+        private RemoverInterface $remover,
+        private ValidatorInterface $validator,
+        private JobParametersValidator $jobParameterValidator,
+        private JobParametersFactory $jobParamsFactory,
+        private JobLauncherInterface $jobLauncher,
+        private TokenStorageInterface $tokenStorage,
+        private RouterInterface $router,
+        private FormProviderInterface $formProvider,
+        private ObjectFilterInterface $objectFilter,
+        private NormalizerInterface $constraintViolationNormalizer,
+        private JobInstanceFactory $jobInstanceFactory,
+        private EventDispatcherInterface $eventDispatcher,
+        private CollectionFilterInterface $inputFilter,
+        private FilesystemOperator $filesystem,
+        private SecurityFacade $securityFacade,
+        private RemoteStorageFeatureFlag $remoteStorageFeatureFlag,
     ) {
-        $this->repository = $repository;
-        $this->jobRegistry = $jobRegistry;
-        $this->jobInstanceNormalizer = $jobInstanceNormalizer;
-        $this->updater = $updater;
-        $this->saver = $saver;
-        $this->remover = $remover;
-        $this->validator = $validator;
-        $this->jobParameterValidator = $jobParameterValidator;
-        $this->jobParamsFactory = $jobParamsFactory;
-        $this->jobLauncher = $jobLauncher;
-        $this->tokenStorage = $tokenStorage;
-        $this->router = $router;
-        $this->formProvider = $formProvider;
-        $this->objectFilter = $objectFilter;
-        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
-        $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->inputFilter = $inputFilter;
-        $this->filesystem = $filesystem;
-        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -347,6 +309,20 @@ class JobInstanceController
 
             $rawParameters = $jobInstance->getRawParameters();
             $rawParameters['filePath'] = $jobFileLocation->url();
+            if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
+                $rawParameters['storage'] = [
+                    'type' => ManualUploadStorage::TYPE,
+                    'file_path' => $jobFileLocation->path(),
+                ];
+            }
+
+            $jobInstance->setRawParameters($rawParameters);
+        }
+
+        /** TODO remove it when we will migrate to storage unification */
+        if ($this->remoteStorageFeatureFlag->isEnabled($jobInstance->getJobName())) {
+            $rawParameters = $jobInstance->getRawParameters();
+            $rawParameters['filePath'] = 'fake_path.zip';
             $jobInstance->setRawParameters($rawParameters);
         }
 

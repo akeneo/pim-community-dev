@@ -24,3 +24,7 @@ services:
         class: 'Akeneo\Platform\Bundle\FeatureFlagBundle\Configuration\EnvVarFeatureFlag'
         arguments:
             - '%env(bool:FLAG_JOB_AUTOMATION_REMOTE_STORAGE_ENABLED)%'
+
+    Akeneo\Platform\Bundle\ImportExportBundle\Infrastructure\RemoteStorageFeatureFlag:
+        arguments:
+            - '@feature_flags'

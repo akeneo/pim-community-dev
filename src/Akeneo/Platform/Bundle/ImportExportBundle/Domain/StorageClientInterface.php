@@ -22,4 +22,9 @@ interface StorageClientInterface
      * @return resource
      */
     public function readStream(string $filePath);
+
+    /**
+     * @return int file size in bytes
+     */
+    public function getFileSize(string $filePath): int;
 }
