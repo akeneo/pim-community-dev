@@ -43,7 +43,6 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
             new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
             new SetImageValue('a_localizable_scopable_image', 'tablet', 'en_US', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
             new SetImageValue('a_localizable_scopable_image', 'ecommerce', 'fr_FR', $this->getFileInfoKey($this->getFixturePath('ziggy.png'))),
-            'family' => 'a_family',
         ]);
 
         $this->createProduct('empty_product', [new SetFamily('a_family')]);

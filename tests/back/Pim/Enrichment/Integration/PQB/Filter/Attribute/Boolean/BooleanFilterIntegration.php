@@ -32,7 +32,6 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
         ]);
 
         $this->createProduct('empty', [new SetFamily('familyA')]);
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     public function testOperatorEquals()

@@ -146,15 +146,10 @@ class ProductQueryBuilderIntegration extends AbstractProductQueryBuilderTestCase
                     new PriceValue(14, 'USD'),
                 ]),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'ecommerce', 'fr_FR', 'Mon textarea localisé et scopable ecommerce'),
-                //new ClearValue('a_localized_and_scopable_text_area', 'ecommerce', 'en_US'),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'fr_FR', 'Mon textarea localisé et scopable tablet'),
                 new SetTextareaValue('a_localized_and_scopable_text_area', 'tablet', 'en_US', 'My localizable and scopable textearea tablet'),
             ]
         );
-
-        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     protected function createPQBWithoutFamilyFilter(): ProductQueryBuilderInterface
