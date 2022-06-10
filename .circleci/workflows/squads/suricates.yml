@@ -1,3 +1,62 @@
+executor-machine: &executor-machine
+
+jobs:
+    build_onboarder_supplier:
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            -   attach_workspace:
+                    at: ~/
+            -   run:
+                    name: Copy docker-compose.override.yml.dist
+                    command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+            -   run:
+                    name: Creating cache key for PHP Docker image
+                    command: |
+                        find Dockerfile docker/ -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/php-docker-image.hash
+                        date +%F >> ~/php-docker-image.hash
+            -   restore_cache:
+                    name: Restore PHP docker image cache
+                    key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
+            -   run:
+                    name: Build the latest Docker images
+                    command: |
+                        ls php-pim-image.tar && docker load -i php-pim-image.tar
+                        ls php-pim-image.tar || make php-image-dev
+                        ls php-pim-image.tar || docker save -o php-pim-image.tar akeneo/pim-dev/php:8.0
+            -   save_cache:
+                    name: Save PHP docker image cache
+                    key: php-docker-image-{{ .Environment.CACHE_VERSION }}-{{ checksum "~/php-docker-image.hash" }}
+                    paths:
+                        - php-pim-image.tar
+            -   run:
+                    name: Setup tests results folder and log folder
+                    command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.cache/Cypress ~/.composer
+            - change_pim_onboarder_branch_steps
+            -   run:
+                    name: Change owner on project dir (docker needs uid 1000, circleci can be another uid)
+                    command: |
+                        sudo chown -R 1000:1000 ../project
+                        sudo chown -R 1000:1000 ~/.composer
+                        sudo chown -R 1000:1000 ~/.cache/
+#            -   run:
+#                    name: Set front package directories owner to circleci
+#                    command: sudo chown -R circleci:circleci components/onboarder-supplier/front/
+            -   run:
+                    name: Set front packages directories owner to docker
+                    command: sudo chown -R 1000:1000 components/onboarder-supplier/front/
+            -   run:
+                    name: Install supplier front dependencies
+                    command: PIM_CONTEXT=onboarder-serenity make front-dependencies-supplier
+            -   run:
+                    name: Change owner on project dir to have the right to cache the data
+                    command: sudo chmod -R 777 ../project ~/.cache ~/.composer components/onboarder-supplier/front/
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project
+
 workflows:
   version: 2
 
@@ -20,9 +79,12 @@ workflows:
       - build_srnt_dev:
           requires:
             - checkout
-      - test_front_onboarder:
+      - build_onboarder_supplier:
           requires:
             - build_srnt_dev
+      - test_front_onboarder:
+          requires:
+            - build_onboarder_supplier
       - test_back_onboarder:
           requires:
             - build_srnt_dev

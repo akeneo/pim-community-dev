@@ -1,6 +1,10 @@
 DOCKER_COMPOSE_RUN_PHP_TEST_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test php
 DOCKER_COMPOSE_RUN_PHP_TEST_FAKE_ENV = $(DOCKER_COMPOSE) run --rm -e APP_ENV=test_fake php
 
+.PHONY: front-dependencies-supplier
+front-dependencies-supplier:
+	$(YARN_RUN) --cwd=components/onboarder-supplier/front install
+
 .PHONY: lint-back-retailer
 lint-back-retailer: #Doc: Run PHPStan and PHPCSFixer for the retailer part of Onboarder Serenity
 	$(PHP_RUN) vendor/bin/phpstan analyse --configuration components/onboarder-retailer/back/tests/phpstan.neon
