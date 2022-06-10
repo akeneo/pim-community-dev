@@ -46,6 +46,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         ];
     }
 
+    // TODO change explanation text
     /**
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
@@ -69,13 +70,15 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
+        $shouldComputeFamilyVariantStructureChanges = \in_array(FamilyInterface::ATTRIBUTES_WERE_UPDATED, $subject->releaseEvents());
+
         $validationResponse = $this->validateFamilyVariants($subject);
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
         Assert::isArray($validFamilyVariants);
         $this->bulkFamilyVariantSaver->saveAll($validFamilyVariants, [
-            ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => true,
+            ComputeFamilyVariantStructureChangesSubscriber::FORCE_JOB_LAUNCHING => $shouldComputeFamilyVariantStructureChanges,
         ]);
 
         if (!empty($allViolations)) {
@@ -110,9 +113,11 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
+        $shouldComputeFamilyVariantStructureChanges = \in_array(FamilyInterface::ATTRIBUTES_WERE_UPDATED, $subject->releaseEvents());
+
         $this->bulkFamilyVariantSaver->saveAll(
             $validFamilyVariants,
-            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => true]
+            [ComputeFamilyVariantStructureChangesSubscriber::DISABLE_JOB_LAUNCHING => $shouldComputeFamilyVariantStructureChanges]
         );
 
         if (!empty($allViolations)) {
