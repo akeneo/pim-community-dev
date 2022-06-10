@@ -5,6 +5,9 @@ import React, {useEffect, useState} from "react";
 import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";
 import styled from "styled-components";
+import {CategoryTree} from "../../../../models/Category";
+import {useCategories} from "../../../../hooks/useCategories";
+import {CategoryReplacementList} from "./CategoryReplacementList";
 
 const Container = styled.div`
   width: 100%;
@@ -38,6 +41,7 @@ const CategoryReplacementModal = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const categoryTrees = useCategoryTrees();
   const [activeCategoryTree, setActiveCategoryTree] = useState<number|null>(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     if (categoryTrees.length > 0) {
@@ -47,6 +51,15 @@ const CategoryReplacementModal = ({
 
   const handleConfirm = async () => {
 
+  }
+
+  function handleActiveCategoryTreeChange(tree: CategoryTree) {
+    setActiveCategoryTree(tree.id);
+  }
+
+  let displayedCategoryTree = categoryTrees.find((categoryTree) => categoryTree.id === activeCategoryTree);
+  if (!displayedCategoryTree) {
+    return null;
   }
 
   return (
@@ -67,7 +80,7 @@ const CategoryReplacementModal = ({
               <TabBar.Tab
                 isActive={activeCategoryTree === tree.id}
                 key={tree.id}
-                onClick={() => setActiveCategoryTree(tree.id)}
+                onClick={() => handleActiveCategoryTreeChange(tree)}
               >
                 {getLabel(tree.labels, catalogLocale, tree.code)}
               </TabBar.Tab>
@@ -87,6 +100,7 @@ const CategoryReplacementModal = ({
               </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
+              <CategoryReplacementList categoryTree={displayedCategoryTree} />
             </Table.Body>
           </Table>
         </Content>
