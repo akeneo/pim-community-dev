@@ -23,6 +23,8 @@ import {
   SPLIT_OPERATION_TYPE,
   SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE,
   SimpleSelectReplacementOperationBlock,
+  CATEGORY_REPLACEMENT_OPERATION_TYPE,
+  CategoryReplacementOperationBlock
 } from './Operation';
 import {usePreviewData} from '../../hooks';
 
@@ -45,6 +47,7 @@ const operationBlocks: {
   [SPLIT_OPERATION_TYPE]: SplitOperationBlock,
   [SIMPLE_SELECT_REPLACEMENT_OPERATION_TYPE]: SimpleSelectReplacementOperationBlock,
   [MULTI_SELECT_REPLACEMENT_OPERATION_TYPE]: MultiSelectReplacementOperationBlock,
+  [CATEGORY_REPLACEMENT_OPERATION_TYPE]: CategoryReplacementOperationBlock,
 };
 
 type OperationsProps = {

@@ -3,3 +3,4 @@ export * from './MultiSelectReplacementOperationBlock';
 export * from './OperationBlockProps';
 export * from './SimpleSelectReplacementOperationBlock';
 export * from './SplitOperationBlock';
+export * from './CategoryReplacementOperationBlock'
