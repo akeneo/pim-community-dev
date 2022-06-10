@@ -24,6 +24,7 @@ final class SqlFindCategoryTreesIntegration extends TestCase
     public function it_fetches_the_category_trees(): void
     {
         $masterTree = new CategoryTree();
+        $masterTree->id = 1;
         $masterTree->code = 'master';
         $masterTree->labels = ['en_US' => 'Master catalog'];
 
