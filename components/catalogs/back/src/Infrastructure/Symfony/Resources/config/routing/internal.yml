@@ -2,3 +2,10 @@ akeneo_catalogs_internal_get_catalogs_by_owner:
     path: '/rest/catalogs'
     controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetAllCatalogsByOwnerAction
     methods: [ GET ]
+
+akeneo_catalogs_internal_get_catalog:
+    path: '/rest/catalogs/{catalogId}'
+    controller: Akeneo\Catalogs\Infrastructure\Controller\Internal\GetCatalogAction
+    methods: [ GET ]
+    requirements:
+        catalogId: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
