@@ -122,6 +122,7 @@ final class TextValidatorTest extends AbstractValidationTest
                     'sources' => ['7fa661ce-3a6c-4b95-8441-259911b70529'],
                     'operations' => [
                         [
+                            'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                             'type' => 'clean_html_tags'
                         ],
                     ],

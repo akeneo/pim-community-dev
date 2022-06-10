@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredImport\Application\ExecuteDataMapping\Operatio
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\NullValue;
+use Akeneo\Platform\TailoredImport\Domain\Model\Value\StringValue;
 use Akeneo\Platform\TailoredImport\Domain\Model\Value\ValueInterface;
 
 final class OperationApplier
@@ -47,6 +48,31 @@ final class OperationApplier
         }
 
         return $value;
+    }
+
+    public function applyOperationWithIndexedResults(
+        OperationCollection $operationCollection,
+        ValueInterface $values,
+    ): array {
+        $operationValues = [];
+
+        if (empty($operationCollection->normalize())) {
+            return $operationValues;
+        }
+
+        foreach ($operationCollection as $operation) {
+            $applier = $this->getApplier($operation);
+
+            if (!$applier instanceof OperationApplierInterface) {
+                continue;
+            }
+
+            foreach ($values->getValue() as $value) {
+                $operationValues[$operation->normalize()['uuid']][] = null === $value ? null : $applier->applyOperation($operation, new StringValue($value))->getValue();
+            }
+        }
+
+        return $operationValues;
     }
 
     private function getApplier(OperationInterface $operation): OperationApplierInterface|null

@@ -6,22 +6,27 @@ import {CleanHTMLTagsOperationBlock, getDefaultCleanHTMLTagsOperation} from './C
 
 test('it can get the default clean html tags operation', () => {
   expect(getDefaultCleanHTMLTagsOperation()).toEqual({
+    uuid: expect.any(String),
     type: 'clean_html_tags',
   });
 });
 
 test('it displays a clean html tags operation block', () => {
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
+
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
       targetCode="name"
-      operation={{type: 'clean_html_tags'}}
+      operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -31,18 +36,21 @@ test('it displays a clean html tags operation block', () => {
 
 test('it can be removed using the remove button', () => {
   const handleRemove = jest.fn();
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
 
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
       targetCode="name"
-      operation={{type: 'clean_html_tags'}}
+      operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
       onChange={jest.fn()}
       onRemove={handleRemove}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );
@@ -57,17 +65,21 @@ test('it can be removed using the remove button', () => {
 });
 
 test('it displays a preview data section when having preview data', () => {
+  const previewData = {
+    [expect.any(String)]: ['<p>Hello</p>', '<p>World</p>'],
+  };
+
   renderWithProviders(
     <CleanHTMLTagsOperationBlock
       targetCode="name"
-      operation={{type: 'clean_html_tags'}}
+      operation={{uuid: expect.any(String), type: 'clean_html_tags'}}
       onChange={jest.fn()}
       onRemove={jest.fn()}
       isLastOperation={false}
       previewData={{
         isLoading: false,
         hasError: false,
-        data: ['<p>Hello</p>', '<p>World</p>'],
+        data: previewData,
       }}
     />
   );

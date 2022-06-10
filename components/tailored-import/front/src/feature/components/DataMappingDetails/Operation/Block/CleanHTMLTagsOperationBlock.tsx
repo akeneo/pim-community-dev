@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block, Button, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-system';
+import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {OperationBlockProps} from './OperationBlockProps';
 import {OperationPreviewData} from '../OperationPreviewData';
@@ -7,10 +7,12 @@ import {OperationPreviewData} from '../OperationPreviewData';
 const CLEAN_HTML_TAGS_OPERATION_TYPE = 'clean_html_tags';
 
 type CleanHTMLTagsOperation = {
+  uuid: string;
   type: typeof CLEAN_HTML_TAGS_OPERATION_TYPE;
 };
 
 const getDefaultCleanHTMLTagsOperation = (): CleanHTMLTagsOperation => ({
+  uuid: uuid(),
   type: CLEAN_HTML_TAGS_OPERATION_TYPE,
 });
 
@@ -51,7 +53,7 @@ const CleanHTMLTagsOperationBlock = ({operation, previewData, isLastOperation, o
       <OperationPreviewData
         isOpen={isPreviewOpen}
         isLoading={previewData.isLoading}
-        previewData={previewData.data}
+        previewData={previewData.data[operation.uuid]}
         hasErrors={previewData.hasError}
       />
     </div>

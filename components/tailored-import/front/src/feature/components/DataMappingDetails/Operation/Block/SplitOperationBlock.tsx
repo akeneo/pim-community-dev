@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Block, Button, CloseIcon, Field, IconButton, SelectInput, useBooleanState} from 'akeneo-design-system';
+import {Block, Button, CloseIcon, Field, IconButton, SelectInput, useBooleanState, uuid} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {OperationBlockProps} from './OperationBlockProps';
 import {Operation} from 'feature/models/Operation';
@@ -8,11 +8,13 @@ import {OperationPreviewData} from '../OperationPreviewData';
 const SPLIT_OPERATION_TYPE = 'split';
 
 type SplitOperation = {
+  uuid: string;
   type: typeof SPLIT_OPERATION_TYPE;
   separator: string;
 };
 
 const getDefaultSplitOperation = (): SplitOperation => ({
+  uuid: uuid(),
   type: SPLIT_OPERATION_TYPE,
   separator: ',',
 });
@@ -85,7 +87,7 @@ const SplitOperationBlock = ({operation, previewData, isLastOperation, onChange,
       <OperationPreviewData
         isOpen={isPreviewOpen}
         isLoading={previewData.isLoading}
-        previewData={previewData.data}
+        previewData={previewData.data[operation.uuid]}
         hasErrors={previewData.hasError}
       />
     </div>

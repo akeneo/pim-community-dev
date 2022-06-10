@@ -24,9 +24,11 @@ use PhpSpec\ObjectBehavior;
 
 class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
 {
+    private $uuid = '00000000-0000-0000-0000-000000000000';
+
     public function it_supports_multi_select_replacement_operation(): void
     {
-        $this->supports(new MultiSelectReplacementOperation([
+        $this->supports(new MultiSelectReplacementOperation($this->uuid, [
             'adidas' => ['nike', 'reebok'],
             'foo' => ['bar', 'baz'],
         ]))->shouldReturn(true);
@@ -34,7 +36,7 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_applies_multi_select_replacement_operation(): void
     {
-        $operation = new MultiSelectReplacementOperation([
+        $operation = new MultiSelectReplacementOperation($this->uuid, [
             'adidas' => ['nike', 'reebok'],
             'foo' => ['bar', 'baz'],
         ]);
@@ -45,7 +47,7 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_returns_the_original_value_when_the_value_is_not_mapped(): void
     {
-        $operation = new MultiSelectReplacementOperation([
+        $operation = new MultiSelectReplacementOperation($this->uuid, [
             'adidas' => ['nike', 'reebok'],
             'foo' => ['bar', 'baz'],
         ]);
@@ -57,7 +59,7 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_value_type_is_invalid(): void
     {
-        $operation = new MultiSelectReplacementOperation([
+        $operation = new MultiSelectReplacementOperation($this->uuid, [
             'adidas' => ['nike', 'reebok'],
             'foo' => ['bar', 'baz'],
         ]);
@@ -67,7 +69,7 @@ class MultiSelectReplacementOperationApplierSpec extends ObjectBehavior
 
     public function it_throws_an_exception_when_operation_type_is_invalid(): void
     {
-        $operation = new CleanHTMLTagsOperation();
+        $operation = new CleanHTMLTagsOperation($this->uuid);
         $value = new StringValue('0');
 
         $this->shouldThrow(new UnexpectedValueException(

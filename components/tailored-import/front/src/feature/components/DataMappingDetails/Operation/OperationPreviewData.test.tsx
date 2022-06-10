@@ -5,7 +5,12 @@ import {renderWithProviders} from '../../../tests';
 
 test('it displays the preview data', async () => {
   await renderWithProviders(
-    <OperationPreviewData isLoading={false} previewData={['product_1', 'product_2', null]} hasErrors={false} />
+    <OperationPreviewData
+      isLoading={false}
+      previewData={['product_1', 'product_2', null]}
+      isOpen={true}
+      hasErrors={false}
+    />
   );
 
   expect(screen.getByText('akeneo.tailored_import.data_mapping.preview.output_title')).toBeInTheDocument();
@@ -15,7 +20,9 @@ test('it displays the preview data', async () => {
 });
 
 test('it displays an error when preview cannot be generated', async () => {
-  await renderWithProviders(<OperationPreviewData isLoading={false} previewData={[]} hasErrors={true} />);
+  await renderWithProviders(
+    <OperationPreviewData isLoading={false} previewData={[]} isOpen={false} hasErrors={true} />
+  );
 
   expect(
     screen.queryByText('akeneo.tailored_import.data_mapping.preview.unable_to_generate_preview_data')
@@ -31,8 +38,9 @@ test('it displays a tag element if preview data is an array of arrays', async ()
       isLoading={false}
       previewData={[
         ['product_1', 'product_2'],
-        ['product_3', 'product_4'],
+        ['product_3', null],
       ]}
+      isOpen={true}
       hasErrors={false}
     />
   );

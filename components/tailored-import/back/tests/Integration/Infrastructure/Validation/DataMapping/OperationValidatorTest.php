@@ -52,6 +52,7 @@ class OperationValidatorTest extends AbstractValidationTest
                 ['clean_html_tags'],
                 [
                     [
+                        'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                         'type' => 'clean_html_tags'
                     ],
                 ],
