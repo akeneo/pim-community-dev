@@ -11,9 +11,11 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\PQB;
 interface ProductUuidQueryFetcher
 {
     /**
-     * @param array<mixed> $esQuery
+     * Initialize the fetcher with a query. If a query was in progress it resets it.
+     *
+     * @param array<mixed> $query
      */
-    public function initialize(array $esQuery): void;
+    public function initialize(array $query): void;
 
     public function getNextResults(): ProductResults;
 

@@ -30,12 +30,15 @@ final class ElasticsearchProductUuidQueryFetcher implements ProductUuidQueryFetc
      */
     public function initialize(array $esQuery): void
     {
-        Assert::null($this->esQuery, 'The query is already instantiated');
+        if (!\in_array('id', $esQuery['_source'] ?? [])) {
+            $esQuery['_source'][] = 'id';
+        }
         if (!\in_array('document_type', $esQuery['_source'] ?? [])) {
             $esQuery['_source'][] = 'document_type';
         }
 
         $this->esQuery = $esQuery;
+        $this->reset();
     }
 
     /**
@@ -78,7 +81,7 @@ final class ElasticsearchProductUuidQueryFetcher implements ProductUuidQueryFetc
         $uuids = [];
         foreach ($response['hits']['hits'] as $hit) {
             Assert::same($hit['_source']['document_type'], ProductInterface::class);
-            $uuids[] = Uuid::fromString(\str_replace('product_', '', $hit['_source']['identifier']));
+            $uuids[] = Uuid::fromString(\str_replace('product_', '', $hit['_source']['id']));
         }
 
         $lastResult = \end($response['hits']['hits']);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Product\API;
 
-use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Enrichment\Product\API\QueryMessageBus;
 use Akeneo\Pim\Enrichment\Product\API\UnknownQueryException;
 use Akeneo\Test\Pim\Enrichment\Product\Helper\DummyHandler;
@@ -20,7 +20,7 @@ class QueryMessageBusSpec extends ObjectBehavior
     {
         $this->beConstructedWith([
             'Other' => $handler1,
-            GetProductUuids::class => $handler2,
+            GetProductUuidsQuery::class => $handler2,
         ]);
     }
 
@@ -32,7 +32,7 @@ class QueryMessageBusSpec extends ObjectBehavior
 
     function it_executes_the_correct_handler(DummyHandler $handler1, DummyHandler $handler2)
     {
-        $query = new GetProductUuids([]);
+        $query = new GetProductUuidsQuery([]);
         $handler1->__invoke(Argument::any())->shouldNotBeCalled();
         $result = new \stdClass();
         $handler2->__invoke($query)->shouldBeCalledOnce()->willReturn($result);

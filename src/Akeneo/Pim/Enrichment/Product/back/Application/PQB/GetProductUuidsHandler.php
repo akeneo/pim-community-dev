@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Application\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\ApplyProductSearchQueryParametersToPQB;
 use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
-use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids;
+use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -25,7 +25,7 @@ final class GetProductUuidsHandler
     ) {
     }
 
-    public function __invoke(GetProductUuids $getProductUuids): ProductUuidCursor
+    public function __invoke(GetProductUuidsQuery $getProductUuids): ProductUuidCursor
     {
         $violations = $this->validator->validate($getProductUuids);
         if (0 < $violations->count()) {
