@@ -14,7 +14,6 @@ final class ProductResults
 {
     /**
      * @param UuidInterface[] $uuids
-     * @param int $count
      */
     public function __construct(private array $uuids, private int $count)
     {

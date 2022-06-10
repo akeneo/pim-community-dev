@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Pim\Enrichment\Product\Application\PQB;
+namespace Akeneo\Pim\Enrichment\Product\Domain\PQB;
 
-use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher;
+use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class ProductUuidCursor implements \Countable, \Iterator
+final class ProductUuidCursor implements ProductUuidCursorInterface
 {
     protected ?array $uuids = null;
     protected int $count;

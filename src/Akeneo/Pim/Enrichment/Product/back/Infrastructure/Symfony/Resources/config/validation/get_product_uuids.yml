@@ -1,4 +1,4 @@
-Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids:
+Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery:
     properties:
         searchFilters:
             - Type: array

@@ -9,7 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterfac
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
-use Akeneo\Pim\Enrichment\Product\Application\PQB\ProductUuidCursor;
+use Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidCursor;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Pim\Enrichment\Product\Integration\EnrichmentProductTestCase;
 use PHPUnit\Framework\Assert;

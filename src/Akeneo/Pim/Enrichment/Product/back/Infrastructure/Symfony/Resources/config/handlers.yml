@@ -18,4 +18,4 @@ services:
             - '@Akeneo\Pim\Enrichment\Product\Domain\PQB\ProductUuidQueryFetcher'
             - '@validator'
         tags:
-            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuids' }
+            - { name: 'akeneo.pim.enrichment.product.query_handler', query: 'Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery' }
