@@ -1,7 +1,7 @@
 import {OperationType, ReplacementValues} from "../../../../models";
 import {ReplacementValueFilter} from "../ReplacementModal";
 import {getLabel, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";
 import styled from "styled-components";
@@ -37,6 +37,13 @@ const CategoryReplacementModal = ({
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
   const categoryTrees = useCategoryTrees();
+  const [activeCategoryTree, setActiveCategoryTree] = useState<number|null>(null);
+
+  useEffect(() => {
+    if (categoryTrees.length > 0) {
+      setActiveCategoryTree(categoryTrees[0].id);
+    }
+  }, [categoryTrees]);
 
   const handleConfirm = async () => {
 
@@ -58,9 +65,9 @@ const CategoryReplacementModal = ({
           <TabBar moreButtonTitle={translate('pim_common.more')}>
             {categoryTrees.map(tree => (
               <TabBar.Tab
-                isActive={false}
+                isActive={activeCategoryTree === tree.id}
                 key={tree.id}
-                onClick={() => {}}
+                onClick={() => setActiveCategoryTree(tree.id)}
               >
                 {getLabel(tree.labels, catalogLocale, tree.code)}
               </TabBar.Tab>
