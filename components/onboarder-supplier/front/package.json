@@ -10,7 +10,8 @@
     "typescript": "4.4.2",
     "akeneo-design-system": "^0.1.188",
     "styled-components": "^5.3.3",
-    "react-query": "^3.39.1"
+    "react-query": "^3.39.1",
+    "react-intl": "^6.0.4"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
@@ -23,7 +24,9 @@
     "@types/react-router-dom": "^5.1.8",
     "@types/styled-components": "^5.1.16",
     "prettier": "^2.1.1",
-    "react-error-overlay": "6.0.9"
+    "react-error-overlay": "6.0.9",
+    "eslint-plugin-formatjs": "^3.1.5",
+    "@formatjs/cli": "^4.8.2"
   },
   "scripts": {
     "app:start": "react-scripts start",
@@ -31,15 +34,27 @@
     "test:unit:run": "react-scripts test --watchAll=false --no-coverage",
     "test:unit:watch": "react-scripts test --no-coverage",
     "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src --fix",
-    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src"
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\" && yarn eslint --max-warnings 0 --ext .tsx,.ts ./src",
+    "i18n-extract": "formatjs extract"
   },
   "eslintConfig": {
+    "plugins": [
+      "formatjs"
+    ],
     "extends": [
       "react-app",
       "react-app/jest"
     ],
     "rules": {
-      "yoda": [1, "always"]
+      "yoda": [1, "always"],
+      "@typescript-eslint/no-explicit-any": "warn",
+      "formatjs/enforce-id": [
+        "error",
+        {
+          "idInterpolationPattern": "[sha512:contenthash:base64:6]"
+        }
+      ],
+      "formatjs/enforce-default-message": "error"
     }
   },
   "browserslist": {

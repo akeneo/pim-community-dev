@@ -6,23 +6,26 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {Authentication} from './Authentication';
 import {UserContextProvider} from './contexts';
 import {queryClient} from './api';
+import {IntlProvider} from 'react-intl';
 
 function App() {
     return (
         <ThemeProvider theme={onboarderTheme}>
-            <UserContextProvider>
-                <QueryClientProvider client={queryClient}>
-                    <BrowserRouter>
-                        <Switch>
-                            <Route path={`/(set-up-password|login)/`}>
-                                <Container>
-                                    <Authentication />
-                                </Container>
-                            </Route>
-                        </Switch>
-                    </BrowserRouter>
-                </QueryClientProvider>
-            </UserContextProvider>
+            <IntlProvider locale="en" defaultLocale="en" messages={{}}>
+                <UserContextProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <BrowserRouter>
+                            <Switch>
+                                <Route path={`/(set-up-password|login)/`}>
+                                    <Container>
+                                        <Authentication />
+                                    </Container>
+                                </Route>
+                            </Switch>
+                        </BrowserRouter>
+                    </QueryClientProvider>
+                </UserContextProvider>
+            </IntlProvider>
         </ThemeProvider>
     );
 }
