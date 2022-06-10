@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\ServiceApi\Service\ConnectedAppFactory;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -51,12 +53,14 @@ abstract class IntegrationTestCase extends WebTestCase
         $this->ensureKernelShutdown();
     }
 
-    protected function logAs(string $username): void
+    protected function logAs(string $username): TokenInterface
     {
         $user = self::getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
         \assert(null !== $user);
         $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
         self::getContainer()->get('security.token_storage')->setToken($token);
+
+        return $token;
     }
 
     protected function getAuthenticatedPublicApiClient(array $scopes = []): KernelBrowser
@@ -85,7 +89,14 @@ abstract class IntegrationTestCase extends WebTestCase
         $client = self::getContainer()->get(KernelBrowser::class);
 
         $this->createUser($username);
-        $this->logAs($username);
+        $token = $this->logAs($username);
+
+        $session = self::getContainer()->get('session');
+        $session->set('_security_main', \serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $client->getCookieJar()->set($cookie);
 
         return $client;
     }
