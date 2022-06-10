@@ -1,0 +1,12 @@
+{{ if .Values.pim.api.ratelimit.enabled -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: api-ratelimit
+spec:
+  rateLimit:
+    average: {{ .Values.pim.api.ratelimit.average }}
+    burst: {{ .Values.pim.api.ratelimit.burst }}
+    sourceCriterion:
+      requestHost: true
+{{- end }}

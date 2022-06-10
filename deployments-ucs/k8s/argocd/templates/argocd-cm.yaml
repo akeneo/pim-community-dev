@@ -1,0 +1,19 @@
+---
+# Workarround for ingress
+# https://argo-cd.readthedocs.io/en/stable/faq/#why-is-my-application-stuck-in-progressing-state
+# https://github.com/argoproj/argo-cd/issues/1704
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  resource.customizations: |
+    networking.k8s.io/Ingress:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          return hs

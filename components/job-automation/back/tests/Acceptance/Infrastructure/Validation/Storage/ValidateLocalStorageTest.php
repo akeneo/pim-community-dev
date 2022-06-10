@@ -33,7 +33,7 @@ class ValidateLocalStorageTest extends AbstractValidationTest
     public function validLocalStorage(): array
     {
         return [
-            'valid none storage' => [
+            'valid local storage' => [
                 [
                     'type' => 'local',
                     'file_path' => '/tmp/products.xlsx',

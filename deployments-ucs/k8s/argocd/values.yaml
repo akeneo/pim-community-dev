@@ -1,0 +1,58 @@
+## Argo CD configuration
+## Ref: https://github.com/argoproj/argo-cd
+##
+
+nameOverride: argocd
+
+global:
+  image:
+    repository: quay.io/argoproj/argocd
+    tag: "v2.3.3"
+    imagePullPolicy: IfNotPresent
+
+## Argo Configs
+configs:
+  # -- Provide one or multiple [external cluster credentials]
+  # @default -- `[]` (See [values.yaml])
+  ## Ref:
+  ## - https://argoproj.github.io/argo-cd/operator-manual/declarative-setup/#clusters
+  ## - https://argoproj.github.io/argo-cd/operator-manual/security/#external-cluster-credentials
+
+  # -- Repository credentials to be used as Templates for other repos
+  ## Creates a secret for each key/value specified below to create repository credentials
+  credentialTemplates:
+    ssh-creds:
+     url: git@github.com:akeneo/pim-enterprise-dev.git
+     sshPrivateKey: null
+
+  # -- Repositories list to be used by applications
+  ## Creates a secret for each key/value specified below to create repositories
+  ## Note: the last example in the list would use a repository credential template, configured under "configs.repositoryCredentials".
+  repositories:
+    private-repo:
+      name: pim-enterprise-dev
+      url: git@github.com:akeneo/pim-enterprise-dev.git
+
+server:
+  extraArgs:
+    - --insecure
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.tls.options: default
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.priority: "15"
+      kubernetes.io/ingress.class: traefik
+    labels:
+      component: "argocd-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+      app.kubernetes.io/component: "argocd-ingress"
+      app.kubernetes.io/instance: "argocd-ingress"
+      role: "argocd-ingress"
+    tls:
+    - hosts:
+      - null
+    hosts:
+      - null
+    paths:
+      - /

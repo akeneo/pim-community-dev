@@ -175,7 +175,7 @@ pimee_catalog_rule:
           subtitle: Valitse perhe
         set_attribute:
           title: ASETA/KORVAA attribuutin arvo
-          helper: Asettaaksesi attribuutin arvon, aloita valitsemalla kohdeattribuutti ja sitten arvo, jonka haluat asettaa
+          helper: Määrittääksesi attribuutin arvot, aloita valitsemalla kohdeattribuutti ja sitten arvo, jonka haluat asettaa. Aikaisemmat arvot korvataan kaikille tuotteille.
           target_subtitle: Valitse kohde
           value_subtitle: Aseta arvo
           attribute_label: Attribuutti

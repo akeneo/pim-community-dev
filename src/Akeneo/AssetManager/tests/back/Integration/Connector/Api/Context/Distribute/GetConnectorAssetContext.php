@@ -42,7 +42,7 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\Connector\ConnectorAsset;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
-use Akeneo\ReferenceEntity\Common\Fake\InMemoryFilesystemProviderStub;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use AkeneoEnterprise\Test\Acceptance\Permission\InMemory\SecurityFacadeStub;
 use Behat\Behat\Context\Context;
@@ -68,7 +68,7 @@ class GetConnectorAssetContext implements Context
 
     private InMemoryMediaFileRepository $mediaFileRepository;
 
-    private InMemoryFilesystemProviderStub $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
     private ?Response $mediaFileDownloadResponse = null;
 
@@ -86,7 +86,7 @@ class GetConnectorAssetContext implements Context
         AssetFamilyRepositoryInterface $assetFamilyRepository,
         AttributeRepositoryInterface $attributeRepository,
         InMemoryMediaFileRepository $mediaFileRepository,
-        InMemoryFilesystemProviderStub $filesystemProvider,
+        FilesystemProvider $filesystemProvider,
         SecurityFacadeStub $securityFacade
     ) {
         $this->clientFactory = $clientFactory;
