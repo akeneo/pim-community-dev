@@ -47,9 +47,16 @@ coupling-list-unused-requirements-retailer: #Doc: List unused coupling detector 
 .PHONY: coupling-list-unused-requirements
 coupling-list-unused-requirements: coupling-list-unused-requirements-retailer #Doc: List unused coupling detector requirements for Onboarder Serenity
 
-.PHONY: unit-back
-unit-back: #Doc: Run unit back tests for Onboarder Serenity
+.PHONY: unit-back-retailer
+unit-back-retailer: #Doc: Run unit back tests for the retailer part of Onboarder Serenity
 	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Retailer_Unit_Test --configuration components/onboarder-retailer/back/tests/phpunit.xml.dist ${ARGS}
+
+.PHONY: unit-back-supplier
+unit-back-supplier: #Doc: Run unit back tests for the supplier part of Onboarder Serenity
+	$(DOCKER_COMPOSE_RUN_PHP_TEST_ENV) vendor/bin/phpunit --testsuite Onboarder_Serenity_Supplier_Unit_Test --configuration components/onboarder-supplier/back/tests/phpunit.xml.dist ${ARGS}
+
+.PHONY: unit-back
+unit-back: unit-back-retailer unit-back-supplier #Doc: Run unit back tests for Onboarder Serenity
 
 .PHONY: unit-front
 unit-front: #Doc: Run unit front tests for Onboarder Serenity
