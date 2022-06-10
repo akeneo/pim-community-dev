@@ -3,7 +3,7 @@
 namespace Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\Storage;
 
 use Akeneo\Platform\JobAutomation\Infrastructure\Validation\Storage\Sftp\SftpStorage;
-use Akeneo\Platform\JobAutomation\Test\Acceptance\Infrastructure\Validation\AbstractValidationTest;
+use AkeneoTest\Platform\Acceptance\ImportExport\Infrastructure\Validation\AbstractValidationTest;
 
 class ValidateSftpStorageTest extends AbstractValidationTest
 {
