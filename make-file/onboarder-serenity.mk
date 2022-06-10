@@ -13,8 +13,12 @@ lint-back: lint-back-retailer #Doc: Run PHPStan and PHPCSFixer for Onboarder Ser
 fix-phpcs-retailer: #Doc: Run PHP-CS-Fixer for the retailer part of Onboarder Serenity
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder-retailer/back/tests/.php_cs.php components/onboarder-retailer/back
 
+.PHONY: fix-phpcs-supplier
+fix-phpcs-supplier: #Doc: Run PHP-CS-Fixer for the supplier part of Onboarder Serenity
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --config=components/onboarder-supplier/back/tests/.php_cs.php components/onboarder-supplier/back
+
 .PHONY: fix-phpcs
-fix-phpcs: fix-phpcs-retailer #Doc: Run PHP-CS-Fixer for Onboarder Serenity
+fix-phpcs: fix-phpcs-retailer fix-phpcs-supplier #Doc: Run PHP-CS-Fixer for Onboarder Serenity
 
 .PHONY: lint-front-retailer
 lint-front-retailer: #Doc: Run Prettier and Eslint for the retailer part of Onboarder Serenity
