@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredImport\Infrastructure\Validation\DataMapping\Operation;
 
+use Akeneo\Platform\TailoredImport\Domain\Model\Operation\CategoryReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\MultiSelectReplacementOperation;
 use Akeneo\Platform\TailoredImport\Domain\Model\Operation\SimpleSelectReplacementOperation;
 use Symfony\Component\Validator\Constraint;
@@ -34,6 +35,7 @@ class ReplacementOperationValidator extends ConstraintValidator
                 'type' => new Choice([
                     SimpleSelectReplacementOperation::TYPE,
                     MultiSelectReplacementOperation::TYPE,
+                    CategoryReplacementOperation::TYPE,
                 ]),
                 'mapping' => new All([
                     new NotBlank([

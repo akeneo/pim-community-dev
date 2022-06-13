@@ -31,8 +31,6 @@ const CategoryReplacementOperationBlock = ({targetCode, operation, onChange, onR
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState(false);
   const [isReplacementModalOpen, openReplacementModal, closeReplacementModal] = useBooleanState(false);
 
-  const categories: string[] = [];
-
   if (!isCategoryReplacementOperation(operation)) {
     throw new Error('CategoryReplacementOperationBlock can only be used with CategoryReplacementOperation');
   }
@@ -58,6 +56,7 @@ const CategoryReplacementOperationBlock = ({targetCode, operation, onChange, onR
           </Button>
           {isReplacementModalOpen && (
             <CategoryReplacementModal
+              initialMapping={operation.mapping}
               onConfirm={handleConfirm}
               onCancel={handleCancel}
             />

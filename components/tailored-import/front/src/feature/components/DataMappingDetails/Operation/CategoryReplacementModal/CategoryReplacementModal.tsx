@@ -1,13 +1,14 @@
-import {OperationType, ReplacementValues} from "../../../../models";
-import {ReplacementValueFilter} from "../ReplacementModal";
-import {getLabel, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
+import {ReplacementValues} from "../../../../models";
+import {formatParameters, getLabel, NotificationLevel, useNotify, useTranslate, useUserContext, ValidationError} from "@akeneo-pim-community/shared";
 import React, {useEffect, useState} from "react";
 import {useCategoryTrees} from "../../../../hooks/useCategoryTrees";
 import {Button, Modal, TabBar, Table} from "akeneo-design-system";
 import styled from "styled-components";
 import {CategoryTree} from "../../../../models/Category";
-import {useCategories} from "../../../../hooks/useCategories";
 import {CategoryReplacementList} from "./CategoryReplacementList";
+import {CATEGORY_REPLACEMENT_OPERATION_TYPE} from "../Block";
+import {useRoute} from "@akeneo-pim-community/shared/lib/hooks/useRoute";
+import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
 
 const Container = styled.div`
   width: 100%;
@@ -29,19 +30,24 @@ const Content = styled.div`
 `;
 
 type CategoryReplacementModalProps = {
+  initialMapping: ReplacementValues;
   onConfirm: (updatedReplacementValues: ReplacementValues) => void;
   onCancel: () => void;
 };
 
 const CategoryReplacementModal = ({
+  initialMapping,
   onConfirm,
-  onCancel
+  onCancel,
 }: CategoryReplacementModalProps) => {
   const translate = useTranslate();
+  const notify = useNotify();
+  const validateReplacementOperationRoute = useRoute('pimee_tailored_import_validate_replacement_operation_action');
   const catalogLocale = useUserContext().get('catalogLocale');
   const categoryTrees = useCategoryTrees();
   const [activeCategoryTree, setActiveCategoryTree] = useState<number|null>(null);
-  const [categories, setCategories] = useState([]);
+  const [mapping, setMapping] = useState(initialMapping);
+  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
   useEffect(() => {
     if (categoryTrees.length > 0) {
@@ -50,7 +56,33 @@ const CategoryReplacementModal = ({
   }, [categoryTrees]);
 
   const handleConfirm = async () => {
+    setValidationErrors([]);
+    const response = await fetch(validateReplacementOperationRoute, {
+      body: JSON.stringify({
+        type: CATEGORY_REPLACEMENT_OPERATION_TYPE,
+        mapping,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      method: 'POST',
+    });
 
+    if (response.ok) {
+      onConfirm(mapping);
+    } else {
+      try {
+        const errors = await response.json();
+
+        setValidationErrors(formatParameters(errors));
+      } catch (error) {}
+
+      notify(
+        NotificationLevel.ERROR,
+        translate('akeneo.tailored_import.data_mapping.operations.replacement.modal.validation_error')
+      );
+    }
   }
 
   function handleActiveCategoryTreeChange(tree: CategoryTree) {
@@ -100,7 +132,12 @@ const CategoryReplacementModal = ({
               </Table.HeaderCell>
             </Table.Header>
             <Table.Body>
-              <CategoryReplacementList categoryTree={displayedCategoryTree} />
+              <CategoryReplacementList
+                categoryTree={displayedCategoryTree}
+                mapping={mapping}
+                onMappingChange={setMapping}
+                validationErrors={filterErrors(validationErrors, '[mapping]')}
+              />
             </Table.Body>
           </Table>
         </Content>
