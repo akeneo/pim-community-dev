@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logoImage from "../assets/images/onboarderlogo.svg";
+import logoImage from '../assets/images/onboarderlogo.svg';
 
 const OnboarderLogo = () => {
     return <Logo src={logoImage} />;

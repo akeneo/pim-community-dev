@@ -1,7 +1,7 @@
 import React, {ReactElement} from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
-import illustration from "../assets/images/Factory.svg";
+import illustration from '../assets/images/Factory.svg';
 
 const UnauthenticatedContainer = ({children}: {children: ReactElement[]}) => {
     return (
