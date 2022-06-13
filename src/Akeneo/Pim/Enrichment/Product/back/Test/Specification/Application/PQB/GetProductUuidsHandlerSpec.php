@@ -25,7 +25,7 @@ class GetProductUuidsHandlerSpec extends ObjectBehavior
         ValidatorInterface $validator
     ) {
         $pqb = new class implements ProductQueryBuilderInterface, LegacyProductQueryBuilderInterface {
-            public function buildQuery(): array
+            public function buildQuery(int $userId): array
             {
                 return ['the query'];
             }
