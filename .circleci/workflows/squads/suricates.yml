@@ -88,7 +88,7 @@ workflows:
                   - /OB2-.*/
                   - /OBS-.*/
       - build_onboarder_supplier_front:
-            require:
+            requires:
               - "Deploy Onboarder PR environment?"
       - build_srnt_prod:
             name: "Build srnt Prod for deploy PR"
