@@ -26,6 +26,19 @@ jobs:
                     root: ~/
                     paths:
                         - project/components/onboarder-supplier/front/node_modules
+    build_onboarder_supplier_front:
+        machine:
+            image: *executor-machine
+        resource_class: medium
+        steps:
+            -   install_onboarder_supplier_front_dependencies
+            -   run:
+                    name: Build Onboarder Supplier frontend application
+                    command: PIM_CONTEXT=onboarder-serenity make build-onboarder-supplier-front-app
+            -   persist_to_workspace:
+                    root: ~/
+                    paths:
+                        - project/components/onboarder-supplier/front/build
 
 workflows:
   version: 2
@@ -74,12 +87,15 @@ workflows:
                   - /SURI-.*/
                   - /OB2-.*/
                   - /OBS-.*/
+      - build_onboarder_supplier_front:
+            require:
+              - "Deploy Onboarder PR environment?"
       - build_srnt_prod:
             name: "Build srnt Prod for deploy PR"
             requires:
               - checkout
               - test_helm_generated_k8s_files
-              - "Deploy Onboarder PR environment?"
+              - build_onboarder_supplier_front
       - deploy_pr_environment:
             name: "Deploy Onboarder PR environment"
             requires:

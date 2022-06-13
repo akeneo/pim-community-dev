@@ -101,3 +101,7 @@ tests-front-onboarder: lint-front unit-front #Doc: Run front tests for Onboarder
 .PHONY: extract-front-translations
 extract-front-translations: #Doc: Extract translations for Crowdin
 	$(YARN_RUN) run --cwd=components/onboarder-supplier/front i18n-extract 'src/**/*.{ts,tsx}' --ignore '**/*.{test,d}.{ts,tsx}' --format simple --out-file src/translations/messages.en.json
+
+.PHONY: build-onboarder-supplier-front-app
+build-onboarder-supplier-front-app: #Doc: Build Onboarder supplier frontend application
+	$(YARN_RUN) run --cwd=components/onboarder-supplier/front app:build
