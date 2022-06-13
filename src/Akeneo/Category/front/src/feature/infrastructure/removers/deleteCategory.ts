@@ -8,7 +8,7 @@ type Response = {
 };
 
 const deleteCategory = async (router: Router, id: number): Promise<Response> => {
-  const response = await fetch(router.generate(ROUTE_NAME, {id}), {
+  const response = await fetch(router.generate(ROUTE_NAME,{ id} ), {
     method: 'DELETE',
     headers: [['X-Requested-With', 'XMLHttpRequest']],
   });

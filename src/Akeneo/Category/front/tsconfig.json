@@ -42,6 +42,7 @@
     "isolatedModules": true
   },
   "include": [
-    "src/feature"
+    "src/feature",
+    "src/tests"
   ]
 }
