@@ -53,17 +53,21 @@ class JobExecutionMessageFactory
         return $class::createJobExecutionMessage($jobExecutionId, $options, $this->tenantId);
     }
 
-    public function buildFromNormalized(array $normalized): JobExecutionMessageInterface
+    public function buildFromNormalized(array $normalized, ?string $jobMessageClass): JobExecutionMessageInterface
     {
         Assert::integer($normalized['job_execution_id'] ?? null);
-        $jobExecution = $this->jobExecutionRepository->find($normalized['job_execution_id']);
 
-        /** @var string|JobExecutionMessageInterface $class */
-        $class = null !== $jobExecution
-            ? $this->getJobMessageClass($jobExecution->getJobInstance()->getType() ?? '')
-            : $this->jobMessageTypeFallback;
+        // TODO UCS: we should not fetch the class and only rely on the $jobExecutionClass parameter
+        if (null === $jobMessageClass) {
+            $jobExecution = $this->jobExecutionRepository->find($normalized['job_execution_id']);
 
-        return $class::createJobExecutionMessageFromNormalized($normalized);
+            /** @var string|JobExecutionMessageInterface $jobMessageClass */
+            $jobMessageClass = null !== $jobExecution
+                ? $this->getJobMessageClass($jobExecution->getJobInstance()->getType() ?? '')
+                : $this->jobMessageTypeFallback;
+        }
+
+        return $jobMessageClass::createJobExecutionMessageFromNormalized($normalized);
     }
 
     private function getJobMessageClass(string $type): string

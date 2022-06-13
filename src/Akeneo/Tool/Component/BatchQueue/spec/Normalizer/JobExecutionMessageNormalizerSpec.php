@@ -90,11 +90,11 @@ class JobExecutionMessageNormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization([], 'Unknown')->shouldBe(false);
     }
 
-    function it_denormalizes_a_job_messenger(JobExecutionMessageFactory $jobExecutionMessageFactory)
+    function it_denormalizes_a_job_execution_message(JobExecutionMessageFactory $jobExecutionMessageFactory)
     {
         $message = UiJobExecutionMessage::createJobExecutionMessage(1, []);
         $normalized = ['test'];
-        $jobExecutionMessageFactory->buildFromNormalized($normalized)->willReturn($message);
+        $jobExecutionMessageFactory->buildFromNormalized($normalized, UiJobExecutionMessage::class)->willReturn($message);
 
         $this->denormalize($normalized, UiJobExecutionMessage::class)->shouldBe($message);
     }

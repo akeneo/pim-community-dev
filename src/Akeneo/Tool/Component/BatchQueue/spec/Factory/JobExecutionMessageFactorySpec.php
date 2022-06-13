@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace spec\Akeneo\Tool\Component\BatchQueue\Factory;
@@ -65,21 +66,20 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
 
     function it_builds_an_ui_job_execution_message_from_normalized(
         ObjectRepository $jobExecutionRepository,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance
     ) {
-        $jobExecutionRepository->find(10)->willReturn($jobExecution);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getType()->willReturn('mass_delete');
+        $jobExecutionRepository->find(10)->shouldNotBeCalled();
 
-        $jobExecutionMessage = $this->buildFromNormalized([
-            'id' => '30e8008d-48dc-4430-97e1-6f67a5c420e9',
-            'job_execution_id' => 10,
-            'tenant_id' => 'foo_tenant_id',
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => null,
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->buildFromNormalized(
+            [
+                'id' => '30e8008d-48dc-4430-97e1-6f67a5c420e9',
+                'job_execution_id' => 10,
+                'tenant_id' => 'foo_tenant_id',
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => null,
+                'options' => ['option1' => 'value1'],
+            ],
+            UiJobExecutionMessage::class
+        );
         $jobExecutionMessage->shouldBeAnInstanceOf(UiJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('30e8008d-48dc-4430-97e1-6f67a5c420e9'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
@@ -91,21 +91,20 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
 
     function it_builds_an_import_job_execution_message_from_normalized(
         ObjectRepository $jobExecutionRepository,
-        JobExecution $jobExecution,
-        JobInstance $jobInstance
     ) {
-        $jobExecutionRepository->find(10)->willReturn($jobExecution);
-        $jobExecution->getJobInstance()->willReturn($jobInstance);
-        $jobInstance->getType()->willReturn('import');
+        $jobExecutionRepository->find(10)->shouldNotBeCalled();
 
-        $jobExecutionMessage = $this->buildFromNormalized([
-            'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
-            'job_execution_id' => 10,
-            'tenant_id' => 'foo_tenant_id',
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => '2021-03-09T15:37:23+01:00',
-            'options' => ['option1' => 'value1'],
-        ]);
+        $jobExecutionMessage = $this->buildFromNormalized(
+            [
+                'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
+                'job_execution_id' => 10,
+                'tenant_id' => 'foo_tenant_id',
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => '2021-03-09T15:37:23+01:00',
+                'options' => ['option1' => 'value1'],
+            ],
+            ImportJobExecutionMessage::class
+        );
         $jobExecutionMessage->shouldBeAnInstanceOf(ImportJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
@@ -124,14 +123,17 @@ class JobExecutionMessageFactorySpec extends ObjectBehavior
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobInstance->getType()->willReturn('other');
 
-        $jobExecutionMessage = $this->buildFromNormalized([
-            'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
-            'job_execution_id' => 10,
-            'tenant_id' => 'foo_tenant_id',
-            'created_time' => '2021-03-08T15:37:23+01:00',
-            'updated_time' => '2021-03-09T15:37:23+01:00',
-            'options' => [],
-        ]);
+        $jobExecutionMessage = $this->buildFromNormalized(
+            [
+                'id' => 'a57380fc-ee3b-4bd2-94e6-c3ead13c32a7',
+                'job_execution_id' => 10,
+                'tenant_id' => 'foo_tenant_id',
+                'created_time' => '2021-03-08T15:37:23+01:00',
+                'updated_time' => '2021-03-09T15:37:23+01:00',
+                'options' => [],
+            ],
+            null
+        );
         $jobExecutionMessage->shouldBeAnInstanceOf(DataMaintenanceJobExecutionMessage::class);
         $jobExecutionMessage->getId()->shouldBeLike(Uuid::fromString('a57380fc-ee3b-4bd2-94e6-c3ead13c32a7'));
         $jobExecutionMessage->getJobExecutionId()->shouldBe(10);
