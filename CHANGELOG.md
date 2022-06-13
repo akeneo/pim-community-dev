@@ -44,6 +44,7 @@
 - PIM-10467: Fix create and delete quickly product models via API create indexation issue
 - PIM-10471: Do not generate 2 files when making a quick export of 1 type of products
 - PIM-10475: Fix option existence validation for numeric option codes
+- PIM-10483: Fix slow loading products when filtering by variants
 
 ## Improvements
 
