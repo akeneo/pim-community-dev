@@ -31,7 +31,7 @@ jobs:
             -   persist_to_workspace:
                     root: ~/
                     paths:
-                        - project
+                        - project/components/onboarder-supplier/front/node_modules
 
 workflows:
   version: 2
