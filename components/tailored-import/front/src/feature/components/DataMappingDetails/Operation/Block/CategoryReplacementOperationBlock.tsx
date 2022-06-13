@@ -26,7 +26,7 @@ const getDefaultCategoryReplacementOperation = (): CategoryReplacementOperation 
   mapping: {},
 });
 
-const CategoryReplacementOperationBlock = ({targetCode, operation, onChange, onRemove}: OperationBlockProps) => {
+const CategoryReplacementOperationBlock = ({operation, onChange, onRemove}: OperationBlockProps) => {
   const translate = useTranslate();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState(false);
   const [isReplacementModalOpen, openReplacementModal, closeReplacementModal] = useBooleanState(false);

@@ -89,7 +89,7 @@ const CategoryReplacementModal = ({
     setActiveCategoryTree(tree.id);
   }
 
-  let displayedCategoryTree = categoryTrees.find((categoryTree) => categoryTree.id === activeCategoryTree);
+  const displayedCategoryTree = categoryTrees.find((categoryTree) => categoryTree.id === activeCategoryTree);
   if (!displayedCategoryTree) {
     return null;
   }

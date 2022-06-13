@@ -1,10 +1,9 @@
 import {Helper, Table, TagInput} from "akeneo-design-system";
 import React from "react";
 import {CategoryTree} from "../../../../models/Category";
-import {getLabel, useTranslate, useUserContext, ValidationError} from "@akeneo-pim-community/shared";
+import {getLabel, useTranslate, useUserContext, ValidationError, filterErrors} from "@akeneo-pim-community/shared";
 import {ReplacementValues} from "../../../../models";
 import styled from "styled-components";
-import {filterErrors} from "@akeneo-pim-community/shared/lib/models/validation-error";
 
 const Field = styled.div`
   width: 100%;
