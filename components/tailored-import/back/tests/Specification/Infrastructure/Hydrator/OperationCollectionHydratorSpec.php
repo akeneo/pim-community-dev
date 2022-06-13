@@ -24,7 +24,7 @@ class OperationCollectionHydratorSpec extends ObjectBehavior
     public function it_hydrates_an_operation_collection(): void
     {
         $expected = OperationCollection::create([
-            new CleanHTMLTagsOperation(),
+            new CleanHTMLTagsOperation('00000000-0000-0000-0000-000000000000'),
         ]);
 
         $this->hydrate(
@@ -34,6 +34,7 @@ class OperationCollectionHydratorSpec extends ObjectBehavior
             ],
             [
                 [
+                    'uuid' => '00000000-0000-0000-0000-000000000000',
                     'type' => CleanHTMLTagsOperation::TYPE,
                     'value' => true,
                 ],

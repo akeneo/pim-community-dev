@@ -47,6 +47,7 @@ final class SplitOperationValidatorTest extends AbstractValidationTest
         return [
             'a valid split operation' => [
                 [
+                    'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'split',
                     'separator' => ';',
                 ],

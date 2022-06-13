@@ -98,6 +98,12 @@ jest.mock('../../hooks/useRefreshedSampleDataFetcher', () => ({
   },
 }));
 
+const mockUuid = 'uuid';
+jest.mock('akeneo-design-system', () => ({
+  ...jest.requireActual('akeneo-design-system'),
+  uuid: () => mockUuid,
+}));
+
 test('it displays a property data mapping', async () => {
   await renderWithProviders(
     <DataMappingDetails
@@ -274,6 +280,7 @@ test('it can add an operation', async () => {
     ...attributeDataMapping,
     operations: [
       {
+        uuid: mockUuid,
         type: 'clean_html_tags',
       },
     ],

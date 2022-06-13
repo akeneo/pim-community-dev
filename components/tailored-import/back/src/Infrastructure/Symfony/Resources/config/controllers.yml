@@ -72,4 +72,4 @@ services:
     class: Akeneo\Platform\TailoredImport\Infrastructure\Controller\GetCategoryTreesAction
     public: true
     arguments:
-      - '@akeneo.enrichment.public_api.find_category_trees'
+      - '@akeneo.tailored_import.infrastructure.public_api.find_category_trees'

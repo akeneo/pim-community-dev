@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class ReplacementOperationValidator extends ConstraintValidator
@@ -32,6 +33,7 @@ class ReplacementOperationValidator extends ConstraintValidator
 
         $violations = $validator->validate($operation, new Collection([
             'fields' => [
+                'uuid' => [new Uuid(), new NotBlank()],
                 'type' => new Choice([
                     SimpleSelectReplacementOperation::TYPE,
                     MultiSelectReplacementOperation::TYPE,

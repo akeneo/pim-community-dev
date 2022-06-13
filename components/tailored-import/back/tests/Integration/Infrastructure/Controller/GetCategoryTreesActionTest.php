@@ -72,6 +72,6 @@ class GetCategoryTreesActionTest extends ControllerIntegrationTestCase
 
     protected function getConfiguration(): Configuration
     {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+        return $this->catalog->useMinimalCatalog();
     }
 }

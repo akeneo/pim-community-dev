@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\ReferenceEntity\Infrastructure\Validation\Record;
 
 use Akeneo\ReferenceEntity\Application\Record\EditRecord\CommandFactory\EditTextValueCommand;
+use Akeneo\ReferenceEntity\Domain\Model\Attribute\AttributeMaxLength;
 use Akeneo\ReferenceEntity\Infrastructure\Validation\Record\EditTextValueCommand as EditTextValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -104,14 +104,9 @@ class EditTextValueCommandValidator extends ConstraintValidator
     private function checkTextLength(EditTextValueCommand $command): ConstraintViolationListInterface
     {
         $intMaxLength = $command->attribute->getMaxLength()->intValue();
-        if (null === $intMaxLength || 0 >= $intMaxLength) {
-            return new ConstraintViolationList();
-        }
-
         $validator = Validation::createValidator();
-
         return $validator->validate($command->text, [
-            new Length(['max' => $intMaxLength]),
+            new Length(['max' => null === $intMaxLength || 0 >= $intMaxLength ? AttributeMaxLength::MAX_LIMIT : $intMaxLength]),
         ]);
     }
 

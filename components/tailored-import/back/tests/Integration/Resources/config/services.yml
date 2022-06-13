@@ -22,3 +22,7 @@ parameters:
     - 'pim_catalog_table'
     - 'pim_catalog_text'
     - 'pim_catalog_textarea'
+
+services:
+  akeneo.tailored_import.infrastructure.public_api.find_category_trees:
+    class: Akeneo\Platform\TailoredImport\Test\Integration\FakePublicApi\FakeFindCategoryTrees

@@ -47,6 +47,7 @@ $rules = [
             'Akeneo\Platform\TailoredImport\Domain',
 
             'Akeneo\Channel\Infrastructure\Component\Query\PublicApi',
+            'Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand',
             'Akeneo\Pim\Enrichment\Product\API\Event',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',

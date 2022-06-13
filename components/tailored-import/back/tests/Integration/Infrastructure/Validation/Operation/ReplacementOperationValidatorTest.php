@@ -47,6 +47,7 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
         return [
             'a simple select replacement' => [
                 [
+                    'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'simple_select_replacement',
                     'mapping' => [
                         'code_1' => ['replacement_value_1'],
@@ -86,6 +87,7 @@ class ReplacementOperationValidatorTest extends AbstractValidationTest
                 'akeneo.tailored_import.validation.operation.replacement.source_values_should_be_unique',
                 '[mapping][code_2]',
                 [
+                    'uuid' => 'ad4e2d5c-2830-4ba8-bf83-07f9935063d6',
                     'type' => 'simple_select_replacement',
                     'mapping' => [
                         'code_1' => ['replacement_value_1'],

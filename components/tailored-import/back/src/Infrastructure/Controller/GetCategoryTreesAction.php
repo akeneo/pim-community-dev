@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class GetCategoryTreesAction
 {
     public function __construct(
-        private FindCategoryTrees $findCategoryTrees
+        private FindCategoryTrees $findCategoryTrees,
     ) {
     }
 
