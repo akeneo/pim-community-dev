@@ -8,8 +8,15 @@ akeneo_catalogs:
         more_information: Check out our Help center for more information.
     catalog_edit:
         tabs:
+            settings: Catalog settings
             product_selection: Product selection
             more: More
     product_selection:
         empty: Add selection criteria to create your product selection
         more_information: Check out our Help center for more information.
+    settings:
+        fields:
+            enabled: Enabled
+        inputs:
+            yes: Yes
+            no: No
