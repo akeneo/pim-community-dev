@@ -82,7 +82,6 @@ workflows:
             - checkout
       - test_front_onboarder:
           requires:
-            - build_srnt_dev
             - install_onboarder_supplier_front_dependencies
       - test_back_onboarder:
           requires:
@@ -109,7 +108,6 @@ workflows:
       - build_srnt_prod:
             name: "Build srnt Prod for deploy PR"
             requires:
-              - checkout
               - test_helm_generated_k8s_files
               - build_onboarder_supplier_front
       - deploy_pr_environment:
