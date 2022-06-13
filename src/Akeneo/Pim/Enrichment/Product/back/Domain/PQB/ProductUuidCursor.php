@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Product\Domain\PQB;
 
 use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
+use Ramsey\Uuid\UuidInterface;
 
 /**
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
@@ -12,6 +13,9 @@ use Akeneo\Pim\Enrichment\Product\API\Query\ProductUuidCursorInterface;
  */
 final class ProductUuidCursor implements ProductUuidCursorInterface
 {
+    /**
+     * @var UuidInterface[]|null
+     */
     protected ?array $uuids = null;
     protected int $count;
 
@@ -33,7 +37,7 @@ final class ProductUuidCursor implements ProductUuidCursorInterface
             $this->rewind();
         }
 
-        return \current($this->uuids);
+        return \current($this->uuids ?? []);
     }
 
     /**
@@ -45,7 +49,7 @@ final class ProductUuidCursor implements ProductUuidCursorInterface
             $this->rewind();
         }
 
-        return \key($this->uuids);
+        return \key($this->uuids ?? []);
     }
 
     /**
@@ -77,7 +81,8 @@ final class ProductUuidCursor implements ProductUuidCursorInterface
      */
     public function next()
     {
-        if (false === next($this->uuids)) {
+        $uuids = $this->uuids ?? [];
+        if (false === next($uuids)) {
             $productResults = $this->fetcher->getNextResults();
             $this->uuids = $productResults->uuids();
             $this->count = $productResults->count();

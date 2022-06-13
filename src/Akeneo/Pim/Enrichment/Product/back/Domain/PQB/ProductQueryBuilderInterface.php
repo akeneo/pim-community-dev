@@ -10,5 +10,8 @@ namespace Akeneo\Pim\Enrichment\Product\Domain\PQB;
  */
 interface ProductQueryBuilderInterface
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function buildQuery(): array;
 }

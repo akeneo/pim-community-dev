@@ -30,6 +30,11 @@ final class ProductQueryBuilderAdapter extends AbstractEntityWithValuesQueryBuil
         ProductQueryBuilderOptionsResolverInterface $optionResolver
     ) {
         $cursorFactory = new class implements CursorFactoryInterface {
+            /**
+             * @param mixed $queryBuilder
+             * @param array<string, mixed> $options
+             * @return mixed
+             */
             public function createCursor($queryBuilder, array $options = [])
             {
                 throw new \RuntimeException('This class should not be called anymore');

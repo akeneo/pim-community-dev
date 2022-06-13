@@ -29,11 +29,13 @@ final class SearchFiltersValidator extends ConstraintValidator
     ) {
     }
 
-
-    public function validate($searchFilters, Constraint $constraint)
+    /**
+     * @inheritDoc
+     */
+    public function validate($searchFilters, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, SearchFilters::class);
-        if (\is_array($searchFilters)) {
+        if (!\is_array($searchFilters)) {
             return;
         }
 

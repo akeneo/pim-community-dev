@@ -11,7 +11,7 @@ namespace Akeneo\Pim\Enrichment\Product\API\Query;
 final class GetProductUuidsQuery
 {
     /**
-     * @param array<string, array> $searchFilters
+     * @param array<string, array<mixed>> $searchFilters
      *
      * The format of the search filters is the same as the one used in the external API. For example:
      *  [

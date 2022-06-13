@@ -17,8 +17,10 @@ use Webmozart\Assert\Assert;
  */
 final class ElasticsearchProductUuidQueryFetcher implements ProductUuidQueryFetcher
 {
+    /** @var array<string, mixed>|null */
     protected ?array $esQuery = null;
     protected int $count;
+    /** @var mixed[] */
     private array $searchAfter = [];
 
     public function __construct(private Client $esClient, private int $pageSize)

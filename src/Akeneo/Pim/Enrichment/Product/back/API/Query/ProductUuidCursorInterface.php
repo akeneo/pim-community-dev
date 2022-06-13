@@ -10,7 +10,7 @@ use Ramsey\Uuid\UuidInterface;
  * @copyright 2022 Akeneo SAS (https://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @return iterable<UuidInterface>
+ * @extends \Iterator<UuidInterface|false>
  */
 interface ProductUuidCursorInterface extends \Countable, \Iterator
 {

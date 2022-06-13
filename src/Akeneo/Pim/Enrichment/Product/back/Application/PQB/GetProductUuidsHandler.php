@@ -29,9 +29,9 @@ final class GetProductUuidsHandler
     ) {
     }
 
-    public function __invoke(GetProductUuidsQuery $getProductUuids): ProductUuidCursorInterface
+    public function __invoke(GetProductUuidsQuery $getProductUuidsQuery): ProductUuidCursorInterface
     {
-        $violations = $this->validator->validate($getProductUuids);
+        $violations = $this->validator->validate($getProductUuidsQuery);
         if (0 < $violations->count()) {
             throw new ViolationsException($violations);
         }
@@ -39,7 +39,7 @@ final class GetProductUuidsHandler
         Assert::implementsInterface($this->pqb, LegacyProductQueryBuilderInterface::class);
         $this->applyProductSearchQueryParametersToPQB->apply(
             $this->pqb,
-            $getProductUuids->searchFilters(),
+            $getProductUuidsQuery->searchFilters(),
             null,
             null,
             null

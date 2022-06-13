@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Product\Test\Integration\Handler\PQB;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Pim\Enrichment\Product\API\Command\Exception\ViolationsException;
 use Akeneo\Pim\Enrichment\Product\API\Command\UpsertProductCommand;
 use Akeneo\Pim\Enrichment\Product\API\Command\UserIntent\SetTextValue;
 use Akeneo\Pim\Enrichment\Product\API\Query\GetProductUuidsQuery;
@@ -83,6 +84,16 @@ final class GetProductUuidsHandlerIntegration extends EnrichmentProductTestCase
         $dateInTheFuture = (new \DateTime('now'))->modify("+ 30 minutes")->format('Y-m-d H:i:s');
         $productUuidCursor = $this->launchPQBCommand(['updated' => [['operator' => '>', 'value' => $dateInTheFuture]]]);
         Assert::assertCount(0, $productUuidCursor);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_the_search_filters_are_not_valid(): void
+    {
+        $this->expectException(ViolationsException::class);
+        $this->expectExceptionMessage('Structure of filter "updated" should respect this structure: {"updated":[{"operator": "my_operator", "value": "my_value"}]}');
+
+        $dateInTheFuture = (new \DateTime('now'))->modify("+ 30 minutes")->format('Y-m-d H:i:s');
+        $this->launchPQBCommand(['updated' => $dateInTheFuture]);
     }
 
     private function launchPQBCommand(array $search): ProductUuidCursor
