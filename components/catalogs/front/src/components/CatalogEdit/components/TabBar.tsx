@@ -18,10 +18,7 @@ const TabBar: FC<PropsWithChildren<Props>> = ({isCurrent, switchTo}) => {
     return (
         <>
             <StyledTabBar moreButtonTitle={translate('akeneo_catalogs.catalog_edit.tabs.more')}>
-                <StyledTabBar.Tab
-                    isActive={isCurrent(Tabs.SETTINGS)}
-                    onClick={() => switchTo(Tabs.SETTINGS)}
-                >
+                <StyledTabBar.Tab isActive={isCurrent(Tabs.SETTINGS)} onClick={() => switchTo(Tabs.SETTINGS)}>
                     {translate('akeneo_catalogs.catalog_edit.tabs.settings')}
                 </StyledTabBar.Tab>
                 <StyledTabBar.Tab
