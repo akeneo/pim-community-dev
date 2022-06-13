@@ -73,7 +73,7 @@ class GetCategoryCodesByProductUuidsIntegration extends TestCase
 
         $userId = ($this->getUserId('admin') !== 0)
             ? $this->getUserId('admin')
-            : $this->createUser('admin', ['ROLE_USER', 'ROLE_ADMINISTRATOR'], ['IT support'])->getId();
+            : $this->createAdminUser()->getId();
 
         $this->productList['variant_product_1'] = $this->createProduct(
             'variant_product_1',

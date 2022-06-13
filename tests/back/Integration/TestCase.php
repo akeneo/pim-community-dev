@@ -185,11 +185,13 @@ abstract class TestCase extends KernelTestCase
         return $user;
     }
 
-    protected function createProduct(string $identifier, array $userIntents): ProductInterface
+    protected function createProduct(string $identifier, array $userIntents, int $userId = null): ProductInterface
     {
-        $userId = ($this->getUserId('peter') !== 0)
-            ? $this->getUserId('peter')
-            : $this->createUser('peter', ['ROLE_USER'], ['IT support'])->getId();
+        if ($userId === null) {
+            $userId = ($this->getUserId('peter') !== 0)
+                ? $this->getUserId('peter')
+                : $this->createUser('peter', ['ROLE_USER'], ['IT support'])->getId();
+        }
 
         $command = UpsertProductCommand::createFromCollection(
             userId: $userId,

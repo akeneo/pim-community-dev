@@ -76,7 +76,7 @@ SQL;
             sort($groupCodes);
 
             $results[$row['uuid']] = [
-                'uuid' => Type::getType(Types::STRING)->convertToPHPValue($row['uuid'], $platform),
+                'uuid' => Uuid::fromString(Type::getType(Types::STRING)->convertToPHPValue($row['uuid'], $platform)),
                 'identifier' => Type::getType(Types::STRING)->convertToPHPValue($row['identifier'], $platform),
                 'is_enabled' => Type::getType(Types::BOOLEAN)->convertToPHPValue($row['is_enabled'], $platform),
                 'product_model_code' => Type::getType(Types::STRING)->convertToPHPValue($row['product_model_code'], $platform),
