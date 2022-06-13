@@ -54,10 +54,10 @@ class JobExecutionMessageFactory
 
     public function buildFromNormalized(array $normalized, ?string $jobMessageClass): JobExecutionMessageInterface
     {
-        Assert::integer($normalized['job_execution_id'] ?? null);
-
-        /** @var string|JobExecutionMessageInterface $class */
         $class = $jobMessageClass ?? $this->jobMessageTypeFallback;
+
+        Assert::classExists($class);
+        Assert::implementsInterface($class, JobExecutionMessageInterface::class);
 
         return $class::createJobExecutionMessageFromNormalized($normalized);
     }
