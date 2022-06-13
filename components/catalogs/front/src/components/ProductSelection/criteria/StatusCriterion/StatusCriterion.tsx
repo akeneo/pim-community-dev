@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {List, SelectInput} from 'akeneo-design-system';
 import {Operator} from '../../models/Operator';
 import {CriterionModule} from '../../models/Criterion';
-import {StatusCriterionOperator} from './types';
+import {StatusCriterionOperator, StatusCriterionState} from './types';
 import styled from 'styled-components';
 import {useOperatorTranslator} from '../../hooks/useOperatorTranslator';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -12,13 +12,7 @@ const Inputs = styled.div`
     gap: 20px;
 `;
 
-type State = {
-    field: 'status';
-    operator: StatusCriterionOperator;
-    value: boolean;
-};
-
-const StatusCriterion: FC<CriterionModule<State>> = ({state, onChange}) => {
+const StatusCriterion: FC<CriterionModule<StatusCriterionState>> = ({state, onChange}) => {
     const translateOperator = useOperatorTranslator();
     const translate = useTranslate();
 

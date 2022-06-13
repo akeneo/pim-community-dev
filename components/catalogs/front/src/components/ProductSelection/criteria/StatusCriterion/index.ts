@@ -2,7 +2,7 @@ import {StatusCriterion, StatusCriterionState} from './types';
 import {StatusCriterion as Component} from './StatusCriterion';
 import {Operator} from '../../models/Operator';
 
-export default (state?: StatusCriterionState): StatusCriterion => ({
+export default (state?: Partial<StatusCriterionState>): StatusCriterion => ({
     id: (Math.random() + 1).toString(36).substring(7),
     module: Component,
     state: {

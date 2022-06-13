@@ -3,12 +3,10 @@ import {Criterion} from '../../models/Criterion';
 
 export type StatusCriterionOperator = typeof Operator.EQUALS | typeof Operator.NOT_EQUAL;
 
-export type StatusCriterion = Criterion & {
+export type StatusCriterionState = {
+    field: 'status';
     operator: StatusCriterionOperator;
     value: boolean;
 };
 
-export type StatusCriterionState = {
-    operator?: StatusCriterionOperator;
-    value?: boolean;
-};
+export type StatusCriterion = Criterion<StatusCriterionState>;
