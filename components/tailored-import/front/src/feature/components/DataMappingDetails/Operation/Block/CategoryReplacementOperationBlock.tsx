@@ -1,5 +1,5 @@
 import React from 'react';
-import {Block, Button, CloseIcon, IconButton, useBooleanState} from 'akeneo-design-system';
+import {Block, Button, CloseIcon, IconButton, useBooleanState, uuid} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {isReplacementValues, ReplacementValues} from '../../../../models';
 import {OperationBlockProps} from './OperationBlockProps';
@@ -8,7 +8,7 @@ import {CategoryReplacementModal} from "../CategoryReplacementModal/CategoryRepl
 const CATEGORY_REPLACEMENT_OPERATION_TYPE = 'category_replacement';
 
 type CategoryReplacementOperation = {
-  // TODO: don't forget to add uuid
+  uuid: string;
   type: typeof CATEGORY_REPLACEMENT_OPERATION_TYPE;
   mapping: ReplacementValues;
 };
@@ -21,7 +21,7 @@ const isCategoryReplacementOperation = (operation?: any): operation is CategoryR
   isReplacementValues(operation.mapping);
 
 const getDefaultCategoryReplacementOperation = (): CategoryReplacementOperation => ({
-  // TODO: don't forget to add uuid
+  uuid: uuid(),
   type: CATEGORY_REPLACEMENT_OPERATION_TYPE,
   mapping: {},
 });
