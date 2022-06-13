@@ -13,7 +13,7 @@ import {Edit} from './Edit';
 jest.mock('../../ProductSelection', () => ({
     ProductSelection: () => <>[ProductSelection]</>,
 }));
-jest.mock('../../Settings', () => ({
+jest.mock('./Settings', () => ({
     Settings: () => <>[Settings]</>,
 }));
 
@@ -56,7 +56,7 @@ test('it switches between tabs', () => {
         </ThemeProvider>
     );
 
-    expect(screen.queryByText('[ProductSelection]')).not.toBeInTheDocument();
+    expect(screen.getByText('[Settings]')).toBeInTheDocument();
 
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.product_selection')));
 
@@ -64,6 +64,5 @@ test('it switches between tabs', () => {
 
     act(() => userEvent.click(screen.getByText('akeneo_catalogs.catalog_edit.tabs.settings')));
 
-    expect(screen.queryByText('[ProductSelection]')).not.toBeInTheDocument();
     expect(screen.getByText('[Settings]')).toBeInTheDocument();
 });

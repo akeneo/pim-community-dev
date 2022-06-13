@@ -3,7 +3,7 @@ import {useSessionStorageState} from '@akeneo-pim-community/shared';
 import {useTabBar} from 'akeneo-design-system';
 import {TabBar, Tabs} from './TabBar';
 import {ProductSelection} from '../../ProductSelection';
-import {Settings} from '../../Settings';
+import {Settings} from './Settings';
 
 type Props = {
     id: string;
